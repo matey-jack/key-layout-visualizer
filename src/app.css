@@ -1,0 +1,18 @@
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 2fr) minmax(0, 2fr) minmax(0, 2fr) 1fr;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem;
+}
+
+.top-bar-keyboard-tab-label {
+    background-color: #f0f0f0;
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+.blank {
+    /* Empty spaces, can be styled if needed */
+}
