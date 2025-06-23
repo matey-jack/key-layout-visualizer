@@ -10,7 +10,7 @@ Key mappings are shown for three different layout types:
 While only "60% keyboards" are shown, all the letter mappings and many other concepts here also apply to bigger keyboards, with or without numpad or F-keys or nav keys.
 
 
-# Terminology and Background 
+## Terminology and Background 
 
 Layout = physical shape, size, and position of keys.
 
@@ -27,4 +27,9 @@ Therefore, this app focuses on optimized key mappings that preserve ancient musc
 Since typing comfort and ergonomics are prioritized over raw speed and anyone can switch to such a layout (and back, when faced with an ancient-type keyboard), we call them "casual" keyboard mappings.
 A casual typist is one who uses the keyboard regularly (and might want to relieve or prevent repetitive strain injury and other pains), but who is not fanatic about optimizing their typing or training for speed "like a pro."
 
+## Development
+
+I use `bun` as package manager and to run `vite`, but `node` should also work.
+
+For `vitest`, however, only `node` is working at the moment!
 

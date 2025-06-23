@@ -13,10 +13,20 @@
     border-radius: 4px;
 }
 
+.top-bar-keyboard-tab-label.selected {
+    background-color: #5cdbef;
+    border: 1px solid #003fae;
+}
+
 .blank {
     /* Empty spaces, can be styled if needed */
 }
 
+.layout-description {
+    padding-right: 10%;
+    padding-left: 10%;
+    font-family: Verdana, sans-serif;
+}
 
 .key-outline {
     stroke: black;
@@ -25,6 +35,10 @@
 
 .key-outline.unlabeled {
     fill: #e7e7e7;
+}
+
+.key-outline.command-key {
+    fill: #729bac;
 }
 
 .key-label {
@@ -45,3 +59,21 @@
     font-size: 21px;
 }
 
+.toggle-text-button {
+    background: none;
+    border: none;
+    color: #003fae;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0 0.5rem;
+    margin-left: 0.5rem;
+    text-decoration: underline;
+}
+
+.toggle-text-button:hover {
+    color: #5cdbef;
+}
+
+.truncated-text {
+    display: inline;
+}

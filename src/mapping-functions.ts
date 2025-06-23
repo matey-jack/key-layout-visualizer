@@ -17,3 +17,6 @@ const keyboardNames = [
 ];
 
 export const isKeyName = (label: string) => keyboardNames.includes(label);
+
+export const isCommandKey = (label: string) =>
+    (isKeyboardSymbol(label) || isKeyName(label)) && label !== "⍽" && label !== "⏎";

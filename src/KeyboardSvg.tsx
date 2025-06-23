@@ -1,5 +1,6 @@
 import {harmonicKeyWidth, harmonicMapping, harmonicRowStart} from "./HarmonicLayoutConfig.ts";
-import {getLabel, isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
+import {getLabel, isCommandKey, isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
+import {KeyboardProps} from "./model.ts";
 
 const keyUnit = 100;
 const keyboardTop = 100;
@@ -44,7 +45,7 @@ export const Key = (props: KeyProps) => {
     const labelClass =
         isKeyboardSymbol(props.label) ? "keyboard-symbol"
             : isKeyName(props.label) ? "key-name"
-                : null;
+                : "";
     const text = (labelClass) ?
         <text x={x + keyUnit * props.width / 2} y={y + keyUnit / 2} className={"key-label " + labelClass}>
             {props.label}
@@ -54,7 +55,9 @@ export const Key = (props: KeyProps) => {
             {props.label}
         </text>
 
-    const keyClass = (!props.label) ? "unlabeled" : "";
+    const keyClass = (!props.label) ? "unlabeled"
+        : (isCommandKey(props.label)) ? "command-key"
+            : "";
     return <g>
         <rect
             className={"key-outline " + keyClass}
@@ -65,10 +68,6 @@ export const Key = (props: KeyProps) => {
         />
         {text}
     </g>
-}
-
-interface KeyboardProps {
-    mapping: string;
 }
 
 export function HarmonicKeyboard(props: KeyboardProps) {

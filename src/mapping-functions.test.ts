@@ -25,21 +25,21 @@ describe('getLabel', () => {
         const labels = harmonicMapping[KeyboardRows.Home].map(
             (label) => getLabel(label, quertyMapping)
         );
-        expect(labels).toStrictEqual(["", "a", "s", "d", "f", "g", "", "h", "j", "k", "l", ";", "'"]);
+        expect(labels).toStrictEqual(["`~", "a", "s", "d", "f", "g", "", "h", "j", "k", "l", ";", "'"]);
     })
 
     it('merges all the labels for the Harmonic layout, lower letter row', () => {
         const labels = harmonicMapping[KeyboardRows.Lower].map(
             (label) => getLabel(label, quertyMapping)
         );
-        expect(labels).toStrictEqual(["⇧", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "⇧",]);
+        expect(labels).toStrictEqual(["⇧", "z", "x", "c", "v", "b", "/", "n", "m", ",", ".", "⇧",]);
     })
 
     it('merges all the labels for the Harmonic layout, bottom row', () => {
         const labels = harmonicMapping[KeyboardRows.Bottom].map(
             (label) => getLabel(label, quertyMapping)
         );
-        expect(labels).toStrictEqual(["Ctrl", "", "", "", "⍽", "⏎", "", "", "", "Ctrl",]);
+        expect(labels).toStrictEqual(["Ctrl", "Cmd", "Alt", "", "⍽", "⏎", "", "AltGr", "Fn", "Ctrl",]);
     })
 
 });
