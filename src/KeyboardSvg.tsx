@@ -1,6 +1,7 @@
 import {harmonicKeyWidth, harmonicMapping, harmonicRowStart} from "./HarmonicLayoutConfig.ts";
 import {getLabel, isCommandKey, isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
 import {KeyboardProps} from "./model.ts";
+import {ansiKeyWidth, ansiMapping} from "./AnsiLayoutConfig.ts";
 
 const keyUnit = 100;
 const keyboardTop = 100;
@@ -76,6 +77,26 @@ export function HarmonicKeyboard(props: KeyboardProps) {
         let colPos = harmonicRowStart(row);
         keys.push(...harmonicMapping[row].map((label, col) => {
             const width = harmonicKeyWidth(row, col);
+            const key = <Key
+                label={getLabel(label, props.mapping)}
+                row={row}
+                col={colPos}
+                width={width}
+                key={row + ',' + col}
+            />
+            colPos += width;
+            return key;
+        }));
+    }
+    return <>{keys.flat()}</>
+}
+
+export function AnsiKeyboard(props: KeyboardProps) {
+    let keys: preact.JSX.Element[] = [];
+    for (let row = 0; row < 5; row++) {
+        let colPos = 0;
+        keys.push(...ansiMapping[row].map((label, col) => {
+            const width = ansiKeyWidth(row, col);
             const key = <Key
                 label={getLabel(label, props.mapping)}
                 row={row}

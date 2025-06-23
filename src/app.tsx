@@ -14,12 +14,12 @@ export function App() {
     return (
         <>
             <TopBar selectedLayout={selectedLayout} setLayout={setLayout}/>
-            <KeyboardSvg>
-                <KeyboardElement mapping={QwertyMapping.mapping}/>
-            </KeyboardSvg>
             <div className="layout-description">
                 <TruncatedText text={LayoutDescriptions[selectedLayout]} />
             </div>
+            <KeyboardSvg>
+                <KeyboardElement mapping={QwertyMapping.mapping}/>
+            </KeyboardSvg>
         </>
     )
 }

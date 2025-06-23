@@ -139,8 +139,6 @@ describe('TruncatedText', () => {
   it('cancels truncation if mouse re-enters before delay expires', () => {
     render(<TruncatedText text={longText} truncationDelay={500} />);
 
-    const firstTwentyWords = longText.split(' ').slice(0, 20).join(' ')!!;
-
     // Click "Show more" to expand text
     fireEvent.click(screen.getByText('Show more'));
 

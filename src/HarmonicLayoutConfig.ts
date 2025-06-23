@@ -26,10 +26,3 @@ export const harmonicKeyWidth = (row: number, col: number) => {
     // all others
     return 1;
 }
-
-export const HarmonicKeyboardPitch = "The Harmonic keyboard layout has a fully symmetric keyboard with only two key sizes to allow for flexible changes to the key mapping. " +
-    "Its regular row stagger allows for many keys to be comfortably typed by two fingers, which let's you intuitively avoid the awkward same-finger bigrams that make new key mappings feel so awkward. " +
-    "Smaller keys make the board slightly narrower than an ANSI-based 60% keyboard, yet the hand home position is one key further apart, allowing for arms to relax and shoulders to open. " +
-    "This also puts a bit of typing load on the index fingers and less on the pinkies. " +
-    "The layout intentionally removes CapsLock and three \"programmer punctuation\" characters from the main layer and maps them onto the AltGr layer. " +
-    "Users are encouraged to map the remaining keys to something personally useful for them. (Even the \"programmer punctuation\", if so desired.) ";
