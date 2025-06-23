@@ -6,5 +6,12 @@ export default defineConfig({
     plugins: [preact()],
     server: {
         port: 3000,
+    },
+    // TODO: does this actually exist? does it belong somewhere else?
+    test: {
+        environment: 'jsdom',
+        globals: true,
+        // setupFiles: './src/test/setup.ts'
     }
+
 })

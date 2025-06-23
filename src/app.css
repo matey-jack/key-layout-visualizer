@@ -16,3 +16,32 @@
 .blank {
     /* Empty spaces, can be styled if needed */
 }
+
+
+.key-outline {
+    stroke: black;
+    fill: none;
+}
+
+.key-outline.unlabeled {
+    fill: #e7e7e7;
+}
+
+.key-label {
+    font-size: 24px;
+    font-family: Verdana, sans-serif;
+    /*font-weight: bold;*/
+}
+
+.key-label.keyboard-symbol {
+    text-anchor: middle;
+    dominant-baseline: central;
+    font-size: 28px;
+}
+
+.key-label.key-name {
+    text-anchor: middle;
+    dominant-baseline: central;
+    font-size: 21px;
+}
+
