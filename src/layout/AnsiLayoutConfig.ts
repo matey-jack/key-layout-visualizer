@@ -1,20 +1,21 @@
 import {KeyboardRows} from "../model.ts";
-import {RowBasedLayoutModel} from "./layout-model.ts";
+import {LayoutMapping, RowBasedLayoutModel} from "./layout-model.ts";
 
 const widthOfAnsiBoard = 15;
 
 // those values are accumulated by the stagger of 0.5, 0.25, and 0.5 again.
 const widthOfFirstKey = [1, 1.5, 1.75, 2.25,]
 
+interface AnsiLayoutOptions {
+    wide: boolean;
+}
+
 export const ansiLayoutModel: RowBasedLayoutModel = {
     layoutMapping: [
-        ["`~", "1", "2", "3", "4", "5", "6", "=", "7", "8", "9", "0", "-", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, 9, "[", "]"],
-        ["CAPS", 10, 11, 12, 13, 14, 30, 15, 16, 17, 18, 19, "⏎"],
-        // The move of key 29 to the middle is a change required to keep the finger assignments of keys 25..28 the same as on the ANSI layout.
-        // This is caused by moving the right home row to the right where the Enter key is removed.
-        // But below, Shift is still there.
-        ["⇧", 20, 21, 22, 23, 24, 29, 25, 26, 27, 28, "⇧"],
+        ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "⌫"],
+        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "\\", "[", "]"],
+        ["CAPS", 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 30, "⏎"],
+        ["⇧", 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, "⇧"],
         ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Fn", "Menu", "Ctrl"],
     ],
 
@@ -40,6 +41,32 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         return 1;
     },
 
+    // This split is used by all 'cleave' or split ANSI/ISO boards that I know of.
+    splitColumns: [7, 6, 6, 6],
+
     leftHomeIndex: 4,
+    rightHomeIndex: 7,
+}
+
+// how many columns are moving to the right?
+// the key just after those will "jump" into the center of the board?
+export const movedColumns = [5, 5, 5, 4];
+
+export const ansiWideLayoutModel: RowBasedLayoutModel = {
+    ...ansiLayoutModel,
     rightHomeIndex: 8,
+    layoutMapping: moveRightHand(ansiLayoutModel, movedColumns),
+}
+
+function moveRightHand(layoutModel: RowBasedLayoutModel, movedColumns: number[]): LayoutMapping {
+    return layoutModel.layoutMapping.map((layoutRow, row) => {
+        if (!movedColumns[row]) return layoutRow;
+        const jumpingColumn = layoutModel.splitColumns[row] + movedColumns[row];
+        return [
+            layoutRow.slice(0, layoutModel.splitColumns[row]),
+            layoutRow[jumpingColumn],
+            layoutRow.slice(layoutModel.splitColumns[row], jumpingColumn),
+            layoutRow.slice(jumpingColumn + 1),
+        ].flat();
+    })
 }

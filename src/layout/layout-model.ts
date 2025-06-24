@@ -31,11 +31,19 @@ export const LayoutDescriptions: Record<LayoutType, string> = {
 export type LayoutMapping = (string | number)[][];
 
 export interface RowBasedLayoutModel {
-    layoutMapping: LayoutMapping;
+    // 1 unit = width of the smallest key.
     rowStart: (row: KeyboardRows) => number;
     keyWidth: (row: KeyboardRows, col: number) => number;
+
+    // How many columns are to the left of the split line for each row?
+    // (Space bar splits just at the column of the row above.)
+    splitColumns: number[];
+
+    // Column number counted from 0.
     leftHomeIndex: number;
     rightHomeIndex: number;
+
+    layoutMapping: LayoutMapping;
 }
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: KeyboardRows, col: number): boolean {
