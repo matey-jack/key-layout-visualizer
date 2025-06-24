@@ -15,8 +15,9 @@ const layoutMapping: LayoutMapping = [
 export const harmonicLayoutModel: RowBasedLayoutModel = {
     layoutMapping,
 
+    // move the whole keyboard one key to the right to align with the ANSI center.
     rowStart: (row: number) =>
-        (row == KeyboardRows.Bottom) ? 0.5 : 0,
+        (row == KeyboardRows.Bottom) ? 1.5 : 1,
 
     keyWidth: (row: KeyboardRows, col: number) => {
         // outer edge keys
@@ -27,6 +28,9 @@ export const harmonicLayoutModel: RowBasedLayoutModel = {
         // all others
         return 1;
     },
+
+    // You'll notice that it's the same as in ANSI, making it easy to use both.
+    splitColumns: [7, 6, 6, 6],
 
     leftHomeIndex: 4,
     rightHomeIndex: 8,
