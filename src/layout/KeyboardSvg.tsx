@@ -1,7 +1,8 @@
-import {harmonicKeyWidth, harmonicMapping, harmonicRowStart} from "./HarmonicLayoutConfig.ts";
-import {getLabel, isCommandKey, isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
-import {KeyboardProps} from "./model.ts";
-import {ansiKeyWidth, ansiMapping} from "./AnsiLayoutConfig.ts";
+import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping-functions.ts";
+import {LayoutType} from "../model.ts";
+import {getLabel, isHomeKey, RowBasedLayoutModel} from "./layout-model.ts";
+import {harmonicLayoutModel} from "./HarmonicLayoutConfig.ts";
+import {ansiLayoutModel} from "./AnsiLayoutConfig.ts";
 
 const keyUnit = 100;
 const keyboardTop = 100;
@@ -36,6 +37,7 @@ interface KeyProps {
     col: number; // those can be fractional, but are measured in 1u from the left-hand side, starting with 0.
     // thus 0,0 is the top left key (tilde on ISO, Escape on Harmonic, and Iris)
     width: number; // measured in units of height, with 1 being the default
+    isHomeKey: boolean;
 }
 
 const keyPadding = 5;
@@ -58,6 +60,7 @@ export const Key = (props: KeyProps) => {
 
     const keyClass = (!props.label) ? "unlabeled"
         : (isCommandKey(props.label)) ? "command-key"
+            : (props.isHomeKey) ? "home-key"
             : "";
     return <g>
         <rect
@@ -71,14 +74,21 @@ export const Key = (props: KeyProps) => {
     </g>
 }
 
-export function HarmonicKeyboard(props: KeyboardProps) {
+export interface KeyboardProps {
+    mapping: string;
+    layoutModel?: RowBasedLayoutModel;
+}
+
+export function RowBasedKeyboard(props: KeyboardProps) {
+    let model = props.layoutModel!!;
     let keys: preact.JSX.Element[] = [];
     for (let row = 0; row < 5; row++) {
-        let colPos = harmonicRowStart(row);
-        keys.push(...harmonicMapping[row].map((label, col) => {
-            const width = harmonicKeyWidth(row, col);
+        let colPos = model.rowStart(row);
+        keys.push(...model.layoutMapping[row].map((label, col) => {
+            const width = model.keyWidth(row, col);
             const key = <Key
                 label={getLabel(label, props.mapping)}
+                isHomeKey={isHomeKey(model, row, col)}
                 row={row}
                 col={colPos}
                 width={width}
@@ -91,22 +101,11 @@ export function HarmonicKeyboard(props: KeyboardProps) {
     return <>{keys.flat()}</>
 }
 
-export function AnsiKeyboard(props: KeyboardProps) {
-    let keys: preact.JSX.Element[] = [];
-    for (let row = 0; row < 5; row++) {
-        let colPos = 0;
-        keys.push(...ansiMapping[row].map((label, col) => {
-            const width = ansiKeyWidth(row, col);
-            const key = <Key
-                label={getLabel(label, props.mapping)}
-                row={row}
-                col={colPos}
-                width={width}
-                key={row + ',' + col}
-            />
-            colPos += width;
-            return key;
-        }));
-    }
-    return <>{keys.flat()}</>
+
+type KeyboardElementType = (props: KeyboardProps) => preact.JSX.Element;
+
+export const LayoutElements: Record<LayoutType, KeyboardElementType | null> = {
+    [LayoutType.ANSI]: (props) => RowBasedKeyboard({layoutModel: ansiLayoutModel, ...props}),
+    [LayoutType.Harmonic]: (props) => RowBasedKeyboard({layoutModel: harmonicLayoutModel, ...props}),
+    [LayoutType.Ortho]: null,
 }

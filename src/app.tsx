@@ -1,8 +1,9 @@
 // @ts-ignore
 import './app.css'
 import './model'
-import {LayoutType, LayoutNames, LayoutElements, LayoutDescriptions} from "./model.ts";
-import {KeyboardSvg} from "./KeyboardSvg.tsx";
+import {LayoutType} from "./model.ts";
+import {LayoutNames, LayoutDescriptions} from "./layout/layout-model.ts";
+import {LayoutElements, KeyboardSvg} from "./layout/KeyboardSvg.tsx";
 import {QwertyMapping} from "./KeyMapping.tsx";
 import {useState} from "react";
 import {TruncatedText} from "./TruncatedText.tsx";

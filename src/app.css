@@ -41,6 +41,10 @@
     fill: #729bac;
 }
 
+.key-outline.home-key {
+    fill: #c3f3ac;
+}
+
 .key-label {
     font-size: 24px;
     font-family: Verdana, sans-serif;

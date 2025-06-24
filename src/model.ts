@@ -1,5 +1,3 @@
-import {AnsiKeyboard, HarmonicKeyboard} from "./KeyboardSvg.tsx";
-
 export enum LayoutType {
     ANSI,
     Ortho,
@@ -13,44 +11,4 @@ export enum KeyboardRows {
     Home,
     Lower,
     Bottom,
-}
-
-export const LayoutNames: Record<LayoutType, string> = {
-    [LayoutType.ANSI]: "ANSI / Typewriter",
-    [LayoutType.Ortho]: "Ortholinear",
-    [LayoutType.Harmonic]: "Harmonic Rows",
-}
-
-export interface KeyboardProps {
-    mapping: string;
-}
-
-type KeyboardElementType = (props: KeyboardProps) => preact.JSX.Element;
-
-export const LayoutElements: Record<LayoutType, KeyboardElementType | null> = {
-    [LayoutType.ANSI]: AnsiKeyboard,
-    [LayoutType.Harmonic]: HarmonicKeyboard,
-    [LayoutType.Ortho]: null,
-}
-
-export const LayoutDescriptions: Record<LayoutType, string> = {
-    [LayoutType.ANSI]: "The ANSI keyboard layout is based on a typewriter keyboard from the 19th century which gradually evolved " +
-        "to add some computer-specific keys like Ctrl, Alt, and most importantly the @ sign. " +
-        "This layout has keys of widely varying withs and an awkward stagger of 0.5, 0.25, and again 0.25 between the rows. " +
-        "This curiosity still dates back to old typewriter days when each key's middle needed to have a non-intersecting lever underneath to operate its type element. " +
-        "To make this ancient layout a bit more user-friendly, we have moved the right hand's home position by one key to the right. " +
-        "Most keys move together with this hand position so that muscle memory is strongly preserved. " +
-        "While it might look very unusual, it actually is very easy to get used to. " +
-        "And this setup makes it easier to switch between a laptop and an ergonomic split keyboard. ",
-    [LayoutType.Ortho]: "Ortholinear keyboards remove the weird row stagger and usually also use uniform key sizes. " +
-        "Those are just as easy to use, but save a lot of space and also allow for easy changing of the key mapping. " +
-        "The layout shown here corresponds to the Iris CE, a split keyboard which is incidentally the one that I used for coding this app. ",
-    [LayoutType.Harmonic]: "The Harmonic keyboard layout has a fully symmetric keyboard with only two key sizes to allow for flexible changes to the key mapping. " +
-        "Its regular row stagger allows for many keys to be comfortably typed by two fingers, " +
-        "which let's you intuitively avoid the awkward same-finger bigrams that make new key mappings feel so awkward. " +
-        "Smaller keys make the board slightly narrower than an ANSI-based 60% keyboard, " +
-        "yet the hand home position is one key further apart, allowing for arms to relax and shoulders to open. " +
-        "This also puts a bit of typing load on the index fingers and less on the pinkies. " +
-        "The layout intentionally removes CapsLock and three \"programmer punctuation\" characters from the main layer and maps them onto the AltGr layer. " +
-        "Users are encouraged to map the remaining keys to something personally useful for them. (Even the \"programmer punctuation\", if so desired.) ",
 }
