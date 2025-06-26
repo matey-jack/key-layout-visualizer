@@ -1,3 +1,4 @@
+import {KeyMapping} from "./mapping-model.ts";
 
 const harmonicComparisonBaseline: KeyMapping = {
     name: "Harmonic Qwerty",

@@ -1,7 +1,7 @@
 
-interface KeyMapping {
+export interface KeyMapping {
     name: string;
-    // description: string;
+    description?: string;
     sourceUrl: string;
 
     // this is 3 rows of 10 characters for ortho/typewriter (classical) mappings
