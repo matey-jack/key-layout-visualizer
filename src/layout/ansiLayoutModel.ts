@@ -11,11 +11,12 @@ interface AnsiLayoutOptions {
 }
 
 export const ansiLayoutModel: RowBasedLayoutModel = {
-    layoutMapping: [
+    // we use double quotes everywhere, just so that the one key with single quote as value isn't a special case ;)
+    mapping30keys: [
         ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "⌫"],
         ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "\\", "[", "]"],
-        ["CAPS", 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 30, "⏎"],
-        ["⇧", 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, "⇧"],
+        ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⏎"],
+        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
         ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Fn", "Menu", "Ctrl"],
     ],
 
@@ -33,7 +34,7 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
             return widthOfFirstKey[row];
         }
         // outer edge keys
-        const numCols = ansiLayoutModel.layoutMapping[row].length;
+        const numCols = ansiLayoutModel.mapping30keys[row].length;
         if (col == numCols - 1) {
             const numberOfMiddleKeys = numCols - 2;
             return widthOfAnsiBoard - numberOfMiddleKeys - widthOfFirstKey[row];
@@ -55,11 +56,11 @@ export const movedColumns = [5, 5, 5, 4];
 export const ansiWideLayoutModel: RowBasedLayoutModel = {
     ...ansiLayoutModel,
     rightHomeIndex: 8,
-    layoutMapping: moveRightHand(ansiLayoutModel, movedColumns),
+    mapping30keys: moveRightHand(ansiLayoutModel, movedColumns),
 }
 
 function moveRightHand(layoutModel: RowBasedLayoutModel, movedColumns: number[]): LayoutMapping {
-    return layoutModel.layoutMapping.map((layoutRow, row) => {
+    return layoutModel.mapping30keys.map((layoutRow, row) => {
         if (!movedColumns[row]) return layoutRow;
         const jumpingColumn = layoutModel.splitColumns[row] + movedColumns[row];
         return [

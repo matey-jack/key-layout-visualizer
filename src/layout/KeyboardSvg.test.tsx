@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/preact';
 import {LayoutElements} from './KeyboardSvg.tsx';
-import {QwertyMapping} from "../KeyMapping.tsx";
+import {QwertyMapping} from "../mapping/mappings-30-keys.ts";
 import {LayoutType} from "../model.ts";
 
 // Test key rendering

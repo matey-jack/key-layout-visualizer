@@ -4,7 +4,7 @@ import './model'
 import {LayoutType} from "./model.ts";
 import {LayoutNames, LayoutDescriptions} from "./layout/layout-model.ts";
 import {LayoutElements, KeyboardSvg} from "./layout/KeyboardSvg.tsx";
-import {QwertyMapping} from "./KeyMapping.tsx";
+import {QwertyMapping} from "./mapping/mappings-30-keys.ts";
 import {useState} from "react";
 import {TruncatedText} from "./TruncatedText.tsx";
 

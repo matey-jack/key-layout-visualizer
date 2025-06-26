@@ -1,46 +1,21 @@
-import { describe, it, expect } from 'vitest';
+import {describe, it, expect} from 'vitest';
 
-import {harmonicLayoutModel} from "./HarmonicLayoutConfig.ts";
-import {getLabel} from "./layout-model.ts";
+import {harmonicLayoutModel} from "./harmonicLayoutModel.ts";
+import {fillMapping, getLabel} from "./layout-model.ts";
 import {KeyboardRows} from "../model.ts";
-import {QwertyMapping} from "../KeyMapping.tsx"
+import {QwertyMapping} from "../mapping/mappings-30-keys.ts"
 
-describe('getLabel', () => {
-    const harmonicMapping = harmonicLayoutModel.layoutMapping;
-    const quertyMapping = QwertyMapping.mapping;
-    it('merges all the labels for the Harmonic layout, number row', () => {
-        const labels = harmonicMapping[KeyboardRows.Number].map(
-            (label) => getLabel(label, quertyMapping)
-        );
-        expect(labels).toStrictEqual(["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="]);
+describe('fillMapping', () => {
+    it('Harmonic layout 30-key qwerty', () => {
+        const actual = fillMapping(harmonicLayoutModel, QwertyMapping.mapping);
+        expect(actual[0]).toStrictEqual(["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="]);
+        expect(actual[1]).toStrictEqual(["↹", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "⌫",]);
+        expect(actual[2]).toStrictEqual(["`~", "a", "s", "d", "f", "g", "\\", "h", "j", "k", "l", ";", "'"]);
+        expect(actual[3]).toStrictEqual(["⇧", "z", "x", "c", "v", "b", "/", "n", "m", ",", ".", "⇧",]);
+        expect(actual[4]).toStrictEqual(["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl",]);
     })
 
-    it('merges all the labels for the Harmonic layout, upper letter row', () => {
-        const labels = harmonicMapping[KeyboardRows.Upper].map(
-            (label) => getLabel(label, quertyMapping)
-        );
-        expect(labels).toStrictEqual(["↹", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "⌫",]);
-    })
+    it('Harmonic layout full qwerty / baseline', () => {
 
-    it('merges all the labels for the Harmonic layout, home row', () => {
-        const labels = harmonicMapping[KeyboardRows.Home].map(
-            (label) => getLabel(label, quertyMapping)
-        );
-        expect(labels).toStrictEqual(["`~", "a", "s", "d", "f", "g", "\\", "h", "j", "k", "l", ";", "'"]);
-    })
-
-    it('merges all the labels for the Harmonic layout, lower letter row', () => {
-        const labels = harmonicMapping[KeyboardRows.Lower].map(
-            (label) => getLabel(label, quertyMapping)
-        );
-        expect(labels).toStrictEqual(["⇧", "z", "x", "c", "v", "b", "/", "n", "m", ",", ".", "⇧",]);
-    })
-
-    it('merges all the labels for the Harmonic layout, bottom row', () => {
-        const labels = harmonicMapping[KeyboardRows.Bottom].map(
-            (label) => getLabel(label, quertyMapping)
-        );
-        expect(labels).toStrictEqual(["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl",]);
-    })
-
+    });
 });

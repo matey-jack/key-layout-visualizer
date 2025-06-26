@@ -1,8 +1,8 @@
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping-functions.ts";
 import {LayoutType} from "../model.ts";
-import {getLabel, isHomeKey, RowBasedLayoutModel} from "./layout-model.ts";
-import {harmonicLayoutModel} from "./HarmonicLayoutConfig.ts";
-import {ansiLayoutModel} from "./AnsiLayoutConfig.ts";
+import {fillMapping, isHomeKey, RowBasedLayoutModel} from "./layout-model.ts";
+import {harmonicLayoutModel} from "./harmonicLayoutModel.ts";
+import {ansiLayoutModel} from "./ansiLayoutModel.ts";
 
 const keyUnit = 100;
 const keyboardTop = 100;
@@ -82,12 +82,13 @@ export interface KeyboardProps {
 export function RowBasedKeyboard(props: KeyboardProps) {
     let model = props.layoutModel!!;
     let keys: preact.JSX.Element[] = [];
+    const fullMapping = fillMapping(model, props.mapping);
     for (let row = 0; row < 5; row++) {
         let colPos = model.rowStart(row);
-        keys.push(...model.layoutMapping[row].map((label, col) => {
+        keys.push(...fullMapping[row].map((label, col) => {
             const width = model.keyWidth(row, col);
             const key = <Key
-                label={getLabel(label, props.mapping)}
+                label={label}
                 isHomeKey={isHomeKey(model, row, col)}
                 row={row}
                 col={colPos}
