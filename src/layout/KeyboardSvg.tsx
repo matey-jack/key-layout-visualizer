@@ -6,7 +6,7 @@ import {ansiLayoutModel} from "./ansiLayoutModel.ts";
 import {orthoLayoutModel} from "./orthoLayoutModel.ts";
 
 const keyUnit = 100;
-const keyboardTop = 100;
+const keyboardTop = 0;
 const keyboardLeft = 100;
 
 // interface KeyboardDimensions {
@@ -22,7 +22,7 @@ interface KeyboardSvgProps {
 // Adding 1u of wiggle room all around suggests a ratio of 7:17 for the SVG grid.
 export const KeyboardSvg = (props: KeyboardSvgProps) =>
     <div>
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1700 700">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1700 500">
             {props.children}
         </svg>
     </div>

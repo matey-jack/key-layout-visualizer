@@ -59,7 +59,7 @@ export function isHomeKey(layoutModel: RowBasedLayoutModel, row: KeyboardRows, c
 
 export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: string[]): string[][] {
         if (flexMapping.length == 3) return mergeMapping(layoutModel.mapping30keys, ["", ...flexMapping]);
-        return mergeMapping(layoutModel.fullMapping, flexMapping);
+        return mergeMapping(layoutModel.fullMapping!!, flexMapping);
 }
 
 export const mergeMapping = (layoutMapping: LayoutMapping, flexMapping: string[]): string[][] =>

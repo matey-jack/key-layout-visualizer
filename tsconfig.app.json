@@ -22,7 +22,8 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
+    // there should be a way to occasionally run with this on to clean up loose ends.
+    "noUnusedLocals": false,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true

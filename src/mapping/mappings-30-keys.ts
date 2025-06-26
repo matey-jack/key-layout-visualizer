@@ -1,21 +1,11 @@
 /*
-    To keep the data model easy, we initially allow remapping only 31 keys,
-    consisting of the inner square of 3 rows by 10 columns plus an extra right pinky key.
-    (This latter is on the upper letter row for ISO and Iris layouts,
-    and it's on the home row for the Harmonic.)
-    The mapping is just modeled as a list of 31 elements, with the extra pinky key going last.
-    (That's never its real position, but makes coding easier.)
-
-    Next steps: since all our layouts have a wide hand position,
-    we could actually add the key to the right of the space bar to the mapping model.
-    As for keys to place äö and ~ we'll see later.
-    Easy way to make it extensible: since most mappings only affect 30 core keys,
-    just add other keys at the end and give them default values :D.
-
-    Escape, Backspace, Tab, two Shift keys, Enter, and Space will be labeled, but are fixed in the layout.
-    + and - are also fixed on ISO and Harmonic layouts.
-    Remaining punctuation, we'll see.
+    Most letter mapping discussions on the Internet talk only about mapping of the 26 letters and sometimes also the four
+    punctuation keys that on the ANSI/Qwerty layout/mapping fall into the central 3×10 field of the keyboard.
+    Such a restricted mapping has the advantage that it maps to different (physical) keyboard layouts that don't have
+    equivalents for all the ANSI keys.
  */
+
+import {KeyMapping} from "./mapping-model.ts";
 
 export const QwertyMapping: KeyMapping = {
     name: "Qwerty",

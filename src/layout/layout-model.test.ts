@@ -1,8 +1,7 @@
 import {describe, it, expect} from 'vitest';
 
 import {harmonicLayoutModel} from "./harmonicLayoutModel.ts";
-import {fillMapping, getLabel} from "./layout-model.ts";
-import {KeyboardRows} from "../model.ts";
+import {fillMapping} from "./layout-model.ts";
 import {QwertyMapping} from "../mapping/mappings-30-keys.ts"
 
 describe('fillMapping', () => {
