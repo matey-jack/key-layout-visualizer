@@ -3,6 +3,7 @@ import preact from '@preact/preset-vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+    base: '/key-layout-visualizer/',
     plugins: [preact()],
     build: {
         // because Github pages only takes it from here
