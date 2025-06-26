@@ -6,15 +6,19 @@ const widthOfAnsiBoard = 15;
 // those values are accumulated by the stagger of 0.5, 0.25, and 0.5 again.
 const widthOfFirstKey = [1, 1.5, 1.75, 2.25,]
 
-interface AnsiLayoutOptions {
+export interface AnsiLayoutOptionsModel {
     wide: boolean;
+}
+
+export const defaultAnsiLayoutOptions: AnsiLayoutOptionsModel = {
+    wide: false,
 }
 
 export const ansiLayoutModel: RowBasedLayoutModel = {
     // we use double quotes everywhere, just so that the one key with single quote as value isn't a special case ;)
     mapping30keys: [
         ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "\\", "[", "]"],
+        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "[", "]", "\\"],
         ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⏎"],
         ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
         ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Fn", "Menu", "Ctrl"],
@@ -53,7 +57,7 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
 
 // how many columns are moving to the right?
 // the key just after those will "jump" into the center of the board?
-export const movedColumns = [5, 5, 5, 4];
+export const movedColumns = [5, 7, 5, 4];
 
 export const ansiWideLayoutModel: RowBasedLayoutModel = {
     ...ansiLayoutModel,

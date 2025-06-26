@@ -1,6 +1,14 @@
 import {KeyboardRows} from "../model.ts";
 import {RowBasedLayoutModel} from "./layout-model.ts";
 
+export interface OrthoLayoutOptionsModel {
+    thumbKeys: boolean;
+}
+
+export const defaultOrthoLayoutOptions: OrthoLayoutOptionsModel = {
+    thumbKeys: false,
+}
+
 export const orthoLayoutModel: RowBasedLayoutModel = {
     // This is arbitrarily based on the Preonic 12×5 with only space as a 2u key.
     // I decided to map all ANSI keys except `[` and `]`. Actual users might omit more or less from their base layer.

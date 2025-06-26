@@ -1,4 +1,7 @@
-import {KeyboardRows, LayoutType} from "../model.ts";
+import {KeyboardRows, LayoutOptionsState, LayoutType} from "../model.ts";
+import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
+import {harmonicLayoutModel, harmonicLayoutModelWithNavKeys} from "./harmonicLayoutModel.ts";
+import {orthoLayoutModel} from "./orthoLayoutModel.ts";
 
 export const LayoutNames: Record<LayoutType, string> = {
     [LayoutType.ANSI]: "ANSI / Typewriter",
@@ -26,6 +29,17 @@ export const LayoutDescriptions: Record<LayoutType, string> = {
         "This also puts a bit of typing load on the index fingers and less on the pinkies. " +
         "The layout intentionally removes CapsLock and three \"programmer punctuation\" characters from the main layer and maps them onto the AltGr layer. " +
         "Users are encouraged to map the remaining keys to something personally useful for them. (Even the \"programmer punctuation\", if so desired.) ",
+}
+
+export function getLayoutModel(layoutType: LayoutType, layoutOptions: LayoutOptionsState) {
+    switch (layoutType) {
+        case LayoutType.ANSI:
+            return layoutOptions.ansiLayoutOptions.value.wide ? ansiWideLayoutModel : ansiLayoutModel;
+        case LayoutType.Ortho:
+            return orthoLayoutModel;
+        case LayoutType.Harmonic:
+            return layoutOptions.harmonicLayoutOptions.value.navKeys ? harmonicLayoutModelWithNavKeys : harmonicLayoutModel;
+    }
 }
 
 export type LayoutMapping = (string | number)[][];

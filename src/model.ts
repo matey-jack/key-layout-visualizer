@@ -1,7 +1,20 @@
+import {signal} from "@preact/signals";
+import {qwertyMapping} from "./mapping/mappings-30-keys.ts";
+import {defaultAnsiLayoutOptions} from "./layout/ansiLayoutModel.ts";
+import {defaultHarmonicLayoutOptions} from "./layout/harmonicLayoutModel.ts";
+import {defaultOrthoLayoutOptions} from "./layout/orthoLayoutModel.ts";
+
 export enum LayoutType {
     ANSI,
     Ortho,
     Harmonic,
+}
+
+export enum LayoutSplit {
+    Bar,
+    Cleave,
+    Flex,
+    TwoPiece,
 }
 
 // change this carefully, we actually use the numeric values 0..4 in calculations!
@@ -11,4 +24,23 @@ export enum KeyboardRows {
     Home,
     Lower,
     Bottom,
+}
+
+export type AppState = ReturnType<typeof createAppState>;
+
+export type LayoutOptionsState = AppState['layoutOptions'];
+
+// Some of the state could be local the Layout or Mapping areas, but unless this global thing gets too big,
+// let's just have one.
+export function createAppState() {
+    const layoutType = signal(LayoutType.ANSI);
+    const layoutSplit = signal(LayoutSplit.Bar);
+    const layoutOptions = {
+        ansiLayoutOptions: signal(defaultAnsiLayoutOptions),
+        harmonicLayoutOptions: signal(defaultHarmonicLayoutOptions),
+        orthoLayoutOptions: signal(defaultOrthoLayoutOptions),
+    };
+
+    const mapping = signal(qwertyMapping)
+    return { layoutType, layoutOptions, layoutSplit, mapping };
 }

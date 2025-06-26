@@ -2,11 +2,11 @@ import {describe, it, expect} from 'vitest';
 
 import {harmonicLayoutModel} from "./harmonicLayoutModel.ts";
 import {fillMapping} from "./layout-model.ts";
-import {QwertyMapping} from "../mapping/mappings-30-keys.ts"
+import {qwertyMapping} from "../mapping/mappings-30-keys.ts"
 
 describe('fillMapping', () => {
     it('Harmonic layout 30-key qwerty', () => {
-        const actual = fillMapping(harmonicLayoutModel, QwertyMapping.mapping);
+        const actual = fillMapping(harmonicLayoutModel, qwertyMapping.mapping);
         expect(actual[0]).toStrictEqual(["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="]);
         expect(actual[1]).toStrictEqual(["↹", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "⌫",]);
         expect(actual[2]).toStrictEqual(["`~", "a", "s", "d", "f", "g", "\\", "h", "j", "k", "l", ";", "'"]);

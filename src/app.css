@@ -1,5 +1,5 @@
 
-.grid-container {
+.layout-top-bar-container {
     display: grid;
     grid-template-columns: 1fr minmax(0, 2fr) minmax(0, 2fr) minmax(0, 2fr) 1fr;
     gap: 1rem;
@@ -26,6 +26,15 @@
     padding-right: 10%;
     padding-left: 10%;
     padding-bottom: 1rem;
+    font-family: Verdana, sans-serif;
+}
+
+.layout-options-bar-container {
+    display: grid;
+    grid-template-columns: 1fr 6fr 1fr;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem;
     font-family: Verdana, sans-serif;
 }
 

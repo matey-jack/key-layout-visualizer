@@ -102,12 +102,3 @@ export function RowBasedKeyboard(props: KeyboardProps) {
     }
     return <>{keys.flat()}</>
 }
-
-
-type KeyboardElementType = (props: KeyboardProps) => preact.JSX.Element;
-
-export const LayoutElements: Record<LayoutType, KeyboardElementType | null> = {
-    [LayoutType.ANSI]: (props) => RowBasedKeyboard({layoutModel: ansiLayoutModel, ...props}),
-    [LayoutType.Harmonic]: (props) => RowBasedKeyboard({layoutModel: harmonicLayoutModel, ...props}),
-    [LayoutType.Ortho]: (props) => RowBasedKeyboard({layoutModel: orthoLayoutModel, ...props}),
-}

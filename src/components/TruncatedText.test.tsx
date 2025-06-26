@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, act } from '@testing-library/preact';
-import { TruncatedText } from './TruncatedText';
+import { TruncatedText } from './TruncatedText.tsx';
 
 describe('TruncatedText', () => {
   const longText = 'This is a long text that has more than twenty words so it should be truncated when displayed initially and then show the full text when the show more button is clicked by the user.';
