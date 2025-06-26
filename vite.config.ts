@@ -4,6 +4,10 @@ import preact from '@preact/preset-vite'
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [preact()],
+    build: {
+        // because Github pages only takes it from here
+        outDir: 'docs',
+    },
     server: {
         port: 3000,
     },
