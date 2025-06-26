@@ -13,7 +13,7 @@ export const orthoLayoutModel: RowBasedLayoutModel = {
         ["Ctrl", "Cmd", "`", "-", "Alt", "⍽", "AltGr", "=", "\\", "Fn", "Ctrl"],
     ],
 
-    rowStart: (_: KeyboardRows) => 1,
+    rowStart: (_: KeyboardRows) => 1.5,
 
     keyWidth: (row: KeyboardRows, col: number): number =>
         ((row == KeyboardRows.Bottom) && (col == 5)) ? 2 : 1,
