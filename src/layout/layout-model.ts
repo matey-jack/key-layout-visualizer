@@ -47,7 +47,7 @@ export interface RowBasedLayoutModel {
     mapping30keys: LayoutMapping;
 
     // this one takes a flex mapping depending on the layout
-    fullMapping: LayoutMapping;
+    fullMapping?: LayoutMapping;
 }
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: KeyboardRows, col: number): boolean {
@@ -57,12 +57,12 @@ export function isHomeKey(layoutModel: RowBasedLayoutModel, row: KeyboardRows, c
     return false;
 }
 
-export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: string[]): LayoutMapping {
+export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: string[]): string[][] {
         if (flexMapping.length == 3) return mergeMapping(layoutModel.mapping30keys, ["", ...flexMapping]);
         return mergeMapping(layoutModel.fullMapping, flexMapping);
 }
 
-export const mergeMapping = (layoutMapping: LayoutMapping, flexMapping: string[]): LayoutMapping =>
+export const mergeMapping = (layoutMapping: LayoutMapping, flexMapping: string[]): string[][] =>
     layoutMapping.map((layoutRow, r) =>
         layoutRow.map((layoutValue) =>
             (typeof layoutValue === 'number') ? flexMapping[r][layoutValue] : layoutValue

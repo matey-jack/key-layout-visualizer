@@ -3,6 +3,7 @@ import {LayoutType} from "../model.ts";
 import {fillMapping, isHomeKey, RowBasedLayoutModel} from "./layout-model.ts";
 import {harmonicLayoutModel} from "./harmonicLayoutModel.ts";
 import {ansiLayoutModel} from "./ansiLayoutModel.ts";
+import {orthoLayoutModel} from "./orthoLayoutModel.ts";
 
 const keyUnit = 100;
 const keyboardTop = 100;
@@ -75,7 +76,7 @@ export const Key = (props: KeyProps) => {
 }
 
 export interface KeyboardProps {
-    mapping: string;
+    mapping: string[];
     layoutModel?: RowBasedLayoutModel;
 }
 
@@ -108,5 +109,5 @@ type KeyboardElementType = (props: KeyboardProps) => preact.JSX.Element;
 export const LayoutElements: Record<LayoutType, KeyboardElementType | null> = {
     [LayoutType.ANSI]: (props) => RowBasedKeyboard({layoutModel: ansiLayoutModel, ...props}),
     [LayoutType.Harmonic]: (props) => RowBasedKeyboard({layoutModel: harmonicLayoutModel, ...props}),
-    [LayoutType.Ortho]: null,
+    [LayoutType.Ortho]: (props) => RowBasedKeyboard({layoutModel: orthoLayoutModel, ...props}),
 }

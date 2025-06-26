@@ -25,10 +25,12 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
     keyWidth: (row: KeyboardRows, col: number): number => {
         // source is roughly https://www.wikiwand.com/en/articles/Keyboard_layout#/media/File:ANSI_Keyboard_Layout_Diagram_with_Form_Factor.svg
         if (row == KeyboardRows.Bottom) {
+            // Modifier sizes are where commercially available keybaords vary the most, but 7 keys are the most common,
+            // and equal size for them is the simplest choice. (Also makes them incompatible with any other key on the board.)
             // space bar
-            if (col == 3) return 6;
-            // 7 keys in the space of 9, all seem to have the same size.
-            return 9/7;
+            if (col == 3) return 6.25;
+            // The space bar leaves 8.75 units for 7 keys and that just works out to:
+            return 1.25;
         }
         if (col == 0) {
             return widthOfFirstKey[row];
