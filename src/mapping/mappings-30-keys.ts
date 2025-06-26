@@ -138,7 +138,7 @@ export const AllMappings: KeyMapping[] = [
 // https://github.com/matey-jack/gemuetliche-tastatur
 // This is lacking ä and ü, but they are differently positioned on ISO and Iris,
 // which our basic model doesn't support yet.
-export const GemütlichesMapping = [
+export const GemuetlichesMapping = [
     "qwbfö" + "zkuop",
     "asdrg" + "hnklt",
     "zxcv/" + "nm,.-",
