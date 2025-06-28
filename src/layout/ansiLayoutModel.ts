@@ -49,7 +49,9 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
     },
 
     // This split is used by all 'cleave' or split ANSI/ISO boards that I know of.
-    splitColumns: [7, 6, 6, 6],
+    // Note that for models with a central space bar, there needs to be special handling or a variant of some sort...
+    // TODO: a fractional value could be a good configuration option here!
+    splitColumns: [7, 6, 6, 6, 4],
 
     leftHomeIndex: 4,
     rightHomeIndex: 7,

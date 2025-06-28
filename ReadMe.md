@@ -33,3 +33,29 @@ I use `bun` as package manager and to run `vite`, but `node` should also work.
 
 For `vitest`, however, only `node` is working at the moment!
 
+
+
+
+## Notes to self
+
+Isn't it funny, that JavaScript has Math.max(), but we need a library for sum(...)?
+Reminder to always check https://youmightnotneed.com/ before searching for libraries.
+
+And isn't it confusing that there are so many libraries out there that provide this function?
+To make things worse, ChatGPT recommends libraries like https://github.com/angus-c/just and https://www.npmjs.com/package/micro-math
+which do not even include the sum(...) function! 
+And there is "just-sum" on npmjs.com, but it only sums two numbers, instead of a list. 
+
+Now, I have prejudices towards first-gen JavaScript libraries like Underscore, Lodash, Ramda, 
+because I think that they come with a lot of cruft and first-generation mistakes that are hard to fix.
+Although I appreciate that they are often battle-tested and cover a lot of edge cases, I prefer "small and focused" as well as 
+"typescript first" and ideally "es6 first", that is use named exports only.
+
+    I looked at Rambda, Radashi, and Remeda.
+    Upacked size (npmjs.com): 675 kB, 436 kB, 863 kB
+
+Rambda doesn't advertise itself to be tree-shakable and also is designed to call all of its functions as part of R.pipe(...).
+
+So that leaves Radashi and Remeda. Darn, I can't decide, I'll just use generated code for the function again. (As you might have noticed, most of the AI-generated code in this project is actually for stuff that should be some public library function or React component, but isn't.)
+
+

@@ -30,12 +30,13 @@
 }
 
 .layout-options-bar-container {
-    display: grid;
-    grid-template-columns: 1fr 6fr 1fr;
-    gap: 1rem;
-    width: 100%;
+    margin-left: 10%;
     padding: 1rem;
     font-family: Verdana, sans-serif;
+}
+
+.layout-options-bar-container CheckboxWithLabel {
+    display: block;
 }
 
 .key-outline {

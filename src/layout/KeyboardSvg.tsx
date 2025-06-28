@@ -1,18 +1,6 @@
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping-functions.ts";
-import {LayoutType} from "../model.ts";
 import {fillMapping, isHomeKey, RowBasedLayoutModel} from "./layout-model.ts";
-import {harmonicLayoutModel} from "./harmonicLayoutModel.ts";
-import {ansiLayoutModel} from "./ansiLayoutModel.ts";
-import {orthoLayoutModel} from "./orthoLayoutModel.ts";
-
-const keyUnit = 100;
-const keyboardTop = 0;
-const keyboardLeft = 100;
-
-// interface KeyboardDimensions {
-//     keyboardSplit: number; // gap between halves in key units
-//     // idea: for ISO and Harmonic put a little slider on the page to move them apart or together.
-// }
+import {sum} from '../library/math.ts';
 
 interface KeyboardSvgProps {
     children?: preact.ComponentChildren;
@@ -26,6 +14,11 @@ export const KeyboardSvg = (props: KeyboardSvgProps) =>
             {props.children}
         </svg>
     </div>
+
+// keep in sync with KeyboardSvg.viewBox
+const totalWidth = 17;
+// in key units
+const horizontalPadding = 0.5;
 
 interface KeyProps {
     label: string;
@@ -41,11 +34,12 @@ interface KeyProps {
     isHomeKey: boolean;
 }
 
+const keyUnit = 100;
 const keyPadding = 5;
 
 export const Key = (props: KeyProps) => {
-    const x = keyboardLeft + props.col * keyUnit + keyPadding;
-    const y = keyboardTop + props.row * keyUnit + keyPadding;
+    const x = props.col * keyUnit + keyPadding;
+    const y = props.row * keyUnit + keyPadding;
     const labelClass =
         isKeyboardSymbol(props.label) ? "keyboard-symbol"
             : isKeyName(props.label) ? "key-name"
@@ -76,21 +70,28 @@ export const Key = (props: KeyProps) => {
 }
 
 export interface KeyboardProps {
-    mapping: string[];
-    layoutModel?: RowBasedLayoutModel;
+    layoutModel: RowBasedLayoutModel;
+    flexMapping: string[];
+    // We split all keyboards by moving their outer edges to a width of 17 units.
+    // In both split and unsplit case, the keyboard will be centered.
+    split: boolean;
 }
 
-export function RowBasedKeyboard(props: KeyboardProps) {
-    let model = props.layoutModel!!;
+export function RowBasedKeyboard({flexMapping, layoutModel, split}: KeyboardProps) {
+    const fullMapping = fillMapping(layoutModel, flexMapping);
+    const rowWidth = fullMapping.map( (row, r) =>
+        2 * (horizontalPadding + layoutModel.rowStart(r)) + sum(row.map((_, c) => layoutModel.keyWidth(r, c)))
+    );
     let keys: preact.JSX.Element[] = [];
-    const fullMapping = fillMapping(model, props.mapping);
     for (let row = 0; row < 5; row++) {
-        let colPos = model.rowStart(row);
+        let colPos = horizontalPadding + layoutModel.rowStart(row);
+        if (!split) colPos += (totalWidth - rowWidth[row]) / 2;
         keys.push(...fullMapping[row].map((label, col) => {
-            const width = model.keyWidth(row, col);
+            if (split && (col==layoutModel.splitColumns[row])) colPos += totalWidth - rowWidth[row];
+            const width = layoutModel.keyWidth(row, col);
             const key = <Key
                 label={label}
-                isHomeKey={isHomeKey(model, row, col)}
+                isHomeKey={isHomeKey(layoutModel, row, col)}
                 row={row}
                 col={colPos}
                 width={width}
