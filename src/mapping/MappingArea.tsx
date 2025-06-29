@@ -1,8 +1,8 @@
-import {AppState, LayoutOptionsState, LayoutType} from "../model.ts";
+import {AppState} from "../model.ts";
 import {FlexMapping} from "./mapping-model.ts";
 import {Signal} from "@preact/signals";
 import {allMappings} from "./mappings.ts";
-import {diffSummary, diffToQwerty, getLayoutModel, MappingChange, RowBasedLayoutModel} from "../layout/layout-model.ts";
+import {diffSummary, diffToQwerty, MappingChange, RowBasedLayoutModel} from "../layout/layout-model.ts";
 
 export interface MappingAreaProps {
     appState: AppState;
@@ -29,7 +29,8 @@ export function MappingList({appState}: MappingListProps) {
         </thead>
         <tbody>
         {allMappings.map((mapping) =>
-            <MappingListItem mappingData={mapping} layoutModel={appState.layoutModel.value} selectedMapping={appState.mapping}/>
+            <MappingListItem mappingData={mapping} layoutModel={appState.layoutModel.value}
+                             selectedMapping={appState.mapping}/>
         )}
         </tbody>
     </table>

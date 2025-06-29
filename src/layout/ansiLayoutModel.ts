@@ -1,4 +1,4 @@
-import {KeyboardRows, LayoutType} from "../model.ts";
+import {KeyboardRows} from "../model.ts";
 import {LayoutMapping, RowBasedLayoutModel} from "./layout-model.ts";
 import {FlexMapping} from "../mapping/mapping-model.ts";
 
@@ -72,7 +72,6 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
 
     // This split is used by all 'cleave' or split ANSI/ISO boards that I know of.
     // Note that for models with a central space bar, there needs to be special handling or a variant of some sort...
-    // TODO: a fractional value could be a good configuration option here!
     splitColumns: [7, 6, 6, 6, 4],
 
     leftHomeIndex: 4,
@@ -83,7 +82,7 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         [1, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9, 8, 8],
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9, 9],
         [0, 1, 2, 3, 3, 3, 6, 6, 7, 8, 9, 9],
-        [0, 1, 4, 5, 5, 9, 9, 9],
+        [0, 1, 4, 5, 5, 7, 8, 9],
     ],
 
     getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsi,
@@ -99,6 +98,13 @@ export const customAnsiWideLayoutModel = (movedColumns: number[]): RowBasedLayou
         rightHomeIndex: 8,
         thirtyKeyMapping: moveRightHand(ansiLayoutModel.thirtyKeyMapping, ansiLayoutModel.splitColumns, movedColumns),
         fullMapping: moveRightHand(ansiLayoutModel.fullMapping!!, ansiLayoutModel.splitColumns, movedColumns),
+        mainFingerAssignment: [
+            [1, 1, 1, 2, 2, 3, 3, 6, 6, 6, 7, 8, 8, 8],
+            [1, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9, 8],
+            [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
+            [0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9],
+            [0, 1, 4, 5, 5, 7, 8, 9],
+        ],
     });
 
 export const ansiWideLayoutModel = customAnsiWideLayoutModel(movedColumns);

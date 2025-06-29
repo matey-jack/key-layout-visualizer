@@ -1,7 +1,7 @@
 import {AppState, LayoutOptionsState, LayoutSplit, LayoutType} from "../model.ts";
 import {KeyboardSvg, RowBasedKeyboard} from "./KeyboardSvg.tsx";
 import {TruncatedText} from "../components/TruncatedText.tsx";
-import {getLayoutModel, RowBasedLayoutModel} from "./layout-model.ts";
+import {getLayoutModel} from "./layout-model.ts";
 import {Signal} from "@preact/signals";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";

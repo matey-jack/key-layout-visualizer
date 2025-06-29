@@ -116,7 +116,7 @@ export const cozyMapping = {
         "e⌥"
     ],
 
-    ansiMovedColumns: [5, 6, 5, 4],
+    ansiMovedColumns: [5, 5, 5, 4],
 
     // This is just as hypothetic as the entire concept for a Harmonic keyboard.
     // I didn't spend too much time on this... and won't until I actually build such a keyboard one day.
@@ -129,6 +129,14 @@ export const cozyMapping = {
         "zxcv" + "=/" + "ym,.",
         "\\e"
     ],
+
+    /*
+        Alternative to mapping [], we can have Home/End, PgUp/PgDn, or Copy/Paste.
+        Unicode symbols, just in case.
+        Copy: 🗐, ⎘
+        Paste: 📋
+        Cut: ✂(✂️), ✄, ✀
+     */
 }
 
 
@@ -162,7 +170,8 @@ export const gemuetlichesMapping = {
         "yxcv/" + "jm,.-",
         "e⌥"
     ],
-
+    // TODO: We could define a "base for diffing" field here that contains the default German Qwertz mapping.
+    //       Then the diff counts should be correct. (We'll have to contort it to ANSI though, because this app will not implement ISO.)
     mappingHarmonic: [
         "´ß",
         "qwbf" + "öü" + "kuop",

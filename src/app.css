@@ -38,7 +38,7 @@ body {
     font-family: Verdana, sans-serif;
 }
 
-.layout-options-bar-container CheckboxWithLabel {
+.layout-options-bar-container label {
     display: block;
 }
 

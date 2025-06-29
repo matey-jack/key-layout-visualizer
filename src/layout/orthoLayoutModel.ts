@@ -1,4 +1,4 @@
-import {KeyboardRows, LayoutType} from "../model.ts";
+import {KeyboardRows} from "../model.ts";
 import {RowBasedLayoutModel} from "./layout-model.ts";
 import {FlexMapping} from "../mapping/mapping-model.ts";
 

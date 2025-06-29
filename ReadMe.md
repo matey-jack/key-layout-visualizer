@@ -42,6 +42,18 @@ Since typing comfort and ergonomics are prioritized over raw speed and anyone ca
 A casual typist is one who uses the keyboard regularly (and might want to relieve or prevent repetitive strain injury and other pains), 
 but who is not fanatic about optimizing their typing or training for speed "like a pro."
 
+## Scope
+
+Once I have implemented my desired base feature set, we can think about various extensions.
+
+One thing I don't want, though, is adding the ISO layout with its tiny left shift key.
+Because that key is an ergonomic no-go. It brought me so much pain. 
+(Not just because German has a lot of capitalized words, but also because as a programmer I use 
+a lot of punctuation on the Shift layer. 
+And then all that pressing of Shift+nav-keys to select text.
+Or Shift+other-modifier for shortcuts.
+Anyway, you see it adds up. Shift needs to be close to home.)
+
 ## Development
 
 I use `bun` as package manager and to run `vite`, but `node` should also work.

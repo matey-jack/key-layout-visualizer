@@ -30,7 +30,7 @@ interface KeyProps {
     // label3?: string;
     row: number; // integer; 0 for the top row (numbers), 4 for the bottom (modifiers).
     col: number; // those can be fractional, but are measured in 1u from the left-hand side, starting with 0.
-    // thus 0,0 is the top left key (tilde on ISO, Escape on Harmonic, and Iris)
+    // thus 0,0 is the top left key (tilde on ANSI, Escape on Harmonic, and Iris)
     width: number; // measured in units of height, with 1 being the default
     isHomeKey: boolean;
     diff: MappingChange;
@@ -95,6 +95,7 @@ export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, split}:
         let colPos = horizontalPadding + layoutModel.rowStart(row);
         if (!split) colPos += (totalWidth - rowWidth[row]) / 2;
         keys.push(...fullMapping[row].map((label, col) => {
+            // idea: use splitColums special value "+" for lengthening the middle key across the split and "/" for splitting the key at the exact midpoint.
             if (split && (col==layoutModel.splitColumns[row])) colPos += totalWidth - rowWidth[row];
             const width = layoutModel.keyWidth(row, col);
             const key = <Key

@@ -1,5 +1,5 @@
-import { FlexMapping } from "../mapping/mapping-model.ts";
-import {KeyboardRows, LayoutType} from "../model.ts";
+import {FlexMapping} from "../mapping/mapping-model.ts";
+import {KeyboardRows} from "../model.ts";
 import {LayoutMapping, RowBasedLayoutModel} from "./layout-model.ts";
 
 /*
