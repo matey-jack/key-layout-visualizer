@@ -1,9 +1,12 @@
 import {describe, it, expect} from 'vitest';
 
 import {harmonicLayoutModel} from "./harmonicLayoutModel.ts";
-import {fillMapping} from "./layout-model.ts";
+import {fillMapping, Finger, Hand, hand} from "./layout-model.ts";
 import {qwertyMapping} from "../mapping/mappings-30-keys.ts"
 import {harmonicComparisonBaseline} from "../mapping/harmonic-mappings.ts";
+import {ansiLayoutModel} from "./ansiLayoutModel.ts";
+import {orthoLayoutModel} from "./orthoLayoutModel.ts";
+import {KeyboardRows} from "../model.ts";
 
 describe('fillMapping', () => {
     it('Harmonic layout 30-key qwerty', () => {
@@ -13,7 +16,7 @@ describe('fillMapping', () => {
         expect(actual[2]).toStrictEqual(["`", "a", "s", "d", "f", "g", "\\", "h", "j", "k", "l", ";", "'"]);
         expect(actual[3]).toStrictEqual(["⇧", "z", "x", "c", "v", "b", "/", "n", "m", ",", ".", "⇧",]);
         expect(actual[4]).toStrictEqual(["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl",]);
-    })
+    });
 
     it('Harmonic layout full qwerty', () => {
         const with30 = fillMapping(harmonicLayoutModel, qwertyMapping.mapping);
@@ -21,5 +24,34 @@ describe('fillMapping', () => {
         with30.forEach((row30, r) => {
             expect(row30).toStrictEqual(full[r])
         })
+    });
+});
+
+describe('finger assignment consistency', () => {
+    it('Harmonic', () => {
+        harmonicLayoutModel.fullMapping!!.forEach((mappingRow, r) => {
+            expect(mappingRow.length, `${KeyboardRows[r]}Row`).toBe(harmonicLayoutModel.mainFingerAssignment[r].length)
+        })
+    });
+
+    it('ANSI', () => {
+        ansiLayoutModel.mapping30keys.forEach((mappingRow, r) => {
+            expect(mappingRow.length, `${KeyboardRows[r]}Row`).toBe(ansiLayoutModel.mainFingerAssignment[r].length)
+        })
+    });
+
+    it('Ortho', () => {
+        orthoLayoutModel.mapping30keys.forEach((mappingRow, r) => {
+            expect(mappingRow.length, `${KeyboardRows[r]}Row`).toBe(orthoLayoutModel.mainFingerAssignment[r].length)
+        })
+    });
+})
+
+describe('hand function', () => {
+    it('works', () => {
+        expect(hand(Finger.LPinky)).toBe(Hand.Left)
+        expect(hand(Finger.LThumb)).toBe(Hand.Left)
+        expect(hand(Finger.RThumb)).toBe(Hand.Right)
+        expect(hand(Finger.RPinky)).toBe(Hand.Right)
     });
 });

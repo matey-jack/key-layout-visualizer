@@ -2,11 +2,40 @@ import {KeyboardRows, LayoutOptionsState, LayoutType} from "../model.ts";
 import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
 import {harmonicLayoutModel, harmonicLayoutModelWithNavKeys} from "./harmonicLayoutModel.ts";
 import {orthoLayoutModel} from "./orthoLayoutModel.ts";
+import {KeyMapping} from "../mapping/mapping-model.ts";
+import {qwertyMapping} from "../mapping/mappings-30-keys.ts";
 
 export const LayoutNames: Record<LayoutType, string> = {
     [LayoutType.ANSI]: "ANSI / Typewriter",
     [LayoutType.Ortho]: "Ortholinear",
     [LayoutType.Harmonic]: "Harmonic Rows",
+}
+
+export enum Finger {
+    LPinky = 0,
+    LRing,
+    LMiddle,
+    LIndex,
+    LThumb,
+    RThumb,
+    RIndex,
+    RMiddle,
+    RRing,
+    RPinky,
+}
+
+export enum Hand {
+    Left,
+    Right,
+}
+
+export const hand = (finger: Finger) => Math.floor(finger / 5)
+
+export enum MappingChange {
+    SamePosition,
+    SameFinger,
+    SameHand,
+    SwapHands,
 }
 
 export const LayoutDescriptions: Record<LayoutType, string> = {
@@ -24,11 +53,9 @@ export const LayoutDescriptions: Record<LayoutType, string> = {
     [LayoutType.Harmonic]: "The Harmonic keyboard layout has a fully symmetric keyboard with only two key sizes to allow for flexible changes to the key mapping. " +
         "Its regular row stagger allows for many keys to be comfortably typed by two fingers, " +
         "which let's you intuitively avoid the awkward same-finger bigrams that make new key mappings feel so awkward. " +
-        "Smaller keys make the board slightly narrower than an ANSI-based 60% keyboard, " +
+        "Using mostly square keys makes the board slightly narrower than an ANSI-based 60% keyboard, " +
         "yet the hand home position is one key further apart, allowing for arms to relax and shoulders to open. " +
-        "This also puts a bit of typing load on the index fingers and less on the pinkies. " +
-        "The layout intentionally removes CapsLock and three \"programmer punctuation\" characters from the main layer and maps them onto the AltGr layer. " +
-        "Users are encouraged to map the remaining keys to something personally useful for them. (Even the \"programmer punctuation\", if so desired.) ",
+        "This also puts a bit of typing load on the index fingers and less on the pinkies. ",
 }
 
 export function getLayoutModel(layoutType: LayoutType, layoutOptions: LayoutOptionsState) {
@@ -62,6 +89,9 @@ export interface RowBasedLayoutModel {
 
     // this one takes a flex mapping depending on the layout
     fullMapping?: LayoutMapping;
+
+    //
+    mainFingerAssignment: Finger[][];
 }
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: KeyboardRows, col: number): boolean {
@@ -72,8 +102,8 @@ export function isHomeKey(layoutModel: RowBasedLayoutModel, row: KeyboardRows, c
 }
 
 export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: string[]): string[][] {
-        if (flexMapping.length == 3) return mergeMapping(layoutModel.mapping30keys, ["", ...flexMapping]);
-        return mergeMapping(layoutModel.fullMapping!!, flexMapping);
+    if (flexMapping.length == 3) return mergeMapping(layoutModel.mapping30keys, ["", ...flexMapping]);
+    return mergeMapping(layoutModel.fullMapping!!, flexMapping);
 }
 
 export const mergeMapping = (layoutMapping: LayoutMapping, flexMapping: string[]): string[][] =>
@@ -83,3 +113,55 @@ export const mergeMapping = (layoutMapping: LayoutMapping, flexMapping: string[]
         )
     )
 
+const diffFinger = (a: Finger, b: Finger) =>
+    (a == b) ? MappingChange.SameFinger
+        : (hand(a) == hand(b)) ? MappingChange.SameHand
+            : MappingChange.SwapHands;
+
+// We report the result by assigned (logical) key. Maybe that makes it easier to compute stats later.
+export function diffMappings(model: RowBasedLayoutModel, a: LayoutMapping, b: LayoutMapping): Record<string, MappingChange> {
+    const bFingers = characterToFinger(model, b);
+    const result: Record<string, MappingChange> = {};
+    a.forEach((aRow, r) => {
+        aRow.forEach((aKey, c) => {
+            if (aKey == b[r][c]) {
+                result[aKey] = MappingChange.SamePosition;
+            } else {
+                result[aKey] = diffFinger(model.mainFingerAssignment[r][c], bFingers[aKey])
+            }
+        })
+    })
+    return result;
+}
+
+function characterToFinger(model: RowBasedLayoutModel, mapping: LayoutMapping): Record<string, Finger> {
+    const result: Record<string, Finger> = {};
+    model.mainFingerAssignment.forEach((fingerRow, r) => {
+        fingerRow.forEach((finger, c) => {
+            const key = mapping[r][c];
+            result[key] = finger;
+        })
+    })
+    return result;
+}
+
+export function diffSummary(diff: Record<string, MappingChange>): Record<MappingChange, number> {
+    const result = {
+        [MappingChange.SamePosition]: 0,
+        [MappingChange.SameFinger]: 0,
+        [MappingChange.SameHand]: 0,
+        [MappingChange.SwapHands]: 0,
+    };
+    Object.values(diff).forEach((change) => {
+        result[change]++;
+    });
+    return result;
+}
+
+export function diffToQwerty(layoutType: LayoutType, layoutOptions: LayoutOptionsState, flexMapping: KeyMapping): Record<MappingChange, number>  {
+    const model = getLayoutModel(layoutType, layoutOptions)
+    const a = fillMapping(model, flexMapping.mapping);
+    const b = fillMapping(model, qwertyMapping.mapping);
+    const diff = diffMappings(model, a, b);
+    return diffSummary(diff);
+}

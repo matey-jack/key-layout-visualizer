@@ -1,5 +1,5 @@
 import {KeyboardRows} from "../model.ts";
-import {LayoutMapping, RowBasedLayoutModel} from "./layout-model.ts";
+import {LayoutMapping, LH, RH, RowBasedLayoutModel} from "./layout-model.ts";
 
 /*
     It's my arbitrary decision to not include numbers, wide keys, and modifiers in the flexible mapping.
@@ -72,6 +72,14 @@ export const harmonicLayoutModel: RowBasedLayoutModel = {
 
     leftHomeIndex: 4,
     rightHomeIndex: 8,
+
+    mainFingerAssignment: [
+        [1, 1, 2, 2, 3, 3, 6, 6, 6, 7, 7, 8, 8],
+        [0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9],
+        [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
+        [0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9],
+        [0, 1, 2, 4, 4, 5, 5, 7, 8, 9],
+    ]
 }
 
 export const harmonicLayoutModelWithNavKeys = {

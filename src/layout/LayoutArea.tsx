@@ -23,7 +23,7 @@ export function LayoutArea({appState}: LayoutAreaProps) {
                 <TruncatedText text={LayoutDescriptions[selectedLayoutType]}/>
             </div>
             <KeyboardSvg>
-                <RowBasedKeyboard layoutModel={layoutModel} flexMapping={qwertyMapping.mapping} split={split}/>
+                <RowBasedKeyboard layoutModel={layoutModel} flexMapping={appState.mapping.value.mapping} split={split}/>
             </KeyboardSvg>
             <LayoutOptionsBar state={appState}/>
         </div>

@@ -53,9 +53,9 @@ export const quipperMapping = {
     name: "Quipper aka Qwpr",
     sourceUrl: "https://sourceforge.net/p/qwpr/wiki/Home/",
     mapping: [
-        "qwert" + "yuiop",
-        "asdfg" + "hjkl;",
-        "zxcvb" + "nm,./",
+        "qwprf" + "yukl;",
+        "asdtg" + "hnioe",
+        "zxcvb" + "jm,./",
     ]
 }
 
@@ -106,15 +106,13 @@ export const cozyMapping = {
     // Since thumb keys are different on each layout, this won't be shown correctly unless we extend the data model.
     mapping: [
         "qwbf;" + "zkuop",
-        "asdrg" + "hnklt",
-        "zxcv-" + "nm,./",
-        "e",
+        "asdrg" + "hnilt",
+        "zxcv-" + "jm,./",
+        // "e",
     ]
 }
 
-
-
-export const AllMappings: KeyMapping[] = [
+export const all30keyMappings: KeyMapping[] = [
     qwertyMapping,
     qwertyFlipTwistMapping,
     qwertyFlipTwistSpinMapping,

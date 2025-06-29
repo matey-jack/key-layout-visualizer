@@ -1,3 +1,6 @@
+body {
+    font-family: Verdana, sans-serif;
+}
 
 .layout-top-bar-container {
     display: grid;
@@ -91,4 +94,23 @@
 
 .truncated-text {
     display: inline;
+}
+
+.mapping-container {
+    display: grid;
+    /* Left colum mapping list, right colum details.
+    Grid is overkill here, because each column has just one <div>, but it should be easy to refactor that. */
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem;
+}
+
+.mapping-list-item.selected {
+    background-color: #5cdbef;
+}
+
+.mapping-list-item button {
+    background: transparent;
+    border: none;
 }
