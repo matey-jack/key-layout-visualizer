@@ -1,6 +1,7 @@
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping-functions.ts";
 import {fillMapping, isHomeKey, MappingChange, RowBasedLayoutModel} from "./layout-model.ts";
 import {sum} from '../library/math.ts';
+import {FlexMapping} from "../mapping/mapping-model.ts";
 
 interface KeyboardSvgProps {
     children?: preact.ComponentChildren;
@@ -77,7 +78,7 @@ export const Key = (props: KeyProps) => {
 
 export interface KeyboardProps {
     layoutModel: RowBasedLayoutModel;
-    flexMapping: string[];
+    flexMapping: FlexMapping;
     mappingDiff: Record<string, MappingChange>;
     // We split all keyboards by moving their outer edges to a width of 17 units.
     // In both split and unsplit case, the keyboard will be centered.

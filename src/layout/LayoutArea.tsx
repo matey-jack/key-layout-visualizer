@@ -17,14 +17,14 @@ export function LayoutArea({appState}: LayoutAreaProps) {
 
     return (
         <div>
-            <TopBar layoutSignal={appState.layoutType} layoutModel={appState.layoutModel}/>
+            <TopBar layoutSignal={appState.layoutType} layoutOptins={appState.layoutOptions}/>
             <div className="layout-description">
                 <TruncatedText text={layoutModel.description}/>
             </div>
             <KeyboardSvg>
                 <RowBasedKeyboard
                     layoutModel={layoutModel}
-                    flexMapping={appState.mapping.value.mapping}
+                    flexMapping={appState.mapping.value}
                     mappingDiff={appState.mappingDiff.value}
                     split={split}
                 />
@@ -37,17 +37,17 @@ export function LayoutArea({appState}: LayoutAreaProps) {
 
 interface TopBarProps {
     layoutSignal: Signal<LayoutType>
-    layoutModel: Signal<RowBasedLayoutModel>
+    layoutOptins: LayoutOptionsState
 }
 
-function TopBar({layoutSignal, layoutModel}: TopBarProps) {
+function TopBar({layoutSignal, layoutOptins}: TopBarProps) {
     const layoutOrder = [LayoutType.ANSI, LayoutType.Harmonic, LayoutType.Ortho];
     return <div className="layout-top-bar-container">
         <BlankGridElement/>
         {layoutOrder.map((layoutType) =>
             <TopBarKeyboardTab
                 layoutType={layoutType}
-                layoutName={layoutModel.value.name}
+                layoutName={getLayoutModel(layoutType, layoutOptins).name}
                 layoutSignal={layoutSignal}
                 key={layoutType}
             />

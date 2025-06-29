@@ -1,4 +1,5 @@
-import {KeyboardRows} from "../model.ts";
+import { FlexMapping } from "../mapping/mapping-model.ts";
+import {KeyboardRows, LayoutType} from "../model.ts";
 import {LayoutMapping, RowBasedLayoutModel} from "./layout-model.ts";
 
 /*
@@ -12,34 +13,34 @@ import {LayoutMapping, RowBasedLayoutModel} from "./layout-model.ts";
     doesn't even exist on the Harmonic.
  */
 const fullMapping: LayoutMapping = [
-        ["Esc", "1", "2", "3", "4", "5", "6", 0, "7", "8", "9", "0", 1],
-        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"],
-        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-        ["Ctrl", "Cmd", "Alt", 0, "⍽", "⏎", 1, "AltGr", "Fn", "Ctrl"],
-    ];
+    ["Esc", "1", "2", "3", "4", "5", "6", 0, "7", "8", "9", "0", 1],
+    ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"],
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+    ["Ctrl", "Cmd", "Alt", 0, "⍽", "⏎", 1, "AltGr", "Fn", "Ctrl"],
+];
 
 // This omits four rarely used punctuation keys and moves `=` and `-` to the home row.
 // (`-` here is neighbor of a home-row key. Very fitting for the third most popular punctuation character!)
 // Remember that the four punctuation keys `,.;/` are part of the flexMapping set.
 const thirtyKeyMappingWithNavKeys: LayoutMapping = [
-        ["Esc", "1", "2", "3", "4", "5", "6", "⇤", "7", "8", "9", "0", "⇥"],
-        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"],
-        ["-", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "'"],
-        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-        ["Ctrl", "Cmd", "Alt", "PgUp", "⍽", "⏎", "PgDn", "AltGr", "Fn", "Ctrl"],
-    ];
+    ["Esc", "1", "2", "3", "4", "5", "6", "⇤", "7", "8", "9", "0", "⇥"],
+    ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"],
+    ["-", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "'"],
+    ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+    ["Ctrl", "Cmd", "Alt", "PgUp", "⍽", "⏎", "PgDn", "AltGr", "Fn", "Ctrl"],
+];
 
 const thirtyKeyMapping: LayoutMapping = [
-        ["Esc", "1", "2", "3", "4", "5", "6", "-", "7", "8", "9", "0", "="],
-        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"],
-        ["`", 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, 9, "'"],
-        // The move of key 9 to the middle is a change required to keep the key-to-finger assignments the same as on the ANSI layout.
-        // This is caused by moving the right home row to the right where the Enter key is removed.
-        // But below, Shift is still there.
-        ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-        ["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl"],
-    ];
+    ["Esc", "1", "2", "3", "4", "5", "6", "-", "7", "8", "9", "0", "="],
+    ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"],
+    ["`", 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, 9, "'"],
+    // The move of key 9 to the middle is a change required to keep the key-to-finger assignments the same as on the ANSI layout.
+    // This is caused by moving the right home row to the right where the Enter key is removed.
+    // But below, Shift is still there.
+    ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
+    ["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl"],
+];
 
 export interface HarmonicLayoutOptionsModel {
     navKeys: boolean;
@@ -62,8 +63,7 @@ export const harmonicLayoutModel: RowBasedLayoutModel = {
     fullMapping,
 
     // move the whole keyboard one key to the right to align with the ANSI center.
-    rowStart: (row: number) =>
-        (row == KeyboardRows.Bottom) ? 0.5 : 0,
+    rowStart: (row: number) => (row == KeyboardRows.Bottom) ? 0.5 : 0,
 
     keyWidth: (row: KeyboardRows, col: number) => {
         // outer edge keys
@@ -87,7 +87,9 @@ export const harmonicLayoutModel: RowBasedLayoutModel = {
         [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
         [0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9],
         [0, 1, 2, 4, 4, 5, 5, 7, 8, 9],
-    ]
+    ],
+
+    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingHarmonic,
 }
 
 export const harmonicLayoutModelWithNavKeys = {

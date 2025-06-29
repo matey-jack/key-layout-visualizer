@@ -1,7 +1,7 @@
 import {AppState, LayoutOptionsState, LayoutType} from "../model.ts";
-import {KeyMapping} from "./mapping-model.ts";
+import {FlexMapping} from "./mapping-model.ts";
 import {Signal} from "@preact/signals";
-import {all30keyMappings} from "./mappings-30-keys.ts";
+import {allMappings} from "./mappings.ts";
 import {diffSummary, diffToQwerty, getLayoutModel, MappingChange, RowBasedLayoutModel} from "../layout/layout-model.ts";
 
 export interface MappingAreaProps {
@@ -28,7 +28,7 @@ export function MappingList({appState}: MappingListProps) {
         </tr>
         </thead>
         <tbody>
-        {all30keyMappings.map((mapping) =>
+        {allMappings.map((mapping) =>
             <MappingListItem mappingData={mapping} layoutModel={appState.layoutModel.value} selectedMapping={appState.mapping}/>
         )}
         </tbody>
@@ -36,9 +36,9 @@ export function MappingList({appState}: MappingListProps) {
 }
 
 interface MappingListItemProps {
-    mappingData: KeyMapping;
+    mappingData: FlexMapping;
     layoutModel: RowBasedLayoutModel;
-    selectedMapping: Signal<KeyMapping>;
+    selectedMapping: Signal<FlexMapping>;
 }
 
 export function MappingListItem(

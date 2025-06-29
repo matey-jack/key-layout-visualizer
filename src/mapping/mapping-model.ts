@@ -1,17 +1,23 @@
 
-export interface KeyMapping {
+export interface FlexMapping {
     name: string;
     description?: string;
-    sourceUrl: string;
+    sourceUrl?: string;
 
-    // this is 3 rows of 10 characters for ortho/typewriter (classical) mappings
-    // and 5 rows of [2, 10, 13, 10, 2] characters for a "full" Harmonic mapping, see harmonic-mapping.ts
-    mapping: string[];
+    /*
+        Key mappings can be defined generically or layout-specific or both.
+        The app shows only the ones that apply to the selected layout,
+        falling back to Qwerty if you switch layouts and the selected mapping doesn't apply.
+     */
+
+    // This is 3 rows of 10 characters – just the keys that most published key mappings are remapping.
+    // It leaves some great improvements untapped, but transfers more easily between different keyboard layouts.
+    // (Which is an ironic prevision of fate, since ortho keyboards only became really popular after many
+    // of the classical layouts were invented...)
+    mapping30?: string[];
+
+    // for correct dimensions, see the layout model files
+    mappingAnsi?: string[];
+    mappingHarmonic?: string[];
+    mappingOrtho?: string[];
 }
-
-// interface MappingDiff {
-//     // number of changes compared to qwerty
-//     sameFinger: number;
-//     sameHand: number;
-//     swapHands: number;
-// }

@@ -1,5 +1,6 @@
-import {KeyboardRows} from "../model.ts";
+import {KeyboardRows, LayoutType} from "../model.ts";
 import {RowBasedLayoutModel} from "./layout-model.ts";
+import {FlexMapping} from "../mapping/mapping-model.ts";
 
 export interface OrthoLayoutOptionsModel {
     thumbKeys: boolean;
@@ -45,6 +46,8 @@ export const orthoLayoutModel: RowBasedLayoutModel = {
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 6, 6, 7, 8, 9, 9],
     ],
+
+    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingOrtho,
 }
 
 export const splitOrthoLayoutModel: RowBasedLayoutModel = {

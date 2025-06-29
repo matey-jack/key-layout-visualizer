@@ -1,5 +1,6 @@
-import {KeyboardRows} from "../model.ts";
+import {KeyboardRows, LayoutType} from "../model.ts";
 import {LayoutMapping, RowBasedLayoutModel} from "./layout-model.ts";
+import {FlexMapping} from "../mapping/mapping-model.ts";
 
 const widthOfAnsiBoard = 15;
 
@@ -32,6 +33,17 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⏎"],
         ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
         ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Fn", "Menu", "Ctrl"],
+    ],
+
+    // arbitrary decision to include one thumb key in the mapping.
+    // (And one more to move AltGr to, if desired.)
+    // CapsLock, however, is included with precent from Colemak and Neo 2.
+    fullMapping: [
+        ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, 1, "⌫"],
+        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, "⏎"],
+        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+        ["Ctrl", "Cmd", "Alt", "⍽", 0, 1 , "Menu", "Ctrl"],
     ],
 
     rowStart: (_: KeyboardRows) => 0,
@@ -72,7 +84,9 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9, 9],
         [0, 1, 2, 3, 3, 3, 6, 6, 7, 8, 9, 9],
         [0, 1, 4, 5, 5, 9, 9, 9],
-    ]
+    ],
+
+    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsi,
 }
 
 // how many columns are moving to the right?

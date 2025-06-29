@@ -2,7 +2,7 @@ import {describe, it, expect} from 'vitest';
 
 import {harmonicLayoutModel} from "./harmonicLayoutModel.ts";
 import {fillMapping, Finger, Hand, hand} from "./layout-model.ts";
-import {qwertyMapping} from "../mapping/mappings-30-keys.ts"
+import {qwertyMapping} from "../mapping/mappings.ts"
 import {harmonicComparisonBaseline} from "../mapping/harmonic-mappings.ts";
 import {ansiLayoutModel} from "./ansiLayoutModel.ts";
 import {orthoLayoutModel} from "./orthoLayoutModel.ts";
@@ -10,7 +10,7 @@ import {KeyboardRows} from "../model.ts";
 
 describe('fillMapping', () => {
     it('Harmonic layout 30-key qwerty', () => {
-        const actual = fillMapping(harmonicLayoutModel, qwertyMapping.mapping);
+        const actual = fillMapping(harmonicLayoutModel, qwertyMapping);
         expect(actual[0]).toStrictEqual(["Esc", "1", "2", "3", "4", "5", "6", "-", "7", "8", "9", "0", "="]);
         expect(actual[1]).toStrictEqual(["↹", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "⌫",]);
         expect(actual[2]).toStrictEqual(["`", "a", "s", "d", "f", "g", "\\", "h", "j", "k", "l", ";", "'"]);
@@ -19,8 +19,8 @@ describe('fillMapping', () => {
     });
 
     it('Harmonic layout full qwerty', () => {
-        const with30 = fillMapping(harmonicLayoutModel, qwertyMapping.mapping);
-        const full = fillMapping(harmonicLayoutModel, harmonicComparisonBaseline.mapping);
+        const with30 = fillMapping(harmonicLayoutModel, qwertyMapping);
+        const full = fillMapping(harmonicLayoutModel, harmonicComparisonBaseline);
         with30.forEach((row30, r) => {
             expect(row30).toStrictEqual(full[r])
         })

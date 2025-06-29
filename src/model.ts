@@ -1,5 +1,5 @@
 import {computed, ReadonlySignal, signal} from "@preact/signals";
-import {qwertyMapping} from "./mapping/mappings-30-keys.ts";
+import {qwertyMapping} from "./mapping/mappings.ts";
 import {defaultAnsiLayoutOptions} from "./layout/ansiLayoutModel.ts";
 import {defaultHarmonicLayoutOptions} from "./layout/harmonicLayoutModel.ts";
 import {defaultOrthoLayoutOptions} from "./layout/orthoLayoutModel.ts";

@@ -2,8 +2,8 @@ import {KeyboardRows, LayoutOptionsState, LayoutType} from "../model.ts";
 import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
 import {harmonicLayoutModel, harmonicLayoutModelWithNavKeys} from "./harmonicLayoutModel.ts";
 import {orthoLayoutModel} from "./orthoLayoutModel.ts";
-import {KeyMapping} from "../mapping/mapping-model.ts";
-import {qwertyMapping} from "../mapping/mappings-30-keys.ts";
+import {FlexMapping} from "../mapping/mapping-model.ts";
+import {qwertyMapping} from "../mapping/mappings.ts";
 
 export enum Finger {
     LPinky = 0,
@@ -69,6 +69,8 @@ export interface RowBasedLayoutModel {
 
     //
     mainFingerAssignment: Finger[][];
+
+    getSpecificMapping(flexMapping: FlexMapping): string[] | undefined;
 }
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: KeyboardRows, col: number): boolean {
@@ -78,9 +80,12 @@ export function isHomeKey(layoutModel: RowBasedLayoutModel, row: KeyboardRows, c
     return false;
 }
 
-export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: string[]): string[][] {
-    if (flexMapping.length == 3) return mergeMapping(layoutModel.thirtyKeyMapping, ["", ...flexMapping]);
-    return mergeMapping(layoutModel.fullMapping!!, flexMapping);
+export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): string[][] {
+    const fullFlexMapping = layoutModel.getSpecificMapping(flexMapping)
+    if (fullFlexMapping) {
+        return mergeMapping(layoutModel.fullMapping!!, fullFlexMapping);
+    }
+    return mergeMapping(layoutModel.thirtyKeyMapping, ["", ...flexMapping.mapping30!!]);
 }
 
 export const mergeMapping = (layoutMapping: LayoutMapping, flexMapping: string[]): string[][] =>
@@ -135,8 +140,8 @@ export function diffSummary(diff: Record<string, MappingChange>): Record<Mapping
     return result;
 }
 
-export function diffToQwerty(layoutModel: RowBasedLayoutModel, flexMapping: KeyMapping): Record<string, MappingChange>  {
-    const a = fillMapping(layoutModel, flexMapping.mapping);
-    const b = fillMapping(layoutModel, qwertyMapping.mapping);
+export function diffToQwerty(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): Record<string, MappingChange>  {
+    const a = fillMapping(layoutModel, flexMapping);
+    const b = fillMapping(layoutModel, qwertyMapping);
     return diffMappings(layoutModel, a, b);
 }
