@@ -5,7 +5,7 @@ import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
 
 describe('ansiLayoutModel.keyWidth', () => {
     const lastCol = (row: KeyboardRows) =>
-        ansiLayoutModel.mapping30keys[row].length - 1;
+        ansiLayoutModel.thirtyKeyMapping[row].length - 1;
 
     it("correct with of Backspace", () => {
         const row = KeyboardRows.Number;
@@ -29,7 +29,7 @@ describe('ansiLayoutModel.keyWidth', () => {
 
     it("correct total with of bottom row", () => {
         const row = KeyboardRows.Bottom;
-        const total = ansiLayoutModel.mapping30keys[row]
+        const total = ansiLayoutModel.thirtyKeyMapping[row]
             .map((_, col) => ansiLayoutModel.keyWidth(row, col))
             .reduce((a, b) => a + b, 0);
         expect(total).toBeCloseTo(15, 8)
@@ -51,7 +51,7 @@ describe('ansiWideLayoutModel', () => {
 
     for (let row = 0; row < 5; row++) {
         it(`correct ${KeyboardRows[row]} row`, () => {
-            expect(ansiWideLayoutModel.mapping30keys[row])
+            expect(ansiWideLayoutModel.thirtyKeyMapping[row])
                 .toStrictEqual(expectedLayoutMapping[row])
         });
     }

@@ -7,7 +7,7 @@ import {harmonicLayoutModel} from "./harmonicLayoutModel.ts";
 // Test key rendering
 describe('Key rendering', () => {
     it('renders correct number of keys for Harmonic 13', () => {
-        const { container } = render(<RowBasedKeyboard layoutModel={harmonicLayoutModel} flexMapping={qwertyMapping.mapping} split={true}/>);
+        const { container } = render(<RowBasedKeyboard layoutModel={harmonicLayoutModel} flexMapping={qwertyMapping.mapping} mappingDiff={{}} split={true}/>);
         const keys = container.querySelectorAll('.key-outline');
         expect(keys.length).toBe(13+12+13+12+10);
     });

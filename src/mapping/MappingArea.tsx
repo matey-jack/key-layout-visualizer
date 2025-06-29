@@ -2,7 +2,7 @@ import {AppState, LayoutOptionsState, LayoutType} from "../model.ts";
 import {KeyMapping} from "./mapping-model.ts";
 import {Signal} from "@preact/signals";
 import {all30keyMappings} from "./mappings-30-keys.ts";
-import {diffToQwerty, MappingChange} from "../layout/layout-model.ts";
+import {diffSummary, diffToQwerty, getLayoutModel, MappingChange, RowBasedLayoutModel} from "../layout/layout-model.ts";
 
 export interface MappingAreaProps {
     appState: AppState;
@@ -21,7 +21,7 @@ export interface MappingListProps {
 export function MappingList({appState}: MappingListProps) {
     return <table class="mapping-list">
         <thead>
-        <tr>
+        <tr class="mapping-list-header">
             <td>Mapping Name</td>
             <td>Learnability Score</td>
             <td>Typing Effort Score</td>
@@ -29,7 +29,7 @@ export function MappingList({appState}: MappingListProps) {
         </thead>
         <tbody>
         {all30keyMappings.map((mapping) =>
-            <MappingListItem mappingData={mapping} selectedLayout={appState.layoutType} layoutOptions={appState.layoutOptions} selectedMapping={appState.mapping}/>
+            <MappingListItem mappingData={mapping} layoutModel={appState.layoutModel.value} selectedMapping={appState.mapping}/>
         )}
         </tbody>
     </table>
@@ -37,13 +37,12 @@ export function MappingList({appState}: MappingListProps) {
 
 interface MappingListItemProps {
     mappingData: KeyMapping;
-    selectedLayout: Signal<LayoutType>;
-    layoutOptions: LayoutOptionsState;
+    layoutModel: RowBasedLayoutModel;
     selectedMapping: Signal<KeyMapping>;
 }
 
 export function MappingListItem(
-    {mappingData, selectedLayout, layoutOptions, selectedMapping}: MappingListItemProps
+    {mappingData, layoutModel, selectedMapping}: MappingListItemProps
 ) {
     const isSelected = selectedMapping.value.name === mappingData.name;
     return <tr
@@ -53,7 +52,7 @@ export function MappingListItem(
         <td>
             <button>{mappingData.name}</button>
         </td>
-        <td>{formatDiff(diffToQwerty(selectedLayout.value, layoutOptions, mappingData))}</td>
+        <td>{formatDiff(diffSummary(diffToQwerty(layoutModel, mappingData)))}</td>
         <td></td>
     </tr>
 }

@@ -35,13 +35,13 @@ describe('finger assignment consistency', () => {
     });
 
     it('ANSI', () => {
-        ansiLayoutModel.mapping30keys.forEach((mappingRow, r) => {
+        ansiLayoutModel.thirtyKeyMapping.forEach((mappingRow, r) => {
             expect(mappingRow.length, `${KeyboardRows[r]}Row`).toBe(ansiLayoutModel.mainFingerAssignment[r].length)
         })
     });
 
     it('Ortho', () => {
-        orthoLayoutModel.mapping30keys.forEach((mappingRow, r) => {
+        orthoLayoutModel.thirtyKeyMapping.forEach((mappingRow, r) => {
             expect(mappingRow.length, `${KeyboardRows[r]}Row`).toBe(orthoLayoutModel.mainFingerAssignment[r].length)
         })
     });

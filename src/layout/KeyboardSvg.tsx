@@ -1,5 +1,5 @@
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping-functions.ts";
-import {fillMapping, isHomeKey, RowBasedLayoutModel} from "./layout-model.ts";
+import {fillMapping, isHomeKey, MappingChange, RowBasedLayoutModel} from "./layout-model.ts";
 import {sum} from '../library/math.ts';
 
 interface KeyboardSvgProps {
@@ -32,10 +32,14 @@ interface KeyProps {
     // thus 0,0 is the top left key (tilde on ISO, Escape on Harmonic, and Iris)
     width: number; // measured in units of height, with 1 being the default
     isHomeKey: boolean;
+    diff: MappingChange;
 }
 
 const keyUnit = 100;
 const keyPadding = 5;
+
+// can't use enum values in const expressions, so we use Array instead of object.
+const keyClassByDiff = [null, "same-finger", "same-hand", "swap-hands"];
 
 export const Key = (props: KeyProps) => {
     const x = props.col * keyUnit + keyPadding;
@@ -53,10 +57,12 @@ export const Key = (props: KeyProps) => {
             {props.label}
         </text>
 
-    const keyClass = (!props.label) ? "unlabeled"
+    // we simplify by putting only color-coded class on the key. Diff information overrides key type.
+    const keyClassByType = (!props.label) ? "unlabeled"
         : (isCommandKey(props.label)) ? "command-key"
             : (props.isHomeKey) ? "home-key"
             : "";
+    const keyClass = (props.diff == MappingChange.SamePosition) ? keyClassByType : keyClassByDiff[props.diff];
     return <g>
         <rect
             className={"key-outline " + keyClass}
@@ -72,12 +78,13 @@ export const Key = (props: KeyProps) => {
 export interface KeyboardProps {
     layoutModel: RowBasedLayoutModel;
     flexMapping: string[];
+    mappingDiff: Record<string, MappingChange>;
     // We split all keyboards by moving their outer edges to a width of 17 units.
     // In both split and unsplit case, the keyboard will be centered.
     split: boolean;
 }
 
-export function RowBasedKeyboard({flexMapping, layoutModel, split}: KeyboardProps) {
+export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, split}: KeyboardProps) {
     const fullMapping = fillMapping(layoutModel, flexMapping);
     const rowWidth = fullMapping.map( (row, r) =>
         2 * (horizontalPadding + layoutModel.rowStart(r)) + sum(row.map((_, c) => layoutModel.keyWidth(r, c)))
@@ -92,6 +99,7 @@ export function RowBasedKeyboard({flexMapping, layoutModel, split}: KeyboardProp
             const key = <Key
                 label={label}
                 isHomeKey={isHomeKey(layoutModel, row, col)}
+                diff={mappingDiff[label]}
                 row={row}
                 col={colPos}
                 width={width}

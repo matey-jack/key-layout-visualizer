@@ -15,8 +15,18 @@ export const defaultAnsiLayoutOptions: AnsiLayoutOptionsModel = {
 }
 
 export const ansiLayoutModel: RowBasedLayoutModel = {
+    name: "ANSI / Typewriter",
+    description: "The ANSI keyboard layout is based on a typewriter keyboard from the 19th century which gradually evolved " +
+        "to add some computer-specific keys like Ctrl, Alt, and most importantly the @ sign. " +
+        "This layout has keys of widely varying withs and an awkward stagger of 0.5, 0.25, and again 0.25 between the rows. " +
+        "This curiosity still dates back to old typewriter days when each key's middle needed to have a non-intersecting lever underneath to operate its type element. " +
+        "To make this ancient layout a bit more user-friendly, we have moved the right hand's home position by one key to the right. " +
+        "Most keys move together with this hand position so that muscle memory is strongly preserved. " +
+        "While it might look very unusual, it actually is very easy to get used to. " +
+        "And this setup makes it easier to switch between a laptop and an ergonomic split keyboard. ",
+
     // we use double quotes everywhere, just so that the one key with single quote as value isn't a special case ;)
-    mapping30keys: [
+    thirtyKeyMapping: [
         ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "⌫"],
         ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "[", "]", "\\"],
         ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⏎"],
@@ -40,7 +50,7 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
             return widthOfFirstKey[row];
         }
         // outer edge keys
-        const numCols = ansiLayoutModel.mapping30keys[row].length;
+        const numCols = ansiLayoutModel.thirtyKeyMapping[row].length;
         if (col == numCols - 1) {
             const numberOfMiddleKeys = numCols - 2;
             return widthOfAnsiBoard - numberOfMiddleKeys - widthOfFirstKey[row];
@@ -72,11 +82,11 @@ export const movedColumns = [5, 7, 5, 4];
 export const ansiWideLayoutModel: RowBasedLayoutModel = {
     ...ansiLayoutModel,
     rightHomeIndex: 8,
-    mapping30keys: moveRightHand(ansiLayoutModel, movedColumns),
+    thirtyKeyMapping: moveRightHand(ansiLayoutModel, movedColumns),
 }
 
 function moveRightHand(layoutModel: RowBasedLayoutModel, movedColumns: number[]): LayoutMapping {
-    return layoutModel.mapping30keys.map((layoutRow, row) => {
+    return layoutModel.thirtyKeyMapping.map((layoutRow, row) => {
         if (!movedColumns[row]) return layoutRow;
         const jumpingColumn = layoutModel.splitColumns[row] + movedColumns[row];
         return [

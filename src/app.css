@@ -59,6 +59,18 @@ body {
     fill: #c3f3ac;
 }
 
+.key-outline.same-finger{
+    fill: #f3eaac;
+}
+
+.key-outline.same-hand{
+    fill: #f6d187;
+}
+
+.key-outline.swap-hands{
+    fill: #f3bfac;
+}
+
 .key-label {
     font-size: 24px;
     font-family: Verdana, sans-serif;
@@ -106,11 +118,20 @@ body {
     padding: 1rem;
 }
 
+.mapping-list-header {
+    background-color: #f0f0f0;
+    font-style: italic;
+}
+
 .mapping-list-item.selected {
-    background-color: #5cdbef;
+    background-color: #b8ebf8;
 }
 
 .mapping-list-item button {
     background: transparent;
     border: none;
+}
+
+.mapping-list-item.selected button {
+    font-weight: bold;
 }

@@ -1,8 +1,9 @@
-import {signal} from "@preact/signals";
+import {computed, ReadonlySignal, signal} from "@preact/signals";
 import {qwertyMapping} from "./mapping/mappings-30-keys.ts";
 import {defaultAnsiLayoutOptions} from "./layout/ansiLayoutModel.ts";
 import {defaultHarmonicLayoutOptions} from "./layout/harmonicLayoutModel.ts";
 import {defaultOrthoLayoutOptions} from "./layout/orthoLayoutModel.ts";
+import {diffToQwerty, getLayoutModel, MappingChange, RowBasedLayoutModel} from "./layout/layout-model.ts";
 
 export enum LayoutType {
     ANSI,
@@ -40,7 +41,13 @@ export function createAppState() {
         harmonicLayoutOptions: signal(defaultHarmonicLayoutOptions),
         orthoLayoutOptions: signal(defaultOrthoLayoutOptions),
     };
+    const layoutModel: ReadonlySignal<RowBasedLayoutModel> = computed(() =>
+        getLayoutModel(layoutType.value, layoutOptions)
+    )
 
-    const mapping = signal(qwertyMapping)
-    return { layoutType, layoutOptions, layoutSplit, mapping };
+    const mapping = signal(qwertyMapping);
+    const mappingDiff: ReadonlySignal<Record<string, MappingChange>> = computed(() =>
+        diffToQwerty(layoutModel.value, mapping.value)
+    )
+    return { layoutType, layoutOptions, layoutSplit, layoutModel, mapping, mappingDiff };
 }

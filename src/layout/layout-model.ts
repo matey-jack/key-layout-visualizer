@@ -5,12 +5,6 @@ import {orthoLayoutModel} from "./orthoLayoutModel.ts";
 import {KeyMapping} from "../mapping/mapping-model.ts";
 import {qwertyMapping} from "../mapping/mappings-30-keys.ts";
 
-export const LayoutNames: Record<LayoutType, string> = {
-    [LayoutType.ANSI]: "ANSI / Typewriter",
-    [LayoutType.Ortho]: "Ortholinear",
-    [LayoutType.Harmonic]: "Harmonic Rows",
-}
-
 export enum Finger {
     LPinky = 0,
     LRing,
@@ -38,26 +32,6 @@ export enum MappingChange {
     SwapHands,
 }
 
-export const LayoutDescriptions: Record<LayoutType, string> = {
-    [LayoutType.ANSI]: "The ANSI keyboard layout is based on a typewriter keyboard from the 19th century which gradually evolved " +
-        "to add some computer-specific keys like Ctrl, Alt, and most importantly the @ sign. " +
-        "This layout has keys of widely varying withs and an awkward stagger of 0.5, 0.25, and again 0.25 between the rows. " +
-        "This curiosity still dates back to old typewriter days when each key's middle needed to have a non-intersecting lever underneath to operate its type element. " +
-        "To make this ancient layout a bit more user-friendly, we have moved the right hand's home position by one key to the right. " +
-        "Most keys move together with this hand position so that muscle memory is strongly preserved. " +
-        "While it might look very unusual, it actually is very easy to get used to. " +
-        "And this setup makes it easier to switch between a laptop and an ergonomic split keyboard. ",
-    [LayoutType.Ortho]: "Ortholinear keyboards remove the weird row stagger and usually also use uniform key sizes. " +
-        "Those are just as easy to use, but save a lot of space and also allow for easy changing of the key mapping. " +
-        "The layout shown here corresponds to the Iris CE, a split keyboard which is incidentally the one that I used for coding this app. ",
-    [LayoutType.Harmonic]: "The Harmonic keyboard layout has a fully symmetric keyboard with only two key sizes to allow for flexible changes to the key mapping. " +
-        "Its regular row stagger allows for many keys to be comfortably typed by two fingers, " +
-        "which let's you intuitively avoid the awkward same-finger bigrams that make new key mappings feel so awkward. " +
-        "Using mostly square keys makes the board slightly narrower than an ANSI-based 60% keyboard, " +
-        "yet the hand home position is one key further apart, allowing for arms to relax and shoulders to open. " +
-        "This also puts a bit of typing load on the index fingers and less on the pinkies. ",
-}
-
 export function getLayoutModel(layoutType: LayoutType, layoutOptions: LayoutOptionsState) {
     switch (layoutType) {
         case LayoutType.ANSI:
@@ -72,6 +46,9 @@ export function getLayoutModel(layoutType: LayoutType, layoutOptions: LayoutOpti
 export type LayoutMapping = (string | number)[][];
 
 export interface RowBasedLayoutModel {
+    name: string;
+    description: string;
+
     // 1 unit = width of the smallest key.
     rowStart: (row: KeyboardRows) => number;
     keyWidth: (row: KeyboardRows, col: number) => number;
@@ -85,7 +62,7 @@ export interface RowBasedLayoutModel {
     rightHomeIndex: number;
 
     // this one is standardized to take a flex Mapping of exactly 3 by 10 keys
-    mapping30keys: LayoutMapping;
+    thirtyKeyMapping: LayoutMapping;
 
     // this one takes a flex mapping depending on the layout
     fullMapping?: LayoutMapping;
@@ -102,7 +79,7 @@ export function isHomeKey(layoutModel: RowBasedLayoutModel, row: KeyboardRows, c
 }
 
 export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: string[]): string[][] {
-    if (flexMapping.length == 3) return mergeMapping(layoutModel.mapping30keys, ["", ...flexMapping]);
+    if (flexMapping.length == 3) return mergeMapping(layoutModel.thirtyKeyMapping, ["", ...flexMapping]);
     return mergeMapping(layoutModel.fullMapping!!, flexMapping);
 }
 
@@ -158,10 +135,8 @@ export function diffSummary(diff: Record<string, MappingChange>): Record<Mapping
     return result;
 }
 
-export function diffToQwerty(layoutType: LayoutType, layoutOptions: LayoutOptionsState, flexMapping: KeyMapping): Record<MappingChange, number>  {
-    const model = getLayoutModel(layoutType, layoutOptions)
-    const a = fillMapping(model, flexMapping.mapping);
-    const b = fillMapping(model, qwertyMapping.mapping);
-    const diff = diffMappings(model, a, b);
-    return diffSummary(diff);
+export function diffToQwerty(layoutModel: RowBasedLayoutModel, flexMapping: KeyMapping): Record<string, MappingChange>  {
+    const a = fillMapping(layoutModel, flexMapping.mapping);
+    const b = fillMapping(layoutModel, qwertyMapping.mapping);
+    return diffMappings(layoutModel, a, b);
 }

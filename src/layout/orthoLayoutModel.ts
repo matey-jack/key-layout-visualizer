@@ -10,10 +10,15 @@ export const defaultOrthoLayoutOptions: OrthoLayoutOptionsModel = {
 }
 
 export const orthoLayoutModel: RowBasedLayoutModel = {
+    name: "Ortholinear",
+    description: "Ortholinear keyboards remove the weird row stagger and usually also use uniform key sizes. " +
+        "Those are just as easy to use, but save a lot of space and also allow for easy changing of the key mapping. " +
+        "The layout shown here corresponds to the Iris CE, a split keyboard which is incidentally the one that I used for coding this app. ",
+
     // This is arbitrarily based on the Preonic 12×5 with only space as a 2u key.
     // I decided to map all ANSI keys except `[` and `]`. Actual users might omit more or less from their base layer.
     // (All ANSI keys fit when using mod/tap double mappings.)
-    mapping30keys: [
+    thirtyKeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
         ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
         ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
