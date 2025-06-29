@@ -19,6 +19,10 @@ export interface MappingListProps {
 }
 
 export function MappingList({appState}: MappingListProps) {
+    const layoutModel = appState.layoutModel.value;
+    const applicableMappings = allMappings.filter((m) =>
+        Boolean(layoutModel.getSpecificMapping(m) || m.mapping30)
+    )
     return <table class="mapping-list">
         <thead>
         <tr class="mapping-list-header">
@@ -28,9 +32,12 @@ export function MappingList({appState}: MappingListProps) {
         </tr>
         </thead>
         <tbody>
-        {allMappings.map((mapping) =>
-            <MappingListItem mappingData={mapping} layoutModel={appState.layoutModel.value}
-                             selectedMapping={appState.mapping}/>
+        {applicableMappings.map((mapping) => {
+                return <MappingListItem mappingData={mapping}
+                                        layoutModel={layoutModel}
+                                        selectedMapping={appState.mapping}
+                />;
+            }
         )}
         </tbody>
     </table>
