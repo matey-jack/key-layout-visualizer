@@ -110,11 +110,13 @@ export const cozyMapping = {
     // But it transposes correctly to the wide layout and this is how I recommend using it.
     mappingAnsi: [
         "=\\",
-        "qwbf" + ";y" + "kuop[]⌦",
+        "qwbf" + "-y" + "kuop[]⌦",
         "⌥asdrg" + "hnilt'",
-        "zxcv" + "-" + "jm,./",
+        "zxcv" + ";" + "jm,./",
         "e⌥"
     ],
+
+    ansiMovedColumns: [5, 6, 5, 4],
 
     // This is just as hypothetic as the entire concept for a Harmonic keyboard.
     // I didn't spend too much time on this... and won't until I actually build such a keyboard one day.

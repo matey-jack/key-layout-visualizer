@@ -1,5 +1,5 @@
 import {KeyboardRows, LayoutOptionsState, LayoutType} from "../model.ts";
-import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
+import {ansiLayoutModel, ansiWideLayoutModel, customAnsiWideLayoutModel} from "./ansiLayoutModel.ts";
 import {harmonicLayoutModel, harmonicLayoutModelWithNavKeys} from "./harmonicLayoutModel.ts";
 import {orthoLayoutModel} from "./orthoLayoutModel.ts";
 import {FlexMapping} from "../mapping/mapping-model.ts";
@@ -32,10 +32,12 @@ export enum MappingChange {
     SwapHands,
 }
 
-export function getLayoutModel(layoutType: LayoutType, layoutOptions: LayoutOptionsState) {
+export function getLayoutModel(layoutType: LayoutType, layoutOptions: LayoutOptionsState, flexMapping?: FlexMapping) {
     switch (layoutType) {
         case LayoutType.ANSI:
-            return layoutOptions.ansiLayoutOptions.value.wide ? ansiWideLayoutModel : ansiLayoutModel;
+            return !layoutOptions.ansiLayoutOptions.value.wide ? ansiLayoutModel
+                : !flexMapping?.ansiMovedColumns ? ansiWideLayoutModel
+                    : customAnsiWideLayoutModel(flexMapping.ansiMovedColumns);
         case LayoutType.Ortho:
             return orthoLayoutModel;
         case LayoutType.Harmonic:

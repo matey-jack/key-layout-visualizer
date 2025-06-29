@@ -12,12 +12,12 @@ interface LayoutAreaProps {
 
 export function LayoutArea({appState}: LayoutAreaProps) {
     const selectedLayoutType = appState.layoutType.value;
-    const layoutModel = getLayoutModel(selectedLayoutType, appState.layoutOptions);
+    const layoutModel = getLayoutModel(selectedLayoutType, appState.layoutOptions, appState.mapping.value);
     const split = appState.layoutSplit.value == LayoutSplit.TwoPiece;
 
     return (
         <div>
-            <TopBar layoutSignal={appState.layoutType} layoutOptins={appState.layoutOptions}/>
+            <TopBar layoutSignal={appState.layoutType} layoutOptions={appState.layoutOptions}/>
             <div className="layout-description">
                 <TruncatedText text={layoutModel.description}/>
             </div>
@@ -37,17 +37,17 @@ export function LayoutArea({appState}: LayoutAreaProps) {
 
 interface TopBarProps {
     layoutSignal: Signal<LayoutType>
-    layoutOptins: LayoutOptionsState
+    layoutOptions: LayoutOptionsState
 }
 
-function TopBar({layoutSignal, layoutOptins}: TopBarProps) {
+function TopBar({layoutSignal, layoutOptions}: TopBarProps) {
     const layoutOrder = [LayoutType.ANSI, LayoutType.Harmonic, LayoutType.Ortho];
     return <div className="layout-top-bar-container">
         <BlankGridElement/>
         {layoutOrder.map((layoutType) =>
             <TopBarKeyboardTab
                 layoutType={layoutType}
-                layoutName={getLayoutModel(layoutType, layoutOptins).name}
+                layoutName={getLayoutModel(layoutType, layoutOptions).name}
                 layoutSignal={layoutSignal}
                 key={layoutType}
             />

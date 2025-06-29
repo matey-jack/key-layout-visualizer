@@ -43,7 +43,7 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, "⏎"],
         ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-        ["Ctrl", "Cmd", "Alt", "⍽", 0, 1 , "Menu", "Ctrl"],
+        ["Ctrl", "Cmd", "Alt", "⍽", 0, 1, "Menu", "Ctrl"],
     ],
 
     rowStart: (_: KeyboardRows) => 0,
@@ -89,24 +89,28 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
     getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsi,
 }
 
-// how many columns are moving to the right?
-// the key just after those will "jump" into the center of the board?
+// How many columns are moving to the right?
+// The key just after those will "jump" into the center of the board.
 export const movedColumns = [5, 7, 5, 4];
 
-export const ansiWideLayoutModel: RowBasedLayoutModel = {
-    ...ansiLayoutModel,
-    rightHomeIndex: 8,
-    thirtyKeyMapping: moveRightHand(ansiLayoutModel, movedColumns),
-}
+export const customAnsiWideLayoutModel = (movedColumns: number[]): RowBasedLayoutModel =>
+    ({
+        ...ansiLayoutModel,
+        rightHomeIndex: 8,
+        thirtyKeyMapping: moveRightHand(ansiLayoutModel.thirtyKeyMapping, ansiLayoutModel.splitColumns, movedColumns),
+        fullMapping: moveRightHand(ansiLayoutModel.fullMapping!!, ansiLayoutModel.splitColumns, movedColumns),
+    });
 
-function moveRightHand(layoutModel: RowBasedLayoutModel, movedColumns: number[]): LayoutMapping {
-    return layoutModel.thirtyKeyMapping.map((layoutRow, row) => {
+export const ansiWideLayoutModel = customAnsiWideLayoutModel(movedColumns);
+
+function moveRightHand(mapping: LayoutMapping, splitColumns: number[], movedColumns: number[]): LayoutMapping {
+    return mapping.map((layoutRow, row) => {
         if (!movedColumns[row]) return layoutRow;
-        const jumpingColumn = layoutModel.splitColumns[row] + movedColumns[row];
+        const jumpingColumn = splitColumns[row] + movedColumns[row];
         return [
-            layoutRow.slice(0, layoutModel.splitColumns[row]),
+            layoutRow.slice(0, splitColumns[row]),
             layoutRow[jumpingColumn],
-            layoutRow.slice(layoutModel.splitColumns[row], jumpingColumn),
+            layoutRow.slice(splitColumns[row], jumpingColumn),
             layoutRow.slice(jumpingColumn + 1),
         ].flat();
     })

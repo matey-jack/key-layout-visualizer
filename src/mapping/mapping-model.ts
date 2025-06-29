@@ -20,4 +20,7 @@ export interface FlexMapping {
     mappingAnsi?: string[];
     mappingHarmonic?: string[];
     mappingOrtho?: string[];
+
+    // for customizing the ANSI wide Layout
+    ansiMovedColumns?: number[];
 }
