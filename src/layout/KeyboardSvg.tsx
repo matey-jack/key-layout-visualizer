@@ -38,6 +38,8 @@ interface KeyProps {
 
 const keyUnit = 100;
 const keyPadding = 5;
+const keyOverlayPaddingH = 17;
+const keyOverlayPaddingV = 1;
 
 // can't use enum values in const expressions, so we use Array instead of object.
 const keyClassByDiff = [null, "same-finger", "same-hand", "swap-hands"];
@@ -58,20 +60,26 @@ export const Key = (props: KeyProps) => {
             {props.label}
         </text>
 
-    // we simplify by putting only color-coded class on the key. Diff information overrides key type.
     const keyClassByType = (!props.label) ? "unlabeled"
         : (isCommandKey(props.label)) ? "command-key"
             : (props.isHomeKey) ? "home-key"
             : "";
-    const keyClass = (props.diff == MappingChange.SamePosition) ? keyClassByType : keyClassByDiff[props.diff];
+    const diffOverlay = (props.diff == MappingChange.SamePosition) ? <></>
+        : <rect class={"key-overlay " + keyClassByDiff[props.diff]!!}
+                x={x + keyOverlayPaddingV}
+                y={y + keyOverlayPaddingH}
+                width={keyUnit * props.width - 2 * (keyPadding + keyOverlayPaddingV)}
+                height={keyUnit - 2 * (keyPadding + keyOverlayPaddingH)}
+        />
     return <g>
         <rect
-            className={"key-outline " + keyClass}
+            className={"key-outline " + keyClassByType}
             x={x}
             y={y}
             width={keyUnit * props.width - 2 * keyPadding}
             height={keyUnit - 2 * keyPadding}
         />
+        {diffOverlay}
         {text}
     </g>
 }
