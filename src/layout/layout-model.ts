@@ -104,23 +104,26 @@ const diffFinger = (a: Finger, b: Finger) =>
 
 // We report the result by assigned (logical) key. Maybe that makes it easier to compute stats later.
 export function diffMappings(model: RowBasedLayoutModel, a: LayoutMapping, b: LayoutMapping): Record<string, MappingChange> {
-    const bFingers = characterToFinger(model, b);
+    const bFingers = characterToFinger(model.mainFingerAssignment, b);
     const result: Record<string, MappingChange> = {};
     a.forEach((aRow, r) => {
         aRow.forEach((aKey, c) => {
             if (aKey == b[r][c]) {
                 result[aKey] = MappingChange.SamePosition;
             } else {
-                result[aKey] = diffFinger(model.mainFingerAssignment[r][c], bFingers[aKey])
+                let f = model.mainFingerAssignment[r][c];
+                // console.log(`[${r},${c}] '${aKey}' on finger ${f}, in base mapping finger ${bFingers[aKey]}.'`)
+                result[aKey] = diffFinger(f, bFingers[aKey])
             }
         })
     })
     return result;
 }
 
-function characterToFinger(model: RowBasedLayoutModel, mapping: LayoutMapping): Record<string, Finger> {
+// exported only for unit tests
+export function characterToFinger(fingerAssignment: Finger[][], mapping: LayoutMapping): Record<string, Finger> {
     const result: Record<string, Finger> = {};
-    model.mainFingerAssignment.forEach((fingerRow, r) => {
+    fingerAssignment.forEach((fingerRow, r) => {
         fingerRow.forEach((finger, c) => {
             const key = mapping[r][c];
             result[key] = finger;
@@ -143,7 +146,12 @@ export function diffSummary(diff: Record<string, MappingChange>): Record<Mapping
 }
 
 export function diffToQwerty(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): Record<string, MappingChange>  {
+    // console.log(`=== diffToQwerty: ${flexMapping.name} on ${layoutModel.name} ===`);
+    // neither using this condition nor omitting it, reflects the actual experienced learning delta for wide models.
+    // let's just accept that this is imperfect and move on.
+    const baseLayoutModel = // (layoutModel.name.includes("wide")) ? ansiLayoutModel :
+        layoutModel;
     const a = fillMapping(layoutModel, flexMapping);
-    const b = fillMapping(layoutModel, qwertyMapping);
+    const b = fillMapping(baseLayoutModel, qwertyMapping);
     return diffMappings(layoutModel, a, b);
 }
