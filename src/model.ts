@@ -27,6 +27,15 @@ export enum KeyboardRows {
     Bottom,
 }
 
+export enum VisualizationType {
+    LayoutEffort,
+    LayoutFingering,
+    LayoutAngle,
+    MappingDiff,
+    MappingFrequeny,
+    MappingBigrams,
+}
+
 export type AppState = ReturnType<typeof createAppState>;
 
 export type LayoutOptionsState = AppState['layoutOptions'];
@@ -55,5 +64,6 @@ export function createAppState() {
     const mappingDiff: ReadonlySignal<Record<string, MappingChange>> = computed(() =>
         diffToQwerty(layoutModel.value, mapping.value)
     )
-    return {layoutType, layoutOptions, layoutSplit, layoutModel, mapping, mappingDiff};
+    const vizType = signal(VisualizationType.MappingDiff)
+    return {layoutType, layoutOptions, layoutSplit, layoutModel, mapping, mappingDiff, vizType};
 }

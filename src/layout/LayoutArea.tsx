@@ -88,7 +88,7 @@ interface LayoutOptionsBarProps {
 function LayoutOptionsBar({state}: LayoutOptionsBarProps) {
     return <div class="layout-options-bar-container">
         <BlankGridElement/>
-        <GenericLayoutOptions split={state.layoutSplit}/><br/>
+        <GenericLayoutOptions split={state.layoutSplit}/>
         <TypeSpecifcLayoutOptions layoutType={state.layoutType.value} layoutOptions={state.layoutOptions}/>
         <BlankGridElement/>
     </div>
