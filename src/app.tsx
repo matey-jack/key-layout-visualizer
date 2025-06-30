@@ -1,65 +1,28 @@
 // @ts-ignore
 import './app.css'
 import './model'
-import {LayoutType} from "./model.ts";
-import {LayoutNames, LayoutDescriptions} from "./layout/layout-model.ts";
-import {LayoutElements, KeyboardSvg} from "./layout/KeyboardSvg.tsx";
-import {QwertyMapping} from "./mapping/mappings-30-keys.ts";
-import {useState} from "react";
-import {TruncatedText} from "./TruncatedText.tsx";
+import {AppState, createAppState} from "./model.ts";
+import {LayoutArea} from "./layout/LayoutArea.tsx";
+import {MappingList} from "./mapping/MappingArea.tsx";
+import {DetailsArea} from "./details/DetailsArea.tsx";
+
+const appState = createAppState();
 
 export function App() {
-    const [selectedLayout, setLayout] = useState(LayoutType.Harmonic);
-    const KeyboardElement = LayoutElements[selectedLayout]!!;
-
-    return (
-        <>
-            <TopBar selectedLayout={selectedLayout} setLayout={setLayout}/>
-            <div className="layout-description">
-                <TruncatedText text={LayoutDescriptions[selectedLayout]} />
-            </div>
-            <KeyboardSvg>
-                <KeyboardElement mapping={QwertyMapping.mapping}/>
-            </KeyboardSvg>
-        </>
-    )
+    return <>
+        <LayoutArea appState={appState}/>
+        <hr></hr>
+        <MappingAndDetailsArea appState={appState}/>
+    </>
 }
 
-
-interface TopBarProps {
-    selectedLayout: LayoutType;
-    setLayout: (layoutType: LayoutType) => void;
+export interface MappingAreaProps {
+    appState: AppState;
 }
 
-function TopBar(props: TopBarProps) {
-    const layoutOrder = [LayoutType.ANSI, LayoutType.Harmonic, LayoutType.Ortho];
-    return <div className="grid-container">
-        <TopBarBlank/>
-        {layoutOrder.map((layoutType) =>
-            <TopBarKeyboardTab
-                layoutType={layoutType}
-                setLayoutType={props.setLayout}
-                isSelected={layoutType === props.selectedLayout}
-            />
-        )}
-        <TopBarBlank/>
+export function MappingAndDetailsArea({appState}: MappingAreaProps) {
+    return <div class="mapping-and-details-container">
+        <MappingList appState={appState}/>
+        <DetailsArea appState={appState}/>
     </div>
 }
-
-const TopBarBlank = () =>
-    <div className="blank"></div>
-
-interface TopBarKeyboardTabProps {
-    layoutType: LayoutType,
-    setLayoutType: (layoutType: LayoutType) => void,
-    isSelected: boolean
-}
-
-const TopBarKeyboardTab = (props: TopBarKeyboardTabProps) =>
-    <div
-        onClick={() => props.setLayoutType(props.layoutType)}
-    >
-        <button className={"top-bar-keyboard-tab-label " + (props.isSelected ? "selected" : "")}>
-            {LayoutNames[props.layoutType]}
-        </button>
-    </div>
