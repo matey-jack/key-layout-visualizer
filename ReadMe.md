@@ -44,7 +44,11 @@ but who is not fanatic about optimizing their typing or training for speed "like
 
 ## Scope
 
-Once I have implemented my desired base feature set, we can think about various extensions.
+Original proposal document: https://docs.google.com/document/d/17ECEu8dVjO9I3P6492D3Q8luSBC8j6HAiPTDwPtMZJ8/edit?usp=sharing 
+This should be outdated, once the app functionality speaks for itself.
+
+I will not consider extensions above the described feature set until most of that is implemented.
+This is to get a basic architecture in place that makes the right things easy.
 
 One thing I don't want, though, is adding the ISO layout with its tiny left shift key.
 Because that key is an ergonomic no-go. It brought me so much pain. 

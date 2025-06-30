@@ -12,7 +12,7 @@ interface LayoutAreaProps {
 
 export function LayoutArea({appState}: LayoutAreaProps) {
     const selectedLayoutType = appState.layoutType.value;
-    const layoutModel = getLayoutModel(selectedLayoutType, appState.layoutOptions, appState.mapping.value);
+    const layoutModel = getLayoutModel(selectedLayoutType, appState.layoutOptions, appState.mapping.value, appState.layoutSplit);
     const split = appState.layoutSplit.value == LayoutSplit.TwoPiece;
 
     return (

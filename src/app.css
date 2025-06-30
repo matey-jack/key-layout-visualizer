@@ -59,15 +59,19 @@ body {
     fill: #c3f3ac;
 }
 
-.key-outline.same-finger{
+.key-overlay {
+    border-color: transparent;
+}
+
+.key-overlay.same-finger{
     fill: #f3eaac;
 }
 
-.key-outline.same-hand{
+.key-overlay.same-hand{
     fill: #f6d187;
 }
 
-.key-outline.swap-hands{
+.key-overlay.swap-hands{
     fill: #f3bfac;
 }
 

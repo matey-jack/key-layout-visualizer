@@ -42,7 +42,7 @@ export function createAppState() {
         orthoLayoutOptions: signal(defaultOrthoLayoutOptions),
     };
     const layoutModel: ReadonlySignal<RowBasedLayoutModel> = computed(() =>
-        getLayoutModel(layoutType.value, layoutOptions)
+        getLayoutModel(layoutType.value, layoutOptions, undefined, layoutSplit)
     )
 
     const mapping = signal(qwertyMapping);

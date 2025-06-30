@@ -1,9 +1,10 @@
-import {KeyboardRows, LayoutOptionsState, LayoutType} from "../model.ts";
+import {KeyboardRows, LayoutOptionsState, LayoutSplit, LayoutType} from "../model.ts";
 import {ansiLayoutModel, ansiWideLayoutModel, customAnsiWideLayoutModel} from "./ansiLayoutModel.ts";
 import {harmonicLayoutModel, harmonicLayoutModelWithNavKeys} from "./harmonicLayoutModel.ts";
-import {orthoLayoutModel} from "./orthoLayoutModel.ts";
+import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 import {FlexMapping} from "../mapping/mapping-model.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
+import {Signal} from "@preact/signals";
 
 export enum Finger {
     LPinky = 0,
@@ -32,14 +33,18 @@ export enum MappingChange {
     SwapHands,
 }
 
-export function getLayoutModel(layoutType: LayoutType, layoutOptions: LayoutOptionsState, flexMapping?: FlexMapping) {
+export function getLayoutModel(layoutType: LayoutType,
+                               layoutOptions: LayoutOptionsState,
+                               flexMapping?: FlexMapping,
+                               layoutSplit?: Signal<LayoutSplit>,
+): RowBasedLayoutModel {
     switch (layoutType) {
         case LayoutType.ANSI:
             return !layoutOptions.ansiLayoutOptions.value.wide ? ansiLayoutModel
                 : !flexMapping?.ansiMovedColumns ? ansiWideLayoutModel
                     : customAnsiWideLayoutModel(flexMapping.ansiMovedColumns);
         case LayoutType.Ortho:
-            return orthoLayoutModel;
+            return layoutSplit?.value == LayoutSplit.TwoPiece ? splitOrthoLayoutModel : orthoLayoutModel;
         case LayoutType.Harmonic:
             return layoutOptions.harmonicLayoutOptions.value.navKeys ? harmonicLayoutModelWithNavKeys : harmonicLayoutModel;
     }
@@ -145,7 +150,7 @@ export function diffSummary(diff: Record<string, MappingChange>): Record<Mapping
     return result;
 }
 
-export function diffToQwerty(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): Record<string, MappingChange>  {
+export function diffToQwerty(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): Record<string, MappingChange> {
     // console.log(`=== diffToQwerty: ${flexMapping.name} on ${layoutModel.name} ===`);
     // neither using this condition nor omitting it, reflects the actual experienced learning delta for wide models.
     // let's just accept that this is imperfect and move on.
