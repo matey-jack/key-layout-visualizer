@@ -1,4 +1,4 @@
-import {computed, ReadonlySignal, signal} from "@preact/signals";
+import {computed, effect, ReadonlySignal, signal} from "@preact/signals";
 import {qwertyMapping} from "./mapping/mappings.ts";
 import {defaultAnsiLayoutOptions} from "./layout/ansiLayoutModel.ts";
 import {defaultHarmonicLayoutOptions} from "./layout/harmonicLayoutModel.ts";
@@ -46,8 +46,14 @@ export function createAppState() {
     )
 
     const mapping = signal(qwertyMapping);
+    effect(() => {
+        // When switching layouts and the current mapping doesn't work on this layout, reset to default.
+        if (!layoutModel.value.getSpecificMapping(mapping.value) && !mapping.value.mapping30) {
+            mapping.value = qwertyMapping;
+        }
+    })
     const mappingDiff: ReadonlySignal<Record<string, MappingChange>> = computed(() =>
         diffToQwerty(layoutModel.value, mapping.value)
     )
-    return { layoutType, layoutOptions, layoutSplit, layoutModel, mapping, mappingDiff };
+    return {layoutType, layoutOptions, layoutSplit, layoutModel, mapping, mappingDiff};
 }
