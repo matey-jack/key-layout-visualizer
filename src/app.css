@@ -63,16 +63,19 @@ body {
     border-color: transparent;
 }
 
-.key-overlay.same-finger{
+.same-finger{
     fill: #f3eaac;
+    background-color: #f3eaac;
 }
 
-.key-overlay.same-hand{
+.same-hand{
     fill: #f6d187;
+    background-color: #f6d187;
 }
 
-.key-overlay.swap-hands{
+.swap-hands{
     fill: #f3bfac;
+    background-color: #f3bfac;
 }
 
 .key-label {
@@ -138,4 +141,16 @@ body {
 
 .mapping-list-item.selected button {
     font-weight: bold;
+}
+
+.diff-counter {
+    display: inline-block;
+    text-align: center;
+    width: 3rem;
+    padding: 0.2rem;
+    margin: 0.1rem;
+}
+
+.diff-counter.unchanged {
+    border: 1px solid darkgray;
 }
