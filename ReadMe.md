@@ -58,7 +58,16 @@ And then all that pressing of Shift+nav-keys to select text.
 Or Shift+other-modifier for shortcuts.
 Anyway, you see it adds up. Shift needs to be close to home.)
 
-## Development
+## Related Work
+
+https://oxey.dev/playground/index.html
+ * actually this was my main inspiration. I just wanted to show more visuals and less numbers!
+
+https://cyanophage.github.io/playground.html?layout=vmlcpxfouj-strdy.naei%2Fzkqgwbh%27%3B%2C%5C%5E&lan=english&mode=ergo
+
+
+
+# Development
 
 I use `bun` as package manager and to run `vite`, but `node` should also work.
 

@@ -4,16 +4,6 @@ import {Signal} from "@preact/signals";
 import {allMappings} from "./mappings.ts";
 import {diffSummary, diffToQwerty, MappingChange, RowBasedLayoutModel} from "../layout/layout-model.ts";
 
-export interface MappingAreaProps {
-    appState: AppState;
-}
-
-export function MappingArea({appState}: MappingAreaProps) {
-    return <div class="mapping-container">
-        <MappingList appState={appState}/>
-    </div>
-}
-
 export interface MappingListProps {
     appState: AppState;
 }
@@ -67,7 +57,4 @@ export function MappingListItem(
 
 function formatDiff(diff: Record<MappingChange, number>) {
     return `${diff["1"]}/${diff["2"]}/${diff["3"]}`
-}
-
-export function MappingDiff() {
 }

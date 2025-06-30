@@ -115,7 +115,7 @@ export function diffMappings(model: RowBasedLayoutModel, a: LayoutMapping, b: La
     const result: Record<string, MappingChange> = {};
     a.forEach((aRow, r) => {
         aRow.forEach((aKey, c) => {
-            if (aKey == b[r][c]) {
+            if (!aKey || aKey == b[r][c]) {
                 result[aKey] = MappingChange.SamePosition;
             } else {
                 let f = model.mainFingerAssignment[r][c];

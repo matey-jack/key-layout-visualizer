@@ -19,7 +19,7 @@ export interface FlexMapping {
     // for correct dimensions, see the layout model files
     mappingAnsi?: string[];
     mappingHarmonic?: string[];
-    mappingOrtho?: string[];
+    mappingSplitOrtho?: string[];
 
     // for customizing the ANSI wide Layout
     ansiMovedColumns?: number[];

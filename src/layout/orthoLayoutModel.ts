@@ -47,10 +47,9 @@ export const orthoLayoutModel: RowBasedLayoutModel = {
         [0, 0, 1, 2, 4,/**/5, 5, 7, 8, 9, 9],
     ],
 
-    // Actually this doesn't work, since I haven't decided on a "fullMapping" for this keyboard.
-    // The big open question is: how to handle different key numbers and positions of the bar and two-piece variants?
-    // (My current best guess is that two different flexMapping formats will be needed!)
-    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingOrtho,
+    // This missing one key, but I don't plan to show any layouts specific to the unsplit ortho board,
+    // so it's fine!
+    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingSplitOrtho,
 }
 
 export const splitOrthoLayoutModel: RowBasedLayoutModel = {
@@ -59,7 +58,9 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
     description: "The Ortholinear is especially popular with two-piece keyboards. " +
         "This allows to position and rotate the two keyboard halves to make columns line up exactly with your finger's natural extension movement. " +
         "Most split models include at least two thumb keys on each side that users can map to any function they want. " +
-        "The layout shown here corresponds to the Iris CE, a split keyboard which is incidentally the one that I used for coding this app. ",
+        "The layout shown here is not too different to the Iris CE, a 56-key split keyboard which is incidentally the one that I used for coding this app. ",
+    // more splitties here: https://jhelvy.shinyapps.io/splitkbcompare/
+    // if it's down, you can run it locally: https://github.com/jhelvy/splitKbCompare
 
     // Mapping Enter as a thumb key allows `'` to stay in its Qwerty position.
     // We use the freed space to improve `-` position, since this is the third most frequently used punctuation character.

@@ -112,7 +112,7 @@ body {
     display: inline;
 }
 
-.mapping-container {
+.mapping-and-details-container {
     display: grid;
     /* Left colum mapping list, right colum details.
     Grid is overkill here, because each column has just one <div>, but it should be easy to refactor that. */
