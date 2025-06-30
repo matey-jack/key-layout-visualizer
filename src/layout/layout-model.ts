@@ -74,7 +74,7 @@ export interface RowBasedLayoutModel {
     thirtyKeyMapping: LayoutMapping;
 
     // this one takes a flex mapping depending on the layout
-    fullMapping?: LayoutMapping;
+    fullMapping: LayoutMapping;
 
     //
     mainFingerAssignment: Finger[][];

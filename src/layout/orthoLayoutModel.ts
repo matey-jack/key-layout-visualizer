@@ -27,6 +27,16 @@ export const orthoLayoutModel: RowBasedLayoutModel = {
         ["Ctrl", "Cmd", "`", "-", "Alt", "⍽", "AltGr", "=", "\\", "Fn", "Ctrl"],
     ],
 
+    // This is not properly supported, no mappings use it.
+    // It's just here to avoid crashes and more filtering logic when selecting the Ortho one-piece layout
+    fullMapping: [
+        ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
+        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+        ["Ctrl", "Cmd", 0, 1, "Alt", "⍽", "AltGr", 2, 3, "Fn", "Ctrl"],
+    ],
+
     rowStart: (_: KeyboardRows) => 0,
 
     keyWidth: (row: KeyboardRows, col: number): number =>
@@ -69,7 +79,17 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
         ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "-"],
         ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
         ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-        ["Ctrl", "Cmd", "`", "\\", "Alt", "⍽", "⏎", "AltGr", "=", "Fn", "Menu", "Ctrl"],
+        ["Ctrl", "Cmd", "=", "\\", "Alt", "⍽", "⏎", "AltGr", "Menu", "`", "Fn", "Ctrl"],
+    ],
+
+    // I arbitrarily decide that the top (number) row shall not be changed by the flex mapping.
+    // But there has to be an empty list in the mapping to keep the format consistent with the algorithms.
+    fullMapping: [
+        ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+        ["Ctrl", "Cmd", 0, 1, "Alt", "⍽", "⏎", "AltGr", 2, 3, "Fn", "Ctrl"],
     ],
 
     rowStart: (row: number) =>

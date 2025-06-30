@@ -139,11 +139,12 @@ export const cozyMapping = {
     mappingAnsi: [
         "=\\",
         "qwbf" + "-y" + "kulp[]",
-        "⌥asdrg" + "hniot'",
+        "asdrg" + "hniot'",
         "zxcv" + ";" + "jm,./",
         "e⌥"
     ],
 
+    // maybe a bit superficial, just to have the brackets appear in the 'right' order. ;-)
     ansiMovedColumns: [5, 5, 5, 4],
 
     // This is just as hypothetic as the entire concept for a Harmonic keyboard.
@@ -158,6 +159,13 @@ export const cozyMapping = {
         "\\e"
     ],
 
+    mappingSplitOrtho: [
+        "",
+        "qwbf-" + "ykulp\\",
+        "asdrg" + "hniot'",
+        "zxcv;" + "jm,./",
+        "⇤⇥e`"
+    ],
     /*
         Alternative to mapping [], we can have Home/End, PgUp/PgDn, or Copy/Paste.
         Unicode symbols, just in case.
@@ -178,10 +186,11 @@ export const cozyPlusMapping = {
     mappingAnsi: [
         "=\\",
         "qwbf-" + "j" + "hulp[]",
-        "⌥asdrg" + "kniot'",
+        "asdrg" + "kniot'",
         "zxcv" + ";" + "ym,./",
         "e⌥"
     ],
+    ansiMovedColumns: [5, 5, 5, 4],
 };
 
 /* Port of my personal German layout. It changes less than Qwerty, because it is already made for a wide home position.
@@ -209,11 +218,20 @@ export const gemuetlichesMapping = {
     // I actually used this layout on an ISO keyboard, so the right pinky keys are a bit different!
     mappingAnsi: [
         "ß´",
-        "qwbfö" + "zkuopü+ä",
-        "⌥asdrg" + "hnilt'",
+        "qwbfö" + "zkuopüä",
+        "asdrg" + "hnilt'",
         "yxcv/" + "jm,.-",
         "e⌥"
     ],
+
+    mappingSplitOrtho: [
+        "",
+        "qwbf'" + "zkuopü",
+        "asdrg" + "hniltä",
+        "yxcv/" + "jm,.-",
+        "ö⌦" + "e+"
+    ],
+
     // TODO: We could define a "base for diffing" field here that contains the default German Qwertz mapping.
     //       Then the diff counts should be correct. (We'll have to contort it to ANSI though, because this app will not implement ISO.)
     mappingHarmonic: [
