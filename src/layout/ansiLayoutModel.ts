@@ -1,5 +1,5 @@
 import {KeyboardRows} from "../model.ts";
-import {LayoutMapping, RowBasedLayoutModel} from "./layout-model.ts";
+import {Finger, LayoutMapping, RowBasedLayoutModel} from "./layout-model.ts";
 import {FlexMapping} from "../mapping/mapping-model.ts";
 
 const widthOfAnsiBoard = 15;
@@ -51,7 +51,7 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
     keyWidth: (row: KeyboardRows, col: number): number => {
         // source is roughly https://www.wikiwand.com/en/articles/Keyboard_layout#/media/File:ANSI_Keyboard_Layout_Diagram_with_Form_Factor.svg
         if (row == KeyboardRows.Bottom) {
-            // Modifier sizes are where commercially available keybaords vary the most, but 7 keys are the most common,
+            // Modifier sizes are where commercially available keyboards vary the most, but 7 keys are the most common,
             // and equal size for them is the simplest choice. (Also makes them incompatible with any other key on the board.)
             // space bar
             if (col == 3) return 6.25;
@@ -121,4 +121,40 @@ function moveRightHand(mapping: LayoutMapping, splitColumns: number[], movedColu
             layoutRow.slice(jumpingColumn + 1),
         ].flat();
     })
+}
+
+/* Duplicate the middle key in the bottom row.
+   Set both clones to:
+     - same key mapping
+     - half the original size
+     - two different thumbs
+*/
+export const splitSpaceBar = (baseModel: RowBasedLayoutModel): RowBasedLayoutModel => {
+    const bottomIdx = 4;
+    // If we ever introduce variants with different number of modifier keys, we can calculate the middle key
+    // by cumulatively adding up all the keyWidths and finding the last key that starts before half of the total width.
+    const middleIdx = 3;
+    const btmFingers = baseModel.mainFingerAssignment[bottomIdx];
+    return {
+        ...baseModel,
+        fullMapping: baseModel.fullMapping && duplicateBottomMiddle(baseModel.fullMapping, bottomIdx, middleIdx),
+        thirtyKeyMapping: baseModel.thirtyKeyMapping && duplicateBottomMiddle(baseModel.thirtyKeyMapping, bottomIdx, middleIdx),
+        keyWidth: (row: KeyboardRows, col: number): number => {
+            if (row != bottomIdx) return baseModel.keyWidth(row, col);
+            if (col < middleIdx || col > middleIdx + 1) return baseModel.keyWidth(row, col);
+            return baseModel.keyWidth(row, middleIdx) / 2;
+        },
+        mainFingerAssignment: [
+            ...baseModel.mainFingerAssignment.slice(0, bottomIdx),
+            [...btmFingers.slice(0, middleIdx), Finger.LThumb, Finger.RThumb, ...btmFingers.slice(middleIdx + 1)],
+        ],
+    };
+}
+
+function duplicateBottomMiddle(mapping: LayoutMapping, bottomIdx: number, middleIdx: number): LayoutMapping {
+    const bottom = mapping[bottomIdx];
+    return [
+        ...mapping.slice(0, bottomIdx),
+        [...bottom.slice(0, middleIdx), bottom[middleIdx], bottom[middleIdx], ...bottom.slice(middleIdx + 1)],
+    ];
 }

@@ -1,5 +1,5 @@
 import {KeyboardRows, LayoutOptionsState, LayoutSplit, LayoutType} from "../model.ts";
-import {ansiLayoutModel, ansiWideLayoutModel, customAnsiWideLayoutModel} from "./ansiLayoutModel.ts";
+import {ansiLayoutModel, ansiWideLayoutModel, customAnsiWideLayoutModel, splitSpaceBar} from "./ansiLayoutModel.ts";
 import {harmonicLayoutModel, harmonicLayoutModelWithNavKeys} from "./harmonicLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 import {FlexMapping} from "../mapping/mapping-model.ts";
@@ -38,11 +38,13 @@ export function getLayoutModel(layoutType: LayoutType,
                                flexMapping?: FlexMapping,
                                layoutSplit?: Signal<LayoutSplit>,
 ): RowBasedLayoutModel {
+    const twoPiece = layoutSplit?.value == LayoutSplit.TwoPiece;
     switch (layoutType) {
         case LayoutType.ANSI:
-            return !layoutOptions.ansiLayoutOptions.value.wide ? ansiLayoutModel
+            const base = !layoutOptions.ansiLayoutOptions.value.wide ? ansiLayoutModel
                 : !flexMapping?.ansiMovedColumns ? ansiWideLayoutModel
                     : customAnsiWideLayoutModel(flexMapping.ansiMovedColumns);
+            return twoPiece ? splitSpaceBar(base) : base;
         case LayoutType.Ortho:
             return layoutSplit?.value == LayoutSplit.TwoPiece ? splitOrthoLayoutModel : orthoLayoutModel;
         case LayoutType.Harmonic:
