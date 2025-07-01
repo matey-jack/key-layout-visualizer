@@ -29,31 +29,27 @@ interface DiffDetailsProps {
 }
 
 export function DiffDetails({diff}: DiffDetailsProps) {
-    const diffLetters = Object.fromEntries(
-        Object.entries(diff).filter(([key]) => isLetter(key))
-    )
-    const diffSummy = diffSummary(diffLetters);
-    // const diffTotty = diffSummary(diff);
+    const diffSummy = diffSummary(diff);
     return <div>
-        <p>Here's how letters are changed in this layout compared to well-known Qwerty:</p>
+        <p>Here's how letters and prose punctuation are changed in this layout compared to well-known Qwerty:</p>
         <DiffEntry
             count={diffSummy[MappingChange.SamePosition]}
-            description="Letter keys unchanged."
+            description="Keys unchanged."
             counterClass="unchanged"
         />
         <DiffEntry
             count={diffSummy[MappingChange.SameFinger]}
-            description="Letter keys change on same finger."
+            description="Keys change on same finger."
             counterClass="same-finger"
         />
         <DiffEntry
             count={diffSummy[MappingChange.SameHand]}
-            description="Letter keys change finger on same hand."
+            description="Keys change finger on same hand."
             counterClass="same-hand"
         />
         <DiffEntry
             count={diffSummy[MappingChange.SwapHands]}
-            description="Letter keys swap hands."
+            description="Keys swap hands."
             counterClass="swap-hands"
         />
     </div>;
@@ -70,9 +66,4 @@ export function DiffEntry({count, description, counterClass}: DiffEntryProps) {
         <div class={`diff-counter ${counterClass}`}>{count}</div>
         {description}
     </div>
-}
-
-function isLetter(x: string): boolean {
-    return new RegExp('^[a-zäöüß]$').test(x);
-
 }

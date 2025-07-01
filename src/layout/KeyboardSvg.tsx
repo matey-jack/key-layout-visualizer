@@ -11,7 +11,7 @@ interface KeyboardSvgProps {
 // Adding 1u of wiggle room all around suggests a ratio of 7:17 for the SVG grid.
 export const KeyboardSvg = (props: KeyboardSvgProps) =>
     <div>
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1700 500">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1700 500" class="keyboard-svg">
             {props.children}
         </svg>
     </div>

@@ -182,11 +182,11 @@ export const cozyPlusMapping = {
     sourceUrl: "https://github.com/matey-jack/gemuetliche-tastatur",
 
     // We could have "Cozy Clean" which swaps `-` and `y` to have all punctuation in the bottom row,
-    // but it doesn't improve ease of typing and has requires `y` to be trained on a different finger.
+    // but it doesn't improve ease of typing and requires `y` to be trained on a different finger.
     mappingAnsi: [
         "=\\",
-        "qwbf-" + "j" + "hulp[]",
-        "asdrg" + "kniot'",
+        "qwbf-" + "j" + "hklp[]",
+        "asdrg" + "uniot'",
         "zxcv" + ";" + "ym,./",
         "e⌥"
     ],

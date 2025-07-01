@@ -6,7 +6,7 @@ body {
     display: grid;
     grid-template-columns: 1fr minmax(0, 2fr) minmax(0, 2fr) minmax(0, 2fr) 1fr;
     gap: 1rem;
-    width: 100%;
+    width: 95%;
     padding: 1rem;
 }
 
@@ -42,6 +42,9 @@ body {
 
 .layout-options-bar-container label {
     display: block;
+}
+
+.keyboard-svg {
 }
 
 .key-outline {
@@ -136,7 +139,7 @@ body {
     Grid is overkill here, because each column has just one <div>, but it should be easy to refactor that. */
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
-    width: 100%;
+    width: 95%;
     padding: 1rem;
 }
 

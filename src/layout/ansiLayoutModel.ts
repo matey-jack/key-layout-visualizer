@@ -47,6 +47,22 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         ["Ctrl", "Cmd", "Alt", "⍽", 0, 1, "Menu", "Ctrl"],
     ],
 
+    mainFingerAssignment: [
+        [1, 1, 1, 2, 2, 3, 3, 6, 6, 7, 8, 8, 8, 8],
+        [1, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9, 8, 8],
+        [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9, 9],
+        [0, 1, 2, 3, 3, 3, 6, 6, 7, 8, 9, 9],
+        [0, 1, 4, 5, 5, 7, 8, 9],
+    ],
+
+    singleKeyEffort: [
+        [NaN, 3, 2, 2, 3, NaN, NaN, 3, 2, 2, 3, NaN, NaN, NaN],
+        [NaN, 2, 1, 1, 1.5, 1.5, 2, 1.5, 1, 1, 2, 2, NaN, NaN],
+        [NaN, 0.2, 0.2, 0.2, 0.2, 2, 2, 0.2, 0.2, 0.2, 0.2, 1.5, NaN],
+        [NaN, 2, 2, 2, 2, 3, 1.5, 1.5, 1.5, 1.5, 1.5, NaN],
+        [NaN, NaN, NaN, NaN, 0.2, NaN, NaN, NaN],
+    ],
+
     rowStart: (_: KeyboardRows) => 0,
 
     keyWidth: (row: KeyboardRows, col: number): number => {
@@ -77,14 +93,6 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
 
     leftHomeIndex: 4,
     rightHomeIndex: 7,
-
-    mainFingerAssignment: [
-        [1, 1, 1, 2, 2, 3, 3, 6, 6, 7, 8, 8, 8, 8],
-        [1, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9, 8, 8],
-        [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9, 9],
-        [0, 1, 2, 3, 3, 3, 6, 6, 7, 8, 9, 9],
-        [0, 1, 4, 5, 5, 7, 8, 9],
-    ],
 
     getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsi,
 }

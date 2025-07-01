@@ -5,7 +5,7 @@ import {characterToFinger, diffToQwerty, fillMapping, Finger, Hand, hand} from "
 import {cozyMapping, qwertyMapping} from "../mapping/mappings.ts"
 import {harmonicComparisonBaseline} from "../mapping/harmonic-mappings.ts";
 import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
-import {orthoLayoutModel} from "./orthoLayoutModel.ts";
+import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 import {KeyboardRows} from "../model.ts";
 
 describe('fillMapping', () => {
@@ -27,25 +27,32 @@ describe('fillMapping', () => {
     });
 });
 
+const allLayoutModels = {
+    'ANSI': ansiLayoutModel,
+    'Harmonic': harmonicLayoutModel,
+    'Ortho': orthoLayoutModel,
+    'Split Ortho': splitOrthoLayoutModel,
+};
+
 describe('finger assignment consistency', () => {
-    it('Harmonic', () => {
-        harmonicLayoutModel.fullMapping!!.forEach((mappingRow, r) => {
-            expect(mappingRow.length, `${KeyboardRows[r]}Row`).toBe(harmonicLayoutModel.mainFingerAssignment[r].length)
-        })
+    Object.entries(allLayoutModels).forEach(([name, model]) => {
+        it(name, () => {
+            model.fullMapping!!.forEach((mappingRow, r) => {
+                expect(mappingRow.length, `${KeyboardRows[r]}Row`).toBe(model.mainFingerAssignment[r].length)
+            });
+        });
     });
+});
 
-    it('ANSI', () => {
-        ansiLayoutModel.thirtyKeyMapping.forEach((mappingRow, r) => {
-            expect(mappingRow.length, `${KeyboardRows[r]}Row`).toBe(ansiLayoutModel.mainFingerAssignment[r].length)
-        })
+describe('key effort consistency', () => {
+    Object.entries(allLayoutModels).forEach(([name, model]) => {
+        it(name, () => {
+            model.fullMapping!!.forEach((mappingRow, r) => {
+                expect(model.singleKeyEffort[r].length, `${KeyboardRows[r]}Row`).toBe(mappingRow.length)
+            });
+        });
     });
-
-    it('Ortho', () => {
-        orthoLayoutModel.thirtyKeyMapping.forEach((mappingRow, r) => {
-            expect(mappingRow.length, `${KeyboardRows[r]}Row`).toBe(orthoLayoutModel.mainFingerAssignment[r].length)
-        })
-    });
-})
+});
 
 describe('hand function', () => {
     it('works', () => {
