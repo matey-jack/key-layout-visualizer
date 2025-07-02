@@ -193,6 +193,18 @@ export const cozyPlusMapping = {
     ansiMovedColumns: [5, 5, 5, 4],
 };
 
+export const magicMapping = {
+    name: "Draft of casual mapping with a thumb key.",
+    mappingAnsi: [
+        "⇤⇥",
+        "qwdfg" + "=" + "kulp-\\",
+        "asrtb" + "jnioh'",
+        "zxcv" + ";" + "ym,./",
+        "e⌥"
+    ],
+    ansiMovedColumns: [4, 6, 5, 4],
+}
+
 /* Port of my personal German layout. It changes less than Qwerty, because it is already made for a wide home position.
      Changed chars are üzj+
      ü sends away + because there is one less physical key on the upper row.
@@ -253,8 +265,9 @@ export const allMappings: FlexMapping[] = [
     qwertyFlipTwistSpinMapping,
     etniMapping,
     quipperMapping,
-    cozyMapping,
-    cozyPlusMapping,
+    // cozyMapping,
+    // cozyPlusMapping,
+    magicMapping,
     gemuetlichesMapping,
 ]
 

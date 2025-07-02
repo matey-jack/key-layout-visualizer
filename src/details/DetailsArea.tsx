@@ -31,7 +31,7 @@ interface DiffDetailsProps {
 export function DiffDetails({diff}: DiffDetailsProps) {
     const diffSummy = diffSummary(diff);
     return <div>
-        <p>Here's how letters and prose punctuation are changed in this layout compared to well-known Qwerty:</p>
+        <p>Here's how 26 letters and six prose punctuation characters are changed in this layout compared to well-known Qwerty:</p>
         <DiffEntry
             count={diffSummy[MappingChange.SamePosition]}
             description="Keys unchanged."

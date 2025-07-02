@@ -1,8 +1,17 @@
 import {describe, expect, it} from 'vitest';
 
 import {harmonicLayoutModel} from "./harmonicLayoutModel.ts";
-import {characterToFinger, diffToQwerty, fillMapping, Finger, Hand, hand} from "./layout-model.ts";
-import {cozyMapping, qwertyMapping} from "../mapping/mappings.ts"
+import {
+    characterToFinger,
+    diffSummary,
+    diffToQwerty,
+    fillMapping,
+    Finger,
+    Hand,
+    hand,
+    MappingChange
+} from "./layout-model.ts";
+import {cozyMapping, normanMapping, qwertyMapping} from "../mapping/mappings.ts"
 import {harmonicComparisonBaseline} from "../mapping/harmonic-mappings.ts";
 import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
@@ -64,6 +73,22 @@ describe('hand function', () => {
 });
 
 describe('diffToQwerty', () => {
+    it('works for Norman', () => {
+        const normanDiff = diffToQwerty(ansiWideLayoutModel, normanMapping)
+        expect(normanDiff['k']).toBe(MappingChange.SwapHands);
+        expect(normanDiff['r']).toBe(MappingChange.SwapHands);
+        expect(normanDiff['p']).toBe(MappingChange.SameHand);
+        expect(normanDiff['h']).toBe(MappingChange.SameHand);
+        expect(normanDiff['e']).toBe(MappingChange.SameFinger);
+        expect(normanDiff['t']).toBe(MappingChange.SameFinger);
+        expect(normanDiff['d']).toBe(MappingChange.SameFinger);
+        expect(normanDiff['j']).toBe(MappingChange.SameFinger);
+        const summary = diffSummary(normanDiff);
+        expect(summary[MappingChange.SwapHands]).toBe(2);
+        expect(summary[MappingChange.SameHand]).toBe(2);
+        expect(summary[MappingChange.SameFinger]).toBe(11);
+        expect(summary[MappingChange.SamePosition]).toBe(17);
+    })
     const cozyDiff = diffToQwerty(ansiWideLayoutModel, cozyMapping)
 });
 

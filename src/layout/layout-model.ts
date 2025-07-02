@@ -156,8 +156,10 @@ export function characterToFinger(fingerAssignment: Finger[][], mapping: LayoutM
     return result;
 }
 
+export const lettersAndVIP = RegExp("^[a-z,.'/;-]$");
+
 export function diffSummary(diff: Record<string, MappingChange>): Record<MappingChange, number> {
-    const lettersAndVIP = RegExp("^[a-zäöüß,.'/-;]$")
+    // remember that the literal `-` can only be mentioned at the end of a [...]
     const result = {
         [MappingChange.SamePosition]: 0,
         [MappingChange.SameFinger]: 0,

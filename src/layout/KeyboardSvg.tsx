@@ -1,5 +1,5 @@
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping-functions.ts";
-import {fillMapping, isHomeKey, MappingChange, RowBasedLayoutModel} from "./layout-model.ts";
+import {fillMapping, isHomeKey, lettersAndVIP, MappingChange, RowBasedLayoutModel} from "./layout-model.ts";
 import {sum} from '../library/math.ts';
 import {FlexMapping} from "../mapping/mapping-model.ts";
 
@@ -33,7 +33,7 @@ interface KeyProps {
     // thus 0,0 is the top left key (tilde on ANSI, Escape on Harmonic, and Iris)
     width: number; // measured in units of height, with 1 being the default
     isHomeKey: boolean;
-    diff: MappingChange;
+    diff?: MappingChange;
 }
 
 const keyUnit = 100;
@@ -64,7 +64,7 @@ export const Key = (props: KeyProps) => {
         : (isCommandKey(props.label)) ? "command-key"
             : (props.isHomeKey) ? "home-key"
             : "";
-    const diffOverlay = (props.diff == MappingChange.SamePosition) ? <></>
+    const diffOverlay = (props.diff === undefined || props.diff === MappingChange.SamePosition) ? <></>
         : <rect class={"key-overlay " + keyClassByDiff[props.diff]!!}
                 x={x + keyOverlayPaddingV}
                 y={y + keyOverlayPaddingH}
@@ -109,7 +109,7 @@ export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, split}:
             const key = <Key
                 label={label}
                 isHomeKey={isHomeKey(layoutModel, row, col)}
-                diff={mappingDiff[label]}
+                diff={lettersAndVIP.test(label) ? mappingDiff[label] : undefined}
                 row={row}
                 col={colPos}
                 width={width}
