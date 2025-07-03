@@ -1,13 +1,7 @@
-import {KeyboardRows} from "../model.ts";
-import {RowBasedLayoutModel} from "./layout-model.ts";
-import {FlexMapping} from "../mapping/mapping-model.ts";
+import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
 
 export interface OrthoLayoutOptionsModel {
     thumbKeys: boolean;
-}
-
-export const defaultOrthoLayoutOptions: OrthoLayoutOptionsModel = {
-    thumbKeys: false,
 }
 
 export const orthoLayoutModel: RowBasedLayoutModel = {
@@ -92,8 +86,7 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
         ["Ctrl", "Cmd", 0, 1, "Alt", "⍽", "⏎", "AltGr", 2, 3, "Fn", "Ctrl"],
     ],
 
-    rowStart: (row: number) =>
-        (row == KeyboardRows.Bottom) ? 1 : 0,
+    rowStart: (row: KeyboardRows) => (row == KeyboardRows.Bottom) ? 1 : 0,
     keyWidth: (_row: KeyboardRows, _col: number): number => 1,
 
     mainFingerAssignment: [

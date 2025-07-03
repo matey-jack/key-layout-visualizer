@@ -1,5 +1,9 @@
-import {AppState} from "../model.ts";
-import {diffSummary, diffToQwerty, MappingChange} from "../layout/layout-model.ts";
+import {FlexMapping, isLayoutViz, MappingChange, RowBasedLayoutModel, VisualizationType} from "../base-model.ts";
+import {AppState} from "../app-model.ts";
+import {compatibilityScore, diffSummary, diffToQwerty} from "../layout/layout-functions.ts";
+import {TruncatedText} from "../components/TruncatedText.tsx";
+import {getEffortClass} from "../layout/KeyboardSvg.tsx";
+import {ComponentChildren} from "preact";
 
 interface DetailsAreaProps {
     appState: AppState;
@@ -8,20 +12,76 @@ interface DetailsAreaProps {
 export function DetailsArea({appState}: DetailsAreaProps) {
     const layout = appState.layoutModel.value;
     const mapping = appState.mapping.value;
+    const vizType = appState.vizType.value;
+    return <div>
+        {isLayoutViz(vizType)
+            ? <div className="layout-description">
+                <TruncatedText text={layout.description}/>
+            </div>
+            : <MappingSummary mapping={mapping} layout={layout}/>
+        }
+        <hr/>
+        <div class="visualization-details">
+            {getVizDetails(vizType, layout, mapping)}
+        </div>
+    </div>;
+}
+
+export function getVizDetails(vizType: VisualizationType, layout: RowBasedLayoutModel, mapping: FlexMapping) {
+    switch (vizType) {
+        case VisualizationType.MappingDiff:
+            return <DiffDetails diff={diffToQwerty(layout, mapping)}/>
+        case VisualizationType.LayoutEffort:
+    }
+}
+
+interface MappingSummaryProps {
+    mapping: FlexMapping;
+    layout: RowBasedLayoutModel;
+}
+
+export function MappingSummary({mapping, layout}: MappingSummaryProps) {
     const mappingType: string = layout.getSpecificMapping(mapping)
         ? "specifically customized"
         : "derived from the generic 30-key mapping";
+    const src = mapping.sourceUrl;
+    return <div className="mapping-summary">
+        <p>The <b>{mapping.name}</b> key mapping for the <b>{layout.name}</b> layout is {mappingType}.</p>
+        {mapping.description && <TruncatedText text={mapping.description}/>}
+        {src && <p>Source: <a href={src}>{src}</a></p>}
+    </div>
+}
+
+interface KeyEffortDetailsProps {
+    layout: RowBasedLayoutModel;
+}
+
+export function KeyEffortDetails({layout: _}: KeyEffortDetailsProps) {
     return <div>
-        <div class="mapping-summary">
-            <p>The <b>{mapping.name}</b> key mapping for the <b>{layout.name}</b> layout is {mappingType}.</p>
-            <p>{mapping.description}</p>
-            <p>Source: <a href={mapping.sourceUrl}>{mapping.sourceUrl}</a></p>
+        <p>
+            There is always some individual bias in determining how hard or easy each key on the board is to reach from
+            the home position, but the differences are mostly in details, so that a resulting evaluation of letter
+            frequency times key effort should not differ strongly enough to justify a change to the layout. This is
+            especially true for casual layouts which strongly limit the variation in letter placement.
+        </p>
+        <div>
+            <KeyEffortLegendItem score={0.2}>Home position, including the thumb keys, if present.</KeyEffortLegendItem>
+            <KeyEffortLegendItem score={1}>Upward move for long fingers is particularly easy.</KeyEffortLegendItem>
+            <KeyEffortLegendItem score={1.5}>One key .</KeyEffortLegendItem>
         </div>
-        <hr/>
-        <div class="visualization-details">
-            <DiffDetails diff={diffToQwerty(appState.layoutModel.value, appState.mapping.value)}/>
-        </div>
-    </div>;
+    </div>
+}
+
+interface KeyEffortLegendItem {
+    score: number;
+    children?: ComponentChildren;
+}
+
+export function KeyEffortLegendItem({score, children}: KeyEffortLegendItem) {
+    return <p>
+        <div class={"key-effort-legend-item " + getEffortClass(score)}>{score}</div>
+        {children}
+    </p>
 }
 
 interface DiffDetailsProps {
@@ -31,7 +91,8 @@ interface DiffDetailsProps {
 export function DiffDetails({diff}: DiffDetailsProps) {
     const diffSummy = diffSummary(diff);
     return <div>
-        <p>Here's how 26 letters and six prose punctuation characters are changed in this layout compared to well-known Qwerty:</p>
+        <p>Here's how 26 letters and six prose punctuation characters are changed in this layout
+            compared to well-known Qwerty:</p>
         <DiffEntry
             count={diffSummy[MappingChange.SamePosition]}
             description="Keys unchanged."
@@ -39,19 +100,22 @@ export function DiffDetails({diff}: DiffDetailsProps) {
         />
         <DiffEntry
             count={diffSummy[MappingChange.SameFinger]}
-            description="Keys change on same finger."
+            description="Keys change on same finger. (0.5 LP)"
             counterClass="same-finger"
         />
         <DiffEntry
             count={diffSummy[MappingChange.SameHand]}
-            description="Keys change finger on same hand."
+            description="Keys change finger on same hand. (1.0 LP)"
             counterClass="same-hand"
         />
         <DiffEntry
             count={diffSummy[MappingChange.SwapHands]}
-            description="Keys swap hands."
+            description="Keys swap hands. (2.0 LP)"
             counterClass="swap-hands"
         />
+        <p>We calculate the total learnability (or switchability) score of the mapping by deducting
+            the specified amount of learning points (LP) for each type of change as listed above.</p>
+        <p><b>Total Score: {compatibilityScore(diffSummy)}</b> – Lower is better.</p>
     </div>;
 }
 

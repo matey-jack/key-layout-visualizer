@@ -1,6 +1,5 @@
-import {KeyboardRows} from "../model.ts";
-import {Finger, LayoutMapping, RowBasedLayoutModel} from "./layout-model.ts";
-import {FlexMapping} from "../mapping/mapping-model.ts";
+import {Finger, LayoutMapping, RowBasedLayoutModel, FlexMapping, KeyboardRows} from "../base-model.ts";
+import {SKE_AWAY, SKE_HOME} from "../base-model.ts";
 
 const widthOfAnsiBoard = 15;
 
@@ -9,10 +8,6 @@ const widthOfFirstKey = [1, 1.5, 1.75, 2.25,]
 
 export interface AnsiLayoutOptionsModel {
     wide: boolean;
-}
-
-export const defaultAnsiLayoutOptions: AnsiLayoutOptionsModel = {
-    wide: false,
 }
 
 export const ansiLayoutModel: RowBasedLayoutModel = {
@@ -55,12 +50,25 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         [0, 1, 4, 5, 5, 7, 8, 9],
     ],
 
+    /*
+        0.2 for Home Keys (incl. thumb, if present) – 8 or 9 keys, since I don't have any layout proposal with two thumbs hitting letters.
+        1   for long finger upper letter row keys – 4 keys
+        1.5 for index finger straight and diagonal up (F T U) and pinky lateral (only ') – 4 keys
+        1.5 for right lower letter row (J to /) because they have well-aligned stagger – 5 keys
+        2   for pinky straight or half-diagonal up – 3 keys
+        2   for left lower letter row (Z to V) because of misaligned stagger – 4 keys
+        2   for index lateral movement – 2 keys in total
+        2   for "long diagonal up" (only Y) and long fingers straight to number row (hits 230-, but only - is relevant as VIP) – 1 key
+        2.5 for the 1! key (which I hit with a short-diagonal long finger) – only relevant if actually count ! as VIP – 1 optional key
+        3   for long diagonal down (only B) – 1 key
+        Just to check, that's 8+4+4+5+3+4+2+1+1 key (32 keys) in the three letter rows, which is (11+11+10) per row. ✅
+     */
     singleKeyEffort: [
         [3, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 3, NaN],
         [NaN, 2, 1, 1, 1.5, 1.5, 2, 1.5, 1, 1, 2, 2, 3, 3],
         [NaN, 0.2, 0.2, 0.2, 0.2, 2, 2, 0.2, 0.2, 0.2, 0.2, 1.5, 2],
         [NaN, 2, 2, 2, 2, 3, 1.5, 1.5, 1.5, 1.5, 1.5, NaN],
-        [NaN, NaN, NaN, 0.2, 0.2, NaN, NaN, NaN],
+        [NaN, NaN, NaN, 0.2, NaN, NaN, NaN, NaN],
     ],
 
     rowStart: (_: KeyboardRows) => 0,
@@ -101,13 +109,16 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
 // The key just after those will "jump" into the center of the board.
 export const movedColumns = [5, 7, 5, 4];
 
-export const customAnsiWideLayoutModel = (movedColumns: number[]): RowBasedLayoutModel =>
-    ({
+export const ansiWideLayoutModel = customAnsiWideLayoutModel(movedColumns);
+
+export function customAnsiWideLayoutModel(movedColumns: number[]): RowBasedLayoutModel {
+    let {thirtyKeyMapping, fullMapping, splitColumns, singleKeyEffort} = ansiLayoutModel;
+    return {
         ...ansiLayoutModel,
         name: "ANSI with wide hand position",
         rightHomeIndex: 8,
-        thirtyKeyMapping: moveRightHand(ansiLayoutModel.thirtyKeyMapping, ansiLayoutModel.splitColumns, movedColumns),
-        fullMapping: moveRightHand(ansiLayoutModel.fullMapping!!, ansiLayoutModel.splitColumns, movedColumns),
+        thirtyKeyMapping: moveRightHand(thirtyKeyMapping, splitColumns, movedColumns),
+        fullMapping: moveRightHand(fullMapping!!, splitColumns, movedColumns),
         mainFingerAssignment: [
             [1, 1, 1, 2, 2, 3, 3, 6, 6, 6, 7, 8, 8, 8],
             [1, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9, 8],
@@ -115,11 +126,19 @@ export const customAnsiWideLayoutModel = (movedColumns: number[]): RowBasedLayou
             [0, 0, 1, 2, 3, 3, 3, 6, 6, 7, 8, 9],
             [0, 1, 4, 5, 5, 7, 8, 9],
         ],
-    });
+        singleKeyEffort: widenSingleKeyEffort(moveRightHand(singleKeyEffort, splitColumns, movedColumns)),
+    }
+}
 
-export const ansiWideLayoutModel = customAnsiWideLayoutModel(movedColumns);
+function widenSingleKeyEffort(effort: number[][]) {
+    ansiLayoutModel.splitColumns.forEach((splitCol, row) => {
+        if (row != KeyboardRows.Bottom) effort[row][splitCol] = SKE_AWAY;
+    })
+    effort[KeyboardRows.Bottom][4] = SKE_HOME;
+    return effort;
+}
 
-function moveRightHand(mapping: LayoutMapping, splitColumns: number[], movedColumns: number[]): LayoutMapping {
+function moveRightHand<T>(mapping: T[][], splitColumns: number[], movedColumns: number[]): T[][] {
     return mapping.map((layoutRow, row) => {
         if (!movedColumns[row]) return layoutRow;
         const jumpingColumn = splitColumns[row] + movedColumns[row];
@@ -128,7 +147,7 @@ function moveRightHand(mapping: LayoutMapping, splitColumns: number[], movedColu
             layoutRow[jumpingColumn],
             layoutRow.slice(splitColumns[row], jumpingColumn),
             layoutRow.slice(jumpingColumn + 1),
-        ].flat();
+        ].flat() as T[];
     })
 }
 
@@ -148,7 +167,7 @@ export const splitSpaceBar = (baseModel: RowBasedLayoutModel): RowBasedLayoutMod
         ...baseModel,
         fullMapping: baseModel.fullMapping && duplicateBottomMiddle(baseModel.fullMapping, bottomIdx, middleIdx),
         thirtyKeyMapping: baseModel.thirtyKeyMapping && duplicateBottomMiddle(baseModel.thirtyKeyMapping, bottomIdx, middleIdx),
-        keyWidth: (row: KeyboardRows, col: number): number => {
+        keyWidth: (row: number, col: number): number => {
             if (row != bottomIdx) return baseModel.keyWidth(row, col);
             if (col < middleIdx || col > middleIdx + 1) return baseModel.keyWidth(row, col);
             return baseModel.keyWidth(row, middleIdx) / 2;

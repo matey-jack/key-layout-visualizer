@@ -5,7 +5,7 @@
     equivalents for all the ANSI keys.
  */
 
-import {FlexMapping} from "./mapping-model.ts";
+import {FlexMapping} from "../base-model.ts";
 
 export const qwertyMapping: FlexMapping = {
     name: "Qwerty",
@@ -197,9 +197,9 @@ export const cozyPlusMapping = {
 
 export const thumbyMin = {
     name: "Thumby Min",
-    description: "Draft of casual mapping with a thumb key. Improves high-frequency letter positions." +
+    description: "Draft of casual mapping with a thumb key. Improves high-frequency letter positions. " +
         "When using the \"ANSI wide\" home position, you suddenly realize how easy it becomes " +
-        "for your thumb to hit the key to the right of the space bar." +
+        "for your thumb to hit the key to the right of the space bar. " +
         "Thus is born the idea of adding a nineth home key, which changes everything. " +
         "Notably it leads to a ring swap EDRFTB at the end of which one more character can be inserted onto the main area of the keyboard. " +
         "Note that R shows as a changed finger, but probably most people already type R with their middle finger " +
@@ -208,7 +208,7 @@ export const thumbyMin = {
         "Only Norman also places H on the home row, but Thumby practically has to do that " +
         "because it can place all the nine most frequent letters there. " +
         "Thus, Thumby could be called \"Norman-Nine\". " +
-        "Wit its few differences to Norman, it could be a great upgrade for anyone currently using Norman. ",
+        "With its few differences to Norman, it could be a great upgrade for anyone currently using Norman. ",
 
     // I would move - to the core board instead of =, but since this mapping is meant to show the lowest-practical Qwerty-diff
     // for any Thumby-variant, we leave - unmoved.
@@ -221,7 +221,7 @@ export const thumbyMin = {
         "zxcv" + "=" + "jm,./",
         "e⌥",
     ],
-    ansiMovedColumns: [4, 6, 5, 4],
+    ansiMovedColumns: [4, 5, 5, 4],
 }
 
 export const thumbyMax = {

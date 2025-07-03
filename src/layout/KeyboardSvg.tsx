@@ -1,8 +1,7 @@
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping-functions.ts";
-import {fillMapping, isHomeKey, lettersAndVIP, MappingChange, RowBasedLayoutModel} from "./layout-model.ts";
+import {fillMapping, isHomeKey, lettersAndVIP} from "./layout-functions.ts";
 import {sum} from '../library/math.ts';
-import {FlexMapping} from "../mapping/mapping-model.ts";
-import {VisualizationType} from "../model.ts";
+import {FlexMapping, MappingChange, RowBasedLayoutModel, VisualizationType} from "../base-model.ts";
 
 interface KeyboardSvgProps {
     children?: preact.ComponentChildren;
@@ -65,9 +64,9 @@ export const Key = ({col, diff, backgroundClass, label, row, width}: KeyProps) =
         </text>
 
     const bgClass = backgroundClass ? backgroundClass
-            : isCommandKey(label) ? "command-key"
-                : !label ? "unlabeled"
-                    : "";
+        : isCommandKey(label) ? "command-key"
+            : !label ? "unlabeled"
+                : "";
 
     // TODO: provide ribbon-class as prop, so that it can be used for other visualizations, such as finger assignment.
     const keyRibbon = (diff === undefined || diff === MappingChange.SamePosition) ? <></>
@@ -100,7 +99,7 @@ export interface KeyboardProps {
     split: boolean;
 }
 
-function getEffortClass(effort: number) {
+export function getEffortClass(effort: number) {
     if (isNaN(effort)) return "";
     if (effort < 1) return "home-key";
     return "effort-" + (effort * 10);
@@ -108,7 +107,7 @@ function getEffortClass(effort: number) {
 
 export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, vizType, split}: KeyboardProps) {
     const fullMapping = fillMapping(layoutModel, flexMapping);
-    const rowWidth = fullMapping.map( (row, r) =>
+    const rowWidth = fullMapping.map((row, r) =>
         2 * (horizontalPadding + layoutModel.rowStart(r)) + sum(row.map((_, c) => layoutModel.keyWidth(r, c)))
     );
     let keys: preact.JSX.Element[] = [];
@@ -117,7 +116,7 @@ export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, vizType
         if (!split) colPos += (totalWidth - rowWidth[row]) / 2;
         keys.push(...fullMapping[row].map((label, col) => {
             // idea: use splitColums special value "+" for lengthening the middle key across the split and "/" for splitting the key at the exact midpoint.
-            if (split && (col==layoutModel.splitColumns[row])) colPos += totalWidth - rowWidth[row];
+            if (split && (col == layoutModel.splitColumns[row])) colPos += totalWidth - rowWidth[row];
             const width = layoutModel.keyWidth(row, col);
             const bgClass = vizType == VisualizationType.LayoutEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
                 : isHomeKey(layoutModel, row, col) ? "home-key"

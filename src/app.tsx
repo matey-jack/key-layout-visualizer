@@ -1,12 +1,43 @@
 // @ts-ignore
 import './app.css'
-import './model'
-import {AppState, createAppState, VisualizationType} from "./model.ts";
+import './app-model.ts'
+import {LayoutSplit, LayoutType, VisualizationType} from "./base-model.ts";
+import {AppState} from "./app-model.ts";
 import {LayoutArea} from "./layout/LayoutArea.tsx";
 import {MappingList} from "./mapping/MappingArea.tsx";
 import {DetailsArea} from "./details/DetailsArea.tsx";
-import {Signal} from "@preact/signals";
+import {computed, effect, signal, Signal} from "@preact/signals";
 import {ComponentChildren} from "preact";
+import {diffToQwerty, getLayoutModel} from "./layout/layout-functions.ts";
+import {qwertyMapping} from "./mapping/mappings.ts";
+
+// Some of the state could be local the Layout or Mapping areas, but unless this global thing gets too big,
+// let's just have one.
+export function createAppState(): AppState {
+    const layoutType = signal(LayoutType.ANSI);
+    const layoutSplit = signal(LayoutSplit.Bar);
+    const layoutOptions = {
+        ansiLayoutOptions: signal({wide: false}),
+        harmonicLayoutOptions: signal({navKeys: false}),
+        orthoLayoutOptions: signal({thumbKeys: true}),
+    };
+    const layoutModel = computed(() =>
+        getLayoutModel(layoutType.value, layoutOptions, mapping.value, layoutSplit)
+    )
+
+    const mapping = signal(qwertyMapping);
+    effect(() => {
+        // When switching layouts and the current mapping doesn't work on this layout, reset to default.
+        if (!layoutModel.value.getSpecificMapping(mapping.value) && !mapping.value.mapping30) {
+            mapping.value = qwertyMapping;
+        }
+    })
+    const mappingDiff = computed(() =>
+        diffToQwerty(layoutModel.value, mapping.value)
+    )
+    const vizType = signal(VisualizationType.MappingDiff)
+    return {layoutType, layoutOptions, layoutSplit, layoutModel, mapping, mappingDiff, vizType};
+}
 
 const appState = createAppState();
 

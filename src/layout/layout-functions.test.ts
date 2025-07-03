@@ -1,21 +1,17 @@
 import {describe, expect, it} from 'vitest';
 
-import {harmonicLayoutModel} from "./harmonicLayoutModel.ts";
+import {Finger, MappingChange, KeyboardRows, Hand, hand} from "../base-model.ts";
 import {
     characterToFinger,
     diffSummary,
     diffToQwerty,
     fillMapping,
-    Finger,
-    Hand,
-    hand,
-    MappingChange
-} from "./layout-model.ts";
+} from "./layout-functions.ts";
 import {cozyMapping, normanMapping, qwertyMapping} from "../mapping/mappings.ts"
 import {harmonicComparisonBaseline} from "../mapping/harmonic-mappings.ts";
 import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
+import {harmonicLayoutModel} from "./harmonicLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
-import {KeyboardRows} from "../model.ts";
 
 describe('fillMapping', () => {
     it('Harmonic layout 30-key qwerty', () => {

@@ -1,6 +1,4 @@
-import {FlexMapping} from "../mapping/mapping-model.ts";
-import {KeyboardRows} from "../model.ts";
-import {LayoutMapping, RowBasedLayoutModel} from "./layout-model.ts";
+import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 
 /*
     It's my arbitrary decision to not include numbers, wide keys, and modifiers in the flexible mapping.
@@ -46,10 +44,6 @@ export interface HarmonicLayoutOptionsModel {
     navKeys: boolean;
 }
 
-export const defaultHarmonicLayoutOptions: HarmonicLayoutOptionsModel = {
-    navKeys: false,
-}
-
 export const harmonicLayoutModel: RowBasedLayoutModel = {
     name: "Harmonic Rows",
     description: "The Harmonic keyboard layout has a fully symmetric keyboard with only two key sizes to allow for flexible changes to the key mapping. " +
@@ -65,7 +59,7 @@ export const harmonicLayoutModel: RowBasedLayoutModel = {
     // move the whole keyboard one key to the right to align with the ANSI center.
     rowStart: (row: number) => (row == KeyboardRows.Bottom) ? 0.5 : 0,
 
-    keyWidth: (row: KeyboardRows, col: number) => {
+    keyWidth: (row: number, col: number) => {
         // outer edge keys
         if ((row == KeyboardRows.Upper || row == KeyboardRows.Lower || row == KeyboardRows.Bottom) &&
             (col == 0 || col == fullMapping[row].length - 1)) return 1.5;

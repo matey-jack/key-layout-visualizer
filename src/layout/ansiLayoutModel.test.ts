@@ -1,7 +1,7 @@
 import {describe, it, expect} from 'vitest';
 
-import {KeyboardRows} from "../model.ts";
 import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
+import {KeyboardRows} from "../base-model.ts";
 
 describe('ansiLayoutModel.keyWidth', () => {
     const lastCol = (row: KeyboardRows) =>
