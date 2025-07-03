@@ -2,9 +2,10 @@ import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping-functions.ts
 import {fillMapping, isHomeKey, lettersAndVIP} from "./layout-functions.ts";
 import {sum} from '../library/math.ts';
 import {FlexMapping, MappingChange, RowBasedLayoutModel, VisualizationType} from "../base-model.ts";
+import {ComponentChildren, JSX} from "preact";
 
 interface KeyboardSvgProps {
-    children?: preact.ComponentChildren;
+    children?: ComponentChildren;
 }
 
 // Our largest keyboards are 15u wide (split Iris CE), while all keyboards are 5u high.
@@ -47,7 +48,7 @@ const keyOverlayPaddingV = 1;
 // can't use enum values in const expressions, so we use Array instead of object.
 const ribbonClassByDiff = [null, "same-finger", "same-hand", "swap-hands"];
 
-export const Key = ({col, diff, backgroundClass, label, row, width}: KeyProps) => {
+export function Key({col, diff, backgroundClass, label, row, width}: KeyProps) {
     const x = col * keyUnit + keyPadding;
     const y = row * keyUnit + keyPadding;
     const labelClass =
@@ -64,8 +65,8 @@ export const Key = ({col, diff, backgroundClass, label, row, width}: KeyProps) =
         </text>
 
     const bgClass = backgroundClass ? backgroundClass
-        : isCommandKey(label) ? "command-key"
-            : !label ? "unlabeled"
+        : !label ? "unlabeled"
+            : isCommandKey(label) ? "command-key"
                 : "";
 
     // TODO: provide ribbon-class as prop, so that it can be used for other visualizations, such as finger assignment.
@@ -110,12 +111,12 @@ export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, vizType
     const rowWidth = fullMapping.map((row, r) =>
         2 * (horizontalPadding + layoutModel.rowStart(r)) + sum(row.map((_, c) => layoutModel.keyWidth(r, c)))
     );
-    let keys: preact.JSX.Element[] = [];
+    let keys: JSX.Element[] = [];
     for (let row = 0; row < 5; row++) {
         let colPos = horizontalPadding + layoutModel.rowStart(row);
         if (!split) colPos += (totalWidth - rowWidth[row]) / 2;
-        keys.push(...fullMapping[row].map((label, col) => {
-            // idea: use splitColums special value "+" for lengthening the middle key across the split and "/" for splitting the key at the exact midpoint.
+        fullMapping[row].forEach((label, col) => {
+            // to show the board as split, add some extra space after the split column.
             if (split && (col == layoutModel.splitColumns[row])) colPos += totalWidth - rowWidth[row];
             const width = layoutModel.keyWidth(row, col);
             const bgClass = vizType == VisualizationType.LayoutEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
@@ -131,8 +132,8 @@ export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, vizType
                 key={row + ',' + col}
             />
             colPos += width;
-            return key;
-        }));
+            keys.push(key);
+        });
     }
-    return <>{keys.flat()}</>
+    return <>{keys}</>
 }

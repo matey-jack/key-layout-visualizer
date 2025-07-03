@@ -77,10 +77,18 @@ export const harmonicLayoutModel: RowBasedLayoutModel = {
 
     mainFingerAssignment: [
         [1, 1, 2, 2, 3, 3, 6, 6, 6, 7, 7, 8, 8],
-        [0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9],
+        [0, 1, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9],
         [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
-        [0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9],
+        [0, 1, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9],
         [0, 1, 2, 4, 4, 5, 5, 7, 8, 9],
+    ],
+
+    singleKeyEffort: [
+        [3, 3, 2, 2, 2, 3, 3, 3, 2, 2, 2, 3, 3],
+        [NaN, 1.5, 1, 1, 1.5, 3, 3, 1.5, 1, 1, 1.5, NaN],
+        [1.5, 0.2, 0.2, 0.2, 0.2, 2, 3, 2, 0.2, 0.2, 0.2, 0.2, 1.5],
+        [NaN, 1.5, 1.5, 1.5, 1.5, 3, 3, 1.5, 1.5, 1.5, 1.5, NaN],
+        [NaN, NaN, NaN, 1.5, 0.2, 0.2, 1.5, NaN, NaN, NaN],
     ],
 
     getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingHarmonic,

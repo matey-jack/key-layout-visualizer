@@ -173,12 +173,36 @@ body {
     font-weight: bold;
 }
 
+.footnote {
+    font-size: 0.8rem;
+}
+
 .key-effort-legend-item {
     display: inline-block;
     text-align: center;
     width: 3rem;
     padding: 0.2rem;
     margin: 0.1rem;
+}
+
+.key-effort-legend-item.home-key {
+    background-color: #c3f3ac;
+}
+
+.key-effort-legend-item.effort-10 {
+    background-color: #f3eaac;
+}
+
+.key-effort-legend-item.effort-15 {
+    background-color: #f1bd7d;
+}
+
+.key-effort-legend-item.effort-20 {
+    background-color: #dd8e6d;
+}
+
+.key-effort-legend-item.effort-30 {
+    background-color: #c35221;
 }
 
 .diff-counter {

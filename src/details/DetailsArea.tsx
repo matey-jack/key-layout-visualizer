@@ -1,4 +1,16 @@
-import {FlexMapping, isLayoutViz, MappingChange, RowBasedLayoutModel, VisualizationType} from "../base-model.ts";
+import {
+    FlexMapping,
+    isLayoutViz,
+    MappingChange,
+    RowBasedLayoutModel,
+    SKE_AWAY,
+    SKE_HOME,
+    SKE_INCONV_NEIGHBOR,
+    SKE_LF_UP,
+    SKE_NEIGHBOR,
+    SKE_PINKY_UP,
+    VisualizationType
+} from "../base-model.ts";
 import {AppState} from "../app-model.ts";
 import {compatibilityScore, diffSummary, diffToQwerty} from "../layout/layout-functions.ts";
 import {TruncatedText} from "../components/TruncatedText.tsx";
@@ -32,6 +44,7 @@ export function getVizDetails(vizType: VisualizationType, layout: RowBasedLayout
         case VisualizationType.MappingDiff:
             return <DiffDetails diff={diffToQwerty(layout, mapping)}/>
         case VisualizationType.LayoutEffort:
+            return <KeyEffortDetails layout={layout}/>
     }
 }
 
@@ -56,7 +69,7 @@ interface KeyEffortDetailsProps {
     layout: RowBasedLayoutModel;
 }
 
-export function KeyEffortDetails({layout: _}: KeyEffortDetailsProps) {
+export function KeyEffortDetails({layout}: KeyEffortDetailsProps) {
     return <div>
         <p>
             There is always some individual bias in determining how hard or easy each key on the board is to reach from
@@ -65,9 +78,31 @@ export function KeyEffortDetails({layout: _}: KeyEffortDetailsProps) {
             especially true for casual layouts which strongly limit the variation in letter placement.
         </p>
         <div>
-            <KeyEffortLegendItem score={0.2}>Home position, including the thumb keys, if present.</KeyEffortLegendItem>
-            <KeyEffortLegendItem score={1}>Upward move for long fingers is particularly easy.</KeyEffortLegendItem>
-            <KeyEffortLegendItem score={1.5}>One key .</KeyEffortLegendItem>
+            <KeyEffortLegendItem score={SKE_HOME}>
+                Home position, including the thumb keys, if present.
+            </KeyEffortLegendItem>
+            <KeyEffortLegendItem score={SKE_LF_UP}>
+                Upward move for long fingers is particularly easy.
+            </KeyEffortLegendItem>
+            <KeyEffortLegendItem score={SKE_NEIGHBOR}>
+                Most neighbors of home position keys.
+            </KeyEffortLegendItem>
+            <KeyEffortLegendItem score={SKE_PINKY_UP}>
+                Upward move for pinkies is a bit harder.
+            </KeyEffortLegendItem>
+            <KeyEffortLegendItem score={SKE_INCONV_NEIGHBOR}>
+                Several neighbors of home keys are inconvenient to reach, especially lateral movement of the index
+                fingers.
+
+                {(layout.name.includes("ANSI")) && <p class="footnote"> On the ANSI layout for typists with classical training,
+                    this also affects the left lower row where the finger assignment goes against the natural direction
+                    of the hand/arm.
+                    (You can train yourself to use the better-suited finger for hitting the key,
+                    but the you'll have to retrain whenever you use an ortho board.)</p>}
+            </KeyEffortLegendItem>
+            <KeyEffortLegendItem score={SKE_AWAY}>
+                Keys that aren't neighbors of home position keys.
+            </KeyEffortLegendItem>
         </div>
     </div>
 }
@@ -78,10 +113,10 @@ interface KeyEffortLegendItem {
 }
 
 export function KeyEffortLegendItem({score, children}: KeyEffortLegendItem) {
-    return <p>
+    return <div>
         <div class={"key-effort-legend-item " + getEffortClass(score)}>{score}</div>
         {children}
-    </p>
+    </div>
 }
 
 interface DiffDetailsProps {
