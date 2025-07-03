@@ -104,4 +104,9 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
         [0, 1, 2, 4, 4, 4, 5, 5, 5, 7, 8, 9],
     ],
+
+    singleKeyEffort: ((orig) => [
+        ...orig.slice(0, 4),
+        [NaN, NaN, 2, 2, NaN, 0.2, 0.2, NaN, NaN, 2, NaN, NaN],
+    ])(orthoLayoutModel.singleKeyEffort),
 }
