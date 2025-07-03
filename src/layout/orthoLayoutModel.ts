@@ -44,7 +44,7 @@ export const orthoLayoutModel: RowBasedLayoutModel = {
     rightHomeIndex: 7,
 
     mainFingerAssignment: [
-        [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
+        [1, 1, 1, 2, 2, 3, 6, 7, 7, 8, 8, 8],
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],

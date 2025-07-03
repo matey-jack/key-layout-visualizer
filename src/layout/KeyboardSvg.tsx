@@ -1,7 +1,7 @@
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping/mapping-functions.ts";
 import {fillMapping, isHomeKey, lettersAndVIP} from "./layout-functions.ts";
 import {sum} from '../library/math.ts';
-import {FlexMapping, MappingChange, RowBasedLayoutModel, VisualizationType} from "../base-model.ts";
+import {Finger, FlexMapping, MappingChange, RowBasedLayoutModel, VisualizationType} from "../base-model.ts";
 import {ComponentChildren, JSX} from "preact";
 
 interface KeyboardSvgProps {
@@ -37,7 +37,10 @@ interface KeyProps {
     width: number; // measured in units of height, with 1 being the default
 
     backgroundClass: string;
-    diff?: MappingChange;
+    // There will be no ribbon element, when there is no ribbon class.
+    // Otherwise, the <rect> will be the same, only the class will be the provided one.
+    ribbonClass?: string;
+    //diff?: MappingChange;
 }
 
 const keyUnit = 100;
@@ -45,10 +48,7 @@ const keyPadding = 5;
 const keyOverlayPaddingH = 17;
 const keyOverlayPaddingV = 1;
 
-// can't use enum values in const expressions, so we use Array instead of object.
-const ribbonClassByDiff = [null, "same-finger", "same-hand", "swap-hands"];
-
-export function Key({col, diff, backgroundClass, label, row, width}: KeyProps) {
+export function Key({col, ribbonClass, backgroundClass, label, row, width}: KeyProps) {
     const x = col * keyUnit + keyPadding;
     const y = row * keyUnit + keyPadding;
     const labelClass =
@@ -69,13 +69,12 @@ export function Key({col, diff, backgroundClass, label, row, width}: KeyProps) {
             : isCommandKey(label) ? "command-key"
                 : "";
 
-    // TODO: provide ribbon-class as prop, so that it can be used for other visualizations, such as finger assignment.
-    const keyRibbon = (diff === undefined || diff === MappingChange.SamePosition) ? <></>
-        : <rect class={"key-overlay " + ribbonClassByDiff[diff]!!}
-                x={x + keyOverlayPaddingV}
-                y={y + keyOverlayPaddingH}
-                width={keyUnit * width - 2 * (keyPadding + keyOverlayPaddingV)}
-                height={keyUnit - 2 * (keyPadding + keyOverlayPaddingH)}
+    const keyRibbon = ribbonClass &&
+        <rect class={"key-overlay " + ribbonClass}
+              x={x + keyOverlayPaddingV}
+              y={y + keyOverlayPaddingH}
+              width={keyUnit * width - 2 * (keyPadding + keyOverlayPaddingV)}
+              height={keyUnit - 2 * (keyPadding + keyOverlayPaddingH)}
         />
     return <g>
         <rect
@@ -106,6 +105,26 @@ export function getEffortClass(effort: number) {
     return "effort-" + (effort * 10);
 }
 
+const ribbonClassByDiff: Record<MappingChange, string | undefined> = {
+    [MappingChange.SamePosition]: undefined,
+    [MappingChange.SameFinger]: "same-finger",
+    [MappingChange.SameHand]: "same-hand",
+    [MappingChange.SwapHands]: "swap-hands",
+};
+
+const ribbonClassByFinger: Record<Finger, string> = {
+    [Finger.LThumb]: "lthumb",
+    [Finger.RThumb]: "rthumb",
+    [Finger.LIndex]: "lindex",
+    [Finger.RIndex]: "rindex",
+    [Finger.LMiddle]: "middy",
+    [Finger.RMiddle]: "middy",
+    [Finger.LRing]: "ringy",
+    [Finger.RRing]: "ringy",
+    [Finger.LPinky]: "pinky",
+    [Finger.RPinky]: "pinky",
+};
+
 export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, vizType, split}: KeyboardProps) {
     const fullMapping = fillMapping(layoutModel, flexMapping);
     const rowWidth = fullMapping.map((row, r) =>
@@ -122,10 +141,15 @@ export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, vizType
             const bgClass = vizType == VisualizationType.LayoutEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
                 : isHomeKey(layoutModel, row, col) ? "home-key"
                     : "";
+            const ribbonClass = vizType == VisualizationType.MappingDiff && lettersAndVIP.test(label)
+                ? ribbonClassByDiff[mappingDiff[label]]
+                : vizType == VisualizationType.LayoutFingering && !isNaN(layoutModel.mainFingerAssignment[row][col])
+                    ? ribbonClassByFinger[layoutModel.mainFingerAssignment[row][col]]
+                    : undefined;
             const key = <Key
                 label={label}
                 backgroundClass={bgClass}
-                diff={(vizType == VisualizationType.MappingDiff && lettersAndVIP.test(label)) ? mappingDiff[label] : undefined}
+                ribbonClass={ribbonClass}
                 row={row}
                 col={colPos}
                 width={width}

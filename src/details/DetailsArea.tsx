@@ -45,6 +45,8 @@ export function getVizDetails(vizType: VisualizationType, layout: RowBasedLayout
             return <DiffDetails diff={diffToQwerty(layout, mapping)}/>
         case VisualizationType.LayoutEffort:
             return <KeyEffortDetails layout={layout}/>
+        case VisualizationType.LayoutFingering:
+            return <FingeringDetails layout={layout}/>
     }
 }
 
@@ -65,6 +67,11 @@ export function MappingSummary({mapping, layout}: MappingSummaryProps) {
     </div>
 }
 
+export function FingeringDetails({layout: _}: { layout: RowBasedLayoutModel }) {
+    return <p>
+
+    </p>
+}
 interface KeyEffortDetailsProps {
     layout: RowBasedLayoutModel;
 }
