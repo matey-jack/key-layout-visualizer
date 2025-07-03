@@ -41,12 +41,18 @@ export function DetailsArea({appState}: DetailsAreaProps) {
 
 export function getVizDetails(vizType: VisualizationType, layout: RowBasedLayoutModel, mapping: FlexMapping) {
     switch (vizType) {
-        case VisualizationType.MappingDiff:
-            return <DiffDetails diff={diffToQwerty(layout, mapping)}/>
-        case VisualizationType.LayoutEffort:
-            return <KeyEffortDetails layout={layout}/>
         case VisualizationType.LayoutFingering:
-            return <FingeringDetails layout={layout}/>
+            return <FingeringDetails layout={layout}/>;
+        case VisualizationType.LayoutAngle:
+            return <p>TODO</p>;
+        case VisualizationType.LayoutEffort:
+            return <KeyEffortDetails layout={layout}/>;
+        case VisualizationType.MappingDiff:
+            return <DiffDetails diff={diffToQwerty(layout, mapping)}/>;
+        case VisualizationType.MappingFrequeny:
+            return <p>TODO</p>;
+        case VisualizationType.MappingBigrams:
+            return <p>TODO</p>;
     }
 }
 
@@ -69,9 +75,14 @@ export function MappingSummary({mapping, layout}: MappingSummaryProps) {
 
 export function FingeringDetails({layout: _}: { layout: RowBasedLayoutModel }) {
     return <p>
-
+        Some people will probably hit some of those keys with different fingers. Given the many bigram conflicts and
+        general awkwardness of the ANSI layout and Qwerty mapping, it might not even be the same finger for every tap
+        on the same key.<br/>
+        But however it might be, we need some base model for finger assignment to reason about the typing of bigrams,
+        so we'll take this as a start.
     </p>
 }
+
 interface KeyEffortDetailsProps {
     layout: RowBasedLayoutModel;
 }
@@ -101,11 +112,13 @@ export function KeyEffortDetails({layout}: KeyEffortDetailsProps) {
                 Several neighbors of home keys are inconvenient to reach, especially lateral movement of the index
                 fingers.
 
-                {(layout.name.includes("ANSI")) && <p class="footnote"> On the ANSI layout for typists with classical training,
-                    this also affects the left lower row where the finger assignment goes against the natural direction
-                    of the hand/arm.
-                    (You can train yourself to use the better-suited finger for hitting the key,
-                    but the you'll have to retrain whenever you use an ortho board.)</p>}
+                {(layout.name.includes("ANSI")) &&
+                    <p class="footnote"> On the ANSI layout for typists with classical training,
+                        this also affects the left lower row where the finger assignment goes against the natural
+                        direction
+                        of the hand/arm.
+                        (You can train yourself to use the better-suited finger for hitting the key,
+                        but the you'll have to retrain whenever you use an ortho board.)</p>}
             </KeyEffortLegendItem>
             <KeyEffortLegendItem score={SKE_AWAY}>
                 Keys that aren't neighbors of home position keys.

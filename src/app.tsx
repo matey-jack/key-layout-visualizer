@@ -35,7 +35,7 @@ export function createAppState(): AppState {
     const mappingDiff = computed(() =>
         diffToQwerty(layoutModel.value, mapping.value)
     )
-    const vizType = signal(VisualizationType.MappingDiff)
+    const vizType = signal(VisualizationType.LayoutFingering)
     return {layoutType, layoutOptions, layoutSplit, layoutModel, mapping, mappingDiff, vizType};
 }
 
