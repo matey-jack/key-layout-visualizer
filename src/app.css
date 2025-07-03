@@ -60,6 +60,18 @@ body {
     fill: #c3f3ac;
 }
 
+.key-outline.command-key-border {
+    filter: brightness(70%);
+    /*stroke: #255a7c;*/
+    /*stroke-width: 7px;*/
+}
+
+.key-outline.home-key-border {
+    filter: brightness(130%);
+    /*stroke: #298800;*/
+    stroke-width: 3px;
+}
+
 .key-outline.effort-10 {
     fill: #f3eaac;
 }

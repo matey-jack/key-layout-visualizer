@@ -139,9 +139,9 @@ describe('characterToFinger for ANSI Qwerty', () => {
     });
 
     it('maps lower letter row characters to correct fingers', () => {
-        expect(actual['z']).toBe(Finger.LRing);
-        expect(actual['x']).toBe(Finger.LMiddle);
-        expect(actual['c']).toBe(Finger.LIndex);
+        expect(actual['z']).toBe(Finger.LPinky);
+        expect(actual['x']).toBe(Finger.LRing);
+        expect(actual['c']).toBe(Finger.LMiddle);
         expect(actual['v']).toBe(Finger.LIndex);
         expect(actual['b']).toBe(Finger.LIndex);
         expect(actual['m']).toBe(Finger.RIndex);

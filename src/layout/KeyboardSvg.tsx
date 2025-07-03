@@ -112,7 +112,7 @@ const ribbonClassByDiff: Record<MappingChange, string | undefined> = {
     [MappingChange.SwapHands]: "swap-hands",
 };
 
-const ribbonClassByFinger: Record<Finger, string> = {
+const bgClassByFinger: Record<Finger, string> = {
     [Finger.LThumb]: "lthumb",
     [Finger.RThumb]: "rthumb",
     [Finger.LIndex]: "lindex",
@@ -124,6 +124,14 @@ const ribbonClassByFinger: Record<Finger, string> = {
     [Finger.LPinky]: "pinky",
     [Finger.RPinky]: "pinky",
 };
+
+function getFingeringClasses(layoutModel: RowBasedLayoutModel, row: number, col: number, label: string) {
+    const bgClass = bgClassByFinger[layoutModel.mainFingerAssignment[row][col]];
+    const borderClass = isHomeKey(layoutModel, row, col) ? "home-key-border"
+        : isCommandKey(label) ? "command-key-border"
+            : "";
+    return bgClass + " " + borderClass;
+}
 
 export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, vizType, split}: KeyboardProps) {
     const fullMapping = fillMapping(layoutModel, flexMapping);
@@ -139,13 +147,13 @@ export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, vizType
             if (split && (col == layoutModel.splitColumns[row])) colPos += totalWidth - rowWidth[row];
             const width = layoutModel.keyWidth(row, col);
             const bgClass = vizType == VisualizationType.LayoutEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
-                : isHomeKey(layoutModel, row, col) ? "home-key"
-                    : "";
+                : vizType == VisualizationType.LayoutFingering && !isNaN(layoutModel.mainFingerAssignment[row][col])
+                    ? getFingeringClasses(layoutModel, row, col, label)
+                    : isHomeKey(layoutModel, row, col) ? "home-key"
+                        : "";
             const ribbonClass = vizType == VisualizationType.MappingDiff && lettersAndVIP.test(label)
                 ? ribbonClassByDiff[mappingDiff[label]]
-                : vizType == VisualizationType.LayoutFingering && !isNaN(layoutModel.mainFingerAssignment[row][col])
-                    ? ribbonClassByFinger[layoutModel.mainFingerAssignment[row][col]]
-                    : undefined;
+                : undefined;
             const key = <Key
                 label={label}
                 backgroundClass={bgClass}

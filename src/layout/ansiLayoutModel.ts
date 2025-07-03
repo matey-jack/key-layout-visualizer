@@ -47,7 +47,7 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         [1, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9, 8, 8],
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9, 9],
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
-        [0, 1, 4, 5, 5, 7, 8, 9],
+        [0, 0, 1, 5, 7, 8, 9, 9],
     ],
 
     /*
@@ -124,8 +124,7 @@ export function customAnsiWideLayoutModel(movedColumns: number[]): RowBasedLayou
             [1, 0, 1, 2, 3, 3, 3, 6, 6, 7, 8, 9, 9, 8],
             [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
             [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9],
-            [0, 1, 4, 5, 5, 7, 8, 9],
-
+            [0, 0, 1, 5, 5, 8, 9, 9],
         ],
         singleKeyEffort: widenSingleKeyEffort(moveRightHand(singleKeyEffort, splitColumns, movedColumns)),
     }
@@ -159,31 +158,34 @@ function moveRightHand<T>(mapping: T[][], splitColumns: number[], movedColumns: 
      - two different thumbs
 */
 export const splitSpaceBar = (baseModel: RowBasedLayoutModel): RowBasedLayoutModel => {
-    const bottomIdx = 4;
     // If we ever introduce variants with different number of modifier keys, we can calculate the middle key
     // by cumulatively adding up all the keyWidths and finding the last key that starts before half of the total width.
     const middleIdx = 3;
-    const btmFingers = baseModel.mainFingerAssignment[bottomIdx];
+    // finger assignment needs more than a duplicated bottom middle
+    const mainFingerAssignment = duplicateBottomMiddle(baseModel.mainFingerAssignment, KeyboardRows.Bottom, middleIdx);
+    mainFingerAssignment[KeyboardRows.Bottom][middleIdx] = Finger.LThumb;
+    if (baseModel.name.includes("wide")) {
+        // On non-split keyboards this key is closer to the left home on the wide layout, but on split, it's part of the right half,
+        // because keyboard makers don't know about the wide layout.
+        mainFingerAssignment[KeyboardRows.Upper][6] = Finger.RIndex;
+    }
     return {
         ...baseModel,
-        fullMapping: baseModel.fullMapping && duplicateBottomMiddle(baseModel.fullMapping, bottomIdx, middleIdx),
-        thirtyKeyMapping: baseModel.thirtyKeyMapping && duplicateBottomMiddle(baseModel.thirtyKeyMapping, bottomIdx, middleIdx),
+        fullMapping: baseModel.fullMapping && duplicateBottomMiddle(baseModel.fullMapping, KeyboardRows.Bottom, middleIdx),
+        thirtyKeyMapping: baseModel.thirtyKeyMapping && duplicateBottomMiddle(baseModel.thirtyKeyMapping, KeyboardRows.Bottom, middleIdx),
         keyWidth: (row: number, col: number): number => {
-            if (row != bottomIdx) return baseModel.keyWidth(row, col);
+            if (row != KeyboardRows.Bottom) return baseModel.keyWidth(row, col);
             if (col < middleIdx || col > middleIdx + 1) return baseModel.keyWidth(row, col);
             return baseModel.keyWidth(row, middleIdx) / 2;
         },
-        mainFingerAssignment: [
-            ...baseModel.mainFingerAssignment.slice(0, bottomIdx),
-            [...btmFingers.slice(0, middleIdx), Finger.LThumb, Finger.RThumb, ...btmFingers.slice(middleIdx + 1)],
-        ],
+        mainFingerAssignment,
     };
 }
 
-function duplicateBottomMiddle(mapping: LayoutMapping, bottomIdx: number, middleIdx: number): LayoutMapping {
+function duplicateBottomMiddle<T>(mapping: T[][], bottomIdx: number, middleIdx: number): T[][] {
     const bottom = mapping[bottomIdx];
     return [
-        ...mapping.slice(0, bottomIdx),
+        ...mapping.slice(0, bottomIdx).map((row) => [...row]),
         [...bottom.slice(0, middleIdx), bottom[middleIdx], bottom[middleIdx], ...bottom.slice(middleIdx + 1)],
     ];
 }
