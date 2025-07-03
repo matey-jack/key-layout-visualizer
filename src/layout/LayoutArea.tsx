@@ -26,6 +26,7 @@ export function LayoutArea({appState}: LayoutAreaProps) {
                     layoutModel={layoutModel}
                     flexMapping={appState.mapping.value}
                     mappingDiff={appState.mappingDiff.value}
+                    vizType={appState.vizType.value}
                     split={split}
                 />
             </KeyboardSvg>

@@ -2,6 +2,7 @@ import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping-functions.ts
 import {fillMapping, isHomeKey, lettersAndVIP, MappingChange, RowBasedLayoutModel} from "./layout-model.ts";
 import {sum} from '../library/math.ts';
 import {FlexMapping} from "../mapping/mapping-model.ts";
+import {VisualizationType} from "../model.ts";
 
 interface KeyboardSvgProps {
     children?: preact.ComponentChildren;
@@ -23,16 +24,19 @@ const horizontalPadding = 0.5;
 
 interface KeyProps {
     label: string;
+
     // labelShift and label3 later added only for non-keyboard-symbol keys.
     // Actually we only need that for very small keyboards like the Iris... and only for very few keys.
     // It's unrelated to the main focus of comparing casual key mappings and the Harmonic layout; so leave for later.
     // labelShifted?: string;
     // label3?: string;
+
     row: number; // integer; 0 for the top row (numbers), 4 for the bottom (modifiers).
     col: number; // those can be fractional, but are measured in 1u from the left-hand side, starting with 0.
     // thus 0,0 is the top left key (tilde on ANSI, Escape on Harmonic, and Iris)
     width: number; // measured in units of height, with 1 being the default
-    isHomeKey: boolean;
+
+    backgroundClass: string;
     diff?: MappingChange;
 }
 
@@ -42,44 +46,46 @@ const keyOverlayPaddingH = 17;
 const keyOverlayPaddingV = 1;
 
 // can't use enum values in const expressions, so we use Array instead of object.
-const keyClassByDiff = [null, "same-finger", "same-hand", "swap-hands"];
+const ribbonClassByDiff = [null, "same-finger", "same-hand", "swap-hands"];
 
-export const Key = (props: KeyProps) => {
-    const x = props.col * keyUnit + keyPadding;
-    const y = props.row * keyUnit + keyPadding;
+export const Key = ({col, diff, backgroundClass, label, row, width}: KeyProps) => {
+    const x = col * keyUnit + keyPadding;
+    const y = row * keyUnit + keyPadding;
     const labelClass =
-        isKeyboardSymbol(props.label) ? "keyboard-symbol"
-            : isKeyName(props.label) ? "key-name"
+        isKeyboardSymbol(label) ? "keyboard-symbol"
+            : isKeyName(label) ? "key-name"
                 : "";
     const text = (labelClass) ?
-        <text x={x + keyUnit * props.width / 2} y={y + keyUnit / 2} className={"key-label " + labelClass}>
-            {props.label}
+        <text x={x + keyUnit * width / 2} y={y + keyUnit / 2} className={"key-label " + labelClass}>
+            {label}
         </text>
         :
         <text x={x + 20} y={y + 60} className="key-label">
-            {props.label}
+            {label}
         </text>
 
-    const keyClassByType = (!props.label) ? "unlabeled"
-        : (isCommandKey(props.label)) ? "command-key"
-            : (props.isHomeKey) ? "home-key"
-            : "";
-    const diffOverlay = (props.diff === undefined || props.diff === MappingChange.SamePosition) ? <></>
-        : <rect class={"key-overlay " + keyClassByDiff[props.diff]!!}
+    const bgClass = backgroundClass ? backgroundClass
+            : isCommandKey(label) ? "command-key"
+                : !label ? "unlabeled"
+                    : "";
+
+    // TODO: provide ribbon-class as prop, so that it can be used for other visualizations, such as finger assignment.
+    const keyRibbon = (diff === undefined || diff === MappingChange.SamePosition) ? <></>
+        : <rect class={"key-overlay " + ribbonClassByDiff[diff]!!}
                 x={x + keyOverlayPaddingV}
                 y={y + keyOverlayPaddingH}
-                width={keyUnit * props.width - 2 * (keyPadding + keyOverlayPaddingV)}
+                width={keyUnit * width - 2 * (keyPadding + keyOverlayPaddingV)}
                 height={keyUnit - 2 * (keyPadding + keyOverlayPaddingH)}
         />
     return <g>
         <rect
-            className={"key-outline " + keyClassByType}
+            className={"key-outline " + bgClass}
             x={x}
             y={y}
-            width={keyUnit * props.width - 2 * keyPadding}
+            width={keyUnit * width - 2 * keyPadding}
             height={keyUnit - 2 * keyPadding}
         />
-        {diffOverlay}
+        {keyRibbon}
         {text}
     </g>
 }
@@ -88,12 +94,19 @@ export interface KeyboardProps {
     layoutModel: RowBasedLayoutModel;
     flexMapping: FlexMapping;
     mappingDiff: Record<string, MappingChange>;
+    vizType: VisualizationType;
     // We split all keyboards by moving their outer edges to a width of 17 units.
     // In both split and unsplit case, the keyboard will be centered.
     split: boolean;
 }
 
-export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, split}: KeyboardProps) {
+function getEffortClass(effort: number) {
+    if (isNaN(effort)) return "";
+    if (effort < 1) return "home-key";
+    return "effort-" + (effort * 10);
+}
+
+export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, vizType, split}: KeyboardProps) {
     const fullMapping = fillMapping(layoutModel, flexMapping);
     const rowWidth = fullMapping.map( (row, r) =>
         2 * (horizontalPadding + layoutModel.rowStart(r)) + sum(row.map((_, c) => layoutModel.keyWidth(r, c)))
@@ -106,10 +119,13 @@ export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, split}:
             // idea: use splitColums special value "+" for lengthening the middle key across the split and "/" for splitting the key at the exact midpoint.
             if (split && (col==layoutModel.splitColumns[row])) colPos += totalWidth - rowWidth[row];
             const width = layoutModel.keyWidth(row, col);
+            const bgClass = vizType == VisualizationType.LayoutEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
+                : isHomeKey(layoutModel, row, col) ? "home-key"
+                    : "";
             const key = <Key
                 label={label}
-                isHomeKey={isHomeKey(layoutModel, row, col)}
-                diff={lettersAndVIP.test(label) ? mappingDiff[label] : undefined}
+                backgroundClass={bgClass}
+                diff={(vizType == VisualizationType.MappingDiff && lettersAndVIP.test(label)) ? mappingDiff[label] : undefined}
                 row={row}
                 col={colPos}
                 width={width}

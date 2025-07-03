@@ -64,6 +64,22 @@ body {
     fill: #c3f3ac;
 }
 
+.key-outline.effort-10 {
+    fill: #f3eaac;
+}
+
+.key-outline.effort-15 {
+    fill: #f1bd7d;
+}
+
+.key-outline.effort-20 {
+    fill: #dd8e6d;
+}
+
+.key-outline.effort-30 {
+    fill: #c35221;
+}
+
 .key-overlay {
     border-color: transparent;
 }
