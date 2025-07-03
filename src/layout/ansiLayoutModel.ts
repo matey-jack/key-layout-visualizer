@@ -140,7 +140,7 @@ function widenSingleKeyEffort(effort: number[][]) {
 
 function moveRightHand<T>(mapping: T[][], splitColumns: number[], movedColumns: number[]): T[][] {
     return mapping.map((layoutRow, row) => {
-        if (!movedColumns[row]) return layoutRow;
+        if (!movedColumns[row]) return [...layoutRow];
         const jumpingColumn = splitColumns[row] + movedColumns[row];
         return [
             layoutRow.slice(0, splitColumns[row]),
