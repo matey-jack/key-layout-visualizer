@@ -1,4 +1,4 @@
-import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping-functions.ts";
+import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping/mapping-functions.ts";
 import {fillMapping, isHomeKey, lettersAndVIP} from "./layout-functions.ts";
 import {sum} from '../library/math.ts';
 import {FlexMapping, MappingChange, RowBasedLayoutModel, VisualizationType} from "../base-model.ts";
