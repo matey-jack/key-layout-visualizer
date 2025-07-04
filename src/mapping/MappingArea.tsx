@@ -1,8 +1,9 @@
-import {AppState} from "../model.ts";
-import {FlexMapping} from "./mapping-model.ts";
+import {AppState} from "../app-model.ts";
+import {FlexMapping, MappingChange, RowBasedLayoutModel} from "../base-model.ts";
 import {Signal} from "@preact/signals";
 import {allMappings} from "./mappings.ts";
-import {diffSummary, diffToQwerty, MappingChange, RowBasedLayoutModel} from "../layout/layout-model.ts";
+import {compatibilityScore, diffSummary, diffToQwerty} from "../layout/layout-functions.ts";
+import {weighSingleKeyEffort} from "./mapping-functions.ts";
 
 export interface MappingListProps {
     appState: AppState;
@@ -51,10 +52,10 @@ export function MappingListItem(
             <button>{mappingData.name}</button>
         </td>
         <td>{formatDiff(diffSummary(diffToQwerty(layoutModel, mappingData)))}</td>
-        <td></td>
+        <td>{weighSingleKeyEffort(layoutModel, mappingData)}</td>
     </tr>
 }
 
 function formatDiff(diff: Record<MappingChange, number>) {
-    return `${diff["1"]}/${diff["2"]}/${diff["3"]}`
+    return `${compatibilityScore(diff)} (${diff[1]}/${diff[2]}/${diff[3]})`
 }

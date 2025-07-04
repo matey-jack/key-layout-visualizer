@@ -1,12 +1,17 @@
 import {describe, expect, it} from 'vitest';
 
-import {harmonicLayoutModel} from "./harmonicLayoutModel.ts";
-import {characterToFinger, diffToQwerty, fillMapping, Finger, Hand, hand} from "./layout-model.ts";
-import {cozyMapping, qwertyMapping} from "../mapping/mappings.ts"
+import {Finger, MappingChange, KeyboardRows, Hand, hand} from "../base-model.ts";
+import {
+    characterToFinger,
+    diffSummary,
+    diffToQwerty,
+    fillMapping,
+} from "./layout-functions.ts";
+import {cozyMapping, normanMapping, qwertyMapping} from "../mapping/mappings.ts"
 import {harmonicComparisonBaseline} from "../mapping/harmonic-mappings.ts";
 import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
-import {orthoLayoutModel} from "./orthoLayoutModel.ts";
-import {KeyboardRows} from "../model.ts";
+import {harmonicLayoutModel} from "./harmonicLayoutModel.ts";
+import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 
 describe('fillMapping', () => {
     it('Harmonic layout 30-key qwerty', () => {
@@ -27,25 +32,32 @@ describe('fillMapping', () => {
     });
 });
 
+const allLayoutModels = {
+    'ANSI': ansiLayoutModel,
+    'Harmonic': harmonicLayoutModel,
+    'Ortho': orthoLayoutModel,
+    'Split Ortho': splitOrthoLayoutModel,
+};
+
 describe('finger assignment consistency', () => {
-    it('Harmonic', () => {
-        harmonicLayoutModel.fullMapping!!.forEach((mappingRow, r) => {
-            expect(mappingRow.length, `${KeyboardRows[r]}Row`).toBe(harmonicLayoutModel.mainFingerAssignment[r].length)
-        })
+    Object.entries(allLayoutModels).forEach(([name, model]) => {
+        it(name, () => {
+            model.fullMapping!!.forEach((mappingRow, r) => {
+                expect(mappingRow.length, `${KeyboardRows[r]}Row`).toBe(model.mainFingerAssignment[r].length)
+            });
+        });
     });
+});
 
-    it('ANSI', () => {
-        ansiLayoutModel.thirtyKeyMapping.forEach((mappingRow, r) => {
-            expect(mappingRow.length, `${KeyboardRows[r]}Row`).toBe(ansiLayoutModel.mainFingerAssignment[r].length)
-        })
+describe('key effort consistency', () => {
+    Object.entries(allLayoutModels).forEach(([name, model]) => {
+        it(name, () => {
+            model.fullMapping!!.forEach((mappingRow, r) => {
+                expect(model.singleKeyEffort[r].length, `${KeyboardRows[r]}Row`).toBe(mappingRow.length)
+            });
+        });
     });
-
-    it('Ortho', () => {
-        orthoLayoutModel.thirtyKeyMapping.forEach((mappingRow, r) => {
-            expect(mappingRow.length, `${KeyboardRows[r]}Row`).toBe(orthoLayoutModel.mainFingerAssignment[r].length)
-        })
-    });
-})
+});
 
 describe('hand function', () => {
     it('works', () => {
@@ -57,6 +69,22 @@ describe('hand function', () => {
 });
 
 describe('diffToQwerty', () => {
+    it('works for Norman', () => {
+        const normanDiff = diffToQwerty(ansiWideLayoutModel, normanMapping)
+        expect(normanDiff['k']).toBe(MappingChange.SwapHands);
+        expect(normanDiff['r']).toBe(MappingChange.SwapHands);
+        expect(normanDiff['p']).toBe(MappingChange.SameHand);
+        expect(normanDiff['h']).toBe(MappingChange.SameHand);
+        expect(normanDiff['e']).toBe(MappingChange.SameFinger);
+        expect(normanDiff['t']).toBe(MappingChange.SameFinger);
+        expect(normanDiff['d']).toBe(MappingChange.SameFinger);
+        expect(normanDiff['j']).toBe(MappingChange.SameFinger);
+        const summary = diffSummary(normanDiff);
+        expect(summary[MappingChange.SwapHands]).toBe(2);
+        expect(summary[MappingChange.SameHand]).toBe(2);
+        expect(summary[MappingChange.SameFinger]).toBe(11);
+        expect(summary[MappingChange.SamePosition]).toBe(17);
+    })
     const cozyDiff = diffToQwerty(ansiWideLayoutModel, cozyMapping)
 });
 
@@ -111,9 +139,9 @@ describe('characterToFinger for ANSI Qwerty', () => {
     });
 
     it('maps lower letter row characters to correct fingers', () => {
-        expect(actual['z']).toBe(Finger.LRing);
-        expect(actual['x']).toBe(Finger.LMiddle);
-        expect(actual['c']).toBe(Finger.LIndex);
+        expect(actual['z']).toBe(Finger.LPinky);
+        expect(actual['x']).toBe(Finger.LRing);
+        expect(actual['c']).toBe(Finger.LMiddle);
         expect(actual['v']).toBe(Finger.LIndex);
         expect(actual['b']).toBe(Finger.LIndex);
         expect(actual['m']).toBe(Finger.RIndex);

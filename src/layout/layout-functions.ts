@@ -1,88 +1,19 @@
-import {KeyboardRows, LayoutOptionsState, LayoutSplit, LayoutType} from "../model.ts";
-import {ansiLayoutModel, ansiWideLayoutModel, customAnsiWideLayoutModel, splitSpaceBar} from "./ansiLayoutModel.ts";
-import {harmonicLayoutModel, harmonicLayoutModelWithNavKeys} from "./harmonicLayoutModel.ts";
-import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
-import {FlexMapping} from "../mapping/mapping-model.ts";
+import {
+    FlexMapping,
+    Finger,
+    RowBasedLayoutModel,
+    LayoutMapping,
+    MappingChange,
+    LayoutType, LayoutSplit, KeyboardRows, hand
+} from "../base-model.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
+import {LayoutOptionsState} from "../app-model.ts";
 import {Signal} from "@preact/signals";
+import {ansiLayoutModel, ansiWideLayoutModel, customAnsiWideLayoutModel, splitSpaceBar} from "./ansiLayoutModel.ts";
+import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
+import {harmonicLayoutModel, harmonicLayoutModelWithNavKeys} from "./harmonicLayoutModel.ts";
 
-export enum Finger {
-    LPinky = 0,
-    LRing,
-    LMiddle,
-    LIndex,
-    LThumb,
-    RThumb,
-    RIndex,
-    RMiddle,
-    RRing,
-    RPinky,
-}
-
-export enum Hand {
-    Left,
-    Right,
-}
-
-export const hand = (finger: Finger) => Math.floor(finger / 5)
-
-export enum MappingChange {
-    SamePosition,
-    SameFinger,
-    SameHand,
-    SwapHands,
-}
-
-export function getLayoutModel(layoutType: LayoutType,
-                               layoutOptions: LayoutOptionsState,
-                               flexMapping?: FlexMapping,
-                               layoutSplit?: Signal<LayoutSplit>,
-): RowBasedLayoutModel {
-    const twoPiece = layoutSplit?.value == LayoutSplit.TwoPiece;
-    switch (layoutType) {
-        case LayoutType.ANSI:
-            const base = !layoutOptions.ansiLayoutOptions.value.wide ? ansiLayoutModel
-                : !flexMapping?.ansiMovedColumns ? ansiWideLayoutModel
-                    : customAnsiWideLayoutModel(flexMapping.ansiMovedColumns);
-            return twoPiece ? splitSpaceBar(base) : base;
-        case LayoutType.Ortho:
-            return layoutSplit?.value == LayoutSplit.TwoPiece ? splitOrthoLayoutModel : orthoLayoutModel;
-        case LayoutType.Harmonic:
-            return layoutOptions.harmonicLayoutOptions.value.navKeys ? harmonicLayoutModelWithNavKeys : harmonicLayoutModel;
-    }
-}
-
-export type LayoutMapping = (string | number)[][];
-
-export interface RowBasedLayoutModel {
-    name: string;
-    description: string;
-
-    // 1 unit = width of the smallest key.
-    rowStart: (row: KeyboardRows) => number;
-    keyWidth: (row: KeyboardRows, col: number) => number;
-
-    // How many columns are to the left of the split line for each row?
-    // (Space bar splits just at the column of the row above.)
-    splitColumns: number[];
-
-    // Column number counted from 0.
-    leftHomeIndex: number;
-    rightHomeIndex: number;
-
-    // this one is standardized to take a flex Mapping of exactly 3 by 10 keys
-    thirtyKeyMapping: LayoutMapping;
-
-    // this one takes a flex mapping depending on the layout
-    fullMapping: LayoutMapping;
-
-    //
-    mainFingerAssignment: Finger[][];
-
-    getSpecificMapping(flexMapping: FlexMapping): string[] | undefined;
-}
-
-export function isHomeKey(layoutModel: RowBasedLayoutModel, row: KeyboardRows, col: number): boolean {
+export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
     if (row != KeyboardRows.Home) return false;
     if (col <= layoutModel.leftHomeIndex && col > layoutModel.leftHomeIndex - 4) return true;
     if (col >= layoutModel.rightHomeIndex && col < layoutModel.rightHomeIndex + 4) return true;
@@ -139,26 +70,59 @@ export function characterToFinger(fingerAssignment: Finger[][], mapping: LayoutM
     return result;
 }
 
+export const lettersAndVIP = RegExp("^[a-z,.'/;-]$");
+
 export function diffSummary(diff: Record<string, MappingChange>): Record<MappingChange, number> {
+// remember that the literal `-` can only be mentioned at the end of a [...]
     const result = {
         [MappingChange.SamePosition]: 0,
         [MappingChange.SameFinger]: 0,
         [MappingChange.SameHand]: 0,
         [MappingChange.SwapHands]: 0,
     };
-    Object.values(diff).forEach((change) => {
+    const relevantDiff = Object.entries(diff).filter(
+        ([char, _change]) => lettersAndVIP.test(char)
+    ).map((
+        [_char, change]) => change
+    );
+    relevantDiff.forEach((change) => {
         result[change]++;
     });
     return result;
 }
 
 export function diffToQwerty(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): Record<string, MappingChange> {
-    // console.log(`=== diffToQwerty: ${flexMapping.name} on ${layoutModel.name} ===`);
-    // neither using this condition nor omitting it, reflects the actual experienced learning delta for wide models.
-    // let's just accept that this is imperfect and move on.
+// console.log(`=== diffToQwerty: ${flexMapping.name} on ${layoutModel.name} ===`);
+// neither using this condition nor omitting it, reflects the actual experienced learning delta for wide models.
+// let's just accept that this is imperfect and move on.
     const baseLayoutModel = // (layoutModel.name.includes("wide")) ? ansiLayoutModel :
         layoutModel;
     const a = fillMapping(layoutModel, flexMapping);
     const b = fillMapping(baseLayoutModel, qwertyMapping);
     return diffMappings(layoutModel, a, b);
+}
+
+export function compatibilityScore(diffSummy: Record<MappingChange, number>): number {
+    return diffSummy[MappingChange.SameFinger] * 0.5 +
+        diffSummy[MappingChange.SameHand] * 1.0 +
+        diffSummy[MappingChange.SwapHands] * 2.0;
+}
+
+export function getLayoutModel(layoutType: LayoutType,
+                               layoutOptions: LayoutOptionsState,
+                               flexMapping?: FlexMapping,
+                               layoutSplit?: Signal<LayoutSplit>,
+): RowBasedLayoutModel {
+    const twoPiece = layoutSplit?.value == LayoutSplit.TwoPiece;
+    switch (layoutType) {
+        case LayoutType.ANSI:
+            const base = !layoutOptions.ansiLayoutOptions.value.wide ? ansiLayoutModel
+                : !flexMapping?.ansiMovedColumns ? ansiWideLayoutModel
+                    : customAnsiWideLayoutModel(flexMapping.ansiMovedColumns);
+            return twoPiece ? splitSpaceBar(base) : base;
+        case LayoutType.Ortho:
+            return layoutSplit?.value == LayoutSplit.TwoPiece ? splitOrthoLayoutModel : orthoLayoutModel;
+        case LayoutType.Harmonic:
+            return layoutOptions.harmonicLayoutOptions.value.navKeys ? harmonicLayoutModelWithNavKeys : harmonicLayoutModel;
+    }
 }

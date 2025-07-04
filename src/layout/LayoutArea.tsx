@@ -1,7 +1,7 @@
-import {AppState, LayoutOptionsState, LayoutSplit, LayoutType} from "../model.ts";
+import {LayoutSplit, LayoutType} from "../base-model.ts";
+import {AppState, LayoutOptionsState} from "../app-model.ts";
 import {KeyboardSvg, RowBasedKeyboard} from "./KeyboardSvg.tsx";
-import {TruncatedText} from "../components/TruncatedText.tsx";
-import {getLayoutModel} from "./layout-model.ts";
+import {getLayoutModel} from "./layout-functions.ts";
 import {Signal} from "@preact/signals";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
@@ -18,14 +18,12 @@ export function LayoutArea({appState}: LayoutAreaProps) {
     return (
         <div>
             <TopBar layoutSignal={appState.layoutType} layoutOptions={appState.layoutOptions}/>
-            <div className="layout-description">
-                <TruncatedText text={layoutModel.description}/>
-            </div>
             <KeyboardSvg>
                 <RowBasedKeyboard
                     layoutModel={layoutModel}
                     flexMapping={appState.mapping.value}
                     mappingDiff={appState.mappingDiff.value}
+                    vizType={appState.vizType.value}
                     split={split}
                 />
             </KeyboardSvg>
@@ -88,7 +86,7 @@ interface LayoutOptionsBarProps {
 function LayoutOptionsBar({state}: LayoutOptionsBarProps) {
     return <div class="layout-options-bar-container">
         <BlankGridElement/>
-        <GenericLayoutOptions split={state.layoutSplit}/><br/>
+        <GenericLayoutOptions split={state.layoutSplit}/>
         <TypeSpecifcLayoutOptions layoutType={state.layoutType.value} layoutOptions={state.layoutOptions}/>
         <BlankGridElement/>
     </div>

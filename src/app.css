@@ -6,7 +6,7 @@ body {
     display: grid;
     grid-template-columns: 1fr minmax(0, 2fr) minmax(0, 2fr) minmax(0, 2fr) 1fr;
     gap: 1rem;
-    width: 100%;
+    width: 95%;
     padding: 1rem;
 }
 
@@ -26,13 +26,11 @@ body {
 }
 
 .layout-description {
-    padding-right: 10%;
-    padding-left: 10%;
-    padding-bottom: 1rem;
-    font-family: Verdana, sans-serif;
 }
 
 .layout-options-bar-container {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 2fr) minmax(0, 2fr) 1fr;
     margin-left: 10%;
     padding: 1rem;
     font-family: Verdana, sans-serif;
@@ -40,6 +38,9 @@ body {
 
 .layout-options-bar-container label {
     display: block;
+}
+
+.keyboard-svg {
 }
 
 .key-outline {
@@ -59,20 +60,51 @@ body {
     fill: #c3f3ac;
 }
 
+.key-outline.command-key-border {
+    filter: brightness(70%);
+    /*stroke: #255a7c;*/
+    /*stroke-width: 7px;*/
+}
+
+.key-outline.home-key-border {
+    filter: brightness(130%);
+    /*stroke: #298800;*/
+    stroke-width: 3px;
+}
+
+.key-outline.effort-10 {
+    fill: #f3eaac;
+}
+
+.key-outline.effort-15 {
+    fill: #f1bd7d;
+}
+
+.key-outline.effort-20 {
+    fill: #dd8e6d;
+}
+
+.key-outline.effort-30 {
+    fill: #c35221;
+}
+
 .key-overlay {
     border-color: transparent;
 }
 
-.key-overlay.same-finger{
+.same-finger{
     fill: #f3eaac;
+    background-color: #f3eaac;
 }
 
-.key-overlay.same-hand{
+.same-hand{
     fill: #f6d187;
+    background-color: #f6d187;
 }
 
-.key-overlay.swap-hands{
+.swap-hands{
     fill: #f3bfac;
+    background-color: #f3bfac;
 }
 
 .key-label {
@@ -112,13 +144,26 @@ body {
     display: inline;
 }
 
+.visualization-switches {
+    margin-left: 10%;
+}
+
+.viz-type-button {
+    margin: 0.3rem;
+}
+
+.viz-type-button.selected {
+    background-color: #5cdbef;
+    border: 1px solid #003fae;
+}
+
 .mapping-and-details-container {
     display: grid;
     /* Left colum mapping list, right colum details.
     Grid is overkill here, because each column has just one <div>, but it should be easy to refactor that. */
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
-    width: 100%;
+    width: 95%;
     padding: 1rem;
 }
 
@@ -138,4 +183,88 @@ body {
 
 .mapping-list-item.selected button {
     font-weight: bold;
+}
+
+.footnote {
+    font-size: 0.8rem;
+}
+
+.key-effort-legend-item {
+    display: inline-block;
+    text-align: center;
+    width: 3rem;
+    padding: 0.2rem;
+    margin: 0.1rem;
+}
+
+.key-effort-legend-item.home-key {
+    background-color: #c3f3ac;
+}
+
+.key-effort-legend-item.effort-10 {
+    background-color: #f3eaac;
+}
+
+.key-effort-legend-item.effort-15 {
+    background-color: #f1bd7d;
+}
+
+.key-effort-legend-item.effort-20 {
+    background-color: #dd8e6d;
+}
+
+.key-effort-legend-item.effort-30 {
+    background-color: #c35221;
+}
+
+.diff-counter {
+    display: inline-block;
+    text-align: center;
+    width: 3rem;
+    padding: 0.2rem;
+    margin: 0.1rem;
+}
+
+.diff-counter.unchanged {
+    border: 1px solid darkgray;
+}
+
+/* colors for the fingering viz
+earthy_colors = {
+    "Dusty Rose": "#D8A39D",       # earthier red
+    "Terracotta": "#D7A86E",       # earthy orange-brown
+    "Warm Clay": "#C6B4A5"         # a warm, soft earth-toned neutral
+    "Moss Yellow": "#DDD88C",      # muted, natural yellow
+    "Sage Green": "#B7C6A3",       # soft, natural green
+    "Foggy Blue": "#A3BFD9",       # desaturated natural blue
+    "Muted Lavender": "#BCA7D4"    # soft violet with grey tones
+}
+*/
+
+.pinky {
+    fill: #BCA7D4;
+}
+
+.ringy {
+    fill: #A3BFD9;
+}
+
+.middy {
+    fill: #a1c67e;
+}
+
+.lindex {
+    fill: #DDD88C;
+}
+
+.rindex {
+    fill: #C6B4A5;
+}
+
+.lthumb {
+    fill: #D7A86E;
+}
+
+.rthumb {
+    fill: #D8A39D;
 }

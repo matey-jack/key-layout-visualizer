@@ -5,7 +5,7 @@
     equivalents for all the ANSI keys.
  */
 
-import {FlexMapping} from "./mapping-model.ts";
+import {FlexMapping} from "../base-model.ts";
 
 export const qwertyMapping: FlexMapping = {
     name: "Qwerty",
@@ -23,7 +23,9 @@ export const normanMapping = {
     name: "Norman",
     sourceUrl: "https://normanlayout.info/index.html",
     description: "Norman has the heaviest focus on minimizing finger movement among all the mappings in this comparison. " +
-        "However, at the time of its creation, the notion of minimizing learning effort was still new and Norman did a great job of balancing the two. ",
+        "However, at the time of its creation, the notion of minimizing learning effort was still new and Norman did a great job of balancing the two. " +
+        "One could apply the Minimak principle of step-wise learning to Norman by starting with the pair-swaps DE and LO, " +
+        "then adding the ring-swap FTKRI, and finally the ring swap NJPYH;",
 
     // I think this would be prettier (and one less letter change to learn) with `p` in its ancient position and `;`
     // where `p` is here. But Norman's creator considers the new `p` position to be 25% easier to reach and thus the move.
@@ -182,16 +184,75 @@ export const cozyPlusMapping = {
     sourceUrl: "https://github.com/matey-jack/gemuetliche-tastatur",
 
     // We could have "Cozy Clean" which swaps `-` and `y` to have all punctuation in the bottom row,
-    // but it doesn't improve ease of typing and has requires `y` to be trained on a different finger.
+    // but it doesn't improve ease of typing and requires `y` to be trained on a different finger.
     mappingAnsi: [
         "=\\",
-        "qwbf-" + "j" + "hulp[]",
-        "asdrg" + "kniot'",
+        "qwbf-" + "j" + "hklp[]",
+        "asdrg" + "uniot'",
         "zxcv" + ";" + "ym,./",
         "e⌥"
     ],
     ansiMovedColumns: [5, 5, 5, 4],
 };
+
+export const thumbyMin = {
+    name: "Thumby Min",
+    description: "Draft of casual mapping with a thumb key. Improves high-frequency letter positions. " +
+        "When using the \"ANSI wide\" home position, you suddenly realize how easy it becomes " +
+        "for your thumb to hit the key to the right of the space bar. " +
+        "Thus is born the idea of adding a nineth home key, which changes everything. " +
+        "Notably it leads to a ring swap EDRFTB at the end of which one more character can be inserted onto the main area of the keyboard. " +
+        "Note that R shows as a changed finger, but probably most people already type R with their middle finger " +
+        "when typing the RT bigram on Qwerty. " +
+        "The remaining swaps in the layout are the same as in other casual mappings. " +
+        "Only Norman also places H on the home row, but Thumby practically has to do that " +
+        "because it can place all the nine most frequent letters there. " +
+        "Thus, Thumby could be called \"Norman-Nine\". " +
+        "With its few differences to Norman, it could be a great upgrade for anyone currently using Norman. ",
+
+    // I would move - to the core board instead of =, but since this mapping is meant to show the lowest-practical Qwerty-diff
+    // for any Thumby-variant, we leave - unmoved.
+    // We could make achieve an even lower learning diff by leaving D on the home row (it's the 10th most frequent letter).
+    // That's basically what Thumby Bilingual is doing!
+    mappingAnsi: [
+        "-\\",
+        "qwdfb" + "y" + "uklp[]",
+        "asrtg" + ";nioh'",
+        "zxcv" + "=" + "jm,./",
+        "e⌥",
+    ],
+    ansiMovedColumns: [4, 5, 5, 4],
+}
+
+export const thumbyMax = {
+    name: "Thumby Max",
+    description: "Draft of casual mapping with a thumb key. " +
+        "Additionally improves the medium-frequency letter positions G, U, and Y. " +
+        "Feel free to call it Thumby-GUY. " +
+        "If you like customizations, some other variants can be created by combining Thumby Min and Max. ",
+    mappingAnsi: [
+        "⇤⇥",
+        "qwdfg" + "=" + "kulp-\\",
+        "asrtb" + "jnioh'",
+        "zxcv" + ";" + "ym,./",
+        "e⌥",
+    ],
+    ansiMovedColumns: [4, 6, 5, 4],
+}
+
+export const thumbyBilingual = {
+    name: "Thumby Bilingual",
+    description: "Only changes letters that have similar frequency in German and English. " +
+        "OLD+H have different frequency  in German and English and are not changed. " +
+        "Thus we also get a much smaller change count. ",
+    mappingAnsi: [
+        "⇤⇥",
+        "qwbf=" + "ykuop-\\",
+        "asdrg" + "hnilt'",
+        "zxcv" + ";" + "jm,./",
+        "e⌥",
+    ]
+}
 
 /* Port of my personal German layout. It changes less than Qwerty, because it is already made for a wide home position.
      Changed chars are üzj+
@@ -211,8 +272,7 @@ export const cozyPlusMapping = {
  */
 export const gemuetlichesMapping = {
     name: "Die Gemütliche Tastatur",
-    description: "A few letter swaps and a thumb E. I used the ANSI version of this for more than ten years daily. " +
-        "Currently using the Ortho version on my Iris CE.",
+    description: "This is basically Thumby, but applied to the German Qwertz mapping as a base. ",
     sourceUrl: "https://github.com/matey-jack/gemuetliche-tastatur",
 
     // I actually used this layout on an ISO keyboard, so the right pinky keys are a bit different!
@@ -253,8 +313,11 @@ export const allMappings: FlexMapping[] = [
     qwertyFlipTwistSpinMapping,
     etniMapping,
     quipperMapping,
-    cozyMapping,
-    cozyPlusMapping,
+    // cozyMapping,
+    // cozyPlusMapping,
+    thumbyMin,
+    thumbyMax,
+    thumbyBilingual,
     gemuetlichesMapping,
 ]
 

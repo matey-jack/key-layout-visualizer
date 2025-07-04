@@ -1,13 +1,7 @@
-import {KeyboardRows} from "../model.ts";
-import {RowBasedLayoutModel} from "./layout-model.ts";
-import {FlexMapping} from "../mapping/mapping-model.ts";
+import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
 
 export interface OrthoLayoutOptionsModel {
     thumbKeys: boolean;
-}
-
-export const defaultOrthoLayoutOptions: OrthoLayoutOptionsModel = {
-    thumbKeys: false,
 }
 
 export const orthoLayoutModel: RowBasedLayoutModel = {
@@ -50,11 +44,19 @@ export const orthoLayoutModel: RowBasedLayoutModel = {
     rightHomeIndex: 7,
 
     mainFingerAssignment: [
-        [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
+        [1, 1, 1, 2, 2, 3, 6, 7, 7, 8, 8, 8],
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 4,/**/5, 5, 7, 8, 9, 9],
+    ],
+
+    singleKeyEffort: [
+        [NaN, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, NaN],
+        [NaN, 1.5, 1, 1, 1.5, 1.5, 1.5, 1.5, 1, 1, 1.5, 2],
+        [NaN, 0.2, 0.2, 0.2, 0.2, 2, 2, 0.2, 0.2, 0.2, 0.2, 1.5],
+        [NaN, 1.5, 1.5, 1.5, 1.5, 2, 2, 1.5, 1.5, 1.5, 1.5, NaN],
+        [NaN, NaN, 2, 1.5, NaN, 0.2, NaN, 1.5, 2, NaN, NaN],
     ],
 
     // This missing one key, but I don't plan to show any layouts specific to the unsplit ortho board,
@@ -92,8 +94,7 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
         ["Ctrl", "Cmd", 0, 1, "Alt", "⍽", "⏎", "AltGr", 2, 3, "Fn", "Ctrl"],
     ],
 
-    rowStart: (row: number) =>
-        (row == KeyboardRows.Bottom) ? 1 : 0,
+    rowStart: (row: KeyboardRows) => (row == KeyboardRows.Bottom) ? 1 : 0,
     keyWidth: (_row: KeyboardRows, _col: number): number => 1,
 
     mainFingerAssignment: [
@@ -103,4 +104,9 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
         [0, 1, 2, 4, 4, 4, 5, 5, 5, 7, 8, 9],
     ],
+
+    singleKeyEffort: ((orig) => [
+        ...orig.slice(0, 4),
+        [NaN, NaN, 2, 2, NaN, 0.2, 0.2, NaN, NaN, 2, NaN, NaN],
+    ])(orthoLayoutModel.singleKeyEffort),
 }

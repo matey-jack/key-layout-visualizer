@@ -1,4 +1,4 @@
-import {FlexMapping} from "./mapping-model.ts";
+import {FlexMapping} from "../base-model.ts";
 
 // probably stuff in this file is obsolete, because we diff layouts after applying the flexMapping to the layoutMapping.
 
