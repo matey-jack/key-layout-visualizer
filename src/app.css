@@ -61,8 +61,8 @@ body {
 }
 
 .key-outline.command-key-border {
-    filter: brightness(70%);
-    /*stroke: #255a7c;*/
+    filter: brightness(80%);
+    stroke: #b5b5b5;
     /*stroke-width: 7px;*/
 }
 
@@ -88,7 +88,7 @@ body {
     fill: #c35221;
 }
 
-.key-overlay {
+.key-ribbon {
     border-color: transparent;
 }
 
@@ -123,6 +123,47 @@ body {
     text-anchor: middle;
     dominant-baseline: central;
     font-size: 21px;
+}
+
+.bigram-line {
+    /* Make all ranks not mentioned below be invisible. */
+    stroke-width: 0;
+}
+
+.bigram-line.same-row {
+    stroke: green;
+}
+
+.bigram-line.neighboring-row{
+    stroke: yellow;
+}
+
+.bigram-line.opposite-row{
+    stroke: orange;
+}
+
+.bigram-line.opposite-lateral{
+    stroke: orange;
+}
+
+.bigram-line.same-finger{
+    stroke: red;
+}
+
+.bigram-line.bigram-rank-1 {
+    stroke-width: 4px;
+}
+
+.bigram-line.bigram-rank-2 {
+    stroke-width: 3px;
+}
+
+.bigram-line.bigram-rank-3 {
+    stroke-width: 2px;
+}
+
+.bigram-line.bigram-rank-4 {
+    stroke-width: 1px;
 }
 
 .toggle-text-button {

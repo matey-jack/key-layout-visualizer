@@ -224,8 +224,8 @@ export const thumbyMin = {
     ansiMovedColumns: [4, 5, 5, 4],
 }
 
-export const thumbyMax = {
-    name: "Thumby Max",
+export const thumbyPlus = {
+    name: "Thumby Plus",
     description: "Draft of casual mapping with a thumb key. " +
         "Additionally improves the medium-frequency letter positions G, U, and Y. " +
         "Feel free to call it Thumby-GUY. " +
@@ -243,8 +243,10 @@ export const thumbyMax = {
 export const thumbyBilingual = {
     name: "Thumby Bilingual",
     description: "Only changes letters that have similar frequency in German and English. " +
-        "OLD+H have different frequency  in German and English and are not changed. " +
-        "Thus we also get a much smaller change count. ",
+        "In particular, letters D and L have high-enough frequency in German to stay on the home row. " +
+        "Thus, we are changing less letters in total. " +
+        "Note that the Learnability score is high because of the changed position of ';', " +
+        "but as a second-tier punctuation character this is much easier to get used to. ",
     mappingAnsi: [
         "⇤⇥",
         "qwbf=" + "ykuop-\\",
@@ -254,25 +256,21 @@ export const thumbyBilingual = {
     ]
 }
 
-/* Port of my personal German layout. It changes less than Qwerty, because it is already made for a wide home position.
-     Changed chars are üzj+
-     ü sends away + because there is one less physical key on the upper row.
-     J and - simply swap places, both keep their finger and direction assignment.
-     (Alternatively swap also Q and J to improve the positioning for frequency.)
-     Finally, with `Z` I am not completely sure: it's still a bit awkward to think about this "new" left off-home position
-     although the symmetric position on the right has always been a character key in ANSI, even a letter in German.
+/*  Port of my personal German layout.
+    Note that this supposes a mixed German/ANSI shift-pairing with notably `;:` mapped on `,.` and `=` on `0`.
+    Other Shift-mappings can vary, as well as the AltGr mappings, although it seems wise to swap Cmd/AltGr keys because
+    most of the German AltGr mappings are on the right hand. This way, we can actually move all of them to the right hand
+    (maybe with some compatibility alternatives like @ and € staying on the left as a second/alternative mapping), and thus
+    we'd only need one exclusive AltGr key. (A secondary AltGr could be tap/hold on `+` which is rare enough not to lead to
+    confusion. Similarly, a secondary tap/hold Fn on the Esc key. This would be so much better than my overloadings of `öy-`
+    on the Iris at the moment.)
 
-     Note that this supposes a mixed German/ANSI shift-pairing with notably `;:` mapped on `,.` and `=` on `0`.
-     Other Shift-mappings can vary, as well as the AltGr mappings, although it seems wise to swap Cmd/AltGr keys because
-     most of the German AltGr mappings are on the right hand. This way, we can actually move all of them to the right hand
-     (maybe with some compatibility alternatives like @ and € staying on the left as a second/alternative mapping), and thus
-     we'd only need one exclusive AltGr key. (A secondary AltGr could be tap/hold on `+` which is rare enough not to lead to
-     confusion. Similarly, a secondary tap/hold Fn on the Esc key. This would be so much better than my overloadings of `öy-`
-     on the Iris at the moment.)
+    With the recent experience, I can imagine a "plus" version of this, which also improves G and H positions by swapping
+    with (new) B and K. Since the latter are changing anyway, the learning is only half as much.
  */
 export const gemuetlichesMapping = {
     name: "Die Gemütliche Tastatur",
-    description: "This is basically Thumby, but applied to the German Qwertz mapping as a base. ",
+    description: "This is basically Thumby Min, but applied to the German Qwertz mapping as a base. ",
     sourceUrl: "https://github.com/matey-jack/gemuetliche-tastatur",
 
     // I actually used this layout on an ISO keyboard, so the right pinky keys are a bit different!
@@ -294,6 +292,15 @@ export const gemuetlichesMapping = {
 
     // TODO: We could define a "base for diffing" field here that contains the default German Qwertz mapping.
     //       Then the diff counts should be correct. (We'll have to contort it to ANSI though, because this app will not implement ISO.)
+/*
+     The Harmonic port of this layout changes less than Qwerty, because it is already made for a wide home position.
+     Changed chars are üzj+
+     ü sends away + because there is one less physical key on the upper row.
+     J and - simply swap places, both keep their finger and direction assignment.
+     (Alternatively swap also Q and J to improve the positioning for frequency.)
+     Finally, with `Z` I am not completely sure: it's still a bit awkward to think about this "new" left off-home position
+     although the symmetric position on the right has always been a character key in ANSI, even a letter in German.
+ */
     mappingHarmonic: [
         "´ß",
         "qwbf" + "öü" + "kuop",
@@ -316,7 +323,7 @@ export const allMappings: FlexMapping[] = [
     // cozyMapping,
     // cozyPlusMapping,
     thumbyMin,
-    thumbyMax,
+    thumbyPlus,
     thumbyBilingual,
     gemuetlichesMapping,
 ]

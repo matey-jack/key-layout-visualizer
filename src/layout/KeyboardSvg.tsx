@@ -1,7 +1,15 @@
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping/mapping-functions.ts";
 import {fillMapping, isHomeKey, lettersAndVIP} from "./layout-functions.ts";
 import {sum} from '../library/math.ts';
-import {Finger, FlexMapping, MappingChange, RowBasedLayoutModel, VisualizationType} from "../base-model.ts";
+import {
+    BigramMovement,
+    BigramType,
+    Finger,
+    FlexMapping,
+    MappingChange,
+    RowBasedLayoutModel,
+    VisualizationType
+} from "../base-model.ts";
 import {ComponentChildren, JSX} from "preact";
 
 interface KeyboardSvgProps {
@@ -16,11 +24,6 @@ export const KeyboardSvg = (props: KeyboardSvgProps) =>
             {props.children}
         </svg>
     </div>
-
-// keep in sync with KeyboardSvg.viewBox
-const totalWidth = 17;
-// in key units
-const horizontalPadding = 0.5;
 
 interface KeyProps {
     label: string;
@@ -45,8 +48,8 @@ interface KeyProps {
 
 const keyUnit = 100;
 const keyPadding = 5;
-const keyOverlayPaddingH = 17;
-const keyOverlayPaddingV = 1;
+const keyRibbonPaddingH = 17;
+const keyRibbonPaddingV = 1;
 
 export function Key({col, ribbonClass, backgroundClass, label, row, width}: KeyProps) {
     const x = col * keyUnit + keyPadding;
@@ -70,11 +73,11 @@ export function Key({col, ribbonClass, backgroundClass, label, row, width}: KeyP
                 : "";
 
     const keyRibbon = ribbonClass &&
-        <rect class={"key-overlay " + ribbonClass}
-              x={x + keyOverlayPaddingV}
-              y={y + keyOverlayPaddingH}
-              width={keyUnit * width - 2 * (keyPadding + keyOverlayPaddingV)}
-              height={keyUnit - 2 * (keyPadding + keyOverlayPaddingH)}
+        <rect class={"key-ribbon " + ribbonClass}
+              x={x + keyRibbonPaddingV}
+              y={y + keyRibbonPaddingH}
+              width={keyUnit * width - 2 * (keyPadding + keyRibbonPaddingV)}
+              height={keyUnit - 2 * (keyPadding + keyRibbonPaddingH)}
         />
     return <g>
         <rect
@@ -133,7 +136,11 @@ function getFingeringClasses(layoutModel: RowBasedLayoutModel, row: number, col:
     return bgClass + " " + borderClass;
 }
 
+// TODO: rewrite this using the function getKeyPositions() from layout-functions.ts
 export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, vizType, split}: KeyboardProps) {
+    const totalWidth = 17;
+    const horizontalPadding = 0.5;
+
     const fullMapping = fillMapping(layoutModel, flexMapping);
     const rowWidth = fullMapping.map((row, r) =>
         2 * (horizontalPadding + layoutModel.rowStart(r)) + sum(row.map((_, c) => layoutModel.keyWidth(r, c)))
@@ -168,4 +175,32 @@ export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, vizType
         });
     }
     return <>{keys}</>
+}
+
+const bigramClassByType: Record<BigramType, string> = {
+    [BigramType.SameRow]: "same-row",
+    [BigramType.NeighboringRow]: "neighboring-row",
+    [BigramType.OppositeRow]: "opposite-row",
+    [BigramType.OppositeLateral]: "opposite-lateral",
+    [BigramType.SameFinger]: "same-finger",
+    [BigramType.OtherHand]: "",
+    [BigramType.InvolvesThumb]: ""
+}
+
+export interface BigramLinesProps {
+    bigrams: BigramMovement[];
+}
+
+export function BigramLines({bigrams}: BigramLinesProps) {
+    return <>
+        {
+            bigrams.map((pair) => {
+                const offset = Math.abs(pair.a.col - pair.b.col);
+                return pair.draw && <line
+                    x1={keyUnit * (pair.a.colPos + 0.5)} y1={keyUnit * (pair.a.row + 0.5 - offset / 10)}
+                    x2={keyUnit * (pair.b.colPos + 0.5)} y2={keyUnit * (pair.b.row + 0.5)}
+                    className={`bigram-line bigram-rank-${pair.rank} ` + bigramClassByType[pair.type]}/>
+            })
+        }
+    </>
 }

@@ -12,7 +12,7 @@ import {
     VisualizationType
 } from "../base-model.ts";
 import {AppState} from "../app-model.ts";
-import {compatibilityScore, diffSummary, diffToQwerty} from "../layout/layout-functions.ts";
+import {compatibilityScore, diffSummary, diffToQwerty, getKeyPositions} from "../layout/layout-functions.ts";
 import {TruncatedText} from "../components/TruncatedText.tsx";
 import {getEffortClass} from "../layout/KeyboardSvg.tsx";
 import {ComponentChildren} from "preact";
@@ -185,4 +185,17 @@ export function DiffEntry({count, description, counterClass}: DiffEntryProps) {
         <div class={`diff-counter ${counterClass}`}>{count}</div>
         {description}
     </div>
+}
+
+interface BigramDetailsProps {
+}
+
+export function BigramDetails({}: BigramDetailsProps) {
+    const bigramCap = 30;
+    // const bigrams = getSameHandBigrams(bigramCap, getKeyPositions(flexMapping, layoutModel))
+    return <p>
+        The above visualization shows lines for {} letter/character pairs that are typed with the same hand.
+        In total, the top {} letter pairs in English consist of those plus {} that are typed with different hands or
+        with the thumb of the same hand (which is mostly an independent, conflict-free movement).
+    </p>
 }

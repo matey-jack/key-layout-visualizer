@@ -35,6 +35,9 @@ export function createAppState(): AppState {
     const mappingDiff = computed(() =>
         diffToQwerty(layoutModel.value, mapping.value)
     )
+    const bigrams = computed(() =>{
+
+    });
     const vizType = signal(VisualizationType.LayoutFingering)
     return {layoutType, layoutOptions, layoutSplit, layoutModel, mapping, mappingDiff, vizType};
 }

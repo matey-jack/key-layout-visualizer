@@ -4,7 +4,7 @@ import {
     RowBasedLayoutModel,
     LayoutMapping,
     MappingChange,
-    LayoutType, LayoutSplit, KeyboardRows, hand
+    LayoutType, LayoutSplit, KeyboardRows, hand, KeyPosition
 } from "../base-model.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
 import {LayoutOptionsState} from "../app-model.ts";
@@ -12,6 +12,7 @@ import {Signal} from "@preact/signals";
 import {ansiLayoutModel, ansiWideLayoutModel, customAnsiWideLayoutModel, splitSpaceBar} from "./ansiLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 import {harmonicLayoutModel, harmonicLayoutModelWithNavKeys} from "./harmonicLayoutModel.ts";
+import {sum} from "../library/math.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
     if (row != KeyboardRows.Home) return false;
@@ -125,4 +126,29 @@ export function getLayoutModel(layoutType: LayoutType,
         case LayoutType.Harmonic:
             return layoutOptions.harmonicLayoutOptions.value.navKeys ? harmonicLayoutModelWithNavKeys : harmonicLayoutModel;
     }
+}
+
+// keep in sync with KeyboardSvg.viewBox
+const totalWidth = 17;
+// in key units
+const horizontalPadding = 0.5;
+
+export function getKeyPositions(flexMapping: FlexMapping, layoutModel: RowBasedLayoutModel, split: boolean): Record<string, KeyPosition> {
+    const fullMapping = fillMapping(layoutModel, flexMapping);
+    const rowWidth = fullMapping.map((row, r) =>
+        2 * (horizontalPadding + layoutModel.rowStart(r)) + sum(row.map((_, c) => layoutModel.keyWidth(r, c)))
+    );
+    let result: Record<string, KeyPosition> = {};
+    for (let row = 0; row < 5; row++) {
+        let colPos = horizontalPadding + layoutModel.rowStart(row);
+        if (!split) colPos += (totalWidth - rowWidth[row]) / 2;
+        fullMapping[row].forEach((label, col) => {
+            // to show the board as split, add some extra space after the split column.
+            if (split && (col == layoutModel.splitColumns[row])) colPos += totalWidth - rowWidth[row];
+            const finger = layoutModel.mainFingerAssignment[row][col];
+            result[label] = {finger, row, col, colPos};
+            colPos += layoutModel.keyWidth(row, col);
+        });
+    }
+    return result;
 }

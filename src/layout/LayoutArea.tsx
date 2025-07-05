@@ -1,18 +1,17 @@
-import {LayoutSplit, LayoutType} from "../base-model.ts";
+import {LayoutSplit, LayoutType, VisualizationType} from "../base-model.ts";
 import {AppState, LayoutOptionsState} from "../app-model.ts";
-import {KeyboardSvg, RowBasedKeyboard} from "./KeyboardSvg.tsx";
-import {getLayoutModel} from "./layout-functions.ts";
+import {BigramLines, KeyboardSvg, RowBasedKeyboard} from "./KeyboardSvg.tsx";
+import {getKeyPositions, getLayoutModel} from "./layout-functions.ts";
 import {Signal} from "@preact/signals";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
+import {getBigramMovements} from "../bigrams.ts";
 
 interface LayoutAreaProps {
     appState: AppState;
 }
 
 export function LayoutArea({appState}: LayoutAreaProps) {
-    const selectedLayoutType = appState.layoutType.value;
-    const layoutModel = getLayoutModel(selectedLayoutType, appState.layoutOptions, appState.mapping.value, appState.layoutSplit);
     const split = appState.layoutSplit.value == LayoutSplit.TwoPiece;
 
     return (
@@ -20,12 +19,15 @@ export function LayoutArea({appState}: LayoutAreaProps) {
             <TopBar layoutSignal={appState.layoutType} layoutOptions={appState.layoutOptions}/>
             <KeyboardSvg>
                 <RowBasedKeyboard
-                    layoutModel={layoutModel}
+                    layoutModel={appState.layoutModel.value}
                     flexMapping={appState.mapping.value}
                     mappingDiff={appState.mappingDiff.value}
                     vizType={appState.vizType.value}
                     split={split}
                 />
+                {appState.vizType.value == VisualizationType.MappingBigrams &&
+                    <BigramLines bigrams={getBigramMovements(getKeyPositions(appState.mapping.value, appState.layoutModel.value, split))}/>
+                }
             </KeyboardSvg>
             <LayoutOptionsBar state={appState}/>
         </div>
