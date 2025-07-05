@@ -137,12 +137,12 @@ const totalWidth = 17;
 // in key units
 const horizontalPadding = 0.5;
 
-export function getKeyPositions(flexMapping: FlexMapping, layoutModel: RowBasedLayoutModel, split: boolean): Record<string, KeyPosition> {
+export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean, flexMapping: FlexMapping): KeyPosition[] {
     const fullMapping = fillMapping(layoutModel, flexMapping);
     const rowWidth = fullMapping.map((row, r) =>
         2 * (horizontalPadding + layoutModel.rowStart(r)) + sum(row.map((_, c) => layoutModel.keyWidth(r, c)))
     );
-    let result: Record<string, KeyPosition> = {};
+    let result: KeyPosition[] = [];
     for (let row = 0; row < 5; row++) {
         let colPos = horizontalPadding + layoutModel.rowStart(row);
         // for non-split boards, apply some white space on the left to make them centered.
@@ -150,15 +150,19 @@ export function getKeyPositions(flexMapping: FlexMapping, layoutModel: RowBasedL
         fullMapping[row].forEach((label, col) => {
             // to show the board as split, add some extra space after the split column.
             if (split && (col == layoutModel.splitColumns[row])) colPos += totalWidth - rowWidth[row];
-            result[label] = {
+            result.push({
+                label,
                 row,
                 col,
                 colPos,
                 finger: layoutModel.mainFingerAssignment[row][col],
                 hasAltFinger: layoutModel.hasAltFinger(row, col)
-            };
+            });
             colPos += layoutModel.keyWidth(row, col);
         });
     }
     return result;
 }
+
+export const getKeyPositionsByLabel = (positions: KeyPosition[]): Record<string, KeyPosition> =>
+    Object.fromEntries(positions.map(p => [p.label, p]));

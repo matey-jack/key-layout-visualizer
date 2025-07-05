@@ -3,14 +3,15 @@ import {
     bigramEffort,
     BigramList,
     BigramMovement,
-    BigramType, FlexMapping,
+    BigramType,
+    FlexMapping,
     hand,
     isThumb,
     KeyPosition,
-    LayoutSplit, RowBasedLayoutModel
+    RowBasedLayoutModel
 } from "./base-model.ts";
 import {sum} from "./library/math.ts";
-import {getKeyPositions} from "./layout/layout-functions.ts";
+import {getKeyPositions, getKeyPositionsByLabel} from "./layout/layout-functions.ts";
 
 export function getBigramType(a: KeyPosition, b: KeyPosition): BigramType {
     if (isThumb(a.finger) || isThumb(b.finger)) return BigramType.InvolvesThumb;
@@ -26,8 +27,9 @@ export function getBigramType(a: KeyPosition, b: KeyPosition): BigramType {
     return BigramType.OppositeRow;
 }
 
-export function getBigramMovements(positions: Record<string, KeyPosition>): BigramMovement[] {
+export function getBigramMovements(positionsList: KeyPosition[]): BigramMovement[] {
     const list = bigrams.data as BigramList;
+    const positions = getKeyPositionsByLabel(positionsList);
     return list.map(([[a, b], count], rank) => {
         const type = getBigramType(positions[a], positions[b]);
         return {
@@ -46,6 +48,10 @@ export function getBigramMovements(positions: Record<string, KeyPosition>): Bigr
 export function sumBigramScores(layout: RowBasedLayoutModel, mapping: FlexMapping): number {
     // We don't need to pass a "split" value, because we don't use the colPos values in the result.
     // And the very important difference between split/bar ortho layout is already included in the model.
-    const movements = getBigramMovements(getKeyPositions(mapping, layout, false));
-    return Math.round(sum(movements.map((m) => m.frequency * bigramEffort[m.type] / 10000)));
+    const movements = getBigramMovements(getKeyPositions(layout, false, mapping));
+    const frequencyTotal = sum(movements.map((m) => m.frequency));
+    const scores = movements.map((m) =>
+        m.frequency * bigramEffort[m.type] * 1000 / frequencyTotal
+    );
+    return Math.round(sum(scores));
 }

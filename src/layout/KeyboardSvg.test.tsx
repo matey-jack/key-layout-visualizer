@@ -4,16 +4,17 @@ import {RowBasedKeyboard} from './KeyboardSvg.tsx';
 import {qwertyMapping} from "../mapping/mappings.ts";
 import {VisualizationType} from "../base-model.ts";
 import {ansiLayoutModel} from "./ansiLayoutModel.ts";
+import {getKeyPositions} from "./layout-functions.ts";
 
 // Test key rendering
 describe('Key rendering', () => {
-    it('renders correct number of keys for Harmonic 13', () => {
+    it('renders correct number of keys for ANSI', () => {
+        const keyPositions = getKeyPositions(ansiLayoutModel, true, qwertyMapping)
         const { container } = render(<RowBasedKeyboard
             layoutModel={ansiLayoutModel}
-            flexMapping={qwertyMapping}
+            keyPositions={keyPositions}
             vizType={VisualizationType.LayoutEffort}
             mappingDiff={{}}
-            split={true}
         />);
         const keys = container.querySelectorAll('.key-outline');
         expect(keys.length).toBe(14+14+13+12+8);

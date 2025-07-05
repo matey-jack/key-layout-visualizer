@@ -1,16 +1,15 @@
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping/mapping-functions.ts";
-import {fillMapping, isHomeKey, lettersAndVIP} from "./layout-functions.ts";
-import {sum} from '../library/math.ts';
+import {isHomeKey, lettersAndVIP} from "./layout-functions.ts";
 import {
     BigramMovement,
     BigramType,
     Finger,
-    FlexMapping,
+    KeyPosition,
     MappingChange,
     RowBasedLayoutModel,
     VisualizationType
 } from "../base-model.ts";
-import {ComponentChildren, JSX} from "preact";
+import {ComponentChildren} from "preact";
 
 interface KeyboardSvgProps {
     children?: ComponentChildren;
@@ -94,12 +93,9 @@ export function Key({col, ribbonClass, backgroundClass, label, row, width}: KeyP
 
 export interface KeyboardProps {
     layoutModel: RowBasedLayoutModel;
-    flexMapping: FlexMapping;
     mappingDiff: Record<string, MappingChange>;
+    keyPositions: KeyPosition[];
     vizType: VisualizationType;
-    // We split all keyboards by moving their outer edges to a width of 17 units.
-    // In both split and unsplit case, the keyboard will be centered.
-    split: boolean;
 }
 
 export function getEffortClass(effort: number) {
@@ -136,45 +132,27 @@ function getFingeringClasses(layoutModel: RowBasedLayoutModel, row: number, col:
     return bgClass + " " + borderClass;
 }
 
-// TODO: rewrite this using the function getKeyPositions() from layout-functions.ts
-export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, vizType, split}: KeyboardProps) {
-    const totalWidth = 17;
-    const horizontalPadding = 0.5;
-
-    const fullMapping = fillMapping(layoutModel, flexMapping);
-    const rowWidth = fullMapping.map((row, r) =>
-        2 * (horizontalPadding + layoutModel.rowStart(r)) + sum(row.map((_, c) => layoutModel.keyWidth(r, c)))
-    );
-    let keys: JSX.Element[] = [];
-    for (let row = 0; row < 5; row++) {
-        let colPos = horizontalPadding + layoutModel.rowStart(row);
-        if (!split) colPos += (totalWidth - rowWidth[row]) / 2;
-        fullMapping[row].forEach((label, col) => {
-            // to show the board as split, add some extra space after the split column.
-            if (split && (col == layoutModel.splitColumns[row])) colPos += totalWidth - rowWidth[row];
-            const width = layoutModel.keyWidth(row, col);
-            const bgClass = vizType == VisualizationType.LayoutEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
-                : vizType == VisualizationType.LayoutFingering && !isNaN(layoutModel.mainFingerAssignment[row][col])
-                    ? getFingeringClasses(layoutModel, row, col, label)
-                    : isHomeKey(layoutModel, row, col) ? "home-key"
-                        : "";
-            const ribbonClass = vizType == VisualizationType.MappingDiff && lettersAndVIP.test(label)
-                ? ribbonClassByDiff[mappingDiff[label]]
-                : undefined;
-            const key = <Key
-                label={label}
-                backgroundClass={bgClass}
-                ribbonClass={ribbonClass}
-                row={row}
-                col={colPos}
-                width={width}
-                key={row + ',' + col}
-            />
-            colPos += width;
-            keys.push(key);
-        });
-    }
-    return <>{keys}</>
+export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizType}: KeyboardProps) {
+    return keyPositions.map(({label, row, col, colPos}) => {
+        const width = layoutModel.keyWidth(row, col);
+        const bgClass = vizType == VisualizationType.LayoutEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
+            : vizType == VisualizationType.LayoutFingering && !isNaN(layoutModel.mainFingerAssignment[row][col])
+                ? getFingeringClasses(layoutModel, row, col, label)
+                : isHomeKey(layoutModel, row, col) ? "home-key"
+                    : "";
+        const ribbonClass = vizType == VisualizationType.MappingDiff && lettersAndVIP.test(label)
+            ? ribbonClassByDiff[mappingDiff[label]]
+            : undefined;
+        return <Key
+            label={label}
+            backgroundClass={bgClass}
+            ribbonClass={ribbonClass}
+            row={row}
+            col={colPos}
+            width={width}
+            key={row + ',' + col}
+        />
+    })
 }
 
 export const bigramClassByType: Record<BigramType, string> = {
@@ -193,15 +171,11 @@ export interface BigramLinesProps {
 }
 
 export function BigramLines({bigrams}: BigramLinesProps) {
-    return <>
-        {
-            bigrams.map((pair) => {
+    return bigrams.map((pair) => {
                 const offset = Math.abs(pair.a.col - pair.b.col);
                 return pair.draw && <line
                     x1={keyUnit * (pair.a.colPos + 0.5)} y1={keyUnit * (pair.a.row + 0.5 - offset / 10)}
                     x2={keyUnit * (pair.b.colPos + 0.5)} y2={keyUnit * (pair.b.row + 0.5)}
                     className={`bigram-line bigram-rank-${pair.rank} ` + bigramClassByType[pair.type]}/>
-            })
-        }
-    </>
+            });
 }

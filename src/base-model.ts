@@ -85,6 +85,8 @@ export const isThumb = (finger: Finger) =>
     finger == Finger.RThumb || finger == Finger.LThumb;
 
 export interface KeyPosition {
+    label: string;
+
     // Logical positions, that is, indices to the layout-arrays.
     row: number;
     col: number;

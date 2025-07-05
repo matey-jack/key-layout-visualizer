@@ -1,7 +1,7 @@
 import {LayoutSplit, LayoutType, VisualizationType} from "../base-model.ts";
 import {AppState, LayoutOptionsState} from "../app-model.ts";
 import {BigramLines, KeyboardSvg, RowBasedKeyboard} from "./KeyboardSvg.tsx";
-import {getLayoutModel} from "./layout-functions.ts";
+import {getKeyPositions, getLayoutModel} from "./layout-functions.ts";
 import {Signal} from "@preact/signals";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
@@ -12,6 +12,7 @@ interface LayoutAreaProps {
 
 export function LayoutArea({appState}: LayoutAreaProps) {
     const split = appState.layoutSplit.value == LayoutSplit.TwoPiece;
+    const keyPositions = getKeyPositions(appState.layoutModel.value, split, appState.mapping.value);
 
     return (
         <div>
@@ -19,10 +20,9 @@ export function LayoutArea({appState}: LayoutAreaProps) {
             <KeyboardSvg>
                 <RowBasedKeyboard
                     layoutModel={appState.layoutModel.value}
-                    flexMapping={appState.mapping.value}
+                    keyPositions={keyPositions}
                     mappingDiff={appState.mappingDiff.value}
                     vizType={appState.vizType.value}
-                    split={split}
                 />
                 {appState.vizType.value == VisualizationType.MappingBigrams &&
                     <BigramLines bigrams={appState.bigramMovements.value}/>

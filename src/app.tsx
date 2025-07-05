@@ -8,7 +8,7 @@ import {MappingList} from "./mapping/MappingArea.tsx";
 import {DetailsArea} from "./details/DetailsArea.tsx";
 import {computed, effect, signal, Signal} from "@preact/signals";
 import {ComponentChildren} from "preact";
-import {diffToQwerty, getKeyPositions, getLayoutModel} from "./layout/layout-functions.ts";
+import {diffToQwerty, getKeyPositions, getKeyPositionsByLabel, getLayoutModel} from "./layout/layout-functions.ts";
 import {qwertyMapping} from "./mapping/mappings.ts";
 import {getBigramMovements} from "./bigrams.ts";
 
@@ -40,7 +40,7 @@ export function createAppState(): AppState {
     )
     const bigramMovements = computed(() => {
             const split = appState.layoutSplit.value == LayoutSplit.TwoPiece;
-            return getBigramMovements(getKeyPositions(appState.mapping.value, appState.layoutModel.value, split));
+            return getBigramMovements(getKeyPositions(layoutModel.value, split, mapping.value));
         }
     )
     return {layoutType, layoutOptions, layoutSplit, layoutModel, mapping, vizType, mappingDiff, bigramMovements};
