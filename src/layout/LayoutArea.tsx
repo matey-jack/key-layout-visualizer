@@ -34,7 +34,6 @@ export function LayoutArea({appState}: LayoutAreaProps) {
     )
 }
 
-
 interface TopBarProps {
     layoutSignal: Signal<LayoutType>
     layoutOptions: LayoutOptionsState

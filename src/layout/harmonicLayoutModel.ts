@@ -84,7 +84,7 @@ export const harmonicLayoutModel: RowBasedLayoutModel = {
     ],
 
     hasAltFinger: (row: number, col: number) =>
-        (row = KeyboardRows.Upper || row == KeyboardRows.Lower) &&
+        (row == KeyboardRows.Upper || row == KeyboardRows.Lower) &&
         ([1, 2, 3, 8, 9, 10].includes(col)),
 
     singleKeyEffort: [
