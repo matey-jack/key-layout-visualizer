@@ -13,7 +13,7 @@ describe('Key rendering', () => {
         const { container } = render(<RowBasedKeyboard
             layoutModel={ansiLayoutModel}
             keyPositions={keyPositions}
-            vizType={VisualizationType.LayoutEffort}
+            vizType={VisualizationType.LayoutKeyEffort}
             mappingDiff={{}}
         />);
         const keys = container.querySelectorAll('.key-outline');

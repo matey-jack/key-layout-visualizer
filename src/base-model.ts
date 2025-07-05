@@ -24,7 +24,7 @@ export enum KeyboardRows {
 }
 
 export enum VisualizationType {
-    LayoutEffort,
+    LayoutKeyEffort,
     LayoutFingering,
     LayoutAngle,
     MappingDiff,
@@ -33,7 +33,7 @@ export enum VisualizationType {
 }
 
 export const isLayoutViz = (t: VisualizationType) =>
-    [VisualizationType.LayoutEffort, VisualizationType.LayoutFingering, VisualizationType.LayoutAngle].includes(t)
+    [VisualizationType.LayoutKeyEffort, VisualizationType.LayoutFingering, VisualizationType.LayoutAngle].includes(t)
 
 export interface FlexMapping {
     name: string;
@@ -106,7 +106,6 @@ export interface KeyPosition {
 export const SKE_HOME = 0.2;
 export const SKE_LF_UP = 1;
 export const SKE_NEIGHBOR = 1.5;
-export const SKE_PINKY_UP = 2;
 export const SKE_INCONV_NEIGHBOR = 2;
 export const SKE_AWAY = 3;
 

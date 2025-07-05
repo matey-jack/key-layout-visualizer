@@ -27,6 +27,8 @@ export function getBigramType(a: KeyPosition, b: KeyPosition): BigramType {
     return BigramType.OppositeRow;
 }
 
+export const bigramRankSize = 40;
+
 export function getBigramMovements(positionsList: KeyPosition[]): BigramMovement[] {
     const list = bigrams.data as BigramList;
     const positions = getKeyPositionsByLabel(positionsList);
@@ -38,11 +40,21 @@ export function getBigramMovements(positionsList: KeyPosition[]): BigramMovement
             frequency: count,
             // TODO: alternatively derive the rank directly from the log or the root of the frequency
             // maybe we should even set the stroke-width directly according to a formula, not a mapping.
-            rank: 1 + Math.floor(rank / 40),
+            rank: 1 + Math.floor(rank / bigramRankSize),
             type,
             draw: type != BigramType.OtherHand && type != BigramType.InvolvesThumb,
         }
     })
+}
+
+export function bigramFrequencyByType(layout: RowBasedLayoutModel, mapping: FlexMapping): Record<BigramType, number> {
+    const movements = getBigramMovements(getKeyPositions(layout, false, mapping));
+    const frequencyTotal = sum(movements.map((m) => m.frequency));
+    const frequencyByType: Record<BigramType, number> = {};
+    movements.forEach((m) => {
+        frequencyByType[m.type] = (frequencyByType[m.type] || 0) + (m.frequency * 1000 / frequencyTotal);
+    });
+    return frequencyByType;
 }
 
 export function sumBigramScores(layout: RowBasedLayoutModel, mapping: FlexMapping): number {

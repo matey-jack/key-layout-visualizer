@@ -135,7 +135,7 @@ function getFingeringClasses(layoutModel: RowBasedLayoutModel, row: number, col:
 export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizType}: KeyboardProps) {
     return keyPositions.map(({label, row, col, colPos}) => {
         const width = layoutModel.keyWidth(row, col);
-        const bgClass = vizType == VisualizationType.LayoutEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
+        const bgClass = vizType == VisualizationType.LayoutKeyEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
             : vizType == VisualizationType.LayoutFingering && !isNaN(layoutModel.mainFingerAssignment[row][col])
                 ? getFingeringClasses(layoutModel, row, col, label)
                 : isHomeKey(layoutModel, row, col) ? "home-key"

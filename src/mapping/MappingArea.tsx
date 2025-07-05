@@ -20,7 +20,7 @@ export function MappingList({appState}: MappingListProps) {
         <tr class="mapping-list-header">
             <td>Mapping Name</td>
             <td>Learnability Score</td>
-            <td>Typing Effort Score</td>
+            <td>Typing Effort Score<br/>(Single / Bigram)</td>
         </tr>
         </thead>
         <tbody>

@@ -68,7 +68,7 @@ export function VisualizationSwitches({vizType}: VisualizationSwitchesProps) {
             Layout Visualizations:
             <VizTypeButton vizType={VisualizationType.LayoutFingering} signal={vizType}>Fingering</VizTypeButton>
             <VizTypeButton vizType={VisualizationType.LayoutAngle} signal={vizType}>Angle</VizTypeButton>
-            <VizTypeButton vizType={VisualizationType.LayoutEffort} signal={vizType}>Single-Key Effort</VizTypeButton>
+            <VizTypeButton vizType={VisualizationType.LayoutKeyEffort} signal={vizType}>Single-Key Effort</VizTypeButton>
         </div>
         <div>
             Mapping Visualizations:
