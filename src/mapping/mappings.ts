@@ -19,6 +19,18 @@ export const qwertyMapping: FlexMapping = {
     ]
 }
 
+export const colemakMapping: FlexMapping = {
+    name: "Colemak",
+    description: "Released in the year 2006, the Colemak layout started a new world-wide interest in better letter mappings. " +
+        "It also pioneered the idea of leaving some crucial-for-shortcuts keys in their place. ",
+    sourceUrl: "https://en.wikipedia.org/wiki/QWERTY",
+    mapping30: [
+        "qwfpg" + "jluy;",
+        "arstd" + "hneio",
+        "zxcvb" + "km,./",
+    ]
+}
+
 export const normanMapping = {
     name: "Norman",
     sourceUrl: "https://normanlayout.info/index.html",
@@ -341,6 +353,7 @@ export const gemuetlichesMapping = {
 
 export const allMappings: FlexMapping[] = [
     qwertyMapping,
+    colemakMapping,
     normanMapping,
     minimak4Mapping,
     minimak8Mapping,

@@ -68,13 +68,13 @@ export function VisualizationSwitches({vizType}: VisualizationSwitchesProps) {
             Layout Visualizations:
             <VizTypeButton vizType={VisualizationType.LayoutFingering} signal={vizType}>Fingering</VizTypeButton>
             <VizTypeButton vizType={VisualizationType.LayoutAngle} signal={vizType}>Angle</VizTypeButton>
-            <VizTypeButton vizType={VisualizationType.LayoutEffort} signal={vizType}>Effort</VizTypeButton>
+            <VizTypeButton vizType={VisualizationType.LayoutEffort} signal={vizType}>Single-Key Effort</VizTypeButton>
         </div>
         <div>
             Mapping Visualizations:
             <VizTypeButton vizType={VisualizationType.MappingDiff} signal={vizType}>Learning</VizTypeButton>
             <VizTypeButton vizType={VisualizationType.MappingFrequeny} signal={vizType}>Letter Frequency</VizTypeButton>
-            <VizTypeButton vizType={VisualizationType.MappingBigrams} signal={vizType}>Bigrams</VizTypeButton>
+            <VizTypeButton vizType={VisualizationType.MappingBigrams} signal={vizType}>Bigram Effort</VizTypeButton>
         </div>
     </div>
 }
