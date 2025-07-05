@@ -215,13 +215,27 @@ export const thumbyMin = {
     // We could make achieve an even lower learning diff by leaving D on the home row (it's the 10th most frequent letter).
     // That's basically what Thumby Bilingual is doing!
     mappingAnsi: [
-        "-\\",
+        "-=",
         "qwdfb" + "y" + "uklp[]",
         "asrtg" + ";nioh'",
-        "zxcv" + "=" + "jm,./",
+        "zxcv" + "\\" + "jm,./",
         "e⌥",
     ],
     ansiMovedColumns: [4, 5, 5, 4],
+    mappingHarmonic: [
+        "[]",
+        "bwdf" + "-=" + "uklp",
+        "qasrtg" + ";" + "ynioh'",
+        "zxcv" + "\\/" + "jm,.",
+        "`e",
+    ],
+    mappingSplitOrtho: [
+        "",
+        "qwdfb" + "yuklp-",
+        "asrtg" + ";nioh'",
+        "zxcv=" + "jm,./",
+        "⇤\\e⇥",
+    ],
 }
 
 export const thumbyPlus = {
@@ -229,15 +243,30 @@ export const thumbyPlus = {
     description: "Draft of casual mapping with a thumb key. " +
         "Additionally improves the medium-frequency letter positions G, U, and Y. " +
         "Feel free to call it Thumby-GUY. " +
-        "If you like customizations, some other variants can be created by combining Thumby Min and Max. ",
+        "Note that to compensate for the Harmonic and Ortho layout differences, it's closer to Thumby Min on those layouts. " +
+        "If you like customizations, some other variants can be created by combining Thumby Min and Plus. ",
     mappingAnsi: [
         "⇤⇥",
         "qwdfg" + "=" + "kulp-\\",
-        "asrtb" + "jnioh'",
-        "zxcv" + ";" + "ym,./",
+        "asrtb" + "ynioh'",
+        "zxcv" + ";" + "jm,./",
         "e⌥",
     ],
     ansiMovedColumns: [4, 6, 5, 4],
+    mappingHarmonic: [
+        "⇞⇟",
+        "bwdf" + "-=" + "kulp",
+        "qasrtg" + ";" + "ynioh'",
+        "zxcv" + "⇤⇥" + "jm,.",
+        "/e",
+    ],
+    mappingSplitOrtho: [
+        "",
+        "qwdfb" + "ykulp-",
+        "asrtg" + ";nioh'",
+        "zxcv=" + "jm,./",
+        "⇤\\e⇥",
+    ],
 }
 
 export const thumbyBilingual = {
@@ -305,7 +334,7 @@ export const gemuetlichesMapping = {
         "´ß",
         "qwbf" + "öü" + "kuop",
         "zasdrg" + "'" + "hniltä",
-        "yxcv" + "/j" + "-m,.",
+        "yxcv" + "/-" + "jm,.",
         "+e"
     ],
 }

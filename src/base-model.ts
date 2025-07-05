@@ -185,9 +185,10 @@ export const BigramEffort = [
     0,
     0,
     4,
+    1,
     2,
-    0,
     // this is fun to type, so gives a rebate on effort.
     -1,
+    0,
     2,
 ];

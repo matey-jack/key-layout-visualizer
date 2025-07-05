@@ -1,4 +1,6 @@
 import {
+    BigramEffort,
+    BigramType,
     FlexMapping,
     isLayoutViz,
     MappingChange,
@@ -14,7 +16,7 @@ import {
 import {AppState} from "../app-model.ts";
 import {compatibilityScore, diffSummary, diffToQwerty} from "../layout/layout-functions.ts";
 import {TruncatedText} from "../components/TruncatedText.tsx";
-import {getEffortClass} from "../layout/KeyboardSvg.tsx";
+import {bigramClassByType, getEffortClass} from "../layout/KeyboardSvg.tsx";
 import {ComponentChildren} from "preact";
 
 interface DetailsAreaProps {
@@ -50,9 +52,12 @@ export function getVizDetails(vizType: VisualizationType, layout: RowBasedLayout
         case VisualizationType.MappingDiff:
             return <DiffDetails diff={diffToQwerty(layout, mapping)}/>;
         case VisualizationType.MappingFrequeny:
-            return <p>TODO</p>;
+            return <p>
+                TODO: this should show how often each letter occurs in the average of all English texts.
+                This frequency is used to calculate the single-key Typing Effort Score.
+            </p>;
         case VisualizationType.MappingBigrams:
-            return <p>TODO</p>;
+            return <BigramDetails/>;
     }
 }
 
@@ -94,6 +99,11 @@ export function KeyEffortDetails({layout}: KeyEffortDetailsProps) {
             the home position, but the differences are mostly in details, so that a resulting evaluation of letter
             frequency times key effort should not differ strongly enough to justify a change to the layout. This is
             especially true for casual layouts which strongly limit the variation in letter placement.
+        </p>
+        <p>
+            Anyway, here are the key effort scores assigned to each color of key.
+            The first part of the Typing Effort Score is calculated using this value multiplied with the average
+            frequency of each letter.
         </p>
         <div>
             <KeyEffortLegendItem score={SKE_HOME}>
@@ -193,9 +203,51 @@ interface BigramDetailsProps {
 export function BigramDetails({}: BigramDetailsProps) {
     const bigramCap = 30;
     // const bigrams = getSameHandBigrams(bigramCap, getKeyPositions(flexMapping, layoutModel))
-    return <p>
-        The above visualization shows lines for {} letter/character pairs that are typed with the same hand.
-        In total, the top {} letter pairs in English consist of those plus {} that are typed with different hands or
-        with the thumb of the same hand (which is mostly an independent, conflict-free movement).
-    </p>
+    return <div>
+        <p>
+            Human hands on a keyboard can move fingers independently and usually will move the next finger to its key
+            while the current key is being hit. Obviously this doesn't work when both keys are to be typed by the same
+            finger or when both keys are to far away from each other.
+            The bigram effort scores give extra penalties to key mappings which make this happen for letter pairs that
+            occur very often together. Here is a legend of the scores I used.
+        </p>
+        <BigramDetailsLegendItem bigramType={BigramType.SameFinger}>
+            The worst thing to happen is having to use the same finger subsequently on different keys.
+            We count this as highest effort.
+        </BigramDetailsLegendItem>
+        <BigramDetailsLegendItem bigramType={BigramType.AltFinger}>
+            When the keyboard layout makes it easy to type some keys with another finger, the single finger bottleneck
+            can be avoided. (Maybe you noticed yourself typing "er", "cd", or "un" with two different fingers, although
+            strict touchtyping rules assign the same finger to both keys.
+        </BigramDetailsLegendItem>
+        <BigramDetailsLegendItem bigramType={BigramType.SameRow}>
+            Two keys on the same row are so easy and fun to type, that I assign an effort rebate for this case.
+        </BigramDetailsLegendItem>
+        <BigramDetailsLegendItem bigramType={BigramType.NeighboringRow}>
+            Two keys on neighboring rows are no extra effort.
+        </BigramDetailsLegendItem>
+        <BigramDetailsLegendItem bigramType={BigramType.OppositeRow}>
+            Two keys on opposite rows (upper and lower letter row) are awkward to type in sequence,
+            because curling a finger moves the palm up and stretching a finger moves the palm down.
+        </BigramDetailsLegendItem>
+        <p>
+            The visualization doesn't show when two subsequent letters are typed with two different hands,
+            or if one is typed by a thumb.
+        </p>
+    </div>
+}
+
+interface BigramDetailsLegendItemProps {
+    bigramType: BigramType;
+    children?: ComponentChildren;
+}
+
+export function BigramDetailsLegendItem({bigramType, children}: BigramDetailsLegendItemProps) {
+    return <div>
+        <div class={"bigram-effort-legend-item " + bigramClassByType[bigramType]}>
+            {BigramEffort[bigramType]}
+        </div>
+        {children}
+    </div>
+
 }

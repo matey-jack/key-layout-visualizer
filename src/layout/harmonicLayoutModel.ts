@@ -11,7 +11,7 @@ import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../
     doesn't even exist on the Harmonic.
  */
 const fullMapping: LayoutMapping = [
-    ["Esc", "1", "2", "3", "4", "5", "6", 0, "7", "8", "9", "0", 1],
+    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, 1],
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"],
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
@@ -22,7 +22,7 @@ const fullMapping: LayoutMapping = [
 // (`-` here is neighbor of a home-row key. Very fitting for the third most popular punctuation character!)
 // Remember that the four punctuation keys `,.;/` are part of the flexMapping set.
 const thirtyKeyMappingWithNavKeys: LayoutMapping = [
-    ["Esc", "1", "2", "3", "4", "5", "6", "⇤", "7", "8", "9", "0", "⇥"],
+    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⇤", "⇥"],
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"],
     ["-", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
@@ -30,7 +30,7 @@ const thirtyKeyMappingWithNavKeys: LayoutMapping = [
 ];
 
 const thirtyKeyMapping: LayoutMapping = [
-    ["Esc", "1", "2", "3", "4", "5", "6", "-", "7", "8", "9", "0", "="],
+    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="],
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"],
     ["`", 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, 9, "'"],
     // The move of key 9 to the middle is a change required to keep the key-to-finger assignments the same as on the ANSI layout.

@@ -177,13 +177,13 @@ export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, vizType
     return <>{keys}</>
 }
 
-const bigramClassByType: Record<BigramType, string> = {
+export const bigramClassByType: Record<BigramType, string> = {
     [BigramType.SameRow]: "same-row",
     [BigramType.NeighboringRow]: "neighboring-row",
     [BigramType.OppositeRow]: "opposite-row",
     [BigramType.OppositeLateral]: "opposite-lateral",
     [BigramType.AltFinger]: "alt-finger",
-    [BigramType.SameFinger]: "same-finger",
+    [BigramType.SameFinger]: "same-finger-bigram",
     [BigramType.OtherHand]: "",
     [BigramType.InvolvesThumb]: ""
 }

@@ -25,7 +25,7 @@ export function getBigramMovements(positions: Record<string, KeyPosition>): Bigr
             frequency: count,
             // TODO: alternatively derive the rank directly from the log or the root of the frequency
             // maybe we should even set the stroke-width directly according to a formula, not a mapping.
-            rank: 1 + Math.floor(rank / 30),
+            rank: 1 + Math.floor(rank / 40),
             type,
             draw: type != BigramType.OtherHand && type != BigramType.InvolvesThumb,
         }

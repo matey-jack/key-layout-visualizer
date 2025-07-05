@@ -97,12 +97,12 @@ body {
     background-color: #f3eaac;
 }
 
-.same-hand{
+.same-hand {
     fill: #f6d187;
     background-color: #f6d187;
 }
 
-.swap-hands{
+.swap-hands {
     fill: #f3bfac;
     background-color: #f3bfac;
 }
@@ -134,40 +134,73 @@ body {
     stroke: green;
 }
 
-.bigram-line.neighboring-row{
+.bigram-line.neighboring-row {
     stroke: yellow;
 }
 
-.bigram-line.opposite-row{
+.bigram-line.opposite-row {
     stroke: orange;
 }
 
-.bigram-line.opposite-lateral{
+.bigram-line.opposite-lateral {
     stroke: orange;
 }
 
-.bigram-line.alt-finger{
+.bigram-line.alt-finger {
     stroke: blue;
 }
 
-.bigram-line.same-finger{
+.bigram-line.same-finger-bigram {
     stroke: red;
 }
 
 .bigram-line.bigram-rank-1 {
-    stroke-width: 4px;
+    stroke-width: 6px;
 }
 
 .bigram-line.bigram-rank-2 {
-    stroke-width: 3px;
+    stroke-width: 4px;
 }
 
 .bigram-line.bigram-rank-3 {
-    stroke-width: 2px;
+    stroke-width: 3px;
 }
 
 .bigram-line.bigram-rank-4 {
-    stroke-width: 1px;
+    stroke-width: 2px;
+}
+
+.bigram-effort-legend-item {
+    display: inline-block;
+    text-align: center;
+    width: 3rem;
+    padding: 0.2rem;
+    margin: 0.1rem;
+}
+
+.bigram-effort-legend-item.same-row {
+    background-color: green;
+}
+
+.bigram-effort-legend-item.neighboring-row {
+    background-color: yellow;
+}
+
+.bigram-effort-legend-item.opposite-row {
+    background-color: orange;
+}
+
+.bigram-effort-legend-item.opposite-lateral {
+    background-color: orange;
+}
+
+.bigram-effort-legend-item.alt-finger {
+    background-color: blue;
+    color: white;
+}
+
+.bigram-effort-legend-item.same-finger-bigram {
+    background-color: red;
 }
 
 .toggle-text-button {
