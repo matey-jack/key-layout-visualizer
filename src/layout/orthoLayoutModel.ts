@@ -51,6 +51,8 @@ export const orthoLayoutModel: RowBasedLayoutModel = {
         [0, 0, 1, 2, 4,/**/5, 5, 7, 8, 9, 9],
     ],
 
+    hasAltFinger: (_r, _c) => false,
+
     singleKeyEffort: [
         [NaN, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, NaN],
         [NaN, 1.5, 1, 1, 1.5, 1.5, 1.5, 1.5, 1, 1, 1.5, 2],

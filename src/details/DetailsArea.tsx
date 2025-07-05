@@ -12,7 +12,7 @@ import {
     VisualizationType
 } from "../base-model.ts";
 import {AppState} from "../app-model.ts";
-import {compatibilityScore, diffSummary, diffToQwerty, getKeyPositions} from "../layout/layout-functions.ts";
+import {compatibilityScore, diffSummary, diffToQwerty} from "../layout/layout-functions.ts";
 import {TruncatedText} from "../components/TruncatedText.tsx";
 import {getEffortClass} from "../layout/KeyboardSvg.tsx";
 import {ComponentChildren} from "preact";

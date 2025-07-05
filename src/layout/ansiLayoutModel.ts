@@ -50,6 +50,9 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         [0, 0, 1, 5, 7, 8, 9, 9],
     ],
 
+    hasAltFinger: (row: number, col: number) =>
+        (row == KeyboardRows.Lower) && ([1, 2, 3, 7, 8, 9].includes(col)),
+
     /*
         0.2 for Home Keys (incl. thumb, if present) – 8 or 9 keys, since I don't have any layout proposal with two thumbs hitting letters.
         1   for long finger upper letter row keys – 4 keys
@@ -126,6 +129,10 @@ export function customAnsiWideLayoutModel(movedColumns: number[]): RowBasedLayou
             [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9],
             [0, 0, 1, 5, 5, 8, 9, 9],
         ],
+
+        hasAltFinger: (row: number, col: number) =>
+            (row == KeyboardRows.Lower) && ([1, 2, 3, 8, 9, 10].includes(col)),
+
         singleKeyEffort: widenSingleKeyEffort(moveRightHand(singleKeyEffort, splitColumns, movedColumns)),
     }
 }

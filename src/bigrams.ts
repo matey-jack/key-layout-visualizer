@@ -4,7 +4,10 @@ import {BigramList, BigramMovement, BigramType, hand, isThumb, KeyPosition} from
 export function getBigramType(a: KeyPosition, b: KeyPosition): BigramType {
     if (isThumb(a.finger) || isThumb(b.finger)) return BigramType.InvolvesThumb;
     if (hand(a.finger) != hand(b.finger)) return BigramType.OtherHand;
-    if (a.finger == b.finger) return BigramType.SameFinger;
+    if (a.finger == b.finger) {
+        if (a.hasAltFinger || b.hasAltFinger) return BigramType.AltFinger
+        else return BigramType.SameFinger;
+    }
     if (Math.abs(a.col - b.col) > 4) return BigramType.OppositeLateral;
 
     if (a.row == b.row) return BigramType.SameRow;
@@ -22,7 +25,7 @@ export function getBigramMovements(positions: Record<string, KeyPosition>): Bigr
             frequency: count,
             // TODO: alternatively derive the rank directly from the log or the root of the frequency
             // maybe we should even set the stroke-width directly according to a formula, not a mapping.
-            rank: 1 + Math.floor(rank/30),
+            rank: 1 + Math.floor(rank / 30),
             type,
             draw: type != BigramType.OtherHand && type != BigramType.InvolvesThumb,
         }

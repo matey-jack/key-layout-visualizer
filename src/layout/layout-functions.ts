@@ -1,10 +1,14 @@
 import {
-    FlexMapping,
     Finger,
-    RowBasedLayoutModel,
+    FlexMapping,
+    hand,
+    KeyboardRows,
+    KeyPosition,
     LayoutMapping,
+    LayoutSplit,
+    LayoutType,
     MappingChange,
-    LayoutType, LayoutSplit, KeyboardRows, hand, KeyPosition
+    RowBasedLayoutModel
 } from "../base-model.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
 import {LayoutOptionsState} from "../app-model.ts";
@@ -141,12 +145,18 @@ export function getKeyPositions(flexMapping: FlexMapping, layoutModel: RowBasedL
     let result: Record<string, KeyPosition> = {};
     for (let row = 0; row < 5; row++) {
         let colPos = horizontalPadding + layoutModel.rowStart(row);
+        // for non-split boards, apply some white space on the left to make them centered.
         if (!split) colPos += (totalWidth - rowWidth[row]) / 2;
         fullMapping[row].forEach((label, col) => {
             // to show the board as split, add some extra space after the split column.
             if (split && (col == layoutModel.splitColumns[row])) colPos += totalWidth - rowWidth[row];
-            const finger = layoutModel.mainFingerAssignment[row][col];
-            result[label] = {finger, row, col, colPos};
+            result[label] = {
+                row,
+                col,
+                colPos,
+                finger: layoutModel.mainFingerAssignment[row][col],
+                hasAltFinger: layoutModel.hasAltFinger(row, col)
+            };
             colPos += layoutModel.keyWidth(row, col);
         });
     }

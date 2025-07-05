@@ -95,10 +95,7 @@ export interface KeyPosition {
 
     // Needed for a different purpose, but convenient to have in the same structure.
     finger: Finger;
-
-    // Is the key in a different logical column than the finger operating it?
-    // TODO: might not be needed.
-    // lateral: boolean;
+    hasAltFinger: boolean;
 }
 
 // constants for common single-key effort scores
@@ -145,6 +142,8 @@ export interface RowBasedLayoutModel {
     // finger assignment and key effort arrays have the same shape (number of entries in each row) as the LayoutMappings.
     mainFingerAssignment: Finger[][];
 
+    hasAltFinger: (row: number, col: number) => boolean;
+
     singleKeyEffort: number[][];
 
     getSpecificMapping(flexMapping: FlexMapping): string[] | undefined;
@@ -165,14 +164,16 @@ export interface BigramMovement {
 }
 
 // Listed in order of priority.
-// This means that for SameFinger or OppositeLateral we don't care about the row.
+// This means that for SameFinger, AltFinger, or OppositeLateral we don't care about the row.
 // (All other cases are mutually exclusive anyway.)
 export enum BigramType {
     OtherHand,
     InvolvesThumb,
-    // TODO: add a type for not same finger when alt-fingered (TBD: should it be treated differently when on opposite rows?)
     SameFinger,
-    // TODO: we might just calculate that by column-difference between keys > 4.
+    // AltFinger applies when both keys have the same main assigned finger, but one of the keys has an alt-fingering available.
+    AltFinger,
+    // TODO: our current definition column-difference between keys > 4 does not apply to any bigram,
+    //  because pinkies have no lateral movement to letters and even on wide layouts, there are no letters in the central column.
     OppositeLateral,
     SameRow,
     NeighboringRow,

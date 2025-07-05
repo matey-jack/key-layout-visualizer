@@ -182,6 +182,7 @@ const bigramClassByType: Record<BigramType, string> = {
     [BigramType.NeighboringRow]: "neighboring-row",
     [BigramType.OppositeRow]: "opposite-row",
     [BigramType.OppositeLateral]: "opposite-lateral",
+    [BigramType.AltFinger]: "alt-finger",
     [BigramType.SameFinger]: "same-finger",
     [BigramType.OtherHand]: "",
     [BigramType.InvolvesThumb]: ""

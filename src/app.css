@@ -146,6 +146,10 @@ body {
     stroke: orange;
 }
 
+.bigram-line.alt-finger{
+    stroke: blue;
+}
+
 .bigram-line.same-finger{
     stroke: red;
 }

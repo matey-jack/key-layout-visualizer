@@ -77,11 +77,15 @@ export const harmonicLayoutModel: RowBasedLayoutModel = {
 
     mainFingerAssignment: [
         [1, 1, 2, 2, 3, 3, 6, 6, 6, 7, 7, 8, 8],
-        [0, 1, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9],
+        [0, 1, 1, 2, 3, 3, 6, 6, 7, 8, 8, 9],
         [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
-        [0, 1, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9],
+        [0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9],
         [0, 1, 2, 4, 4, 5, 5, 7, 8, 9],
     ],
+
+    hasAltFinger: (row: number, col: number) =>
+        (row = KeyboardRows.Upper || row == KeyboardRows.Lower) &&
+        ([1, 2, 3, 8, 9, 10].includes(col)),
 
     singleKeyEffort: [
         [3, 3, 2, 2, 2, 3, 3, 3, 2, 2, 2, 3, 3],
