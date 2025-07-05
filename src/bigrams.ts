@@ -1,5 +1,16 @@
 import * as bigrams from "./frequencies/english-character-pairs.json";
-import {BigramList, BigramMovement, BigramType, hand, isThumb, KeyPosition} from "./base-model.ts";
+import {
+    bigramEffort,
+    BigramList,
+    BigramMovement,
+    BigramType, FlexMapping,
+    hand,
+    isThumb,
+    KeyPosition,
+    LayoutSplit, RowBasedLayoutModel
+} from "./base-model.ts";
+import {sum} from "./library/math.ts";
+import {getKeyPositions} from "./layout/layout-functions.ts";
 
 export function getBigramType(a: KeyPosition, b: KeyPosition): BigramType {
     if (isThumb(a.finger) || isThumb(b.finger)) return BigramType.InvolvesThumb;
@@ -30,4 +41,11 @@ export function getBigramMovements(positions: Record<string, KeyPosition>): Bigr
             draw: type != BigramType.OtherHand && type != BigramType.InvolvesThumb,
         }
     })
+}
+
+export function sumBigramScores(layout: RowBasedLayoutModel, mapping: FlexMapping): number {
+    // We don't need to pass a "split" value, because we don't use the colPos values in the result.
+    // And the very important difference between split/bar ortho layout is already included in the model.
+    const movements = getBigramMovements(getKeyPositions(mapping, layout, false));
+    return Math.round(sum(movements.map((m) => m.frequency * bigramEffort[m.type] / 10000)));
 }

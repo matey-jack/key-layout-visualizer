@@ -4,6 +4,7 @@ import {Signal} from "@preact/signals";
 import {allMappings} from "./mappings.ts";
 import {compatibilityScore, diffSummary, diffToQwerty} from "../layout/layout-functions.ts";
 import {weighSingleKeyEffort} from "./mapping-functions.ts";
+import {sumBigramScores} from "../bigrams.ts";
 
 export interface MappingListProps {
     appState: AppState;
@@ -24,8 +25,8 @@ export function MappingList({appState}: MappingListProps) {
         </thead>
         <tbody>
         {applicableMappings.map((mapping) => {
-                return <MappingListItem mappingData={mapping}
-                                        layoutModel={layoutModel}
+                return <MappingListItem mapping={mapping}
+                                        layout={layoutModel}
                                         selectedMapping={appState.mapping}
                 />;
             }
@@ -35,24 +36,22 @@ export function MappingList({appState}: MappingListProps) {
 }
 
 interface MappingListItemProps {
-    mappingData: FlexMapping;
-    layoutModel: RowBasedLayoutModel;
+    layout: RowBasedLayoutModel;
+    mapping: FlexMapping;
     selectedMapping: Signal<FlexMapping>;
 }
 
-export function MappingListItem(
-    {mappingData, layoutModel, selectedMapping}: MappingListItemProps
-) {
-    const isSelected = selectedMapping.value.name === mappingData.name;
+export function MappingListItem({layout, mapping, selectedMapping}: MappingListItemProps) {
+    const isSelected = selectedMapping.value.name === mapping.name;
     return <tr
         class={"mapping-list-item" + (isSelected ? " selected" : "")}
-        onClick={() => selectedMapping.value = mappingData}
+        onClick={() => selectedMapping.value = mapping}
     >
         <td>
-            <button>{mappingData.name}</button>
+            <button>{mapping.name}</button>
         </td>
-        <td>{formatDiff(diffSummary(diffToQwerty(layoutModel, mappingData)))}</td>
-        <td>{weighSingleKeyEffort(layoutModel, mappingData)}</td>
+        <td>{formatDiff(diffSummary(diffToQwerty(layout, mapping)))}</td>
+        <td>{weighSingleKeyEffort(layout, mapping)} / {sumBigramScores(layout, mapping)}</td>
     </tr>
 }
 

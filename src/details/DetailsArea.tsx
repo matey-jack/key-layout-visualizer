@@ -1,5 +1,5 @@
 import {
-    BigramEffort,
+    bigramEffort,
     BigramType,
     FlexMapping,
     isLayoutViz,
@@ -245,7 +245,7 @@ interface BigramDetailsLegendItemProps {
 export function BigramDetailsLegendItem({bigramType, children}: BigramDetailsLegendItemProps) {
     return <div>
         <div class={"bigram-effort-legend-item " + bigramClassByType[bigramType]}>
-            {BigramEffort[bigramType]}
+            {bigramEffort[bigramType]}
         </div>
         {children}
     </div>

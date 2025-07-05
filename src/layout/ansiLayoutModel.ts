@@ -180,6 +180,7 @@ export const splitSpaceBar = (baseModel: RowBasedLayoutModel): RowBasedLayoutMod
         ...baseModel,
         fullMapping: baseModel.fullMapping && duplicateBottomMiddle(baseModel.fullMapping, KeyboardRows.Bottom, middleIdx),
         thirtyKeyMapping: baseModel.thirtyKeyMapping && duplicateBottomMiddle(baseModel.thirtyKeyMapping, KeyboardRows.Bottom, middleIdx),
+        singleKeyEffort: duplicateBottomMiddle(baseModel.singleKeyEffort, KeyboardRows.Bottom, middleIdx),
         keyWidth: (row: number, col: number): number => {
             if (row != KeyboardRows.Bottom) return baseModel.keyWidth(row, col);
             if (col < middleIdx || col > middleIdx + 1) return baseModel.keyWidth(row, col);
@@ -192,6 +193,7 @@ export const splitSpaceBar = (baseModel: RowBasedLayoutModel): RowBasedLayoutMod
 function duplicateBottomMiddle<T>(mapping: T[][], bottomIdx: number, middleIdx: number): T[][] {
     const bottom = mapping[bottomIdx];
     return [
+        // actually copy each row, so we can tweak it further without affecting the original.
         ...mapping.slice(0, bottomIdx).map((row) => [...row]),
         [...bottom.slice(0, middleIdx), bottom[middleIdx], bottom[middleIdx], ...bottom.slice(middleIdx + 1)],
     ];

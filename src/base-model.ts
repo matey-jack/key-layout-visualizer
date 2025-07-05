@@ -181,14 +181,14 @@ export enum BigramType {
 }
 
 // Indexed by BigramType!
-export const BigramEffort = [
+export const bigramEffort = [
     0,
     0,
     4,
     1,
     2,
     // this is fun to type, so gives a rebate on effort.
-    -1,
+    -0.5,
     0,
     2,
 ];
