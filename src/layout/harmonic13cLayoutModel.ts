@@ -41,10 +41,10 @@ const thirtyKeyMapping: LayoutMapping = [
 ];
 
 export interface HarmonicLayoutOptionsModel {
-    navKeys: boolean;
+    h13c: boolean;
 }
 
-export const harmonicLayoutModel: RowBasedLayoutModel = {
+export const harmonic13cLayoutModel: RowBasedLayoutModel = {
     name: "Harmonic Rows",
     description: "The Harmonic keyboard layout has a fully symmetric keyboard with only two key sizes to allow for flexible changes to the key mapping. " +
         "Its regular row stagger allows for many keys to be comfortably typed by two fingers, " +
@@ -99,6 +99,6 @@ export const harmonicLayoutModel: RowBasedLayoutModel = {
 }
 
 export const harmonicLayoutModelWithNavKeys = {
-    ...harmonicLayoutModel,
+    ...harmonic13cLayoutModel,
     mapping30keys: thirtyKeyMappingWithNavKeys,
 }

@@ -15,8 +15,9 @@ import {LayoutOptionsState} from "../app-model.ts";
 import {Signal} from "@preact/signals";
 import {ansiLayoutModel, ansiWideLayoutModel, customAnsiWideLayoutModel, splitSpaceBar} from "./ansiLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
-import {harmonicLayoutModel, harmonicLayoutModelWithNavKeys} from "./harmonicLayoutModel.ts";
+import {harmonic13cLayoutModel, harmonicLayoutModelWithNavKeys} from "./harmonic13cLayoutModel.ts";
 import {sum} from "../library/math.ts";
+import {harmonic14LayoutModel} from "./harmonic14LayoutModel.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
     if (row != KeyboardRows.Home) return false;
@@ -128,7 +129,7 @@ export function getLayoutModel(layoutType: LayoutType,
         case LayoutType.Ortho:
             return layoutSplit?.value == LayoutSplit.TwoPiece ? splitOrthoLayoutModel : orthoLayoutModel;
         case LayoutType.Harmonic:
-            return layoutOptions.harmonicLayoutOptions.value.navKeys ? harmonicLayoutModelWithNavKeys : harmonicLayoutModel;
+            return layoutOptions.harmonicLayoutOptions.value.h13c ? harmonic13cLayoutModel : harmonic14LayoutModel;
     }
 }
 

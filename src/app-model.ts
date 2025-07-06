@@ -2,7 +2,7 @@ import {ReadonlySignal, Signal} from "@preact/signals";
 import {MappingChange, RowBasedLayoutModel, FlexMapping, BigramMovement} from "./base-model.ts";
 import {LayoutSplit, LayoutType, VisualizationType} from "./base-model.ts";
 import {AnsiLayoutOptionsModel} from "./layout/ansiLayoutModel.ts";
-import {HarmonicLayoutOptionsModel} from "./layout/harmonicLayoutModel.ts";
+import {HarmonicLayoutOptionsModel} from "./layout/harmonic13cLayoutModel.ts";
 import {OrthoLayoutOptionsModel} from "./layout/orthoLayoutModel.ts";
 
 export interface AppState {

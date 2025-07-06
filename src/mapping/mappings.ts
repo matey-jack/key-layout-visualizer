@@ -163,9 +163,17 @@ export const cozyMapping = {
 
     // This is just as hypothetic as the entire concept for a Harmonic keyboard.
     // I didn't spend too much time on this... and won't until I actually build such a keyboard one day.
+    mappingHarmonic: [
+        "=",
+        "qwbf;" + "[]" + "jkulp'",
+        "asdrg" + "`" + "hniot",
+        "zxcv" + "-/" + "ym,.",
+        "\\e"
+    ],
+
     // Bottom left thumb key could alternatively be used for Delete, as on my Iris. And [] as Home/End keys.
     // (But adding PgUp/PgDn would mean more refactoring and a more complicated AltGr layer.)
-    mappingHarmonic: [
+    mappingHarmonic13c: [
         "[]",
         "qwbf" + ";j" + "kulp",
         "-asdrg" + "`" + "hniot'",
@@ -234,12 +242,19 @@ export const thumbyMin = {
         "e⌥",
     ],
     ansiMovedColumns: [4, 5, 5, 4],
-    mappingHarmonic: [
+    mappingHarmonic13c: [
         "[]",
         "bwdf" + "-=" + "uklp",
         "qasrtg" + ";" + "ynioh'",
         "zxcv" + "\\/" + "jm,.",
         "`e",
+    ],
+    mappingHarmonic: [
+        "=",
+        "qwdfb" + "`" + "juklp'\\",
+        "asrtg" + "-" + "ynioh",
+        "zxcv" + "[]" + ";m,.",
+        "⌦e/",
     ],
     mappingSplitOrtho: [
         "",
@@ -265,12 +280,19 @@ export const thumbyPlus = {
         "e⌥",
     ],
     ansiMovedColumns: [4, 6, 5, 4],
-    mappingHarmonic: [
+    mappingHarmonic13c: [
         "⇞⇟",
         "bwdf" + "-=" + "kulp",
         "qasrtg" + ";" + "ynioh'",
         "zxcv" + "⇤⇥" + "jm,.",
         "/e",
+    ],
+    mappingHarmonic: [
+        "=",
+        "qwdfb" + "`" + "jkulp'\\",
+        "asrtg" + "-" + "ynioh",
+        "zxcv" + "⇤⇥" + ";m,.",
+        "⌦e/",
     ],
     mappingSplitOrtho: [
         "",
@@ -342,12 +364,19 @@ export const gemuetlichesMapping = {
      Finally, with `Z` I am not completely sure: it's still a bit awkward to think about this "new" left off-home position
      although the symmetric position on the right has always been a character key in ANSI, even a letter in German.
  */
-    mappingHarmonic: [
+    mappingHarmonic13c: [
         "´ß",
         "qwbf" + "öü" + "kuop",
         "zasdrg" + "'" + "hniltä",
         "yxcv" + "/-" + "jm,.",
         "+e"
+    ],
+    mappingHarmonic: [
+        "ß",
+        "qwbfö" + "´ä" + "zkuopü",
+        "asdrg" + "'" + "hnilt",
+        "yxcv" + "/-" + "jm,.",
+        "\\e+"
     ],
 }
 
