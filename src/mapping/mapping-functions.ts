@@ -4,7 +4,7 @@ import {fillMapping} from "../layout/layout-functions.ts";
 
 // We don't use Unicode ranges, because we might later map some other Unicode symbols, that are actually charaters to insert.
 // Examples: × or ¢ or the "per mille" sign
-const keyboardSymbols = "↹⌫⇧⍽⏎";
+const keyboardSymbols = "↹⌫⇧⍽⏎¤⌥";
 
 export const isKeyboardSymbol = (label: string) => keyboardSymbols.includes(label);
 

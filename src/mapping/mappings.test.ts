@@ -1,7 +1,8 @@
 import {describe, expect, it} from "vitest";
 import {allMappings} from "./mappings.ts";
 import {ansiLayoutModel} from "../layout/ansiLayoutModel.ts";
-import {harmonicLayoutModel} from "../layout/harmonicLayoutModel.ts";
+import {harmonic13cLayoutModel} from "../layout/harmonic13cLayoutModel.ts";
+import {harmonic14LayoutModel} from "../layout/harmonic14LayoutModel.ts";
 import {splitOrthoLayoutModel} from "../layout/orthoLayoutModel.ts";
 
 const rowLengths = (mapping: any[][]): number[] =>
@@ -50,7 +51,7 @@ describe('flex mappings consistency', () => {
         if (mappingHarmonic) {
             it(mapping.name + " – Harmonic – array shape", () => {
                 expect(mappingHarmonic.length).toBe(5);
-                rowLengths(harmonicLayoutModel.fullMapping).forEach((expected, row) => {
+                rowLengths(harmonic14LayoutModel.fullMapping).forEach((expected, row) => {
                     expect(mappingHarmonic[row].length, `row ${row}`).toBe(expected);
                 });
             });

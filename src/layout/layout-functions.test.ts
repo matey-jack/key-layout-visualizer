@@ -10,12 +10,12 @@ import {
 import {cozyMapping, normanMapping, qwertyMapping} from "../mapping/mappings.ts"
 import {harmonicComparisonBaseline} from "../mapping/harmonic-mappings.ts";
 import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
-import {harmonicLayoutModel} from "./harmonicLayoutModel.ts";
+import {harmonic13cLayoutModel} from "./harmonic13cLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 
 describe('fillMapping', () => {
     it('Harmonic layout 30-key qwerty', () => {
-        const actual = fillMapping(harmonicLayoutModel, qwertyMapping);
+        const actual = fillMapping(harmonic13cLayoutModel, qwertyMapping);
         expect(actual[0]).toStrictEqual(["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="]);
         expect(actual[1]).toStrictEqual(["↹", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "⌫",]);
         expect(actual[2]).toStrictEqual(["`", "a", "s", "d", "f", "g", "\\", "h", "j", "k", "l", ";", "'"]);
@@ -24,8 +24,8 @@ describe('fillMapping', () => {
     });
 
     it('Harmonic layout full qwerty', () => {
-        const with30 = fillMapping(harmonicLayoutModel, qwertyMapping);
-        const full = fillMapping(harmonicLayoutModel, harmonicComparisonBaseline);
+        const with30 = fillMapping(harmonic13cLayoutModel, qwertyMapping);
+        const full = fillMapping(harmonic13cLayoutModel, harmonicComparisonBaseline);
         with30.forEach((row30, r) => {
             expect(row30).toStrictEqual(full[r])
         })
@@ -34,7 +34,7 @@ describe('fillMapping', () => {
 
 const allLayoutModels = {
     'ANSI': ansiLayoutModel,
-    'Harmonic': harmonicLayoutModel,
+    'Harmonic': harmonic13cLayoutModel,
     'Ortho': orthoLayoutModel,
     'Split Ortho': splitOrthoLayoutModel,
 };

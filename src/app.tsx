@@ -19,7 +19,7 @@ export function createAppState(): AppState {
     const layoutSplit = signal(LayoutSplit.Bar);
     const layoutOptions = {
         ansiLayoutOptions: signal({wide: false}),
-        harmonicLayoutOptions: signal({navKeys: false}),
+        harmonicLayoutOptions: signal({h13c: false}),
         orthoLayoutOptions: signal({thumbKeys: true}),
     };
     const layoutModel = computed(() =>
