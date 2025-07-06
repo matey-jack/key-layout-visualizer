@@ -50,6 +50,9 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         [0, 0, 1, 5, 7, 8, 9, 9],
     ],
 
+    hasAltFinger: (row: number, col: number) =>
+        (row == KeyboardRows.Lower) && ([1, 2, 3, 7, 8, 9].includes(col)),
+
     /*
         0.2 for Home Keys (incl. thumb, if present) – 8 or 9 keys, since I don't have any layout proposal with two thumbs hitting letters.
         1   for long finger upper letter row keys – 4 keys
@@ -126,6 +129,10 @@ export function customAnsiWideLayoutModel(movedColumns: number[]): RowBasedLayou
             [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9],
             [0, 0, 1, 5, 5, 8, 9, 9],
         ],
+
+        hasAltFinger: (row: number, col: number) =>
+            (row == KeyboardRows.Lower) && ([1, 2, 3, 8, 9, 10].includes(col)),
+
         singleKeyEffort: widenSingleKeyEffort(moveRightHand(singleKeyEffort, splitColumns, movedColumns)),
     }
 }
@@ -173,6 +180,7 @@ export const splitSpaceBar = (baseModel: RowBasedLayoutModel): RowBasedLayoutMod
         ...baseModel,
         fullMapping: baseModel.fullMapping && duplicateBottomMiddle(baseModel.fullMapping, KeyboardRows.Bottom, middleIdx),
         thirtyKeyMapping: baseModel.thirtyKeyMapping && duplicateBottomMiddle(baseModel.thirtyKeyMapping, KeyboardRows.Bottom, middleIdx),
+        singleKeyEffort: duplicateBottomMiddle(baseModel.singleKeyEffort, KeyboardRows.Bottom, middleIdx),
         keyWidth: (row: number, col: number): number => {
             if (row != KeyboardRows.Bottom) return baseModel.keyWidth(row, col);
             if (col < middleIdx || col > middleIdx + 1) return baseModel.keyWidth(row, col);
@@ -185,6 +193,7 @@ export const splitSpaceBar = (baseModel: RowBasedLayoutModel): RowBasedLayoutMod
 function duplicateBottomMiddle<T>(mapping: T[][], bottomIdx: number, middleIdx: number): T[][] {
     const bottom = mapping[bottomIdx];
     return [
+        // actually copy each row, so we can tweak it further without affecting the original.
         ...mapping.slice(0, bottomIdx).map((row) => [...row]),
         [...bottom.slice(0, middleIdx), bottom[middleIdx], bottom[middleIdx], ...bottom.slice(middleIdx + 1)],
     ];

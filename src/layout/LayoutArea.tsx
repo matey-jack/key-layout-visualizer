@@ -1,7 +1,7 @@
-import {LayoutSplit, LayoutType} from "../base-model.ts";
+import {LayoutSplit, LayoutType, VisualizationType} from "../base-model.ts";
 import {AppState, LayoutOptionsState} from "../app-model.ts";
-import {KeyboardSvg, RowBasedKeyboard} from "./KeyboardSvg.tsx";
-import {getLayoutModel} from "./layout-functions.ts";
+import {BigramLines, KeyboardSvg, RowBasedKeyboard} from "./KeyboardSvg.tsx";
+import {getKeyPositions, getLayoutModel} from "./layout-functions.ts";
 import {Signal} from "@preact/signals";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
@@ -11,27 +11,27 @@ interface LayoutAreaProps {
 }
 
 export function LayoutArea({appState}: LayoutAreaProps) {
-    const selectedLayoutType = appState.layoutType.value;
-    const layoutModel = getLayoutModel(selectedLayoutType, appState.layoutOptions, appState.mapping.value, appState.layoutSplit);
     const split = appState.layoutSplit.value == LayoutSplit.TwoPiece;
+    const keyPositions = getKeyPositions(appState.layoutModel.value, split, appState.mapping.value);
 
     return (
         <div>
             <TopBar layoutSignal={appState.layoutType} layoutOptions={appState.layoutOptions}/>
             <KeyboardSvg>
                 <RowBasedKeyboard
-                    layoutModel={layoutModel}
-                    flexMapping={appState.mapping.value}
+                    layoutModel={appState.layoutModel.value}
+                    keyPositions={keyPositions}
                     mappingDiff={appState.mappingDiff.value}
                     vizType={appState.vizType.value}
-                    split={split}
                 />
+                {appState.vizType.value == VisualizationType.MappingBigrams &&
+                    <BigramLines bigrams={appState.bigramMovements.value}/>
+                }
             </KeyboardSvg>
             <LayoutOptionsBar state={appState}/>
         </div>
     )
 }
-
 
 interface TopBarProps {
     layoutSignal: Signal<LayoutType>

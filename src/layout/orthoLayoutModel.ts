@@ -51,6 +51,8 @@ export const orthoLayoutModel: RowBasedLayoutModel = {
         [0, 0, 1, 2, 4,/**/5, 5, 7, 8, 9, 9],
     ],
 
+    hasAltFinger: (_r, _c) => false,
+
     singleKeyEffort: [
         [NaN, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, NaN],
         [NaN, 1.5, 1, 1, 1.5, 1.5, 1.5, 1.5, 1, 1, 1.5, 2],
@@ -91,7 +93,7 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
         ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-        ["Ctrl", "Cmd", 0, 1, "Alt", "⍽", "⏎", "AltGr", 2, 3, "Fn", "Ctrl"],
+        ["Ctrl", "Cmd", 0, "Alt", 1, "⍽", "⏎", 2, "AltGr", 3, "Fn", "Ctrl"],
     ],
 
     rowStart: (row: KeyboardRows) => (row == KeyboardRows.Bottom) ? 1 : 0,
@@ -107,6 +109,6 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
 
     singleKeyEffort: ((orig) => [
         ...orig.slice(0, 4),
-        [NaN, NaN, 2, 2, NaN, 0.2, 0.2, NaN, NaN, 2, NaN, NaN],
+        [NaN, NaN, 2, NaN, 0.2, 0.2, 0.2, 0.2, NaN, 2, NaN, NaN],
     ])(orthoLayoutModel.singleKeyEffort),
 }

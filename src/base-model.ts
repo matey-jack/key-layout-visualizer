@@ -24,7 +24,7 @@ export enum KeyboardRows {
 }
 
 export enum VisualizationType {
-    LayoutEffort,
+    LayoutKeyEffort,
     LayoutFingering,
     LayoutAngle,
     MappingDiff,
@@ -33,7 +33,7 @@ export enum VisualizationType {
 }
 
 export const isLayoutViz = (t: VisualizationType) =>
-    [VisualizationType.LayoutEffort, VisualizationType.LayoutFingering, VisualizationType.LayoutAngle].includes(t)
+    [VisualizationType.LayoutKeyEffort, VisualizationType.LayoutFingering, VisualizationType.LayoutAngle].includes(t)
 
 export interface FlexMapping {
     name: string;
@@ -74,7 +74,6 @@ export enum Finger {
     RPinky,
 }
 
-
 export enum Hand {
     Left,
     Right,
@@ -82,13 +81,31 @@ export enum Hand {
 
 export const hand = (finger: Finger) => Math.floor(finger / 5)
 
+export const isThumb = (finger: Finger) =>
+    finger == Finger.RThumb || finger == Finger.LThumb;
+
+export interface KeyPosition {
+    label: string;
+
+    // Logical positions, that is, indices to the layout-arrays.
+    row: number;
+    col: number;
+
+    // Graphical position on the screen, taking into account different key width and gaps.
+    // Measured in fractional units of one square key.
+    colPos: number;
+
+    // Needed for a different purpose, but convenient to have in the same structure.
+    finger: Finger;
+    hasAltFinger: boolean;
+}
+
 // constants for common single-key effort scores
 // I don't know why I want to be different from other people who define home keys as "effort 1",
 // but I think a typically medium-easy to type key should be "1" and home keys some number lower than that.
 export const SKE_HOME = 0.2;
 export const SKE_LF_UP = 1;
 export const SKE_NEIGHBOR = 1.5;
-export const SKE_PINKY_UP = 2;
 export const SKE_INCONV_NEIGHBOR = 2;
 export const SKE_AWAY = 3;
 
@@ -126,7 +143,53 @@ export interface RowBasedLayoutModel {
     // finger assignment and key effort arrays have the same shape (number of entries in each row) as the LayoutMappings.
     mainFingerAssignment: Finger[][];
 
+    hasAltFinger: (row: number, col: number) => boolean;
+
     singleKeyEffort: number[][];
 
     getSpecificMapping(flexMapping: FlexMapping): string[] | undefined;
 }
+
+// this is the format that we received as JSON array
+export type BigramList = [string, number][];
+
+export interface BigramMovement {
+    a: KeyPosition;
+    b: KeyPosition;
+    type: BigramType;
+    // original value is used for weighting.
+    frequency: number;
+    // frequency rank used for formatting bigram lines.
+    rank: number;
+    draw: boolean;
+}
+
+// Listed in order of priority.
+// This means that for SameFinger, AltFinger, or OppositeLateral we don't care about the row.
+// (All other cases are mutually exclusive anyway.)
+export enum BigramType {
+    OtherHand,
+    InvolvesThumb,
+    SameFinger,
+    // AltFinger applies when both keys have the same main assigned finger, but one of the keys has an alt-fingering available.
+    AltFinger,
+    // TODO: our current definition column-difference between keys > 4 does not apply to any bigram,
+    //  because pinkies have no lateral movement to letters and even on wide layouts, there are no letters in the central column.
+    OppositeLateral,
+    SameRow,
+    NeighboringRow,
+    OppositeRow,
+}
+
+// Indexed by BigramType!
+export const bigramEffort = [
+    0,
+    0,
+    4,
+    1,
+    2,
+    // this is fun to type, so gives a rebate on effort.
+    -0.5,
+    0,
+    2,
+];

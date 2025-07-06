@@ -11,7 +11,7 @@ import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../
     doesn't even exist on the Harmonic.
  */
 const fullMapping: LayoutMapping = [
-    ["Esc", "1", "2", "3", "4", "5", "6", 0, "7", "8", "9", "0", 1],
+    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, 1],
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"],
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
@@ -22,7 +22,7 @@ const fullMapping: LayoutMapping = [
 // (`-` here is neighbor of a home-row key. Very fitting for the third most popular punctuation character!)
 // Remember that the four punctuation keys `,.;/` are part of the flexMapping set.
 const thirtyKeyMappingWithNavKeys: LayoutMapping = [
-    ["Esc", "1", "2", "3", "4", "5", "6", "⇤", "7", "8", "9", "0", "⇥"],
+    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⇤", "⇥"],
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"],
     ["-", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
@@ -30,7 +30,7 @@ const thirtyKeyMappingWithNavKeys: LayoutMapping = [
 ];
 
 const thirtyKeyMapping: LayoutMapping = [
-    ["Esc", "1", "2", "3", "4", "5", "6", "-", "7", "8", "9", "0", "="],
+    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="],
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"],
     ["`", 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, 9, "'"],
     // The move of key 9 to the middle is a change required to keep the key-to-finger assignments the same as on the ANSI layout.
@@ -77,18 +77,22 @@ export const harmonicLayoutModel: RowBasedLayoutModel = {
 
     mainFingerAssignment: [
         [1, 1, 2, 2, 3, 3, 6, 6, 6, 7, 7, 8, 8],
-        [0, 1, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9],
+        [0, 1, 1, 2, 3, 3, 6, 6, 7, 8, 8, 9],
         [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
-        [0, 1, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9],
+        [0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9],
         [0, 1, 2, 4, 4, 5, 5, 7, 8, 9],
     ],
+
+    hasAltFinger: (row: number, col: number) =>
+        (row == KeyboardRows.Upper || row == KeyboardRows.Lower) &&
+        ([1, 2, 3, 8, 9, 10].includes(col)),
 
     singleKeyEffort: [
         [3, 3, 2, 2, 2, 3, 3, 3, 2, 2, 2, 3, 3],
         [NaN, 1.5, 1, 1, 1.5, 3, 3, 1.5, 1, 1, 1.5, NaN],
         [1.5, 0.2, 0.2, 0.2, 0.2, 2, 3, 2, 0.2, 0.2, 0.2, 0.2, 1.5],
         [NaN, 1.5, 1.5, 1.5, 1.5, 3, 3, 1.5, 1.5, 1.5, 1.5, NaN],
-        [NaN, NaN, NaN, 1.5, 0.2, 0.2, 1.5, NaN, NaN, NaN],
+        [NaN, NaN, NaN, 1.0, 0.2, 1.0, 0.2, NaN, NaN, NaN],
     ],
 
     getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingHarmonic,

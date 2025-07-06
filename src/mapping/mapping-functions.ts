@@ -27,6 +27,15 @@ export function weighSingleKeyEffort(layoutModel: RowBasedLayoutModel, mapping: 
     return Math.round(totalEffort);
 }
 
+export function sumKeyFrequenciesByEffort(layoutModel: RowBasedLayoutModel, mapping: FlexMapping): Record<number, number> {
+    const efforts = getSingleKeyEffort(layoutModel, mapping);
+    const result: Record<number, number> = {};
+    Object.entries(efforts).forEach(([char, effort]) => {
+        result[effort] = (result[effort] || 0) + singleCharacterFrequencies[char.toUpperCase()];
+    });
+    return result;
+}
+
 export function getSingleKeyEffort(layoutModel: RowBasedLayoutModel, mapping: FlexMapping): Record<string, number> {
     const charMap = fillMapping(layoutModel, mapping);
     const result: Record<string, number> = {};

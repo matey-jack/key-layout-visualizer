@@ -61,8 +61,8 @@ body {
 }
 
 .key-outline.command-key-border {
-    filter: brightness(70%);
-    /*stroke: #255a7c;*/
+    filter: brightness(80%);
+    stroke: #b5b5b5;
     /*stroke-width: 7px;*/
 }
 
@@ -88,7 +88,7 @@ body {
     fill: #c35221;
 }
 
-.key-overlay {
+.key-ribbon {
     border-color: transparent;
 }
 
@@ -97,12 +97,12 @@ body {
     background-color: #f3eaac;
 }
 
-.same-hand{
+.same-hand {
     fill: #f6d187;
     background-color: #f6d187;
 }
 
-.swap-hands{
+.swap-hands {
     fill: #f3bfac;
     background-color: #f3bfac;
 }
@@ -123,6 +123,84 @@ body {
     text-anchor: middle;
     dominant-baseline: central;
     font-size: 21px;
+}
+
+.bigram-line {
+    /* Make all ranks not mentioned below be invisible. */
+    stroke-width: 0;
+}
+
+.bigram-line.same-row {
+    stroke: green;
+}
+
+.bigram-line.neighboring-row {
+    stroke: yellow;
+}
+
+.bigram-line.opposite-row {
+    stroke: orange;
+}
+
+.bigram-line.opposite-lateral {
+    stroke: orange;
+}
+
+.bigram-line.alt-finger {
+    stroke: blue;
+}
+
+.bigram-line.same-finger-bigram {
+    stroke: red;
+}
+
+.bigram-line.bigram-rank-1 {
+    stroke-width: 6px;
+}
+
+.bigram-line.bigram-rank-2 {
+    stroke-width: 4px;
+}
+
+.bigram-line.bigram-rank-3 {
+    stroke-width: 3px;
+}
+
+.bigram-line.bigram-rank-4 {
+    stroke-width: 2px;
+}
+
+.bigram-effort-legend-item {
+    display: inline-block;
+    text-align: center;
+    width: 5rem;
+    padding: 0.2rem;
+    margin: 0.1rem;
+}
+
+.bigram-effort-legend-item.same-row {
+    background-color: green;
+}
+
+.bigram-effort-legend-item.neighboring-row {
+    background-color: yellow;
+}
+
+.bigram-effort-legend-item.opposite-row {
+    background-color: orange;
+}
+
+.bigram-effort-legend-item.opposite-lateral {
+    background-color: orange;
+}
+
+.bigram-effort-legend-item.alt-finger {
+    background-color: blue;
+    color: white;
+}
+
+.bigram-effort-legend-item.same-finger-bigram {
+    background-color: red;
 }
 
 .toggle-text-button {
@@ -159,7 +237,7 @@ body {
 
 .mapping-and-details-container {
     display: grid;
-    /* Left colum mapping list, right colum details.
+    align-items: start;    /* Left colum mapping list, right colum details.
     Grid is overkill here, because each column has just one <div>, but it should be easy to refactor that. */
     grid-template-columns: 1fr 1fr;
     gap: 1rem;

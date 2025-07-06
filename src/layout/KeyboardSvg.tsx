@@ -1,8 +1,15 @@
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping/mapping-functions.ts";
-import {fillMapping, isHomeKey, lettersAndVIP} from "./layout-functions.ts";
-import {sum} from '../library/math.ts';
-import {Finger, FlexMapping, MappingChange, RowBasedLayoutModel, VisualizationType} from "../base-model.ts";
-import {ComponentChildren, JSX} from "preact";
+import {isHomeKey, lettersAndVIP} from "./layout-functions.ts";
+import {
+    BigramMovement,
+    BigramType,
+    Finger,
+    KeyPosition,
+    MappingChange,
+    RowBasedLayoutModel,
+    VisualizationType
+} from "../base-model.ts";
+import {ComponentChildren} from "preact";
 
 interface KeyboardSvgProps {
     children?: ComponentChildren;
@@ -16,11 +23,6 @@ export const KeyboardSvg = (props: KeyboardSvgProps) =>
             {props.children}
         </svg>
     </div>
-
-// keep in sync with KeyboardSvg.viewBox
-const totalWidth = 17;
-// in key units
-const horizontalPadding = 0.5;
 
 interface KeyProps {
     label: string;
@@ -45,8 +47,8 @@ interface KeyProps {
 
 const keyUnit = 100;
 const keyPadding = 5;
-const keyOverlayPaddingH = 17;
-const keyOverlayPaddingV = 1;
+const keyRibbonPaddingH = 17;
+const keyRibbonPaddingV = 1;
 
 export function Key({col, ribbonClass, backgroundClass, label, row, width}: KeyProps) {
     const x = col * keyUnit + keyPadding;
@@ -70,11 +72,11 @@ export function Key({col, ribbonClass, backgroundClass, label, row, width}: KeyP
                 : "";
 
     const keyRibbon = ribbonClass &&
-        <rect class={"key-overlay " + ribbonClass}
-              x={x + keyOverlayPaddingV}
-              y={y + keyOverlayPaddingH}
-              width={keyUnit * width - 2 * (keyPadding + keyOverlayPaddingV)}
-              height={keyUnit - 2 * (keyPadding + keyOverlayPaddingH)}
+        <rect class={"key-ribbon " + ribbonClass}
+              x={x + keyRibbonPaddingV}
+              y={y + keyRibbonPaddingH}
+              width={keyUnit * width - 2 * (keyPadding + keyRibbonPaddingV)}
+              height={keyUnit - 2 * (keyPadding + keyRibbonPaddingH)}
         />
     return <g>
         <rect
@@ -91,12 +93,9 @@ export function Key({col, ribbonClass, backgroundClass, label, row, width}: KeyP
 
 export interface KeyboardProps {
     layoutModel: RowBasedLayoutModel;
-    flexMapping: FlexMapping;
     mappingDiff: Record<string, MappingChange>;
+    keyPositions: KeyPosition[];
     vizType: VisualizationType;
-    // We split all keyboards by moving their outer edges to a width of 17 units.
-    // In both split and unsplit case, the keyboard will be centered.
-    split: boolean;
 }
 
 export function getEffortClass(effort: number) {
@@ -133,39 +132,50 @@ function getFingeringClasses(layoutModel: RowBasedLayoutModel, row: number, col:
     return bgClass + " " + borderClass;
 }
 
-export function RowBasedKeyboard({flexMapping, layoutModel, mappingDiff, vizType, split}: KeyboardProps) {
-    const fullMapping = fillMapping(layoutModel, flexMapping);
-    const rowWidth = fullMapping.map((row, r) =>
-        2 * (horizontalPadding + layoutModel.rowStart(r)) + sum(row.map((_, c) => layoutModel.keyWidth(r, c)))
-    );
-    let keys: JSX.Element[] = [];
-    for (let row = 0; row < 5; row++) {
-        let colPos = horizontalPadding + layoutModel.rowStart(row);
-        if (!split) colPos += (totalWidth - rowWidth[row]) / 2;
-        fullMapping[row].forEach((label, col) => {
-            // to show the board as split, add some extra space after the split column.
-            if (split && (col == layoutModel.splitColumns[row])) colPos += totalWidth - rowWidth[row];
-            const width = layoutModel.keyWidth(row, col);
-            const bgClass = vizType == VisualizationType.LayoutEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
-                : vizType == VisualizationType.LayoutFingering && !isNaN(layoutModel.mainFingerAssignment[row][col])
-                    ? getFingeringClasses(layoutModel, row, col, label)
-                    : isHomeKey(layoutModel, row, col) ? "home-key"
-                        : "";
-            const ribbonClass = vizType == VisualizationType.MappingDiff && lettersAndVIP.test(label)
-                ? ribbonClassByDiff[mappingDiff[label]]
-                : undefined;
-            const key = <Key
-                label={label}
-                backgroundClass={bgClass}
-                ribbonClass={ribbonClass}
-                row={row}
-                col={colPos}
-                width={width}
-                key={row + ',' + col}
-            />
-            colPos += width;
-            keys.push(key);
-        });
-    }
-    return <>{keys}</>
+export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizType}: KeyboardProps) {
+    return keyPositions.map(({label, row, col, colPos}) => {
+        const width = layoutModel.keyWidth(row, col);
+        const bgClass = vizType == VisualizationType.LayoutKeyEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
+            : vizType == VisualizationType.LayoutFingering && !isNaN(layoutModel.mainFingerAssignment[row][col])
+                ? getFingeringClasses(layoutModel, row, col, label)
+                : isHomeKey(layoutModel, row, col) ? "home-key"
+                    : "";
+        const ribbonClass = vizType == VisualizationType.MappingDiff && lettersAndVIP.test(label)
+            ? ribbonClassByDiff[mappingDiff[label]]
+            : undefined;
+        return <Key
+            label={label}
+            backgroundClass={bgClass}
+            ribbonClass={ribbonClass}
+            row={row}
+            col={colPos}
+            width={width}
+            key={row + ',' + col}
+        />
+    })
+}
+
+export const bigramClassByType: Record<BigramType, string> = {
+    [BigramType.SameRow]: "same-row",
+    [BigramType.NeighboringRow]: "neighboring-row",
+    [BigramType.OppositeRow]: "opposite-row",
+    [BigramType.OppositeLateral]: "opposite-lateral",
+    [BigramType.AltFinger]: "alt-finger",
+    [BigramType.SameFinger]: "same-finger-bigram",
+    [BigramType.OtherHand]: "",
+    [BigramType.InvolvesThumb]: ""
+}
+
+export interface BigramLinesProps {
+    bigrams: BigramMovement[];
+}
+
+export function BigramLines({bigrams}: BigramLinesProps) {
+    return bigrams.map((pair) => {
+                const offset = Math.abs(pair.a.col - pair.b.col);
+                return pair.draw && <line
+                    x1={keyUnit * (pair.a.colPos + 0.5)} y1={keyUnit * (pair.a.row + 0.5 - offset / 10)}
+                    x2={keyUnit * (pair.b.colPos + 0.5)} y2={keyUnit * (pair.b.row + 0.5)}
+                    className={`bigram-line bigram-rank-${pair.rank} ` + bigramClassByType[pair.type]}/>
+            });
 }

@@ -1,10 +1,14 @@
 import {
-    FlexMapping,
     Finger,
-    RowBasedLayoutModel,
+    FlexMapping,
+    hand,
+    KeyboardRows,
+    KeyPosition,
     LayoutMapping,
+    LayoutSplit,
+    LayoutType,
     MappingChange,
-    LayoutType, LayoutSplit, KeyboardRows, hand
+    RowBasedLayoutModel
 } from "../base-model.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
 import {LayoutOptionsState} from "../app-model.ts";
@@ -12,6 +16,7 @@ import {Signal} from "@preact/signals";
 import {ansiLayoutModel, ansiWideLayoutModel, customAnsiWideLayoutModel, splitSpaceBar} from "./ansiLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 import {harmonicLayoutModel, harmonicLayoutModelWithNavKeys} from "./harmonicLayoutModel.ts";
+import {sum} from "../library/math.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
     if (row != KeyboardRows.Home) return false;
@@ -126,3 +131,38 @@ export function getLayoutModel(layoutType: LayoutType,
             return layoutOptions.harmonicLayoutOptions.value.navKeys ? harmonicLayoutModelWithNavKeys : harmonicLayoutModel;
     }
 }
+
+// keep in sync with KeyboardSvg.viewBox
+const totalWidth = 17;
+// in key units
+const horizontalPadding = 0.5;
+
+export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean, flexMapping: FlexMapping): KeyPosition[] {
+    const fullMapping = fillMapping(layoutModel, flexMapping);
+    const rowWidth = fullMapping.map((row, r) =>
+        2 * (horizontalPadding + layoutModel.rowStart(r)) + sum(row.map((_, c) => layoutModel.keyWidth(r, c)))
+    );
+    let result: KeyPosition[] = [];
+    for (let row = 0; row < 5; row++) {
+        let colPos = horizontalPadding + layoutModel.rowStart(row);
+        // for non-split boards, apply some white space on the left to make them centered.
+        if (!split) colPos += (totalWidth - rowWidth[row]) / 2;
+        fullMapping[row].forEach((label, col) => {
+            // to show the board as split, add some extra space after the split column.
+            if (split && (col == layoutModel.splitColumns[row])) colPos += totalWidth - rowWidth[row];
+            result.push({
+                label,
+                row,
+                col,
+                colPos,
+                finger: layoutModel.mainFingerAssignment[row][col],
+                hasAltFinger: layoutModel.hasAltFinger(row, col)
+            });
+            colPos += layoutModel.keyWidth(row, col);
+        });
+    }
+    return result;
+}
+
+export const getKeyPositionsByLabel = (positions: KeyPosition[]): Record<string, KeyPosition> =>
+    Object.fromEntries(positions.map(p => [p.label, p]));
