@@ -8,7 +8,7 @@ import {MappingList} from "./mapping/MappingArea.tsx";
 import {DetailsArea} from "./details/DetailsArea.tsx";
 import {computed, effect, signal, Signal} from "@preact/signals";
 import {ComponentChildren} from "preact";
-import {diffToQwerty, getKeyPositions, getKeyPositionsByLabel, getLayoutModel} from "./layout/layout-functions.ts";
+import {diffToQwerty, getKeyPositions, getLayoutModel} from "./layout/layout-functions.ts";
 import {qwertyMapping} from "./mapping/mappings.ts";
 import {getBigramMovements} from "./bigrams.ts";
 

@@ -50,7 +50,7 @@ export function getBigramMovements(positionsList: KeyPosition[]): BigramMovement
 export function bigramFrequencyByType(layout: RowBasedLayoutModel, mapping: FlexMapping): Record<BigramType, number> {
     const movements = getBigramMovements(getKeyPositions(layout, false, mapping));
     const frequencyTotal = sum(movements.map((m) => m.frequency));
-    const frequencyByType: Record<BigramType, number> = {};
+    const frequencyByType: Record<number, number> = {};
     movements.forEach((m) => {
         frequencyByType[m.type] = (frequencyByType[m.type] || 0) + (m.frequency * 1000 / frequencyTotal);
     });
