@@ -65,6 +65,24 @@ describe('flex mappings consistency', () => {
             });
         }
 
+        const mappingHarmonic13c = mapping.mappingHarmonic13c;
+        if (mappingHarmonic13c) {
+            it(mapping.name + " – Harmonic 13c – array shape", () => {
+                expect(mappingHarmonic13c.length).toBe(5);
+                rowLengths(harmonic13cLayoutModel.fullMapping).forEach((expected, row) => {
+                    expect(mappingHarmonic13c[row].length, `row ${row}`).toBe(expected);
+                });
+            });
+
+            it(mapping.name + " – Harmonic – character completeness", {
+                skip:  mappingHarmonic13c.join().includes('ä')
+            }, () => {
+                const allChars = mappingHarmonic13c.join().split('').sort();
+                expect(allChars).to.include.members("abcdefghijklmnopqrstuvwxyz".split(''));
+                expect(allChars).to.include.members(",./;'-=".split(''));
+            });
+        }
+
         const mappingSplitOrtho = mapping.mappingSplitOrtho;
         if (mappingSplitOrtho) {
             it(mapping.name + " – Split-Ortho – array shape", () => {

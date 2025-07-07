@@ -4,6 +4,7 @@ body {
 
 .layout-top-bar-container {
     display: grid;
+    justify-items: center;
     grid-template-columns: 1fr minmax(0, 2fr) minmax(0, 2fr) minmax(0, 2fr) 1fr;
     gap: 1rem;
     width: 95%;
@@ -30,10 +31,21 @@ body {
 
 .layout-options-bar-container {
     display: grid;
-    grid-template-columns: 1fr minmax(0, 2fr) minmax(0, 2fr) 1fr;
+    grid-template-columns: 1fr 1fr;
     margin-left: 10%;
+    right: 10%;
     padding: 1rem;
-    font-family: Verdana, sans-serif;
+    justify-items: center;
+}
+
+.layout-options-button {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.layout-options-button.selected {
+    background-color: #5cdbef;
+    border: 1px solid #003fae;
 }
 
 .layout-options-bar-container label {

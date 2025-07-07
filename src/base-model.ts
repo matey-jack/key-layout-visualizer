@@ -55,6 +55,7 @@ export interface FlexMapping {
     // for correct dimensions, see the layout model files
     mappingAnsi?: string[];
     mappingHarmonic?: string[];
+    mappingHarmonic13c?: string[];
     mappingSplitOrtho?: string[];
 
     // for customizing the ANSI wide Layout
@@ -116,7 +117,7 @@ export enum MappingChange {
     SwapHands,
 }
 
-export type LayoutMapping = (string | number)[][];
+export type LayoutMapping = (string | number | [number, number])[][];
 
 export interface RowBasedLayoutModel {
     name: string;

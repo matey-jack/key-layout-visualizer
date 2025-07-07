@@ -37,7 +37,8 @@ export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexM
 export const mergeMapping = (layoutMapping: LayoutMapping, flexMapping: string[]): string[][] =>
     layoutMapping.map((layoutRow, r) =>
         layoutRow.map((layoutValue) =>
-            (typeof layoutValue === 'number') ? flexMapping[r][layoutValue] : layoutValue
+            Array.isArray(layoutValue) ? flexMapping[r+layoutValue[0]][layoutValue[1]]
+                    : (typeof layoutValue === 'number') ? flexMapping[r][layoutValue] : layoutValue
         )
     )
 
@@ -47,7 +48,7 @@ const diffFinger = (a: Finger, b: Finger) =>
             : MappingChange.SwapHands;
 
 // We report the result by assigned (logical) key. Maybe that makes it easier to compute stats later.
-export function diffMappings(model: RowBasedLayoutModel, a: LayoutMapping, b: LayoutMapping): Record<string, MappingChange> {
+export function diffMappings(model: RowBasedLayoutModel, a: string[][], b: string[][]): Record<string, MappingChange> {
     const bFingers = characterToFinger(model.mainFingerAssignment, b);
     const result: Record<string, MappingChange> = {};
     a.forEach((aRow, r) => {
@@ -65,7 +66,7 @@ export function diffMappings(model: RowBasedLayoutModel, a: LayoutMapping, b: La
 }
 
 // exported only for unit tests
-export function characterToFinger(fingerAssignment: Finger[][], mapping: LayoutMapping): Record<string, Finger> {
+export function characterToFinger(fingerAssignment: Finger[][], mapping: string[][]): Record<string, Finger> {
     const result: Record<string, Finger> = {};
     fingerAssignment.forEach((fingerRow, r) => {
         fingerRow.forEach((finger, c) => {

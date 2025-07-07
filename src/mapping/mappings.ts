@@ -244,16 +244,16 @@ export const thumbyMin = {
     ansiMovedColumns: [4, 5, 5, 4],
     mappingHarmonic13c: [
         "[]",
-        "bwdf" + "-=" + "uklp",
-        "qasrtg" + ";" + "ynioh'",
-        "zxcv" + "\\/" + "jm,.",
+        "wdfb" + "-=" + "uklp",
+        "qasrtg" + ";" + "jnioh'",
+        "zxcv" + "\\/" + "ym,.",
         "`e",
     ],
     mappingHarmonic: [
-        "=",
-        "qwdfb" + "`" + "juklp'\\",
-        "asrtg" + "-" + "ynioh",
-        "zxcv" + "[]" + ";m,.",
+        "`",
+        "qwdfb" + "-=" + "uklp'\\",
+        "asrtg" + ";" + "jnioh",
+        "zxcv" + "[]" + "ym,.",
         "⌦e/",
     ],
     mappingSplitOrtho: [
@@ -282,16 +282,16 @@ export const thumbyPlus = {
     ansiMovedColumns: [4, 6, 5, 4],
     mappingHarmonic13c: [
         "⇞⇟",
-        "bwdf" + "-=" + "kulp",
-        "qasrtg" + ";" + "ynioh'",
+        "wdfg" + "-=" + "kulp",
+        "qasrtb" + ";" + "ynioh'",
         "zxcv" + "⇤⇥" + "jm,.",
         "/e",
     ],
     mappingHarmonic: [
         "=",
-        "qwdfb" + "`" + "jkulp'\\",
-        "asrtg" + "-" + "ynioh",
-        "zxcv" + "⇤⇥" + ";m,.",
+        "qwdfg" + "-'" + "kulp⇞⇟",
+        "asrtb" + ";" + "jnioh",
+        "zxcv" + "⇤⇥" + "ym,.",
         "⌦e/",
     ],
     mappingSplitOrtho: [
@@ -363,6 +363,7 @@ export const gemuetlichesMapping = {
      (Alternatively swap also Q and J to improve the positioning for frequency.)
      Finally, with `Z` I am not completely sure: it's still a bit awkward to think about this "new" left off-home position
      although the symmetric position on the right has always been a character key in ANSI, even a letter in German.
+     TODO: align those layouts with modifications made on Thumby. In particular the Q overspill to the home row.
  */
     mappingHarmonic13c: [
         "´ß",
