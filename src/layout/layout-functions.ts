@@ -19,6 +19,7 @@ import {harmonic13cLayoutModel} from "./harmonic13cLayoutModel.ts";
 import {sum} from "../library/math.ts";
 import {harmonic14LayoutModel} from "./harmonic14LayoutModel.ts";
 import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
+import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
     if (row != KeyboardRows.Home) return false;
@@ -139,7 +140,7 @@ export function getLayoutModel(layoutType: LayoutType,
                 case HarmonicVariant.H13_MidShift:
                     return harmonic13MidShiftLayoutModel;
                 case HarmonicVariant.H12_3:
-                    return harmonic13cLayoutModel;
+                    return harmonic12LayoutModel;
             }
     }
 }

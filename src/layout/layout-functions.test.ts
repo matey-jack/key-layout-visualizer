@@ -14,6 +14,7 @@ import {harmonic13cLayoutModel} from "./harmonic13cLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
 import {harmonic14LayoutModel} from "./harmonic14LayoutModel.ts";
+import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 
 describe('fillMapping', () => {
     it('Harmonic 13c layout 30-key qwerty', () => {
@@ -34,18 +35,20 @@ describe('fillMapping', () => {
     });
 });
 
+// TODO: remove names and make it an array, they are already in the model.
 export const allLayoutModels = {
     'ANSI': ansiLayoutModel,
     'Harmonic 14T': harmonic14LayoutModel,
     'Harmonic 13/3': harmonic13cLayoutModel,
     'Harmonic 13MS': harmonic13MidShiftLayoutModel,
+    'Harmonic 12': harmonic12LayoutModel,
     'Ortho': orthoLayoutModel,
     'Split Ortho': splitOrthoLayoutModel,
 };
 
 describe('finger assignment consistency', () => {
-    Object.entries(allLayoutModels).forEach(([name, model]) => {
-        it(name, () => {
+    Object.entries(allLayoutModels).forEach(([_, model]) => {
+        it(model.name, () => {
             model.fullMapping!!.forEach((mappingRow, r) => {
                 expect(mappingRow.length, `${model.name} ${KeyboardRows[r]}Row`).toBe(model.mainFingerAssignment[r].length)
             });
@@ -54,8 +57,8 @@ describe('finger assignment consistency', () => {
 });
 
 describe('key effort consistency', () => {
-    Object.entries(allLayoutModels).forEach(([name, model]) => {
-        it(name, () => {
+    Object.entries(allLayoutModels).forEach(([_, model]) => {
+        it(model.name, () => {
             model.fullMapping!!.forEach((mappingRow, r) => {
                 expect(model.singleKeyEffort[r].length, `${model.name} ${KeyboardRows[r]}Row`).toBe(mappingRow.length)
             });
