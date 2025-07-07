@@ -9,44 +9,28 @@ export const harmonicComparisonBaseline: FlexMapping = {
     // For calculations, we replace the five keys \/`[] with placeholders to account for them always changing.
     // Thus, the smallest change count is 5, but changing any of those keys won't increase the count.
     sourceUrl: "/",
-    mappingHarmonic: [
+    mappingHarmonic13c: [
         "-=",
-        "qwer" + "ty" + "uiop",
-        "`asdfg" + "\\" + "hjkl;'",
+        "wert" + "`" + "yuiop",
+        "qasdfg" + "\\" + "hjkl;'",
         "zxcv" + "b/" + "nm,.",
         "[]"
     ]
 }
 
 /*
-    A "perfect home row" is when eight of the eleven most frequent characters are placed on the home row.
-    (It's sensible to count the top eleven because D and L are already on the home row and replacing them with a top 8
-    letter has less added value. Furthermore, in English the top 6,7,8,9 letters are very close in frequency,
-    so they are usually considered together in keymap designs.)
-    All casual layouts have a perfect home row, and we can get two steps closer to that place when mitigating for
-    Harmonic's weak center keys.
-
-    Qwerty has already 4 out of 8 home row keys "perfect".
-
-    Rationale: swap NJY on same-finger seems to be a no-brainer and also one step to a perfect home row.
-    But it doesn't take into account that the lower row is usually a bit harder to access, so it is not all set.
-    Swapping T; is a bold hand-switch, but also another step closer to a perfect home row.
-    Finally, the BQ swap is debatable in many ways: if off-homerow too precious a position for Q? Would top-center be good enough for B?
-    (That would mean less reassignments of letters, since we could move `;` somewhere else...)
-    I think I need to print a life-sized version of the keyboard layout to figure that out...
-
-    Anyway, this layout is not something to recommend to anyone anyway. Maybe Qwerty on the Harmonic is not that much worse than Qwerty anywhere,
-    so any user will use a better layout instead.
+    With Qwerty on Harmonic (both versions, actually) B and Y are not on neighbor-of-home keys
+    B isn't there on ANSI either, but Y is worse to type on Harmonic, so we can fix that with a ring-swap NJY.
+    Best minimal way to fix B is a H;B ring swap. But then again, no layout is good until E is on a thumb key,
+    and when doing that, another place will be free for B... after a lot of keys move triggered by E's free spot.
  */
 const harmonicBaseline: FlexMapping = {
     name: "Harmonic Baseline",
-    description: "Makes minimal changes to QWERTY to mitigate Harmonic's harder to reach center keys. Letters T Y B N are moving to better postions.",
+    description: "Simple NJY ring-swap on Qwerty to mitigate for worse typing score of Y on Harmonic.",
     sourceUrl: "/",
-    mappingHarmonic: [
-        "-=",
-        "bwer" + ";j" + "uiop",
-        "qasdfg" + "`" + "hnklt'",
-        "zxcv" + "\\/" + "ym,.",
-        "[]"
+    mapping30: [
+        "qwert" + "juiop",
+        "asdfg" + "hnkl;",
+        "zxcv" + "ym,./",
     ]
 }

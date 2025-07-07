@@ -5,6 +5,7 @@ import {getKeyPositions, getLayoutModel} from "./layout-functions.ts";
 import {Signal} from "@preact/signals";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
+import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
 
 interface LayoutAreaProps {
     appState: AppState;
@@ -85,10 +86,8 @@ interface LayoutOptionsBarProps {
 
 function LayoutOptionsBar({state}: LayoutOptionsBarProps) {
     return <div class="layout-options-bar-container">
-        <BlankGridElement/>
         <GenericLayoutOptions split={state.layoutSplit}/>
         <TypeSpecifcLayoutOptions layoutType={state.layoutType.value} layoutOptions={state.layoutOptions}/>
-        <BlankGridElement/>
     </div>
 }
 
@@ -112,6 +111,8 @@ function TypeSpecifcLayoutOptions({layoutType, layoutOptions}: LayoutOptionsProp
     switch (layoutType) {
         case LayoutType.ANSI:
             return <AnsiLayoutOptions options={layoutOptions.ansiLayoutOptions}/>
+        case LayoutType.Harmonic:
+            return <HarmonicLayoutOptions options={layoutOptions.harmonicLayoutOptions}/>
     }
     return <></>;
 }
