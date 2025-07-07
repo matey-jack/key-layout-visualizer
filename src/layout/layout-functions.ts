@@ -11,13 +11,14 @@ import {
     RowBasedLayoutModel
 } from "../base-model.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
-import {LayoutOptionsState} from "../app-model.ts";
+import {HarmonicVariant, LayoutOptionsState} from "../app-model.ts";
 import {Signal} from "@preact/signals";
 import {ansiLayoutModel, ansiWideLayoutModel, customAnsiWideLayoutModel, splitSpaceBar} from "./ansiLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
-import {harmonic13cLayoutModel, harmonicLayoutModelWithNavKeys} from "./harmonic13cLayoutModel.ts";
+import {harmonic13cLayoutModel} from "./harmonic13cLayoutModel.ts";
 import {sum} from "../library/math.ts";
 import {harmonic14LayoutModel} from "./harmonic14LayoutModel.ts";
+import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
     if (row != KeyboardRows.Home) return false;
@@ -37,8 +38,8 @@ export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexM
 export const mergeMapping = (layoutMapping: LayoutMapping, flexMapping: string[]): string[][] =>
     layoutMapping.map((layoutRow, r) =>
         layoutRow.map((layoutValue) =>
-            Array.isArray(layoutValue) ? flexMapping[r+layoutValue[0]][layoutValue[1]]
-                    : (typeof layoutValue === 'number') ? flexMapping[r][layoutValue] : layoutValue
+            Array.isArray(layoutValue) ? flexMapping[r + layoutValue[0]][layoutValue[1]]
+                : (typeof layoutValue === 'number') ? flexMapping[r][layoutValue] : layoutValue
         )
     )
 
@@ -130,7 +131,16 @@ export function getLayoutModel(layoutType: LayoutType,
         case LayoutType.Ortho:
             return layoutSplit?.value == LayoutSplit.TwoPiece ? splitOrthoLayoutModel : orthoLayoutModel;
         case LayoutType.Harmonic:
-            return layoutOptions.harmonicLayoutOptions.value.h13c ? harmonic13cLayoutModel : harmonic14LayoutModel;
+            switch (layoutOptions.harmonicLayoutOptions.value.variant) {
+                case HarmonicVariant.H14_Traditional:
+                    return harmonic14LayoutModel;
+                case HarmonicVariant.H13_3:
+                    return harmonic13cLayoutModel;
+                case HarmonicVariant.H13_MidShift:
+                    return harmonic13MidShiftLayoutModel;
+                case HarmonicVariant.H12_3:
+                    return harmonic13cLayoutModel;
+            }
     }
 }
 

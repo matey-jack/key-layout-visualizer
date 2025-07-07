@@ -8,12 +8,8 @@ const fullMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Alt", 0, "⍽", "⏎", 1, "AltGr", "Fn", "Ctrl"], // 10 keys
 ];
 
-export interface HarmonicLayoutOptionsModel {
-    h13c: boolean;
-}
-
 export const harmonic13cLayoutModel: RowBasedLayoutModel = {
-    name: "Harmonic Rows",
+    name: "Harmonic 13/3",
     description: "The Harmonic keyboard layout has a fully symmetric keyboard with only two key sizes to allow for flexible changes to the key mapping. " +
         "Its regular row stagger allows for many keys to be comfortably typed by two fingers, " +
         "which let's you intuitively avoid the awkward same-finger bigrams that make new key mappings feel so awkward. " +

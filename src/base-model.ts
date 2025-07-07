@@ -55,8 +55,9 @@ export interface FlexMapping {
 
     // for correct dimensions, see the layout model files
     mappingAnsi?: string[];
-    mappingHarmonic?: string[];
+    mappingHarmonic14?: string[];
     mappingHarmonic13c?: string[];
+    mappingHarmonic13MS?: string[];
     mappingSplitOrtho?: string[];
 
     // for customizing the ANSI wide Layout

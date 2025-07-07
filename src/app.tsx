@@ -11,6 +11,7 @@ import {ComponentChildren} from "preact";
 import {diffToQwerty, getKeyPositions, getLayoutModel} from "./layout/layout-functions.ts";
 import {qwertyMapping} from "./mapping/mappings.ts";
 import {getBigramMovements} from "./bigrams.ts";
+import {HarmonicVariant} from "./app-model.ts";
 
 // Some of the state could be local the Layout or Mapping areas, but unless this global thing gets too big,
 // let's just have one.
@@ -19,7 +20,7 @@ export function createAppState(): AppState {
     const layoutSplit = signal(LayoutSplit.Bar);
     const layoutOptions = {
         ansiLayoutOptions: signal({wide: false}),
-        harmonicLayoutOptions: signal({h13c: false}),
+        harmonicLayoutOptions: signal({variant: HarmonicVariant.H13_3}),
         orthoLayoutOptions: signal({thumbKeys: true}),
     };
     const layoutModel = computed(() =>
