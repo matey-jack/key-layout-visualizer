@@ -163,7 +163,7 @@ export const cozyMapping = {
 
     // This is just as hypothetic as the entire concept for a Harmonic keyboard.
     // I didn't spend too much time on this... and won't until I actually build such a keyboard one day.
-    mappingHarmonic: [
+    mappingHarmonic14: [
         "=",
         "qwbf;" + "[]" + "jkulp'",
         "asdrg" + "`" + "hniot",
@@ -249,7 +249,7 @@ export const thumbyMin = {
         "zxcv" + "\\/" + "ym,.",
         "`e",
     ],
-    mappingHarmonic: [
+    mappingHarmonic14: [
         "`",
         "qwdfb" + "-=" + "uklp'\\",
         "asrtg" + ";" + "jnioh",
@@ -287,7 +287,7 @@ export const thumbyPlus = {
         "zxcv" + "⇤⇥" + "jm,.",
         "/e",
     ],
-    mappingHarmonic: [
+    mappingHarmonic14: [
         "=",
         "qwdfg" + "-'" + "kulp⇞⇟",
         "asrtb" + ";" + "jnioh",
@@ -372,7 +372,7 @@ export const gemuetlichesMapping = {
         "yxcv" + "/-" + "jm,.",
         "+e"
     ],
-    mappingHarmonic: [
+    mappingHarmonic14: [
         "ß",
         "qwbfö" + "´ä" + "zkuopü",
         "asdrg" + "'" + "hnilt",

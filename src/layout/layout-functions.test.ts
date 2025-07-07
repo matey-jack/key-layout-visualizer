@@ -12,6 +12,8 @@ import {harmonicComparisonBaseline} from "../mapping/harmonic-mappings.ts";
 import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
 import {harmonic13cLayoutModel} from "./harmonic13cLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
+import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
+import {harmonic14LayoutModel} from "./harmonic14LayoutModel.ts";
 
 describe('fillMapping', () => {
     it('Harmonic 13c layout 30-key qwerty', () => {
@@ -32,9 +34,11 @@ describe('fillMapping', () => {
     });
 });
 
-const allLayoutModels = {
+export const allLayoutModels = {
     'ANSI': ansiLayoutModel,
-    'Harmonic': harmonic13cLayoutModel,
+    'Harmonic 14T': harmonic14LayoutModel,
+    'Harmonic 13/3': harmonic13cLayoutModel,
+    'Harmonic 13MS': harmonic13MidShiftLayoutModel,
     'Ortho': orthoLayoutModel,
     'Split Ortho': splitOrthoLayoutModel,
 };
@@ -43,7 +47,7 @@ describe('finger assignment consistency', () => {
     Object.entries(allLayoutModels).forEach(([name, model]) => {
         it(name, () => {
             model.fullMapping!!.forEach((mappingRow, r) => {
-                expect(mappingRow.length, `${KeyboardRows[r]}Row`).toBe(model.mainFingerAssignment[r].length)
+                expect(mappingRow.length, `${model.name} ${KeyboardRows[r]}Row`).toBe(model.mainFingerAssignment[r].length)
             });
         });
     });
@@ -53,7 +57,7 @@ describe('key effort consistency', () => {
     Object.entries(allLayoutModels).forEach(([name, model]) => {
         it(name, () => {
             model.fullMapping!!.forEach((mappingRow, r) => {
-                expect(model.singleKeyEffort[r].length, `${KeyboardRows[r]}Row`).toBe(mappingRow.length)
+                expect(model.singleKeyEffort[r].length, `${model.name} ${KeyboardRows[r]}Row`).toBe(mappingRow.length)
             });
         });
     });

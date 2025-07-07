@@ -61,9 +61,8 @@ export const orthoLayoutModel: RowBasedLayoutModel = {
         [NaN, NaN, 2, 1.5, NaN, 0.2, NaN, 1.5, 2, NaN, NaN],
     ],
 
-    // This missing one key, but I don't plan to show any layouts specific to the unsplit ortho board,
-    // so it's fine!
-    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingSplitOrtho,
+    // NOT USED since its different from split and this layout is not recommended anyways.
+    getSpecificMapping: (_: FlexMapping) => undefined,
 }
 
 export const splitOrthoLayoutModel: RowBasedLayoutModel = {
@@ -111,4 +110,6 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
         ...orig.slice(0, 4),
         [NaN, NaN, 2, NaN, 0.2, 0.2, 0.2, 0.2, NaN, 2, NaN, NaN],
     ])(orthoLayoutModel.singleKeyEffort),
+
+    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingSplitOrtho,
 }

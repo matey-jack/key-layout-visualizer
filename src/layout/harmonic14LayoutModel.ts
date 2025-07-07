@@ -17,7 +17,7 @@ const fullMapping: LayoutMapping = [
 ];
 
 export const harmonic14LayoutModel: RowBasedLayoutModel = {
-    name: "Harmonic Rows",
+    name: "Harmonic 14/Traditional",
     description: "The Harmonic keyboard layout has a fully symmetric keyboard with only two key sizes to allow for flexible changes to the key mapping. " +
         "Its regular row stagger allows for many keys to be comfortably typed by two fingers, " +
         "which let's you intuitively avoid the awkward same-finger bigrams that make new key mappings feel so awkward. " +
@@ -79,5 +79,5 @@ export const harmonic14LayoutModel: RowBasedLayoutModel = {
         [NaN, NaN, NaN, 1.0, 0.2, 1.0, 0.2, NaN, NaN, NaN],
     ],
 
-    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingHarmonic,
+    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingHarmonic14,
 }
