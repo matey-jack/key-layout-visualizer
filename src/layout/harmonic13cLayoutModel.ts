@@ -56,7 +56,7 @@ export const harmonic13cLayoutModel: RowBasedLayoutModel = {
     rightHomeIndex: 8,
 
     mainFingerAssignment: [
-        [1, 1, 2, 2, 3, 3, 6, 6, 6, 7, 7, 8, 8],
+        [1, 1, 2, 2, 3, 3, 3, 6, 6, 7, 7, 8, 8],
         [0, 1, 1, 2, 3, 3, 6, 6, 7, 8, 8, 9],
         [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
         [0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9],

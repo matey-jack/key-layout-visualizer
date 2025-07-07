@@ -48,7 +48,11 @@ export function getVizDetails(vizType: VisualizationType, layout: RowBasedLayout
         case VisualizationType.LayoutFingering:
             return <FingeringDetails layout={layout}/>;
         case VisualizationType.LayoutAngle:
-            return <p>TODO</p>;
+            return <p>
+                TODO: show how the Harmonic fits the natural angle of the hands (but only when not split)
+                and Ortho does the same (but only when split)
+                and ANSI is just weird.
+            </p>;
         case VisualizationType.LayoutKeyEffort:
             return <SingleKeyEffortDetails layout={layout} mapping={mapping}/>;
         case VisualizationType.MappingDiff:
@@ -60,6 +64,8 @@ export function getVizDetails(vizType: VisualizationType, layout: RowBasedLayout
             </p>;
         case VisualizationType.MappingBigrams:
             return <BigramEffortDetails layout={layout} mapping={mapping}/>;
+        case VisualizationType.MappingAltGr:
+            return <AltGrLayerDetails></AltGrLayerDetails>
     }
 }
 
@@ -268,4 +274,23 @@ export function BigramDetailsLegendItem({bigramType, frequency, children}: Bigra
         [Score: {bigramEffort[bigramType]}] {children}
     </div>
 
+}
+
+interface AltGrLayerDetailsProps {
+}
+
+export function AltGrLayerDetails({}: AltGrLayerDetailsProps) {
+    return <>
+        <p>
+            The US American keyboard mapping might be the only one that doesn't come with an AltGr layer.
+            Even the UK English keyboards have it! This layer basically allows us to type a lot more characters.
+            We can use it for characters that are on the traditional keyboards, but we rarely type them.
+            And we can add some extra useful characters like ¢ or ‰ or the m-dash – I really use that one a lot.
+        </p>
+        <p>
+            I think that all punctuation characters used in daily writing should be accessible via a direct key or
+            Shift, while more rare characters can easily be moved to the AltGr layer. <br/>
+            TODO: actually show an example mapping of the keys that some of the letter mappings omit.
+        </p>
+    </>
 }
