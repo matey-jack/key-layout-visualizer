@@ -36,7 +36,7 @@ export const harmonic14LayoutModel: RowBasedLayoutModel = {
     ],
     fullMapping,
 
-    // move the whole keyboard one key to the right to align with the ANSI center.
+    // chamfer bottom row, because pinky can't reach all the way into the corner.
     rowStart: (row: number) => (row == KeyboardRows.Bottom) ? 0.5 : 0,
 
     keyWidth: (row: number, col: number) => {
