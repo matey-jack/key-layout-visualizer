@@ -30,9 +30,10 @@ export const harmonic12LayoutModel: RowBasedLayoutModel = {
 
     keyWidth: (row: number, col: number) => {
         // outer edge keys
-        if ((row == KeyboardRows.Upper || row == KeyboardRows.Lower) &&
+        if ((row == KeyboardRows.Upper || row == KeyboardRows.Lower || row == KeyboardRows.Bottom) &&
             (col == 0 || col == fullMapping[row].length - 1)) return 1.5;
         // space and enter
+        // TODO: This makes the bottom row staggering to be incorrect. But maybe this is just fine?
         if (row == KeyboardRows.Bottom && ([4, 5].includes(col))) return 1.5;
         // all others
         return 1;

@@ -6,6 +6,9 @@ import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../
 
     Decision: H14 and H13c use a different format of FlexMapping, so that different gaps in the letter/punctuation
     pattern can be used for pair-wise positioned nav-keys. Both can do that in different places.
+
+    TODO: can we devise a data model for describing the bottom row which allows specifying different form-factors
+     as options such that finger assignment and key effort will automatically be filled?
  */
 const fullMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, "⌫"], // 13 keys
@@ -13,7 +16,7 @@ const fullMapping: LayoutMapping = [
     ["¤", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"], // 13 keys
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"], // 12 keys, due to 2u Shift keys.
     // 10 keys due to 6×1.5u for 2×Space, Cmd/Fn, and 2×Ctrl, plus 0.5 chamfer at the edge.
-    ["Ctrl", "Cmd", "Alt", 0, "⍽", 1, 2, "AltGr", "Fn", "Ctrl"],
+    ["Ctrl", "Cmd", "Alt", 0, 1, "⍽", 1, 2, 3, "AltGr", "Fn", "Ctrl"],
 ];
 
 export const harmonic14LayoutModel: RowBasedLayoutModel = {
@@ -32,12 +35,11 @@ export const harmonic14LayoutModel: RowBasedLayoutModel = {
         // The move of key 9 to the middle is a change required to keep the key-to-finger assignments
         // the same as on the ANSI layout. This is caused by moving the right home row to the right.
         ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"], // 12 keys
-        ["Ctrl", "Cmd", "Alt", "[", "⌦", "⍽", "]", "AltGr", "Fn", "Ctrl"], // 10 keys
+        ["Ctrl", "Cmd", "", "Alt", "[", "⌦", "⍽", "]", "AltGr", "", "Fn", "Ctrl"], // 10 keys
     ],
     fullMapping,
 
-    // chamfer bottom row, because pinky can't reach all the way into the corner.
-    rowStart: (row: number) => (row == KeyboardRows.Bottom) ? 0.5 : 0,
+    rowStart: (_: number) => 0,
 
     keyWidth: (row: number, col: number) => {
         // outer edge keys
@@ -46,9 +48,9 @@ export const harmonic14LayoutModel: RowBasedLayoutModel = {
         // Shift
         if (row == KeyboardRows.Lower && (col == 0 || col == fullMapping[row].length - 1)) return 2;
         // space and the other space
-        if (row == KeyboardRows.Bottom && (col == 4 || col == 5)) return 1.5;
+        if (row == KeyboardRows.Bottom && (col == 5 || col == 6)) return 1.5;
         // Cmd/Fn
-        if (row == KeyboardRows.Bottom && (col == 1 || col == fullMapping[row].length - 2)) return 1.5;
+        // if (row == KeyboardRows.Bottom && (col == 1 || col == fullMapping[row].length - 2)) return 1.5;
         // all others
         return 1;
     },
@@ -64,7 +66,7 @@ export const harmonic14LayoutModel: RowBasedLayoutModel = {
         [1, 0, 1, 1, 2, 3, 3, 6, 6, 7, 8, 8, 9, 8],
         [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
         [0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9],
-        [0, 1, 2, 4, 4, 5, 5, 7, 8, 9],
+        [0, 1, 2, 2, 4, 4, 5, 5, 7, 7, 8, 9],
     ],
 
     hasAltFinger: (row: number, col: number) =>
@@ -76,7 +78,7 @@ export const harmonic14LayoutModel: RowBasedLayoutModel = {
         [NaN, 1.5, 1.5, 1, 1, 1.5, 3, 3, 1.5, 1, 1, 1.5, 1.5, 3],
         [NaN, 0.2, 0.2, 0.2, 0.2, 2, 3, 2, 0.2, 0.2, 0.2, 0.2, NaN],
         [NaN, 1.5, 1.5, 1.5, 1.5, 3, 3, 1.5, 1.5, 1.5, 1.5, NaN],
-        [NaN, NaN, NaN, 1.0, 0.2, 1.0, 0.2, NaN, NaN, NaN],
+        [NaN, NaN, NaN, NaN, 1.0, 0.2, 1.0, 0.2, NaN, NaN, NaN, NaN],
     ],
 
     getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingHarmonic14,

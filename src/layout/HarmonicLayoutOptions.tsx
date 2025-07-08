@@ -15,7 +15,7 @@ export function HarmonicLayoutOptions({options}: HarmonicLayoutOptionsProps) {
             14/Traditional
         </HarmonicVariantButton>
         <HarmonicVariantButton variant={HarmonicVariant.H13_3} currentVariant={variant} setVariant={setVariant}>
-            13/LowShift
+            13/Balance
         </HarmonicVariantButton>
         <HarmonicVariantButton variant={HarmonicVariant.H13_MidShift} currentVariant={variant} setVariant={setVariant}>
             13/MidShift

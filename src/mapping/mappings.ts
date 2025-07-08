@@ -234,6 +234,7 @@ export const thumbyMin = {
     // for any Thumby-variant, we leave - unmoved.
     // We could make achieve an even lower learning diff by leaving D on the home row (it's the 10th most frequent letter).
     // That's basically what Thumby Bilingual is doing!
+	// TODO: consider swapping ; and J to have all punctuation in the bottom row.
     mappingAnsi: [
         "-=",
         "qwdfb" + "y" + "uklp[]",
@@ -242,6 +243,7 @@ export const thumbyMin = {
         "e⌥",
     ],
     ansiMovedColumns: [4, 5, 5, 4],
+	// this additionally swaps JY; because the Harmonic qwerty Y position is further away from the index finger's home.
     mappingHarmonic13c: [
         "[]",
         "wdfb" + "-=" + "uklp",
