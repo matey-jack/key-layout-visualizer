@@ -51,7 +51,19 @@ export interface FlexMapping {
     // It leaves some great improvements untapped, but transfers more easily between different keyboard layouts.
     // (Which is an ironic prevision of fate, since ortho keyboards only became really popular after many
     // of the classical layouts were invented...)
+    // This mapping should include 26 letters plus the punctuation characters `,./;`.
     mapping30?: string[];
+
+    // Keys per row: 10, 10, 8 plus one thumb key.
+    // The Harmonic "wide" (hand position) variants wrap the outer keys of the upper row to the home row
+    // thus make this 8, 12, 8 plus one thumb key. (In both cases the keys are operated by the pinky.
+    // Many Ortho mappings already do the same in reverse with the apostrophe key!)
+    // Includes 26 letters plus the punctuation characters `,.'`. Other punctuation is placed by the Layout-specific mapping.
+    // Note that the Qwerty positions of B and Y and / don't exist in this scheme. Usually B will be remapped
+    // using the spot freed by the thumb key (usually E, same hand as B), and Y will be remapped using the spot of `;`,
+    // also same hand. (Remappings can be ring swaps. Hand change is of course possible, but no hand change makes it
+    // easier to learn!)
+    mappingThumb28?: string[];
 
     // for correct dimensions, see the layout model files
     mappingAnsi?: string[];

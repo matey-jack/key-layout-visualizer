@@ -19,6 +19,39 @@ export const qwertyMapping: FlexMapping = {
     ]
 }
 
+export const qwerthMapping: FlexMapping = {
+    name: "Qwert-H",
+    description: "This is a minimal change of Qwerty to fit (all variants of) the Harmonic keyboard. " +
+        "By moving H to the home row, Y can be moved to a neighbor of home-row key. " +
+        "We could do the same for B by pushing one of the very rare letters away from the 28 home+neighbor keys, " +
+        "but I think that is better solved by using a thumb key. See Qwert-EH.",
+    sourceUrl: "https://en.wikipedia.org/wiki/QWERTY",
+    mapping30: [
+        "qwert" + ";uiop",
+        "asdfg" + "yjklh",
+        "zxcvb" + "nm,./",
+    ],
+}
+
+export const qwertEhMapping: FlexMapping = {
+    name: "Qwert-EH",
+    description: "This mapping is the smallest change to Qwerty that fits all Harmonic layouts while still being compatible " +
+        "with ANSI-wide mappings and all Ortholiniear and col-staggered keyboards. " +
+        "Querty on ANSI has the Y and B letters positioned more than one key away from the home row. " +
+        "On Ortho layouts this improves to making them diagonal neighbors. " +
+        "On Harmonic layouts, however, there are only 28 keys on the home row plus neighbors, " +
+        "which already includes the traditional position of the apostrophe. " +
+        "Since ,.' are more frequently typed (in average English) than some letters, the only way to place all those" +
+        "26 letters plus 3 punctuation keys on neighbor-of-home keys is to also use a thumb key.",
+    sourceUrl: "https://en.wikipedia.org/wiki/QWERTY",
+    mappingThumb28: [
+        "qwbrt" + "uiop'",
+        "asdfg" + "yjklh",
+        "zxcv" + "nm,.",
+        "e",
+    ],
+}
+
 export const colemakMapping: FlexMapping = {
     name: "Colemak",
     description: "Released in the year 2006, the Colemak layout started a new world-wide interest in better letter mappings. " +
@@ -135,86 +168,6 @@ export const quipperMapping = {
     ]
 }
 
-export const cozyMapping = {
-    name: "The Cozy Keyboard",
-    description: "Based on my daily use of a similar mapping for the German language. " +
-        "It's meant to work with the \"wide\" version of the ANSI keyboard or a split ortho keyboard. " +
-        "Using the thumb for typing E is very unconventional, but works great in practice. " +
-        "This is the way to actually have 9 home keys and thus avoid having to move around more letters to make room. " +
-        "Note that when counting only changed letters, it's stats are 7/3/2, which is less than Norman's 10/2/2 and Flip/Twist's 13/0/0.",
-    sourceUrl: "https://github.com/matey-jack/gemuetliche-tastatur",
-
-    // The current model doesn't let us remap keys with labels longer than one character.
-    // Therefore, I am using ⌥ for AltGr.
-    // Note that this is written for classic Ansi hand home position.
-    // But it transposes correctly to the wide layout and this is how I recommend using it.
-    // While it looks like = changed position, the change actually serves to keep it on the same finger in the wide layout,
-    // instead of spilling over to the middle column.
-    mappingAnsi: [
-        "=\\",
-        "qwbf" + "-y" + "kulp[]",
-        "asdrg" + "hniot'",
-        "zxcv" + ";" + "jm,./",
-        "e⌥"
-    ],
-
-    // maybe a bit superficial, just to have the brackets appear in the 'right' order. ;-)
-    ansiMovedColumns: [5, 5, 5, 4],
-
-    // This is just as hypothetic as the entire concept for a Harmonic keyboard.
-    // I didn't spend too much time on this... and won't until I actually build such a keyboard one day.
-    mappingHarmonic14: [
-        "=",
-        "qwbf;" + "[]" + "jkulp'",
-        "asdrg" + "`" + "hniot",
-        "zxcv" + "-/" + "ym,.",
-        "\\e"
-    ],
-
-    // Bottom left thumb key could alternatively be used for Delete, as on my Iris. And [] as Home/End keys.
-    // (But adding PgUp/PgDn would mean more refactoring and a more complicated AltGr layer.)
-    mappingHarmonic13c: [
-        "[]",
-        "qwbf" + ";j" + "kulp",
-        "-asdrg" + "`" + "hniot'",
-        "zxcv" + "=/" + "ym,.",
-        "\\e"
-    ],
-
-    mappingSplitOrtho: [
-        "",
-        "qwbf-" + "ykulp\\",
-        "asdrg" + "hniot'",
-        "zxcv;" + "jm,./",
-        "⇤⇥e`"
-    ],
-    /*
-        Alternative to mapping [], we can have Home/End, PgUp/PgDn, or Copy/Paste.
-        Unicode symbols, just in case.
-        Copy: 🗐, ⎘
-        Paste: 📋
-        Cut: ✂(✂️), ✄, ✀
-     */
-}
-
-export const cozyPlusMapping = {
-    name: "Cozy Plus",
-    description: "Hypothetical Cozy variant with easier typing at the expense of more learning. " +
-        "Inspired by the Norman layout, but adding the thumb-E. ",
-    sourceUrl: "https://github.com/matey-jack/gemuetliche-tastatur",
-
-    // We could have "Cozy Clean" which swaps `-` and `y` to have all punctuation in the bottom row,
-    // but it doesn't improve ease of typing and requires `y` to be trained on a different finger.
-    mappingAnsi: [
-        "=\\",
-        "qwbf-" + "j" + "hklp[]",
-        "asdrg" + "uniot'",
-        "zxcv" + ";" + "ym,./",
-        "e⌥"
-    ],
-    ansiMovedColumns: [5, 5, 5, 4],
-};
-
 export const thumbyMin = {
     name: "Thumby Min",
     description: "Draft of casual mapping with a thumb key. Improves high-frequency letter positions. " +
@@ -234,7 +187,7 @@ export const thumbyMin = {
     // for any Thumby-variant, we leave - unmoved.
     // We could make achieve an even lower learning diff by leaving D on the home row (it's the 10th most frequent letter).
     // That's basically what Thumby Bilingual is doing!
-	// TODO: consider swapping ; and J to have all punctuation in the bottom row.
+    // TODO: consider swapping ; and J to have all punctuation in the bottom row.
     mappingAnsi: [
         "-=",
         "qwdfb" + "y" + "uklp[]",
@@ -243,7 +196,7 @@ export const thumbyMin = {
         "e⌥",
     ],
     ansiMovedColumns: [4, 5, 5, 4],
-	// this additionally swaps JY; because the Harmonic qwerty Y position is further away from the index finger's home.
+    // this additionally swaps JY; because the Harmonic qwerty Y position is further away from the index finger's home.
     mappingHarmonic13c: [
         "[]",
         "wdfb" + "-=" + "uklp",
@@ -357,16 +310,16 @@ export const gemuetlichesMapping = {
 
     // TODO: We could define a "base for diffing" field here that contains the default German Qwertz mapping.
     //       Then the diff counts should be correct. (We'll have to contort it to ANSI though, because this app will not implement ISO.)
-/*
-     The Harmonic port of this layout changes less than Qwerty, because it is already made for a wide home position.
-     Changed chars are üzj+
-     ü sends away + because there is one less physical key on the upper row.
-     J and - simply swap places, both keep their finger and direction assignment.
-     (Alternatively swap also Q and J to improve the positioning for frequency.)
-     Finally, with `Z` I am not completely sure: it's still a bit awkward to think about this "new" left off-home position
-     although the symmetric position on the right has always been a character key in ANSI, even a letter in German.
-     TODO: align those layouts with modifications made on Thumby. In particular the Q overspill to the home row.
- */
+    /*
+         The Harmonic port of this layout changes less than Qwerty, because it is already made for a wide home position.
+         Changed chars are üzj+
+         ü sends away + because there is one less physical key on the upper row.
+         J and - simply swap places, both keep their finger and direction assignment.
+         (Alternatively swap also Q and J to improve the positioning for frequency.)
+         Finally, with `Z` I am not completely sure: it's still a bit awkward to think about this "new" left off-home position
+         although the symmetric position on the right has always been a character key in ANSI, even a letter in German.
+         TODO: align those layouts with modifications made on Thumby. In particular the Q overspill to the home row.
+     */
     mappingHarmonic13c: [
         "´ß",
         "qwbf" + "öü" + "kuop",
@@ -401,7 +354,6 @@ export const allMappings: FlexMapping[] = [
     thumbyBilingual,
     gemuetlichesMapping,
 ]
-
 
 
 // Colemak changes 17 keys, many without good reason, which is not at all casual.

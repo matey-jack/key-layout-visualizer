@@ -1,14 +1,8 @@
 import {describe, expect, it} from 'vitest';
 
-import {Finger, MappingChange, KeyboardRows, Hand, hand} from "../base-model.ts";
-import {
-    characterToFinger,
-    diffSummary,
-    diffToQwerty,
-    fillMapping,
-} from "./layout-functions.ts";
-import {cozyMapping, normanMapping, qwertyMapping} from "../mapping/mappings.ts"
-import {harmonicComparisonBaseline} from "../mapping/harmonic-mappings.ts";
+import {Finger, Hand, hand, KeyboardRows, MappingChange} from "../base-model.ts";
+import {characterToFinger, diffSummary, diffToQwerty, fillMapping,} from "./layout-functions.ts";
+import {normanMapping, qwertyMapping} from "../mapping/mappings.ts"
 import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
 import {harmonic13cLayoutModel} from "./harmonic13cLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
@@ -24,14 +18,6 @@ describe('fillMapping', () => {
         expect(actual[2]).toStrictEqual(["q", "a", "s", "d", "f", "g", "\\", "h", "j", "k", "l", ";", "'"]);
         expect(actual[3]).toStrictEqual(["⇧", "z", "x", "c", "v", "b", "/", "n", "m", ",", ".", "⇧",]);
         expect(actual[4]).toStrictEqual(["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl",]);
-    });
-
-    it('Harmonic layout full qwerty', () => {
-        const with30 = fillMapping(harmonic13cLayoutModel, qwertyMapping);
-        const full = fillMapping(harmonic13cLayoutModel, harmonicComparisonBaseline);
-        with30.forEach((row30, r) => {
-            expect(row30).toStrictEqual(full[r])
-        })
     });
 });
 
@@ -92,7 +78,6 @@ describe('diffToQwerty', () => {
         expect(summary[MappingChange.SameFinger]).toBe(11);
         expect(summary[MappingChange.SamePosition]).toBe(17);
     })
-    const cozyDiff = diffToQwerty(ansiWideLayoutModel, cozyMapping)
 });
 
 describe('characterToFinger for ANSI Qwerty', () => {
