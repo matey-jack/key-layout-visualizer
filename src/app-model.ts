@@ -5,7 +5,10 @@ import {AnsiLayoutOptionsModel} from "./layout/ansiLayoutModel.ts";
 import {OrthoLayoutOptionsModel} from "./layout/orthoLayoutModel.ts";
 
 export interface AppState {
-    layoutType: Signal<LayoutType>;
+    // There's a writeable signal behind those two, but we hide it behind a setter function to preserve model integrity.
+    layoutType: ReadonlySignal<LayoutType>;
+    setLayoutType: (layoutType: LayoutType) => void;
+
     layoutOptions: LayoutOptionsState;
     layoutSplit: Signal<LayoutSplit>;
     layoutModel: ReadonlySignal<RowBasedLayoutModel>;

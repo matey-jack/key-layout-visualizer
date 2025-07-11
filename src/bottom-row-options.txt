@@ -1,6 +1,11 @@
+# Two main keys per thumb. With unplit spacebar, that's one less in for one hand!
+
 When the space bar is split and the two keys are 2u or less, there will be one more key on each side that is very accessible to the thumb
 and can serve as a home key for a letter or anything else.
-Having two great thumb keys on each side is probably also the case for most split keyboards with thumb clusters.
+Having two easy-to-reach thumb keys on each side is probably also the case for most split keyboards with thumb clusters.
+On larger thumb clusters, the third key is often already harder to reach and all others aren't in touch-typing position at all,
+requiring to lift the hand instead.
+
 On my Iris CE, I have set them up as Delete and Space on the left hand; Enter and E on the right hand.
 I like the aesthetic idea of having slightly larger keys for Space and Enter, especially if they can be the same size as the "gap-filling" 1.5u keys in the shorter, staggered rows of the main keyboard.
 Therefore, I think that a single, central space bar would only make sense on the Harmonic 14 Traditional which has the Enter key in the traditional right pinky position.

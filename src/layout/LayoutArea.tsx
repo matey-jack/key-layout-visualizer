@@ -1,8 +1,8 @@
 import {LayoutSplit, LayoutType, VisualizationType} from "../base-model.ts";
 import {AppState, LayoutOptionsState} from "../app-model.ts";
 import {BigramLines, KeyboardSvg, RowBasedKeyboard} from "./KeyboardSvg.tsx";
-import {getKeyPositions, getLayoutModel} from "./layout-functions.ts";
-import {Signal} from "@preact/signals";
+import {getKeyPositions, getLayoutModel, hasMatchingMapping} from "./layout-functions.ts";
+import {ReadonlySignal, Signal} from "@preact/signals";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
@@ -17,7 +17,11 @@ export function LayoutArea({appState}: LayoutAreaProps) {
 
     return (
         <div>
-            <TopBar layoutSignal={appState.layoutType} layoutOptions={appState.layoutOptions}/>
+            <TopBar
+                currentLayout={appState.layoutType}
+                setLayout={appState.setLayoutType}
+                layoutOptions={appState.layoutOptions}
+            />
             <KeyboardSvg>
                 <RowBasedKeyboard
                     layoutModel={appState.layoutModel.value}
@@ -35,11 +39,12 @@ export function LayoutArea({appState}: LayoutAreaProps) {
 }
 
 interface TopBarProps {
-    layoutSignal: Signal<LayoutType>
-    layoutOptions: LayoutOptionsState
+    currentLayout: ReadonlySignal<LayoutType>;
+    setLayout: (layout: LayoutType) => void;
+    layoutOptions: LayoutOptionsState;
 }
 
-function TopBar({layoutSignal, layoutOptions}: TopBarProps) {
+function TopBar({currentLayout, setLayout, layoutOptions}: TopBarProps) {
     const layoutOrder = [LayoutType.ANSI, LayoutType.Harmonic, LayoutType.Ortho];
     return <div className="layout-top-bar-container">
         <BlankGridElement/>
@@ -47,7 +52,8 @@ function TopBar({layoutSignal, layoutOptions}: TopBarProps) {
             <TopBarKeyboardTab
                 layoutType={layoutType}
                 layoutName={getLayoutModel(layoutType, layoutOptions).name}
-                layoutSignal={layoutSignal}
+                currentLayout={currentLayout}
+                setLayout={setLayout}
                 key={layoutType}
             />
         )}
@@ -59,15 +65,16 @@ const BlankGridElement = () =>
     <div class="blank"></div>
 
 interface TopBarKeyboardTabProps {
-    layoutType: LayoutType
-    layoutName: string
-    layoutSignal: Signal<LayoutType>
+    layoutType: LayoutType;
+    layoutName: string;
+    currentLayout: ReadonlySignal<LayoutType>;
+    setLayout: (layout: LayoutType) => void;
 }
 
-function TopBarKeyboardTab({layoutType, layoutName, layoutSignal}: TopBarKeyboardTabProps) {
-    const selected = layoutType === layoutSignal.value;
+function TopBarKeyboardTab({layoutType, layoutName, currentLayout, setLayout}: TopBarKeyboardTabProps) {
+    const selected = layoutType === currentLayout.value;
     return <div
-        onClick={() => layoutSignal.value = layoutType}
+        onClick={() => setLayout(layoutType)}
     >
         <button class={"top-bar-keyboard-tab-label" + (selected ? " selected" : "")}>
             {layoutName}

@@ -2,21 +2,31 @@
 import './app.css'
 import './app-model.ts'
 import {FlexMapping, LayoutSplit, LayoutType, VisualizationType} from "./base-model.ts";
-import {AppState} from "./app-model.ts";
+import {AppState, HarmonicVariant} from "./app-model.ts";
 import {LayoutArea} from "./layout/LayoutArea.tsx";
 import {MappingList} from "./mapping/MappingArea.tsx";
 import {DetailsArea} from "./details/DetailsArea.tsx";
-import {computed, effect, signal, Signal} from "@preact/signals";
+import {computed, signal, Signal} from "@preact/signals";
 import {ComponentChildren} from "preact";
 import {diffToQwerty, getKeyPositions, getLayoutModel, hasMatchingMapping} from "./layout/layout-functions.ts";
 import {qwertyMapping} from "./mapping/mappings.ts";
 import {getBigramMovements} from "./bigrams.ts";
-import {HarmonicVariant} from "./app-model.ts";
+
+// Function needed, because doing the same in an effect() would already run all the computed() functions
+// with inconsistent data that might crash them.
+function setLayout(layoutType: LayoutType, layoutSignal: Signal<LayoutType>, appState: AppState) {
+    const newLayoutModel =
+        getLayoutModel(layoutType, appState.layoutOptions, appState.mapping.value, appState.layoutSplit)
+    if (!hasMatchingMapping(newLayoutModel, appState.mapping.value)) {
+        appState.mapping.value = qwertyMapping;
+    }
+    layoutSignal.value = layoutType;
+}
 
 // Some of the state could be local the Layout or Mapping areas, but unless this global thing gets too big,
 // let's just have one.
 export function createAppState(): AppState {
-    const layoutType = signal(LayoutType.ANSI);
+    const layoutTypeSignal = signal(LayoutType.ANSI);
     const layoutSplit = signal(LayoutSplit.Bar);
     const layoutOptions = {
         ansiLayoutOptions: signal({wide: false}),
@@ -24,29 +34,32 @@ export function createAppState(): AppState {
         orthoLayoutOptions: signal({thumbKeys: true}),
     };
     const layoutModel = computed(() =>
-        getLayoutModel(layoutType.value, layoutOptions, mapping.value, layoutSplit)
+        getLayoutModel(layoutTypeSignal.value, layoutOptions, mapping.value, layoutSplit)
     )
 
     const mapping = signal(qwertyMapping as FlexMapping);
-    effect(() => {
-        // When switching layouts and the current mapping doesn't work on this layout, reset to default.
-        if (!hasMatchingMapping(layoutModel.value, mapping.value)) {
-            mapping.value = qwertyMapping;
-        }
-    })
     const vizType = signal(VisualizationType.LayoutFingering)
 
     const mappingDiff = computed(() =>
         diffToQwerty(layoutModel.value, mapping.value)
     )
     const bigramMovements = computed(() => {
-            const split = layoutSplit.value == LayoutSplit.TwoPiece;
-            return getBigramMovements(
-                getKeyPositions(layoutModel.value, split, mapping.value),
-                `get bigrams for visualization of ${mapping.value.name} on ${layoutModel.value.name}`);
-        }
-    )
-    return {layoutType, layoutOptions, layoutSplit, layoutModel, mapping, vizType, mappingDiff, bigramMovements};
+        const split = layoutSplit.value == LayoutSplit.TwoPiece;
+        return getBigramMovements(
+            getKeyPositions(layoutModel.value, split, mapping.value),
+            `get bigrams for visualization of ${mapping.value.name} on ${layoutModel.value.name}`);
+    })
+    return {
+        layoutType: computed(() => layoutTypeSignal.value),
+        setLayoutType: (layoutType) => setLayout(layoutType, layoutTypeSignal, appState),
+        layoutOptions,
+        layoutSplit,
+        layoutModel,
+        mapping,
+        vizType,
+        mappingDiff,
+        bigramMovements
+    };
 }
 
 const appState = createAppState();
@@ -71,7 +84,8 @@ export function VisualizationSwitches({vizType}: VisualizationSwitchesProps) {
             Layout Visualizations:
             <VizTypeButton vizType={VisualizationType.LayoutFingering} signal={vizType}>Fingering</VizTypeButton>
             <VizTypeButton vizType={VisualizationType.LayoutAngle} signal={vizType}>Angle</VizTypeButton>
-            <VizTypeButton vizType={VisualizationType.LayoutKeyEffort} signal={vizType}>Single-Key Effort</VizTypeButton>
+            <VizTypeButton vizType={VisualizationType.LayoutKeyEffort} signal={vizType}>Single-Key
+                Effort</VizTypeButton>
         </div>
         <div>
             Mapping Visualizations:
