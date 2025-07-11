@@ -8,7 +8,7 @@ import {MappingList} from "./mapping/MappingArea.tsx";
 import {DetailsArea} from "./details/DetailsArea.tsx";
 import {computed, effect, signal, Signal} from "@preact/signals";
 import {ComponentChildren} from "preact";
-import {diffToQwerty, getKeyPositions, getLayoutModel} from "./layout/layout-functions.ts";
+import {diffToQwerty, getKeyPositions, getLayoutModel, hasMatchingMapping} from "./layout/layout-functions.ts";
 import {qwertyMapping} from "./mapping/mappings.ts";
 import {getBigramMovements} from "./bigrams.ts";
 import {HarmonicVariant} from "./app-model.ts";
@@ -30,7 +30,7 @@ export function createAppState(): AppState {
     const mapping = signal(qwertyMapping as FlexMapping);
     effect(() => {
         // When switching layouts and the current mapping doesn't work on this layout, reset to default.
-        if (!layoutModel.value.getSpecificMapping(mapping.value) && !mapping.value.mapping30) {
+        if (!hasMatchingMapping(layoutModel.value, mapping.value)) {
             mapping.value = qwertyMapping;
         }
     })
@@ -40,8 +40,10 @@ export function createAppState(): AppState {
         diffToQwerty(layoutModel.value, mapping.value)
     )
     const bigramMovements = computed(() => {
-            const split = appState.layoutSplit.value == LayoutSplit.TwoPiece;
-            return getBigramMovements(getKeyPositions(layoutModel.value, split, mapping.value));
+            const split = layoutSplit.value == LayoutSplit.TwoPiece;
+            return getBigramMovements(
+                getKeyPositions(layoutModel.value, split, mapping.value),
+                `get bigrams for visualization of ${mapping.value.name} on ${layoutModel.value.name}`);
         }
     )
     return {layoutType, layoutOptions, layoutSplit, layoutModel, mapping, vizType, mappingDiff, bigramMovements};
