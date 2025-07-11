@@ -222,6 +222,14 @@ export const thumbyNine = {
     ],
     ansiMovedColumns: [4, 5, 5, 4],
 
+    mappingSplitOrtho: [
+        "",
+        "qwdfb" + "yuklp-",
+        "asrtg" + "=nioh'",
+        "zxcv;" + "jm,./",
+        "⇤\\e⇥",
+    ],
+
     // this additionally swaps JY; because the Harmonic qwerty Y position is further away from the index finger's home.
     mappingHarmonic13wide: [
         "[]",
@@ -236,13 +244,6 @@ export const thumbyNine = {
         "asrtg" + ";" + "jnioh",
         "zxcv" + "[]" + "ym,.",
         "⌦e/",
-    ],
-    mappingSplitOrtho: [
-        "",
-        "qwdfb" + "yuklp-",
-        "asrtg" + ";nioh'",
-        "zxcv=" + "jm,./",
-        "⇤\\e⇥",
     ],
 }
 

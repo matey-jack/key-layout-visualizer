@@ -73,10 +73,10 @@ export interface FlexMapping {
     // maybe all of those should be removed to avoid all the duplication?
     // we could instead have some variants of the frame layouts which map all the keys not in the flex mapping.
     mappingAnsi?: string[];
+    mappingSplitOrtho?: string[];
     mappingHarmonic13wide?: string[];
     // mappingHarmonic14?: string[];
     // mappingHarmonic13MS?: string[];
-    // mappingSplitOrtho?: string[];
 
     // for customizing the ANSI wide Layout
     ansiMovedColumns?: number[];

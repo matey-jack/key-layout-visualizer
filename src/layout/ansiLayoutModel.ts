@@ -76,7 +76,7 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
      */
     singleKeyEffort: [
         [3, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 3, NaN],
-        [NaN, 2, 1, 1, 1.5, 1.5, 2, 1.5, 1, 1, 2, 2, 3, 3],
+        [NaN, 2, 1, 1, 1.5, 1.5, 1.5, 1.5, 1, 1, 2, 2, 3, 3],
         [NaN, 0.2, 0.2, 0.2, 0.2, 2, 2, 0.2, 0.2, 0.2, 0.2, 1.5, 2],
         [NaN, 2, 2, 2, 2, 3, 1.5, 1.5, 1.5, 1.5, 1.5, NaN],
         [NaN, NaN, NaN, 0.2, 1.5, NaN, NaN, NaN],

@@ -72,7 +72,7 @@ export const harmonic13WideLayoutModel: RowBasedLayoutModel = {
 
     singleKeyEffort: [
         [3, 3, 2, 2, 2, 3, 3, 3, 2, 2, 2, 3, 3],
-        [NaN, 1.5, 1, 1, 1.5, 3, 3, 1.5, 1, 1, 1.5, NaN],
+        [NaN, 1.5, 1, 1, 1.5, 2, 2, 1.5, 1, 1, 1.5, NaN],
         [1.5, 0.2, 0.2, 0.2, 0.2, 2, 3, 2, 0.2, 0.2, 0.2, 0.2, 1.5],
         [NaN, 1.5, 1.5, 1.5, 1.5, 3, 3, 1.5, 1.5, 1.5, 1.5, NaN],
         [NaN, NaN, NaN, 1.0, 0.2, 1.0, 0.2, NaN, NaN, NaN],
