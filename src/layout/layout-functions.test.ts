@@ -60,7 +60,12 @@ describe('fillMapping', () => {
         hasLettersNumbersAndProsePunctuation(mergeMapping(splitOrthoLayoutModel.fullMapping, thumbyNine.mappingSplitOrtho));
     });
 
-    // TODO: fullMappings for Harmonic need clean up first
+    // this is currently not used in the app, but let's keep it working
+    it(`Harmonic 13 wide full layout maps all important characters`, () => {
+        hasLettersNumbersAndProsePunctuation(mergeMapping(harmonic13WideLayoutModel.fullMapping, thumbyNine.mappingHarmonic13wide));
+    });
+
+    // TODO: fullMappings for other Harmonic variants need clean up first
 });
 
 describe('finger assignment consistency', () => {
