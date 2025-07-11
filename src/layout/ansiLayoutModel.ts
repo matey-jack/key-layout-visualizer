@@ -79,7 +79,7 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         [NaN, 2, 1, 1, 1.5, 1.5, 2, 1.5, 1, 1, 2, 2, 3, 3],
         [NaN, 0.2, 0.2, 0.2, 0.2, 2, 2, 0.2, 0.2, 0.2, 0.2, 1.5, 2],
         [NaN, 2, 2, 2, 2, 3, 1.5, 1.5, 1.5, 1.5, 1.5, NaN],
-        [NaN, NaN, NaN, 0.2, NaN, NaN, NaN, NaN],
+        [NaN, NaN, NaN, 0.2, 1.5, NaN, NaN, NaN],
     ],
 
     rowStart: (_: KeyboardRows) => 0,
@@ -123,12 +123,13 @@ export const movedColumns = [5, 7, 5, 4];
 export const ansiWideLayoutModel = customAnsiWideLayoutModel(movedColumns);
 
 export function customAnsiWideLayoutModel(movedColumns: number[]): RowBasedLayoutModel {
-    let {thirtyKeyMapping, fullMapping, splitColumns, singleKeyEffort} = ansiLayoutModel;
+    let {thirtyKeyMapping, thumb30KeyMapping, fullMapping, splitColumns, singleKeyEffort} = ansiLayoutModel;
     return {
         ...ansiLayoutModel,
         name: "ANSI with wide hand position",
         rightHomeIndex: 8,
         thirtyKeyMapping: moveRightHand(thirtyKeyMapping, splitColumns, movedColumns),
+        thumb30KeyMapping: thumb30KeyMapping && moveRightHand(thumb30KeyMapping, splitColumns, movedColumns),
         fullMapping: moveRightHand(fullMapping!!, splitColumns, movedColumns),
         mainFingerAssignment: [
             [1, 1, 1, 2, 2, 3, 3, 6, 6, 6, 7, 8, 8, 8],
@@ -188,6 +189,7 @@ export const splitSpaceBar = (baseModel: RowBasedLayoutModel): RowBasedLayoutMod
         ...baseModel,
         fullMapping: baseModel.fullMapping && duplicateBottomMiddle(baseModel.fullMapping, KeyboardRows.Bottom, middleIdx),
         thirtyKeyMapping: baseModel.thirtyKeyMapping && duplicateBottomMiddle(baseModel.thirtyKeyMapping, KeyboardRows.Bottom, middleIdx),
+        thumb30KeyMapping: baseModel.thumb30KeyMapping && duplicateBottomMiddle(baseModel.thumb30KeyMapping, KeyboardRows.Bottom, middleIdx),
         singleKeyEffort: duplicateBottomMiddle(baseModel.singleKeyEffort, KeyboardRows.Bottom, middleIdx),
         keyWidth: (row: number, col: number): number => {
             if (row != KeyboardRows.Bottom) return baseModel.keyWidth(row, col);
