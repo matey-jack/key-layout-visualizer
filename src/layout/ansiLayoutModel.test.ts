@@ -46,7 +46,7 @@ describe('ansiWideLayoutModel', () => {
         // This is caused by moving the right home row to the right where the Enter key is removed.
         // But below, Shift is still there.
         ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-        ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Fn", "Menu", "Ctrl"],
+        ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
     ];
 
     for (let row = 0; row < 5; row++) {

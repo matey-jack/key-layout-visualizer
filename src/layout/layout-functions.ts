@@ -15,7 +15,7 @@ import {HarmonicVariant, LayoutOptionsState} from "../app-model.ts";
 import {Signal} from "@preact/signals";
 import {ansiLayoutModel, ansiWideLayoutModel, customAnsiWideLayoutModel, splitSpaceBar} from "./ansiLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
-import {harmonic13cLayoutModel} from "./harmonic13cLayoutModel.ts";
+import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 import {sum} from "../library/math.ts";
 import {harmonic14LayoutModel} from "./harmonic14LayoutModel.ts";
 import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
@@ -33,7 +33,18 @@ export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexM
     if (fullFlexMapping) {
         return mergeMapping(layoutModel.fullMapping!!, fullFlexMapping);
     }
+    if (flexMapping.mappingThumb30 && layoutModel.thumb30KeyMapping) {
+        return mergeMapping(layoutModel.thumb30KeyMapping, ["", ...flexMapping.mappingThumb30]);
+    }
     return mergeMapping(layoutModel.thirtyKeyMapping, ["", ...flexMapping.mapping30!!]);
+}
+
+export function hasMatchingMapping(layout: RowBasedLayoutModel, flexMapping: FlexMapping): boolean {
+    // every layout can process a full mapping for its own type or a 30 key mapping.
+    // TODO: actually, every layout should also be able to use a Thumb30 mapping...
+    return !!(layout.getSpecificMapping(flexMapping) ||
+        flexMapping.mapping30 ||
+        (flexMapping.mappingThumb30 && layout.thumb30KeyMapping));
 }
 
 export const mergeMapping = (layoutMapping: LayoutMapping, flexMapping: string[]): string[][] =>
@@ -136,7 +147,7 @@ export function getLayoutModel(layoutType: LayoutType,
                 case HarmonicVariant.H14_Traditional:
                     return harmonic14LayoutModel;
                 case HarmonicVariant.H13_3:
-                    return harmonic13cLayoutModel;
+                    return harmonic13WideLayoutModel;
                 case HarmonicVariant.H13_MidShift:
                     return harmonic13MidShiftLayoutModel;
                 case HarmonicVariant.H12_3:

@@ -37,6 +37,13 @@ export const harmonic14LayoutModel: RowBasedLayoutModel = {
         ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"], // 12 keys
         ["Ctrl", "Cmd", "", "Alt", "[", "⌦", "⍽", "]", "AltGr", "", "Fn", "Ctrl"], // 10 keys
     ],
+    thumb30KeyMapping: [
+        ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "`", "⌫"], // 13 keys
+        ["↹", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "'", "\\"], // 14 keys
+        ["¤", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "⏎"], // 13 keys
+        ["⇧", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, "⇧"], // 12 keys
+        ["Ctrl", "Cmd", "", "Alt", "/", "⌦", "⍽", 0, "AltGr", "", "Fn", "Ctrl"], // 10 keys
+    ],
     fullMapping,
 
     rowStart: (_: number) => 0,
@@ -81,5 +88,6 @@ export const harmonic14LayoutModel: RowBasedLayoutModel = {
         [NaN, NaN, NaN, NaN, 1.0, 0.2, 1.0, 0.2, NaN, NaN, NaN, NaN],
     ],
 
-    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingHarmonic14,
+    // rely on Thumb30 only
+    getSpecificMapping: (_: FlexMapping) => undefined,
 }

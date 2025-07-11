@@ -77,7 +77,8 @@ interface MappingSummaryProps {
 export function MappingSummary({mapping, layout}: MappingSummaryProps) {
     const mappingType: string = layout.getSpecificMapping(mapping)
         ? "specifically customized"
-        : "derived from the generic 30-key mapping";
+        : mapping.mappingThumb30 ? "derived from the generic 30-key with thumb mapping"
+            : "derived from the generic 30-key without thumb mapping";
     const src = mapping.sourceUrl;
     return <div className="mapping-summary">
         <p>The <b>{mapping.name}</b> key mapping for the <b>{layout.name}</b> layout is {mappingType}.</p>

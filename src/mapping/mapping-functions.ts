@@ -41,7 +41,7 @@ export function getSingleKeyEffort(layoutModel: RowBasedLayoutModel, mapping: Fl
     const result: Record<string, number> = {};
     charMap.forEach((charMapRow, row) => {
         charMapRow.forEach((char, col) => {
-            if (singleCharacterFrequencies[char.toUpperCase()]) {
+            if (char && singleCharacterFrequencies[char.toUpperCase()]) {
                 result[char] = layoutModel.singleKeyEffort[row][col];
             }
         })

@@ -19,39 +19,6 @@ export const qwertyMapping: FlexMapping = {
     ]
 }
 
-export const qwerthMapping: FlexMapping = {
-    name: "Qwert-H",
-    description: "This is a minimal change of Qwerty to fit (all variants of) the Harmonic keyboard. " +
-        "By moving H to the home row, Y can be moved to a neighbor of home-row key. " +
-        "We could do the same for B by pushing one of the very rare letters away from the 28 home+neighbor keys, " +
-        "but I think that is better solved by using a thumb key. See Qwert-EH.",
-    sourceUrl: "https://en.wikipedia.org/wiki/QWERTY",
-    mapping30: [
-        "qwert" + ";uiop",
-        "asdfg" + "yjklh",
-        "zxcvb" + "nm,./",
-    ],
-}
-
-export const qwertEhMapping: FlexMapping = {
-    name: "Qwert-EH",
-    description: "This mapping is the smallest change to Qwerty that fits all Harmonic layouts while still being compatible " +
-        "with ANSI-wide mappings and all Ortholiniear and col-staggered keyboards. " +
-        "Querty on ANSI has the Y and B letters positioned more than one key away from the home row. " +
-        "On Ortho layouts this improves to making them diagonal neighbors. " +
-        "On Harmonic layouts, however, there are only 28 keys on the home row plus neighbors, " +
-        "which already includes the traditional position of the apostrophe. " +
-        "Since ,.' are more frequently typed (in average English) than some letters, the only way to place all those" +
-        "26 letters plus 3 punctuation keys on neighbor-of-home keys is to also use a thumb key.",
-    sourceUrl: "https://en.wikipedia.org/wiki/QWERTY",
-    mappingThumb28: [
-        "qwbrt" + "uiop'",
-        "asdfg" + "yjklh",
-        "zxcv" + "nm,.",
-        "e",
-    ],
-}
-
 export const colemakMapping: FlexMapping = {
     name: "Colemak",
     description: "Released in the year 2006, the Colemak layout started a new world-wide interest in better letter mappings. " +
@@ -168,9 +135,60 @@ export const quipperMapping = {
     ]
 }
 
+export const thumbyZero = {
+    name: "Thumby Zero",
+    description: "Simply puts E on the best key of the board and rescues B from the worst key of the board. ",
+    mappingThumb30: [
+        "qwbrt" + "y" + "uiop",
+        "asdfg" + "hjkl;'",
+        "zxcv" + "-" + "nm,.",
+        "e",
+    ],
+    mappingAnsi: [
+        "=\\",
+        "qwbrt" + "yuiop[]",
+        "asdfg" + "hjkl;'",
+        "zxcv-" + "nm,./",
+        "e⌥",
+    ],
+}
+
+export const thumbyNero = {
+    name: "Thumby Nero",
+    description: "This is like Thumby Zero, a minimal dip into Thumby-land, but this time only containing the NJ swap. " +
+        "This makes it possible to try out using just ordinary KLC layouts, nothing wild. " +
+        "I think that this swap is the most effective single change to Qwerty, because it also improves all the bigrams" +
+        "between N and the upper row right hand vowels (UIO). ",
+    mapping30: [
+        "qwert" + "yuiop",
+        "asdfg" + "hnkl;",
+        "zxcvb" + "jm,./",
+    ],
+}
+
 export const thumbyMin = {
     name: "Thumby Min",
-    description: "Draft of casual mapping with a thumb key. Improves high-frequency letter positions. " +
+    description: "This mapping is the smallest change to Qwerty that fits all Harmonic layouts while still being compatible " +
+        "with ANSI-wide mappings and all Ortholiniear and col-staggered keyboards. " +
+        "Querty on ANSI has the Y and B letters positioned more than one key away from the home row. " +
+        "On Ortho layouts this improves to making them diagonal neighbors. " +
+        "On Harmonic layouts, however, there are only 28 keys on the home row plus neighbors, " +
+        "which already includes the traditional position of the apostrophe. " +
+        "Since ,.' are more frequently typed (in average English) than some letters, the only way to place all those" +
+        "26 letters plus 3 punctuation keys on neighbor-of-home keys is to also use a thumb key.",
+    sourceUrl: "https://en.wikipedia.org/wiki/QWERTY",
+    mappingThumb30: [
+        "qwbrt" + "y" + "uiop",
+        "asdfg" + "-nklh",
+        "zxcv" + ";" + "jm,.",
+        "e",
+    ],
+}
+
+export const thumbyNine = {
+    name: "Thumby Nine",
+    description: "Puts the nine most frequent letters of English into home key positions, " +
+        "keeping most of them on the same finger. " +
         "When using the \"ANSI wide\" home position, you suddenly realize how easy it becomes " +
         "for your thumb to hit the key to the right of the space bar. " +
         "Thus is born the idea of adding a nineth home key, which changes everything. " +
@@ -178,10 +196,15 @@ export const thumbyMin = {
         "Note that R shows as a changed finger, but probably most people already type R with their middle finger " +
         "when typing the RT bigram on Qwerty. " +
         "The remaining swaps in the layout are the same as in other casual mappings. " +
-        "Only Norman also places H on the home row, but Thumby practically has to do that " +
-        "because it can place all the nine most frequent letters there. " +
-        "Thus, Thumby could be called \"Norman-Nine\". " +
-        "With its few differences to Norman, it could be a great upgrade for anyone currently using Norman. ",
+        "With its few differences to Norman, it could be a great upgrade for anyone currently using Norman. " +
+        "We could even call it  \"Norman-Nine\". ",
+    // Note that the full mappings below might not be consistent with this. We'll deal with that later.
+    mappingThumb30: [
+        "qwdfb" + "-" + "uklp",
+        "asrtg" + "ynioh",
+        "zxcv" + ";" + "jm,.",
+        "e",
+    ],
 
     // I would move - to the core board instead of =, but since this mapping is meant to show the lowest-practical Qwerty-diff
     // for any Thumby-variant, we leave - unmoved.
@@ -197,7 +220,7 @@ export const thumbyMin = {
     ],
     ansiMovedColumns: [4, 5, 5, 4],
     // this additionally swaps JY; because the Harmonic qwerty Y position is further away from the index finger's home.
-    mappingHarmonic13c: [
+    mappingHarmonic13wide: [
         "[]",
         "wdfb" + "-=" + "uklp",
         "qasrtg" + ";" + "jnioh'",
@@ -220,13 +243,18 @@ export const thumbyMin = {
     ],
 }
 
-export const thumbyPlus = {
-    name: "Thumby Plus",
-    description: "Draft of casual mapping with a thumb key. " +
-        "Additionally improves the medium-frequency letter positions G, U, and Y. " +
-        "Feel free to call it Thumby-GUY. " +
-        "Note that to compensate for the Harmonic and Ortho layout differences, it's closer to Thumby Min on those layouts. " +
-        "If you like customizations, some other variants can be created by combining Thumby Min and Plus. ",
+export const thumby9ku = {
+    name: "Thumby Nine-KU",
+    description: "Adding the K-U swap to Thumby Nine not only makes the relatively frequent U easier to type, " +
+        "but also removes the same-finger conflict of the UN bigram. ",
+    // Note that the full mappings below might not be consistent with this. We'll deal with that later.
+    mappingThumb28: [
+        "qwdfb" + "kulp'",
+        "asrtg" + "ynioh",
+        "zxcv" + "jm,.",
+        "e",
+    ],
+
     mappingAnsi: [
         "⇤⇥",
         "qwdfg" + "=" + "kulp-\\",
@@ -235,7 +263,7 @@ export const thumbyPlus = {
         "e⌥",
     ],
     ansiMovedColumns: [4, 6, 5, 4],
-    mappingHarmonic13c: [
+    mappingHarmonic13wide: [
         "⇞⇟",
         "wdfg" + "-=" + "kulp",
         "qasrtb" + ";" + "ynioh'",
@@ -265,6 +293,9 @@ export const thumbyBilingual = {
         "Thus, we are changing less letters in total. " +
         "Note that the Learnability score is high because of the changed position of ';', " +
         "but as a second-tier punctuation character this is much easier to get used to. ",
+    // this is not expressible using the Thumb28 format, because it leaves Y on the "non-Harmonic" center column position.
+    // we would need to introduce a Thumb30 format (9/12/9 rows) which is just the maximum fitting into the three core
+    // rows of the smallest (Harmonic 12/wide) keyboard layout.
     mappingAnsi: [
         "⇤⇥",
         "qwbf=" + "ykuop-\\",
@@ -320,7 +351,7 @@ export const gemuetlichesMapping = {
          although the symmetric position on the right has always been a character key in ANSI, even a letter in German.
          TODO: align those layouts with modifications made on Thumby. In particular the Q overspill to the home row.
      */
-    mappingHarmonic13c: [
+    mappingHarmonic13wide: [
         "´ß",
         "qwbf" + "öü" + "kuop",
         "zasdrg" + "'" + "hniltä",
@@ -349,8 +380,11 @@ export const allMappings: FlexMapping[] = [
     quipperMapping,
     // cozyMapping,
     // cozyPlusMapping,
+    thumbyZero,
+    thumbyNero,
     thumbyMin,
-    thumbyPlus,
+    thumbyNine,
+    thumby9ku,
     thumbyBilingual,
     gemuetlichesMapping,
 ]
