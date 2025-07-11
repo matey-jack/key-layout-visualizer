@@ -82,10 +82,11 @@ export function MappingSummary({mapping, layout}: MappingSummaryProps) {
         : mapping.mappingThumb30 ? "derived from the generic 30-key with thumb mapping"
             : "derived from the generic 30-key without thumb mapping";
     const src = mapping.sourceUrl;
+    const srcTitle= mapping.sourceLinkTitle ?? src;
     return <div className="mapping-summary">
         <p>The <b>{mapping.name}</b> key mapping for the <b>{layout.name}</b> layout is {mappingType}.</p>
         {mapping.description && <TruncatedText text={mapping.description}/>}
-        {src && <p>Source: <a href={src}>{src}</a></p>}
+        {src && <p>Source: <a href={src}>{srcTitle}</a></p>}
     </div>
 }
 

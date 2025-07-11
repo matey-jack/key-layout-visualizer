@@ -40,6 +40,7 @@ export interface FlexMapping {
     name: string;
     description?: string;
     sourceUrl?: string;
+    sourceLinkTitle?: string;
 
     /*
         Key mappings can be defined generically or layout-specific or both.

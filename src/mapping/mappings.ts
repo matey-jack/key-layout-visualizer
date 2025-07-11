@@ -51,6 +51,7 @@ export const normanMapping = {
 export const minimak4Mapping = {
     name: "Minimak 4-key",
     sourceUrl: "https://github.com/binaryphile/www.minimak.org/blob/master/media/minimak_4_key.png",
+    sourceLinkTitle: "GitHub: binaryphile/www.minimak.org",
     description: "Minimak partitions its key remapping in three steps, so that you can learn the layout incrementally. " +
         "Thanks to the many same-finger changes this trick actually works with all of the layouts in this app, " +
         "but Minimak get credit for making it explicit.",
@@ -62,9 +63,9 @@ export const minimak4Mapping = {
 }
 
 export const minimak8Mapping = {
+    ...minimak4Mapping,
     name: "Minimak 8-key",
     sourceUrl: "https://github.com/binaryphile/www.minimak.org/blob/master/media/minimak_8_key.png",
-    description: minimak4Mapping.description,
     mapping30: [
         "qwdrk" + "yuilp",
         "astfg" + "hneo;",
@@ -73,9 +74,9 @@ export const minimak8Mapping = {
 }
 
 export const minimakFullMapping = {
+    ...minimak4Mapping,
     name: "Minimak Full (12-key)",
     sourceUrl: "https://github.com/binaryphile/www.minimak.org/blob/master/media/minimak.png",
-    description: minimak4Mapping.description,
     mapping30: [
         "qwdfk" + "yuil;",
         "astrg" + "hneop",
@@ -176,7 +177,6 @@ export const thumbyMin = {
         "which already includes the traditional position of the apostrophe. " +
         "Since ,.' are more frequently typed (in average English) than some letters, the only way to place all those" +
         "26 letters plus 3 punctuation keys on neighbor-of-home keys is to also use a thumb key.",
-    sourceUrl: "https://en.wikipedia.org/wiki/QWERTY",
     // Writing upper and lower row as three strings emphasizes the center columns of the Harmonic and ANSI keyboards.
     // On Ortho and Harmonic Narrow, it will just be 5 + 5 on each side.
     mappingThumb30: [
@@ -313,14 +313,12 @@ export const thumbyBilingual = {
     we'd only need one exclusive AltGr key. (A secondary AltGr could be tap/hold on `+` which is rare enough not to lead to
     confusion. Similarly, a secondary tap/hold Fn on the Esc key. This would be so much better than my overloadings of `öy-`
     on the Iris at the moment.)
-
-    With the recent experience, I can imagine a "plus" version of this, which also improves G and H positions by swapping
-    with (new) B and K. Since the latter are changing anyway, the learning is only half as much.
  */
 export const gemuetlichesMapping = {
     name: "Die Gemütliche Tastatur",
     description: "This is basically Thumby Min, but applied to the German Qwertz mapping as a base. ",
     sourceUrl: "https://github.com/matey-jack/gemuetliche-tastatur",
+    sourceLinkTitle: "GitHub: matey-jack/gemuetliche-tastatur",
 
     // I actually used this layout on an ISO keyboard, so the right pinky keys are a bit different!
     mappingAnsi: [
