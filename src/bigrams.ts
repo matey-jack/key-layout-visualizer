@@ -14,25 +14,38 @@ import {sum} from "./library/math.ts";
 import {getKeyPositions, getKeyPositionsByLabel} from "./layout/layout-functions.ts";
 
 export function getBigramType(a: KeyPosition, b: KeyPosition): BigramType {
-    if (isThumb(a.finger) || isThumb(b.finger)) return BigramType.InvolvesThumb;
-    if (hand(a.finger) != hand(b.finger)) return BigramType.OtherHand;
-    if (a.finger == b.finger) {
-        if (a.hasAltFinger || b.hasAltFinger) return BigramType.AltFinger
-        else return BigramType.SameFinger;
-    }
-    if (Math.abs(a.col - b.col) > 4) return BigramType.OppositeLateral;
+    try {
+        if (isThumb(a.finger) || isThumb(b.finger)) return BigramType.InvolvesThumb;
+        if (hand(a.finger) != hand(b.finger)) return BigramType.OtherHand;
+        if (a.finger == b.finger) {
+            if (a.hasAltFinger || b.hasAltFinger) return BigramType.AltFinger
+            else return BigramType.SameFinger;
+        }
+        if (Math.abs(a.col - b.col) > 4) return BigramType.OppositeLateral;
 
-    if (a.row == b.row) return BigramType.SameRow;
-    if (Math.abs(a.row - b.row) == 1) return BigramType.NeighboringRow;
-    return BigramType.OppositeRow;
+        if (a.row == b.row) return BigramType.SameRow;
+        if (Math.abs(a.row - b.row) == 1) return BigramType.NeighboringRow;
+        return BigramType.OppositeRow;
+    } catch (e) {
+        console.log(`Error in getBigramType: ${e}. a: ${a}, b: ${b}`);
+        throw e;
+    }
 }
 
 export const bigramRankSize = 40;
 
-export function getBigramMovements(positionsList: KeyPosition[]): BigramMovement[] {
+export function getBigramMovements(positionsList: KeyPosition[], logContext: string): BigramMovement[] {
     const list = bigrams.data as BigramList;
     const positions = getKeyPositionsByLabel(positionsList);
     return list.map(([[a, b], count], rank) => {
+        if (!positions[a]) {
+            console.log(`character ${a} not mapped for ${logContext}.`);
+            return null;
+        }
+        if (!positions[b]) {
+            console.log(`character ${b} not mapped for ${logContext}.`);
+            return null;
+        }
         const type = getBigramType(positions[a], positions[b]);
         return {
             a: positions[a],
@@ -44,11 +57,14 @@ export function getBigramMovements(positionsList: KeyPosition[]): BigramMovement
             type,
             draw: type != BigramType.OtherHand && type != BigramType.InvolvesThumb,
         }
-    })
+    }).filter((m) => !!m);
 }
 
 export function bigramFrequencyByType(layout: RowBasedLayoutModel, mapping: FlexMapping): Record<BigramType, number> {
-    const movements = getBigramMovements(getKeyPositions(layout, false, mapping));
+    const movements = getBigramMovements(
+        getKeyPositions(layout, false, mapping),
+        `bigramFrequencyByType for ${mapping.name} on ${layout.name}`,
+    );
     const frequencyTotal = sum(movements.map((m) => m.frequency));
     const frequencyByType: Record<number, number> = {};
     movements.forEach((m) => {
@@ -57,13 +73,21 @@ export function bigramFrequencyByType(layout: RowBasedLayoutModel, mapping: Flex
     return frequencyByType;
 }
 
-export function sumBigramScores(layout: RowBasedLayoutModel, mapping: FlexMapping): number {
-    // We don't need to pass a "split" value, because we don't use the colPos values in the result.
-    // And the very important difference between split/bar ortho layout is already included in the model.
-    const movements = getBigramMovements(getKeyPositions(layout, false, mapping));
-    const frequencyTotal = sum(movements.map((m) => m.frequency));
-    const scores = movements.map((m) =>
-        m.frequency * bigramEffort[m.type] * 1000 / frequencyTotal
-    );
-    return Math.round(sum(scores));
+export function sumBigramScores(layout: RowBasedLayoutModel, mapping: FlexMapping): number | undefined {
+    try {
+        // We don't need to pass a "split" value, because we don't use the colPos values in the result.
+        // And the very important difference between split/bar ortho layout is already included in the model.
+        const movements = getBigramMovements(
+            getKeyPositions(layout, false, mapping),
+            `sumBigramScores for ${mapping.name} on ${layout.name}`,
+        );
+        const frequencyTotal = sum(movements.map((m) => m.frequency));
+        const scores = movements.map((m) =>
+            m.frequency * bigramEffort[m.type] * 1000 / frequencyTotal
+        );
+        return Math.round(sum(scores));
+    } catch (e) {
+        console.log(`Error in sumBigramScores: ${e} for mapping ${mapping.name} on layout ${layout.name}`);
+        return undefined;
+    }
 }

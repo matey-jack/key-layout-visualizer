@@ -27,6 +27,22 @@ describe('flex mappings consistency', () => {
             });
         }
 
+        const mappingThumb30 = mapping.mappingThumb30;
+        if (mappingThumb30) {
+            it(mapping.name + " – array shape", () => {
+                expect(mappingThumb30.length, "number of rows").toBe(4);
+                [10, 10, 9, 1].forEach((expected, row) => {
+                    expect(mappingThumb30[row].length).toBe(expected);
+                });
+            });
+
+            it(mapping.name + " – character completeness", () => {
+                const allChars = mappingThumb30.join().split('').sort();
+                expect(allChars).to.include.members("abcdefghijklmnopqrstuvwxyz".split(''));
+                expect(allChars).to.include.members(",.;-".split(''));
+            });
+        }
+
         Object.values(allLayoutModels).forEach((layoutModel) => {
             const specificMapping = layoutModel.getSpecificMapping(mapping);
             if (specificMapping) {

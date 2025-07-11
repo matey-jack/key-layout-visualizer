@@ -111,5 +111,5 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
         [NaN, NaN, 2, NaN, 0.2, 0.2, 0.2, 0.2, NaN, 2, NaN, NaN],
     ])(orthoLayoutModel.singleKeyEffort),
 
-    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingSplitOrtho,
+    getSpecificMapping: (_: FlexMapping) => undefined,
 }

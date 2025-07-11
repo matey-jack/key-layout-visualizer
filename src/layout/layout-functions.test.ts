@@ -1,8 +1,8 @@
 import {describe, expect, it} from 'vitest';
 
 import {Finger, Hand, hand, KeyboardRows, MappingChange} from "../base-model.ts";
-import {characterToFinger, diffSummary, diffToQwerty, fillMapping,} from "./layout-functions.ts";
-import {normanMapping, qwertyMapping} from "../mapping/mappings.ts"
+import {characterToFinger, diffSummary, diffToQwerty, fillMapping, mergeMapping,} from "./layout-functions.ts";
+import {normanMapping, qwertyMapping, thumbyNine} from "../mapping/mappings.ts"
 import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
@@ -10,8 +10,26 @@ import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts"
 import {harmonic14LayoutModel} from "./harmonic14LayoutModel.ts";
 import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 
+export const allLayoutModels = [
+    ansiLayoutModel,
+    harmonic14LayoutModel,
+    harmonic13WideLayoutModel,
+    harmonic13MidShiftLayoutModel,
+    harmonic12LayoutModel,
+    orthoLayoutModel,
+    splitOrthoLayoutModel
+];
+
+function hasLettersNumbersAndProsePunctuation(filledMapping: string[][]) {
+    const allChars = filledMapping.flat().filter((entry) => entry.length == 1)
+    expect(allChars).to.include.members("abcdefghijklmnopqrstuvwxyz".split(''));
+    expect(allChars).to.include.members("0123456789".split(''));
+    expect(allChars).to.include.members(",.;-/'".split(''));
+    // \[]` are not mapped on all layouts
+}
+
 describe('fillMapping', () => {
-    it('Harmonic 13c layout 30-key qwerty', () => {
+    it('Harmonic 13 wide layout 30-key qwerty exact test', () => {
         const actual = fillMapping(harmonic13WideLayoutModel, qwertyMapping);
         expect(actual[0]).toStrictEqual(["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="]);
         expect(actual[1]).toStrictEqual(["↹", "w", "e", "r", "t", "`", "y", "u", "i", "o", "p", "⌫",]);
@@ -19,21 +37,34 @@ describe('fillMapping', () => {
         expect(actual[3]).toStrictEqual(["⇧", "z", "x", "c", "v", "b", "/", "n", "m", ",", ".", "⇧",]);
         expect(actual[4]).toStrictEqual(["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl",]);
     });
+
+    allLayoutModels.forEach((model) => {
+        if (model.thirtyKeyMapping) {
+            it(`${model.name} 30-key frame maps all important characters`, () => {
+                hasLettersNumbersAndProsePunctuation(mergeMapping(model.thirtyKeyMapping, ["", ...qwertyMapping.mapping30!!]));
+            });
+        }
+        if (model.thumb30KeyMapping) {
+            it(`${model.name} Thumb30 frame maps all important characters`, () => {
+                hasLettersNumbersAndProsePunctuation(mergeMapping(model.thumb30KeyMapping!!, ["", ...thumbyNine.mappingThumb30!!]));
+            });
+        }
+    });
+
+    it(`ANSI full layout maps all important characters`, () => {
+        hasLettersNumbersAndProsePunctuation(mergeMapping(ansiLayoutModel.fullMapping, thumbyNine.mappingAnsi));
+    });
+
+    // this is currently not used in the app, but let's keep it working
+    it(`Split Ortho full layout maps all important characters`, () => {
+        hasLettersNumbersAndProsePunctuation(mergeMapping(splitOrthoLayoutModel.fullMapping, thumbyNine.mappingSplitOrtho));
+    });
+
+    // TODO: fullMappings for Harmonic need clean up first
 });
 
-// TODO: remove names and make it an array, they are already in the model.
-export const allLayoutModels = {
-    'ANSI': ansiLayoutModel,
-    'Harmonic 14T': harmonic14LayoutModel,
-    'Harmonic 13/3': harmonic13WideLayoutModel,
-    'Harmonic 13MS': harmonic13MidShiftLayoutModel,
-    'Harmonic 12': harmonic12LayoutModel,
-    'Ortho': orthoLayoutModel,
-    'Split Ortho': splitOrthoLayoutModel,
-};
-
 describe('finger assignment consistency', () => {
-    Object.entries(allLayoutModels).forEach(([_, model]) => {
+    allLayoutModels.forEach((model) => {
         it(model.name, () => {
             model.fullMapping!!.forEach((mappingRow, r) => {
                 expect(mappingRow.length, `${model.name} ${KeyboardRows[r]}Row`).toBe(model.mainFingerAssignment[r].length)
@@ -43,7 +74,7 @@ describe('finger assignment consistency', () => {
 });
 
 describe('key effort consistency', () => {
-    Object.entries(allLayoutModels).forEach(([_, model]) => {
+    allLayoutModels.forEach((model) => {
         it(model.name, () => {
             model.fullMapping!!.forEach((mappingRow, r) => {
                 expect(model.singleKeyEffort[r].length, `${model.name} ${KeyboardRows[r]}Row`).toBe(mappingRow.length)

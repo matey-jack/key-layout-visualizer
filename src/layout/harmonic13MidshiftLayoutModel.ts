@@ -31,8 +31,8 @@ export const harmonic13MidShiftLayoutModel: RowBasedLayoutModel = {
         ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
         ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "="],
         ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-        ["⇤", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "⇥"],
-        ["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl"],
+        ["⇤", 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, "/", "⇥"],
+        ["Ctrl", "Cmd", "Alt", "`", "⍽", "⏎", 0, "AltGr", "Fn", "Ctrl"],
     ],
     fullMapping,
 
@@ -42,22 +42,22 @@ export const harmonic13MidShiftLayoutModel: RowBasedLayoutModel = {
         // outer edge keys
         if ((row == KeyboardRows.Number || row == KeyboardRows.Home || row == KeyboardRows.Bottom) &&
             (col == 0 || col == fullMapping[row].length - 1)) return 1.5;
-        // space and enter and neigboring keys
+        // space and enter and neighboring keys
         if (row == KeyboardRows.Bottom && ([3, 4, 5, 6].includes(col))) return 1.5;
         // all others
         return 1;
     },
 
-    splitColumns: [6, 7, 6, 6, 5],
+    splitColumns: [6, 6, 6, 7, 5],
 
     leftHomeIndex: 4,
     rightHomeIndex: 7,
 
     mainFingerAssignment: [
         [1, 1, 2, 2, 3, 3, 6, 6, 7, 7, 8, 8],
-        [1, 0, 0, 1, 2, 3, 3, 6, 7, 8, 9, 9, 8],
+        [1, 0, 0, 1, 2, 3, 6, 6, 7, 8, 9, 9, 8],
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
-        [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
+        [0, 0, 1, 2, 3, 3, 3, 6, 6, 7, 8, 9, 9],
         [0, 1, 2, 4, 4, 5, 5, 7, 8, 9],
     ],
 

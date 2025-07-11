@@ -140,7 +140,7 @@ export const thumbyZero = {
     description: "Simply puts E on the best key of the board and rescues B from the worst key of the board. ",
     mappingThumb30: [
         "qwbrt" + "y" + "uiop",
-        "asdfg" + "hjkl;'",
+        "asdfg" + "hjkl;",
         "zxcv" + "-" + "nm,.",
         "e",
     ],
@@ -177,6 +177,8 @@ export const thumbyMin = {
         "Since ,.' are more frequently typed (in average English) than some letters, the only way to place all those" +
         "26 letters plus 3 punctuation keys on neighbor-of-home keys is to also use a thumb key.",
     sourceUrl: "https://en.wikipedia.org/wiki/QWERTY",
+    // Writing upper and lower row as three strings emphasizes the center columns of the Harmonic and ANSI keyboards.
+    // On Ortho and Harmonic Narrow, it will just be 5 + 5 on each side.
     mappingThumb30: [
         "qwbrt" + "y" + "uiop",
         "asdfg" + "-nklh",
@@ -219,6 +221,7 @@ export const thumbyNine = {
         "e⌥",
     ],
     ansiMovedColumns: [4, 5, 5, 4],
+
     // this additionally swaps JY; because the Harmonic qwerty Y position is further away from the index finger's home.
     mappingHarmonic13wide: [
         "[]",
@@ -248,10 +251,10 @@ export const thumby9ku = {
     description: "Adding the K-U swap to Thumby Nine not only makes the relatively frequent U easier to type, " +
         "but also removes the same-finger conflict of the UN bigram. ",
     // Note that the full mappings below might not be consistent with this. We'll deal with that later.
-    mappingThumb28: [
-        "qwdfb" + "kulp'",
+    mappingThumb30: [
+        "qwdfb" + "-kulp",
         "asrtg" + "ynioh",
-        "zxcv" + "jm,.",
+        "zxcv;" + "jm,.",
         "e",
     ],
 
@@ -293,15 +296,11 @@ export const thumbyBilingual = {
         "Thus, we are changing less letters in total. " +
         "Note that the Learnability score is high because of the changed position of ';', " +
         "but as a second-tier punctuation character this is much easier to get used to. ",
-    // this is not expressible using the Thumb28 format, because it leaves Y on the "non-Harmonic" center column position.
-    // we would need to introduce a Thumb30 format (9/12/9 rows) which is just the maximum fitting into the three core
-    // rows of the smallest (Harmonic 12/wide) keyboard layout.
-    mappingAnsi: [
-        "⇤⇥",
-        "qwbf=" + "ykuop-\\",
-        "asdrg" + "hnilt'",
-        "zxcv" + ";" + "jm,./",
-        "e⌥",
+    mappingThumb30: [
+        "qwbf-" + "ykuop",
+        "asdrg" + "hnilt",
+        "zxcv;" + "jm,.",
+        "e",
     ]
 }
 
