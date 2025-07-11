@@ -148,7 +148,7 @@ export interface RowBasedLayoutModel {
     keyWidth: (row: KeyboardRows, col: number) => number;
 
     // How many columns are to the left of the split line for each row?
-    // (Space bar splits just at the column of the row above.)
+    // (We could actually automatically derive this from the finger assignment...)
     splitColumns: number[];
 
     // Column number counted from 0.
