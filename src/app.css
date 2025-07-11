@@ -137,6 +137,10 @@ body {
     font-size: 21px;
 }
 
+.frequency-circle {
+    fill: #f3eaac;
+}
+
 .bigram-line {
     /* Make all ranks not mentioned below be invisible. */
     stroke-width: 0;

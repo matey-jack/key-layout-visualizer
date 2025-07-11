@@ -59,8 +59,10 @@ export function getVizDetails(vizType: VisualizationType, layout: RowBasedLayout
             return <DiffDetails diff={diffToQwerty(layout, mapping)}/>;
         case VisualizationType.MappingFrequeny:
             return <p>
-                TODO: this should show how often each letter occurs in the average of all English texts.
-                This frequency is used to calculate the single-key Typing Effort Score.
+                The area of each shown circle is proportional to how often each letter occurs in the average of all
+                English texts. This frequency is used to calculate the single-key Typing Effort Score. Switch between
+                this and the Single-Key Effort vizualization to see if the most frequent letters are on the easiest
+                keys.
             </p>;
         case VisualizationType.MappingBigrams:
             return <BigramEffortDetails layout={layout} mapping={mapping}/>;

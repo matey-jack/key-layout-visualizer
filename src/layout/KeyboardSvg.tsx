@@ -10,6 +10,7 @@ import {
     VisualizationType
 } from "../base-model.ts";
 import {ComponentChildren} from "preact";
+import {singleCharacterFrequencies} from "../frequencies/english-single-character-frequencies.ts";
 
 interface KeyboardSvgProps {
     children?: ComponentChildren;
@@ -43,6 +44,8 @@ interface KeyProps {
     // Otherwise, the <rect> will be the same, only the class will be the provided one.
     ribbonClass?: string;
     //diff?: MappingChange;
+
+    frequencyCircleRadius?: number;
 }
 
 const keyUnit = 100;
@@ -50,7 +53,7 @@ const keyPadding = 5;
 const keyRibbonPaddingH = 17;
 const keyRibbonPaddingV = 1;
 
-export function Key({col, ribbonClass, backgroundClass, label, row, width}: KeyProps) {
+export function Key({col, ribbonClass, backgroundClass, label, row, width, frequencyCircleRadius}: KeyProps) {
     const x = col * keyUnit + keyPadding;
     const y = row * keyUnit + keyPadding;
     const labelClass =
@@ -78,6 +81,8 @@ export function Key({col, ribbonClass, backgroundClass, label, row, width}: KeyP
               width={keyUnit * width - 2 * (keyPadding + keyRibbonPaddingV)}
               height={keyUnit - 2 * (keyPadding + keyRibbonPaddingH)}
         />
+    const frequencyCircle = frequencyCircleRadius &&
+        <circle cx={x + 70} cy={y + 30} r={frequencyCircleRadius} className="frequency-circle" />;
     return <g>
         <rect
             className={"key-outline " + bgClass}
@@ -86,7 +91,7 @@ export function Key({col, ribbonClass, backgroundClass, label, row, width}: KeyP
             width={keyUnit * width - 2 * keyPadding}
             height={keyUnit - 2 * keyPadding}
         />
-        {keyRibbon}
+        {keyRibbon || frequencyCircle}
         {text}
     </g>
 }
@@ -143,6 +148,11 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
         const ribbonClass = vizType == VisualizationType.MappingDiff && lettersAndVIP.test(label)
             ? ribbonClassByDiff[mappingDiff[label]]
             : undefined;
+        let frequencyCircleRadius = undefined;
+        if (vizType == VisualizationType.MappingFrequeny){
+            const freq = Math.sqrt(singleCharacterFrequencies[label.toUpperCase()] / singleCharacterFrequencies['E']);
+            frequencyCircleRadius = freq * keyUnit / 2;
+        }
         return <Key
             label={label}
             backgroundClass={bgClass}
@@ -150,6 +160,7 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
             row={row}
             col={colPos}
             width={width}
+            frequencyCircleRadius={frequencyCircleRadius}
             key={row + ',' + col}
         />
     })
