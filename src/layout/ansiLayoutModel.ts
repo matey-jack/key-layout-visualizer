@@ -27,7 +27,15 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "[", "]", "\\"],
         ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⏎"],
         ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-        ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Fn", "Menu", "Ctrl"],
+        ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
+    ],
+
+    thumb30KeyMapping: [
+        ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "⌫"],
+        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "[", "]", "\\"],
+        ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, '/', "⇧"],
+        ["Ctrl", "Cmd", "Alt", "⍽", 0, "AltGr", "Fn", "Ctrl"],
     ],
 
     // arbitrary decision to include one thumb key in the mapping.
@@ -39,7 +47,7 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ""],
         ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"],
         ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-        ["Ctrl", "Cmd", "Alt", "⍽", 0, 1, "Menu", "Ctrl"],
+        ["Ctrl", "Cmd", "Alt", "⍽", 0, 1, "Fn", "Ctrl"],
     ],
 
     mainFingerAssignment: [

@@ -2,7 +2,7 @@ import {AppState} from "../app-model.ts";
 import {FlexMapping, MappingChange, RowBasedLayoutModel} from "../base-model.ts";
 import {Signal} from "@preact/signals";
 import {allMappings} from "./mappings.ts";
-import {compatibilityScore, diffSummary, diffToQwerty} from "../layout/layout-functions.ts";
+import {compatibilityScore, diffSummary, diffToQwerty, hasMatchingMapping} from "../layout/layout-functions.ts";
 import {weighSingleKeyEffort} from "./mapping-functions.ts";
 import {sumBigramScores} from "../bigrams.ts";
 
@@ -13,8 +13,8 @@ export interface MappingListProps {
 export function MappingList({appState}: MappingListProps) {
     const layoutModel = appState.layoutModel.value;
     const applicableMappings = allMappings.filter((m) =>
-        Boolean(layoutModel.getSpecificMapping(m) || m.mapping30)
-    )
+        hasMatchingMapping(layoutModel, m)
+    );
     return <table class="mapping-list">
         <thead>
         <tr class="mapping-list-header">

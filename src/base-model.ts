@@ -51,26 +51,32 @@ export interface FlexMapping {
     // It leaves some great improvements untapped, but transfers more easily between different keyboard layouts.
     // (Which is an ironic prevision of fate, since ortho keyboards only became really popular after many
     // of the classical layouts were invented...)
-    // This mapping should include 26 letters plus the punctuation characters `,./;`.
+    // This mapping should include 26 letters plus the punctuation characters `;,./`.
     mapping30?: string[];
+    /* ^^^
+    The fact that traditional keyboard mappings just swap things around those thirty positions is also some legacy not
+    based on science. On the ANSI/Qwerty layout keys `'` and even `[` are easier to reach than `B` and just as easy as
+    YJV, but still traditional mappings don't use them.
+    Also, character-wise, the hyphen is used in English as much or more as semi-colon and slash (depending on personal
+    style maybe). In any case, the hyphen has more reason to be part of the "core keys" than [] and \. (I wonder how `\`
+    even made it onto the keyboard in the first place. I know that it is used in programming language, but that's presumably
+    because programming languages just the characters that were available. (See $ for variable expansion or § as used in Perl.)
+     */
 
-    // Keys per row: 10, 10, 8 plus one thumb key.
-    // The Harmonic "wide" (hand position) variants wrap the outer keys of the upper row to the home row
-    // thus make this 8, 12, 8 plus one thumb key. (In both cases the keys are operated by the pinky.
-    // Many Ortho mappings already do the same in reverse with the apostrophe key!)
-    // Includes 26 letters plus the punctuation characters `,.'`. Other punctuation is placed by the Layout-specific mapping.
-    // Note that the Qwerty positions of B and Y and / don't exist in this scheme. Usually B will be remapped
-    // using the spot freed by the thumb key (usually E, same hand as B), and Y will be remapped using the spot of `;`,
-    // also same hand. (Remappings can be ring swaps. Hand change is of course possible, but no hand change makes it
-    // easier to learn!)
-    mappingThumb28?: string[];
+    // Keys per row: 10, 10, 9 plus one thumb key.
+    // Includes 26 letters plus the punctuation characters `;,.-`.
+    // Other punctuation is placed by the Layout-specific mapping.
+    // For rationale see //thumb30-mapping-format.md
+    mappingThumb30?: string[];
 
     // for correct dimensions, see the layout model files
+    // maybe all of those should be removed to avoid all the duplication?
+    // we could instead have some variants of the frame layouts which map all the keys not in the flex mapping.
     mappingAnsi?: string[];
-    mappingHarmonic14?: string[];
-    mappingHarmonic13c?: string[];
-    mappingHarmonic13MS?: string[];
-    mappingSplitOrtho?: string[];
+    mappingHarmonic13wide?: string[];
+    // mappingHarmonic14?: string[];
+    // mappingHarmonic13MS?: string[];
+    // mappingSplitOrtho?: string[];
 
     // for customizing the ANSI wide Layout
     ansiMovedColumns?: number[];
@@ -149,10 +155,16 @@ export interface RowBasedLayoutModel {
     leftHomeIndex: number;
     rightHomeIndex: number;
 
-    // this one is standardized to take a flex Mapping of exactly 3 by 10 keys
+    // to be filled by FlexMapping.mapping30
     thirtyKeyMapping: LayoutMapping;
 
-    // this one takes a flex mapping depending on the layout
+    // to be filled by FlexMapping.mappingThumb30
+    // As a guideline `-` should be mapped closer to the top and right hand, so it's closer to its old position and also
+    // the `=+` key. (The latter being important for tapping Ctrl with + and - to zoom in and out.
+    // Ctrl held with one hand, + and - tapped with the other.)
+    thumb30KeyMapping?: LayoutMapping;
+
+    // to be filled by whatever getSpecificMapping() selects
     fullMapping: LayoutMapping;
 
     // finger assignment and key effort arrays have the same shape (number of entries in each row) as the LayoutMappings.

@@ -24,6 +24,13 @@ export const harmonic12LayoutModel: RowBasedLayoutModel = {
         ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧"], // 11
         ["Ctrl", "Cmd", "Alt", "=", "⍽", "⏎", [-1, 9], "AltGr", "Fn", "Ctrl"], // 10, with small control
     ],
+    thumb30KeyMapping: [
+        ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "="], // 12
+        ["↹", 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"], // 11
+        [[-1, 0], 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"], // 12
+        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧"], // 11
+        ["Ctrl", "Cmd", "Alt", "/", "⍽", "⏎", 0, "AltGr", "Fn", "Ctrl"], // 10, with small control
+    ],
     fullMapping,
 
     rowStart: (row: number) => (row == KeyboardRows.Bottom) ? 0.5 : 0,
@@ -48,7 +55,7 @@ export const harmonic12LayoutModel: RowBasedLayoutModel = {
         [1, 1, 2, 2, 3, 3, 6, 6, 7, 7, 8, 8],
         [0, 0, 1, 2, 3, 3, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
-        [0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
+        [0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9],
         [0, 1, 2, 4, 4, 5, 5, 7, 8, 9],
     ],
 
@@ -65,5 +72,6 @@ export const harmonic12LayoutModel: RowBasedLayoutModel = {
         [NaN, NaN, NaN, 1.0, 0.2, 0.2, 1.0, NaN, NaN, NaN],
     ],
 
-    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingHarmonic13MS,
+    // rely on Thumb30 only
+    getSpecificMapping: (_: FlexMapping) => undefined,
 }

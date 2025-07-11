@@ -8,7 +8,7 @@ const fullMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Alt", 0, "⍽", "⏎", 1, "AltGr", "Fn", "Ctrl"], // 10 keys
 ];
 
-export const harmonic13cLayoutModel: RowBasedLayoutModel = {
+export const harmonic13WideLayoutModel: RowBasedLayoutModel = {
     name: "Harmonic 13/3",
     description: "The Harmonic keyboard layout has a fully symmetric keyboard with only two key sizes to allow for flexible changes to the key mapping. " +
         "Its regular row stagger allows for many keys to be comfortably typed by two fingers, " +
@@ -29,6 +29,13 @@ export const harmonic13cLayoutModel: RowBasedLayoutModel = {
         // But below, Shift is still there.
         ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
         ["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl"],
+    ],
+    thumb30KeyMapping: [
+        ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "[", "]"],
+        ["↹", 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "⌫"],
+        [[-1, 0], 0, 1, 2, 3, 4, "`", 5, 6, 7, 8, 9, "'"],
+        ["⇧", 0, 1, 2, 3, 4, "/", 5, 6, 7, 8, "⇧"],
+        ["Ctrl", "Cmd", "Alt", "\\", "⍽", "⏎", 0, "AltGr", "Fn", "Ctrl"],
     ],
     fullMapping,
 
@@ -71,7 +78,7 @@ export const harmonic13cLayoutModel: RowBasedLayoutModel = {
         [NaN, NaN, NaN, 1.0, 0.2, 1.0, 0.2, NaN, NaN, NaN],
     ],
 
-    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingHarmonic13c,
+    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingHarmonic13wide,
 }
 
 // NOT USED IN APP YET
@@ -79,7 +86,7 @@ export const harmonic13cLayoutModel: RowBasedLayoutModel = {
 // (`-` here is neighbor of a home-row key. Very fitting for the third most popular punctuation character!)
 // Remember that the four punctuation keys `,.;/` are part of the flexMapping set.
 export const harmonicLayoutModelWithNavKeys = {
-    ...harmonic13cLayoutModel,
+    ...harmonic13WideLayoutModel,
     mapping30keys: [
         ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⇤", "⇥"],
         ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"],

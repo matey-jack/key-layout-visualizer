@@ -4,7 +4,7 @@ import {Finger, Hand, hand, KeyboardRows, MappingChange} from "../base-model.ts"
 import {characterToFinger, diffSummary, diffToQwerty, fillMapping,} from "./layout-functions.ts";
 import {normanMapping, qwertyMapping} from "../mapping/mappings.ts"
 import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
-import {harmonic13cLayoutModel} from "./harmonic13cLayoutModel.ts";
+import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
 import {harmonic14LayoutModel} from "./harmonic14LayoutModel.ts";
@@ -12,7 +12,7 @@ import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 
 describe('fillMapping', () => {
     it('Harmonic 13c layout 30-key qwerty', () => {
-        const actual = fillMapping(harmonic13cLayoutModel, qwertyMapping);
+        const actual = fillMapping(harmonic13WideLayoutModel, qwertyMapping);
         expect(actual[0]).toStrictEqual(["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="]);
         expect(actual[1]).toStrictEqual(["↹", "w", "e", "r", "t", "`", "y", "u", "i", "o", "p", "⌫",]);
         expect(actual[2]).toStrictEqual(["q", "a", "s", "d", "f", "g", "\\", "h", "j", "k", "l", ";", "'"]);
@@ -25,7 +25,7 @@ describe('fillMapping', () => {
 export const allLayoutModels = {
     'ANSI': ansiLayoutModel,
     'Harmonic 14T': harmonic14LayoutModel,
-    'Harmonic 13/3': harmonic13cLayoutModel,
+    'Harmonic 13/3': harmonic13WideLayoutModel,
     'Harmonic 13MS': harmonic13MidShiftLayoutModel,
     'Harmonic 12': harmonic12LayoutModel,
     'Ortho': orthoLayoutModel,

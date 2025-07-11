@@ -22,9 +22,16 @@ export const harmonic13MidShiftLayoutModel: RowBasedLayoutModel = {
 
     thirtyKeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "'"],
+        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "="],
         ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-        ["⇤", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "⇥"],
+        ["⇤", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "⇥"],
+        ["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl"],
+    ],
+    thumb30KeyMapping: [
+        ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "="],
+        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+        ["⇤", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "⇥"],
         ["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl"],
     ],
     fullMapping,
@@ -67,5 +74,6 @@ export const harmonic13MidShiftLayoutModel: RowBasedLayoutModel = {
         [NaN, NaN, NaN, 1.0, 0.2, 0.2, 1.0, NaN, NaN, NaN],
     ],
 
-    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingHarmonic13MS,
+    // rely on Thumb30 only
+    getSpecificMapping: (_: FlexMapping) => undefined,
 }
