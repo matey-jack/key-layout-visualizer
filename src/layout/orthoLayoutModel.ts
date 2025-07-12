@@ -53,12 +53,15 @@ export const orthoLayoutModel: RowBasedLayoutModel = {
 
     hasAltFinger: (_r, _c) => false,
 
+    // From my personal experience, there's only one difference to row-staggered keyboards that actually results in a
+    // change of numbers here: it's that pinky moving down straight in the column is indeed easier than moving the pinky
+    // down and slightly to the side.
     singleKeyEffort: [
-        [NaN, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, NaN],
-        [NaN, 1.5, 1, 1, 1.5, 1.5, 1.5, 1.5, 1, 1, 1.5, 2],
-        [NaN, 0.2, 0.2, 0.2, 0.2, 2, 2, 0.2, 0.2, 0.2, 0.2, 1.5],
-        [NaN, 1.5, 1.5, 1.5, 1.5, 2, 2, 1.5, 1.5, 1.5, 1.5, NaN],
-        [NaN, NaN, 2, 1.5, NaN, 0.2, NaN, 1.5, 2, NaN, NaN],
+        [NaN, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, NaN],
+        [NaN, 1.5, 1.0, 1.0, 1.5, 1.5, 1.5, 1.5, 1.0, 1.0, 1.5, 2.0],
+        [NaN, 0.2, 0.2, 0.2, 0.2, 2.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
+        [NaN, 1.0, 1.5, 1.5, 1.0, 2.0, 2.0, 1.5, 1.0, 1.5, 1.0, NaN],
+        [NaN, NaN, 2.0, 1.5, NaN, 0.2, NaN, 1.5, 2.0, NaN, NaN],
     ],
 
     // NOT USED since its different from split and this layout is not recommended anyways.
