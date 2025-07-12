@@ -113,6 +113,8 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
     leftHomeIndex: 4,
     rightHomeIndex: 7,
 
+    staggerOffsets: [-0.75, -0.25, 0, 0.5],
+
     getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsi,
 }
 

@@ -1,7 +1,7 @@
-import {LayoutSplit, LayoutType, VisualizationType} from "../base-model.ts";
+import {LayoutType, VisualizationType} from "../base-model.ts";
 import {AppState, LayoutOptionsState} from "../app-model.ts";
-import {BigramLines, KeyboardSvg, RowBasedKeyboard} from "./KeyboardSvg.tsx";
-import {getKeyPositions, getLayoutModel, hasMatchingMapping} from "./layout-functions.ts";
+import {BigramLines, KeyboardSvg, RowBasedKeyboard, StaggerLines} from "./KeyboardSvg.tsx";
+import {getKeyPositions, getLayoutModel} from "./layout-functions.ts";
 import {ReadonlySignal, Signal} from "@preact/signals";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
@@ -12,8 +12,7 @@ interface LayoutAreaProps {
 }
 
 export function LayoutArea({appState}: LayoutAreaProps) {
-    const split = appState.layoutSplit.value == LayoutSplit.TwoPiece;
-    const keyPositions = getKeyPositions(appState.layoutModel.value, split, appState.mapping.value);
+    const keyPositions = getKeyPositions(appState.layoutModel.value, appState.layoutSplit.value, appState.mapping.value);
 
     return (
         <div>
@@ -29,6 +28,9 @@ export function LayoutArea({appState}: LayoutAreaProps) {
                     mappingDiff={appState.mappingDiff.value}
                     vizType={appState.vizType.value}
                 />
+                {appState.vizType.value == VisualizationType.LayoutAngle &&
+                    <StaggerLines layoutModel={appState.layoutModel.value} layoutSplit={appState.layoutSplit.value} keyPositions={keyPositions}/>
+                }
                 {appState.vizType.value == VisualizationType.MappingBigrams &&
                     <BigramLines bigrams={appState.bigramMovements.value}/>
                 }
@@ -99,16 +101,16 @@ function LayoutOptionsBar({state}: LayoutOptionsBarProps) {
 }
 
 interface GenericLayoutOptionsProps {
-    split: Signal<LayoutSplit>;
+    split: Signal<boolean>;
 }
 
 export function GenericLayoutOptions({split}: GenericLayoutOptionsProps) {
     return <>
         <CheckboxWithLabel
             label="split keyboard"
-            checked={split.value != LayoutSplit.Bar}
+            checked={split.value}
             onChange={(checked) =>
-                split.value = checked ? LayoutSplit.TwoPiece : LayoutSplit.Bar
+                split.value = checked
             }
         />
     </>

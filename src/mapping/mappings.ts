@@ -27,6 +27,7 @@ import {FlexMapping} from "../base-model.ts";
 
 export const qwertyMapping: FlexMapping = {
     name: "Qwerty – US and world-wide standard",
+    techName: "QWERTY",
     description: "This ancient typewriter-born key mapping is so ubiquitous today that many people might never have seen a different mapping in their whole life. " +
         "At the same time it is also extra-ordinary bad for touch-typing, because frequently used letters are not in the center.",
     sourceUrl: "https://en.wikipedia.org/wiki/QWERTY",
@@ -39,6 +40,7 @@ export const qwertyMapping: FlexMapping = {
 
 export const qwertzMapping: FlexMapping = {
     name: "Qwertz – German Standard",
+    techName: "QWERTZ",
     description: "Qwerty, but with z/y swapped and three more letters added instead of extended punctuation.",
     sourceUrl: "https://en.wikipedia.org/wiki/QWERTZ",
     mappingAnsi: [
@@ -85,6 +87,7 @@ export const normanMapping = {
 
 export const minimak4Mapping = {
     name: "Minimak 4-key",
+    techName: "Minimak-4",
     sourceUrl: "https://github.com/binaryphile/www.minimak.org/blob/master/media/minimak_4_key.png",
     sourceLinkTitle: "GitHub: binaryphile/www.minimak.org",
     description: "Minimak partitions its key remapping in three steps, so that you can learn the layout incrementally. " +
@@ -100,6 +103,7 @@ export const minimak4Mapping = {
 export const minimak8Mapping = {
     ...minimak4Mapping,
     name: "Minimak 8-key",
+    techName: "Minimak-8",
     sourceUrl: "https://github.com/binaryphile/www.minimak.org/blob/master/media/minimak_8_key.png",
     mapping30: [
         "qwdrk" + "yuilp",
@@ -111,6 +115,7 @@ export const minimak8Mapping = {
 export const minimakFullMapping = {
     ...minimak4Mapping,
     name: "Minimak Full (12-key)",
+    techName: "Minimak-12",
     sourceUrl: "https://github.com/binaryphile/www.minimak.org/blob/master/media/minimak.png",
     mapping30: [
         "qwdfk" + "yuil;",
@@ -127,6 +132,7 @@ export const minimakFullMapping = {
 // Nobody should waste time with a UN swap! (Especially, since U's position on the upper row is quite befitting for its frequency!)
 export const qwertyFlipTwistMapping = {
     name: "Qwerty Flip/Twist",
+    techName: "Qwerty-FlipTwist",
     sourceUrl: "https://nick-gravgaard.com/qwerty-flip/",
     description: "The genius mapping that anyone can remember after seeing it only one time. " +
         "Absolutely minimal learning; much better typing than Qwerty; and anyone can still use your relabled keyboard, " +
@@ -140,6 +146,7 @@ export const qwertyFlipTwistMapping = {
 
 export const qwertyFlipTwistSpinMapping = {
     name: "Qwerty Flip/Twist/Spin",
+    techName: "Qwerty-FlipTwistSpin",
     sourceUrl: "https://nick-gravgaard.com/qwerty-flip/",
     description: "A nice spin on the Flip/Twist mapping which improves typing a bit more.",
     mapping30: [
@@ -165,6 +172,7 @@ export const etniMapping = {
 
 export const quipperMapping = {
     name: "Quipper aka Qwpr",
+    techName: "Qwpr",
     sourceUrl: "https://sourceforge.net/p/qwpr/wiki/Home/",
     description: "By placing 'e' on the right pinky, this mapping avoids a lot of bigram conflicts, " +
         "since no other letter is on that finger. ",

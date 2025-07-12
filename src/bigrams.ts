@@ -21,6 +21,8 @@ export function getBigramType(a: KeyPosition, b: KeyPosition): BigramType {
             if (a.hasAltFinger || b.hasAltFinger) return BigramType.AltFinger
             else return BigramType.SameFinger;
         }
+        // TODO: our current definition column-difference between keys > 4 does not apply to any bigram,
+        //  because pinkies have no lateral movement to letters and even on wide layouts, there are no letters in the central column.
         if (Math.abs(a.col - b.col) > 4) return BigramType.OppositeLateral;
 
         if (a.row == b.row) return BigramType.SameRow;

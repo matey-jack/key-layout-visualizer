@@ -49,9 +49,14 @@ export function getVizDetails(vizType: VisualizationType, layout: RowBasedLayout
             return <FingeringDetails layout={layout}/>;
         case VisualizationType.LayoutAngle:
             return <p>
-                TODO: show how the Harmonic fits the natural angle of the hands (but only when not split)
-                and Ortho does the same (but only when split)
-                and ANSI is just weird.
+                The <span className="hand-stagger-line">green</span> line represents your hand's angle on the keyboard,
+                assuming that you turn a split keyboard to get
+                just the right straight angle.
+                For the non-split keyboards the angle actually is more vertical for people sitting straight up
+                and more tilted for people like me who spread their elbows on the desk.
+                The <span className="stagger-line">red</span> line shows the keyboad stagger which for ANSI
+                always faces one-way because of the 0.25 step
+                that would be 0.75 if one tried to reach the other way.
             </p>;
         case VisualizationType.LayoutKeyEffort:
             return <SingleKeyEffortDetails layout={layout} mapping={mapping}/>;

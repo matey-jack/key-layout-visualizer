@@ -1,6 +1,6 @@
 import {ReadonlySignal, Signal} from "@preact/signals";
 import {MappingChange, RowBasedLayoutModel, FlexMapping, BigramMovement} from "./base-model.ts";
-import {LayoutSplit, LayoutType, VisualizationType} from "./base-model.ts";
+import {LayoutType, VisualizationType} from "./base-model.ts";
 import {AnsiLayoutOptionsModel} from "./layout/ansiLayoutModel.ts";
 import {OrthoLayoutOptionsModel} from "./layout/orthoLayoutModel.ts";
 
@@ -10,7 +10,7 @@ export interface AppState {
     setLayoutType: (layoutType: LayoutType) => void;
 
     layoutOptions: LayoutOptionsState;
-    layoutSplit: Signal<LayoutSplit>;
+    layoutSplit: Signal<boolean>;
     layoutModel: ReadonlySignal<RowBasedLayoutModel>;
     mapping: Signal<FlexMapping>;
 

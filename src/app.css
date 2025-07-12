@@ -362,3 +362,15 @@ earthy_colors = {
 .rthumb {
     fill: #D8A39D;
 }
+
+.stagger-line {
+    stroke: #e33c3c;
+    stroke-width: 2px;
+    background-color: #ef7272;
+}
+
+.hand-stagger-line {
+    stroke: #a9daa9;
+    stroke-width: 10px;
+    background-color: #a9daa9;
+}
