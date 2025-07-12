@@ -31,7 +31,7 @@ export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: nu
 export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): string[][] {
     const fullFlexMapping = layoutModel.getSpecificMapping(flexMapping)
     if (fullFlexMapping) {
-        return mergeMapping(layoutModel.fullMapping!!, fullFlexMapping);
+        return mergeMapping(layoutModel.fullMapping!!, fullFlexMapping, layoutModel.thirtyKeyMapping);
     }
     if (flexMapping.mappingThumb30 && layoutModel.thumb30KeyMapping) {
         return mergeMapping(layoutModel.thumb30KeyMapping, ["", ...flexMapping.mappingThumb30]);
@@ -47,11 +47,16 @@ export function hasMatchingMapping(layout: RowBasedLayoutModel, flexMapping: Fle
         (flexMapping.mappingThumb30 && layout.thumb30KeyMapping));
 }
 
-export const mergeMapping = (layoutMapping: LayoutMapping, flexMapping: string[]): string[][] =>
+export const mergeMapping = (
+    layoutMapping: LayoutMapping, flexMapping: string[], fallbackMapping?: LayoutMapping
+): string[][] =>
     layoutMapping.map((layoutRow, r) =>
-        layoutRow.map((layoutValue) =>
-            Array.isArray(layoutValue) ? flexMapping[r + layoutValue[0]][layoutValue[1]]
-                : (typeof layoutValue === 'number') ? flexMapping[r][layoutValue] : layoutValue
+        layoutRow.map((layoutValue, c) => {
+                const v = Array.isArray(layoutValue) ? flexMapping[r + layoutValue[0]][layoutValue[1]]
+                    : (typeof layoutValue === 'number') ? flexMapping[r][layoutValue]
+                        : layoutValue;
+                return v ?? (fallbackMapping ? fallbackMapping[r][c] : "");
+            }
         )
     )
 

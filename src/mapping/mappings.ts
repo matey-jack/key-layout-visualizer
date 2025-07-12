@@ -3,12 +3,30 @@
     punctuation keys that on the ANSI/Qwerty layout/mapping fall into the central 3×10 field of the keyboard.
     Such a restricted mapping has the advantage that it maps to different (physical) keyboard layouts that don't have
     equivalents for all the ANSI keys.
+
+    But once we add the Thumb-E and have non-ANSI keyboards with very different key positions for the remaining punctuation
+    characters, we'll often need to provide a full mapping. In particular, this can create a logical positioning of characters
+    inside and outside the core set. (For example / and \ when using the classic 3×10 core, - and = (with +) when using the
+    thumb30 core, or any of the two when we want to put [] in adjacent center columns, where belongs to the flex mapping and
+    the other doesn't.
+
+    Here are some useful Unicode characters that you can use in your mappings:
+    ⌥ – will be spelled out as "AltGr"
+
+    All others will be shown on the keyboard as is:
+    Navigation keys:
+
+    White space and other keyboard specials: ⍽ ↵ ↹ ⎋ ⇧ ⇪ ⌫ ⌦ 🖰
+    Navigation keys: ↑ ↓ ← → ⇤ ⇥ ⇞ ⇟ ↞ ↠ ⇱ ⇲
+
+    Useful Unicode characters: € $ ¢ £ ¥ µ × – ¿ ¡ § % ‰
+
  */
 
 import {FlexMapping} from "../base-model.ts";
 
 export const qwertyMapping: FlexMapping = {
-    name: "Qwerty",
+    name: "Qwerty – US and world-wide standard",
     description: "This ancient typewriter-born key mapping is so ubiquitous today that many people might never have seen a different mapping in their whole life. " +
         "At the same time it is also extra-ordinary bad for touch-typing, because frequently used letters are not in the center.",
     sourceUrl: "https://en.wikipedia.org/wiki/QWERTY",
@@ -19,11 +37,28 @@ export const qwertyMapping: FlexMapping = {
     ]
 }
 
+export const qwertzMapping: FlexMapping = {
+    name: "Qwertz – German Standard",
+    description: "Qwerty, but with z/y swapped and three more letters added instead of extended punctuation.",
+    sourceUrl: "https://en.wikipedia.org/wiki/QWERTZ",
+    mappingAnsi: [
+        "ß´",
+        "qwert" + "zuiopü+#",
+        "asdfg" + "hjklöä",  // there is # on the ISO key here
+        "yxcvb" + "nm,./",   // and <> on the ISO key here
+        "⌥ "
+    ],
+    // TODO: this would be interesting to see on H14T or maybe even H14-Wide, because it can actually make use of all those keys!
+    //       especially the ß!
+}
+
 export const colemakMapping: FlexMapping = {
     name: "Colemak",
     description: "Released in the year 2006, the Colemak layout started a new world-wide interest in better letter mappings. " +
-        "It also pioneered the idea of leaving some crucial-for-shortcuts keys in their place. ",
-    sourceUrl: "https://en.wikipedia.org/wiki/QWERTY",
+        "It also pioneered the idea of leaving some crucial-for-shortcuts keys in their place. " +
+        "Colemak places a strong emphasis on avoiding single-finger bigram conflicts at the cost of many letters changing fingers. " +
+        "TODO: is there a layout which achieves the same, but better, by including E on a thumb key?",
+    sourceUrl: "https://colemak.com/",
     mapping30: [
         "qwfpg" + "jluy;",
         "arstd" + "hneio",
@@ -84,8 +119,12 @@ export const minimakFullMapping = {
     ]
 }
 
-// I omit the plain "flip" version, because I think that the JN swap is essential.
-// Nobody should waste time with a UN swap!
+// I omit the plain "flip" version, because I think that the JN swap is essential to avoid a lot of vertical 
+// bigram conflicts. 
+// (Most typing is on home and upper row, often even both ahead and after the N, for example, double upper-row neigbors
+// mINUte, commUNIty, UNIversal, contINUe, ecONOmic, traINIng. The lateral movement to Qwerty N even moves the hand away from 
+// home row letters, see ONLy, thINK, KNOw, ONLine, ...)
+// Nobody should waste time with a UN swap! (Especially, since U's position on the upper row is quite befitting for its frequency!)
 export const qwertyFlipTwistMapping = {
     name: "Qwerty Flip/Twist",
     sourceUrl: "https://nick-gravgaard.com/qwerty-flip/",
@@ -157,9 +196,9 @@ export const thumbyZero = {
 export const thumbyNero = {
     name: "Thumby Nero",
     description: "This is like Thumby Zero, a minimal dip into Thumby-land, but this time only containing the NJ swap. " +
-        "This makes it possible to try out using just ordinary KLC layouts, nothing wild. " +
-        "I think that this swap is the most effective single change to Qwerty, because it also improves all the bigrams" +
-        "between N and the upper row right hand vowels (UIO). ",
+        "This makes it possible to try out using just ordinary KLC layouts, no other tools or manual registry changes required. " +
+        "I think that this swap is the most effective single change to Qwerty, because it also improves all the bigrams " +
+        "between N and the upper row right hand vowels (UIO) as well as nk/kn. ",
     mapping30: [
         "qwert" + "yuiop",
         "asdfg" + "hnkl;",
@@ -167,24 +206,19 @@ export const thumbyNero = {
     ],
 }
 
-export const thumbyMin = {
-    name: "Thumby Min",
-    description: "This mapping is the smallest change to Qwerty that fits all Harmonic layouts while still being compatible " +
-        "with ANSI-wide mappings and all Ortholiniear and col-staggered keyboards. " +
-        "Querty on ANSI has the Y and B letters positioned more than one key away from the home row. " +
-        "On Ortho layouts this improves to making them diagonal neighbors. " +
-        "On Harmonic layouts, however, there are only 28 keys on the home row plus neighbors, " +
-        "which already includes the traditional position of the apostrophe. " +
-        "Since ,.' are more frequently typed (in average English) than some letters, the only way to place all those" +
-        "26 letters plus 3 punctuation keys on neighbor-of-home keys is to also use a thumb key.",
+export const thumbyEntry = {
+    name: "Thumby Entry (or EN-try!)",
+    description: "Combines Thumby Zero + Nero to fix Qwerty's two biggest flaws. " +
+        "Additionally provides synergy, because the common EN/NE bigrams don't require you to pinch your hand. ",
     // Writing upper and lower row as three strings emphasizes the center columns of the Harmonic and ANSI keyboards.
     // On Ortho and Harmonic Narrow, it will just be 5 + 5 on each side.
     mappingThumb30: [
         "qwbrt" + "y" + "uiop",
-        "asdfg" + "-nklh",
-        "zxcv" + ";" + "jm,.",
+        "asdfg" + "hnkl;",
+        "zxcv" + "-" + "jm,.",
         "e",
     ],
+    // TODO: we should provide this as ANSI full mapping to minimize insignificant differences in punctuation and modifier keys.
 }
 
 export const thumbyNine = {
@@ -253,8 +287,8 @@ export const thumby9ku = {
         "but also removes the same-finger conflict of the UN bigram. ",
     // Note that the full mappings below might not be consistent with this. We'll deal with that later.
     mappingThumb30: [
-        "qwdfb" + "-kulp",
-        "asrtg" + "ynioh",
+        "qwdfb" + "ykulp",
+        "asrtg" + "-nioh",
         "zxcv;" + "jm,.",
         "e",
     ],
@@ -292,15 +326,14 @@ export const thumby9ku = {
 
 export const thumbyBilingual = {
     name: "Thumby Bilingual",
-    description: "Only changes letters that have similar frequency in German and English. " +
-        "In particular, letters D and L have high-enough frequency in German to stay on the home row. " +
-        "Thus, we are changing less letters in total. " +
-        "Note that the Learnability score is high because of the changed position of ';', " +
-        "but as a second-tier punctuation character this is much easier to get used to. ",
+    description: "German and English have very similar letter frequencies. " +
+        "I am writing a lot in both languages, and so I optimized for both. " +
+        "The result is Thumby Nine, but without the OL swap. " +
+        "Since L in German is much more frequenty than O, we can just leave both in the Qwerty position and there by make it easier to learn and switch. ",
     mappingThumb30: [
-        "qwbf-" + "ykuop",
-        "asdrg" + "hnilt",
-        "zxcv;" + "jm,.",
+        "qwdfb" + "y" + "kuop",
+        "asrtg" + "-nilh",
+        "zxcv" + ";" + "jm,.",
         "e",
     ]
 }
@@ -367,6 +400,7 @@ export const gemuetlichesMapping = {
 
 export const allMappings: FlexMapping[] = [
     qwertyMapping,
+    qwertzMapping,
     colemakMapping,
     normanMapping,
     minimak4Mapping,
@@ -376,19 +410,11 @@ export const allMappings: FlexMapping[] = [
     qwertyFlipTwistSpinMapping,
     etniMapping,
     quipperMapping,
-    // cozyMapping,
-    // cozyPlusMapping,
     thumbyZero,
     thumbyNero,
-    thumbyMin,
+    thumbyEntry,
     thumbyNine,
     thumby9ku,
     thumbyBilingual,
     gemuetlichesMapping,
 ]
-
-
-// Colemak changes 17 keys, many without good reason, which is not at all casual.
-// Which is why it's omitted for now.
-// But being so popular, I know it will creep up some day :-D
-
