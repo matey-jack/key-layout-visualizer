@@ -44,7 +44,7 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
     // because it distracts from the lettering changes, especially when show the diff with Qwerty.
     fullMapping: [
         ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, 1, "⌫"],
-        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ""],
+        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"],
         ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
         ["Ctrl", "Cmd", "Alt", "⍽", 0, 1, "Fn", "Ctrl"],
