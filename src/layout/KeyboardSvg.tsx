@@ -3,14 +3,16 @@ import {isHomeKey, lettersAndVIP} from "./layout-functions.ts";
 import {
     BigramMovement,
     BigramType,
-    Finger,
+    Finger, harmonicStaggerOffsets,
+    KeyboardRows,
     KeyPosition,
     MappingChange,
     RowBasedLayoutModel,
     VisualizationType
 } from "../base-model.ts";
-import {ComponentChildren} from "preact";
+import {ComponentChildren, JSX} from "preact";
 import {singleCharacterFrequencies} from "../frequencies/english-single-character-frequencies.ts";
+import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 
 interface KeyboardSvgProps {
     children?: ComponentChildren;
@@ -82,7 +84,7 @@ export function Key({col, ribbonClass, backgroundClass, label, row, width, frequ
               height={keyUnit - 2 * (keyPadding + keyRibbonPaddingH)}
         />
     const frequencyCircle = frequencyCircleRadius &&
-        <circle cx={x + 70} cy={y + 30} r={frequencyCircleRadius} className="frequency-circle" />;
+        <circle cx={x + 70} cy={y + 30} r={frequencyCircleRadius} className="frequency-circle"/>;
     return <g>
         <rect
             className={"key-outline " + bgClass}
@@ -149,7 +151,7 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
             ? ribbonClassByDiff[mappingDiff[label]]
             : undefined;
         let frequencyCircleRadius = undefined;
-        if (vizType == VisualizationType.MappingFrequeny){
+        if (vizType == VisualizationType.MappingFrequeny) {
             const freq = Math.sqrt(singleCharacterFrequencies[label.toUpperCase()] / singleCharacterFrequencies['E']);
             frequencyCircleRadius = freq * keyUnit / 2;
         }
@@ -183,10 +185,79 @@ export interface BigramLinesProps {
 
 export function BigramLines({bigrams}: BigramLinesProps) {
     return bigrams.map((pair) => {
-                const offset = Math.abs(pair.a.col - pair.b.col);
-                return pair.draw && <line
-                    x1={keyUnit * (pair.a.colPos + 0.5)} y1={keyUnit * (pair.a.row + 0.5 - offset / 10)}
-                    x2={keyUnit * (pair.b.colPos + 0.5)} y2={keyUnit * (pair.b.row + 0.5)}
-                    className={`bigram-line bigram-rank-${pair.rank} ` + bigramClassByType[pair.type]}/>
-            });
+        const offset = Math.abs(pair.a.col - pair.b.col);
+        return pair.draw && <line
+            x1={keyUnit * (pair.a.colPos + 0.5)} y1={keyUnit * (pair.a.row + 0.5 - offset / 10)}
+            x2={keyUnit * (pair.b.colPos + 0.5)} y2={keyUnit * (pair.b.row + 0.5)}
+            className={`bigram-line bigram-rank-${pair.rank} ` + bigramClassByType[pair.type]}/>
+    });
+}
+
+export interface StaggerLinesProps {
+    layoutModel: RowBasedLayoutModel;
+    layoutSplit: boolean;
+    keyPositions: KeyPosition[];
+}
+
+export function StaggerLines({layoutModel, layoutSplit, keyPositions}: StaggerLinesProps) {
+    const leftHomePositions = keyPositions.filter((kp) =>
+        kp.row == KeyboardRows.Home && kp.col <= layoutModel.leftHomeIndex && kp.col > layoutModel.leftHomeIndex - 4
+    ).map((kp) => kp.colPos);
+    const rightHomePositions = keyPositions.filter((kp) =>
+        kp.row == KeyboardRows.Home && kp.col >= layoutModel.rightHomeIndex && kp.col < layoutModel.rightHomeIndex + 4
+    ).map((kp) => kp.colPos);
+    const leftHandOffsets = layoutSplit ? [0, 0, 0, 0] : [1.0, 0.5, 0, -0.5];
+    const rightHandOffsets = leftHandOffsets.map((x) => -x);
+    // This uses object identity comparison and only works, because the models actually reference the same array.
+    const rightKeyboardOffsets = layoutModel.staggerOffsets == harmonicStaggerOffsets
+        ? layoutModel.staggerOffsets.map((x) => -x)
+        : layoutModel.staggerOffsets;
+    return <>
+        <OneHandStaggerLines
+            homePositions={leftHomePositions}
+            staggerOffsets={leftHandOffsets}
+            className="hand-stagger-line"
+        />
+        <OneHandStaggerLines
+            homePositions={rightHomePositions}
+            staggerOffsets={rightHandOffsets}
+            className="hand-stagger-line"
+        />
+        <OneHandStaggerLines
+            homePositions={leftHomePositions}
+            staggerOffsets={layoutModel.staggerOffsets}
+            className="stagger-line"
+        />
+        <OneHandStaggerLines
+            homePositions={rightHomePositions}
+            staggerOffsets={rightKeyboardOffsets}
+            className="stagger-line"
+        />
+    </>
+}
+
+export interface OneHandStaggerLinesProps {
+    // Same unit as colPos. The row is always the home row.
+    homePositions: number[];
+    // Three numbers, measure in units of key width (thus 0, 0.25, or 0.5) for the number, upper, and lower row,
+    // all in relation to the homeRow. (Either above or below home row numbers should be negative to keep the direction.
+    // And for the home row it should be 0.)
+    staggerOffsets: number[];
+    className: string;
+}
+
+export function OneHandStaggerLines({homePositions, staggerOffsets, className}: OneHandStaggerLinesProps) {
+    // it's simpler to draw this with separate lines instead of a nice continuous SVG path...
+    const results = [] as JSX.Element[];
+    homePositions.forEach((homePos) => {
+        for (let row = 0; row < staggerOffsets.length - 1; row++) {
+            results.push(<line
+                key={row}
+                x1={keyUnit * (homePos + 0.5 + staggerOffsets[row])} y1={keyUnit * (row + 0.5)}
+                x2={keyUnit * (homePos + 0.5 + staggerOffsets[row + 1])} y2={keyUnit * (row + 1.5)}
+                class={className}
+            />)
+        }
+    })
+    return results;
 }

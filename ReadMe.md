@@ -60,11 +60,17 @@ Anyway, you see it adds up. Shift needs to be close to home.)
 
 ## Related Work
 
+### key mapping visualizers
+
 https://oxey.dev/playground/index.html
  * actually this was my main inspiration. I just wanted to show more visuals and less numbers!
 
-https://cyanophage.github.io/playground.html?layout=vmlcpxfouj-strdy.naei%2Fzkqgwbh%27%3B%2C%5C%5E&lan=english&mode=ergo
+https://cyanophage.github.io/index.html (and the [playground](https://cyanophage.github.io/playground.html?layout=vmlcpxfouj-strdy.naei%2Fzkqgwbh%27%3B%2C%5C%5E&lan=english&mode=ergo).)
+ * On this page, all layouts starting from "maltron" down in the list have one letter on a thumb key. (The data model doesn't allow more.)
 
+### articles about letters on thumb keys
+
+https://precondition.github.io/pressing-e-with-the-thumb
 
 
 # Development

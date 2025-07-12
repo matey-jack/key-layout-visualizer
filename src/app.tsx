@@ -1,12 +1,12 @@
 // @ts-ignore
 import './app.css'
 import './app-model.ts'
-import {FlexMapping, LayoutSplit, LayoutType, VisualizationType} from "./base-model.ts";
+import {FlexMapping, LayoutType, VisualizationType} from "./base-model.ts";
 import {AppState, HarmonicVariant} from "./app-model.ts";
 import {LayoutArea} from "./layout/LayoutArea.tsx";
 import {MappingList} from "./mapping/MappingArea.tsx";
 import {DetailsArea} from "./details/DetailsArea.tsx";
-import {computed, signal, Signal} from "@preact/signals";
+import {computed, effect, signal, Signal} from "@preact/signals";
 import {ComponentChildren} from "preact";
 import {diffToQwerty, getKeyPositions, getLayoutModel, hasMatchingMapping} from "./layout/layout-functions.ts";
 import {qwertyMapping} from "./mapping/mappings.ts";
@@ -27,7 +27,7 @@ function setLayout(layoutType: LayoutType, layoutSignal: Signal<LayoutType>, app
 // let's just have one.
 export function createAppState(): AppState {
     const layoutTypeSignal = signal(LayoutType.ANSI);
-    const layoutSplit = signal(LayoutSplit.Bar);
+    const layoutSplit = signal(false);
     const layoutOptions = {
         ansiLayoutOptions: signal({wide: false}),
         harmonicLayoutOptions: signal({variant: HarmonicVariant.H13_3}),
@@ -44,10 +44,14 @@ export function createAppState(): AppState {
         diffToQwerty(layoutModel.value, mapping.value)
     )
     const bigramMovements = computed(() => {
-        const split = layoutSplit.value == LayoutSplit.TwoPiece;
         return getBigramMovements(
-            getKeyPositions(layoutModel.value, split, mapping.value),
+            getKeyPositions(layoutModel.value, layoutSplit.value, mapping.value),
             `get bigrams for visualization of ${mapping.value.name} on ${layoutModel.value.name}`);
+    })
+    effect(() => {
+        const mappingName = mapping.value.techName || mapping.value.name;
+        const fragment = `#layout=${layoutTypeSignal.value}&mapping=${mappingName}&viz=${vizType.value}`
+        window.history.pushState(null, "", fragment);
     })
     return {
         layoutType: computed(() => layoutTypeSignal.value),

@@ -43,6 +43,8 @@ export const orthoLayoutModel: RowBasedLayoutModel = {
     // Since the board only has 12 columns, the same index as on the ANSI board actually leads to a symmetric hand position <3.
     rightHomeIndex: 7,
 
+    staggerOffsets: [0, 0, 0, 0],
+
     mainFingerAssignment: [
         [1, 1, 1, 2, 2, 3, 6, 7, 7, 8, 8, 8],
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],

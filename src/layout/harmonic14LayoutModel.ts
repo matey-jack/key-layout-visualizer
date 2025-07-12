@@ -1,4 +1,4 @@
-import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {FlexMapping, harmonicStaggerOffsets, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 
 /*
     Harmonic 14 has a total width of 14u and two rows of that width with 3 rows losing one key due to staggering.
@@ -64,6 +64,8 @@ export const harmonic14LayoutModel: RowBasedLayoutModel = {
 
     leftHomeIndex: 4,
     rightHomeIndex: 8,
+
+    staggerOffsets: harmonicStaggerOffsets,
 
     mainFingerAssignment: [
         [1, 1, 2, 2, 3, 3, 3, 6, 6, 7, 7, 8, 8],

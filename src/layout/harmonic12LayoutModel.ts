@@ -1,4 +1,4 @@
-import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {FlexMapping, harmonicStaggerOffsets, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 
 const fullMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0], // 12 keys
@@ -50,6 +50,8 @@ export const harmonic12LayoutModel: RowBasedLayoutModel = {
 
     leftHomeIndex: 4,
     rightHomeIndex: 7,
+
+    staggerOffsets: harmonicStaggerOffsets,
 
     mainFingerAssignment: [
         [1, 1, 2, 2, 3, 3, 6, 6, 7, 7, 8, 8],

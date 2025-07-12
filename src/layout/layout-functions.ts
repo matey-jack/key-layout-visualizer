@@ -5,7 +5,6 @@ import {
     KeyboardRows,
     KeyPosition,
     LayoutMapping,
-    LayoutSplit,
     LayoutType,
     MappingChange,
     RowBasedLayoutModel
@@ -136,9 +135,9 @@ export function compatibilityScore(diffSummy: Record<MappingChange, number>): nu
 export function getLayoutModel(layoutType: LayoutType,
                                layoutOptions: LayoutOptionsState,
                                flexMapping?: FlexMapping,
-                               layoutSplit?: Signal<LayoutSplit>,
+                               layoutSplit?: Signal<boolean>,
 ): RowBasedLayoutModel {
-    const twoPiece = layoutSplit?.value == LayoutSplit.TwoPiece;
+    const twoPiece = layoutSplit?.value;
     switch (layoutType) {
         case LayoutType.ANSI:
             const base = !layoutOptions.ansiLayoutOptions.value.wide ? ansiLayoutModel
@@ -146,7 +145,7 @@ export function getLayoutModel(layoutType: LayoutType,
                     : customAnsiWideLayoutModel(flexMapping.ansiMovedColumns);
             return twoPiece ? splitSpaceBar(base) : base;
         case LayoutType.Ortho:
-            return layoutSplit?.value == LayoutSplit.TwoPiece ? splitOrthoLayoutModel : orthoLayoutModel;
+            return layoutSplit?.value ? splitOrthoLayoutModel : orthoLayoutModel;
         case LayoutType.Harmonic:
             switch (layoutOptions.harmonicLayoutOptions.value.variant) {
                 case HarmonicVariant.H14_Traditional:

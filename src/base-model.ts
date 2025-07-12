@@ -5,13 +5,10 @@ export enum LayoutType {
     ANSI,
     Ortho,
     Harmonic,
-}
-
-export enum LayoutSplit {
-    Bar,
-    Cleave,
-    Flex,
-    TwoPiece,
+    // If we want a separate button for the Harmonic Traditional and keep all other variants under the label "Harmonic Compact",
+    // we need to think about the HarmonicOptions structure. We could have specific and common options for both tabs, such that
+    // the variants are specific to the "Compact". Any future option can be added to either just one of the tabs or
+    // both via the common child object of the HarmonicOptions.
 }
 
 // Enum values need to be fixed as 0..4 because we have literal arrays indexed with this.
@@ -38,6 +35,7 @@ export const isLayoutViz = (t: VisualizationType) =>
 
 export interface FlexMapping {
     name: string;
+    techName?: string;
     description?: string;
     sourceUrl?: string;
     sourceLinkTitle?: string;
@@ -140,6 +138,8 @@ export enum MappingChange {
 
 export type LayoutMapping = (string | number | [number, number])[][];
 
+export const harmonicStaggerOffsets = [1, 0.5, 0, -0.5];
+
 export interface RowBasedLayoutModel {
     name: string;
     description: string;
@@ -155,6 +155,9 @@ export interface RowBasedLayoutModel {
     // Column number counted from 0.
     leftHomeIndex: number;
     rightHomeIndex: number;
+
+    // cumulative values relative to home row
+    staggerOffsets: number[];
 
     // to be filled by FlexMapping.mapping30
     thirtyKeyMapping: LayoutMapping;
@@ -201,8 +204,6 @@ export enum BigramType {
     SameFinger,
     // AltFinger applies when both keys have the same main assigned finger, but one of the keys has an alt-fingering available.
     AltFinger,
-    // TODO: our current definition column-difference between keys > 4 does not apply to any bigram,
-    //  because pinkies have no lateral movement to letters and even on wide layouts, there are no letters in the central column.
     OppositeLateral,
     SameRow,
     NeighboringRow,
