@@ -21,7 +21,8 @@ export const allLayoutModels = [
 ];
 
 function hasLettersNumbersAndProsePunctuation(filledMapping: string[][]) {
-    const allChars = filledMapping.flat().filter((entry) => entry.length == 1)
+    const allChars = filledMapping.flat()
+        .filter((entry) => entry.length == 1)
     expect(allChars).to.include.members("abcdefghijklmnopqrstuvwxyz".split(''));
     expect(allChars).to.include.members("0123456789".split(''));
     expect(allChars).to.include.members(",.;-/'".split(''));

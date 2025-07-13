@@ -15,9 +15,9 @@ const fullMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], // 14 keys
     ["¤", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"], // 13 keys
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"], // 12 keys, due to 2u Shift keys.
-    // 1×2u space, 2×1.5u for restoring stagger, 2×1.5u at the end (take up stagger), leaves 1+10 keys.
-    ["Ctrl", "Cmd", "Alt", 0, 1, "⍽", "AltGr", 1, 2, "Fn", "Ctrl"],
-];
+    // 1×3u space, 2×4×1u, 2×1.5u at the end (take up stagger), makes 1+10 keys.
+    ["Ctrl", "Cmd", "Alt", 0, "⌦", "⍽", 1, 2, 3, "Fn", "Ctrl"],
+]; // total of 63 keys, compared to 62 in the Harmonic 13. (Another bottom bar config could yield one or two more ;-). )
 
 export const harmonic14LayoutModel: RowBasedLayoutModel = {
     name: "Harmonic 14/Traditional",
@@ -87,6 +87,5 @@ export const harmonic14LayoutModel: RowBasedLayoutModel = {
         [NaN, NaN, NaN, 1.5, 0.2, 1.0, 0.2, 1.5, NaN, NaN, NaN],
     ],
 
-    // rely on Thumb30 only
-    getSpecificMapping: (_: FlexMapping) => undefined,
+    getSpecificMapping: (f: FlexMapping) => f.mappingHarmonic14t,
 }

@@ -92,10 +92,10 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
 
     thumb30KeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "="],
-        ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
-        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "⇧"],
-        ["Ctrl", "Cmd", "`", "\\", "Alt", "⍽", "⏎", 0, "AltGr", "Menu", "Fn", "Ctrl"],
+        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+        ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "Ctrl"],
+        ["Cmd", "", "`", "=", "Alt", "⍽", "⏎", 0, "AltGr", "Menu", "\\", "Fn"],
     ],
 
     // I arbitrarily decide that the top (number) row shall not be changed by the flex mapping.

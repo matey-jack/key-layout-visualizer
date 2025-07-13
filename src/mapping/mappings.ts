@@ -11,15 +11,13 @@
     the other doesn't.
 
     Here are some useful Unicode characters that you can use in your mappings:
-    ⌥ – will be spelled out as "AltGr"
-
-    All others will be shown on the keyboard as is:
-    Navigation keys:
 
     White space and other keyboard specials: ⍽ ↵ ↹ ⎋ ⇧ ⇪ ⌫ ⌦ 🖰
     Navigation keys: ↑ ↓ ← → ⇤ ⇥ ⇞ ⇟ ↞ ↠ ⇱ ⇲
 
-    Useful Unicode characters: € $ ¢ £ ¥ µ × – ¿ ¡ § % ‰
+    Useful printable characters: € $ ¢ £ ¥ µ × – ¿ ¡ § % ‰
+
+    Some characters are treated specially, see mergeMapping() for details!
 
  */
 
@@ -47,11 +45,18 @@ export const qwertzMapping: FlexMapping = {
         "ß´",
         "qwert" + "zuiopü+#",
         "asdfg" + "hjklöä",  // there is # on the ISO key here
-        "yxcvb" + "nm,./",   // and <> on the ISO key here
-        "⌥ "
+        "yxcvb" + "nm,.-",   // and <> on the ISO key here
+        "⌥≡"
     ],
-    // TODO: this would be interesting to see on H14T or maybe even H14-Wide, because it can actually make use of all those keys!
-    //       especially the ß!
+    // We have one less key above the bottom on the Harmonic 14T than on ANSI, and one taken up by Escape,
+    // but we have two character keys in the bottom, so it checks out to 100% coverage!
+    mappingHarmonic14t: [
+        "ß",
+        "qwert" + "+z" + "uiopüä",
+        "asdfg" + "#" + "hjklö",  // there is # on the ISO key here
+        "yxcvb" + "-" + "nm,.",   // and <> on the ISO key here
+        "^⌥´≡"
+    ]
 }
 
 export const colemakMapping: FlexMapping = {
@@ -332,6 +337,18 @@ export const thumby9ku = {
     ],
 }
 
+export const thumby9kul = {
+    name: "Thumby Nine-KU-L",
+    description: "One more finger swap to remove the strong ol/lo bigram conflict. " +
+        "I wouldn't want to actually use this, so it's just there to show the improvement in bigram scores. ",
+    mappingThumb30: [
+        "qwdfb" + "yku-p",
+        "asrtg" + "lnioh",
+        "zxcv;" + "jm,.",
+        "e",
+    ],
+}
+
 export const thumbyBilingual = {
     name: "Thumby Bilingual",
     description: "German and English have very similar letter frequencies. " +
@@ -423,6 +440,7 @@ export const allMappings: FlexMapping[] = [
     thumbyEntry,
     thumbyNine,
     thumby9ku,
+    thumby9kul,
     thumbyBilingual,
     gemuetlichesMapping,
 ]
