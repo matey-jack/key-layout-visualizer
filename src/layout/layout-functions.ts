@@ -46,6 +46,19 @@ export function hasMatchingMapping(layout: RowBasedLayoutModel, flexMapping: Fle
         (flexMapping.mappingThumb30 && layout.thumb30KeyMapping));
 }
 
+// Thanks to those, we can keep the flex mappings as simple strings. (Which I think is more readable.)
+const keyLabelShortcuts = {
+    "⌥": "AltGr",
+    "⇪": "CAPS",
+    "≡": "Menu",
+    "ƒ": "Fn",
+};
+
+// In the layoutModel's mappings, only the empty string has a special meaning (no label = greyed out key).
+// But in the FlexMappings, there are two special ones:
+const useFallback = "?";
+const leaveEmpty = "_";
+
 export const mergeMapping = (
     layoutMapping: LayoutMapping, flexMapping: string[], fallbackMapping?: LayoutMapping
 ): string[][] =>
@@ -54,7 +67,9 @@ export const mergeMapping = (
                 const v = Array.isArray(layoutValue) ? flexMapping[r + layoutValue[0]][layoutValue[1]]
                     : (typeof layoutValue === 'number') ? flexMapping[r][layoutValue]
                         : layoutValue;
-                return v ?? (fallbackMapping ? fallbackMapping[r][c] : "");
+                if (!v || v == leaveEmpty) return "";
+                if (v == useFallback) return (fallbackMapping ? fallbackMapping[r][c] : "");
+                return keyLabelShortcuts[v] ?? v;
             }
         )
     )

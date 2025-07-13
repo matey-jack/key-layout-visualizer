@@ -54,8 +54,8 @@ export interface FlexMapping {
     mapping30?: string[];
     /* ^^^
     The fact that traditional keyboard mappings just swap things around those thirty positions is also some legacy not
-    based on science. On the ANSI/Qwerty layout keys `'` and even `[` are easier to reach than `B` and just as easy as
-    YJV, but still traditional mappings don't use them.
+    based on science. On the ANSI/Qwerty layout keys `'` and to less extend even `[` are easier to reach than `B` and
+    just as easy as J and V, but still traditional mappings don't use them.
     Also, character-wise, the hyphen is used in English as much or more as semi-colon and slash (depending on personal
     style maybe). In any case, the hyphen has more reason to be part of the "core keys" than [] and \. (I wonder how `\`
     even made it onto the keyboard in the first place. I know that it is used in programming language, but that's presumably
@@ -65,6 +65,8 @@ export interface FlexMapping {
     // Keys per row: 10, 10, 9 plus one thumb key.
     // Includes 26 letters plus the punctuation characters `;,.-`.
     // Other punctuation is placed by the Layout-specific mapping.
+    // Note that this uses another "frame mapping" than 'mapping30', so it's an opportunity to modernize also the non-core
+    // key arrangement a little.
     // For rationale see //thumb30-mapping-format.md
     mappingThumb30?: string[];
 
@@ -74,7 +76,7 @@ export interface FlexMapping {
     mappingAnsi?: string[];
     mappingSplitOrtho?: string[];
     mappingHarmonic13wide?: string[];
-    // mappingHarmonic14?: string[];
+    mappingHarmonic14t?: string[];
     // mappingHarmonic13MS?: string[];
 
     // for customizing the ANSI wide Layout

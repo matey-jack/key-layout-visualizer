@@ -252,7 +252,7 @@ export function OneHandStaggerLines({homePositions, staggerOffsets, className}: 
     homePositions.forEach((homePos) => {
         for (let row = 0; row < staggerOffsets.length - 1; row++) {
             results.push(<line
-                key={row}
+                key={`${row},${homePos}`}
                 x1={keyUnit * (homePos + 0.5 + staggerOffsets[row])} y1={keyUnit * (row + 0.5)}
                 x2={keyUnit * (homePos + 0.5 + staggerOffsets[row + 1])} y2={keyUnit * (row + 1.5)}
                 class={className}

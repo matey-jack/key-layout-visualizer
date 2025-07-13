@@ -99,12 +99,22 @@ bigshift (aka traditional):
 To express both thumb-e and other mappings in this format, 
 we'd have to agree to put `-` on the thumb key in those other mappings.
 
-Conclusions:
+## Conclusions
+
+Upsides:
  - thumb30 can express the qwerty letter mapping on Harmonic and Ortho boards with `-` 
-   mapped to the thumb key. Thus, we can use it to show intermediate mappings that move E to thumb, without also moving around Y (or not even B if not desired).
+   mapped to the thumb key. Thus, we can use it to show intermediate mappings that move E to thumb, 
+   without also moving around Y (or not even B if not desired).
  - the position of Y on Harmonic is probably not as bad as it seems. Definitely better than B! So it's good to have the option to keep it.
  - Harmonic and Ortho boards have to move around punctuation a lot in any case. So it's also fine to have `-` on the thumb by default.
  - For showing a Thumby-Layout-Progression on ANSI we'll probably want to use fullMappings, so that we can keep all the punctuation in the usual places.
    Only in advanced stages we'll add Del or Nav keys to the ANSI core... just because there is space :-D.
- - To represent traditional casual mappings, we still need a flex-mapping format that excludes the thumb key. But that's fine, it was implemented already and it's not as much duplication as having to represent all Thumby variants individually using full mappings.
+ - To represent traditional casual mappings, we still need a flex-mapping format that excludes the thumb key. But that's fine, it was implemented already, and it's not as much duplication as having to represent all Thumby variants individually using full mappings.
 
+Downsides:
+ - Mapping the core-30 characters separately from the remaining (framing) punctuation and other keys, 
+   makes it hard to properly form pairs of +- or /\ or [].  Maybe it would be more sensible to use an "empty frame"
+   or at least no outside punctuation keys to focus on the change of lettering only...
+ - When creating a full keyboard mapping for a beloved letter mapping (such as my Thumby Nine) and only creating a core mapping 
+   for its variants (merely to compare metrics), comparing both on a given layout will result in non-core punctuation shifting around.
+ - It seems that the easiest workaround for this (despite all my hard thinking here) is to actually duplicate the full mapping for the variants...

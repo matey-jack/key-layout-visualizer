@@ -38,10 +38,10 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         ["Ctrl", "Cmd", "Alt", "⍽", 0, "AltGr", "Fn", "Ctrl"],
     ],
 
-    // arbitrary decision to include one thumb key in the mapping.
-    // (And one more to move AltGr to, if desired.)
-    // Exclude CapsLock and "slightly wide character key" from the flex mapping,
-    // because it distracts from the lettering changes, especially when show the diff with Qwerty.
+    // arbitrary decision to include two thumb keys in the mapping.
+    // (One for a letter and one more to move AltGr to, if desired.)
+    // Exclude CapsLock from the flex mapping, because it distracts from the lettering changes,
+    // especially when showing the diff with Qwerty.
     fullMapping: [
         ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, 1, "⌫"],
         ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
