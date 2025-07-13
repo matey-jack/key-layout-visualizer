@@ -47,7 +47,7 @@ export function hasMatchingMapping(layout: RowBasedLayoutModel, flexMapping: Fle
 }
 
 // Thanks to those, we can keep the flex mappings as simple strings. (Which I think is more readable.)
-const keyLabelShortcuts = {
+const keyLabelShortcuts: Record<string, string> = {
     "⌥": "AltGr",
     "⇪": "CAPS",
     "≡": "Menu",
@@ -66,9 +66,9 @@ export const mergeMapping = (
         layoutRow.map((layoutValue, c) => {
                 const v = Array.isArray(layoutValue) ? flexMapping[r + layoutValue[0]][layoutValue[1]]
                     : (typeof layoutValue === 'number') ? flexMapping[r][layoutValue]
-                        : layoutValue;
+                        : layoutValue as string;
                 if (!v || v == leaveEmpty) return "";
-                if (v == useFallback) return (fallbackMapping ? fallbackMapping[r][c] : "");
+                if (v == useFallback) return (fallbackMapping ? fallbackMapping[r][c] as string : "");
                 return keyLabelShortcuts[v] ?? v;
             }
         )

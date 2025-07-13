@@ -41,6 +41,7 @@ export interface HarmonicLayoutOptionsModel {
 
 export interface LayoutOptionsState {
     // TODO: life would be easier if we had signals inside those structures!
+    //       maybe also easier if all the config was flat in appState, since it's globally persistent anyway...
     ansiLayoutOptions: Signal<AnsiLayoutOptionsModel>;
     harmonicLayoutOptions: Signal<HarmonicLayoutOptionsModel>;
     orthoLayoutOptions: Signal<OrthoLayoutOptionsModel>;
