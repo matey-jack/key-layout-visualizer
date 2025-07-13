@@ -1,7 +1,6 @@
 import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
 
 export interface OrthoLayoutOptionsModel {
-    thumbKeys: boolean;
 }
 
 export const orthoLayoutModel: RowBasedLayoutModel = {
