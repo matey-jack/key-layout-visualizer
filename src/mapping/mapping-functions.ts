@@ -31,6 +31,7 @@ export function sumKeyFrequenciesByEffort(layoutModel: RowBasedLayoutModel, mapp
     const efforts = getSingleKeyEffort(layoutModel, mapping);
     const result: Record<number, number> = {};
     Object.entries(efforts).forEach(([char, effort]) => {
+
         result[effort] = (result[effort] || 0) + singleCharacterFrequencies[char.toUpperCase()];
     });
     return result;

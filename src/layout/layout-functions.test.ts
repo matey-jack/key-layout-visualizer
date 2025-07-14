@@ -58,12 +58,12 @@ describe('fillMapping', () => {
 
     // this is currently not used in the app, but let's keep it working
     it(`Split Ortho full layout maps all important characters`, () => {
-        hasLettersNumbersAndProsePunctuation(mergeMapping(splitOrthoLayoutModel.fullMapping, thumbyNine.mappingSplitOrtho));
+        hasLettersNumbersAndProsePunctuation(mergeMapping(splitOrthoLayoutModel.fullMapping, thumbyNine.mappingSplitOrtho!!));
     });
 
     // this is currently not used in the app, but let's keep it working
     it(`Harmonic 13 wide full layout maps all important characters`, () => {
-        hasLettersNumbersAndProsePunctuation(mergeMapping(harmonic13WideLayoutModel.fullMapping, thumbyNine.mappingHarmonic13wide));
+        hasLettersNumbersAndProsePunctuation(mergeMapping(harmonic13WideLayoutModel.fullMapping, thumbyNine.mappingHarmonic13wide!!));
     });
 
     // TODO: fullMappings for other Harmonic variants need clean up first

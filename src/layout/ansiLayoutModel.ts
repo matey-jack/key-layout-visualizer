@@ -75,10 +75,10 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         Just to check, that's 8+4+4+5+3+4+2+1+1 key (32 keys) in the three letter rows, which is (11+11+10) per row. ✅
      */
     singleKeyEffort: [
-        [3, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 3, NaN],
-        [NaN, 2, 1, 1, 1.5, 1.5, 1.5, 1.5, 1, 1, 2, 2, 3, 3],
-        [NaN, 0.2, 0.2, 0.2, 0.2, 2, 2, 0.2, 0.2, 0.2, 0.2, 1.5, 2],
-        [NaN, 2, 2, 2, 2, 3, 1.5, 1.5, 1.5, 1.5, 1.5, NaN],
+        [3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, NaN],
+        [NaN, 2.0, 1.0, 1.0, 1.5, 1.5, 1.5, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0, 3.0],
+        [NaN, 0.2, 0.2, 0.2, 0.2, 2, 2, 0.2, 0.2, 0.2, 0.2, 1.5, 2.0],
+        [NaN, 2.0, 2.0, 1.5, 1.5, 3, 1.5, 1.0, 1.5, 1.5, 1.5, NaN],
         [NaN, NaN, NaN, 0.2, 1.5, NaN, NaN, NaN],
     ],
 
@@ -137,6 +137,10 @@ export const ansiWideLayoutModel = {
         ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
         ["⇧", 0, 1, 2, 3, 4, '/', 5, 6, 7, 8, "⇧"],
         ["Ctrl", "Cmd", "Alt", "⍽", 0, "AltGr", "Fn", "Ctrl"],
+    ],
+    fullMapping: [
+        ["`~", "1", "2", "3", "4", "5", "6", 0, "7", "8", "9", "0", 1, "⌫"],
+        ...ansiLayoutModel.fullMapping.slice(1),
     ],
     mainFingerAssignment: [
         [1, 1, 1, 2, 2, 3, 3, 6, 6, 6, 7, 8, 8, 8],

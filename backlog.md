@@ -33,19 +33,28 @@ missing core features:
 - design: for finger and single key effort viz: highlight home and non-character keys 
 - check consistency of all mappings:
    + variants for different layouts should be consistent (only have differences clearly attributed to the layout)
+   + maybe check if some full-mappings can be omitted, because thumb30 and 3×10 do the job well enough?
    + related thumby variants should be consistent (only have the intended differences)
+     * especially Thumby-KU
 - Offer an option to hide all keys outside the core 30 mapping (labeled "show only letters and prose punctuation").
   This is better than trying to create a representation of "best options" for the frame layout – since there are just 
   too many good options and personal preferences in this area! (Mainly on split ortho keyboards.) 
 
+bugs:
+- validate mapping/layout/options combination from URL data, so that the app doesn't crash
+- handle Harmonic variants without a matching mapping:
+  + when switching to the Harmonic layout with an unsupported mapping already set
+  + when switching the Harmonic variant
+- fix altFinger configuration for Harmonic variants
 
 small things:
-- Thumby Nine on Harmonic 13 to make nice punctuation arrangement
 - better visual design:
    - scoring and description of learning/single key/bigram classes
    - Mapping Name not be centered when it wraps to two lines.
-   - Enter and Space as special-key background (will change when a letter is mapped to the key)
-   - special-key background overriding effort score colors: maybe some striping (SVG pattern) would solve this well.
+   - Enter and Space as a lighter shade of the special-key background (will change when a letter is mapped to the key)
+   - show both special-key background and finger assignment / effort score colors: 
+     + either use SVG pattern to create stripes in both colors.
+     + or use the finger/score color in combination with a thick border around the key. (As we do with the home row in the fingers viz.)
    - Change description fields of layout and mapping data to JSX.Component (or markdown)
 
 

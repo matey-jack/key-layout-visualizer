@@ -281,7 +281,7 @@ export const thumbyZero = {
     ],
 }
 
-export const thumbyNero = {
+export const thumbyNero: FlexMapping = {
     name: "Thumby Nero",
     description: "This is like Thumby Zero, a minimal dip into Thumby-land, but this time only containing the NJ swap. " +
         "This makes it possible to try out using just ordinary KLC layouts, no other tools or manual registry changes required. " +
@@ -294,7 +294,7 @@ export const thumbyNero = {
     ],
 }
 
-export const thumbyEntry = {
+export const thumbyEntry: FlexMapping = {
     name: "Thumby Entry (or EN-try!)",
     description: "Combines Thumby Zero + Nero to fix Qwerty's two biggest flaws. " +
         "Additionally provides synergy, because the common EN/NE bigrams don't require you to pinch your hand. ",
@@ -306,30 +306,28 @@ export const thumbyEntry = {
         "zxcv" + "-" + "jm,.",
         "e",
     ],
-    // TODO: we should provide this as ANSI full mapping to minimize insignificant differences in punctuation and modifier keys.
+    // TODO: maybe provide this as ANSI full mapping to minimize insignificant differences in punctuation and modifier keys.
 }
 
-export const thumbyNine = {
+export const thumbyNine: FlexMapping = {
     name: "Thumby Nine",
     description: "Puts the nine most frequent letters of English into home key positions, " +
         "keeping most of them on the same finger. " +
         "When using the \"ANSI wide\" home position, you suddenly realize how easy it becomes " +
         "for your thumb to hit the key to the right of the space bar. " +
-        "Thus is born the idea of adding a nineth home key, which changes everything. " +
+        "Thus is born the idea of adding a ninth home key, which changes everything. " +
         "Notably it leads to a ring swap EDRFTB at the end of which one more character can be inserted onto the main area of the keyboard. " +
         "Note that R shows as a changed finger, but probably most people already type R with their middle finger " +
         "when typing the RT bigram on Qwerty. " +
         "The remaining swaps in the layout are the same as in other casual mappings. " +
         "With its few differences to Norman, it could be a great upgrade for anyone currently using Norman. " +
-        "We could even call it  \"Norman-Nine\". ",
-    // Note that the full mappings below might not be consistent with this. We'll deal with that later.
+        "We could even call it \"Norman-Nine\". ",
     mappingThumb30: [
-        "qwdfb" + "-" + "uklp",
-        "asrtg" + "ynioh",
+        "qwdfb" + "y" + "uklp",
+        "asrtg" + "-nioh",
         "zxcv" + ";" + "jm,.",
         "e",
     ],
-
     mappingAnsiWide: [
         "=\\",
         "qwdfb" + "-y" + "uklp'",
@@ -337,16 +335,13 @@ export const thumbyNine = {
         "zxcv" + "[]" + "jm,.",
         "e⌥",
     ],
-
     mappingSplitOrtho: [
         "",
-        "qwdfb" + "yuklp-",
-        "asrtg" + "=nioh'",
-        "zxcv;" + "jm,./",
+        "qwdfb" + "y" + "uklp=",
+        "asrtg" + "-nioh'",
+        "zxcv" + ";" + "jm,./",
         "⇤\\e⇥",
     ],
-
-    // TODO: update.
     mappingHarmonic13wide: [
         "[]",
         "wdfb" + "-=" + "uklp",
@@ -354,13 +349,38 @@ export const thumbyNine = {
         "zxcv" + "\\/" + "ym,.",
         "`e",
     ],
-    mappingHarmonic14: [
+    mappingHarmonic14t: [
         "`",
         "qwdfb" + "-=" + "uklp'\\",
         "asrtg" + ";" + "jnioh",
         "zxcv" + "[]" + "ym,.",
-        "⌦e/",
+        "/e⌥≡",
     ],
+}
+
+export const thumbyLeft: FlexMapping = {
+    name: "Thumby Left",
+    description: `This is Thumby Nine, but the left thumb types the letter E. 
+    On the ancient ANSI keyboard, it's weird to use the space bar for a letter, 
+    but on any modern Ortholinear or harmonically staggered keyboard, left and right are equally usable. 
+    And Thumby Left uses this symmetry to provide a highly performant layout where all the letters 
+    are on the same hand as in Qwerty. 
+    (Unlike shown on the keyboard above, the space bar should be on the other thumb.) `,
+    mappingSplitOrtho: [
+        "",
+        "qwdfb" + "yuklp-",
+        "asrtg" + "=nioh'",
+        "zxcv;" + "jm,./",
+        "⇤e\\⇥",
+    ],
+    mappingHarmonic13wide: [
+        "[]",
+        "wdfb" + "-=" + "uklp",
+        "qasrtg" + ";" + "jnioh'",
+        "zxcv" + "\\/" + "ym,.",
+        "e`",
+    ],
+    // TODO: add a flex slot for the space bar on ANSI?
 }
 
 export const thumby9t = {
@@ -387,7 +407,7 @@ export const thumby9u = {
     ],
 };
 
-export const thumby9ku = {
+export const thumby9ku: FlexMapping = {
     name: "Thumby Nine-KU",
     description: "Adding the K-U swap to Thumby Nine not only makes the relatively frequent U easier to type, " +
         "but also removes the same-finger conflict of the UN bigram and the KI bigram. ",
@@ -399,7 +419,7 @@ export const thumby9ku = {
         "e",
     ],
 
-    // TODO: fix it
+    // TODO: align with Thumby Nine
     mappingAnsiWide: [
         "⇤⇥",
         "qwdfb" + "=y" + "kulp\\",
@@ -414,12 +434,12 @@ export const thumby9ku = {
         "zxcv" + "⇤⇥" + "jm,.",
         "/e",
     ],
-    mappingHarmonic14: [
+    mappingHarmonic14t: [
         "=",
         "qwdfb" + "-'" + "kulp⇞⇟",
         "asrtg" + ";" + "jnioh",
         "zxcv" + "⇤⇥" + "ym,.",
-        "⌦e/",
+        "/e⌥≡",
     ],
     mappingSplitOrtho: [
         "",
@@ -447,11 +467,27 @@ export const thumbyBilingual = {
     description: "German and English have very similar letter frequencies. " +
         "I am writing a lot in both languages, and so I optimized for both. " +
         "The result is Thumby Nine, but without the OL swap. " +
-        "Since L in German is much more frequenty than O, we can just leave both in the Qwerty position and there by make it easier to learn and switch. ",
+        "Since L in German is much more frequent than O, we can just leave both " +
+        "in the Qwerty position and there by make it easier to learn and switch. ",
     mappingThumb30: [
         "qwdfb" + "y" + "kuop",
         "asrtg" + "-nilh",
         "zxcv" + ";" + "jm,.",
+        "e",
+    ]
+}
+
+export const thumbyOldBilingual = {
+    name: "Legacy Thumby Bilingual",
+    description: `Since D is almost as frequent as H, this layout minimizes the difference to Qwerty, 
+        by keeping D on the home row. It has several disadvantages compared with Thumby Bilingual: 
+        first, it breaks apart the frequent RT bigram that Qwerty users roll all the time. 
+        Second, it keeps H in worse position than D gets in Thumby.
+        And third, T has to move hands, which is a bigger learning effort than D moving up on the same finger. `,
+    mappingThumb30: [
+        "qwbf;" + "y" + "kuop",
+        "asdrg" + "hnilt",
+        "zxcv" + "-" + "jm,.",
         "e",
     ]
 }
@@ -531,7 +567,7 @@ export const allMappings: FlexMapping[] = [
     colemakDhMapping,
     colemakThumbyMapping,
     // colemakThumbyLMapping,
-    // colemakThumbyNMapping,
+    colemakThumbyNMapping,
     normanMapping,
     // minimak4Mapping,
     // minimak8Mapping,
@@ -544,10 +580,12 @@ export const allMappings: FlexMapping[] = [
     // thumbyNero,
     // thumbyEntry,
     thumbyNine,
+    thumbyLeft,
     thumby9ku,
     // thumby9u,
     thumby9kul,
     // thumby9t,
     thumbyBilingual,
+    thumbyOldBilingual,
     // gemuetlichesMapping,
 ]
