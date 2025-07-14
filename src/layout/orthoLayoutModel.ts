@@ -20,6 +20,14 @@ export const orthoLayoutModel: RowBasedLayoutModel = {
         ["Ctrl", "Cmd", "`", "-", "Alt", "⍽", "AltGr", "=", "\\", "Fn", "Ctrl"],
     ],
 
+    thumb30KeyMapping: [
+        ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+        ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
+        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "⇧"],
+        ["Ctrl", "Cmd", "`", "=", "Alt", "⍽", 0, "AltGr", "\\", "Fn", "Ctrl"],
+    ],
+
     // This is not properly supported, no mappings use it.
     // It's just here to avoid crashes and more filtering logic when selecting the Ortho one-piece layout
     fullMapping: [
@@ -61,11 +69,11 @@ export const orthoLayoutModel: RowBasedLayoutModel = {
         [NaN, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, NaN],
         [NaN, 1.5, 1.0, 1.0, 1.5, 1.5, 1.5, 1.5, 1.0, 1.0, 1.5, 2.0],
         [NaN, 0.2, 0.2, 0.2, 0.2, 2.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
-        [NaN, 1.0, 1.5, 1.5, 1.0, 2.0, 2.0, 1.5, 1.0, 1.5, 1.0, NaN],
-        [NaN, NaN, 2.0, 1.5, NaN, 0.2, NaN, 1.5, 2.0, NaN, NaN],
+        [NaN, 1.0, 1.5, 1.5, 1.0, 2.0, 2.0, 1.0, 1.5, 1.5, 1.0, NaN],
+        [NaN, 2.0, 2.0, 1.5, 1.5, 0.2, 1.5, 1.5, 2.0, 2.0, NaN],
     ],
 
-    // NOT USED since its different from split and this layout is not recommended anyways.
+    // NOT USED since it's different from split and this layout is not recommended anyways.
     getSpecificMapping: (_: FlexMapping) => undefined,
 }
 
@@ -89,6 +97,8 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
         ["Ctrl", "Cmd", "=", "\\", "Alt", "⍽", "⏎", "AltGr", "Menu", "`", "Fn", "Ctrl"],
     ],
 
+    // I like Shift in the home row.
+    // TODO: provide a separate option for this and not depend on the thumb-letter!
     thumb30KeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
         ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
@@ -120,7 +130,7 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
 
     singleKeyEffort: ((orig) => [
         ...orig.slice(0, 4),
-        [NaN, NaN, 2, NaN, 0.2, 0.2, 0.2, 0.2, NaN, 2, NaN, NaN],
+        [NaN, 2.0, 2.0, 1.5, 0.2, 0.2, 0.2, 0.2, 1.5, 2.0, 2.0, NaN],
     ])(orthoLayoutModel.singleKeyEffort),
 
     getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingSplitOrtho,

@@ -47,11 +47,20 @@ but who is not fanatic about optimizing their typing or training for speed "like
 Original proposal document: https://docs.google.com/document/d/17ECEu8dVjO9I3P6492D3Q8luSBC8j6HAiPTDwPtMZJ8/edit?usp=sharing 
 This should be outdated, once the app functionality speaks for itself.
 
+TODO: put an info button and hover text on the "use wide key mapping" checkbox and link to https://colemakmods.github.io/ergonomic-mods/wide.html
+
 I will not consider extensions above the described feature set until most of that is implemented.
 This is to get a basic architecture in place that makes the right things easy.
 
+### Modifier mapping for small split ortho keyboards
+
+This is a big topic of which too little has been written. 
+It does influence what keys are available for mapping punctuation – and also relates to typing a letter key with a thumb.
+But the options are just too many to show them all in the app.
+
+### Out of Scope
 One thing I don't want, though, is adding the ISO layout with its tiny left shift key.
-Because that key is an ergonomic no-go. It brought me so much pain. 
+That key is an ergonomic no-go which brought me a lot of pain. 
 (Not just because German has a lot of capitalized words, but also because as a programmer I use 
 a lot of punctuation on the Shift layer. 
 And then all that pressing of Shift+nav-keys to select text.

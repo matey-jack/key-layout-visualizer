@@ -26,14 +26,15 @@ import {FlexMapping} from "../base-model.ts";
 export const qwertyMapping: FlexMapping = {
     name: "Qwerty – US and world-wide standard",
     techName: "QWERTY",
-    description: "This ancient typewriter-born key mapping is so ubiquitous today that many people might never have seen a different mapping in their whole life. " +
-        "At the same time it is also extra-ordinary bad for touch-typing, because frequently used letters are not in the center.",
+    description: `This ancient typewriter-born key mapping is so ubiquitous today that many people might never have seen 
+    a different mapping in their whole life. At the same time it is also extra-ordinary bad for touch-typing, 
+    because frequently used letters are not in the center. `,
     sourceUrl: "https://en.wikipedia.org/wiki/QWERTY",
     mapping30: [
         "qwert" + "yuiop",
         "asdfg" + "hjkl;",
         "zxcvb" + "nm,./",
-    ]
+    ],
 }
 
 export const qwertzMapping: FlexMapping = {
@@ -46,6 +47,13 @@ export const qwertzMapping: FlexMapping = {
         "qwert" + "zuiopü+#",
         "asdfg" + "hjklöä",  // there is # on the ISO key here
         "yxcvb" + "nm,.-",   // and <> on the ISO key here
+        "⌥≡"
+    ],
+    mappingAnsiWide: [
+        "´ß",
+        "qwert" + "+" + "zuiopüä",
+        "asdfg" + "#hjklö",  // there is ä on the ISO key here
+        "yxcvb" + "-nm,.",   // and <> on the ISO key here
         "⌥≡"
     ],
     // We have one less key above the bottom on the Harmonic 14T than on ANSI, and one taken up by Escape,
@@ -63,13 +71,79 @@ export const colemakMapping: FlexMapping = {
     name: "Colemak",
     description: "Released in the year 2006, the Colemak layout started a new world-wide interest in better letter mappings. " +
         "It also pioneered the idea of leaving some crucial-for-shortcuts keys in their place. " +
-        "Colemak places a strong emphasis on avoiding single-finger bigram conflicts at the cost of many letters changing fingers. " +
-        "TODO: is there a layout which achieves the same, but better, by including E on a thumb key?",
+        "Colemak places a strong emphasis on avoiding single-finger bigram conflicts at the cost of many letters changing fingers. ",
     sourceUrl: "https://colemak.com/",
     mapping30: [
         "qwfpg" + "jluy;",
         "arstd" + "hneio",
         "zxcvb" + "km,./",
+    ]
+}
+
+export const colemakDhMapping: FlexMapping = {
+    name: "Colemak DH",
+    description: "A 2014 variant of Colemak that places the letters D and H in better positions. " +
+        "Apparently the original Colemak assumed that the \"home row\" is the easiest to type in any position, " +
+        "but actually fingers move up and down more easily than left and right. " +
+        "Thus Colemak-DH puts less frequently used keys in the center column. " +
+        "(Note that the Colemak-DH authors prefer the ISO keyboard to achieve better staggering in the bottom row. " +
+        "That idea is valid, but the resulting tiny and much further away shift key is a no-go for me. " +
+        "Shown here is the version for the ANSI keyboard which additionally moves Z to the middle column.) ",
+    sourceUrl: "https://colemakmods.github.io/mod-dh/",
+    mapping30: [
+        "qwfpb" + "jluy;",
+        "arstg" + "mneio",
+        "xcdvz" + "kh,./",
+    ],
+
+    // Due to Angle Mod, the Ortho version has a flip: https://colemakmods.github.io/mod-dh/keyboards.html
+    mappingSplitOrtho: [
+        "",
+        "qwfpb" + "jluy;-",
+        "arstg" + "mneio'",
+        "zxcdv" + "kh,./",
+        "⇤\\=⇥",
+    ]
+}
+
+export const colemakThumbyMapping: FlexMapping = {
+    name: "Colemak Thumby H",
+    description: `Slightly modified version of Colemak-DH that places E on the thumb key and H on an actual home key. 
+    Unlike Thumby Zero, there is no need to rescue the letter from "the worst position of the board", 
+    because Colemak already places a very rare letter there. 
+    TODO: make a custom version of this for the Harmonic 13 MidShift, because that's the only board to properly represent the angle mod. 
+    And a custom version for ortho, same reason.`,
+    mappingThumb30: [
+        "qwfpb" + "jluy;",
+        "arstg" + "-nhio",
+        "xcdvz" + "km,.",
+        "e"
+    ]
+}
+
+export const colemakThumbyNMapping: FlexMapping = {
+    name: "Colemak Thumby N",
+    description: `Slightly modified version of Colemak-DH that places E on the thumb key and H on an actual home key. 
+    Since N is more frequent than H, we move N to the middle finger where it causes less bigram conflicts.  
+    TODO: make a custom version of this for the Harmonic 13 MidShift, because that's the only board to properly represent the angle mod. 
+    And a custom version for ortho, same reason.`,
+    mappingThumb30: [
+        "qwfpb" + "jlyu;",
+        "arstg" + "-hnio",
+        "xcdvz" + "km,.",
+        "e"
+    ]
+}
+
+export const colemakThumbyLMapping: FlexMapping = {
+    name: "Colemak Thumby L",
+    description: `Just a test to compare metrics. Turns out that moving L to the home row does not cause less bigram conflicts. `,
+    // It's worse than Thumby-H, so we don't show it in the app :D
+    mappingThumb30: [
+        "qwfpb" + "j-uy;",
+        "arstg" + "mnlio",
+        "xcdvz" + "kh,.",
+        "e"
     ]
 }
 
@@ -197,9 +271,10 @@ export const thumbyZero = {
         "zxcv" + "-" + "nm,.",
         "e",
     ],
+    // TODO: provide separate Ansi wide variant that can include some slight punctuation improvements.
     mappingAnsi: [
         "=\\",
-        "qwbrt" + "yuiop[]",
+        "qwbrt" + "yuiop[]_",
         "asdfg" + "hjkl;'",
         "zxcv-" + "nm,./",
         "e⌥",
@@ -255,19 +330,13 @@ export const thumbyNine = {
         "e",
     ],
 
-    // I would move - to the core board instead of =, but since this mapping is meant to show the lowest-practical Qwerty-diff
-    // for any Thumby-variant, we leave - unmoved.
-    // We could make achieve an even lower learning diff by leaving D on the home row (it's the 10th most frequent letter).
-    // That's basically what Thumby Bilingual is doing!
-    // TODO: consider swapping ; and J to have all punctuation in the bottom row.
-    mappingAnsi: [
-        "-=",
-        "qwdfb" + "y" + "uklp[]",
-        "asrtg" + ";nioh'",
-        "zxcv" + "\\" + "jm,./",
+    mappingAnsiWide: [
+        "=\\",
+        "qwdfb" + "-y" + "uklp'",
+        "asrtg" + "/;nioh",
+        "zxcv" + "[]" + "jm,.",
         "e⌥",
     ],
-    ansiMovedColumns: [4, 5, 5, 4],
 
     mappingSplitOrtho: [
         "",
@@ -277,7 +346,7 @@ export const thumbyNine = {
         "⇤\\e⇥",
     ],
 
-    // this additionally swaps JY; because the Harmonic qwerty Y position is further away from the index finger's home.
+    // TODO: update.
     mappingHarmonic13wide: [
         "[]",
         "wdfb" + "-=" + "uklp",
@@ -306,14 +375,14 @@ export const thumby9ku = {
         "e",
     ],
 
-    mappingAnsi: [
+    // TODO: fix it
+    mappingAnsiWide: [
         "⇤⇥",
         "qwdfg" + "=" + "kulp-\\",
         "asrtb" + "ynioh'",
         "zxcv" + ";" + "jm,./",
         "e⌥",
     ],
-    ansiMovedColumns: [4, 6, 5, 4],
     mappingHarmonic13wide: [
         "⇞⇟",
         "wdfg" + "-=" + "kulp",
@@ -379,10 +448,18 @@ export const gemuetlichesMapping = {
     sourceLinkTitle: "GitHub: matey-jack/gemuetliche-tastatur",
 
     // I actually used this layout on an ISO keyboard, so the right pinky keys are a bit different!
+    mappingAnsiWide: [
+        "´ß",
+        "qwbfö" + "+zkuopüä",
+        "asdrg" + "'hnilt",
+        "yxcv/" + "-jm,.",
+        "e⌥"
+    ],
+
     mappingAnsi: [
-        "ß´",
-        "qwbfö" + "zkuopüä",
-        "asdrg" + "hnilt'",
+        "´ß",
+        "qwbfö" + "zkuopü+'",
+        "asdrg" + "hniltä",
         "yxcv/" + "jm,.-",
         "e⌥"
     ],
@@ -427,6 +504,10 @@ export const allMappings: FlexMapping[] = [
     qwertyMapping,
     qwertzMapping,
     colemakMapping,
+    colemakDhMapping,
+    colemakThumbyMapping,
+    // colemakThumbyLMapping,
+    colemakThumbyNMapping,
     normanMapping,
     minimak4Mapping,
     minimak8Mapping,

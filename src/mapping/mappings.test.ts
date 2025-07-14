@@ -29,19 +29,27 @@ describe('flex mappings consistency', () => {
 
         const mappingThumb30 = mapping.mappingThumb30;
         if (mappingThumb30) {
-            it(mapping.name + " – array shape", () => {
+            it(mapping.name + " – Thumb30 array shape", () => {
                 expect(mappingThumb30.length, "number of rows").toBe(4);
                 [10, 10, 9, 1].forEach((expected, row) => {
                     expect(mappingThumb30[row].length).toBe(expected);
                 });
             });
 
-            it(mapping.name + " – character completeness", () => {
+            it(mapping.name + " – Thumb30 character completeness", () => {
                 const allChars = mappingThumb30.join().split('').sort();
                 expect(allChars).to.include.members("abcdefghijklmnopqrstuvwxyz".split(''));
                 expect(allChars).to.include.members(",.;-".split(''));
             });
         }
+
+        it(mapping.name + "has both ANSI and ANSI wide mapping", () => {
+            if ((mapping.mappingAnsi || mapping.mappingAnsiWide)
+            && !(mapping.mappingThumb30 || mapping.mapping30)) {
+                expect(mapping.mappingAnsi).toBeDefined();
+                expect(mapping.mappingAnsiWide).toBeDefined();
+            }
+        });
 
         Object.values(allLayoutModels).forEach((layoutModel) => {
             const specificMapping = layoutModel.getSpecificMapping(mapping);

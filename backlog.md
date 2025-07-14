@@ -1,0 +1,91 @@
+
+done:
+- switch between keyboard layouts DONE
+- highlight active keyboard layout DONE
+- implement ANSI layout  DONE
+- remove duplicated code between Ansi and Harmonic DONE
+- add narrow/wide option for ANSI
+    - add second layout config DONE
+    - refactor app to hold layout options closer to Keyboard layout component (maybe container components LayoutArea and MappingArea?)
+    - mapping list, learning effort, colors 
+- implement Ortho split layout; simply stagger bottom row to get thumb keys.
+- list key mappings
+- switch between mappings
+- show mapping information: sourceUrl and diff to Qwerty
+- calculated bigram effort
+- change all the legends to display (weighted) counts (or percentage of strokes) in the colored boxes
+  and show the scores as part of the legend text. (As is already done with the Learning Diff...).
+- single key frequency viz
+- angle viz
+- URL #fragments for state parameters: layoutType, split, HarmonicType, vizType, ...
+- add Unicode mappings for bottom row modifiers, so that FlexMappings can change them. Minimum affected keys are AltGr and what's to the right of it.
+
+bugs fixed:
+ - Learnability Score for Wide ANSI in Mapping List is changing when I select different mappings =:-[]
+ - Frequency for Thumby bigrams should be counted, even if there is no wide layout.
+
+
+missing core features:
+- add "FlexMapping.comparisonBase" so that Qwertz and Colemak can be chosen by layouts based on those. 
+- add "specialized" column to mapping list and mention the meaning in the mapping description in the Details Area.
+  + when a mapping has both core and full mappings defined for a layout, show both in the list!
+- design: for finger and single key effort viz: highlight home and non-character keys 
+- check consistency of all mappings:
+   + variants for different layouts should be consistent (only have differences clearly attributed to the layout)
+   + related thumby variants should be consistent (only have the intended differences)
+- Offer an option to hide all keys outside the core 30 mapping (labeled "show only letters and prose punctuation").
+  This is better than trying to create a representation of "best options" for the frame layout – since there are just 
+  too many good options and personal preferences in this area! (Mainly on split ortho keyboards.) 
+
+
+small things:
+- Thumby Nine on Harmonic 13 to make nice punctuation arrangement
+- better visual design:
+   - scoring and description of learning/single key/bigram classes
+   - Mapping Name not be centered when it wraps to two lines.
+   - Enter and Space as special-key background (will change when a letter is mapped to the key)
+   - special-key background overriding effort score colors: maybe some striping (SVG pattern) would solve this well.
+   - Change description fields of layout and mapping data to JSX.Component (or markdown)
+
+
+optional features:
+- mouse hover in bigram viz to only show lines in/out of one key. 
+  + Create a specific detail view to show the frequency of 
+- 'frame layout' options for nav/del keys
+- hex-shaped keys
+- let AI generate a few more unit tests
+- only deduct half the learning points for changed punctuation keys. (Relevant only for `;`, since `-` is out of the box and others aren't moved.)
+
+
+research option:
+- can we redefine thumb30 in a way that omits ;- from its character set and let's the frame map all punctuation? (Except , and . which are constant in all our variants.)
+- can we make a data model for the Harmonic that allows us to simply scale the layout for a width of 14, 13, and 12 keys?
+   * 12 only works as "balanced" (full-width home row, lower shift), 14 as "traditional" and "balanced", 13 as balanced and "mid-shift".
+   * for the layout itself it should be easy, but defining really sensible punctuation depends on the exact number and position of keys available!
+   * some options for the bottom row should be available, although H12 only supports 1U space, for H13 I prefer the current alignment, only H14 can choose between having more 1u keys or some 1.5u keys.
+- variants of Harmonic bottom row, including a 2u central space bar ()
+
+Postponed:
+- nav keys and AltGr layer – this fits better into an app/page focused on the Harmonic keyboard. There's already enough info on layers on the 'net, so let's keep this app focused on the themes of casual mappings, thumb-E, and the alt-fingering aspect of staggering.  
+
+discarded ideas:
+- have thumb30 mapping include placeholders for punctuation characters, so that the frame layout can set them!
+  -> won't help, because a consistent arrangement of punctuation depends on where those are actually mapped
+  (Both parenthesis and nav keys are pairs, and also +- ideally are a pair, and maybe even /\.)
+
+
+
+building usable things:
+ - actual Windows implementation of ANSI-Thumby, including a few useful options of using CapsLock sensibly and what key to swap with AltGr so that it can be mapped to E. (Maybe some ISO key not used on ANSI board or the other way round.)
+
+possible additions:
+http://www.michaelcapewell.com/projects/keyboard/#The_QWERF_Layout
+strangely changes mostly the right hand.
+
+https://mk.bcgsc.ca/carpalx/?partial_optimization – makes only 5 or 10 swaps, but doesn't respect hand or finger position. 10 swaps without those restrictions is already a completely unrecognizable new layout.
+
+https://mk.bcgsc.ca/carpalx/?keyboard_layouts this page shows c-qwerty and variants, that swap ED UJ IK OL and some other pairs. I might include one of them in my app.
+
+But with thumb-E everything changes! The layout with the least changes is simply the thumb-E-B-hyphen swap. (Of course even simpler without B, but with B is what I have been using for 11 years now.) When adding D and R in the swap, T and F are just begging to join as well. Adding G is a matter of taste. But then the ring is definitely closed.
+Ironically, on the right hand, all swaps are independent NJ, IK, OL, H;, with the exception of UK (if used) and YJ; (needed in Harmonic). 
+

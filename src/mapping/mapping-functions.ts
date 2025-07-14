@@ -16,7 +16,7 @@ const keyboardNames = [
 export const isKeyName = (label: string) => keyboardNames.includes(label);
 
 export const isCommandKey = (label: string) =>
-    (isKeyboardSymbol(label) || isKeyName(label)) && label !== "⍽" && label !== "⏎";
+    (isKeyboardSymbol(label) || isKeyName(label)) && label !== "⍽" && label !== "⏎" && label !== "";
 
 export function weighSingleKeyEffort(layoutModel: RowBasedLayoutModel, mapping: FlexMapping): number {
     const efforts = getSingleKeyEffort(layoutModel, mapping);
