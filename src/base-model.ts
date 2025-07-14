@@ -71,16 +71,12 @@ export interface FlexMapping {
     mappingThumb30?: string[];
 
     // for correct dimensions, see the layout model files
-    // maybe all of those should be removed to avoid all the duplication?
-    // we could instead have some variants of the frame layouts which map all the keys not in the flex mapping.
     mappingAnsi?: string[];
+    mappingAnsiWide?: string[];
     mappingSplitOrtho?: string[];
     mappingHarmonic13wide?: string[];
     mappingHarmonic14t?: string[];
     // mappingHarmonic13MS?: string[];
-
-    // for customizing the ANSI wide Layout
-    ansiMovedColumns?: number[];
 }
 
 export enum Finger {
@@ -168,7 +164,7 @@ export interface RowBasedLayoutModel {
     // As a guideline `-` should be mapped closer to the top and right hand, so it's closer to its old position and also
     // the `=+` key. (The latter being important for tapping Ctrl with + and - to zoom in and out.
     // Ctrl held with one hand, + and - tapped with the other.)
-    thumb30KeyMapping?: LayoutMapping;
+    thumb30KeyMapping: LayoutMapping;
 
     // to be filled by whatever getSpecificMapping() selects
     fullMapping: LayoutMapping;

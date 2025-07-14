@@ -10,7 +10,9 @@ const fullMapping: LayoutMapping = [
 
 export const harmonic12LayoutModel: RowBasedLayoutModel = {
     name: "Harmonic 12/3",
-    description: "The Harmonic keyboard layout has a fully symmetric keyboard with only two key sizes to allow for flexible changes to the key mapping. " +
+    description: "The smallest variant of the Harmonic keyboard family is especially useful for use with tablets, mobile phones, " +
+        "or for people who mainly write plain English. But all ANSI punctuation is available on the AltGr layer. " +
+        "The Harmonic keyboard layout has a fully symmetric keyboard with only two key sizes to allow for flexible changes to the key mapping. " +
         "Its regular row stagger allows for many keys to be comfortably typed by two fingers, " +
         "which let's you intuitively avoid the awkward same-finger bigrams that make new key mappings feel so awkward. " +
         "Using mostly square keys makes the board slightly narrower than an ANSI-based 60% keyboard, " +

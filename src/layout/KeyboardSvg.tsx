@@ -3,7 +3,8 @@ import {isHomeKey, lettersAndVIP} from "./layout-functions.ts";
 import {
     BigramMovement,
     BigramType,
-    Finger, harmonicStaggerOffsets,
+    Finger,
+    harmonicStaggerOffsets,
     KeyboardRows,
     KeyPosition,
     MappingChange,
@@ -12,7 +13,6 @@ import {
 } from "../base-model.ts";
 import {ComponentChildren, JSX} from "preact";
 import {singleCharacterFrequencies} from "../frequencies/english-single-character-frequencies.ts";
-import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 
 interface KeyboardSvgProps {
     children?: ComponentChildren;
@@ -71,10 +71,9 @@ export function Key({col, ribbonClass, backgroundClass, label, row, width, frequ
             {label}
         </text>
 
-    const bgClass = backgroundClass ? backgroundClass
-        : !label ? "unlabeled"
-            : isCommandKey(label) ? "command-key"
-                : "";
+    const bgClass = isCommandKey(label) ? "command-key"
+        : backgroundClass ? backgroundClass
+            : !label ? "unlabeled" : "";
 
     const keyRibbon = ribbonClass &&
         <rect class={"key-ribbon " + ribbonClass}

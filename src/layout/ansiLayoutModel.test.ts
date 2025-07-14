@@ -40,8 +40,8 @@ describe('ansiLayoutModel.keyWidth', () => {
 describe('ansiWideLayoutModel', () => {
     const expectedLayoutMapping = [
         ["`~", "1", "2", "3", "4", "5", "6", "=", "7", "8", "9", "0", "-", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, 9, "[", "]"],
-        ["CAPS", 0, 1, 2, 3, 4, "'", 5, 6, 7, 8, 9, "⏎"],
+        ["↹", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "'", "\\"],
+        ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
         // The move of key 29 to the middle is a change required to keep the finger assignments of keys 25..28 the same as on the ANSI layout.
         // This is caused by moving the right home row to the right where the Enter key is removed.
         // But below, Shift is still there.

@@ -2,7 +2,7 @@ import {describe, expect, it} from 'vitest';
 
 import {Finger, Hand, hand, KeyboardRows, MappingChange} from "../base-model.ts";
 import {characterToFinger, diffSummary, diffToQwerty, fillMapping, mergeMapping,} from "./layout-functions.ts";
-import {normanMapping, qwertyMapping, thumbyNine} from "../mapping/mappings.ts"
+import {normanMapping, qwertyMapping, qwertzMapping, thumbyNine, thumbyZero} from "../mapping/mappings.ts"
 import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
@@ -53,7 +53,7 @@ describe('fillMapping', () => {
     });
 
     it(`ANSI full layout maps all important characters`, () => {
-        hasLettersNumbersAndProsePunctuation(mergeMapping(ansiLayoutModel.fullMapping, thumbyNine.mappingAnsi));
+        hasLettersNumbersAndProsePunctuation(mergeMapping(ansiLayoutModel.fullMapping, thumbyZero.mappingAnsi!!));
     });
 
     // this is currently not used in the app, but let's keep it working

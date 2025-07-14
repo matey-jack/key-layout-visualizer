@@ -34,7 +34,7 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "=", "`~", "⌫"],
         ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "[", "]", "\\"],
         ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⏎"],
-            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, '/', "⇧"],
+        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, '/', "⇧"],
         ["Ctrl", "Cmd", "Alt", "⍽", 0, "AltGr", "Fn", "Ctrl"],
     ],
 
@@ -118,35 +118,43 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
     getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsi,
 }
 
-// How many columns are moving to the right?
-// The key just after those will "jump" into the center of the board.
-export const movedColumns = [5, 7, 5, 4];
+export const ansiWideLayoutModel = {
+    ...ansiLayoutModel,
+    name: "ANSI with wide hand position",
+    rightHomeIndex: 8,
+    thirtyKeyMapping: [
+        // https://colemakmods.github.io/ergonomic-mods/wide.html
+        ["`~", "1", "2", "3", "4", "5", "6", "=", "7", "8", "9", "0", "-", "⌫"],
+        ["↹", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "'", "\\"],
+        ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
+        // note how 9 is flipped here, as well.
+        ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
+        ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
+    ],
+    thumb30KeyMapping: [
+        ["Esc", "1", "2", "3", "4", "5", "6", "`~", "7", "8", "9", "0", "=", "⌫"],
+        ["↹", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "'", "\\"],
+        ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
+        ["⇧", 0, 1, 2, 3, 4, '/', 5, 6, 7, 8, "⇧"],
+        ["Ctrl", "Cmd", "Alt", "⍽", 0, "AltGr", "Fn", "Ctrl"],
+    ],
+    mainFingerAssignment: [
+        [1, 1, 1, 2, 2, 3, 3, 6, 6, 6, 7, 8, 8, 8],
+        [1, 0, 1, 2, 3, 3, 3, 6, 6, 7, 8, 9, 9, 8],
+        [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
+        [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9],
+        [0, 0, 1, 5, 5, 8, 9, 9],
+    ],
 
-export const ansiWideLayoutModel = customAnsiWideLayoutModel(movedColumns);
+    hasAltFinger: (row: number, col: number) =>
+        (row == KeyboardRows.Lower) && ([1, 2, 3, 8, 9, 10].includes(col)),
 
-export function customAnsiWideLayoutModel(movedColumns: number[]): RowBasedLayoutModel {
-    let {thirtyKeyMapping, thumb30KeyMapping, fullMapping, splitColumns, singleKeyEffort} = ansiLayoutModel;
-    return {
-        ...ansiLayoutModel,
-        name: "ANSI with wide hand position",
-        rightHomeIndex: 8,
-        thirtyKeyMapping: moveRightHand(thirtyKeyMapping, splitColumns, movedColumns),
-        thumb30KeyMapping: thumb30KeyMapping && moveRightHand(thumb30KeyMapping, splitColumns, movedColumns),
-        fullMapping: moveRightHand(fullMapping!!, splitColumns, movedColumns),
-        mainFingerAssignment: [
-            [1, 1, 1, 2, 2, 3, 3, 6, 6, 6, 7, 8, 8, 8],
-            [1, 0, 1, 2, 3, 3, 3, 6, 6, 7, 8, 9, 9, 8],
-            [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
-            [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9],
-            [0, 0, 1, 5, 5, 8, 9, 9],
-        ],
-
-        hasAltFinger: (row: number, col: number) =>
-            (row == KeyboardRows.Lower) && ([1, 2, 3, 8, 9, 10].includes(col)),
-
-        singleKeyEffort: widenSingleKeyEffort(moveRightHand(singleKeyEffort, splitColumns, movedColumns)),
-    }
-}
+    // moveRightHand now only used here. maybe just make this array explicit as well.
+    singleKeyEffort: widenSingleKeyEffort(
+        moveRightHand(ansiLayoutModel.singleKeyEffort, ansiLayoutModel.splitColumns)
+    ),
+    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsiWide,
+};
 
 function widenSingleKeyEffort(effort: number[][]) {
     ansiLayoutModel.splitColumns.forEach((splitCol, row) => {
@@ -156,7 +164,11 @@ function widenSingleKeyEffort(effort: number[][]) {
     return effort;
 }
 
-function moveRightHand<T>(mapping: T[][], splitColumns: number[], movedColumns: number[]): T[][] {
+function moveRightHand<T>(mapping: T[][], splitColumns: number[]): T[][] {
+    // How many columns are moving to the right?
+    // The key just after those will "jump" into the center of the board.
+    const movedColumns = [5, 7, 5, 4];
+
     return mapping.map((layoutRow, row) => {
         if (!movedColumns[row]) return [...layoutRow];
         const jumpingColumn = splitColumns[row] + movedColumns[row];

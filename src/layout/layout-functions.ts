@@ -12,7 +12,7 @@ import {
 import {qwertyMapping} from "../mapping/mappings.ts";
 import {HarmonicVariant, LayoutOptionsState} from "../app-model.ts";
 import {Signal} from "@preact/signals";
-import {ansiLayoutModel, ansiWideLayoutModel, customAnsiWideLayoutModel, splitSpaceBar} from "./ansiLayoutModel.ts";
+import {ansiLayoutModel, ansiWideLayoutModel, splitSpaceBar} from "./ansiLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 import {sum} from "../library/math.ts";
@@ -39,11 +39,12 @@ export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexM
 }
 
 export function hasMatchingMapping(layout: RowBasedLayoutModel, flexMapping: FlexMapping): boolean {
-    // every layout can process a full mapping for its own type or a 30 key mapping.
-    // TODO: actually, every layout should also be able to use a Thumb30 mapping...
-    return !!(layout.getSpecificMapping(flexMapping) ||
-        flexMapping.mapping30 ||
-        (flexMapping.mappingThumb30 && layout.thumb30KeyMapping));
+    if (flexMapping.mapping30 || flexMapping.mappingThumb30) return true;
+    if (layout.name.includes("ANSI")) {
+        // we require both because data will be inconsistent when the user flips between narrow and wide
+        return !!(flexMapping.mappingAnsiWide && flexMapping.mappingAnsi);
+    }
+    return !!layout.getSpecificMapping(flexMapping);
 }
 
 // Thanks to those, we can keep the flex mappings as simple strings. (Which I think is more readable.)
@@ -147,18 +148,17 @@ export function compatibilityScore(diffSummy: Record<MappingChange, number>): nu
         diffSummy[MappingChange.SwapHands] * 2.0;
 }
 
+// TODO: will we need "flexMapping" parameter at a later point?
+//  Because if no, the architecture of mapping list could simplify and not get a fresh layout for every mapping in the list!
 export function getLayoutModel(layoutType: LayoutType,
                                layoutOptions: LayoutOptionsState,
-                               flexMapping?: FlexMapping,
+                               _flexMapping?: FlexMapping,
                                layoutSplit?: Signal<boolean>,
 ): RowBasedLayoutModel {
-    const twoPiece = layoutSplit?.value;
     switch (layoutType) {
         case LayoutType.ANSI:
-            const base = !layoutOptions.ansiLayoutOptions.value.wide ? ansiLayoutModel
-                : !flexMapping?.ansiMovedColumns ? ansiWideLayoutModel
-                    : customAnsiWideLayoutModel(flexMapping.ansiMovedColumns);
-            return twoPiece ? splitSpaceBar(base) : base;
+            const base = layoutOptions.ansiLayoutOptions.value.wide ? ansiWideLayoutModel : ansiLayoutModel;
+            return layoutSplit?.value ? splitSpaceBar(base) : base;
         case LayoutType.Ortho:
             return layoutSplit?.value ? splitOrthoLayoutModel : orthoLayoutModel;
         case LayoutType.Harmonic:
