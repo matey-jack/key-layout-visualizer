@@ -87,9 +87,11 @@ export function MappingSummary({mapping, layout}: MappingSummaryProps) {
         : mapping.mappingThumb30 ? "derived from the generic 30-key with thumb mapping"
             : "derived from the generic 30-key without thumb mapping";
     const src = mapping.sourceUrl;
-    const srcTitle= mapping.sourceLinkTitle ?? src;
+    const srcTitle = mapping.sourceLinkTitle ?? src;
     return <div className="mapping-summary">
-        <p>The <b>{mapping.name}</b> key mapping for the <b>{layout.name}</b> layout is {mappingType}.</p>
+        <p>
+            The <b>{mapping.name}</b> key mapping for the <b>{layout.name}</b> layout is <i>{mappingType}</i>.
+        </p>
         {mapping.description && <TruncatedText text={mapping.description}/>}
         {src && <p>Source: <a href={src}>{srcTitle}</a></p>}
     </div>
@@ -112,7 +114,10 @@ interface KeyEffortDetailsProps {
 
 export function SingleKeyEffortDetails({layout, mapping}: KeyEffortDetailsProps) {
     const freqsByEffort = sumKeyFrequenciesByEffort(layout, mapping);
-    const totalEffort = sum(Object.entries(freqsByEffort).map(([a, b]) => Number(a) * b));
+    const totalEffort = Math.round(sum(
+        Object.entries(freqsByEffort)
+            .map(([a, b]) => Number(a) * b)
+    ));
     return <div>
         <p>
             There is always some individual bias in determining how hard or easy each key on the board is to reach from
@@ -162,8 +167,8 @@ interface KeyEffortLegendItem {
 
 export function KeyEffortLegendItem({frequency, score, children}: KeyEffortLegendItem) {
     return <div>
-        <div class={"key-effort-legend-item " + getEffortClass(score)}>{frequency}</div>
-        [Score: {score}] {children}
+        <div class={"key-effort-legend-item " + getEffortClass(score)}>{Math.round(frequency ?? 0)}</div>
+        [Score: {score.toFixed(1)}] {children}
     </div>
 }
 
@@ -260,7 +265,7 @@ export function BigramEffortDetails({layout, mapping}: BigramEffortDetailsProps)
         <BigramDetailsLegendItem bigramType={BigramType.OtherHand} frequency={freqs[BigramType.OtherHand]}>
             Bigrams typed with fingers of different hands aren't shown either. They make no trouble.
         </BigramDetailsLegendItem>
-        <p><b>Total: {Math.round(total * 100) / 100}</b></p>
+        <p><b>Total: {Math.round(total)}</b></p>
         <p class="footnote">
             Only the {4 * bigramRankSize} most frequent bigrams are shown in the keyboard visualization, but all
             available data is used in the calculation of the total score. (Infrequent bigrams have a an inconsequential
@@ -278,7 +283,7 @@ interface BigramDetailsLegendItemProps {
 export function BigramDetailsLegendItem({bigramType, frequency, children}: BigramDetailsLegendItemProps) {
     return <div>
         <div class={"bigram-effort-legend-item " + bigramClassByType[bigramType]}>
-            {Math.round(frequency * 100) / 100}
+            {Math.round(frequency??0)}
         </div>
         [Score: {bigramEffort[bigramType]}] {children}
     </div>

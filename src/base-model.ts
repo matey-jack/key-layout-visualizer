@@ -66,7 +66,7 @@ export interface FlexMapping {
     // Includes 26 letters plus the punctuation characters `;,.-`.
     // Other punctuation is placed by the Layout-specific mapping.
     // Note that this uses another "frame mapping" than 'mapping30', so it's an opportunity to modernize also the non-core
-    // key arrangement a little.
+    // key arrangement a little!
     // For rationale see //thumb30-mapping-format.md
     mappingThumb30?: string[];
 

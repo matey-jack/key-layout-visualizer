@@ -1,6 +1,7 @@
 import {Signal} from "@preact/signals";
 import {HarmonicLayoutOptionsModel, HarmonicVariant} from "../app-model.ts";
 import {ComponentChildren} from "preact";
+import {getLayoutModel} from "./layout-functions.ts";
 
 export interface HarmonicLayoutOptionsProps {
     options: Signal<HarmonicLayoutOptionsModel>,
@@ -8,8 +9,11 @@ export interface HarmonicLayoutOptionsProps {
 
 export function HarmonicLayoutOptions({options}: HarmonicLayoutOptionsProps) {
     const variant = options.value.variant;
-    const setVariant = (variant: HarmonicVariant) =>
-        options.value = {...options.value, variant};
+    const setVariant = (variant: HarmonicVariant) => {
+        // TODO: we probably need to inject a setter function for this, because that function needs to validate mapping support
+        //       and either block the change or change the mapping.
+        options.value = {...options.value, variant}
+    };
     return <div>
         <HarmonicVariantButton variant={HarmonicVariant.H14_Traditional} currentVariant={variant} setVariant={setVariant}>
             14/Traditional
