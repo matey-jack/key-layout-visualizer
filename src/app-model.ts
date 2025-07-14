@@ -1,48 +1,38 @@
 import {ReadonlySignal, Signal} from "@preact/signals";
 import {MappingChange, RowBasedLayoutModel, FlexMapping, BigramMovement} from "./base-model.ts";
 import {LayoutType, VisualizationType} from "./base-model.ts";
-import {AnsiLayoutOptionsModel} from "./layout/ansiLayoutModel.ts";
-import {OrthoLayoutOptionsModel} from "./layout/orthoLayoutModel.ts";
-
-export interface AppState {
-    // There's a writeable signal behind those two, but we hide it behind a setter function to preserve model integrity.
-    layoutType: ReadonlySignal<LayoutType>;
-    setLayoutType: (layoutType: LayoutType) => void;
-
-    layoutOptions: LayoutOptionsState;
-    layoutSplit: Signal<boolean>;
-    layoutModel: ReadonlySignal<RowBasedLayoutModel>;
-    mapping: Signal<FlexMapping>;
-
-    vizType: Signal<VisualizationType>;
-    mappingDiff: ReadonlySignal<Record<string, MappingChange>>;
-    bigramMovements: ReadonlySignal<BigramMovement[]>;
-}
 
 /*
-    Just for the sake of disambiguating, I classify all Harmonic variants by their width in key units first,
-    and then by how many rows actually have that width, ignoring that the bottom will usually have less actual keys.
-    Shift keys will be either on the 1.5u keys of a shorter row, or in some other arrangement of the lower row when it
-    is the longer one (a /2 variant).
-
-    I will probably find more descriptive names, once I have seen the boards and worked with them.
-    Until then, names around the code might be inconsistent...
+    Just for the sake of disambiguating, I classify all Harmonic variants by their total width in key units first,
+    and then by the number of keys in the home row. A "wide Harmonic" has as many keys in the home row as the width of the board.
+    A narrow variant has the home row staggered and thus one less key in it.
  */
 export enum HarmonicVariant {
-    H14_Traditional,  // 14/2, lower row 2u shift
-    H13_3, // 13/3, lower row shift
-    H13_MidShift, // 13/2, home row shift
-    H12_3, // 12/3, lower row shift
+    H14_Traditional,  // narrow home row, lower row 2u shift.
+    H13_Wide, // narrow home row, lower row shift.
+    H13_MidShift, // narrow home row, home row shift.
+    H12, // wide home row, lower row shift.
+    // The H12 has no nickname, since an H12 narrow doesn't have enough keys to be practical.
 }
 
-export interface HarmonicLayoutOptionsModel {
-    variant: HarmonicVariant;
+export interface LayoutOptions {
+    type: LayoutType;
+    split: boolean;
+    // This is more of a mapping transformer than an actual layout,
+    // but fits here, since the ansiWideLayout is an actual LayoutModel instance.
+    wideAnsi: boolean;
+    harmonicVariant: HarmonicVariant;
 }
 
-export interface LayoutOptionsState {
-    // TODO: life would be easier if we had signals inside those structures!
-    //       maybe also easier if all the config was flat in appState, since it's globally persistent anyway...
-    ansiLayoutOptions: Signal<AnsiLayoutOptionsModel>;
-    harmonicLayoutOptions: Signal<HarmonicLayoutOptionsModel>;
-    orthoLayoutOptions: Signal<OrthoLayoutOptionsModel>;
+export interface AppState {
+    // Getter/Setter to do validations on the state.
+    layout: ReadonlySignal<LayoutOptions>;
+    layoutModel: ReadonlySignal<RowBasedLayoutModel>;
+    setLayout: (layoutOptions: LayoutOptions) => void;
+
+    mapping: Signal<FlexMapping>;
+    mappingDiff: ReadonlySignal<Record<string, MappingChange>>;
+    bigramMovements: ReadonlySignal<BigramMovement[]>;
+
+    vizType: Signal<VisualizationType>;
 }

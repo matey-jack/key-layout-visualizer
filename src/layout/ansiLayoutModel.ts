@@ -5,10 +5,6 @@ const widthOfAnsiBoard = 15;
 // those values are accumulated by the stagger of 0.5, 0.25, and 0.5 again.
 const widthOfFirstKey = [1, 1.5, 1.75, 2.25,]
 
-export interface AnsiLayoutOptionsModel {
-    wide: boolean;
-}
-
 export const ansiLayoutModel: RowBasedLayoutModel = {
     name: "ANSI / Typewriter",
     description: "The ANSI keyboard layout is based on a typewriter keyboard from the 19th century which gradually evolved " +

@@ -1,8 +1,5 @@
 import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
 
-export interface OrthoLayoutOptionsModel {
-}
-
 export const orthoLayoutModel: RowBasedLayoutModel = {
     name: "Ortholinear",
     description: "Ortholinear keyboards remove the weird row stagger and usually also use uniform key sizes. " +

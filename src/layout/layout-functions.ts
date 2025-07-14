@@ -10,8 +10,7 @@ import {
     RowBasedLayoutModel
 } from "../base-model.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
-import {HarmonicVariant, LayoutOptionsState} from "../app-model.ts";
-import {Signal} from "@preact/signals";
+import {HarmonicVariant, LayoutOptions} from "../app-model.ts";
 import {ansiLayoutModel, ansiWideLayoutModel, splitSpaceBar} from "./ansiLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
@@ -148,28 +147,22 @@ export function compatibilityScore(diffSummy: Record<MappingChange, number>): nu
         diffSummy[MappingChange.SwapHands] * 2.0;
 }
 
-// TODO: will we need "flexMapping" parameter at a later point?
-//  Because if no, the architecture of mapping list could simplify and not get a fresh layout for every mapping in the list!
-export function getLayoutModel(layoutType: LayoutType,
-                               layoutOptions: LayoutOptionsState,
-                               _flexMapping?: FlexMapping,
-                               layoutSplit?: Signal<boolean>,
-): RowBasedLayoutModel {
-    switch (layoutType) {
+export function getLayoutModel(layoutOptions: LayoutOptions): RowBasedLayoutModel {
+    switch (layoutOptions.type) {
         case LayoutType.ANSI:
-            const base = layoutOptions.ansiLayoutOptions.value.wide ? ansiWideLayoutModel : ansiLayoutModel;
-            return layoutSplit?.value ? splitSpaceBar(base) : base;
+            const base = layoutOptions.wideAnsi ? ansiWideLayoutModel : ansiLayoutModel;
+            return layoutOptions.split ? splitSpaceBar(base) : base;
         case LayoutType.Ortho:
-            return layoutSplit?.value ? splitOrthoLayoutModel : orthoLayoutModel;
+            return layoutOptions.split ? splitOrthoLayoutModel : orthoLayoutModel;
         case LayoutType.Harmonic:
-            switch (layoutOptions.harmonicLayoutOptions.value.variant) {
+            switch (layoutOptions.harmonicVariant) {
                 case HarmonicVariant.H14_Traditional:
                     return harmonic14LayoutModel;
-                case HarmonicVariant.H13_3:
+                case HarmonicVariant.H13_Wide:
                     return harmonic13WideLayoutModel;
                 case HarmonicVariant.H13_MidShift:
                     return harmonic13MidShiftLayoutModel;
-                case HarmonicVariant.H12_3:
+                case HarmonicVariant.H12:
                     return harmonic12LayoutModel;
             }
     }

@@ -28,17 +28,14 @@ bugs fixed:
 
 missing core features:
 - add "FlexMapping.comparisonBase" so that Qwertz and Colemak can be chosen by layouts based on those. 
-- add "specialized" column to mapping list and mention the meaning in the mapping description in the Details Area.
-  + when a mapping has both core and full mappings defined for a layout, show both in the list!
-- design: for finger and single key effort viz: highlight home and non-character keys 
+- add some more explanations, especially for:
+  + the "wide" mappings
+  + Harmonic and Ortho general texts (maybe (i) icon in layout bar). But still repeat that text under the H and O variants.
 - check consistency of all mappings:
    + variants for different layouts should be consistent (only have differences clearly attributed to the layout)
    + maybe check if some full-mappings can be omitted, because thumb30 and 3×10 do the job well enough?
    + related thumby variants should be consistent (only have the intended differences)
      * especially Thumby-KU
-- Offer an option to hide all keys outside the core 30 mapping (labeled "show only letters and prose punctuation").
-  This is better than trying to create a representation of "best options" for the frame layout – since there are just 
-  too many good options and personal preferences in this area! (Mainly on split ortho keyboards.) 
 
 bugs:
 - validate mapping/layout/options combination from URL data, so that the app doesn't crash
@@ -47,8 +44,7 @@ bugs:
   + when switching the Harmonic variant
 - fix altFinger configuration for Harmonic variants
 
-small things:
-- better visual design:
+better visual design:
    - scoring and description of learning/single key/bigram classes
    - Mapping Name not be centered when it wraps to two lines.
    - Enter and Space as a lighter shade of the special-key background (will change when a letter is mapped to the key)
@@ -57,11 +53,14 @@ small things:
      + or use the finger/score color in combination with a thick border around the key. (As we do with the home row in the fingers viz.)
    - Change description fields of layout and mapping data to JSX.Component (or markdown)
 
-
 optional features:
 - mouse hover in bigram viz to only show lines in/out of one key. 
   + Create a specific detail view to show the frequency of 
 - 'frame layout' options for nav/del keys
+- Alternatively, offer an option to hide all keys outside the core 30 mapping (labeled "show only letters and prose punctuation").
+  (Especially split ortho keyboards have too many permutations that people are using.)
+- add "specialized" column to mapping list and mention the meaning in the mapping description in the Details Area.
+  + when a mapping has both core and full mappings defined for a layout, show both in the list!
 - hex-shaped keys
 - let AI generate a few more unit tests
 - only deduct half the learning points for changed punctuation keys. (Relevant only for `;`, since `-` is out of the box and others aren't moved.)

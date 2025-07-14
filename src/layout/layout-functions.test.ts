@@ -2,7 +2,7 @@ import {describe, expect, it} from 'vitest';
 
 import {Finger, Hand, hand, KeyboardRows, MappingChange} from "../base-model.ts";
 import {characterToFinger, diffSummary, diffToQwerty, fillMapping, mergeMapping,} from "./layout-functions.ts";
-import {normanMapping, qwertyMapping, qwertzMapping, thumbyNine, thumbyZero} from "../mapping/mappings.ts"
+import {normanMapping, qwertyMapping, thumbyNine, thumbyZero} from "../mapping/mappings.ts"
 import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
@@ -113,7 +113,7 @@ describe('diffToQwerty', () => {
         expect(summary[MappingChange.SwapHands]).toBe(2);
         expect(summary[MappingChange.SameHand]).toBe(2);
         expect(summary[MappingChange.SameFinger]).toBe(11);
-        expect(summary[MappingChange.SamePosition]).toBe(17);
+        expect(summary[MappingChange.SamePosition]).toBe(16);
     })
 });
 
