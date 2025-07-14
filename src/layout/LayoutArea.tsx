@@ -1,8 +1,7 @@
 import {LayoutType, VisualizationType} from "../base-model.ts";
-import {AppState, LayoutOptionsState} from "../app-model.ts";
+import {AppState, LayoutOptions} from "../app-model.ts";
 import {BigramLines, KeyboardSvg, RowBasedKeyboard, StaggerLines} from "./KeyboardSvg.tsx";
 import {getKeyPositions, getLayoutModel} from "./layout-functions.ts";
-import {ReadonlySignal, Signal} from "@preact/signals";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
@@ -12,27 +11,25 @@ interface LayoutAreaProps {
 }
 
 export function LayoutArea({appState}: LayoutAreaProps) {
-    const keyPositions = getKeyPositions(appState.layoutModel.value, appState.layoutSplit.value, appState.mapping.value);
+    const {layout, layoutModel, mapping, setLayout, mappingDiff, bigramMovements, vizType} = appState;
+    const keyPositions = getKeyPositions(layoutModel.value, layout.value.split, mapping.value);
 
     return (
         <div>
-            <TopBar
-                currentLayout={appState.layoutType}
-                setLayout={appState.setLayoutType}
-                layoutOptions={appState.layoutOptions}
-            />
+            <TopBar layout={layout.value} setLayout={setLayout}/>
             <KeyboardSvg>
                 <RowBasedKeyboard
-                    layoutModel={appState.layoutModel.value}
+                    layoutModel={layoutModel.value}
                     keyPositions={keyPositions}
-                    mappingDiff={appState.mappingDiff.value}
-                    vizType={appState.vizType.value}
+                    mappingDiff={mappingDiff.value}
+                    vizType={vizType.value}
                 />
-                {appState.vizType.value == VisualizationType.LayoutAngle &&
-                    <StaggerLines layoutModel={appState.layoutModel.value} layoutSplit={appState.layoutSplit.value} keyPositions={keyPositions}/>
+                {vizType.value == VisualizationType.LayoutAngle &&
+                    <StaggerLines layoutModel={layoutModel.value} layoutSplit={layout.value.split}
+                                  keyPositions={keyPositions}/>
                 }
-                {appState.vizType.value == VisualizationType.MappingBigrams &&
-                    <BigramLines bigrams={appState.bigramMovements.value}/>
+                {vizType.value == VisualizationType.MappingBigrams &&
+                    <BigramLines bigrams={bigramMovements.value}/>
                 }
             </KeyboardSvg>
             <LayoutOptionsBar state={appState}/>
@@ -41,21 +38,20 @@ export function LayoutArea({appState}: LayoutAreaProps) {
 }
 
 interface TopBarProps {
-    currentLayout: ReadonlySignal<LayoutType>;
-    setLayout: (layout: LayoutType) => void;
-    layoutOptions: LayoutOptionsState;
+    layout: LayoutOptions;
+    setLayout: (layout: LayoutOptions) => void;
 }
 
-function TopBar({currentLayout, setLayout, layoutOptions}: TopBarProps) {
+function TopBar({layout, setLayout}: TopBarProps) {
     const layoutOrder = [LayoutType.ANSI, LayoutType.Harmonic, LayoutType.Ortho];
     return <div className="layout-top-bar-container">
         <BlankGridElement/>
         {layoutOrder.map((layoutType) =>
             <TopBarKeyboardTab
                 layoutType={layoutType}
-                layoutName={getLayoutModel(layoutType, layoutOptions).name}
-                currentLayout={currentLayout}
-                setLayout={setLayout}
+                layoutName={getLayoutModel(layout).name}
+                currentLayout={layout.type}
+                setLayoutType={(type) => setLayout({...layout, type})}
                 key={layoutType}
             />
         )}
@@ -69,24 +65,17 @@ const BlankGridElement = () =>
 interface TopBarKeyboardTabProps {
     layoutType: LayoutType;
     layoutName: string;
-    currentLayout: ReadonlySignal<LayoutType>;
-    setLayout: (layout: LayoutType) => void;
+    currentLayout: LayoutType;
+    setLayoutType: (layout: LayoutType) => void;
 }
 
-function TopBarKeyboardTab({layoutType, layoutName, currentLayout, setLayout}: TopBarKeyboardTabProps) {
-    const selected = layoutType === currentLayout.value;
-    return <div
-        onClick={() => setLayout(layoutType)}
-    >
+function TopBarKeyboardTab({layoutType, layoutName, currentLayout, setLayoutType}: TopBarKeyboardTabProps) {
+    const selected = layoutType === currentLayout;
+    return <div onClick={() => setLayoutType(layoutType)}>
         <button class={"top-bar-keyboard-tab-label" + (selected ? " selected" : "")}>
             {layoutName}
         </button>
     </div>
-}
-
-interface LayoutOptionsProps {
-    layoutType: LayoutType;
-    layoutOptions: LayoutOptionsState;
 }
 
 interface LayoutOptionsBarProps {
@@ -95,33 +84,32 @@ interface LayoutOptionsBarProps {
 
 function LayoutOptionsBar({state}: LayoutOptionsBarProps) {
     return <div class="layout-options-bar-container">
-        <GenericLayoutOptions split={state.layoutSplit}/>
-        <TypeSpecifcLayoutOptions layoutType={state.layoutType.value} layoutOptions={state.layoutOptions}/>
+        <CheckboxWithLabel label="split keyboard"
+                           checked={state.layout.value.split}
+                           onChange={(split) => state.setLayout({...state.layout.value, split})}
+        />
+        <TypeSpecifcLayoutOptions layoutOptions={state.layout.value} setLayoutOptions={state.setLayout}/>
     </div>
 }
 
-interface GenericLayoutOptionsProps {
-    split: Signal<boolean>;
+
+interface LayoutOptionsProps {
+    layoutOptions: LayoutOptions;
+    setLayoutOptions: (layoutOptions: LayoutOptions) => void;
 }
 
-export function GenericLayoutOptions({split}: GenericLayoutOptionsProps) {
-    return <>
-        <CheckboxWithLabel
-            label="split keyboard"
-            checked={split.value}
-            onChange={(checked) =>
-                split.value = checked
-            }
-        />
-    </>
-}
-
-function TypeSpecifcLayoutOptions({layoutType, layoutOptions}: LayoutOptionsProps) {
-    switch (layoutType) {
+function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions}: LayoutOptionsProps) {
+    switch (layoutOptions.type) {
         case LayoutType.ANSI:
-            return <AnsiLayoutOptions options={layoutOptions.ansiLayoutOptions}/>
+            return <AnsiLayoutOptions
+                wide={layoutOptions.wideAnsi}
+                setWide={(wide) => setLayoutOptions({...layoutOptions, wideAnsi: wide})}
+            />
         case LayoutType.Harmonic:
-            return <HarmonicLayoutOptions options={layoutOptions.harmonicLayoutOptions}/>
+            return <HarmonicLayoutOptions
+                variant={layoutOptions.harmonicVariant}
+                setVariant={(variant) => setLayoutOptions({...layoutOptions, harmonicVariant: variant})}
+            />
     }
     return <></>;
 }

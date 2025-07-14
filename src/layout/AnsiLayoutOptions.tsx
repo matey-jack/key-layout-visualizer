@@ -1,17 +1,12 @@
-import {Signal} from "@preact/signals";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
-import {AnsiLayoutOptionsModel} from "./ansiLayoutModel.ts";
 
 export interface AnsiLayoutOptionsProps {
-    options: Signal<AnsiLayoutOptionsModel>,
+    wide: boolean;
+    setWide: (wide: boolean) => void;
 }
 
-export function AnsiLayoutOptions({options}: AnsiLayoutOptionsProps) {
+export function AnsiLayoutOptions({wide, setWide}: AnsiLayoutOptionsProps) {
     return <>
-        <CheckboxWithLabel
-            label="use wide key mapping"
-            checked={options.value.wide}
-            onChange={(checked) => options.value = {...options.value, wide: checked}}
-        />
+        <CheckboxWithLabel label="use wide key mapping" checked={wide} onChange={setWide}/>
     </>
 }

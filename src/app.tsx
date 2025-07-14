@@ -2,25 +2,33 @@
 import './app.css'
 import './app-model.ts'
 import {FlexMapping, LayoutType, VisualizationType} from "./base-model.ts";
-import {AppState, HarmonicVariant, LayoutOptionsState} from "./app-model.ts";
+import {AppState, HarmonicVariant, LayoutOptions} from "./app-model.ts";
 import {LayoutArea} from "./layout/LayoutArea.tsx";
 import {MappingList} from "./mapping/MappingArea.tsx";
 import {DetailsArea} from "./details/DetailsArea.tsx";
 import {computed, effect, signal, Signal} from "@preact/signals";
 import {ComponentChildren} from "preact";
 import {diffToQwerty, getKeyPositions, getLayoutModel, hasMatchingMapping} from "./layout/layout-functions.ts";
-import {allMappings, qwertyMapping} from "./mapping/mappings.ts";
+import {allMappings, colemakMapping, qwertyMapping, thumbyNine} from "./mapping/mappings.ts";
 import {getBigramMovements} from "./bigrams.ts";
 
 // Function needed, because doing the same in an effect() would already run all the computed() functions
 // with inconsistent data that might crash them.
-function setLayout(layoutType: LayoutType, layoutSignal: Signal<LayoutType>, appState: AppState) {
-    const newLayoutModel =
-        getLayoutModel(layoutType, appState.layoutOptions, appState.mapping.value, appState.layoutSplit)
-    if (!hasMatchingMapping(newLayoutModel, appState.mapping.value)) {
-        appState.mapping.value = qwertyMapping;
+function setLayout(
+    newLayoutOptions: LayoutOptions,
+    layoutOptionsState: Signal<LayoutOptions>,
+    mapping: Signal<FlexMapping>,
+) {
+    const newLayoutModel = getLayoutModel(newLayoutOptions)
+    if (!hasMatchingMapping(newLayoutModel, mapping.value)) {
+        const mappingName = mapping.value.name.toLowerCase();
+        if (mappingName.includes("thumby") && !mappingName.includes("colemak")) {
+            mapping.value = thumbyNine;
+        } else {
+            mapping.value = colemakMapping;
+        }
     }
-    layoutSignal.value = layoutType;
+    layoutOptionsState.value = newLayoutOptions;
 }
 
 // We need to do careful conversion to preserve the null value (and other invalid values),
@@ -38,32 +46,42 @@ function s2i(value: string | null): number | null {
     return i;
 }
 
+function getMappingByName(name: string | null): FlexMapping {
+    if (name) {
+        allMappings.forEach((mapping) => {
+            if (mapping.name == name || mapping.techName == name) {
+                return mapping;
+            }
+        });
+    }
+    return qwertyMapping;
+}
+
 // Some of the state could be local the Layout or Mapping areas, but unless this global thing gets too big,
+function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vizType: Signal<number>) {
+    const params = new URLSearchParams();
+    params.set("layout", layout.type.toString());
+    params.set("mapping", mapping.value.techName || mapping.value.name);
+    params.set("viz", vizType.value.toString());
+    params.set("split", layout.split ? "1" : "0");
+    params.set("wide", layout.wideAnsi ? "1" : "0");
+    params.set("harmonic", layout.harmonicVariant.toString());
+    window.history.pushState(null, "", "#" + params.toString());
+}
+
 // let's just have one.
 export function createAppState(): AppState {
     const params = new URLSearchParams(window.location.hash.slice(1));
     // important to use ?? because (the falsy) 0 is a proper value that should not trigger the default.
-    const layoutTypeSignal = signal(s2i(params.get("layout")) ?? LayoutType.ANSI);
-    const layoutSplit = signal(s2b(params.get("split")) ?? false);
-    const layoutOptions: LayoutOptionsState = {
-        ansiLayoutOptions: signal({wide: s2b(params.get("wide")) ?? false}),
-        harmonicLayoutOptions: signal({variant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_3}),
-        orthoLayoutOptions: signal({}),
-    };
-    const layoutModel = computed(() =>
-        getLayoutModel(layoutTypeSignal.value, layoutOptions, mapping.value, layoutSplit)
-    )
+    const layoutOptionsState: Signal<LayoutOptions> = signal({
+        type: s2i(params.get("layout")) ?? LayoutType.ANSI,
+        split: s2b(params.get("split")) ?? false,
+        wideAnsi: s2b(params.get("wide")) ?? false,
+        harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
+    });
+    const layoutModel = computed(() => getLayoutModel(layoutOptionsState.value))
 
-    let mappingName = params.get("mapping");
-    let startMapping = qwertyMapping as FlexMapping;
-    if (mappingName) {
-        allMappings.forEach((mapping) => {
-            if (mapping.name == mappingName || mapping.techName == mappingName) {
-                startMapping = mapping;
-            }
-        });
-    }
-    const mapping = signal(startMapping);
+    const mapping = signal(getMappingByName(params.get("mapping")));
     const vizType = signal(s2i(params.get("viz")) ?? VisualizationType.LayoutFingering)
 
     const mappingDiff = computed(() =>
@@ -71,24 +89,13 @@ export function createAppState(): AppState {
     )
     const bigramMovements = computed(() => {
         return getBigramMovements(
-            getKeyPositions(layoutModel.value, layoutSplit.value, mapping.value),
+            getKeyPositions(layoutModel.value, layoutOptionsState.value.split, mapping.value),
             `get bigrams for visualization of ${mapping.value.name} on ${layoutModel.value.name}`);
-    })
-    effect(() => {
-        const mappingName = mapping.value.techName || mapping.value.name;
-        const fragment = "#layout=" + layoutTypeSignal.value
-            + "&mapping=" + mappingName
-            + "&viz=" + vizType.value
-            + "&split=" + (layoutSplit.value ? "1" : "0")
-            + "&wide=" + (layoutOptions.ansiLayoutOptions.value.wide ? "1" : "0")
-            + "&harmonic=" + layoutOptions.harmonicLayoutOptions.value.variant;
-        window.history.pushState(null, "", fragment);
-    })
+    });
+    effect(() => updateUrlParams(layoutOptionsState.value, mapping, vizType));
     return {
-        layoutType: computed(() => layoutTypeSignal.value),
-        setLayoutType: (layoutType) => setLayout(layoutType, layoutTypeSignal, appState),
-        layoutOptions,
-        layoutSplit,
+        layout: computed(() => layoutOptionsState.value),
+        setLayout: (layoutOptions: LayoutOptions) => setLayout(layoutOptions, layoutOptionsState, mapping),
         layoutModel,
         mapping,
         vizType,

@@ -84,11 +84,11 @@ https://precondition.github.io/pressing-e-with-the-thumb
 
 # Development
 
-I use `bun` as package manager and to run `vite`, but `node` should also work.
+I use `bun` as package manager and to run `vite`, but `node` should also work. For `vitest`, however, only `node` is working at the moment!
 
-For `vitest`, however, only `node` is working at the moment!
-
-
+After cloning the project and the typical `node install`, you can run `npm run vite` (or similar) to start the app.
+That should be enough to make changes in the code and directly see the result in the browser.
+This way, you can make small tweaks to mappings or colors without having to implement actual buttons and switches in the app itself.
 
 
 ## Notes to self
