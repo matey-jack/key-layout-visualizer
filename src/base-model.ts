@@ -39,11 +39,15 @@ export interface FlexMapping {
     description?: string;
     sourceUrl?: string;
     sourceLinkTitle?: string;
+    // used for showing the learning diff
+    comparisonBase?: FlexMapping;
 
     /*
         Key mappings can be defined generically or layout-specific or both.
-        The app shows only the ones that apply to the selected layout,
-        falling back to Qwerty if you switch layouts and the selected mapping doesn't apply.
+        Generic mappings can be shown on all layouts.
+        Specific mappings override the generic one for one layout if both are defined.
+            TODO: we might add a switch for the user to see also the generic one in that case.
+        There can also be mappings that work only on a specific layout.
      */
 
     // This is 3 rows of 10 characters – just the keys that most published key mappings are remapping.
@@ -53,13 +57,11 @@ export interface FlexMapping {
     // This mapping should include 26 letters plus the punctuation characters `;,./`.
     mapping30?: string[];
     /* ^^^
-    The fact that traditional keyboard mappings just swap things around those thirty positions is also some legacy not
-    based on science. On the ANSI/Qwerty layout keys `'` and to less extend even `[` are easier to reach than `B` and
-    just as easy as J and V, but still traditional mappings don't use them.
-    Also, character-wise, the hyphen is used in English as much or more as semi-colon and slash (depending on personal
-    style maybe). In any case, the hyphen has more reason to be part of the "core keys" than [] and \. (I wonder how `\`
-    even made it onto the keyboard in the first place. I know that it is used in programming language, but that's presumably
-    because programming languages just the characters that were available. (See $ for variable expansion or § as used in Perl.)
+        The fact that traditional keyboard mappings just swap things around those thirty positions is also some legacy
+        not based on science. On the ANSI/Qwerty layout keys `'` and to less extend even `[` are easier to reach than `B`
+        and just as easy as J and V, but still traditional mappings don't use them.
+        Also, character-wise, the hyphen is used in English as much or more as semi-colon and slash (depending on personal
+        style maybe). In any case, the hyphen has more reason to be part of the "core keys" than [] and \.
      */
 
     // Keys per row: 10, 10, 9 plus one thumb key.

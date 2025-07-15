@@ -1,7 +1,7 @@
 import {describe, expect, it} from 'vitest';
 
 import {Finger, Hand, hand, KeyboardRows, MappingChange} from "../base-model.ts";
-import {characterToFinger, diffSummary, diffToQwerty, fillMapping, mergeMapping,} from "./layout-functions.ts";
+import {characterToFinger, diffSummary, diffToBase, fillMapping, mergeMapping,} from "./layout-functions.ts";
 import {normanMapping, qwertyMapping, thumbyNine, thumbyZero} from "../mapping/mappings.ts"
 import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
@@ -102,7 +102,7 @@ describe('hand function', () => {
 
 describe('diffToQwerty', () => {
     it('works for Norman', () => {
-        const normanDiff = diffToQwerty(ansiWideLayoutModel, normanMapping)
+        const normanDiff = diffToBase(ansiWideLayoutModel, normanMapping)
         expect(normanDiff['k']).toBe(MappingChange.SwapHands);
         expect(normanDiff['r']).toBe(MappingChange.SwapHands);
         expect(normanDiff['p']).toBe(MappingChange.SameHand);

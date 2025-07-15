@@ -113,6 +113,7 @@ export const colemakThumbyMapping: FlexMapping = {
     because Colemak already places a very rare letter there. 
     TODO: make a custom version of this for the Harmonic 13 MidShift, because that's the only board to properly represent the angle mod. 
     And a custom version for ortho, same reason.`,
+    comparisonBase: colemakDhMapping,
     mappingThumb30: [
         "qwfpb" + "jluy;",
         "arstg" + "-nhio",
@@ -127,6 +128,7 @@ export const colemakThumbyNMapping: FlexMapping = {
     Since N is more frequent than H, we move N to the middle finger where it causes less bigram conflicts.  
     TODO: make a custom version of this for the Harmonic 13 MidShift, because that's the only board to properly represent the angle mod. 
     And a custom version for ortho, same reason.`,
+    comparisonBase: colemakDhMapping,
     mappingThumb30: [
         "qwfpb" + "jlyu;",
         "arstg" + "-hnio",
@@ -139,6 +141,7 @@ export const colemakThumbyLMapping: FlexMapping = {
     name: "Colemak Thumby L",
     description: `Just a test to compare metrics. Turns out that moving L to the home row does not cause less bigram conflicts. `,
     // It's worse than Thumby-H, so we don't show it in the app :D
+    comparisonBase: colemakDhMapping,
     mappingThumb30: [
         "qwfpb" + "j-uy;",
         "arstg" + "mnlio",
@@ -506,6 +509,7 @@ export const gemuetlichesMapping = {
     description: "This is basically Thumby Min, but applied to the German Qwertz mapping as a base. ",
     sourceUrl: "https://github.com/matey-jack/gemuetliche-tastatur",
     sourceLinkTitle: "GitHub: matey-jack/gemuetliche-tastatur",
+    comparisonBase: qwertzMapping,
 
     // I actually used this layout on an ISO keyboard, so the right pinky keys are a bit different!
     mappingAnsiWide: [

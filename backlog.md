@@ -19,15 +19,19 @@ done:
 - angle viz
 - URL #fragments for state parameters: layoutType, split, HarmonicType, vizType, ...
 - add Unicode mappings for bottom row modifiers, so that FlexMappings can change them. Minimum affected keys are AltGr and what's to the right of it.
+- add "FlexMapping.comparisonBase" so that Qwertz and Colemak can be chosen by layouts based on those.
 - inner index column should not count as bigram conflict, because of nice alt-fingering.
 
 bugs fixed:
  - Learnability Score for Wide ANSI in Mapping List is changing when I select different mappings =:-[]
  - Frequency for Thumby bigrams should be counted, even if there is no wide layout.
+- validate mapping/layout/options combination from URL data, so that the app doesn't crash
+- handle Harmonic variants without a matching mapping:
+  + when switching to the Harmonic layout with an unsupported mapping already set
+  + when switching the Harmonic variant
 
 
 missing core features:
-- add "FlexMapping.comparisonBase" so that Qwertz and Colemak can be chosen by layouts based on those. 
 - add some more explanations, especially for:
   + the "wide" mappings
   + Harmonic and Ortho general texts (maybe (i) icon in layout bar). But still repeat that text under the H and O variants.
@@ -38,11 +42,11 @@ missing core features:
      * especially Thumby-KU
 
 bugs:
-- validate mapping/layout/options combination from URL data, so that the app doesn't crash
-- handle Harmonic variants without a matching mapping:
-  + when switching to the Harmonic layout with an unsupported mapping already set
-  + when switching the Harmonic variant
-- fix altFinger configuration for Harmonic variants
+- fix altFinger configuration for Harmonic variants AND show it in finger viz
+- show available mappings per layout type and set other options when needed by the mapping
+
+refactoring:
+- remove home finger properties; use keyEffort==Home instead.
 
 better visual design:
    - scoring and description of learning/single key/bigram classes

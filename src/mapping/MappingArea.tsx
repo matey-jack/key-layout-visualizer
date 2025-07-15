@@ -2,7 +2,7 @@ import {AppState} from "../app-model.ts";
 import {FlexMapping, MappingChange, RowBasedLayoutModel} from "../base-model.ts";
 import {Signal} from "@preact/signals";
 import {allMappings} from "./mappings.ts";
-import {compatibilityScore, diffSummary, diffToQwerty, hasMatchingMapping} from "../layout/layout-functions.ts";
+import {compatibilityScore, diffSummary, diffToBase, hasMatchingMapping} from "../layout/layout-functions.ts";
 import {weighSingleKeyEffort} from "./mapping-functions.ts";
 import {sumBigramScores} from "../bigrams.ts";
 
@@ -50,7 +50,7 @@ export function MappingListItem({layout, mapping, selectedMapping}: MappingListI
         <td>
             <button>{mapping.name}</button>
         </td>
-        <td>{formatDiff(diffSummary(diffToQwerty(layout, mapping)))}</td>
+        <td>{formatDiff(diffSummary(diffToBase(layout, mapping)))}</td>
         <td>{weighSingleKeyEffort(layout, mapping)} / {sumBigramScores(layout, mapping)}</td>
     </tr>
 }

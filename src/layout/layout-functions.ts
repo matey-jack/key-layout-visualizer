@@ -131,14 +131,9 @@ export function diffSummary(diff: Record<string, MappingChange>): Record<Mapping
     return result;
 }
 
-export function diffToQwerty(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): Record<string, MappingChange> {
-// console.log(`=== diffToQwerty: ${flexMapping.name} on ${layoutModel.name} ===`);
-// neither using this condition nor omitting it, reflects the actual experienced learning delta for wide models.
-// let's just accept that this is imperfect and move on.
-    const baseLayoutModel = // (layoutModel.name.includes("wide")) ? ansiLayoutModel :
-        layoutModel;
+export function diffToBase(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): Record<string, MappingChange> {
     const a = fillMapping(layoutModel, flexMapping);
-    const b = fillMapping(baseLayoutModel, qwertyMapping);
+    const b = fillMapping(layoutModel, flexMapping.comparisonBase ?? qwertyMapping);
     return diffMappings(layoutModel, a, b);
 }
 
