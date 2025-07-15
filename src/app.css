@@ -31,7 +31,7 @@ body {
 
 .layout-options-bar-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 2fr;
     margin-left: 10%;
     right: 10%;
     padding: 1rem;

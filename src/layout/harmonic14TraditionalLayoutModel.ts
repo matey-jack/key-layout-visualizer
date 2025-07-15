@@ -1,15 +1,5 @@
 import {FlexMapping, harmonicStaggerOffsets, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 
-/*
-    Harmonic 14 has a total width of 14u and two rows of that width with 3 rows losing one key due to staggering.
-    (Plus keys lost for creating larger Shift, Space, and Ctrl. See below.)
-
-    Decision: H14 and H13c use a different format of FlexMapping, so that different gaps in the letter/punctuation
-    pattern can be used for pair-wise positioned nav-keys. Both can do that in different places.
-
-    TODO: can we devise a data model for describing the bottom row which allows specifying different form-factors
-     as options such that finger assignment and key effort will automatically be filled?
- */
 const fullMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, "⌫"], // 13 keys
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], // 14 keys
@@ -19,12 +9,15 @@ const fullMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Alt", 0, "⌦", "⍽", 1, 2, 3, "Fn", "Ctrl"],
 ]; // total of 63 keys, compared to 62 in the Harmonic 13. (Another bottom bar config could yield one or two more ;-). )
 
-export const harmonic14LayoutModel: RowBasedLayoutModel = {
-    name: "Harmonic 14/Traditional",
-    description: "The Harmonic keyboard layout has a fully symmetric keyboard with only two key sizes to allow for flexible changes to the key mapping. " +
+export const harmonic14TraditionalLayoutModel: RowBasedLayoutModel = {
+    name: "Harmonic 14 Traditional",
+    description: "With its large shift keys and Enter/Backspace/Caps in the same position as the ANSI keyboard, " +
+        "this Harmonic variant might be the easiest to get used to. We even put a central space bar for that special retro feeling. " +
+        "But other than that we keep the Harmonic virtues of a fully symmetric keyboard and only two key sizes " +
+        "for all remaining keys to allow for flexible changes to the key mapping. " +
         "Its regular row stagger allows for many keys to be comfortably typed by two fingers, " +
         "which let's you intuitively avoid the awkward same-finger bigrams that make new key mappings feel so awkward. " +
-        "Using mostly square keys makes the board slightly narrower than an ANSI-based 60% keyboard, " +
+        "Despite its size, the H14T is still one key unit narrower than an ANSI-based 60% keyboard, " +
         "yet the hand home position is one key further apart, allowing for arms to relax and shoulders to open. " +
         "This also puts a bit of typing load on the index fingers and less on the pinkies. ",
 
@@ -35,14 +28,14 @@ export const harmonic14LayoutModel: RowBasedLayoutModel = {
         // The move of key 9 to the middle is a change required to keep the key-to-finger assignments
         // the same as on the ANSI layout. This is caused by moving the right home row to the right.
         ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"], // 12 keys
-        ["Ctrl", "Cmd", "Alt", "[", "⌦", "⍽", "AltGr", "]", "Menu", "Fn", "Ctrl"], // 10 keys
+        ["Ctrl", "Cmd", "Alt", "[", "⌦", "⍽", "AltGr", "]", "Menu", "Fn", "Ctrl"], // 11 keys
     ],
     thumb30KeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "`", "⌫"], // 13 keys
         ["↹", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "'", "\\"], // 14 keys
         ["¤", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "⏎"], // 13 keys
         ["⇧", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, "⇧"], // 12 keys
-        ["Ctrl", "Cmd", "Alt", "/", "⌦", "⍽", 0, "AltGr", "Menu", "Fn", "Ctrl"], // 10 keys
+        ["Ctrl", "Cmd", "Alt", "/", "⌦", "⍽", 0, "AltGr", "Menu", "Fn", "Ctrl"], // 11 keys
     ],
     fullMapping,
 

@@ -7,12 +7,14 @@ import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
-import {harmonic14LayoutModel} from "./harmonic14LayoutModel.ts";
+import {harmonic14TraditionalLayoutModel} from "./harmonic14TraditionalLayoutModel.ts";
 import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
+import {harmonic14WideLayoutModel} from "./harmonic14WideLayoutModel.ts";
 
 export const allLayoutModels = [
     ansiLayoutModel,
-    harmonic14LayoutModel,
+    harmonic14WideLayoutModel,
+    harmonic14TraditionalLayoutModel,
     harmonic13WideLayoutModel,
     harmonic13MidShiftLayoutModel,
     harmonic12LayoutModel,

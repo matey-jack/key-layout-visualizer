@@ -9,7 +9,7 @@ const fullMapping: LayoutMapping = [
 ];
 
 export const harmonic13WideLayoutModel: RowBasedLayoutModel = {
-    name: "Harmonic 13/3",
+    name: "Harmonic 13 Balance",
     description: "The Harmonic keyboard layout has a fully symmetric keyboard with only two key sizes to allow for flexible changes to the key mapping. " +
         "Its regular row stagger allows for many keys to be comfortably typed by two fingers, " +
         "which let's you intuitively avoid the awkward same-finger bigrams that make new key mappings feel so awkward. " +

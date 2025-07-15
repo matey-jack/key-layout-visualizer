@@ -15,9 +15,10 @@ import {ansiLayoutModel, ansiWideLayoutModel, splitSpaceBar} from "./ansiLayoutM
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 import {sum} from "../library/math.ts";
-import {harmonic14LayoutModel} from "./harmonic14LayoutModel.ts";
+import {harmonic14TraditionalLayoutModel} from "./harmonic14TraditionalLayoutModel.ts";
 import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
 import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
+import {harmonic14WideLayoutModel} from "./harmonic14WideLayoutModel.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
     if (row != KeyboardRows.Home) return false;
@@ -147,6 +148,21 @@ export function compatibilityScore(diffSummy: Record<MappingChange, number>): nu
         diffSummy[MappingChange.SwapHands] * 2.0;
 }
 
+export function getHarmonicVariant(variant: HarmonicVariant) {
+    switch (variant) {
+        case HarmonicVariant.H14_Wide:
+            return harmonic14WideLayoutModel;
+        case HarmonicVariant.H14_Traditional:
+            return harmonic14TraditionalLayoutModel;
+        case HarmonicVariant.H13_Wide:
+            return harmonic13WideLayoutModel;
+        case HarmonicVariant.H13_MidShift:
+            return harmonic13MidShiftLayoutModel;
+        case HarmonicVariant.H12:
+            return harmonic12LayoutModel;
+    }
+}
+
 export function getLayoutModel(layoutOptions: LayoutOptions): RowBasedLayoutModel {
     switch (layoutOptions.type) {
         case LayoutType.ANSI:
@@ -155,16 +171,7 @@ export function getLayoutModel(layoutOptions: LayoutOptions): RowBasedLayoutMode
         case LayoutType.Ortho:
             return layoutOptions.split ? splitOrthoLayoutModel : orthoLayoutModel;
         case LayoutType.Harmonic:
-            switch (layoutOptions.harmonicVariant) {
-                case HarmonicVariant.H14_Traditional:
-                    return harmonic14LayoutModel;
-                case HarmonicVariant.H13_Wide:
-                    return harmonic13WideLayoutModel;
-                case HarmonicVariant.H13_MidShift:
-                    return harmonic13MidShiftLayoutModel;
-                case HarmonicVariant.H12:
-                    return harmonic12LayoutModel;
-            }
+            return getHarmonicVariant(layoutOptions.harmonicVariant);
     }
 }
 

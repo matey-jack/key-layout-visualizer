@@ -12,6 +12,8 @@ export interface MappingListProps {
 
 export function MappingList({appState}: MappingListProps) {
     const applicableMappings = allMappings.filter((m) =>
+        // TODO: use a different function that doesn't use concrete LayoutModels, but only considers the layout.type.
+        //      we then also need a custom setMapping function that will adjust layout options if needed.
         hasMatchingMapping(appState.layoutModel.value, m)
     );
     return <table class="mapping-list">
