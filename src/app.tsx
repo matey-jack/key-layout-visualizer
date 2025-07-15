@@ -48,11 +48,10 @@ function s2i(value: string | null): number | null {
 
 function getMappingByName(name: string | null): FlexMapping {
     if (name) {
-        allMappings.forEach((mapping) => {
-            if (mapping.name == name || mapping.techName == name) {
-                return mapping;
-            }
-        });
+        const found = allMappings.find(
+            (m) => m.name == name || m.techName == name
+        );
+        if (found) return found;
     }
     return qwertyMapping;
 }
