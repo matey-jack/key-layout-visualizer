@@ -13,13 +13,14 @@ import {
     VisualizationType
 } from "../base-model.ts";
 import {AppState} from "../app-model.ts";
-import {compatibilityScore, diffSummary, diffToQwerty} from "../layout/layout-functions.ts";
+import {compatibilityScore, diffSummary, diffToBase} from "../layout/layout-functions.ts";
 import {TruncatedText} from "../components/TruncatedText.tsx";
 import {bigramClassByType, getEffortClass} from "../layout/KeyboardSvg.tsx";
 import {ComponentChildren} from "preact";
 import {sumKeyFrequenciesByEffort} from "../mapping/mapping-functions.ts";
 import {sum} from "../library/math.ts";
 import {bigramFrequencyByType, bigramRankSize} from "../bigrams.ts";
+import {qwertyMapping} from "../mapping/mappings.ts";
 
 interface DetailsAreaProps {
     appState: AppState;
@@ -61,12 +62,12 @@ export function getVizDetails(vizType: VisualizationType, layout: RowBasedLayout
         case VisualizationType.LayoutKeyEffort:
             return <SingleKeyEffortDetails layout={layout} mapping={mapping}/>;
         case VisualizationType.MappingDiff:
-            return <DiffDetails diff={diffToQwerty(layout, mapping)}/>;
+            return <DiffDetails diff={diffToBase(layout, mapping)} mapping={mapping}/>;
         case VisualizationType.MappingFrequeny:
             return <p>
                 The area of each shown circle is proportional to how often each letter occurs in the average of all
                 English texts. This frequency is used to calculate the single-key Typing Effort Score. Switch between
-                this and the Single-Key Effort vizualization to see if the most frequent letters are on the easiest
+                this and the Single-Key Effort visualization to see if the most frequent letters are on the easiest
                 keys.
             </p>;
         case VisualizationType.MappingBigrams:
@@ -174,13 +175,15 @@ export function KeyEffortLegendItem({frequency, score, children}: KeyEffortLegen
 
 interface DiffDetailsProps {
     diff: Record<string, MappingChange>;
+    mapping: FlexMapping;
 }
 
-export function DiffDetails({diff}: DiffDetailsProps) {
+export function DiffDetails({diff, mapping}: DiffDetailsProps) {
     const diffSummy = diffSummary(diff);
+    const base = mapping.comparisonBase ?? qwertyMapping;
     return <div>
         <p>Here's how 26 letters and six prose punctuation characters are changed in this layout
-            compared to well-known Qwerty:</p>
+            compared to well-known <i>{base.name}</i>:</p>
         <DiffEntry
             count={diffSummy[MappingChange.SamePosition]}
             description="Keys unchanged."

@@ -8,7 +8,7 @@ import {MappingList} from "./mapping/MappingArea.tsx";
 import {DetailsArea} from "./details/DetailsArea.tsx";
 import {computed, effect, signal, Signal} from "@preact/signals";
 import {ComponentChildren} from "preact";
-import {diffToQwerty, getKeyPositions, getLayoutModel, hasMatchingMapping} from "./layout/layout-functions.ts";
+import {diffToBase, getKeyPositions, getLayoutModel, hasMatchingMapping} from "./layout/layout-functions.ts";
 import {allMappings, colemakMapping, qwertyMapping, thumbyNine} from "./mapping/mappings.ts";
 import {getBigramMovements} from "./bigrams.ts";
 
@@ -84,7 +84,7 @@ export function createAppState(): AppState {
     const vizType = signal(s2i(params.get("viz")) ?? VisualizationType.LayoutFingering)
 
     const mappingDiff = computed(() =>
-        diffToQwerty(layoutModel.value, mapping.value)
+        diffToBase(layoutModel.value, mapping.value)
     )
     const bigramMovements = computed(() => {
         return getBigramMovements(
