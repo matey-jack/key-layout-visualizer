@@ -49,7 +49,7 @@ function TopBar({layout, setLayout}: TopBarProps) {
         {layoutOrder.map((layoutType) =>
             <TopBarKeyboardTab
                 layoutType={layoutType}
-                layoutName={getLayoutModel(layout).name}
+                layoutName={getLayoutModel({...layout, type: layoutType}).name}
                 currentLayout={layout.type}
                 setLayoutType={(type) => setLayout({...layout, type})}
                 key={layoutType}

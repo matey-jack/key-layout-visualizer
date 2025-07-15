@@ -8,6 +8,7 @@ import {LayoutType, VisualizationType} from "./base-model.ts";
     A narrow variant has the home row staggered and thus one less key in it.
  */
 export enum HarmonicVariant {
+    H14_Wide,  // wide home row, lower row shift.
     H14_Traditional,  // narrow home row, lower row 2u shift.
     H13_Wide, // narrow home row, lower row shift.
     H13_MidShift, // narrow home row, home row shift.
