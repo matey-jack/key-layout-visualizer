@@ -102,7 +102,7 @@ describe('hand function', () => {
 
 describe('diffToQwerty', () => {
     it('works for Norman', () => {
-        const normanDiff = diffToBase(ansiWideLayoutModel, normanMapping)
+        const normanDiff = diffToBase(ansiLayoutModel, normanMapping)
         expect(normanDiff['k']).toBe(MappingChange.SwapHands);
         expect(normanDiff['r']).toBe(MappingChange.SwapHands);
         expect(normanDiff['p']).toBe(MappingChange.SameHand);

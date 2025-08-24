@@ -35,6 +35,18 @@ export const qwertyMapping: FlexMapping = {
         "asdfg" + "hjkl;",
         "zxcvb" + "nm,./",
     ],
+    // Keep the \| and J keys in place because of different shape and because F and J key caps often cannot be swapped
+    // on the physical keyboard.
+    // We also pair [] and +- vertically and close, instead of horizontally and split,
+    // which brings the frequently used hyphen into a better position.
+    // A lot of muscle memory is preserved because + and - stay on the same finger and in the same direction of movement.
+    mappingAnsiWide: [
+        "[=",
+        "qwert" + "]" + "yuiop-\\",
+        "asdfg" + ";" + "jnkl'",
+        "zxcvb" + "/" + "hm,.",
+        "⌥≡",
+    ],
 }
 
 export const qwertzMapping: FlexMapping = {
@@ -61,8 +73,8 @@ export const qwertzMapping: FlexMapping = {
     mappingHarmonic14t: [
         "ß",
         "qwert" + "+z" + "uiopüä",
-        "asdfg" + "#" + "hjklö",  // there is # on the ISO key here
-        "yxcvb" + "-" + "nm,.",   // and <> on the ISO key here
+        "asdfg" + "#" + "hjklö",
+        "yxcvb" + "-" + "nm,.",
         "^⌥´≡"
     ]
 }
@@ -77,7 +89,17 @@ export const colemakMapping: FlexMapping = {
         "qwfpg" + "jluy;",
         "arstd" + "hneio",
         "zxcvb" + "km,./",
-    ]
+    ],
+
+    // This is the first published version of any wide mapping that I know of.
+    // It originated the idea of flipping the right-hand column of symbols to the center.
+    mappingAnsiWide: [
+        "=-",
+        "qwfpg" + "[" + "jluy;'\\",
+        "arstd" + "]" + "hneio",
+        "zxcvb" + "/" + "km,.",
+        "⌥≡"
+    ],
 }
 
 export const colemakDhMapping: FlexMapping = {
@@ -96,6 +118,14 @@ export const colemakDhMapping: FlexMapping = {
         "xcdvz" + "kh,./",
     ],
 
+    mappingAnsiWide: [
+        "=-",
+        "qwfpb" + "[" + "jluy;'\\",
+        "arstg" + "]" + "mneio",
+        "xcdvz" + "/" + "kh,.",
+        "⌥≡"
+    ],
+
     // Due to Angle Mod, the Ortho version has a flip: https://colemakmods.github.io/mod-dh/keyboards.html
     mappingSplitOrtho: [
         "",
@@ -106,7 +136,19 @@ export const colemakDhMapping: FlexMapping = {
     ]
 }
 
-export const colemakThumbyMapping: FlexMapping = {
+export const colemakThumbyDMapping: FlexMapping = {
+    name: "Colemak Thumby D",
+    description: "Colemak with E on the thumb key and D taking E's home position. ",
+    sourceUrl: "https://colemak.com/",
+    mappingThumb30: [
+        "qwfpg" + "jluy;",
+        "arst-" + "mndio",
+        "zxcvb" + "kh,.",
+        "e"
+    ]
+}
+
+export const colemakThumbyHMapping: FlexMapping = {
     name: "Colemak Thumby H",
     description: `Slightly modified version of Colemak-DH that places E on the thumb key and H on an actual home key. 
     Unlike Thumby Zero, there is no need to rescue the letter from "the worst position of the board", 
@@ -569,8 +611,9 @@ export const allMappings: FlexMapping[] = [
     // qwertzMapping,
     colemakMapping,
     colemakDhMapping,
-    colemakThumbyMapping,
-    // colemakThumbyLMapping,
+    colemakThumbyDMapping,
+    colemakThumbyHMapping,
+    colemakThumbyLMapping,
     colemakThumbyNMapping,
     normanMapping,
     // minimak4Mapping,
