@@ -138,7 +138,9 @@ export const colemakDhMapping: FlexMapping = {
 
 export const colemakThumbyDMapping: FlexMapping = {
     name: "Colemak Thumby D",
-    description: "Colemak with E on the thumb key and D taking E's home position. ",
+    description: "Colemak with E on the thumb key and D taking E's home position. " +
+        "I like this variant the most, because it combines low typing effort with the lowest diff to Qwerty. " +
+        "(It' s fun to see how it undoes a lot of the shuffling which Colemak-DH introduced.) ",
     sourceUrl: "https://colemak.com/",
     mappingThumb30: [
         "qwfpg" + "jluy;",
@@ -155,7 +157,7 @@ export const colemakThumbyHMapping: FlexMapping = {
     because Colemak already places a very rare letter there. 
     TODO: make a custom version of this for the Harmonic 13 MidShift, because that's the only board to properly represent the angle mod. 
     And a custom version for ortho, same reason.`,
-    comparisonBase: colemakDhMapping,
+    // comparisonBase: colemakDhMapping,
     mappingThumb30: [
         "qwfpb" + "jluy;",
         "arstg" + "-nhio",
@@ -170,7 +172,7 @@ export const colemakThumbyNMapping: FlexMapping = {
     Since N is more frequent than H, we move N to the middle finger where it causes less bigram conflicts.  
     TODO: make a custom version of this for the Harmonic 13 MidShift, because that's the only board to properly represent the angle mod. 
     And a custom version for ortho, same reason.`,
-    comparisonBase: colemakDhMapping,
+    // comparisonBase: colemakDhMapping,
     mappingThumb30: [
         "qwfpb" + "jlyu;",
         "arstg" + "-hnio",
@@ -183,7 +185,7 @@ export const colemakThumbyLMapping: FlexMapping = {
     name: "Colemak Thumby L",
     description: `Just a test to compare metrics. Turns out that moving L to the home row does not cause less bigram conflicts. `,
     // It's worse than Thumby-H, so we don't show it in the app :D
-    comparisonBase: colemakDhMapping,
+    // comparisonBase: colemakDhMapping,
     mappingThumb30: [
         "qwfpb" + "j-uy;",
         "arstg" + "mnlio",
@@ -458,20 +460,21 @@ export const thumby9ku: FlexMapping = {
         "but also removes the same-finger conflict of the UN bigram and the KI bigram. ",
     // Note that the full mappings below might not be consistent with this. We'll deal with that later.
     mappingThumb30: [
-        "qwdfb" + "-kulp",
-        "asrtg" + "ynioh",
-        "zxcv;" + "jm,.",
+        "qwdfb" + "ykulp",
+        "asrtg" + ";nioh",
+        "zxcv-" + "jm,.",
         "e",
     ],
 
-    // TODO: align with Thumby Nine
     mappingAnsiWide: [
-        "⇤⇥",
-        "qwdfb" + "=y" + "kulp\\",
-        "asrtg" + "-'nioh",
-        "zxcv" + ";/" + "jm,.",
+        "[`",
+        "qwdfb" + "]y" + "kulp'\\",
+        "asrtg" + "=" + ";nioh",
+        "zxcv" + "-/" + "jm,.",
         "e⌥",
     ],
+
+    // The following are unrelated to the Thumby variant; just brainstorming some ideas about better use of keys for navigation instead of tech punctuation.
     mappingHarmonic13wide: [
         "⇞⇟",
         "wdfb" + "-=" + "kulp",
@@ -494,6 +497,18 @@ export const thumby9ku: FlexMapping = {
         "⇤\\e⇥",
     ],
 }
+
+export const thumby9rst: FlexMapping = {
+    name: "Thumby Nine-RST",
+    description: "Thumby's DR conflict is especially painful for Qwerty users, so we sacrifice the otherwise unchanged position of S to improve this. " +
+        "(And yep, somewhat ironically, we obtain Colemak' s left-hand home row.) ",
+    mappingThumb30: [
+        "qwdfb" + "ykulp",
+        "arstg" + ";nioh",
+        "zxcv-" + "jm,.",
+        "e",
+    ],
+};
 
 export const thumby9kul = {
     name: "Thumby Nine-KU-L",
@@ -629,9 +644,10 @@ export const allMappings: FlexMapping[] = [
     thumbyNine,
     thumbyLeft,
     thumby9ku,
-    // thumby9u,
+    thumby9rst,
+    thumby9u,
     thumby9kul,
-    // thumby9t,
+    thumby9t,
     thumbyBilingual,
     thumbyOldBilingual,
     // gemuetlichesMapping,
