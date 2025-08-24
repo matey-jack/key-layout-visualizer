@@ -363,14 +363,38 @@ export const thumbyNine = {
     ],
 }
 
+export const thumby9t = {
+    name: "Thumby Nine-T",
+    description: "Swapping the order of RT (from Qwerty) to TR improves the RD and RT bigrams, " +
+        "but brings new problems with RF, RB, RG, and CT.",
+    mappingThumb30: [
+        "qwdfb" + "y" + "kulp",
+        "astrg" + "-nioh",
+        "zxcv" + ";" + "jm,.",
+        "e",
+    ],
+};
+
+export const thumby9u = {
+    name: "Thumby Nine-U",
+    description: "Instead of swapping UK to improve the UN bigram, we swap UY. " +
+        "This is a same-finger swap generally, but allows alt-fingering the UN bigram. ",
+    mappingThumb30: [
+        "qwdfb" + "u" + "yklp",
+        "asrtg" + "-nioh",
+        "zxcv" + ";" + "jm,.",
+        "e",
+    ],
+};
+
 export const thumby9ku = {
     name: "Thumby Nine-KU",
     description: "Adding the K-U swap to Thumby Nine not only makes the relatively frequent U easier to type, " +
-        "but also removes the same-finger conflict of the UN bigram. ",
+        "but also removes the same-finger conflict of the UN bigram and the KI bigram. ",
     // Note that the full mappings below might not be consistent with this. We'll deal with that later.
     mappingThumb30: [
-        "qwdfb" + "ykulp",
-        "asrtg" + "-nioh",
+        "qwdfb" + "-kulp",
+        "asrtg" + "ynioh",
         "zxcv;" + "jm,.",
         "e",
     ],
@@ -378,22 +402,22 @@ export const thumby9ku = {
     // TODO: fix it
     mappingAnsiWide: [
         "⇤⇥",
-        "qwdfg" + "=" + "kulp-\\",
-        "asrtb" + "ynioh'",
-        "zxcv" + ";" + "jm,./",
+        "qwdfb" + "=y" + "kulp\\",
+        "asrtg" + "-'nioh",
+        "zxcv" + ";/" + "jm,.",
         "e⌥",
     ],
     mappingHarmonic13wide: [
         "⇞⇟",
-        "wdfg" + "-=" + "kulp",
-        "qasrtb" + ";" + "ynioh'",
+        "wdfb" + "-=" + "kulp",
+        "qasrtg" + ";" + "ynioh'",
         "zxcv" + "⇤⇥" + "jm,.",
         "/e",
     ],
     mappingHarmonic14: [
         "=",
-        "qwdfg" + "-'" + "kulp⇞⇟",
-        "asrtb" + ";" + "jnioh",
+        "qwdfb" + "-'" + "kulp⇞⇟",
+        "asrtg" + ";" + "jnioh",
         "zxcv" + "⇤⇥" + "ym,.",
         "⌦e/",
     ],
@@ -502,26 +526,28 @@ export const gemuetlichesMapping = {
 
 export const allMappings: FlexMapping[] = [
     qwertyMapping,
-    qwertzMapping,
+    // qwertzMapping,
     colemakMapping,
     colemakDhMapping,
     colemakThumbyMapping,
     // colemakThumbyLMapping,
-    colemakThumbyNMapping,
+    // colemakThumbyNMapping,
     normanMapping,
-    minimak4Mapping,
-    minimak8Mapping,
+    // minimak4Mapping,
+    // minimak8Mapping,
     minimakFullMapping,
-    qwertyFlipTwistMapping,
+    // qwertyFlipTwistMapping,
     qwertyFlipTwistSpinMapping,
-    etniMapping,
-    quipperMapping,
-    thumbyZero,
-    thumbyNero,
-    thumbyEntry,
+    // etniMapping,
+    // quipperMapping,
+    // thumbyZero,
+    // thumbyNero,
+    // thumbyEntry,
     thumbyNine,
     thumby9ku,
+    // thumby9u,
     thumby9kul,
+    // thumby9t,
     thumbyBilingual,
-    gemuetlichesMapping,
+    // gemuetlichesMapping,
 ]

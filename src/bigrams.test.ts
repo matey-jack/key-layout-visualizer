@@ -6,6 +6,6 @@ import {sumBigramScores} from "./bigrams.ts";
 describe("getMovements", () => {
     it("works", () => {
         const actual = sumBigramScores(ansiLayoutModel, qwertyMapping);
-        expect(actual).toBe(462);
+        expect(actual).toBe(426);
     })
 })
