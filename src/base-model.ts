@@ -216,7 +216,7 @@ export const bigramEffort = [
     1,
     2,
     // this is fun to type, so gives a rebate on effort.
-    -0.5,
+    -0.33,
     0,
     2,
 ];

@@ -19,6 +19,7 @@ done:
 - angle viz
 - URL #fragments for state parameters: layoutType, split, HarmonicType, vizType, ...
 - add Unicode mappings for bottom row modifiers, so that FlexMappings can change them. Minimum affected keys are AltGr and what's to the right of it.
+- inner index column should not count as bigram conflict, because of nice alt-fingering.
 
 bugs fixed:
  - Learnability Score for Wide ANSI in Mapping List is changing when I select different mappings =:-[]

@@ -193,13 +193,14 @@ export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean
         fullMapping[row].forEach((label, col) => {
             // to show the board as split, add some extra space after the split column.
             if (split && (col == layoutModel.splitColumns[row])) colPos += totalWidth - rowWidth[row];
+            const finger = layoutModel.mainFingerAssignment[row][col];
             result.push({
                 label,
                 row,
                 col,
                 colPos,
-                finger: layoutModel.mainFingerAssignment[row][col],
-                hasAltFinger: layoutModel.hasAltFinger(row, col)
+                finger,
+                hasAltFinger: layoutModel.hasAltFinger(row, col),
             });
             colPos += layoutModel.keyWidth(row, col);
         });
