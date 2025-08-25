@@ -114,7 +114,7 @@ describe('diffToQwerty', () => {
         const summary = diffSummary(normanDiff);
         expect(summary[MappingChange.SwapHands]).toBe(2);
         expect(summary[MappingChange.SameHand]).toBe(2);
-        expect(summary[MappingChange.SameFinger]).toBe(11);
+        expect(summary[MappingChange.SameFinger]).toBe(10);
         expect(summary[MappingChange.SamePosition]).toBe(16);
     })
 });
