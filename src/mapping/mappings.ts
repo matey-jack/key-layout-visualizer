@@ -569,6 +569,19 @@ export const cozyKeyboard = {
     ]
 }
 
+export const cozyH = {
+    name: "Cozy H",
+    description: `Cozy has great bigram conflict avoidance due to flipping T to the right hand. 
+    Cozy H builds on that by improving H'r position without having to move D or S as Thumby does. 
+    It's a nice try, but neither single nor bigram score approaches the values of Thumby-RST.`,
+    mappingThumb30: [
+        "qwfhb" + "y" + "kulp",
+        "asdrg" + ";niot",
+        "zxcv" + "-" + "jm,.",
+        "e",
+    ]
+}
+
 /*  Port of my personal German layout.
     Note that this supposes a mixed German/ANSI shift-pairing with notably `;:` mapped on `,.` and `=` on `0`.
     Other Shift-mappings can vary, as well as the AltGr mappings, although it seems wise to swap Cmd/AltGr keys because
@@ -660,6 +673,7 @@ export const allMappings: FlexMapping[] = [
     // thumbyNero,
     // thumbyEntry,
     cozyKeyboard,
+    cozyH,
     thumbyNine,
     thumbyLeft,
     thumby9ku,

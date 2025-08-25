@@ -3,7 +3,7 @@
 
 // data on punctuation from https://www.researchgate.net/publication/328512136_Frequency_Distributions_of_Punctuation_Marks_in_English_Evidence_from_Large-scale_Corpora
 // those are punctuation character counts per million words which I divided by 4.7 (average English word length) to get to per million characters.
-// (This is low accuracy, but it's fine, because just having the right order of magnitude helps to put things in perspective.
+// (This is low accuracy, but it's fine, because just having the right order of magnitude helps to put things in perspective.)
 
 export const singleCharacterFrequencies: Record<string, number> = {
     E: 127,
