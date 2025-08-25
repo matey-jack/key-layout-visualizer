@@ -18,31 +18,30 @@ export const isKeyName = (label: string) => keyboardNames.includes(label);
 export const isCommandKey = (label: string) =>
     (isKeyboardSymbol(label) || isKeyName(label)) && label !== "⍽" && label !== "⏎" && label !== "";
 
-export function weighSingleKeyEffort(layoutModel: RowBasedLayoutModel, mapping: FlexMapping): number {
-    const efforts = getSingleKeyEffort(layoutModel, mapping);
+export function weighSingleKeyEffort(layoutModel: RowBasedLayoutModel, mapping: FlexMapping, freqs: Record<string, number>): number {
+    const efforts = getSingleKeyEffort(layoutModel, mapping, freqs);
     let totalEffort = 0;
     Object.entries(efforts).forEach(([char, effort]) => {
-        totalEffort += effort * singleCharacterFrequencies[char.toUpperCase()];
+        totalEffort += effort * freqs[char.toUpperCase()];
     });
     return Math.round(totalEffort);
 }
 
 export function sumKeyFrequenciesByEffort(layoutModel: RowBasedLayoutModel, mapping: FlexMapping): Record<number, number> {
-    const efforts = getSingleKeyEffort(layoutModel, mapping);
+    const efforts = getSingleKeyEffort(layoutModel, mapping, singleCharacterFrequencies);
     const result: Record<number, number> = {};
     Object.entries(efforts).forEach(([char, effort]) => {
-
         result[effort] = (result[effort] || 0) + singleCharacterFrequencies[char.toUpperCase()];
     });
     return result;
 }
 
-export function getSingleKeyEffort(layoutModel: RowBasedLayoutModel, mapping: FlexMapping): Record<string, number> {
+export function getSingleKeyEffort(layoutModel: RowBasedLayoutModel, mapping: FlexMapping, freqs: Record<string, number>): Record<string, number> {
     const charMap = fillMapping(layoutModel, mapping);
     const result: Record<string, number> = {};
     charMap.forEach((charMapRow, row) => {
         charMapRow.forEach((char, col) => {
-            if (char && singleCharacterFrequencies[char.toUpperCase()]) {
+            if (char && freqs[char.toUpperCase()]) {
                 result[char] = layoutModel.singleKeyEffort[row][col];
             }
         })

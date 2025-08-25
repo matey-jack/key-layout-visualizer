@@ -5,6 +5,8 @@ import {allMappings} from "./mappings.ts";
 import {compatibilityScore, diffSummary, diffToBase, hasMatchingMapping} from "../layout/layout-functions.ts";
 import {weighSingleKeyEffort} from "./mapping-functions.ts";
 import {sumBigramScores} from "../bigrams.ts";
+import {singleCharacterFrequencies as englishFeqs} from "../frequencies/english-single-character-frequencies.ts";
+import {singleCharacterFrequencies as germanFreqs} from "../frequencies/german-single-character-frequencies.ts";
 
 export interface MappingListProps {
     appState: AppState;
@@ -22,6 +24,7 @@ export function MappingList({appState}: MappingListProps) {
             <td>Mapping Name</td>
             <td>Learnability Score</td>
             <td>Typing Effort Score<br/>(Single / Bigram)</td>
+            <td>Typing Effort Score<br/>Single for German</td>
         </tr>
         </thead>
         <tbody>
@@ -51,7 +54,8 @@ export function MappingListItem({layout, mapping, selectedMapping}: MappingListI
             <button>{mapping.name}</button>
         </td>
         <td>{formatDiff(diffSummary(diffToBase(layout, mapping)))}</td>
-        <td>{weighSingleKeyEffort(layout, mapping)} / {sumBigramScores(layout, mapping)}</td>
+        <td>{weighSingleKeyEffort(layout, mapping, englishFeqs)} / {sumBigramScores(layout, mapping)}</td>
+        <td>{weighSingleKeyEffort(layout, mapping, germanFreqs)}</td>
     </tr>
 }
 
