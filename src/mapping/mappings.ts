@@ -569,6 +569,17 @@ export const cozyKeyboard = {
     ]
 }
 
+export const cozyPlus = {
+    name: "Cozy Plus",
+    description: ``,
+    mappingThumb30: [
+        "qwcfb" + "y" + "kulp",
+        "asdrg" + "mniot",
+        "zx;v" + "-" + "jh,.",
+        "e",
+    ]
+}
+
 export const cozyH = {
     name: "Cozy H",
     description: `Cozy has great bigram conflict avoidance due to flipping T to the right hand. 
@@ -674,6 +685,7 @@ export const allMappings: FlexMapping[] = [
     // thumbyEntry,
     cozyKeyboard,
     cozyH,
+    cozyPlus,
     thumbyNine,
     thumbyLeft,
     thumby9ku,
