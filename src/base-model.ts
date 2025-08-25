@@ -217,8 +217,10 @@ export const bigramEffort = [
     4,
     1,
     2,
-    // this is fun to type, so gives a rebate on effort.
-    -0.33,
+    // This rebate gives an outsized advantage to placing frequent letters in the center of the home row,
+    // thus making the old Cozy Keyboard look better than any Thumby variant, which is not
+    // reflected in actual typing experience.
+    0, // -0.33,
     0,
     2,
 ];
