@@ -530,23 +530,23 @@ export const thumbyBilingual = {
         "Since L in German is much more frequent than O, we can just leave both " +
         "in the Qwerty position and there by make it easier to learn and switch. ",
     mappingThumb30: [
-        "qwdfb" + "y" + "kuop",
+        "qwdfb" + "z" + "kuop",
         "asrtg" + "-nilh",
-        "zxcv" + ";" + "jm,.",
+        "yxcv" + ";" + "jm,.",
         "e",
     ]
 }
 
-export const thumbyOldBilingual = {
-    name: "Legacy Thumby Bilingual",
+export const cozyKeyboard = {
+    name: "The Cozy Keyboard",
     description: `Since D is almost as frequent as H, this layout minimizes the difference to Qwerty, 
         by keeping D on the home row. It has several disadvantages compared with Thumby Bilingual: 
         first, it breaks apart the frequent RT bigram that Qwerty users roll all the time. 
         Second, it keeps H in worse position than D gets in Thumby.
         And third, T has to move hands, which is a bigger learning effort than D moving up on the same finger. `,
     mappingThumb30: [
-        "qwbf;" + "y" + "kuop",
-        "asdrg" + "hnilt",
+        "qwbf;" + "y" + "kulp",
+        "asdrg" + "hniot",
         "zxcv" + "-" + "jm,.",
         "e",
     ]
@@ -649,6 +649,6 @@ export const allMappings: FlexMapping[] = [
     thumby9kul,
     thumby9t,
     thumbyBilingual,
-    thumbyOldBilingual,
+    cozyKeyboard,
     // gemuetlichesMapping,
 ]
