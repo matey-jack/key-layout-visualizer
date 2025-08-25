@@ -35,6 +35,14 @@ export const qwertyMapping: FlexMapping = {
         "asdfg" + "hjkl;",
         "zxcvb" + "nm,./",
     ],
+}
+
+export const qwertyWideMapping: FlexMapping = {
+    name: "Qwerty Wide",
+    description: `Small changes to Qwerty for a wide hand position. 
+    It's actually a gateway drug to more layout changes, because it makes it feel good to have N on a home key 
+    and weird to not have more frequent letters there, too.
+    I think that the next step would logically be Qwipper or flip/spin or Cozy, Thumby, Colemak.`,
     // Keep the \| and J keys in place because of different shape and because F and J key caps often cannot be swapped
     // on the physical keyboard.
     // We also pair [] and +- vertically and close, instead of horizontally and split,
@@ -46,6 +54,13 @@ export const qwertyMapping: FlexMapping = {
         "asdfg" + ";" + "jnkl'",
         "zxcvb" + "/" + "hm,.",
         "⌥≡",
+    ],
+
+    // needed for compatibility with the code.
+    mapping30: [
+        "qwert" + "yuiop",
+        "asdfg" + "jnkl;",
+        "zxcvb" + "hm,./",
     ],
 }
 
@@ -137,7 +152,7 @@ export const colemakDhMapping: FlexMapping = {
 }
 
 export const colemakThumbyDMapping: FlexMapping = {
-    name: "Colemak Thumby D",
+    name: "Colemak Thumby D - The best.",
     description: "Colemak with E on the thumb key and D taking E's home position. " +
         "I like this variant the most, because it combines low typing effort with the lowest diff to Qwerty. " +
         "(It' s fun to see how it undoes a lot of the shuffling which Colemak-DH introduced.) ",
@@ -155,6 +170,8 @@ export const colemakThumbyHMapping: FlexMapping = {
     description: `Slightly modified version of Colemak-DH that places E on the thumb key and H on an actual home key. 
     Unlike Thumby Zero, there is no need to rescue the letter from "the worst position of the board", 
     because Colemak already places a very rare letter there. 
+    Note that this slightly beats Colemak Thumby D on staggered keyboards where the left-bottom conflicts can be alt-fingered,
+    but it's noticeably worse on Ortho boards. And all that for having more changes to Qwerty.
     TODO: make a custom version of this for the Harmonic 13 MidShift, because that's the only board to properly represent the angle mod. 
     And a custom version for ortho, same reason.`,
     // comparisonBase: colemakDhMapping,
@@ -623,6 +640,7 @@ export const gemuetlichesMapping = {
 
 export const allMappings: FlexMapping[] = [
     qwertyMapping,
+    qwertyWideMapping,
     // qwertzMapping,
     colemakMapping,
     colemakDhMapping,
@@ -634,13 +652,14 @@ export const allMappings: FlexMapping[] = [
     // minimak4Mapping,
     // minimak8Mapping,
     minimakFullMapping,
-    // qwertyFlipTwistMapping,
+    qwertyFlipTwistMapping,
     qwertyFlipTwistSpinMapping,
     // etniMapping,
-    // quipperMapping,
+    quipperMapping,
     // thumbyZero,
     // thumbyNero,
     // thumbyEntry,
+    cozyKeyboard,
     thumbyNine,
     thumbyLeft,
     thumby9ku,
@@ -649,6 +668,5 @@ export const allMappings: FlexMapping[] = [
     thumby9kul,
     thumby9t,
     thumbyBilingual,
-    cozyKeyboard,
     // gemuetlichesMapping,
 ]
