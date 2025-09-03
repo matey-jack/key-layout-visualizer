@@ -294,12 +294,46 @@ export const qwertyFlipTwistThumbMapping = {
     description: `We build on the genius of Qwerty Flip and make it into a real ten-finger mapping 
     by moving E to the thumb and B in E's old spot. 
     As a consequence, D can stay on the home row. 
-    This layout changes no more letters than Qwerty Flip/Spin, but has much better metrics that can also be felt in practice. '`,
+    This layout changes no more letters than Qwerty Flip/Spin, but has much better metrics that can also be felt in practice. 
+    It has great bigram metrics, but it's single key metrics depend a lot on how one values the central home columns. 
+     (Currently on my split ortho keyboard they feel just as easy to reach as the best non-home keys...)`,
     mappingThumb30: [
         "qwbfg" + "yukl;",
         "asdrt" + "hniop",
         "zxcv" + "-" + "jm,.",
         "e"
+    ]
+}
+
+export const qwertyFlipTwistThumbT = {
+    name: "Qwerty Flip/Twist + Thumb-T",
+    techName: "Qwerty-FlipTwist-Thumb-T",
+    sourceUrl: "",
+    description: `We build on the genius of Qwerty Flip and make it into a real ten-finger mapping. 
+    This alternative moves T to the thumb to break the overuse of the index finger and the RT bigram conflict. 
+    This layout changes no more letters than Qwerty Flip/Spin, but has much better metrics that can also be felt in practice. 
+    Good single-key metrics and bad SFBs from E on its Qwerty finger. 
+    This could be improved by swapping E to the right pinky... and that is bascially the Qwpr layout. `,
+    mappingThumb30: [
+        "qwdfb" + "yukl;",
+        "aserg" + "hniop",
+        "zxcv" + "-" + "jm,.",
+        "t"
+    ]
+}
+
+export const qwertyFlipTwistThumbR = {
+    name: "Qwerty Flip/Twist + Thumb-R",
+    techName: "Qwerty-FlipTwist-Thumb-R",
+    sourceUrl: "",
+    description: `We build on the genius of Qwerty Flip and make it into a real ten-finger mapping. 
+    This alternative moves R to the thumb to break the overuse of the index finger and the RT bigram conflict. 
+    This layout changes no more letters than Qwerty Flip/Spin, but has much better metrics that can also be felt in practice. '`,
+    mappingThumb30: [
+        "qwdfb" + "yukl;",
+        "asetg" + "hniop",
+        "zxcv" + "-" + "jm,.",
+        "r"
     ]
 }
 
@@ -628,8 +662,6 @@ export const thumby9kul = {
     ],
 }
 
-// TODO: variants of Qwerty-Flip which put R or T onto the thumb. (S is already placed to well, and other letters not frequent enough.)
-
 /*  Port of my personal German layout.
     Note that this supposes a mixed German/ANSI shift-pairing with notably `;:` mapped on `,.` and `=` on `0`.
     Other Shift-mappings can vary, as well as the AltGr mappings, although it seems wise to swap Cmd/AltGr keys because
@@ -716,6 +748,8 @@ export const allMappings: FlexMapping[] = [
     qwertyFlipTwistMapping,
     qwertyFlipTwistSpinMapping,
     qwertyFlipTwistThumbMapping,
+    qwertyFlipTwistThumbR,
+    qwertyFlipTwistThumbT,
     // etniMapping,
     quipperMapping,
     quipperThumbMapping,
