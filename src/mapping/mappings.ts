@@ -287,6 +287,22 @@ export const qwertyFlipTwistMapping = {
     ]
 }
 
+export const qwertyFlipTwistThumbMapping = {
+    name: "Qwerty Flip/Twist + Thumb",
+    techName: "Qwerty-FlipTwist-Thumb",
+    sourceUrl: "",
+    description: `We build on the genius of Qwerty Flip and make it into a real ten-finger mapping 
+    by moving E to the thumb and B in E's old spot. 
+    As a consequence, D can stay on the home row. 
+    This layout changes no more letters than Qwerty Flip/Spin, but has much better metrics that can also be felt in practice. '`,
+    mappingThumb30: [
+        "qwbfg" + "yukl;",
+        "asdrt" + "hniop",
+        "zxcv" + "-" + "jm,.",
+        "e"
+    ]
+}
+
 export const qwertyFlipTwistSpinMapping = {
     name: "Qwerty Flip/Twist/Spin",
     techName: "Qwerty-FlipTwistSpin",
@@ -323,6 +339,77 @@ export const quipperMapping = {
         "qwprf" + "yukl;",
         "asdtg" + "hnioe",
         "zxcvb" + "jm,./",
+    ]
+}
+
+export const quipperThumbMapping = {
+    name: "Quipper with Thumb-R",
+    techName: "Qwp-Thumb-R",
+    sourceUrl: "",
+    description: `We super-charge Quipper by placing R on the thumb and B in R's old spot. 
+    This means that the Quipper Home-Row stays unchanged, 
+    making it a super-easy upgrade with a lot of benefits both in single-key effort and avoided bigram conflicts. 
+    Interestingly, we end up with very similar metrics to Thumby Original, despite rotating the very frequent letters E, T, and R. `,
+    mappingThumb30: [
+        "qwpbf" + "yukl;",
+        "asdtg" + "hnioe",
+        "zxcv" + "-" + "jm,.",
+        "r"
+    ]
+}
+
+
+export const thumbyOriginal = {
+    name: "Thumby Original",
+    description: `A simple continuation of Qwerty Flip/Spin/Thumb although I didn't know of Qwerty Flip when first designing this layout. 
+    We swap T to the right hand and suddenly get very good metrics given very little changes from the original Qwerty.`,
+    mappingThumb30: [
+        "qwbf;" + "y" + "kulp",
+        "asdrg" + "hniot",
+        "zxcv" + "-" + "jm,.",
+        "e",
+    ]
+}
+
+export const thumbyBilingual = {
+    name: "Thumby Bilingual",
+    description: "German and English have very similar letter frequencies. " +
+        "I am writing a lot in both languages, and so I optimized for both. " +
+        "The result is Thumby Original, but without the OL swap (and the German YZ swap, of course). " +
+        "Since L in German is much more frequent than O, we can just leave both " +
+        "in the Qwerty position and thereby make it easier to learn and switch. ",
+    mappingThumb30: [
+        "qwbf-" + "z" + "kuop",
+        "asdrg" + "hnilt",
+        "yxcv" + ";" + "jm,.",
+        "e",
+    ]
+}
+
+export const thumbyOriginalMoreChanges = {
+    name: "Thumby Original, improve more letters",
+    description: `Swapping C and H on same finger to better positions improves the single-key metrics, 
+    but doesn't have significant impact in practical experience. 
+    Especially on my ortho keyboard, the old and new H positions are similarly easy to reach. `,
+    mappingThumb30: [
+        "qwcfb" + "y" + "kulp",
+        "asdrg" + "mniot",
+        "zx;v" + "-" + "jh,.",
+        "e",
+    ]
+}
+
+export const thumbyOrigSwapH = {
+    name: "Thumby Original, swap H",
+    description: `(Just an experiment, NOT a recommended variant.) 
+    Thumby Original has great bigram conflict avoidance due to flipping T to the right hand. 
+    This variant tries improving H's position without having to move D or S as Thumby does. 
+    It's a nice try, but neither single nor bigram score approaches the values of Thumby-RST.`,
+    mappingThumb30: [
+        "qwfhb" + "y" + "kulp",
+        "asdrg" + ";niot",
+        "zxcv" + "-" + "jm,.",
+        "e",
     ]
 }
 
@@ -374,7 +461,7 @@ export const thumbyEntry: FlexMapping = {
 }
 
 export const thumbyNine: FlexMapping = {
-    name: "Thumby Nine",
+    name: "Thumby Nine, aka Thumby RT",
     description: "Puts the nine most frequent letters of English into home key positions, " +
         "keeping most of them on the same finger. " +
         "When using the \"ANSI wide\" home position, you suddenly realize how easy it becomes " +
@@ -423,7 +510,7 @@ export const thumbyNine: FlexMapping = {
 }
 
 export const thumbyLeft: FlexMapping = {
-    name: "Thumby Left",
+    name: "Thumby Nine Left",
     description: `This is Thumby Nine, but the left thumb types the letter E. 
     On the ancient ANSI keyboard, it's weird to use the space bar for a letter, 
     but on any modern Ortholinear or harmonically staggered keyboard, left and right are equally usable. 
@@ -517,7 +604,8 @@ export const thumby9ku: FlexMapping = {
 
 export const thumby9rst: FlexMapping = {
     name: "Thumby Nine-RST",
-    description: "Thumby's DR conflict is especially painful for Qwerty users, so we sacrifice the otherwise unchanged position of S to improve this. " +
+    description: "(Just an experiment, NOT a recommended variant.) " +
+        "Thumby's DR conflict is especially painful for Qwerty users, so we sacrifice the otherwise unchanged position of S to improve this. " +
         "(And yep, somewhat ironically, we obtain Colemak' s left-hand home row.) ",
     mappingThumb30: [
         "qwdfb" + "ykulp",
@@ -529,7 +617,8 @@ export const thumby9rst: FlexMapping = {
 
 export const thumby9kul = {
     name: "Thumby Nine-KU-L",
-    description: "One more finger swap to remove the strong ol/lo bigram conflict. " +
+    description: "(Just an experiment, NOT a recommended variant.) " +
+        "One more finger swap to remove the strong ol/lo bigram conflict. " +
         "I wouldn't want to actually use this, so it's just there to show the improvement in bigram scores. ",
     mappingThumb30: [
         "qwdfb" + "yku-p",
@@ -539,59 +628,7 @@ export const thumby9kul = {
     ],
 }
 
-export const thumbyBilingual = {
-    name: "Thumby Bilingual",
-    description: "German and English have very similar letter frequencies. " +
-        "I am writing a lot in both languages, and so I optimized for both. " +
-        "The result is Thumby Nine, but without the OL swap. " +
-        "Since L in German is much more frequent than O, we can just leave both " +
-        "in the Qwerty position and there by make it easier to learn and switch. ",
-    mappingThumb30: [
-        "qwdfb" + "z" + "kuop",
-        "asrtg" + "-nilh",
-        "yxcv" + ";" + "jm,.",
-        "e",
-    ]
-}
-
-export const cozyKeyboard = {
-    name: "The Cozy Keyboard",
-    description: `Since D is almost as frequent as H, this layout minimizes the difference to Qwerty, 
-        by keeping D on the home row. It has several disadvantages compared with Thumby Bilingual: 
-        first, it breaks apart the frequent RT bigram that Qwerty users roll all the time. 
-        Second, it keeps H in worse position than D gets in Thumby.
-        And third, T has to move hands, which is a bigger learning effort than D moving up on the same finger. `,
-    mappingThumb30: [
-        "qwbf;" + "y" + "kulp",
-        "asdrg" + "hniot",
-        "zxcv" + "-" + "jm,.",
-        "e",
-    ]
-}
-
-export const cozyPlus = {
-    name: "Cozy Plus",
-    description: ``,
-    mappingThumb30: [
-        "qwcfb" + "y" + "kulp",
-        "asdrg" + "mniot",
-        "zx;v" + "-" + "jh,.",
-        "e",
-    ]
-}
-
-export const cozyH = {
-    name: "Cozy H",
-    description: `Cozy has great bigram conflict avoidance due to flipping T to the right hand. 
-    Cozy H builds on that by improving H'r position without having to move D or S as Thumby does. 
-    It's a nice try, but neither single nor bigram score approaches the values of Thumby-RST.`,
-    mappingThumb30: [
-        "qwfhb" + "y" + "kulp",
-        "asdrg" + ";niot",
-        "zxcv" + "-" + "jm,.",
-        "e",
-    ]
-}
+// TODO: variants of Qwerty-Flip which put R or T onto the thumb. (S is already placed to well, and other letters not frequent enough.)
 
 /*  Port of my personal German layout.
     Note that this supposes a mixed German/ANSI shift-pairing with notably `;:` mapped on `,.` and `=` on `0`.
@@ -678,14 +715,16 @@ export const allMappings: FlexMapping[] = [
     minimakFullMapping,
     qwertyFlipTwistMapping,
     qwertyFlipTwistSpinMapping,
+    qwertyFlipTwistThumbMapping,
     // etniMapping,
     quipperMapping,
-    // thumbyZero,
+    quipperThumbMapping,
+    // thumbyZero, // aka Qwerty Thumb-E
     // thumbyNero,
     // thumbyEntry,
-    cozyKeyboard,
-    cozyH,
-    cozyPlus,
+    thumbyOriginal,
+    thumbyOrigSwapH,
+    thumbyOriginalMoreChanges,
     thumbyNine,
     thumbyLeft,
     thumby9ku,
