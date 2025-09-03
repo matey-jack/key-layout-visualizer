@@ -32,6 +32,10 @@ bugs fixed:
 
 
 missing core features:
+- highlight all mappings that have the best typing scores among all layouts with the same learning effort or less
+  (This is the same as the layouts with the lowest learning effort given their typing scores.)
+Or maybe make a graph of the "efficiency frontier" — once for single and once for bigram scores.
+
 - add some more explanations, especially for:
   + the "wide" mappings
   + Harmonic and Ortho general texts (maybe (i) icon in layout bar). But still repeat that text under the H and O variants.
@@ -43,7 +47,8 @@ missing core features:
 
 bugs:
 - fix altFinger configuration for Harmonic variants AND show it in finger viz
-- show available mappings per layout type and set other options when needed by the mapping
+- HIGH_PRIO show available mappings per layout type and set other options when needed by the mapping
+- HIGH_PRIO switch to wide (on ANSI) and split (on Ortho) whenever a layout with thumb letter is selected.
 
 refactoring:
 - remove home finger properties; use keyEffort==Home instead.
