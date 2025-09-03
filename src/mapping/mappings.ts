@@ -496,6 +496,7 @@ export const thumbyEntry: FlexMapping = {
 
 export const thumbyNine: FlexMapping = {
     name: "Thumby Nine, aka Thumby RT",
+    techName: "Thumby-Nine",
     description: "Puts the nine most frequent letters of English into home key positions, " +
         "keeping most of them on the same finger. " +
         "When using the \"ANSI wide\" home position, you suddenly realize how easy it becomes " +
