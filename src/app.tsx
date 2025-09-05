@@ -9,7 +9,7 @@ import {DetailsArea} from "./details/DetailsArea.tsx";
 import {computed, effect, signal, Signal} from "@preact/signals";
 import {ComponentChildren} from "preact";
 import {diffToBase, getKeyPositions, getLayoutModel, hasMatchingMapping} from "./layout/layout-functions.ts";
-import {allMappings, colemakMapping, qwertyMapping, thumbyNine} from "./mapping/mappings.ts";
+import {allMappings, colemakMapping, qwertyMapping} from "./mapping/mappings.ts";
 import {getBigramMovements} from "./bigrams.ts";
 
 // Function needed, because doing the same in an effect() would already run all the computed() functions
@@ -22,10 +22,10 @@ function setLayout(
     const newLayoutModel = getLayoutModel(newLayoutOptions)
     if (!hasMatchingMapping(newLayoutModel, mapping.value)) {
         const mappingName = mapping.value.name.toLowerCase();
-        if (mappingName.includes("thumby") && !mappingName.includes("colemak")) {
-            mapping.value = thumbyNine;
-        } else {
+        if (mappingName.includes("colemak")) {
             mapping.value = colemakMapping;
+        } else {
+            mapping.value = qwertyMapping;
         }
     }
     layoutOptionsState.value = newLayoutOptions;

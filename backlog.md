@@ -34,11 +34,18 @@ bugs fixed:
 missing core features:
 - highlight all mappings that have the best typing scores among all layouts with the same learning effort or less
   (This is the same as the layouts with the lowest learning effort given their typing scores.)
-Or maybe make a graph of the "efficiency frontier" — once for single and once for bigram scores.
+    + One highlight color for layouts with thumb letter and another color for ones without.
+    + Candidates are: Flip/Twist, Quipper, Colemak and Cozy Keyboard, Thumby Quipper, Thumby Colemak.
+    + Yes, three of each seems like a good offering. 
+      We could add Qwerty with just the Thumb-E, but I think it's not a worthy choice except as a temporary experience.
+
+- Outside of the app: make a graph of the "efficiency frontier" with those six layouts and Qwerty — once for single and once for bigram scores. 
+  (Maybe add the minimum SFB layout from Oxley each with and without thumb letter use as the right fence post for the diagram.)
 
 - add some more explanations, especially for:
   + the "wide" mappings
   + Harmonic and Ortho general texts (maybe (i) icon in layout bar). But still repeat that text under the H and O variants.
+
 - check consistency of all mappings:
    + variants for different layouts should be consistent (only have differences clearly attributed to the layout)
    + maybe check if some full-mappings can be omitted, because thumb30 and 3×10 do the job well enough?
@@ -46,6 +53,9 @@ Or maybe make a graph of the "efficiency frontier" — once for single and once 
      * especially Thumby-KU
 
 bugs:
+- on Thumby / Cozy Keyboard English variant, the apostrophy is counted as "changed on same finger" on the ortho layout, 
+  but not on ANSI wide, although it's on the same position.
+  It should not be counted as changed on either, because the change is due to the wide layout, not the letter mapping.
 - fix altFinger configuration for Harmonic variants AND show it in finger viz
 - HIGH_PRIO show available mappings per layout type and set other options when needed by the mapping
 - HIGH_PRIO switch to wide (on ANSI) and split (on Ortho) whenever a layout with thumb letter is selected.
