@@ -19,6 +19,12 @@
 
     Some characters are treated specially, see mergeMapping() for details!
 
+    Terminology:
+        - Swap means two characters change position in general.
+        - Flip means a swap on the same finger.
+        - Fling means a swap to the other hand. Many of the Qwerty-derived mappings have exactly one of that!
+          E or R or T to the right pinky! (Or another finger in case of layouts like Colemak which have a lot of finger swaps.)
+        - No specific term for finger-swaps.
  */
 
 import {FlexMapping} from "../base-model.ts";
@@ -91,123 +97,6 @@ export const qwertzMapping: FlexMapping = {
         "asdfg" + "#" + "hjklö",
         "yxcvb" + "-" + "nm,.",
         "^⌥´≡"
-    ]
-}
-
-export const colemakMapping: FlexMapping = {
-    name: "Colemak",
-    description: "Released in the year 2006, the Colemak layout started a new world-wide interest in better letter mappings. " +
-        "It also pioneered the idea of leaving some crucial-for-shortcuts keys in their place. " +
-        "Colemak places a strong emphasis on avoiding single-finger bigram conflicts at the cost of many letters changing fingers. ",
-    sourceUrl: "https://colemak.com/",
-    mapping30: [
-        "qwfpg" + "jluy;",
-        "arstd" + "hneio",
-        "zxcvb" + "km,./",
-    ],
-
-    // This is the first published version of any wide mapping that I know of.
-    // It originated the idea of flipping the right-hand column of symbols to the center.
-    mappingAnsiWide: [
-        "=-",
-        "qwfpg" + "[" + "jluy;'\\",
-        "arstd" + "]" + "hneio",
-        "zxcvb" + "/" + "km,.",
-        "⌥≡"
-    ],
-}
-
-export const colemakDhMapping: FlexMapping = {
-    name: "Colemak DH",
-    description: "A 2014 variant of Colemak that places the letters D and H in better positions. " +
-        "Apparently the original Colemak assumed that the \"home row\" is the easiest to type in any position, " +
-        "but actually fingers move up and down more easily than left and right. " +
-        "Thus Colemak-DH puts less frequently used keys in the center column. " +
-        "(Note that the Colemak-DH authors prefer the ISO keyboard to achieve better staggering in the bottom row. " +
-        "That idea is valid, but the resulting tiny and much further away shift key is a no-go for me. " +
-        "Shown here is the version for the ANSI keyboard which additionally moves Z to the middle column.) ",
-    sourceUrl: "https://colemakmods.github.io/mod-dh/",
-    mapping30: [
-        "qwfpb" + "jluy;",
-        "arstg" + "mneio",
-        "xcdvz" + "kh,./",
-    ],
-
-    mappingAnsiWide: [
-        "=-",
-        "qwfpb" + "[" + "jluy;'\\",
-        "arstg" + "]" + "mneio",
-        "xcdvz" + "/" + "kh,.",
-        "⌥≡"
-    ],
-
-    // Due to Angle Mod, the Ortho version has a flip: https://colemakmods.github.io/mod-dh/keyboards.html
-    mappingSplitOrtho: [
-        "",
-        "qwfpb" + "jluy;-",
-        "arstg" + "mneio'",
-        "zxcdv" + "kh,./",
-        "⇤\\=⇥",
-    ]
-}
-
-export const colemakThumbyDMapping: FlexMapping = {
-    name: "Colemak Thumby D - The best.",
-    description: "Colemak with E on the thumb key and D taking E's home position. " +
-        "I like this variant the most, because it combines low typing effort with the lowest diff to Qwerty. " +
-        "(It' s fun to see how it undoes a lot of the shuffling which Colemak-DH introduced.) ",
-    sourceUrl: "https://colemak.com/",
-    mappingThumb30: [
-        "qwfpg" + "jluy;",
-        "arst-" + "mndio",
-        "zxcvb" + "kh,.",
-        "e"
-    ]
-}
-
-export const colemakThumbyHMapping: FlexMapping = {
-    name: "Colemak Thumby H",
-    description: `Slightly modified version of Colemak-DH that places E on the thumb key and H on an actual home key. 
-    Unlike Thumby Zero, there is no need to rescue the letter from "the worst position of the board", 
-    because Colemak already places a very rare letter there. 
-    Note that this slightly beats Colemak Thumby D on staggered keyboards where the left-bottom conflicts can be alt-fingered,
-    but it's noticeably worse on Ortho boards. And all that for having more changes to Qwerty.
-    TODO: make a custom version of this for the Harmonic 13 MidShift, because that's the only board to properly represent the angle mod. 
-    And a custom version for ortho, same reason.`,
-    // comparisonBase: colemakDhMapping,
-    mappingThumb30: [
-        "qwfpb" + "jluy;",
-        "arstg" + "-nhio",
-        "xcdvz" + "km,.",
-        "e"
-    ]
-}
-
-export const colemakThumbyNMapping: FlexMapping = {
-    name: "Colemak Thumby N",
-    description: `Slightly modified version of Colemak-DH that places E on the thumb key and H on an actual home key. 
-    Since N is more frequent than H, we move N to the middle finger where it causes less bigram conflicts.  
-    TODO: make a custom version of this for the Harmonic 13 MidShift, because that's the only board to properly represent the angle mod. 
-    And a custom version for ortho, same reason.`,
-    // comparisonBase: colemakDhMapping,
-    mappingThumb30: [
-        "qwfpb" + "jlyu;",
-        "arstg" + "-hnio",
-        "xcdvz" + "km,.",
-        "e"
-    ]
-}
-
-export const colemakThumbyLMapping: FlexMapping = {
-    name: "Colemak Thumby L",
-    description: `Just a test to compare metrics. Turns out that moving L to the home row does not cause less bigram conflicts. `,
-    // It's worse than Thumby-H, so we don't show it in the app :D
-    // comparisonBase: colemakDhMapping,
-    mappingThumb30: [
-        "qwfpb" + "j-uy;",
-        "arstg" + "mnlio",
-        "xcdvz" + "kh,.",
-        "e"
     ]
 }
 
@@ -305,6 +194,35 @@ export const qwertyFlipTwistThumbMapping = {
     ]
 }
 
+export const qwertyFlipTwistThumbFlingR = {
+    name: "Qwerty Flip/Twist + Thumb + Fling R",
+    techName: "Qwerty-FlipTwist-Thumb-Fling-R",
+    sourceUrl: "",
+    description: `Instead of Qwerty Flip/Twist's OLP "Spin" to improve right pinky use, we do a hand-swap (aka "fling") of R 
+    which brings all top nine letters to a home key and simultaneously removes a lot of SFBs. `,
+    mappingThumb30: [
+        "qwbf;" + "yuklp",
+        "asdtg" + "hnior",
+        "zxcv" + "-" + "jm,.",
+        "e"
+    ]
+}
+
+export const qwertyFlipTwistThumbFlingT = {
+    name: "Qwerty Flip/Twist + Thumb + Fling T",
+    techName: "Qwerty-FlipTwist-Thumb-Fling-T",
+    sourceUrl: "",
+    description: `Instead of Qwerty Flip/Twist's OLP "Spin" to improve right pinky use, we do a hand-swap (aka "fling") of T 
+    which brings all top nine letters to a home key and simultaneously removes a lot of SFBs. 
+    We can see how the Thumby layout derives from this one...`,
+    mappingThumb30: [
+        "qwbf;" + "yuklp",
+        "asdrg" + "hniot",
+        "zxcv" + "-" + "jm,.",
+        "e"
+    ]
+}
+
 export const qwertyFlipTwistThumbT = {
     name: "Qwerty Flip/Twist + Thumb-T",
     techName: "Qwerty-FlipTwist-Thumb-T",
@@ -313,7 +231,7 @@ export const qwertyFlipTwistThumbT = {
     This alternative moves T to the thumb to break the overuse of the index finger and the RT bigram conflict. 
     This layout changes no more letters than Qwerty Flip/Spin, but has much better metrics that can also be felt in practice. 
     Good single-key metrics and bad SFBs from E on its Qwerty finger. 
-    This could be improved by swapping E to the right pinky... and that is bascially the Qwpr layout. `,
+    This could be improved by swapping E to the right pinky... and that is basically the Qwpr layout. `,
     mappingThumb30: [
         "qwdfb" + "yukl;",
         "aserg" + "hniop",
@@ -336,6 +254,19 @@ export const qwertyFlipTwistThumbR = {
         "r"
     ]
 }
+
+/**
+Full list of flip/fling layouts with one thumb key letter and hand swap:
+ - A S D always stay in place
+ - NIO always flips to home row on same finger
+ - E moves to the thumb key or the right pinky
+ - R or T takes the other of (thumb key, right pinky), while the remaining T or R stays on left index home position.
+ - small adjustments like the KU swap in Thumby or the P swap to right hand (instead of ;) on QWP Thumb-R.
+Just the ERT distribution leads to 4 variations.
+The KU swap is beneficial in all cases.
+Maybe I should check if the P swap improves Thumby... but really I am not interested in marginal improvements
+at the cost of more swaps to learn...
+*/
 
 export const qwertyFlipTwistSpinMapping = {
     name: "Qwerty Flip/Twist/Spin",
@@ -376,7 +307,7 @@ export const quipperMapping = {
     ]
 }
 
-export const quipperThumbMapping = {
+export const quipperThumbRMapping = {
     name: "Quipper with Thumb-R",
     techName: "Qwp-Thumb-R",
     sourceUrl: "",
@@ -389,6 +320,22 @@ export const quipperThumbMapping = {
         "asdtg" + "hnioe",
         "zxcv" + "-" + "jm,.",
         "r"
+    ]
+}
+
+export const quipperThumbTMapping = {
+    name: "Quipper with Thumb-T",
+    techName: "Qwp-Thumb-T",
+    sourceUrl: "",
+    description: `We super-charge Quipper by placing T on the thumb, R on T's home spot, and B in R's old spot. 
+    This means that the Quipper Home-Row stays unchanged, 
+    making it a super-easy upgrade with a lot of benefits both in single-key effort and avoided bigram conflicts. 
+    Interestingly, we end up with very similar metrics to Thumby Original, despite rotating the very frequent letters E, T, and R. `,
+    mappingThumb30: [
+        "qwpbf" + "yukl;",
+        "asdrg" + "hnioe",
+        "zxcv" + "-" + "jm,.",
+        "t"
     ]
 }
 
@@ -420,8 +367,32 @@ export const thumbyBilingual = {
     ]
 }
 
-export const thumbyOriginalMoreChanges = {
-    name: "Thumby Original, improve more letters",
+export const thumbyOriginalPlusP = {
+    name: "Thumby Original plus P",
+    description: `Trying out Qwpr's P-Fling which also keeps B on the traditional finger. 
+    Qwpr needs this swap because of the PE bigram, but for Thumby it has no benefits.`,
+    mappingThumb30: [
+        "qwpfb" + "y" + "kul;",
+        "asdrg" + "hniot",
+        "zxcv" + "-" + "jm,.",
+        "e",
+    ]
+}
+
+export const thumbyOriginalPlusC = {
+    name: "Thumby Original plus C",
+    description: `Swapping C to a better position on its traditions finger improves the single-key metrics 
+    and also keeps B on the traditional finger. `,
+    mappingThumb30: [
+        "qwcfb" + "y" + "kulp",
+        "asdrg" + "hniot",
+        "zx;v" + "-" + "jm,.",
+        "e",
+    ]
+}
+
+export const thumbyOriginalPlusCH = {
+    name: "Thumby Original plus C and H",
     description: `Swapping C and H on same finger to better positions improves the single-key metrics, 
     but doesn't have significant impact in practical experience. 
     Especially on my ortho keyboard, the old and new H positions are similarly easy to reach. `,
@@ -433,12 +404,12 @@ export const thumbyOriginalMoreChanges = {
     ]
 }
 
-export const thumbyOrigSwapH = {
-    name: "Thumby Original, swap H",
+export const thumbyOrigFlingH = {
+    name: "Thumby Original, fling H",
     description: `(Just an experiment, NOT a recommended variant.) 
     Thumby Original has great bigram conflict avoidance due to flipping T to the right hand. 
-    This variant tries improving H's position without having to move D or S as Thumby does. 
-    It's a nice try, but neither single nor bigram score approaches the values of Thumby-RST.`,
+    This variant tries improving H's position without having to move D or S as Thumby Nine does. 
+    It's a nice try, but neither single nor bigram score approaches the values of Thumby Nine RST.`,
     mappingThumb30: [
         "qwfhb" + "y" + "kulp",
         "asdrg" + ";niot",
@@ -732,34 +703,147 @@ export const gemuetlichesMapping = {
     ],
 }
 
+export const colemakMapping: FlexMapping = {
+    name: "Colemak",
+    description: "Released in the year 2006, the Colemak layout started a new world-wide interest in better letter mappings. " +
+        "It also pioneered the idea of leaving some crucial-for-shortcuts keys in their place. " +
+        "Colemak places a strong emphasis on avoiding single-finger bigram conflicts at the cost of many letters changing fingers. ",
+    sourceUrl: "https://colemak.com/",
+    mapping30: [
+        "qwfpg" + "jluy;",
+        "arstd" + "hneio",
+        "zxcvb" + "km,./",
+    ],
+
+    // This is the first published version of any wide mapping that I know of.
+    // It originated the idea of flipping the right-hand column of symbols to the center.
+    mappingAnsiWide: [
+        "=-",
+        "qwfpg" + "[" + "jluy;'\\",
+        "arstd" + "]" + "hneio",
+        "zxcvb" + "/" + "km,.",
+        "⌥≡"
+    ],
+}
+
+export const colemakDhMapping: FlexMapping = {
+    name: "Colemak DH",
+    description: "A 2014 variant of Colemak that places the letters D and H in better positions. " +
+        "Apparently the original Colemak assumed that the \"home row\" is the easiest to type in any position, " +
+        "but actually fingers move up and down more easily than left and right. " +
+        "Thus Colemak-DH puts less frequently used keys in the center column. " +
+        "(Note that the Colemak-DH authors prefer the ISO keyboard to achieve better staggering in the bottom row. " +
+        "That idea is valid, but the resulting tiny and much further away shift key is a no-go for me. " +
+        "Shown here is the version for the ANSI keyboard which additionally moves Z to the middle column.) ",
+    sourceUrl: "https://colemakmods.github.io/mod-dh/",
+    mapping30: [
+        "qwfpb" + "jluy;",
+        "arstg" + "mneio",
+        "xcdvz" + "kh,./",
+    ],
+
+    mappingAnsiWide: [
+        "=-",
+        "qwfpb" + "[" + "jluy;'\\",
+        "arstg" + "]" + "mneio",
+        "xcdvz" + "/" + "kh,.",
+        "⌥≡"
+    ],
+
+    // Due to Angle Mod, the Ortho version has a flip: https://colemakmods.github.io/mod-dh/keyboards.html
+    mappingSplitOrtho: [
+        "",
+        "qwfpb" + "jluy;-",
+        "arstg" + "mneio'",
+        "zxcdv" + "kh,./",
+        "⇤\\=⇥",
+    ]
+}
+
+export const colemakThumbyDMapping: FlexMapping = {
+    name: "Colemak Thumby D - The best.",
+    description: "Colemak with E on the thumb key and D taking E's home position. " +
+        "I like this variant the most, because it combines low typing effort with the lowest diff to Qwerty. " +
+        "(It' s fun to see how it undoes a lot of the shuffling which Colemak-DH introduced.) ",
+    sourceUrl: "https://colemak.com/",
+    mappingThumb30: [
+        "qwfpg" + "jluy;",
+        "arst-" + "mndio",
+        "zxcvb" + "kh,.",
+        "e"
+    ]
+}
+
+export const colemakThumbyHMapping: FlexMapping = {
+    name: "Colemak Thumby H",
+    description: `Slightly modified version of Colemak-DH that places E on the thumb key and H on an actual home key. 
+    Unlike Thumby Zero, there is no need to rescue the letter from "the worst position of the board", 
+    because Colemak already places a very rare letter there. 
+    Note that this slightly beats Colemak Thumby D on staggered keyboards where the left-bottom conflicts can be alt-fingered,
+    but it's noticeably worse on Ortho boards. And all that for having more changes to Qwerty.
+    TODO: make a custom version of this for the Harmonic 13 MidShift, because that's the only board to properly represent the angle mod. 
+    And a custom version for ortho, same reason.`,
+    // comparisonBase: colemakDhMapping,
+    mappingThumb30: [
+        "qwfpb" + "jluy;",
+        "arstg" + "-nhio",
+        "xcdvz" + "km,.",
+        "e"
+    ]
+}
+
+export const colemakThumbyNMapping: FlexMapping = {
+    name: "Colemak Thumby N",
+    description: `Slightly modified version of Colemak-DH that places E on the thumb key and H on an actual home key. 
+    Since N is more frequent than H, we move N to the middle finger where it causes less bigram conflicts.  
+    TODO: make a custom version of this for the Harmonic 13 MidShift, because that's the only board to properly represent the angle mod. 
+    And a custom version for ortho, same reason.`,
+    // comparisonBase: colemakDhMapping,
+    mappingThumb30: [
+        "qwfpb" + "jlyu;",
+        "arstg" + "-hnio",
+        "xcdvz" + "km,.",
+        "e"
+    ]
+}
+
+export const colemakThumbyLMapping: FlexMapping = {
+    name: "Colemak Thumby L",
+    description: `Just a test to compare metrics. Turns out that moving L to the home row does not cause less bigram conflicts. `,
+    // It's worse than Thumby-H, so we don't show it in the app :D
+    // comparisonBase: colemakDhMapping,
+    mappingThumb30: [
+        "qwfpb" + "j-uy;",
+        "arstg" + "mnlio",
+        "xcdvz" + "kh,.",
+        "e"
+    ]
+}
+
 export const allMappings: FlexMapping[] = [
     qwertyMapping,
     qwertyWideMapping,
     // qwertzMapping,
-    colemakMapping,
-    colemakDhMapping,
-    colemakThumbyDMapping,
-    colemakThumbyHMapping,
-    colemakThumbyLMapping,
-    colemakThumbyNMapping,
-    normanMapping,
-    // minimak4Mapping,
-    // minimak8Mapping,
-    minimakFullMapping,
     qwertyFlipTwistMapping,
     qwertyFlipTwistSpinMapping,
     qwertyFlipTwistThumbMapping,
-    qwertyFlipTwistThumbR,
-    qwertyFlipTwistThumbT,
-    // etniMapping,
+    qwertyFlipTwistThumbFlingR,
+    qwertyFlipTwistThumbFlingT,
+    // next two excluded, because Qwp-Thumb{RT} is the better version of the same idea.
+    // qwertyFlipTwistThumbR,
+    // qwertyFlipTwistThumbT,
+    // etniMapping, // excluded, because the weird home finger position isn't reflected in our metrics (and no useable to me in practice).
     quipperMapping,
-    quipperThumbMapping,
+    quipperThumbRMapping,
+    quipperThumbTMapping,
     // thumbyZero, // aka Qwerty Thumb-E
     // thumbyNero,
     // thumbyEntry,
     thumbyOriginal,
-    thumbyOrigSwapH,
-    thumbyOriginalMoreChanges,
+    thumbyOrigFlingH,
+    // thumbyOriginalPlusP,
+    thumbyOriginalPlusC,
+    thumbyOriginalPlusCH,
     thumbyNine,
     thumbyLeft,
     thumby9ku,
@@ -768,5 +852,15 @@ export const allMappings: FlexMapping[] = [
     thumby9kul,
     thumby9t,
     thumbyBilingual,
+    // minimak4Mapping,
+    // minimak8Mapping,
+    minimakFullMapping,
+    colemakMapping,
+    colemakDhMapping,
+    colemakThumbyDMapping,
+    colemakThumbyHMapping,
+    colemakThumbyLMapping,
+    colemakThumbyNMapping,
+    normanMapping,
     // gemuetlichesMapping,
 ]
