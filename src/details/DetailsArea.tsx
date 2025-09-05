@@ -259,6 +259,7 @@ export function BigramEffortDetails({layout, mapping}: BigramEffortDetailsProps)
         <BigramDetailsLegendItem bigramType={BigramType.OppositeRow} frequency={freqs[BigramType.OppositeRow]}>
             Two keys on opposite rows (upper and lower letter row) are awkward to type in sequence,
             because curling a finger moves the palm up and stretching a finger moves the palm down.
+            This count is sometimes referred to as "scissor" movement in the literature.
         </BigramDetailsLegendItem>
         <BigramDetailsLegendItem bigramType={BigramType.InvolvesThumb} frequency={freqs[BigramType.InvolvesThumb]}>
             Bigrams where one letter is on a thumb key are not shown, because (most people's) thumbs move
