@@ -21,6 +21,13 @@ done:
 - add Unicode mappings for bottom row modifiers, so that FlexMappings can change them. Minimum affected keys are AltGr and what's to the right of it.
 - add "FlexMapping.comparisonBase" so that Qwertz and Colemak can be chosen by layouts based on those.
 - inner index column should not count as bigram conflict, because of nice alt-fingering.
+- highlight all mappings that have the best typing scores among all layouts with the same learning effort or less
+  (This is the same as the layouts with the lowest learning effort given their typing scores.)
+    + One highlight color for layouts with thumb letter and another color for ones without.
+    + Candidates are: Flip/Twist, Quipper, Colemak and Cozy Keyboard, Thumby Quipper, Thumby Colemak.
+    + Yes, three of each seems like a good offering.
+      We could add Qwerty with just the Thumb-E, but I think it's not a worthy choice except as a temporary experience.
+
 
 bugs fixed:
  - Learnability Score for Wide ANSI in Mapping List is changing when I select different mappings =:-[]
@@ -32,13 +39,6 @@ bugs fixed:
 
 
 missing core features:
-- highlight all mappings that have the best typing scores among all layouts with the same learning effort or less
-  (This is the same as the layouts with the lowest learning effort given their typing scores.)
-    + One highlight color for layouts with thumb letter and another color for ones without.
-    + Candidates are: Flip/Twist, Quipper, Colemak and Cozy Keyboard, Thumby Quipper, Thumby Colemak.
-    + Yes, three of each seems like a good offering. 
-      We could add Qwerty with just the Thumb-E, but I think it's not a worthy choice except as a temporary experience.
-
 - Outside of the app: make a graph of the "efficiency frontier" with those six layouts and Qwerty — once for single and once for bigram scores. 
   (Maybe add the minimum SFB layout from Oxley each with and without thumb letter use as the right fence post for the diagram.)
 
