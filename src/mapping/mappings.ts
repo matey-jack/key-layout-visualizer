@@ -81,6 +81,13 @@ export const qwertzMapping: FlexMapping = {
     techName: "QWERTZ",
     description: "Qwerty, but with z/y swapped and three more letters added instead of extended punctuation.",
     sourceUrl: "https://en.wikipedia.org/wiki/QWERTZ",
+    // This is not correct, but needed as diffing base for the Cozy German layout that is only defined as a mapping30.
+    // Otherwise the app will crash just by switching to Ortho layout on any mapping. :/
+    mapping30: [
+        "qwert" + "zuiop",
+        "asdfg" + "jnkl;",
+        "yxcvb" + "hm,./",
+    ],
     mappingAnsi: [
         "ß´",
         "qwert" + "zuiopü+#",
@@ -388,7 +395,7 @@ export const cozyEnglish = {
     ]
 }
 
-export const cozyGerman = {
+export const cozyGerman: FlexMapping = {
     name: "The Cozy Keyboard, German variant",
     techName: "cozy-german",
     sourceUrl: "https://github.com/matey-jack/gemuetliche-tastatur",
@@ -398,6 +405,7 @@ export const cozyGerman = {
         "and Y and Z stay as in the standard German Qwertz. " +
         "This reflects German letter frequencies and also makes it a bit easier to switch " +
         "from the legacy Qwerty/Qwertz layout. ",
+    comparisonBase: qwertzMapping,
     mappingThumb30: [
         "qwbf-" + "z" + "kuop",
         "asdrg" + "hnilt",
@@ -811,12 +819,13 @@ export const colemakThumbyDMapping: FlexMapping = {
     localMaximum: true,
     description: "Colemak with E on the thumb key and D taking E's home position. " +
         "I like this variant the most, because it combines low typing effort with the lowest diff to Qwerty. " +
-        "(It' s fun to see how it undoes a lot of the shuffling which Colemak-DH introduced.) ",
+        "(And it doesn't need all the shuffling of Colemak-DH on the left hand, while optionally allowing for " +
+        "the HM swap on the right hand, depending on preference.) ",
     sourceUrl: "https://colemak.com/",
     mappingThumb30: [
         "qwfpg" + "jluy;",
-        "arst-" + "mndio",
-        "zxcvb" + "kh,.",
+        "arst-" + "hndio",
+        "zxcvb" + "km,.",
         "e"
     ]
 }
@@ -867,10 +876,45 @@ export const colemakThumbyLMapping: FlexMapping = {
     ]
 }
 
+// straw man mappings to represent the limit of what's possible in SFBs (bigram effort).
+// (Similar to the Top Nine layout showing a minimal single key effort on ANSI.)
+// I spent minimal research effort and just went to https://cyanophage.github.io/
+// sorted it by SFB and picked the first using a thumb letter and the first using no thumb letter.
+
+export const snthMapping: FlexMapping = {
+    name: "SNTH",
+    sourceUrl: "https://www.reddit.com/r/KeyboardLayouts/comments/18jefux/snth/",
+    sourceLinkTitle: "r/KeyboardLayouts",
+    description: `There are so many mappings proposed nowadays, some of them probably have no actual users,
+     because even their creator has moved on. 
+     But SNTH stands out on https://cyanophage.github.io/ as the layout with the lowest SFB.
+     (My version here looks different because of constraints of my data model.)`,
+    mappingThumb30: [
+        "xpdmq" + "-you,",
+        "snthv" + "gcaei",
+        "fbklj" + "zw;.",
+        "r"
+    ]
+}
+
+export const rtnaMapping: FlexMapping = {
+    name: "RTNA",
+    sourceUrl: "https://docs.google.com/document/d/1_a5Nzbkwyk1o0bvTctZrtgsee9jSP-6I0q3A0_9Mzm0/edit?tab=t.0",
+    sourceLinkTitle: "The Keyboard Layouts doc, v2",
+    description: `See the last page of the linked document. It was actually made as a straw man. `,
+    mapping30: [
+        "xdh.q" + "bfouj",
+        "rtna;" + "gweis",
+        "lkm,/" + "pczyv",
+    ]
+}
+
+// TODO: RSTDH is a kinda famous Thumby variant.
+
 export const allMappings: FlexMapping[] = [
     qwertyMapping,
     qwertyWideMapping,
-    // qwertzMapping,
+    qwertzMapping,
     qwertyFlipTwistMapping,
     qwertyFlipTwistSpinMapping,
     qwertyFlipTwistThumbMapping,
@@ -878,6 +922,7 @@ export const allMappings: FlexMapping[] = [
     qwertyFlipTwistThumbFlingT,
     cozyEnglish,
     cozyGerman,
+    // gemuetlichesMapping,
     cozyFlingH,
     // cozyPlusP,
     cozyPlusC,
@@ -910,5 +955,9 @@ export const allMappings: FlexMapping[] = [
     colemakThumbyLMapping,
     colemakThumbyNMapping,
     normanMapping,
-    // gemuetlichesMapping,
+    // Those two actually don't have significantly better metrics than Colemak and Thumby Colemak.
+    // Other than a bug in my code, the reason for the small difference could be the different weights that I use,
+    // compared to whatever weights those layouts for optimized for.
+    // snthMapping,
+    // rtnaMapping,
 ]

@@ -53,7 +53,9 @@ missing core features:
      * especially Thumby-KU
 
 bugs:
-- on Thumby / Cozy Keyboard English variant, the apostrophy is counted as "changed on same finger" on the ortho layout, 
+- the comparisonBase mapping needs to have definitions on all layouts, thus at least a mapping30.
+   Add that for qwertz and maybe add a full mapping for the ortho board to make the comparison more meaningful.
+- on Thumby / Cozy Keyboard English variant, the apostrophe is counted as "changed on same finger" on the ortho layout, 
   but not on ANSI wide, although it's on the same position.
   It should not be counted as changed on either, because the change is due to the wide layout, not the letter mapping.
 - fix altFinger configuration for Harmonic variants AND show it in finger viz
