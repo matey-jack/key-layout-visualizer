@@ -266,8 +266,20 @@ body {
     font-style: italic;
 }
 
-.mapping-list-item.selected {
+.mapping-list-item.recommended {
     background-color: #b8ebf8;
+}
+
+.mapping-list-item.recommended.thumb-letter {
+    background-color: #a1c67e;
+}
+
+.mapping-list-item.selected:not(.recommended) {
+    background-color: #f3eaac;
+}
+
+.mapping-list-item.selected.recommended {
+    font-weight: bold;
 }
 
 .mapping-list-item button {

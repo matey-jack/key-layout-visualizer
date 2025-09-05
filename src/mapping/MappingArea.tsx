@@ -45,9 +45,11 @@ interface MappingListItemProps {
 }
 
 export function MappingListItem({layout, mapping, selectedMapping}: MappingListItemProps) {
-    const isSelected = selectedMapping.value.name === mapping.name;
+    const selectedClass = selectedMapping.value.name === mapping.name ? " selected" : "";
+    const recommendedClass = mapping.localMaximum ? " recommended" : "";
+    const thumbLetterClass = !!mapping.mapping30 ? " thumb-letter" : "";
     return <tr
-        class={"mapping-list-item" + (isSelected ? " selected" : "")}
+        class={"mapping-list-item" + selectedClass + recommendedClass + thumbLetterClass}
         onClick={() => selectedMapping.value = mapping}
     >
         <td>
