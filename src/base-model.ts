@@ -36,6 +36,7 @@ export const isLayoutViz = (t: VisualizationType) =>
 export interface FlexMapping {
     name: string;
     techName?: string;
+    localMaximum?: boolean,
     description?: string;
     sourceUrl?: string;
     sourceLinkTitle?: string;
