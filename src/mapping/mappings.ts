@@ -392,7 +392,14 @@ export const cozyEnglish = {
         "asdrg" + "hniot",
         "zxcv" + "-" + "jm,.",
         "e",
-    ]
+    ],
+    mappingSplitOrtho: [
+        "",
+        "qwbf'" + "ykulp-",
+        "asdrg" + "hniot;",
+        "zxcv=" + "jm,./",
+        "⇤\\e⇥",
+    ],
 }
 
 export const cozyGerman: FlexMapping = {
@@ -547,9 +554,9 @@ export const topNine: FlexMapping = {
     ],
     mappingSplitOrtho: [
         "",
-        "qwdfb" + "y" + "kulp=",
+        "qwdfb" + "ykulp=",
         "asrtg" + "-nioh'",
-        "zxcv" + ";" + "jm,./",
+        "zxcv;" + "jm,./",
         "⇤\\e⇥",
     ],
     mappingHarmonic13wide: [
@@ -883,13 +890,14 @@ export const maltronMapping: FlexMapping = {
     sourceUrl: "https://www.maltron.com/the-maltron-letter-layout-advantage.html",
     sourceLinkTitle: "Maltron Company Website",
     description: `Before the keyboard mapping community existed, the Maltron company produced and marketed keyboards that 
-    had their own letter mapping... and remarkedly with a letter on a thumb key. `,
-    // TODO: actually the dot '.' seems to be duplicated and mapped on both hands. place
-    mappingThumb30: [
-        "qpycb" + "vmuzl",
-        "anisf" + "dthor",
-        ".,jg'" + ".wk-x",
-        "e",
+    had their own letter mapping... and remarkedly with a letter on a thumb key. 
+    This is designed exclusively for a split ortho board and I'll leave it at that.`,
+    mappingSplitOrtho: [
+        "",
+        "qpycb" + "vmuzl=",
+        "anisf" + "dthor'",
+        ".,jg;" + "/wk-x",
+        "⇤\\e⇥",
     ],
 }
 
@@ -898,13 +906,37 @@ export const rsthdMapping: FlexMapping = {
     sourceUrl: "https://xsznix.wordpress.com/2016/05/16/introducing-the-rsthd-layout/",
     sourceLinkTitle: `Announcement Blog Post`,
     description: `The first (or at least an early example) of a layout with thumb letter, now created with the modern metrics 
-    of the keyboard community in mind: not just frequent home row use and SFBs, but rolls, scissors, and more.`,
-    mappingThumb30: [
-        "jcyfk" + "zl,uq",
-        "rsthd" + "mnaio",
+    of the keyboard community in mind: not just frequent home row use and SFBs, but rolls, scissors, and more.
+    Note that RSTD with thumb-E is only defined for Ortho boards, so the wide ANSI version here is an adaption 
+    created in a rush just to let the app calculate the metrics.
+    It also has a variant without thumb-E which is shown here on the ANSI non-wide and Harmonic layouts. 
+    Switch to wide ANSI or split Ortho to see the actually famous version. `,
+    // our Thumb30 abstraction doesn't fit this layout because of different '/' placement.
+    // mappingThumb30: [
+    //     "jcyfk" + "zl,uq",
+    //     "rsthd" + "mnaio",
+    //     "/vgpb" + "xw.;'",
+    //     "e"
+    // ],
+    mapping30: [
+        "jcyfk" + "zlou;",
+        "rsthd" + "mneia",
+        "qvgpb" + "xw,./"
+    ],
+    mappingAnsiWide: [
+        "=\\",
+        "jcyfk" + "-" + "zl,uq'",
+        "rsthd" + "b" + "mnaio",
+        "/vgp" + "[]" + "xw.;",
+        "e⌥",
+    ],
+    mappingSplitOrtho: [
+        "",
+        "jcyfk" + "zl,uq-",
+        "rsthd" + "mnaio=",
         "/vgpb" + "xw.;'",
-        "e"
-    ]
+        "⇤\\e⇥",
+    ],
 }
 
 // straw man mappings to represent the limit of what's possible in SFBs (bigram effort).

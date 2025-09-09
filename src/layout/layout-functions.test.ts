@@ -2,8 +2,8 @@ import {describe, expect, it} from 'vitest';
 
 import {Finger, Hand, hand, KeyboardRows, MappingChange} from "../base-model.ts";
 import {characterToFinger, diffSummary, diffToBase, fillMapping, mergeMapping,} from "./layout-functions.ts";
-import {normanMapping, qwertyMapping, thumbyNine, thumbyZero} from "../mapping/mappings.ts"
-import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
+import {normanMapping, qwertyMapping, cozyEnglish, thumbyZero, topNine} from "../mapping/mappings.ts"
+import {ansiLayoutModel} from "./ansiLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
@@ -25,6 +25,7 @@ export const allLayoutModels = [
 function hasLettersNumbersAndProsePunctuation(filledMapping: string[][]) {
     const allChars = filledMapping.flat()
         .filter((entry) => entry.length == 1)
+        .sort()
     expect(allChars).to.include.members("abcdefghijklmnopqrstuvwxyz".split(''));
     expect(allChars).to.include.members("0123456789".split(''));
     expect(allChars).to.include.members(",.;-/'".split(''));
@@ -49,7 +50,7 @@ describe('fillMapping', () => {
         }
         if (model.thumb30KeyMapping) {
             it(`${model.name} Thumb30 frame maps all important characters`, () => {
-                hasLettersNumbersAndProsePunctuation(mergeMapping(model.thumb30KeyMapping!!, ["", ...thumbyNine.mappingThumb30!!]));
+                hasLettersNumbersAndProsePunctuation(mergeMapping(model.thumb30KeyMapping!!, ["", ...cozyEnglish.mappingThumb30!!]));
             });
         }
     });
@@ -60,12 +61,12 @@ describe('fillMapping', () => {
 
     // this is currently not used in the app, but let's keep it working
     it(`Split Ortho full layout maps all important characters`, () => {
-        hasLettersNumbersAndProsePunctuation(mergeMapping(splitOrthoLayoutModel.fullMapping, thumbyNine.mappingSplitOrtho!!));
+        hasLettersNumbersAndProsePunctuation(mergeMapping(splitOrthoLayoutModel.fullMapping, cozyEnglish.mappingSplitOrtho!!));
     });
 
     // this is currently not used in the app, but let's keep it working
     it(`Harmonic 13 wide full layout maps all important characters`, () => {
-        hasLettersNumbersAndProsePunctuation(mergeMapping(harmonic13WideLayoutModel.fullMapping, thumbyNine.mappingHarmonic13wide!!));
+        hasLettersNumbersAndProsePunctuation(mergeMapping(harmonic13WideLayoutModel.fullMapping, topNine.mappingHarmonic13wide!!));
     });
 
     // TODO: fullMappings for other Harmonic variants need clean up first
