@@ -49,6 +49,19 @@ export const qwertyMapping: FlexMapping = {
     ],
 }
 
+export const qweertyMapping: FlexMapping = {
+    name: "Qweerty",
+    description: `This layout does not move any key, but simply provides an additional key mapping for E on a thumb key. 
+        It is not made for practical use, but simply to show the effect of the thumb key on the typing metrics.
+        Or for people to just try how a thumb key would feel. `,
+    mappingThumb30: [
+        "qwért" + "yuiop",
+        "asdfg" + "hjkl;",
+        "zxcvb" + "nm,.",
+        "e"
+    ],
+}
+
 export const qwertyWideMapping: FlexMapping = {
     name: "Qwerty Wide",
     description: `Small changes to Qwerty for a wide hand position. 
@@ -74,6 +87,21 @@ export const qwertyWideMapping: FlexMapping = {
         "asdfg" + "jnkl;",
         "zxcvb" + "hm,./",
     ],
+}
+
+export const enTryMapping: FlexMapping = {
+    name: "Thumby Entry (or EN-try!)",
+    description: "Thumb-E plus a home-row N as low-key way to feel into optimized keyboard layouts. " +
+        "Additionally provides synergy, because the common EN/NE bigrams don't require you to pinch your hand. ",
+    // Writing upper and lower row as three strings emphasizes the center columns of the Harmonic and ANSI keyboards.
+    // On Ortho and Harmonic Narrow, it will just be 5 + 5 on each side.
+    mappingThumb30: [
+        "qwbrt" + "y" + "uiop",
+        "asdfg" + "hnkl;",
+        "zxcv" + "-" + "jm,.",
+        "e",
+    ],
+    // TODO: maybe provide this as ANSI full mapping to minimize insignificant differences in punctuation and modifier keys.
 }
 
 export const qwertzMapping: FlexMapping = {
@@ -502,21 +530,6 @@ export const thumbyNero: FlexMapping = {
         "asdfg" + "hnkl;",
         "zxcvb" + "jm,./",
     ],
-}
-
-export const thumbyEntry: FlexMapping = {
-    name: "Thumby Entry (or EN-try!)",
-    description: "Combines Thumby Zero + Nero to fix Qwerty's two biggest flaws. " +
-        "Additionally provides synergy, because the common EN/NE bigrams don't require you to pinch your hand. ",
-    // Writing upper and lower row as three strings emphasizes the center columns of the Harmonic and ANSI keyboards.
-    // On Ortho and Harmonic Narrow, it will just be 5 + 5 on each side.
-    mappingThumb30: [
-        "qwbrt" + "y" + "uiop",
-        "asdfg" + "hnkl;",
-        "zxcv" + "-" + "jm,.",
-        "e",
-    ],
-    // TODO: maybe provide this as ANSI full mapping to minimize insignificant differences in punctuation and modifier keys.
 }
 
 export const topNine: FlexMapping = {
@@ -972,11 +985,11 @@ export const rtnaMapping: FlexMapping = {
     ]
 }
 
-// TODO: RSTDH is a kinda famous Thumby variant.
-
 export const allMappings: FlexMapping[] = [
     qwertyMapping,
     qwertyWideMapping,
+    qweertyMapping,
+    enTryMapping,
     qwertzMapping,
     qwertyFlipTwistMapping,
     qwertyFlipTwistSpinMapping,
@@ -1000,7 +1013,6 @@ export const allMappings: FlexMapping[] = [
     quipperThumbyMapping,
     // thumbyZero, // aka Qwerty Thumb-E
     // thumbyNero,
-    // thumbyEntry,
     topNine,
     topNineLeftThumb,
     // topNineDifferentSymbols,
