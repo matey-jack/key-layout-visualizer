@@ -876,6 +876,37 @@ export const colemakThumbyLMapping: FlexMapping = {
     ]
 }
 
+// There are too many contemporary mappings and I have no good way to select representative ones,
+// but I do want to include two historically importatn ones that are actually using a letter on thumb key.
+export const maltronMapping: FlexMapping = {
+    name: "Maltron",
+    sourceUrl: "https://www.maltron.com/the-maltron-letter-layout-advantage.html",
+    sourceLinkTitle: "Maltron Company Website",
+    description: `Before the keyboard mapping community existed, the Maltron company produced and marketed keyboards that 
+    had their own letter mapping... and remarkedly with a letter on a thumb key. `,
+    // TODO: actually the dot '.' seems to be duplicated and mapped on both hands. place
+    mappingThumb30: [
+        "qpycb" + "vmuzl",
+        "anisf" + "dthor",
+        ".,jg'" + ".wk-x",
+        "e",
+    ],
+}
+
+export const rsthdMapping: FlexMapping = {
+    name: "RSTHD",
+    sourceUrl: "https://xsznix.wordpress.com/2016/05/16/introducing-the-rsthd-layout/",
+    sourceLinkTitle: `Announcement Blog Post`,
+    description: `The first (or at least an early example) of a layout with thumb letter, now created with the modern metrics 
+    of the keyboard community in mind: not just frequent home row use and SFBs, but rolls, scissors, and more.`,
+    mappingThumb30: [
+        "jcyfk" + "zl,uq",
+        "rsthd" + "mnaio",
+        "/vgpb" + "xw.;'",
+        "e"
+    ]
+}
+
 // straw man mappings to represent the limit of what's possible in SFBs (bigram effort).
 // (Similar to the Top Nine layout showing a minimal single key effort on ANSI.)
 // I spent minimal research effort and just went to https://cyanophage.github.io/
@@ -955,9 +986,12 @@ export const allMappings: FlexMapping[] = [
     colemakThumbyLMapping,
     colemakThumbyNMapping,
     normanMapping,
+    // full 31 key rearrangements
+    maltronMapping,
+    rsthdMapping,
     // Those two actually don't have significantly better metrics than Colemak and Thumby Colemak.
     // Other than a bug in my code, the reason for the small difference could be the different weights that I use,
-    // compared to whatever weights those layouts for optimized for.
+    // compared to whatever metrics and weights those layouts for optimized for.
     // snthMapping,
     // rtnaMapping,
 ]
