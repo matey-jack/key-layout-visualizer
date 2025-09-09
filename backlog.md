@@ -27,11 +27,13 @@ done:
     + Candidates are: Flip/Twist, Quipper, Colemak and Cozy Keyboard, Thumby Quipper, Thumby Colemak.
     + Yes, three of each seems like a good offering.
       We could add Qwerty with just the Thumb-E, but I think it's not a worthy choice except as a temporary experience.
+- Outside of the app: make a graph of the "efficiency frontier" with those six layouts and Qwerty — once for single and once for bigram scores. 
+  (Maybe add the minimum SFB layout from Oxley each with and without thumb letter use as the right fence post for the diagram.)
 
 
 bugs fixed:
- - Learnability Score for Wide ANSI in Mapping List is changing when I select different mappings =:-[]
- - Frequency for Thumby bigrams should be counted, even if there is no wide layout.
+- Learnability Score for Wide ANSI in Mapping List is changing when I select different mappings =:-[]
+- Frequency for Thumby bigrams should be counted, even if there is no wide layout.
 - validate mapping/layout/options combination from URL data, so that the app doesn't crash
 - handle Harmonic variants without a matching mapping:
   + when switching to the Harmonic layout with an unsupported mapping already set
@@ -39,8 +41,7 @@ bugs fixed:
 
 
 missing core features:
-- Outside of the app: make a graph of the "efficiency frontier" with those six layouts and Qwerty — once for single and once for bigram scores. 
-  (Maybe add the minimum SFB layout from Oxley each with and without thumb letter use as the right fence post for the diagram.)
+- Support the Qweerty layout: correct bigram stats when a letter occurs twice in the mapping.
 
 - add some more explanations, especially for:
   + the "wide" mappings
@@ -52,15 +53,22 @@ missing core features:
    + related thumby variants should be consistent (only have the intended differences)
      * especially Thumby-KU
 
+- maybe split the app somehow to decouple the Harmonic variants and simplify handling of ANSI and Ortho. 
+  Also consider adding the well-hated ISO layout... which at least would give a fair representation of 
+  Die gemütliche Tastatur... and help all the people from the "international" community to which I myself belong!
+
+
 bugs:
+- HIGH_PRIO show available mappings per layout type and set other options when needed by the mapping
+- HIGH_PRIO switch to wide (on ANSI) and split (on Ortho) whenever a layout with thumb letter is selected.
 - the comparisonBase mapping needs to have definitions on all layouts, thus at least a mapping30.
    Add that for qwertz and maybe add a full mapping for the ortho board to make the comparison more meaningful.
+   ==> only applies to Cozy German, which maybe I should merge with the GL entry and also provide as full layout,
+		so that the diff can be correct!
 - on Thumby / Cozy Keyboard English variant, the apostrophe is counted as "changed on same finger" on the ortho layout, 
   but not on ANSI wide, although it's on the same position.
   It should not be counted as changed on either, because the change is due to the wide layout, not the letter mapping.
 - fix altFinger configuration for Harmonic variants AND show it in finger viz
-- HIGH_PRIO show available mappings per layout type and set other options when needed by the mapping
-- HIGH_PRIO switch to wide (on ANSI) and split (on Ortho) whenever a layout with thumb letter is selected.
 
 refactoring:
 - remove home finger properties; use keyEffort==Home instead.
