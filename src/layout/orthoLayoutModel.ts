@@ -118,7 +118,7 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
     keyWidth: (_row: KeyboardRows, _col: number): number => 1,
 
     mainFingerAssignment: [
-        [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
+        [1, 1, 2, 2, 3, 3, 6, 6, 7, 7, 8, 8],
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
