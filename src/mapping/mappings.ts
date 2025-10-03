@@ -55,7 +55,7 @@ export const qweertyMapping: FlexMapping = {
         It is not made for practical use, but simply to show the effect of the thumb key on the typing metrics.
         Or for people to just try how a thumb key would feel. `,
     mappingThumb30: [
-        "qwért" + "yuiop",
+        "qw-rt" + "yuiop",
         "asdfg" + "hjkl;",
         "zxcvb" + "nm,.",
         "e"
