@@ -8,7 +8,13 @@ import {MappingList} from "./mapping/MappingArea.tsx";
 import {DetailsArea} from "./details/DetailsArea.tsx";
 import {computed, effect, signal, Signal} from "@preact/signals";
 import {ComponentChildren} from "preact";
-import {diffToBase, getKeyPositions, getLayoutModel, hasMatchingMapping} from "./layout/layout-functions.ts";
+import {
+    diffToBase,
+    fillMapping,
+    getKeyPositions,
+    getLayoutModel,
+    hasMatchingMapping
+} from "./layout/layout-functions.ts";
 import {allMappings, colemakMapping, qwertyMapping} from "./mapping/mappings.ts";
 import {getBigramMovements} from "./bigrams.ts";
 
@@ -87,8 +93,9 @@ export function createAppState(): AppState {
         diffToBase(layoutModel.value, mapping.value)
     )
     const bigramMovements = computed(() => {
+        const charMap = fillMapping(layoutModel.value, mapping.value);
         return getBigramMovements(
-            getKeyPositions(layoutModel.value, layoutOptionsState.value.split, mapping.value),
+            getKeyPositions(layoutModel.value, layoutOptionsState.value.split, charMap!),
             `get bigrams for visualization of ${mapping.value.name} on ${layoutModel.value.name}`);
     });
     effect(() => updateUrlParams(layoutOptionsState.value, mapping, vizType));

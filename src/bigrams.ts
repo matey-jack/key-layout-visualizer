@@ -12,7 +12,7 @@ import {
     RowBasedLayoutModel
 } from "./base-model.ts";
 import {sum} from "./library/math.ts";
-import {getKeyPositions, getKeyPositionsByLabel} from "./layout/layout-functions.ts";
+import {fillMapping, getKeyPositions, getKeyPositionsByLabel} from "./layout/layout-functions.ts";
 
 export function getBigramType(a: KeyPosition, b: KeyPosition): BigramType {
     try {
@@ -66,8 +66,9 @@ export function getBigramMovements(positionsList: KeyPosition[], logContext: str
 }
 
 export function bigramFrequencyByType(layout: RowBasedLayoutModel, mapping: FlexMapping): Record<BigramType, number> {
+    const charMap = fillMapping(layout, mapping);
     const movements = getBigramMovements(
-        getKeyPositions(layout, false, mapping),
+        getKeyPositions(layout, false, charMap!),
         `bigramFrequencyByType for ${mapping.name} on ${layout.name}`,
     );
     const frequencyTotal = sum(movements.map((m) => m.frequency));
@@ -78,13 +79,13 @@ export function bigramFrequencyByType(layout: RowBasedLayoutModel, mapping: Flex
     return frequencyByType;
 }
 
-export function sumBigramScores(layout: RowBasedLayoutModel, mapping: FlexMapping): number | undefined {
+export function sumBigramScores(layout: RowBasedLayoutModel, fullMapping: string[][], mappingName: string): number | undefined {
     try {
         // We don't need to pass a "split" value, because we don't use the colPos values in the result.
         // And the very important difference between split/bar ortho layout is already included in the model.
         const movements = getBigramMovements(
-            getKeyPositions(layout, false, mapping),
-            `sumBigramScores for ${mapping.name} on ${layout.name}`,
+            getKeyPositions(layout, false, fullMapping),
+            `sumBigramScores for ${mappingName} on ${layout.name}`,
         );
         const frequencyTotal = sum(movements.map((m) => m.frequency));
         const scores = movements.map((m) =>
@@ -92,7 +93,7 @@ export function sumBigramScores(layout: RowBasedLayoutModel, mapping: FlexMappin
         );
         return Math.round(sum(scores));
     } catch (e) {
-        console.log(`Error in sumBigramScores: ${e} for mapping ${mapping.name} on layout ${layout.name}`);
+        console.log(`Error in sumBigramScores: ${e} for mapping ${mappingName} on layout ${layout.name}`);
         return undefined;
     }
 }

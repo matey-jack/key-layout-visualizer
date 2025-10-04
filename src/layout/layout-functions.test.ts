@@ -34,7 +34,7 @@ function hasLettersNumbersAndProsePunctuation(filledMapping: string[][]) {
 
 describe('fillMapping', () => {
     it('Harmonic 13 wide layout 30-key qwerty exact test', () => {
-        const actual = fillMapping(harmonic13WideLayoutModel, qwertyMapping);
+        const actual = fillMapping(harmonic13WideLayoutModel, qwertyMapping)!;
         expect(actual[0]).toStrictEqual(["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="]);
         expect(actual[1]).toStrictEqual(["↹", "w", "e", "r", "t", "`", "y", "u", "i", "o", "p", "⌫",]);
         expect(actual[2]).toStrictEqual(["q", "a", "s", "d", "f", "g", "\\", "h", "j", "k", "l", ";", "'"]);
@@ -45,28 +45,28 @@ describe('fillMapping', () => {
     allLayoutModels.forEach((model) => {
         if (model.thirtyKeyMapping) {
             it(`${model.name} 30-key frame maps all important characters`, () => {
-                hasLettersNumbersAndProsePunctuation(mergeMapping(model.thirtyKeyMapping, ["", ...qwertyMapping.mapping30!!]));
+                hasLettersNumbersAndProsePunctuation(mergeMapping(model.thirtyKeyMapping, ["", ...qwertyMapping.mapping30!]));
             });
         }
         if (model.thumb30KeyMapping) {
             it(`${model.name} Thumb30 frame maps all important characters`, () => {
-                hasLettersNumbersAndProsePunctuation(mergeMapping(model.thumb30KeyMapping!!, ["", ...cozyEnglish.mappingThumb30!!]));
+                hasLettersNumbersAndProsePunctuation(mergeMapping(model.thumb30KeyMapping!, ["", ...cozyEnglish.mappingThumb30!]));
             });
         }
     });
 
     it(`ANSI full layout maps all important characters`, () => {
-        hasLettersNumbersAndProsePunctuation(mergeMapping(ansiLayoutModel.fullMapping, thumbyZero.mappingAnsi!!));
+        hasLettersNumbersAndProsePunctuation(mergeMapping(ansiLayoutModel.fullMapping, thumbyZero.mappingAnsi!));
     });
 
     // this is currently not used in the app, but let's keep it working
     it(`Split Ortho full layout maps all important characters`, () => {
-        hasLettersNumbersAndProsePunctuation(mergeMapping(splitOrthoLayoutModel.fullMapping, cozyEnglish.mappingSplitOrtho!!));
+        hasLettersNumbersAndProsePunctuation(mergeMapping(splitOrthoLayoutModel.fullMapping, cozyEnglish.mappingSplitOrtho!));
     });
 
     // this is currently not used in the app, but let's keep it working
     it(`Harmonic 13 wide full layout maps all important characters`, () => {
-        hasLettersNumbersAndProsePunctuation(mergeMapping(harmonic13WideLayoutModel.fullMapping, topNine.mappingHarmonic13wide!!));
+        hasLettersNumbersAndProsePunctuation(mergeMapping(harmonic13WideLayoutModel.fullMapping, topNine.mappingHarmonic13wide!));
     });
 
     // TODO: fullMappings for other Harmonic variants need clean up first
@@ -75,7 +75,7 @@ describe('fillMapping', () => {
 describe('finger assignment consistency', () => {
     allLayoutModels.forEach((model) => {
         it(model.name, () => {
-            model.fullMapping!!.forEach((mappingRow, r) => {
+            model.fullMapping!.forEach((mappingRow, r) => {
                 expect(mappingRow.length, `${model.name} ${KeyboardRows[r]}Row`).toBe(model.mainFingerAssignment[r].length)
             });
         });
@@ -85,7 +85,7 @@ describe('finger assignment consistency', () => {
 describe('key effort consistency', () => {
     allLayoutModels.forEach((model) => {
         it(model.name, () => {
-            model.fullMapping!!.forEach((mappingRow, r) => {
+            model.fullMapping!.forEach((mappingRow, r) => {
                 expect(model.singleKeyEffort[r].length, `${model.name} ${KeyboardRows[r]}Row`).toBe(mappingRow.length)
             });
         });
@@ -123,7 +123,7 @@ describe('diffToQwerty', () => {
 describe('characterToFinger for ANSI Qwerty', () => {
     const layoutMapping = fillMapping(ansiLayoutModel, qwertyMapping);
     const fingering = ansiLayoutModel.mainFingerAssignment;
-    const actual = characterToFinger(fingering, layoutMapping);
+    const actual = characterToFinger(fingering, layoutMapping!);
 
     it('maps number row characters to correct fingers', () => {
         expect(actual['`~']).toBe(Finger.LRing);

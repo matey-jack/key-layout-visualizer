@@ -1,7 +1,7 @@
 import {LayoutType, VisualizationType} from "../base-model.ts";
 import {AppState, LayoutOptions} from "../app-model.ts";
 import {BigramLines, KeyboardSvg, RowBasedKeyboard, StaggerLines} from "./KeyboardSvg.tsx";
-import {getKeyPositions, getLayoutModel} from "./layout-functions.ts";
+import {fillMapping, getKeyPositions, getLayoutModel} from "./layout-functions.ts";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
@@ -12,7 +12,8 @@ interface LayoutAreaProps {
 
 export function LayoutArea({appState}: LayoutAreaProps) {
     const {layout, layoutModel, mapping, setLayout, mappingDiff, bigramMovements, vizType} = appState;
-    const keyPositions = getKeyPositions(layoutModel.value, layout.value.split, mapping.value);
+    const charMap = fillMapping(layoutModel.value, mapping.value);
+    const keyPositions = getKeyPositions(layoutModel.value, layout.value.split, charMap!);
 
     return (
         <div>

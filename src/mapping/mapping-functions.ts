@@ -18,8 +18,8 @@ export const isKeyName = (label: string) => keyboardNames.includes(label);
 export const isCommandKey = (label: string) =>
     (isKeyboardSymbol(label) || isKeyName(label)) && label !== "⍽" && label !== "⏎" && label !== "";
 
-export function weighSingleKeyEffort(layoutModel: RowBasedLayoutModel, mapping: FlexMapping, freqs: Record<string, number>): number {
-    const efforts = getSingleKeyEffort(layoutModel, mapping, freqs);
+export function weighSingleKeyEffort(layoutModel: RowBasedLayoutModel, charMap: string[][], freqs: Record<string, number>): number {
+    const efforts = getSingleKeyEffort(layoutModel, charMap, freqs);
     let totalEffort = 0;
     Object.entries(efforts).forEach(([char, effort]) => {
         totalEffort += effort * freqs[char.toUpperCase()];
@@ -27,8 +27,8 @@ export function weighSingleKeyEffort(layoutModel: RowBasedLayoutModel, mapping: 
     return Math.round(totalEffort);
 }
 
-export function sumKeyFrequenciesByEffort(layoutModel: RowBasedLayoutModel, mapping: FlexMapping): Record<number, number> {
-    const efforts = getSingleKeyEffort(layoutModel, mapping, singleCharacterFrequencies);
+export function sumKeyFrequenciesByEffort(layoutModel: RowBasedLayoutModel, charMap: string[][]): Record<number, number> {
+    const efforts = getSingleKeyEffort(layoutModel, charMap, singleCharacterFrequencies);
     const result: Record<number, number> = {};
     Object.entries(efforts).forEach(([char, effort]) => {
         result[effort] = (result[effort] || 0) + singleCharacterFrequencies[char.toUpperCase()];
@@ -36,8 +36,7 @@ export function sumKeyFrequenciesByEffort(layoutModel: RowBasedLayoutModel, mapp
     return result;
 }
 
-export function getSingleKeyEffort(layoutModel: RowBasedLayoutModel, mapping: FlexMapping, freqs: Record<string, number>): Record<string, number> {
-    const charMap = fillMapping(layoutModel, mapping);
+export function getSingleKeyEffort(layoutModel: RowBasedLayoutModel, charMap: string[][], freqs: Record<string, number>): Record<string, number> {
     const result: Record<string, number> = {};
     charMap.forEach((charMapRow, row) => {
         charMapRow.forEach((char, col) => {

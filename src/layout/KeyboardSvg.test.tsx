@@ -1,15 +1,16 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/preact';
 import {RowBasedKeyboard} from './KeyboardSvg.tsx';
-import {qwertyMapping} from "../mapping/mappings.ts";
+import {qweertyMapping, qwertyMapping} from "../mapping/mappings.ts";
 import {VisualizationType} from "../base-model.ts";
 import {ansiLayoutModel} from "./ansiLayoutModel.ts";
-import {getKeyPositions} from "./layout-functions.ts";
+import {fillMapping, getKeyPositions} from "./layout-functions.ts";
 
 // Test key rendering
 describe('Key rendering', () => {
     it('renders correct number of keys for ANSI', () => {
-        const keyPositions = getKeyPositions(ansiLayoutModel, true, qwertyMapping)
+        const charMap = fillMapping(ansiLayoutModel, qweertyMapping);
+        const keyPositions = getKeyPositions(ansiLayoutModel, true, charMap!)
         const { container } = render(<RowBasedKeyboard
             layoutModel={ansiLayoutModel}
             keyPositions={keyPositions}

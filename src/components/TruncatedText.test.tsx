@@ -99,7 +99,7 @@ describe('TruncatedText', () => {
 
     // Simulate mouse enter
     const truncatedTextElement =
-        screen.getByText(`${firstTwentyWords}...`).closest('.truncated-text')!!;
+        screen.getByText(`${firstTwentyWords}...`).closest('.truncated-text')!;
     fireEvent.mouseEnter(truncatedTextElement);
 
     // Text should still be truncated (not expanded)
@@ -119,7 +119,7 @@ describe('TruncatedText', () => {
     expect(screen.getByText(longText)).toBeInTheDocument();
 
     // Get the expanded text element
-    const expandedTextElement = screen.getByText(longText).closest('.truncated-text')!!;
+    const expandedTextElement = screen.getByText(longText).closest('.truncated-text')!;
 
     // Simulate mouse leave
     fireEvent.mouseLeave(expandedTextElement);
@@ -146,7 +146,7 @@ describe('TruncatedText', () => {
     expect(screen.getByText(longText)).toBeInTheDocument();
 
     // Get the expanded text element
-    const expandedTextElement = screen.getByText(longText).closest('.truncated-text')!!;
+    const expandedTextElement = screen.getByText(longText).closest('.truncated-text')!;
 
     // Simulate mouse leave
     fireEvent.mouseLeave(expandedTextElement);
@@ -157,7 +157,7 @@ describe('TruncatedText', () => {
     });
 
     // Simulate mouse re-enter before delay expires
-    fireEvent.mouseEnter(screen.getByText(longText).closest('.truncated-text')!!);
+    fireEvent.mouseEnter(screen.getByText(longText).closest('.truncated-text')!);
 
     // Advance timer by the rest of the delay time
     act(() => {

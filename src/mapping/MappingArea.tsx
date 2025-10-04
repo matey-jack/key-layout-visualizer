@@ -2,7 +2,13 @@ import {AppState} from "../app-model.ts";
 import {FlexMapping, MappingChange, RowBasedLayoutModel} from "../base-model.ts";
 import {Signal} from "@preact/signals";
 import {allMappings} from "./mappings.ts";
-import {compatibilityScore, diffSummary, diffToBase, hasMatchingMapping} from "../layout/layout-functions.ts";
+import {
+    compatibilityScore,
+    diffSummary,
+    diffToBase,
+    fillMapping,
+    hasMatchingMapping
+} from "../layout/layout-functions.ts";
 import {weighSingleKeyEffort} from "./mapping-functions.ts";
 import {sumBigramScores} from "../bigrams.ts";
 import {singleCharacterFrequencies as englishFeqs} from "../frequencies/english-single-character-frequencies.ts";
@@ -48,6 +54,7 @@ export function MappingListItem({layout, mapping, selectedMapping}: MappingListI
     const selectedClass = selectedMapping.value.name === mapping.name ? " selected" : "";
     const recommendedClass = mapping.localMaximum ? " recommended" : "";
     const thumbLetterClass = !!mapping.mapping30 ? " thumb-letter" : "";
+    const charMap = fillMapping(layout, mapping);
     return <tr
         class={"mapping-list-item" + selectedClass + recommendedClass + thumbLetterClass}
         onClick={() => selectedMapping.value = mapping}
@@ -56,8 +63,8 @@ export function MappingListItem({layout, mapping, selectedMapping}: MappingListI
             <button>{mapping.name}</button>
         </td>
         <td>{formatDiff(diffSummary(diffToBase(layout, mapping)))}</td>
-        <td>{weighSingleKeyEffort(layout, mapping, englishFeqs)} / {sumBigramScores(layout, mapping)}</td>
-        <td>{weighSingleKeyEffort(layout, mapping, germanFreqs)}</td>
+        <td>{charMap && weighSingleKeyEffort(layout, charMap, englishFeqs)} / {charMap && sumBigramScores(layout, charMap, mapping.name)}</td>
+        <td>{charMap && weighSingleKeyEffort(layout, charMap, germanFreqs)}</td>
     </tr>
 }
 

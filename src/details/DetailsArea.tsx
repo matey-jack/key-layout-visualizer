@@ -13,7 +13,7 @@ import {
     VisualizationType
 } from "../base-model.ts";
 import {AppState} from "../app-model.ts";
-import {compatibilityScore, diffSummary, diffToBase} from "../layout/layout-functions.ts";
+import {compatibilityScore, diffSummary, diffToBase, fillMapping} from "../layout/layout-functions.ts";
 import {TruncatedText} from "../components/TruncatedText.tsx";
 import {bigramClassByType, getEffortClass} from "../layout/KeyboardSvg.tsx";
 import {ComponentChildren} from "preact";
@@ -114,7 +114,9 @@ interface KeyEffortDetailsProps {
 }
 
 export function SingleKeyEffortDetails({layout, mapping}: KeyEffortDetailsProps) {
-    const freqsByEffort = sumKeyFrequenciesByEffort(layout, mapping);
+    // In the details screen, we know that layout options always match the mapping, because they are set for the mapping when that is selected.
+    const charMap = fillMapping(layout, mapping)!;
+    const freqsByEffort = sumKeyFrequenciesByEffort(layout, charMap);
     const totalEffort = Math.round(sum(
         Object.entries(freqsByEffort)
             .map(([a, b]) => Number(a) * b)

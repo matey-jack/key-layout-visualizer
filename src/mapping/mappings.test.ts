@@ -43,13 +43,23 @@ describe('flex mappings consistency', () => {
             });
         }
 
-        it(mapping.name + "has both ANSI and ANSI wide mapping", () => {
-            if ((mapping.mappingAnsi || mapping.mappingAnsiWide)
-            && !(mapping.mappingThumb30 || mapping.mapping30)) {
-                expect(mapping.mappingAnsi).toBeDefined();
-                expect(mapping.mappingAnsiWide).toBeDefined();
-            }
-        });
+        if (mapping.mappingAnsi || mapping.mappingAnsiWide) {
+            it(mapping.name + " has both ANSI and ANSI wide mapping, or at least one generic mapping.", () => {
+                if (!(mapping.mappingThumb30 || mapping.mapping30)) {
+                    expect(mapping.mappingAnsi).toBeDefined();
+                    expect(mapping.mappingAnsiWide).toBeDefined();
+                }
+            });
+        }
+
+        if (mapping.mappingSplitOrtho) {
+            it(mapping.name + " has also non-split Ortho mapping.", () => {
+                if (!(mapping.mappingThumb30 || mapping.mapping30)) {
+                    // unlike for ANSI wide, we accept that some don't comply.
+                    console.log("FYI: missing");
+                }
+            });
+        }
 
         Object.values(allLayoutModels).forEach((layoutModel) => {
             const specificMapping = layoutModel.getSpecificMapping(mapping);

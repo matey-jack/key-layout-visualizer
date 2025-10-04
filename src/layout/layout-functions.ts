@@ -27,15 +27,17 @@ export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: nu
     return false;
 }
 
-export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): string[][] {
+export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): string[][] | undefined {
     const fullFlexMapping = layoutModel.getSpecificMapping(flexMapping)
     if (fullFlexMapping) {
-        return mergeMapping(layoutModel.fullMapping!!, fullFlexMapping, layoutModel.thirtyKeyMapping);
+        return mergeMapping(layoutModel.fullMapping!, fullFlexMapping, layoutModel.thirtyKeyMapping);
     }
-    if (flexMapping.mappingThumb30 && layoutModel.thumb30KeyMapping) {
+    if (layoutModel.thumb30KeyMapping && flexMapping.mappingThumb30) {
         return mergeMapping(layoutModel.thumb30KeyMapping, ["", ...flexMapping.mappingThumb30]);
     }
-    return mergeMapping(layoutModel.thirtyKeyMapping, ["", ...flexMapping.mapping30!!]);
+    if (layoutModel.thirtyKeyMapping && flexMapping.mapping30) {
+        return mergeMapping(layoutModel.thirtyKeyMapping, ["", ...flexMapping.mapping30!]);
+    }
 }
 
 export function hasMatchingMapping(layout: RowBasedLayoutModel, flexMapping: FlexMapping): boolean {
@@ -134,7 +136,7 @@ export function diffSummary(diff: Record<string, MappingChange>): Record<Mapping
 export function diffToBase(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): Record<string, MappingChange> {
     const a = fillMapping(layoutModel, flexMapping);
     const b = fillMapping(layoutModel, flexMapping.comparisonBase ?? qwertyMapping);
-    return diffMappings(layoutModel, a, b);
+    return diffMappings(layoutModel, a!, b!);
 }
 
 export function compatibilityScore(diffSummy: Record<MappingChange, number>): number {
@@ -175,8 +177,7 @@ const totalWidth = 17;
 // in key units
 const horizontalPadding = 0.5;
 
-export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean, flexMapping: FlexMapping): KeyPosition[] {
-    const fullMapping = fillMapping(layoutModel, flexMapping);
+export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean, fullMapping: string[][]): KeyPosition[] {
     const rowWidth = fullMapping.map((row, r) =>
         2 * (horizontalPadding + layoutModel.rowStart(r)) + sum(row.map((_, c) => layoutModel.keyWidth(r, c)))
     );
