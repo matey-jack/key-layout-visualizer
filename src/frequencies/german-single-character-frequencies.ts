@@ -1,4 +1,4 @@
-// data from https://en.wikipedia.org/wiki/Letter_frequency
+// data from https://de.wikipedia.org/wiki/Buchstabenh%C3%A4ufigkeit
 // converted to occurrences per thousand for better readability
 
 // data on punctuation copied from English, omitting the apostrophe which is much rarer in German.

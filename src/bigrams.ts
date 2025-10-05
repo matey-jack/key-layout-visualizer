@@ -79,6 +79,12 @@ export function bigramFrequencyByType(layout: RowBasedLayoutModel, mapping: Flex
     return frequencyByType;
 }
 
+export function weighBigramTypes(movements: BigramMovement[], types: BigramType[]) {
+    const sfbs = movements.filter((m) => types.includes(m.type));
+    const frequencyTotal = sum(movements.map((m) => m.frequency));
+    return Math.round(sum(sfbs.map((m) => m.frequency)) * 1000  / frequencyTotal);
+}
+
 export function sumBigramScores(layout: RowBasedLayoutModel, fullMapping: string[][], mappingName: string): number | undefined {
     try {
         // We don't need to pass a "split" value, because we don't use the colPos values in the result.

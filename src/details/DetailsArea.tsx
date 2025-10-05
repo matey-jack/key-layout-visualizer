@@ -17,10 +17,11 @@ import {compatibilityScore, diffSummary, diffToBase, fillMapping} from "../layou
 import {TruncatedText} from "../components/TruncatedText.tsx";
 import {bigramClassByType, getEffortClass} from "../layout/KeyboardSvg.tsx";
 import {ComponentChildren} from "preact";
-import {sumKeyFrequenciesByEffort} from "../mapping/mapping-functions.ts";
+import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
 import {sum} from "../library/math.ts";
 import {bigramFrequencyByType, bigramRankSize} from "../bigrams.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
+import {singleCharacterFrequencies as englishFreqs} from "../frequencies/english-single-character-frequencies.ts";
 
 interface DetailsAreaProps {
     appState: AppState;
@@ -116,7 +117,7 @@ interface KeyEffortDetailsProps {
 export function SingleKeyEffortDetails({layout, mapping}: KeyEffortDetailsProps) {
     // In the details screen, we know that layout options always match the mapping, because they are set for the mapping when that is selected.
     const charMap = fillMapping(layout, mapping)!;
-    const freqsByEffort = sumKeyFrequenciesByEffort(layout, charMap);
+    const freqsByEffort = sumKeyFrequenciesByEffort(layout, charMap, englishFreqs);
     const totalEffort = Math.round(sum(
         Object.entries(freqsByEffort)
             .map(([a, b]) => Number(a) * b)
@@ -124,14 +125,14 @@ export function SingleKeyEffortDetails({layout, mapping}: KeyEffortDetailsProps)
     return <div>
         <p>
             There is always some individual bias in determining how hard or easy each key on the board is to reach from
-            the home position, but the differences are mostly in details, so that a resulting evaluation of letter
-            frequency times key effort should not differ strongly enough to justify a change to the layout. This is
-            especially true for casual layouts which strongly limit the variation in letter placement.
+            the home position, which is why the statistic on the left shows only the usage of the eight or nine home keys.
+            Those are the easiest to type for any shape of keyboard or hand.
         </p>
         <p>
             The following legend shows the percentage of key strokes (according to English average letter frequency),
             that fall on each color of letter. I assigned an effort score for each color of letter. By multiplying
-            frequency with the score and adding it all up, we get the total Typing Effort Score for single keys.
+            frequency with the score and adding it all up, we get a "total single key effort score" for this keymap in English of
+            <b> {weighSingleKeyEffort(layout, charMap, englishFreqs)}</b>.
         </p>
         <div>
             <KeyEffortLegendItem score={SKE_HOME} frequency={freqsByEffort[SKE_HOME]}>
@@ -244,24 +245,24 @@ export function BigramEffortDetails({layout, mapping}: BigramEffortDetailsProps)
             Like for single-key effort, the weighted sum is the total Typing Effort Score for bigrams.
         </p>
         <BigramDetailsLegendItem bigramType={BigramType.SameFinger} frequency={freqs[BigramType.SameFinger]}>
-            The worst thing to happen is having to use the same finger subsequently on different keys.
+            "Same-finger Bigram": The worst thing to happen is having to use the same finger subsequently on different keys.
             We count this as highest effort.
         </BigramDetailsLegendItem>
         <BigramDetailsLegendItem bigramType={BigramType.AltFinger} frequency={freqs[BigramType.AltFinger]}>
-            When the keyboard layout makes it easy to type some keys with another finger, the single finger bottleneck
+            "Alt-Fingering": When the keyboard layout makes it easy to type some keys with another finger, the single finger bottleneck
             can be avoided. (Maybe you noticed yourself typing "er", "cd", or "un" with two different fingers, although
-            strict touchtyping rules assign the same finger to both keys.
+            strict touch-typing rules assign the same finger to both keys.)
         </BigramDetailsLegendItem>
-        <BigramDetailsLegendItem bigramType={BigramType.SameRow} frequency={freqs[BigramType.SameRow]}>
-            Two keys on the same row are so easy and fun to type, that I assign an effort rebate for this case.
+        <BigramDetailsLegendItem bigramType={BigramType.OppositeRow} frequency={freqs[BigramType.OppositeRow]}>
+            "Scissor movement": Two keys on opposite rows (upper and lower letter row) are awkward to type in sequence,
+            because curling a finger moves the palm up and stretching a finger moves the palm down.
+            This count is sometimes referred to as "scissor" movement in the literature.
         </BigramDetailsLegendItem>
         <BigramDetailsLegendItem bigramType={BigramType.NeighboringRow} frequency={freqs[BigramType.NeighboringRow]}>
             Two keys on neighboring rows are no extra effort.
         </BigramDetailsLegendItem>
-        <BigramDetailsLegendItem bigramType={BigramType.OppositeRow} frequency={freqs[BigramType.OppositeRow]}>
-            Two keys on opposite rows (upper and lower letter row) are awkward to type in sequence,
-            because curling a finger moves the palm up and stretching a finger moves the palm down.
-            This count is sometimes referred to as "scissor" movement in the literature.
+        <BigramDetailsLegendItem bigramType={BigramType.SameRow} frequency={freqs[BigramType.SameRow]}>
+            "Generalized Rolls": Two keys on the same row are so easy and fun to type, that many key maps try to maximize those.
         </BigramDetailsLegendItem>
         <BigramDetailsLegendItem bigramType={BigramType.InvolvesThumb} frequency={freqs[BigramType.InvolvesThumb]}>
             Bigrams where one letter is on a thumb key are not shown, because (most people's) thumbs move

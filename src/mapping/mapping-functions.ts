@@ -27,12 +27,13 @@ export function weighSingleKeyEffort(layoutModel: RowBasedLayoutModel, charMap: 
     return Math.round(totalEffort);
 }
 
-export function sumKeyFrequenciesByEffort(layoutModel: RowBasedLayoutModel, charMap: string[][]): Record<number, number> {
-    const efforts = getSingleKeyEffort(layoutModel, charMap, singleCharacterFrequencies);
+export function sumKeyFrequenciesByEffort(layoutModel: RowBasedLayoutModel, charMap: string[][], freqs: Record<string, number>): Record<number, number> {
+    const efforts = getSingleKeyEffort(layoutModel, charMap, freqs);
     const result: Record<number, number> = {};
     Object.entries(efforts).forEach(([char, effort]) => {
-        result[effort] = (result[effort] || 0) + singleCharacterFrequencies[char.toUpperCase()];
+        result[effort] = (result[effort] || 0) + freqs[char.toUpperCase()];
     });
+    Object.entries(result).forEach(([effort, weight]) => { result[effort] = Math.round(weight); });
     return result;
 }
 

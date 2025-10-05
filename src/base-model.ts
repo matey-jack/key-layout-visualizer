@@ -208,6 +208,7 @@ export enum BigramType {
     OppositeLateral,
     SameRow,
     NeighboringRow,
+    // those are the awkward "scissor" bigrams.
     OppositeRow,
 }
 
