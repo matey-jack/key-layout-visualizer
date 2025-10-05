@@ -20,11 +20,11 @@ export const harmonic12LayoutModel: RowBasedLayoutModel = {
         "yet has the same key dimensions and only 5 keys less. ",
 
     thirtyKeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-"], // 12
+        ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "="], // 12
         ["↹", 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"], // 11
         [[-1, 0], 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"], // 12
         ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧"], // 11
-        ["Ctrl", "Cmd", "Alt", "=", "⍽", "⏎", [-1, 9], "AltGr", "Fn", "Ctrl"], // 10, with small control
+        ["Ctrl", "Cmd", "Alt", "-", "⍽", "⏎", [-1, 9], "AltGr", "Fn", "Ctrl"], // 10, with small control
     ],
     thumb30KeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "="], // 12
