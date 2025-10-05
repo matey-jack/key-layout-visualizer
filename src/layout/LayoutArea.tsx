@@ -1,10 +1,11 @@
-import {LayoutType, VisualizationType} from "../base-model.ts";
+import {FlexMapping, LayoutType, VisualizationType} from "../base-model.ts";
 import {AppState, LayoutOptions} from "../app-model.ts";
 import {BigramLines, KeyboardSvg, RowBasedKeyboard, StaggerLines} from "./KeyboardSvg.tsx";
-import {fillMapping, getKeyPositions, getLayoutModel} from "./layout-functions.ts";
+import {fillMapping, getKeyPositions, getLayoutModel, onlySupportsSplit} from "./layout-functions.ts";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
+import {Signal} from "@preact/signals";
 
 interface LayoutAreaProps {
     appState: AppState;
@@ -88,8 +89,9 @@ function LayoutOptionsBar({state}: LayoutOptionsBarProps) {
         <CheckboxWithLabel label="split keyboard"
                            checked={state.layout.value.split}
                            onChange={(split) => state.setLayout({...state.layout.value, split})}
+                           disabled={state.layout.value.type == LayoutType.Ortho && onlySupportsSplit(state.mapping.value)}
         />
-        <TypeSpecifcLayoutOptions layoutOptions={state.layout.value} setLayoutOptions={state.setLayout}/>
+        <TypeSpecifcLayoutOptions layoutOptions={state.layout.value} setLayoutOptions={state.setLayout} mapping={state.mapping}/>
     </div>
 }
 
@@ -97,14 +99,16 @@ function LayoutOptionsBar({state}: LayoutOptionsBarProps) {
 interface LayoutOptionsProps {
     layoutOptions: LayoutOptions;
     setLayoutOptions: (layoutOptions: LayoutOptions) => void;
+    mapping: Signal<FlexMapping>;
 }
 
-function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions}: LayoutOptionsProps) {
+function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions, mapping}: LayoutOptionsProps) {
     switch (layoutOptions.type) {
         case LayoutType.ANSI:
             return <AnsiLayoutOptions
                 wide={layoutOptions.wideAnsi}
                 setWide={(wide) => setLayoutOptions({...layoutOptions, wideAnsi: wide})}
+                mapping={mapping}
             />
         case LayoutType.Harmonic:
             return <HarmonicLayoutOptions

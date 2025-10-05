@@ -32,6 +32,7 @@ export interface AppState {
     setLayout: (layoutOptions: LayoutOptions) => void;
 
     mapping: Signal<FlexMapping>;
+    setMapping: (m: FlexMapping) => void;
     mappingDiff: ReadonlySignal<Record<string, MappingChange>>;
     bigramMovements: ReadonlySignal<BigramMovement[]>;
 

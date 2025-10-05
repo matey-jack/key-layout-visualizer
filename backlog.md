@@ -28,6 +28,10 @@ done:
     + Yes, three of each seems like a good offering.
       We could add Qwerty with just the Thumb-E, but I think it's not a worthy choice except as a temporary experience.
 
+- shows all mappings in the list and sets layout type and options when needed by the mapping.
+    + don't show metrics in mapping list when mapping does not work with current layout type
+    + set layout options for mapping and disable the checkbox if mapping only supports one setting
+
 
 bugs fixed:
  - Learnability Score for Wide ANSI in Mapping List is changing when I select different mappings =:-[]
@@ -52,6 +56,8 @@ missing core features:
    + related thumby variants should be consistent (only have the intended differences)
      * especially Thumby-KU
 
+- switch to wide (on ANSI) and split (on Ortho) whenever a layout with thumb letter is selected.
+
 bugs:
 - the comparisonBase mapping needs to have definitions on all layouts, thus at least a mapping30.
    Add that for qwertz and maybe add a full mapping for the ortho board to make the comparison more meaningful.
@@ -59,8 +65,6 @@ bugs:
   but not on ANSI wide, although it's on the same position.
   It should not be counted as changed on either, because the change is due to the wide layout, not the letter mapping.
 - fix altFinger configuration for Harmonic variants AND show it in finger viz
-- HIGH_PRIO show available mappings per layout type and set other options when needed by the mapping
-- HIGH_PRIO switch to wide (on ANSI) and split (on Ortho) whenever a layout with thumb letter is selected.
 
 refactoring:
 - remove home finger properties; use keyEffort==Home instead.

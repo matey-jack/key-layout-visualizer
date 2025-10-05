@@ -27,6 +27,14 @@ export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: nu
     return false;
 }
 
+export function onlySupportsSplit(mapping: FlexMapping) {
+    return !mapping.mapping30;
+}
+
+export function onlySupportsWide(mapping: FlexMapping) {
+    return !mapping.mapping30 && !mapping.mappingAnsi;
+}
+
 export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): string[][] | undefined {
     const fullFlexMapping = layoutModel.getSpecificMapping(flexMapping)
     if (fullFlexMapping) {

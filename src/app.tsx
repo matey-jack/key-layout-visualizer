@@ -1,114 +1,14 @@
 // @ts-ignore
 import './app.css'
 import './app-model.ts'
-import {FlexMapping, LayoutType, VisualizationType} from "./base-model.ts";
-import {AppState, HarmonicVariant, LayoutOptions} from "./app-model.ts";
+import {VisualizationType} from "./base-model.ts";
+import {AppState} from "./app-model.ts";
 import {LayoutArea} from "./layout/LayoutArea.tsx";
 import {MappingList} from "./mapping/MappingArea.tsx";
 import {DetailsArea} from "./details/DetailsArea.tsx";
-import {computed, effect, signal, Signal} from "@preact/signals";
+import {Signal} from "@preact/signals";
 import {ComponentChildren} from "preact";
-import {
-    diffToBase,
-    fillMapping,
-    getKeyPositions,
-    getLayoutModel,
-    hasMatchingMapping
-} from "./layout/layout-functions.ts";
-import {allMappings, colemakMapping, qwertyMapping} from "./mapping/mappings.ts";
-import {getBigramMovements} from "./bigrams.ts";
-
-// Function needed, because doing the same in an effect() would already run all the computed() functions
-// with inconsistent data that might crash them.
-function setLayout(
-    newLayoutOptions: LayoutOptions,
-    layoutOptionsState: Signal<LayoutOptions>,
-    mapping: Signal<FlexMapping>,
-) {
-    const newLayoutModel = getLayoutModel(newLayoutOptions)
-    if (!hasMatchingMapping(newLayoutModel, mapping.value)) {
-        const mappingName = mapping.value.name.toLowerCase();
-        if (mappingName.includes("colemak")) {
-            mapping.value = colemakMapping;
-        } else {
-            mapping.value = qwertyMapping;
-        }
-    }
-    layoutOptionsState.value = newLayoutOptions;
-}
-
-// We need to do careful conversion to preserve the null value (and other invalid values),
-// so that we can later apply the situation-dependent default.
-function s2b(value: string | null): boolean | null {
-    if (value === "0") return false;
-    if (value === "1") return true;
-    return null;
-}
-
-function s2i(value: string | null): number | null {
-    if (!value) return null;
-    const i = Number(value);
-    if (!Number.isFinite(i)) return null;
-    return i;
-}
-
-function getMappingByName(name: string | null): FlexMapping {
-    if (name) {
-        const found = allMappings.find(
-            (m) => m.name == name || m.techName == name
-        );
-        if (found) return found;
-    }
-    return qwertyMapping;
-}
-
-// Some of the state could be local the Layout or Mapping areas, but unless this global thing gets too big,
-function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vizType: Signal<number>) {
-    const params = new URLSearchParams();
-    params.set("layout", layout.type.toString());
-    params.set("mapping", mapping.value.techName || mapping.value.name);
-    params.set("viz", vizType.value.toString());
-    params.set("split", layout.split ? "1" : "0");
-    params.set("wide", layout.wideAnsi ? "1" : "0");
-    params.set("harmonic", layout.harmonicVariant.toString());
-    window.history.pushState(null, "", "#" + params.toString());
-}
-
-// let's just have one.
-export function createAppState(): AppState {
-    const params = new URLSearchParams(window.location.hash.slice(1));
-    // important to use ?? because (the falsy) 0 is a proper value that should not trigger the default.
-    const layoutOptionsState: Signal<LayoutOptions> = signal({
-        type: s2i(params.get("layout")) ?? LayoutType.ANSI,
-        split: s2b(params.get("split")) ?? false,
-        wideAnsi: s2b(params.get("wide")) ?? false,
-        harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
-    });
-    const layoutModel = computed(() => getLayoutModel(layoutOptionsState.value))
-
-    const mapping = signal(getMappingByName(params.get("mapping")));
-    const vizType = signal(s2i(params.get("viz")) ?? VisualizationType.LayoutFingering)
-
-    const mappingDiff = computed(() =>
-        diffToBase(layoutModel.value, mapping.value)
-    )
-    const bigramMovements = computed(() => {
-        const charMap = fillMapping(layoutModel.value, mapping.value);
-        return getBigramMovements(
-            getKeyPositions(layoutModel.value, layoutOptionsState.value.split, charMap!),
-            `get bigrams for visualization of ${mapping.value.name} on ${layoutModel.value.name}`);
-    });
-    effect(() => updateUrlParams(layoutOptionsState.value, mapping, vizType));
-    return {
-        layout: computed(() => layoutOptionsState.value),
-        setLayout: (layoutOptions: LayoutOptions) => setLayout(layoutOptions, layoutOptionsState, mapping),
-        layoutModel,
-        mapping,
-        vizType,
-        mappingDiff,
-        bigramMovements
-    };
-}
+import {createAppState} from "./app-state.ts";
 
 const appState = createAppState();
 

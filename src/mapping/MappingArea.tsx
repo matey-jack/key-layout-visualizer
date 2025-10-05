@@ -19,11 +19,6 @@ export interface MappingListProps {
 }
 
 export function MappingList({appState}: MappingListProps) {
-    const applicableMappings = allMappings.filter((m) =>
-        // TODO: use a different function that doesn't use concrete LayoutModels, but only considers the layout.type.
-        //      we then also need a custom setMapping function that will adjust layout options if needed.
-        hasMatchingMapping(appState.layoutModel.value, m)
-    );
     return <table class="mapping-list">
         <thead>
         <tr class="mapping-list-header">
@@ -34,11 +29,12 @@ export function MappingList({appState}: MappingListProps) {
         </tr>
         </thead>
         <tbody>
-        {applicableMappings.map((mapping) =>
+        {allMappings.map((mapping) =>
             <MappingListItem mapping={mapping}
                              layout={appState.layoutModel.value}
                              selectedMapping={appState.mapping}
-                             key={mapping.techName}/>
+                             key={mapping.techName}
+                             appState={appState}/>
         )}
         </tbody>
     </table>
@@ -48,21 +44,22 @@ interface MappingListItemProps {
     layout: RowBasedLayoutModel;
     mapping: FlexMapping;
     selectedMapping: Signal<FlexMapping>;
+    appState: AppState;
 }
 
-export function MappingListItem({layout, mapping, selectedMapping}: MappingListItemProps) {
+export function MappingListItem({layout, mapping, selectedMapping, appState}: MappingListItemProps) {
     const selectedClass = selectedMapping.value.name === mapping.name ? " selected" : "";
     const recommendedClass = mapping.localMaximum ? " recommended" : "";
     const thumbLetterClass = !!mapping.mapping30 ? " thumb-letter" : "";
     const charMap = fillMapping(layout, mapping);
     return <tr
         class={"mapping-list-item" + selectedClass + recommendedClass + thumbLetterClass}
-        onClick={() => selectedMapping.value = mapping}
+        onClick={() => appState.setMapping(mapping)}
     >
         <td>
             <button>{mapping.name}</button>
         </td>
-        <td>{formatDiff(diffSummary(diffToBase(layout, mapping)))}</td>
+        <td>{charMap && formatDiff(diffSummary(diffToBase(layout, mapping)))}</td>
         <td>{charMap && weighSingleKeyEffort(layout, charMap, englishFeqs)} / {charMap && sumBigramScores(layout, charMap, mapping.name)}</td>
         <td>{charMap && weighSingleKeyEffort(layout, charMap, germanFreqs)}</td>
     </tr>
