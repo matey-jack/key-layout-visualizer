@@ -28,7 +28,7 @@ export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: nu
 }
 
 export function onlySupportsSplit(mapping: FlexMapping) {
-    return !mapping.mapping30;
+    return !mapping.mapping30 && !mapping.mappingThumb30;
 }
 
 export function onlySupportsWide(mapping: FlexMapping) {
