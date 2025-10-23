@@ -43,14 +43,15 @@ describe('flex mappings consistency', () => {
             });
         }
 
-        if (mapping.mappingAnsi || mapping.mappingAnsiWide) {
-            it(mapping.name + " has both ANSI and ANSI wide mapping, or at least one generic mapping.", () => {
-                if (!(mapping.mappingThumb30 || mapping.mapping30)) {
-                    expect(mapping.mappingAnsi).toBeDefined();
-                    expect(mapping.mappingAnsiWide).toBeDefined();
-                }
-            });
-        }
+        // TODO: It would be nice to keep this as a warning or a statistic, but it's not mandatory any more.
+        // if (mapping.mappingAnsi || mapping.mappingAnsiWide) {
+        //     it(mapping.name + " has both ANSI and ANSI wide mapping, or at least one generic mapping.", () => {
+        //         if (!(mapping.mappingThumb30 || mapping.mapping30)) {
+        //             expect(mapping.mappingAnsi).toBeDefined();
+        //             expect(mapping.mappingAnsiWide).toBeDefined();
+        //         }
+        //     });
+        // }
 
         if (mapping.mappingSplitOrtho) {
             it(mapping.name + " has also non-split Ortho mapping.", () => {
@@ -78,7 +79,7 @@ describe('flex mappings consistency', () => {
                     const allChars = specificMapping.join().split('').sort();
                     expect(allChars).to.include.members("abcdefghijklmnopqrstuvwxyz".split(''));
                     // There are (from top to bottom) 2+2+1+0+1 = 6 more positions in the full mapping,
-                    // but we require only three additional punctuation characters ' and - because they are so frequent,
+                    // but we require only three additional punctuation characters: ' and - because they are so frequent,
                     // and = because it has the `+` character, which is such a nice complement to `-`.
                     expect(allChars).to.include.members(",./;'-=".split(''));
                 });
