@@ -65,14 +65,16 @@ export const qweertyMapping: FlexMapping = {
 export const qwertyWideMapping: FlexMapping = {
     name: "Qwerty Wide",
     description: `Small changes to Qwerty for a wide hand position. 
-    It's actually a gateway drug to more layout changes, because it makes it feel good to have N on a home key 
+    This makes it easy to swap keycaps on your keyboard to fit the layout, by not changing the J and \\| key position. e
+    This is, how, as a nice side-effect, N moves to the home-row.
+    Thus the mapping becomes a gateway drug to more layout changes, because it makes it feel good to have N on a home key 
     and weird to not have more frequent letters there, too.
-    I think that the next step would logically be Flip/Twist, Quipper, Colemak, or a Cozy/Thumby version of those.`,
-    // Keep the \| and J keys in place because of different shape and because F and J key caps often cannot be swapped
-    // on the physical keyboard.
-    // We also pair [] and +- vertically and close, instead of horizontally and split,
-    // which brings the frequently used hyphen into a better position.
-    // A lot of muscle memory is preserved because + and - stay on the same finger and in the same direction of movement.
+    We also pair [] and +- vertically and close, instead of horizontally and split (as would happen with the automatically generated wide-mod),
+    which brings the frequently used hyphen into a better position.
+    A lot of muscle memory is preserved because + and - stay on the same finger and in the same direction of movement.
+    For a fun laptop version, [] could be replaced by Home/End and \\ by Delete. 
+    Far better to have those keys in standard positions (instead of random model-dependent Laptop positions),
+    because the characters can as well be accessible on the AltGr layer.`,
     mappingAnsiWide: [
         "[=",
         "qwert" + "]" + "yuiop-\\",
@@ -80,13 +82,7 @@ export const qwertyWideMapping: FlexMapping = {
         "zxcvb" + "/" + "hm,.",
         "⌥≡",
     ],
-
-    // needed for compatibility with the code.
-    mapping30: [
-        "qwert" + "yuiop",
-        "asdfg" + "jnkl;",
-        "zxcvb" + "hm,./",
-    ],
+    // don't define mapping30, so the app switches automatically into wide mode and only shows this on the ANSI keyboard.
 }
 
 export const enTryMapping: FlexMapping = {
@@ -110,7 +106,7 @@ export const qwertzMapping: FlexMapping = {
     description: "Qwerty, but with z/y swapped and three more letters added instead of extended punctuation.",
     sourceUrl: "https://en.wikipedia.org/wiki/QWERTZ",
     // This is not correct, but needed as diffing base for the Cozy German layout that is only defined as a mapping30.
-    // Otherwise the app will crash just by switching to Ortho layout on any mapping. :/
+    // Otherwise, the app will crash just by switching to Ortho layout on any mapping. :/
     mapping30: [
         "qwert" + "zuiop",
         "asdfg" + "jnkl;",
