@@ -32,6 +32,9 @@ done:
     + don't show metrics in mapping list when mapping does not work with current layout type
     + set layout options for mapping and disable the checkbox if mapping only supports one setting
 
+- Outside the app: make a graph of the "efficiency frontier" with those six layouts and Qwerty — once for single and once for bigram scores.
+  (Maybe add the minimum SFB layout from Oxley each with and without thumb letter use as the right fence post for the diagram.)
+    done here ==> https://docs.google.com/spreadsheets/d/1E3uta8rgbxNcu7onwrg5y7bJaWY-TkvE0JlzE-3GAtY/edit?usp=sharing
 
 bugs fixed:
  - Learnability Score for Wide ANSI in Mapping List is changing when I select different mappings =:-[]
@@ -43,9 +46,6 @@ bugs fixed:
 
 
 missing core features:
-- Outside of the app: make a graph of the "efficiency frontier" with those six layouts and Qwerty — once for single and once for bigram scores. 
-  (Maybe add the minimum SFB layout from Oxley each with and without thumb letter use as the right fence post for the diagram.)
-
 - add some more explanations, especially for:
   + the "wide" mappings
   + Harmonic and Ortho general texts (maybe (i) icon in layout bar). But still repeat that text under the H and O variants.
