@@ -1,5 +1,6 @@
 import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
 
+// only the split version below is actually used. maybe clean this up some time.
 export const orthoLayoutModel: RowBasedLayoutModel = {
     name: "Ortholinear",
     description: "Ortholinear keyboards remove the weird row stagger and usually also use uniform key sizes. " +
@@ -76,8 +77,8 @@ export const orthoLayoutModel: RowBasedLayoutModel = {
 
 export const splitOrthoLayoutModel: RowBasedLayoutModel = {
     ...orthoLayoutModel,
-    name: "Split Ortholinear with thumb keys",
-    description: "The Ortholinear is especially popular with two-piece keyboards. " +
+    name: "Split Ergonomic",
+    description: "The Ortholinear key layout is especially popular with two-piece keyboards. " +
         "This allows to position and rotate the two keyboard halves to make columns line up exactly with your finger's natural extension movement. " +
         "Most split models include at least two thumb keys on each side that users can map to any function they want. " +
         "The layout shown here is not too different to the Iris CE, a 56-key split keyboard which is incidentally the one that I used for coding this app. ",

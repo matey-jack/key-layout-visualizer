@@ -33,7 +33,7 @@ export function sumKeyFrequenciesByEffort(layoutModel: RowBasedLayoutModel, char
     Object.entries(efforts).forEach(([char, effort]) => {
         result[effort] = (result[effort] || 0) + freqs[char.toUpperCase()];
     });
-    Object.entries(result).forEach(([effort, weight]) => { result[effort] = Math.round(weight); });
+    Object.entries(result).forEach(([effort, weight]) => { result[effort as unknown as number] = Math.round(weight); });
     return result;
 }
 
