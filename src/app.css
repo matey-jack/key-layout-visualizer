@@ -52,6 +52,10 @@ body {
     display: block;
 }
 
+label.disabled {
+    color: gray;
+}
+
 .keyboard-svg {
 }
 

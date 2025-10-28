@@ -11,14 +11,27 @@ import {
 import {allMappings, colemakMapping, qwertyMapping} from "./mapping/mappings.ts";
 import {getBigramMovements} from "./bigrams.ts";
 
+// returns new split value, if the layout only supports one
+function modifySplit(opts: LayoutOptions): boolean {
+    switch (opts.type) {
+        case LayoutType.Harmonic:
+        case LayoutType.ErgoPlank:
+            return false;
+        case LayoutType.Ortho:
+            return true;
+    }
+    return opts.split;
+}
+
 // Function needed, because doing the same in an effect() would already run all the computed() functions
 // with inconsistent data that might crash them.
 function setLayout(
-    newLayoutOptions: LayoutOptions,
+    opts: LayoutOptions,
     layoutOptionsState: Signal<LayoutOptions>,
     mapping: Signal<FlexMapping>,
 ) {
-    const newLayoutModel = getLayoutModel(newLayoutOptions)
+    const newLayoutOptions = {...opts, split: modifySplit(opts)};
+    const newLayoutModel = getLayoutModel(newLayoutOptions);
     if (!hasMatchingMapping(newLayoutModel, mapping.value)) {
         const mappingName = mapping.value.name.toLowerCase();
         if (mappingName.includes("colemak")) {

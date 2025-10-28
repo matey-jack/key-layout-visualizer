@@ -1,5 +1,3 @@
-import {useState} from 'preact/hooks';
-
 type CheckboxWithLabelProps = {
     label: string;
     checked: boolean;
@@ -14,7 +12,9 @@ export function CheckboxWithLabel(props: CheckboxWithLabelProps) {
     };
 
     return (
-        <label style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+        <label style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}
+               class={props.disabled ? "disabled" : ""}
+        >
             <input
                 type="checkbox"
                 checked={props.checked}
