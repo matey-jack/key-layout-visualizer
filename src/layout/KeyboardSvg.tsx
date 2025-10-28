@@ -4,7 +4,6 @@ import {
     BigramMovement,
     BigramType,
     Finger,
-    harmonicStaggerOffsets,
     KeyboardRows,
     KeyPosition,
     MappingChange,
@@ -63,17 +62,19 @@ export function Key({col, ribbonClass, backgroundClass, label, row, width, frequ
             : isKeyName(label) ? "key-name"
                 : "";
     const text = (labelClass) ?
+        // center all the non-character key labels
         <text x={x + keyUnit * width / 2} y={y + keyUnit / 2} className={"key-label " + labelClass}>
             {label}
         </text>
         :
+        // left align labels for character keys
         <text x={x + 20} y={y + 60} className="key-label">
             {label}
         </text>
 
-    const bgClass = isCommandKey(label) ? "command-key"
-        : backgroundClass ? backgroundClass
-            : !label ? "unlabeled" : "";
+    const bgClass = backgroundClass ? backgroundClass
+        : isCommandKey(label) ? "command-key"
+        : !label ? "unlabeled" : "";
 
     const keyRibbon = ribbonClass &&
         <rect class={"key-ribbon " + ribbonClass}
@@ -205,10 +206,11 @@ export function StaggerLines({layoutModel, layoutSplit, keyPositions}: StaggerLi
     const rightHomePositions = keyPositions.filter((kp) =>
         kp.row == KeyboardRows.Home && kp.col >= layoutModel.rightHomeIndex && kp.col < layoutModel.rightHomeIndex + 4
     ).map((kp) => kp.colPos);
-    const leftHandOffsets = layoutSplit ? [0, 0, 0, 0] : [1.0, 0.5, 0, -0.5];
+    const leftHandOffsets = layoutSplit ? [0, 0, 0, 0] : [0.5, 0.25, 0, -0.25];
     const rightHandOffsets = leftHandOffsets.map((x) => -x);
     // This uses object identity comparison and only works, because the models actually reference the same array.
-    const rightKeyboardOffsets = layoutModel.staggerOffsets == harmonicStaggerOffsets
+    const symmetricalledStaggered = layoutModel.name.includes("Harmonic") || layoutModel.name.includes("Ergo");
+    const rightKeyboardOffsets = symmetricalledStaggered
         ? layoutModel.staggerOffsets.map((x) => -x)
         : layoutModel.staggerOffsets;
     return <>

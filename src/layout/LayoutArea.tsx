@@ -45,7 +45,7 @@ interface TopBarProps {
 }
 
 function TopBar({layout, setLayout}: TopBarProps) {
-    const layoutOrder = [LayoutType.ANSI, LayoutType.Harmonic, LayoutType.Ortho];
+    const layoutOrder = [LayoutType.ANSI, LayoutType.Harmonic, LayoutType.ErgoPlank, LayoutType.Ortho];
     return <div className="layout-top-bar-container">
         <BlankGridElement/>
         {layoutOrder.map((layoutType) =>

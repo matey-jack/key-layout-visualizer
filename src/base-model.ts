@@ -3,6 +3,7 @@
 
 export enum LayoutType {
     ANSI,
+    ErgoPlank,
     Ortho,
     Harmonic,
     // If we want a separate button for the Harmonic Traditional and keep all other variants under the label "Harmonic Compact",

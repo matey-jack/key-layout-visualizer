@@ -19,6 +19,7 @@ import {harmonic14TraditionalLayoutModel} from "./harmonic14TraditionalLayoutMod
 import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
 import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 import {harmonic14WideLayoutModel} from "./harmonic14WideLayoutModel.ts";
+import {ergoPlankLayoutModel} from "./ergoPlankLayoutModel.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
     if (row != KeyboardRows.Home) return false;
@@ -177,6 +178,8 @@ export function getLayoutModel(layoutOptions: LayoutOptions): RowBasedLayoutMode
             return layoutOptions.split ? splitOrthoLayoutModel : orthoLayoutModel;
         case LayoutType.Harmonic:
             return getHarmonicVariant(layoutOptions.harmonicVariant);
+        case LayoutType.ErgoPlank:
+            return ergoPlankLayoutModel;
     }
 }
 
