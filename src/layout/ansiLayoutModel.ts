@@ -151,13 +151,13 @@ export const ansiWideLayoutModel = {
 
     // moveRightHand now only used here. maybe just make this array explicit as well.
     singleKeyEffort: widenSingleKeyEffort(
-        moveRightHand(ansiLayoutModel.singleKeyEffort, ansiLayoutModel.splitColumns)
+        moveRightHand(ansiLayoutModel.singleKeyEffort, ansiLayoutModel.splitColumns!!)
     ),
     getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsiWide,
 };
 
 function widenSingleKeyEffort(effort: number[][]) {
-    ansiLayoutModel.splitColumns.forEach((splitCol, row) => {
+    ansiLayoutModel.splitColumns!!.forEach((splitCol, row) => {
         if (row != KeyboardRows.Bottom) effort[row][splitCol] = SKE_AWAY;
     })
     effort[KeyboardRows.Bottom][4] = SKE_HOME;

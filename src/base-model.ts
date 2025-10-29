@@ -138,7 +138,7 @@ export enum MappingChange {
     SwapHands,
 }
 
-export type LayoutMapping = (string | number | [number, number])[][];
+export type LayoutMapping = (string | number | null | [number, number])[][];
 
 export const harmonicStaggerOffsets = [1, 0.5, 0, -0.5];
 

@@ -17,26 +17,28 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
     // row lengths: 14, 14, 15, 13, 12
     thirtyKeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, "-", "=", 5, 6, 7, 8, 9, "⏎"],
-        ["`~", 0, 1, 2, 3, 4, "", "", "\\", 5, 6, 7, 8, 9, "'"],
+        ["↹", 0, 1, 2, 3, 4, "-", null, "=", 5, 6, 7, 8, 9, "⏎"],
+        ["", 0, 1, 2, 3, 4, "`~", "", "\\", 5, 6, 7, 8, 9, "'"],
         ["⇧", 0, 1, 2, 3, 4, "", 9, 5, 6, 7, 8, "⇧"],
         ["Ctrl", "Cmd", "", "Alt", "Fn", "⏎", "⍽", "Fn", "AltGr", "Menu", "Cmd", "Ctrl"],
     ],
 
     thumb30KeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, "=", "`~", 5, 6, 7, 8, 9, "⏎"],
+        ["↹", 0, 1, 2, 3, 4, "=", null, "`~", 5, 6, 7, 8, 9, "⏎"],
         ["\\", 0, 1, 2, 3, 4, "", "", "", 5, 6, 7, 8, 9, "'"],
-        ["⇧", 0, 1, 2, 3, 4, "", '/', 5, 6, 7, 8, "⇧"],
+        ["⇧", 0, 1, 2, 3, 4, "", "/", 5, 6, 7, 8, "⇧"],
         ["Ctrl", "Cmd", "", "Alt", "Fn", 0, "⍽", "Fn", "AltGr", "Menu", "Cmd", "Ctrl"],
     ],
 
     // todo
     fullMapping: [],
 
+    // note that for data model reason, we also have to assign a finger to gaps.
+    // but it will never be shown or used in any calulations.
     mainFingerAssignment: [
         [1, 1, 1, 2, 2, 3, 3, 6, 6, 7, 8, 8, 8, 8],
-        [1, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9],
+        [1, 0, 1, 2, 3, 3, 3, 6, 6, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 6, 7, 8, 9, 9],
         [0, 1, 2, 3, 3, 3, 6, 6, 6, 6, 7, 8, 9],
         [0, 1, 2, 4, 4, 4, 5, 5, 5, 7, 8, 9],
@@ -48,7 +50,7 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
     // Only fixed values can be used. see base-model.ts SKE_*
     singleKeyEffort: [
         [3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0],
-        [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0],
+        [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0],
         [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 3.0, 2, 0.2, 0.2, 0.2, 0.2, 1.5],
         [1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0],
         [3.0, 3.0, 2.0, 1.5, 0.2, 1.0, 1.0, 0.2, 1.5, 2.0, 3.0, 3.0],
@@ -64,9 +66,8 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
         if (col == 0 || col == numCols - 1) {
             return widthOfEdgeKey[row];
         }
-        // TODO: implement the gap
-        if (row == KeyboardRows.Upper && (col == 6 || col == 7)) {
-            return 1.25;
+        if (row == KeyboardRows.Upper && (col == 7)) {
+            return 0.5;
         }
         if (row == KeyboardRows.Lower && (col == 6)) {
             return 1.5;

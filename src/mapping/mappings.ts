@@ -51,7 +51,7 @@ export const qwertyMapping: FlexMapping = {
 
 export const qweertyMapping: FlexMapping = {
     name: "Qweerty",
-    description: `This layout does not move any key, but simply provides an additional key mapping for E on a thumb key. 
+    description: `This mapping does not move any key, but simply provides an additional key mapping for E on a thumb key. 
         It is not made for practical use, but simply to show the effect of the thumb key on the typing metrics.
         Or for people to just try how a thumb key would feel. `,
     mappingThumb30: [
@@ -59,6 +59,25 @@ export const qweertyMapping: FlexMapping = {
         "asdfg" + "hjkl;",
         "zxcvb" + "nm,.",
         "e"
+    ],
+}
+
+export const ergoFix: FlexMapping = {
+    name: "ErgoFix",
+    description: `The changed stagger on the left-hand side of the ErgoPlank keyboard layout 
+    makes the Qwerty letters B and T even harder to access than they already are on Qwerty. 
+    Users that are not touch-typing will not notice this small shift in position, 
+    but for touch-typists the change is so noticeable and big, that we can as well place the letters somewhere else.
+    So we swap the triple "TB;" which also make the keymap cleaner to look at with punctuation characters in the bottom row.
+    The move of T creates a lateral stretch for the NT bigram, so let's use that as an excuse to also swap J and N.
+    The J-N swap also removes the worst scissor-movements of the Qwerty letter map and allows the hands to be much more centered,
+    since all the 11 most frequent letters in English texts are now on the home row or above.`,
+    // if someone now feels that the UN single-finger bigram is annoying, they can go all the way to right-hand Cozy
+    // by also swapping KUI and OL.
+    mapping30: [
+        "qwerb" + "yuiop",
+        "asdfg" + "hnklt",
+        "zxcv;" + "jm,./",
     ],
 }
 
@@ -87,7 +106,7 @@ export const qwertyWideMapping: FlexMapping = {
 
 export const enTryMapping: FlexMapping = {
     name: "Thumby Entry (or EN-try!)",
-    description: "Thumb-E plus a home-row N as low-key way to feel into optimized keyboard layouts. " +
+    description: "Thumb-E plus a home-row N as low-key way to feel into optimized letter mappings. " +
         "Additionally provides synergy, because the common EN/NE bigrams don't require you to pinch your hand. ",
     // Writing upper and lower row as three strings emphasizes the center columns of the Harmonic and ANSI keyboards.
     // On Ortho and Harmonic Narrow, it will just be 5 + 5 on each side.
@@ -105,7 +124,7 @@ export const qwertzMapping: FlexMapping = {
     techName: "QWERTZ",
     description: "Qwerty, but with z/y swapped and three more letters added instead of extended punctuation.",
     sourceUrl: "https://en.wikipedia.org/wiki/QWERTZ",
-    // This is not correct, but needed as diffing base for the Cozy German layout that is only defined as a mapping30.
+    // This is not correct, but needed as diffing base for the Cozy German mapping that is only defined as a mapping30.
     // Otherwise, the app will crash just by switching to Ortho layout on any mapping. :/
     mapping30: [
         "qwert" + "zuiop",
@@ -141,7 +160,7 @@ export const normanMapping = {
     name: "Norman",
     sourceUrl: "https://normanlayout.info/index.html",
     description: "Norman has the heaviest focus on minimizing finger movement among all the mappings in this comparison. " +
-        "Because Norman does this while also minimizing the learning difference to the Qwerty layout," +
+        "Because Norman does this while also minimizing the learning difference to the Qwerty mapping," +
         "it ends up with the very worst SFB scores as well. " +
         "Especially the RI bigram and several of the right-index finger bigrams would certainly drive me crazy. " +
         "So Norman serves as a good example that not-measured metrics will usually suffer when optimizing very hard for some other metric. " +
@@ -161,8 +180,8 @@ export const minimak4Mapping = {
     techName: "Minimak-4",
     sourceUrl: "https://github.com/binaryphile/www.minimak.org/blob/master/media/minimak_4_key.png",
     sourceLinkTitle: "GitHub: binaryphile/www.minimak.org",
-    description: "Minimak partitions its key remapping in three steps, so that you can learn the layout incrementally. " +
-        "Thanks to the many same-finger changes this trick actually works with all of the layouts in this app, " +
+    description: "Minimak partitions its key remapping in three steps, so that you can learn the mapping incrementally. " +
+        "Thanks to the many same-finger changes this trick actually works with all of the mappings in this app, " +
         "but Minimak get credit for making it explicit.",
     mapping30: [
         "qwdrk" + "yuiop",
@@ -223,7 +242,7 @@ export const qwertyFlipTwistThumbMapping = {
     description: `We build on the genius of Qwerty Flip and make it into a real ten-finger mapping 
     by moving E to the thumb and B in E's old spot. 
     As a consequence, D can stay on the home row. 
-    This layout changes no more letters than Qwerty Flip/Spin, but has much better metrics that can also be felt in practice. 
+    This mapping changes no more letters than Qwerty Flip/Spin, but has much better metrics that can also be felt in practice. 
     It has great bigram metrics, but it's single key metrics depend a lot on how one values the central home columns. 
      (Currently on my split ortho keyboard they feel just as easy to reach as the best non-home keys...)`,
     mappingThumb30: [
@@ -269,9 +288,9 @@ export const qwertyFlipTwistThumbT = {
     sourceUrl: "",
     description: `We build on the genius of Qwerty Flip and make it into a real ten-finger mapping. 
     This alternative moves T to the thumb to break the overuse of the index finger and the RT bigram conflict. 
-    This layout changes no more letters than Qwerty Flip/Spin, but has much better metrics that can also be felt in practice. 
+    This mapping changes no more letters than Qwerty Flip/Spin, but has much better metrics that can also be felt in practice. 
     Good single-key metrics and bad SFBs from E on its Qwerty finger. 
-    This could be improved by swapping E to the right pinky... and that is basically the Qwpr layout. `,
+    This could be improved by swapping E to the right pinky... and that is basically the Qwpr mapping. `,
     mappingThumb30: [
         "qwdfb" + "yukl;",
         "aserg" + "hniop",
@@ -286,7 +305,7 @@ export const qwertyFlipTwistThumbR = {
     sourceUrl: "",
     description: `We build on the genius of Qwerty Flip and make it into a real ten-finger mapping. 
     This alternative moves R to the thumb to break the overuse of the index finger and the RT bigram conflict. 
-    This layout changes no more letters than Qwerty Flip/Spin, but has much better metrics that can also be felt in practice. '`,
+    This mapping changes no more letters than Qwerty Flip/Spin, but has much better metrics that can also be felt in practice. '`,
     mappingThumb30: [
         "qwdfb" + "yukl;",
         "asetg" + "hniop",
@@ -296,26 +315,26 @@ export const qwertyFlipTwistThumbR = {
 }
 
 /**
-    Full list of flip/fling layouts with one thumb key letter and hand swap.
-    Nine Home Keys:
-     - A S D always stay in place
-     - NIO always flips to home row on same finger
-     - E moves to the thumb key or the right pinky
-     - R or T takes the other of (thumb key, right pinky), while the remaining T or R stays on left index home position.
+ Full list of flip/fling mappings with one thumb key letter and hand swap.
+ Nine Home Keys:
+ - A S D always stay in place
+ - NIO always flips to home row on same finger
+ - E moves to the thumb key or the right pinky
+ - R or T takes the other of (thumb key, right pinky), while the remaining T or R stays on left index home position.
 
-    This yields four different variants, two of which analyzed below as Flip/Twist/Thumb/Fling and finally the Cozy Keyboard.
-    The other two are Thumby Quipper variants.
+ This yields four different variants, two of which analyzed below as Flip/Twist/Thumb/Fling and finally the Cozy Keyboard.
+ The other two are Thumby Quipper variants.
 
-    Outside of Home Keys:
-     - always swap KU because of SFBs with N (and H) as well as better U position.
-     - in the case of pinky-E, also fling P to the left hand.
+ Outside of Home Keys:
+ - always swap KU because of SFBs with N (and H) as well as better U position.
+ - in the case of pinky-E, also fling P to the left hand.
 
-    Basically, there are two winning variants out of many sub-variants and those are The Cozy Keyboard and Thumby Quipper,
-    with surprisingly similar scores!
+ Basically, there are two winning variants out of many sub-variants and those are The Cozy Keyboard and Thumby Quipper,
+ with surprisingly similar scores!
 
-    Basically, to beat those scores, one needs to diverge much more from Qwerty.
-    Colemak does that with noticeably lower SFBs.
-    (But comparing the relative improvement in typing effort vs learning effort, the lower hanging fruit also offer more gain!)
+ Basically, to beat those scores, one needs to diverge much more from Qwerty.
+ Colemak does that with noticeably lower SFBs.
+ (But comparing the relative improvement in typing effort vs learning effort, the lower hanging fruit also offer more gain!)
  */
 
 export const qwertyFlipTwistSpinMapping = {
@@ -391,8 +410,8 @@ export const quipperThumbTMapping = {
 export const quipperThumbyMapping = {
     name: "Quipper Thumby",
     localMaximum: true,
-    description: `With the Thumb T and the KU swap, Quipper Thumby is an excellent well-rounded layout. 
-    Great typing metrics for little learning effort! (Disclaimer: I haven't actually typed with this layout.)`,
+    description: `With the Thumb T and the KU swap, Quipper Thumby is an excellent well-rounded mapping. 
+    Great typing metrics for little learning effort! (Disclaimer: I haven't actually typed with this letter map.)`,
     mappingThumb30: [
         "qwpbf" + "ykul;",
         "asdrg" + "hnioe",
@@ -407,7 +426,7 @@ export const cozyEnglish = {
     techName: "cozy-english",
     localMaximum: true,
     description: `A simple continuation of Qwerty Flip/Twist/Thumb (with a Fling instead of the Spin 😅), 
-    although I didn't know of Qwerty Flip when first designing this layout. 
+    although I didn't know of Qwerty Flip when first designing this letter map. 
     We swap T to the right hand and suddenly get very good metrics given very little changes from the original Qwerty.
     There's also an additional KU swap which makes U easier to type and more importantly removes NU and HU SFBs 
     which could be alt-fingered in Qwerty, but become annoyingly noticeable once the N is so easy to type. `,
@@ -435,7 +454,7 @@ export const cozyGerman: FlexMapping = {
         "The result is a Cozy variant with just two changes: O and L stay as in Qwerty" +
         "and Y and Z stay as in the standard German Qwertz. " +
         "This reflects German letter frequencies and also makes it a bit easier to switch " +
-        "from the legacy Qwerty/Qwertz layout. ",
+        "from the legacy Qwerty/Qwertz mapping. ",
     comparisonBase: qwertzMapping,
     mappingThumb30: [
         "qwbf-" + "z" + "kuop",
@@ -540,12 +559,12 @@ export const topNine: FlexMapping = {
     Anyway, the next most frequent letters are D, L, and U, which are placed in second-best positions on the strongest and 
     longest finger upper row.
     This not just yields a great single key metric, but also pleasantly little changes compared to the Qwerty mapping,
-    thus nice learnability not just from Qwerty, but also derived layouts, like in particular Norman which it resembles.
+    thus nice learnability not just from Qwerty, but also derived mappings, like in particular Norman which it resembles.
     
     However, the price to pay is some very annoying SFBs involving R. 
     Those can be fixed with more letter swaps, yielding many variants, lots of confusion, but no clear winner.
     And the over-focus on English also reduces the scores for German.
-    But at least the straw man allows us to see that the actual winning (well-rounded) layouts are not so far away from
+    But at least the straw man allows us to see that the actual winning (well-rounded) mappings are not so far away from
     the theoretical optimum! Which is what the experiment was all about! `,
 
     mappingThumb30: [
@@ -589,7 +608,7 @@ export const topNineLeftThumb: FlexMapping = {
     description: `This is Top Nine, but the left thumb types the letter E. 
     On the ancient ANSI keyboard, it's weird to use the space bar for a letter, 
     but on any modern Ortholinear or harmonically staggered keyboard, left and right are equally usable. 
-    And Top Nine Left uses this symmetry to provide a highly performant layout where all the letters 
+    And Top Nine Left uses this symmetry to provide a highly performant mapping where all the letters 
     are on the same hand as in Qwerty. 
     (Unlike shown on the keyboard above, the space bar should be on the other thumb.) `,
     mappingSplitOrtho: [
@@ -701,7 +720,7 @@ export const top9kul = {
     ],
 }
 
-/*  Port of my personal German layout.
+/*  Port of my personal German letter map.
     Note that this supposes a mixed German/ANSI shift-pairing with notably `;:` mapped on `,.` and `=` on `0`.
     Other Shift-mappings can vary, as well as the AltGr mappings, although it seems wise to swap Cmd/AltGr keys because
     most of the German AltGr mappings are on the right hand. This way, we can actually move all of them to the right hand
@@ -719,7 +738,7 @@ export const gemuetlichesMapping = {
     sourceLinkTitle: "GitHub: matey-jack/gemuetliche-tastatur",
     comparisonBase: qwertzMapping,
 
-    // I actually used this layout on an ISO keyboard, so the right pinky keys are a bit different!
+    // I actually used this mapping on an ISO keyboard, so the right pinky keys are a bit different!
     mappingAnsiWide: [
         "´ß",
         "qwbfö" + "+zkuopüä",
@@ -747,14 +766,14 @@ export const gemuetlichesMapping = {
     // TODO: We could define a "base for diffing" field here that contains the default German Qwertz mapping.
     //       Then the diff counts should be correct. (We'll have to contort it to ANSI though, because this app will not implement ISO.)
     /*
-         The Harmonic port of this layout changes less than Qwerty, because it is already made for a wide home position.
+         The Harmonic port of this mapping changes less than Qwerty, because it is already made for a wide home position.
          Changed chars are üzj+
          ü sends away + because there is one less physical key on the upper row.
          J and - simply swap places, both keep their finger and direction assignment.
          (Alternatively swap also Q and J to improve the positioning for frequency.)
          Finally, with `Z` I am not completely sure: it's still a bit awkward to think about this "new" left off-home position
          although the symmetric position on the right has always been a character key in ANSI, even a letter in German.
-         TODO: align those layouts with modifications made on other variants. In particular the Q overspill to the home row.
+         TODO: align those mappings with modifications made on other variants. In particular the Q overspill to the home row.
      */
     mappingHarmonic13wide: [
         "´ß",
@@ -775,7 +794,7 @@ export const gemuetlichesMapping = {
 export const colemakMapping: FlexMapping = {
     name: "Colemak",
     localMaximum: true,
-    description: "Released in the year 2006, the Colemak layout started a new world-wide interest in better letter mappings. " +
+    description: "Released in the year 2006, the Colemak letter map started a new world-wide interest in better keyboard mappings. " +
         "It also pioneered the idea of leaving some crucial-for-shortcuts keys in their place. " +
         "Colemak places a strong emphasis on avoiding single-finger bigram conflicts at the cost of many letters changing fingers. ",
     sourceUrl: "https://colemak.com/",
@@ -899,7 +918,7 @@ export const maltronMapping: FlexMapping = {
     sourceUrl: "https://www.maltron.com/the-maltron-letter-layout-advantage.html",
     sourceLinkTitle: "Maltron Company Website",
     description: `Before the keyboard mapping community existed, the Maltron company produced and marketed keyboards that 
-    had their own letter mapping... and remarkedly with a letter on a thumb key. 
+    had their own letter mapping... and remarkably with a letter on a thumb key! 
     This is designed exclusively for a split ortho board and I'll leave it at that.`,
     mappingSplitOrtho: [
         "",
@@ -914,13 +933,13 @@ export const rsthdMapping: FlexMapping = {
     name: "RSTHD",
     sourceUrl: "https://xsznix.wordpress.com/2016/05/16/introducing-the-rsthd-layout/",
     sourceLinkTitle: `Announcement Blog Post`,
-    description: `The first (or at least an early example) of a layout with thumb letter, now created with the modern metrics 
+    description: `The first (or at least an early example) of a mapping with thumb letter, now created with the modern metrics 
     of the keyboard community in mind: not just frequent home row use and SFBs, but rolls, scissors, and more.
     Note that RSTD with thumb-E is only defined for Ortho boards, so the wide ANSI version here is an adaption 
     created in a rush just to let the app calculate the metrics.
     It also has a variant without thumb-E which is shown here on the ANSI non-wide and Harmonic layouts. 
     Switch to wide ANSI or split Ortho to see the actually famous version. `,
-    // our Thumb30 abstraction doesn't fit this layout because of different '/' placement.
+    // our Thumb30 abstraction doesn't fit this mapping because of different '/' placement.
     // mappingThumb30: [
     //     "jcyfk" + "zl,uq",
     //     "rsthd" + "mnaio",
@@ -949,7 +968,7 @@ export const rsthdMapping: FlexMapping = {
 }
 
 // straw man mappings to represent the limit of what's possible in SFBs (bigram effort).
-// (Similar to the Top Nine layout showing a minimal single key effort on ANSI.)
+// (Similar to the Top Nine mapping showing a minimal single key effort on ANSI.)
 // I spent minimal research effort and just went to https://cyanophage.github.io/
 // sorted it by SFB and picked the first using a thumb letter and the first using no thumb letter.
 
@@ -959,7 +978,7 @@ export const snthMapping: FlexMapping = {
     sourceLinkTitle: "r/KeyboardLayouts",
     description: `There are so many mappings proposed nowadays, some of them probably have no actual users,
      because even their creator has moved on. 
-     But SNTH stands out on https://cyanophage.github.io/ as the layout with the lowest SFB.
+     But SNTH stands out on https://cyanophage.github.io/ as the mapping with the lowest SFB.
      (My version here looks different because of constraints of my data model.)`,
     mappingThumb30: [
         "xpdmq" + "-you,",
@@ -984,6 +1003,7 @@ export const rtnaMapping: FlexMapping = {
 export const allMappings: FlexMapping[] = [
     qwertyMapping,
     qwertyWideMapping,
+    ergoFix,
     qweertyMapping,
     enTryMapping,
     qwertzMapping,
@@ -1031,7 +1051,7 @@ export const allMappings: FlexMapping[] = [
     rsthdMapping,
     // Those two actually don't have significantly better metrics than Colemak and Thumby Colemak.
     // Other than a bug in my code, the reason for the small difference could be the different weights that I use,
-    // compared to whatever metrics and weights those layouts for optimized for.
+    // compared to whatever metrics and weights those mappings for optimized for.
     // snthMapping,
     // rtnaMapping,
 ]

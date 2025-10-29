@@ -50,6 +50,13 @@ missing core features:
   + the "wide" mappings
   + Harmonic and Ortho general texts (maybe (i) icon in layout bar). But still repeat that text under the H and O variants.
 
+- prettier coloring of the "edge keys": 
+    + consistently shade all of them darker, even the \| key. 
+    + And maybe except the Space bar. (And E or Return if they are mapped to a key symmetric of the space bar.)
+    + Generally make the coloring dependent on the LayoutModel, not the key type. So every layout can be pretty. 
+        Like my dream Harmonic "Balance" with the four symmetric long keys on the side. 
+        (And maybe matching Space/Return on the bottom.) 
+
 - check consistency of all mappings:
    + variants for different layouts should be consistent (only have differences clearly attributed to the layout)
    + maybe check if some full-mappings can be omitted, because thumb30 and 3×10 do the job well enough?

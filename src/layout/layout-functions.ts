@@ -75,7 +75,7 @@ export const mergeMapping = (
                 const v = Array.isArray(layoutValue) ? flexMapping[r + layoutValue[0]][layoutValue[1]]
                     : (typeof layoutValue === 'number') ? flexMapping[r][layoutValue]
                         : layoutValue as string;
-                if (!v || v == leaveEmpty) return "";
+                if (v == leaveEmpty) return "";
                 if (v == useFallback) return (fallbackMapping ? fallbackMapping[r][c] as string : "");
                 return keyLabelShortcuts[v] ?? v;
             }
@@ -96,7 +96,7 @@ export function diffMappings(model: RowBasedLayoutModel, a: string[][], b: strin
             if (!aKey || aKey == b[r][c]) {
                 result[aKey] = MappingChange.SamePosition;
             } else {
-                let f = model.mainFingerAssignment[r][c];
+                let f = model.mainFingerAssignment[r][c] as Finger;
                 // console.log(`[${r},${c}] '${aKey}' on finger ${f}, in base mapping finger ${bFingers[aKey]}.'`)
                 result[aKey] = diffFinger(f, bFingers[aKey])
             }
@@ -106,12 +106,12 @@ export function diffMappings(model: RowBasedLayoutModel, a: string[][], b: strin
 }
 
 // exported only for unit tests
-export function characterToFinger(fingerAssignment: Finger[][], mapping: string[][]): Record<string, Finger> {
+export function characterToFinger(fingerAssignment: (Finger | null)[][], mapping: string[][]): Record<string, Finger> {
     const result: Record<string, Finger> = {};
     fingerAssignment.forEach((fingerRow, r) => {
         fingerRow.forEach((finger, c) => {
             const key = mapping[r][c];
-            result[key] = finger;
+            if (finger && key) result[key] = finger;
         })
     })
     return result;
@@ -195,16 +195,20 @@ export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean
         if (!split) colPos += (totalWidth - rowWidth[row]) / 2;
         fullMapping[row].forEach((label, col) => {
             // to show the board as split, add some extra space after the split column.
-            if (split && (col == layoutModel.splitColumns[row])) colPos += totalWidth - rowWidth[row];
-            const finger = layoutModel.mainFingerAssignment[row][col];
-            result.push({
-                label,
-                row,
-                col,
-                colPos,
-                finger,
-                hasAltFinger: layoutModel.hasAltFinger(row, col),
-            });
+            if (split && layoutModel.splitColumns && (col == layoutModel.splitColumns[row])) {
+                colPos += totalWidth - rowWidth[row];
+            }
+            const finger = layoutModel.mainFingerAssignment[row][col] as Finger;
+            if (fullMapping[row][col] != null) {
+                result.push({
+                    label,
+                    row,
+                    col,
+                    colPos,
+                    finger,
+                    hasAltFinger: layoutModel.hasAltFinger(row, col),
+                });
+            }
             colPos += layoutModel.keyWidth(row, col);
         });
     }
