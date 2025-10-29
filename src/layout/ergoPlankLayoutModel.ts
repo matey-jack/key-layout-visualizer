@@ -6,12 +6,13 @@ const caseWidth = 15;
 // those values are accumulated by the stagger of 0.25, with the home row being maximal length.
 const widthOfEdgeKey = [1.5, 1.25, 1, 1.75]
 
-export const ergoPlankLayoutModel: RowBasedLayoutModel = {
+export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
     name: "ErgoPlank",
     description: `The most ergonomic key layout that fits into a standard "60%" keyboard case. 
     Hand distance is maximized. Row stagger is equal to a "cleave-style ergonomic" keyboard.
     Thumb keys are added. 
-    Key cap sizes are harmonized to facilitate customizing the keymap. `,
+    Key cap sizes are harmonized to facilitate customizing the keymap. 
+    This is based on the "Harmonic" layout as well as the "Katana" design by RominRonin. `,
 
     // row lengths: 14, 14, 15, 13, 12
     thirtyKeyMapping: [
@@ -50,7 +51,7 @@ export const ergoPlankLayoutModel: RowBasedLayoutModel = {
         [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0],
         [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 3.0, 2, 0.2, 0.2, 0.2, 0.2, 1.5],
         [1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0],
-        [3.0, 3.0, 2.0, 1.5, 1.0, 0.2, 0.2, 1.0, 1.5, 2.0, 3.0, 3.0],
+        [3.0, 3.0, 2.0, 1.5, 0.2, 1.0, 1.0, 0.2, 1.5, 2.0, 3.0, 3.0],
     ],
 
     rowStart: (_: KeyboardRows) => 0,
@@ -73,13 +74,43 @@ export const ergoPlankLayoutModel: RowBasedLayoutModel = {
         return 1;
     },
 
-    // todo: disable split for this layout
-    splitColumns: [7, 7, 7, 6, 6],
-
     leftHomeIndex: 4,
     rightHomeIndex: 10,
 
     staggerOffsets: [0.5, 0.25, 0, -0.25],
 
     getSpecificMapping: (_: FlexMapping) => undefined,
+}
+
+export const ergoPlankLayoutModel: RowBasedLayoutModel = {
+    ...ergoPlankRegularLayoutModel,
+    thirtyKeyMapping: replaceLast(ergoPlankRegularLayoutModel.thirtyKeyMapping,
+        ["Ctrl", "Cmd", "", "Alt", "⏎", "Fn", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"]
+    ),
+    thumb30KeyMapping: replaceLast(ergoPlankRegularLayoutModel.thumb30KeyMapping,
+        ["Ctrl", "Cmd", "", "Alt", 0, "Fn", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"]
+    ),
+    // fullMapping: replaceLast(ergoPlankRegularLayoutModel.fullMapping, []),
+    singleKeyEffort: replaceLast(ergoPlankRegularLayoutModel.singleKeyEffort,
+        [3.0, 3.0, 2.0, 1.5, 0.2, 1.5, 0.2, 1.5, 2.0, 3.0, 3.0]
+    ),
+    mainFingerAssignment: replaceLast(ergoPlankRegularLayoutModel.mainFingerAssignment,
+        [0, 1, 2, 4, 4, 5, 5, 5, 7, 8, 9]
+    ),
+    keyWidth: (row: KeyboardRows, col: number): number => {
+        if (row == KeyboardRows.Bottom) {
+            switch (col) {
+                case 4:
+                case 6:
+                    return 1.75;
+                case 5:
+                    return 1.5;
+            }
+        }
+        return ergoPlankRegularLayoutModel.keyWidth(row, col);
+    }
+}
+
+function replaceLast<T>(list: T[], last: T) {
+    return [...list.slice(0, -1), last];
 }

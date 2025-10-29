@@ -152,7 +152,7 @@ export interface RowBasedLayoutModel {
 
     // How many columns are to the left of the split line for each row?
     // (We could actually automatically derive this from the finger assignment...)
-    splitColumns: number[];
+    splitColumns?: number[];
 
     // Column number counted from 0.
     leftHomeIndex: number;
