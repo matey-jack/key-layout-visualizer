@@ -51,13 +51,9 @@ export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexM
     }
 }
 
-// todo: merge this with the function that actually selects the applicable mapping using all the current layout options.
 export function hasMatchingMapping(layout: RowBasedLayoutModel, flexMapping: FlexMapping): boolean {
-    if (flexMapping.mapping30 || flexMapping.mappingThumb30) return true;
-    if (layout.name.includes("ANSI")) {
-        // we require both because data will be inconsistent when the user flips between narrow and wide
-        return !!(flexMapping.mappingAnsiWide && flexMapping.mappingAnsi);
-    }
+    if (flexMapping.mapping30 && layout.thirtyKeyMapping) return true;
+    if (flexMapping.mappingThumb30 && layout.thumb30KeyMapping) return true;
     return !!layout.getSpecificMapping(flexMapping);
 }
 
@@ -118,7 +114,7 @@ export function characterToFinger(fingerAssignment: (Finger | null)[][], mapping
     fingerAssignment.forEach((fingerRow, r) => {
         fingerRow.forEach((finger, c) => {
             const key = mapping[r][c];
-            if (finger && key) result[key] = finger;
+            if (finger != null && key) result[key] = finger;
         })
     })
     return result;

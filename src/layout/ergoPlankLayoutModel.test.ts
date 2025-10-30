@@ -7,20 +7,22 @@ import {qwertyMapping} from "../mapping/mappings.ts";
 
 describe('ergoPlankLayoutModel', () => {
     it('thirtyKeyMapping row length', () => {
-        expect(ergoPlankLayoutModel.thirtyKeyMapping[0].length).toBe(14)
-        expect(ergoPlankLayoutModel.thirtyKeyMapping[1].length).toBe(15)
-        expect(ergoPlankLayoutModel.thirtyKeyMapping[2].length).toBe(15)
-        expect(ergoPlankLayoutModel.thirtyKeyMapping[3].length).toBe(13)
-        expect(ergoPlankLayoutModel.thirtyKeyMapping[4].length).toBe(11)
+        const thirtyKeyMapping = ergoPlankLayoutModel.thirtyKeyMapping!;
+        expect(thirtyKeyMapping[0].length).toBe(14)
+        expect(thirtyKeyMapping[1].length).toBe(15)
+        expect(thirtyKeyMapping[2].length).toBe(15)
+        expect(thirtyKeyMapping[3].length).toBe(13)
+        expect(thirtyKeyMapping[4].length).toBe(11)
 
     })
 
     it('thumb30KeyMapping row length', () => {
-        expect(ergoPlankLayoutModel.thumb30KeyMapping[0].length).toBe(14)
-        expect(ergoPlankLayoutModel.thumb30KeyMapping[1].length).toBe(15)
-        expect(ergoPlankLayoutModel.thumb30KeyMapping[2].length).toBe(15)
-        expect(ergoPlankLayoutModel.thumb30KeyMapping[3].length).toBe(13)
-        expect(ergoPlankLayoutModel.thumb30KeyMapping[4].length).toBe(11)
+        const thumb30KeyMapping = ergoPlankLayoutModel.thumb30KeyMapping!;
+        expect(thumb30KeyMapping[0].length).toBe(14)
+        expect(thumb30KeyMapping[1].length).toBe(15)
+        expect(thumb30KeyMapping[2].length).toBe(15)
+        expect(thumb30KeyMapping[3].length).toBe(13)
+        expect(thumb30KeyMapping[4].length).toBe(11)
     })
 
     it('mainFingerAssignment row length', () => {

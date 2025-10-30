@@ -27,14 +27,6 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
     ],
 
-    thumb30KeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "=", "`~", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "[", "]", "\\"],
-        ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⏎"],
-        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, '/', "⇧"],
-        ["Ctrl", "Cmd", "Alt", "⍽", 0, "AltGr", "Fn", "Ctrl"],
-    ],
-
     // arbitrary decision to include two thumb keys in the mapping.
     // (One for a letter and one more to move AltGr to, if desired.)
     // Exclude CapsLock from the flex mapping, because it distracts from the lettering changes,
@@ -95,7 +87,7 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
             return widthOfFirstKey[row];
         }
         // outer edge keys
-        const numCols = ansiLayoutModel.thirtyKeyMapping[row].length;
+        const numCols = ansiLayoutModel.thirtyKeyMapping![row].length;
         if (col == numCols - 1) {
             const numberOfMiddleKeys = numCols - 2;
             return widthOfAnsiBoard - numberOfMiddleKeys - widthOfFirstKey[row];
@@ -142,7 +134,7 @@ export const ansiWideLayoutModel = {
     ],
     fullMapping: [
         ["`~", "1", "2", "3", "4", "5", "6", 0, "7", "8", "9", "0", 1, "⌫"],
-        ...ansiLayoutModel.fullMapping.slice(1),
+        ...ansiLayoutModel.fullMapping!.slice(1),
     ],
     mainFingerAssignment: [
         [1, 1, 1, 2, 2, 3, 3, 6, 6, 6, 7, 8, 8, 8],
@@ -165,7 +157,7 @@ export const ansiWideLayoutModel = {
 function widenSingleKeyEffort(effort: number[][]) {
     ansiLayoutModel.splitColumns!!.forEach((splitCol, row) => {
         if (row != KeyboardRows.Bottom) {
-            const lastCol = ansiLayoutModel.thirtyKeyMapping[row].length - 1;
+            const lastCol = ansiLayoutModel.thirtyKeyMapping![row].length - 1;
             // keys at splitCol have the wrapped-around effort from the right-hand side.
             effort[row][lastCol] = effort[row][splitCol];
             effort[row][splitCol] = SKE_AWAY;

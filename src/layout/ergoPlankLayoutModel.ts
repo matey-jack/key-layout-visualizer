@@ -60,7 +60,7 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
         if (row == KeyboardRows.Bottom) {
             return 1.25;
         }
-        const numCols = ergoPlankLayoutModel.thirtyKeyMapping[row].length;
+        const numCols = ergoPlankLayoutModel.thirtyKeyMapping![row].length;
         if (col == 0 || col == numCols - 1) {
             return widthOfEdgeKey[row];
         }
@@ -83,10 +83,10 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
 
 export const ergoPlankLayoutModel: RowBasedLayoutModel = {
     ...ergoPlankRegularLayoutModel,
-    thirtyKeyMapping: replaceLast(ergoPlankRegularLayoutModel.thirtyKeyMapping,
+    thirtyKeyMapping: replaceLast(ergoPlankRegularLayoutModel.thirtyKeyMapping!,
         ["Ctrl", "Cmd", "", "Alt", "⏎", "Fn", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"]
     ),
-    thumb30KeyMapping: replaceLast(ergoPlankRegularLayoutModel.thumb30KeyMapping,
+    thumb30KeyMapping: replaceLast(ergoPlankRegularLayoutModel.thumb30KeyMapping!,
         ["Ctrl", "Cmd", "", "Alt", 0, "Fn", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"]
     ),
     // fullMapping: replaceLast(ergoPlankRegularLayoutModel.fullMapping, []),

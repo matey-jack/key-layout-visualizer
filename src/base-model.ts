@@ -175,16 +175,16 @@ export interface RowBasedLayoutModel {
     staggerOffsets: number[];
 
     // to be filled by FlexMapping.mapping30
-    thirtyKeyMapping: LayoutMapping;
+    thirtyKeyMapping?: LayoutMapping;
 
     // to be filled by FlexMapping.mappingThumb30
     // As a guideline `-` should be mapped closer to the top and right hand, so it's closer to its old position and also
     // the `=+` key. (The latter being important for tapping Ctrl with + and - to zoom in and out.
     // Ctrl held with one hand, + and - tapped with the other.)
-    thumb30KeyMapping: LayoutMapping;
+    thumb30KeyMapping?: LayoutMapping;
 
     // to be filled by whatever getSpecificMapping() selects
-    fullMapping: LayoutMapping;
+    fullMapping?: LayoutMapping;
 
     // finger assignment and key effort arrays have the same shape (number of entries in each row) as the LayoutMappings.
     mainFingerAssignment: Finger[][];

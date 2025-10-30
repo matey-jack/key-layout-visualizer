@@ -59,7 +59,7 @@ describe('fillMapping', () => {
     allLayoutModels.forEach((model) => {
         if (model.thirtyKeyMapping) {
             it(`${model.name} 30-key frame maps all important characters`, () => {
-                hasLettersNumbersAndProsePunctuation(mergeMapping(model.thirtyKeyMapping, ["", ...qwertyMapping.mapping30!]));
+                hasLettersNumbersAndProsePunctuation(mergeMapping(model.thirtyKeyMapping!, ["", ...qwertyMapping.mapping30!]));
             });
         }
         if (model.thumb30KeyMapping) {
@@ -70,17 +70,17 @@ describe('fillMapping', () => {
     });
 
     it(`ANSI full layout maps all important characters`, () => {
-        hasLettersNumbersAndProsePunctuation(mergeMapping(ansiLayoutModel.fullMapping, thumbyZero.mappingAnsi!));
+        hasLettersNumbersAndProsePunctuation(mergeMapping(ansiLayoutModel.fullMapping!, thumbyZero.mappingAnsi!));
     });
 
     // this is currently not used in the app, but let's keep it working
     it(`Split Ortho full layout maps all important characters`, () => {
-        hasLettersNumbersAndProsePunctuation(mergeMapping(splitOrthoLayoutModel.fullMapping, cozyEnglish.mappingSplitOrtho!));
+        hasLettersNumbersAndProsePunctuation(mergeMapping(splitOrthoLayoutModel.fullMapping!, cozyEnglish.mappingSplitOrtho!));
     });
 
     // this is currently not used in the app, but let's keep it working
     it(`Harmonic 13 wide full layout maps all important characters`, () => {
-        hasLettersNumbersAndProsePunctuation(mergeMapping(harmonic13WideLayoutModel.fullMapping, topNine.mappingHarmonic13wide!));
+        hasLettersNumbersAndProsePunctuation(mergeMapping(harmonic13WideLayoutModel.fullMapping!, topNine.mappingHarmonic13wide!));
     });
 
     // TODO: fullMappings for other Harmonic variants need clean up first

@@ -68,7 +68,7 @@ describe('flex mappings consistency', () => {
                 it(mapping.name + ` – ${layoutModel.name} – array shape`, () => {
                     expect(specificMapping.length).toBe(5);
                     // TODO: take new default value into account – or rethink that concept!
-                    rowLengths(layoutModel.fullMapping).forEach((expected, row) => {
+                    rowLengths(layoutModel.fullMapping!).forEach((expected, row) => {
                         expect(specificMapping[row].length, `row ${row}`).toBe(expected);
                     });
                 });

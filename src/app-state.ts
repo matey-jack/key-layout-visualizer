@@ -46,6 +46,7 @@ function setLayout(
 export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<LayoutOptions>, layoutModel: RowBasedLayoutModel, mappingState: Signal<FlexMapping>) {
     if (hasMatchingMapping(layoutModel, newMapping)) {
         mappingState.value = newMapping;
+        console.log("accepting mapping on current layout")
         return;
     }
     // we don't have a generic 30-key mapping and no specific mapping for this layout plus options.
@@ -57,7 +58,7 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
             mappingState.value = newMapping;
             return;
         }
-        if (newMapping.mappingAnsiWide) {
+        if (newMapping.mappingAnsiWide || newMapping.mappingThumb30) {
             layoutOptionsState.value = {...layoutOptionsState.value, wideAnsi: true};
             mappingState.value = newMapping;
             return;
