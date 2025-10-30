@@ -32,13 +32,21 @@ done:
     + don't show metrics in mapping list when mapping does not work with current layout type
     + set layout options for mapping and disable the checkbox if mapping only supports one setting
 
+- switch to wide (on ANSI) whenever a layout with thumb letter is selected. 
+   (And remove OrthoPlank to reduce maintenance. This layout is ergonomically unacceptable.)
+
 - Outside the app: make a graph of the "efficiency frontier" with those six layouts and Qwerty — once for single and once for bigram scores.
   (Maybe add the minimum SFB layout from Oxley each with and without thumb letter use as the right fence post for the diagram.)
     done here ==> https://docs.google.com/spreadsheets/d/1E3uta8rgbxNcu7onwrg5y7bJaWY-TkvE0JlzE-3GAtY/edit?usp=sharing
 
+- ErgoPlank variants:
+   - "Katana max with ANSI bottom row": offsets 0.5, 0.25, 0, 0.5; Keys: 14, 14, 15, 14.
+      (The difference to the original Katana is mostly in the bigger Shift keys, while unfortunately also Escape is big.)
+   - original Katana with 力 icon, offsets: 0, 0.5, 0.25, 0. Keys: 15, 14, 14, 15.
+
 bugs fixed:
- - Learnability Score for Wide ANSI in Mapping List is changing when I select different mappings =:-[]
- - Frequency for Thumby bigrams should be counted, even if there is no wide layout.
+- Learnability Score for Wide ANSI in Mapping List is changing when I select different mappings =:-[]
+- Frequency for Thumby bigrams should be counted, even if there is no wide layout.
 - validate mapping/layout/options combination from URL data, so that the app doesn't crash
 - handle Harmonic variants without a matching mapping:
   + when switching to the Harmonic layout with an unsupported mapping already set
@@ -46,16 +54,15 @@ bugs fixed:
 
 
 missing core features:
+- ErgoPlank and Katana logos to fill the gap
+- Rectangle around the keyboard to signify the HK60 box.
+
 - add some more explanations, especially for:
   + the "wide" mappings
   + Harmonic and Ortho general texts (maybe (i) icon in layout bar). But still repeat that text under the H and O variants.
 
-- prettier coloring of the "edge keys": 
-    + consistently shade all of them darker, even the \| key. 
-    + And maybe except the Space bar. (And E or Return if they are mapped to a key symmetric of the space bar.)
-    + Generally make the coloring dependent on the LayoutModel, not the key type. So every layout can be pretty. 
-        Like my dream Harmonic "Balance" with the four symmetric long keys on the side. 
-        (And maybe matching Space/Return on the bottom.) 
+- prettier coloring of the "edge keys / command keys": 
+    + Allow layouts to highlight keys or change the rules on coloring. (Needed for ErgoPlanck to make its Return key visible.)
 
 - check consistency of all mappings:
    + variants for different layouts should be consistent (only have differences clearly attributed to the layout)
@@ -63,10 +70,9 @@ missing core features:
    + related thumby variants should be consistent (only have the intended differences)
      * especially Thumby-KU
 
-- switch to wide (on ANSI) and split (on Ortho) whenever a layout with thumb letter is selected.
-
 bugs:
-- the comparisonBase mapping needs to have definitions on all layouts, thus at least a mapping30.
+- when switching mappings we correctly set options (which only affects ANSI), but we don't switch Layouts, because there are so many variants to iterate through. But needs to be done at some point.
+- the comparisonBase mapping needs to have definitions on all layouts, thus at least a mapping30 (which is supported everywhere).
    Add that for qwertz and maybe add a full mapping for the ortho board to make the comparison more meaningful.
 - on Thumby / Cozy Keyboard English variant, the apostrophe is counted as "changed on same finger" on the ortho layout, 
   but not on ANSI wide, although it's on the same position.

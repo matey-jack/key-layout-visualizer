@@ -57,6 +57,7 @@ export const harmonic14WideLayoutModel: RowBasedLayoutModel = {
     rightHomeIndex: 9,
 
     staggerOffsets: harmonicStaggerOffsets,
+    symmetricStagger: true,
 
     mainFingerAssignment: [
         [1, 1, 1, 2, 2, 3, 3, 6, 6, 7, 7, 8, 8, 8],

@@ -199,8 +199,7 @@ export function StaggerLines({layoutModel, layoutSplit, keyPositions}: StaggerLi
     const leftHandOffsets = layoutSplit ? [0, 0, 0, 0] : [0.5, 0.25, 0, -0.25];
     const rightHandOffsets = leftHandOffsets.map((x) => -x);
     // This uses object identity comparison and only works, because the models actually reference the same array.
-    const symmetricalledStaggered = layoutModel.name.includes("Harmonic") || layoutModel.name.includes("Ergo");
-    const rightKeyboardOffsets = symmetricalledStaggered
+    const rightKeyboardOffsets = layoutModel.symmetricStagger
         ? layoutModel.staggerOffsets.map((x) => -x)
         : layoutModel.staggerOffsets;
     return <>

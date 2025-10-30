@@ -12,7 +12,7 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
     Key cap sizes are harmonized to facilitate customizing the keymap. 
     This is based on the "Harmonic" layout as well as the "Katana" design by RominRonin. `,
 
-    // row lengths: 14, 14, 15, 14, 12
+    // row lengths: 14, 14 (but +1 gap!), 15, 14, 12
     thirtyKeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
         ["↹", 0, 1, 2, 3, 4, "-", null, "=", 5, 6, 7, 8, 9, "\\"],
@@ -49,7 +49,7 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
     singleKeyEffort: [
         [3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0],
         [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0],
-        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 3.0, 2, 0.2, 0.2, 0.2, 0.2, 1.5],
+        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
         [1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0],
         [3.0, 3.0, 2.0, 1.5, 0.2, 1.0, 1.0, 0.2, 1.5, 2.0, 3.0, 3.0],
     ],
@@ -76,7 +76,8 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
     leftHomeIndex: 4,
     rightHomeIndex: 10,
 
-    staggerOffsets: [0.5, 0.25, 0, -0.25],
+    staggerOffsets: [0.5, 0.25, 0, -0.5],
+    symmetricStagger: true,
 
     getSpecificMapping: (_: FlexMapping) => undefined,
 }

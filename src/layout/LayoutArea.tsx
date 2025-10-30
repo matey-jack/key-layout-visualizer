@@ -6,6 +6,7 @@ import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
 import {Signal} from "@preact/signals";
+import {PlankLayoutOptions} from "./PlankLayoutOptions.tsx";
 
 interface LayoutAreaProps {
     appState: AppState;
@@ -114,6 +115,11 @@ function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions, mapping}: La
             return <HarmonicLayoutOptions
                 variant={layoutOptions.harmonicVariant}
                 setVariant={(variant) => setLayoutOptions({...layoutOptions, harmonicVariant: variant})}
+            />
+        case LayoutType.ErgoPlank:
+            return <PlankLayoutOptions
+                variant={layoutOptions.plankVariant}
+                setVariant={(variant) => setLayoutOptions({...layoutOptions, plankVariant: variant})}
             />
     }
     return <></>;

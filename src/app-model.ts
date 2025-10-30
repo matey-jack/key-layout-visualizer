@@ -16,6 +16,12 @@ export enum HarmonicVariant {
     // The H12 has no nickname, since an H12 narrow doesn't have enough keys to be practical.
 }
 
+
+export enum PlankVariant {
+    MAX_WIDTH, // 15 keys in home row for widest possible hand distance
+    KATANA_60, // the original as published by RominRonin.
+}
+
 export interface LayoutOptions {
     type: LayoutType;
     split: boolean;
@@ -23,6 +29,7 @@ export interface LayoutOptions {
     // but fits here, since the ansiWideLayout is an actual LayoutModel instance.
     wideAnsi: boolean;
     harmonicVariant: HarmonicVariant;
+    plankVariant: PlankVariant;
 }
 
 export interface AppState {

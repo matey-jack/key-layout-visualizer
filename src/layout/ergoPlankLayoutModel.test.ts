@@ -36,7 +36,7 @@ describe('ergoPlankLayoutModel', () => {
         expect(ergoPlankLayoutModel.singleKeyEffort[0].length).toBe(14)
         expect(ergoPlankLayoutModel.singleKeyEffort[1].length).toBe(15)
         expect(ergoPlankLayoutModel.singleKeyEffort[2].length).toBe(15)
-        expect(ergoPlankLayoutModel.singleKeyEffort[3].length).toBe(13)
+        expect(ergoPlankLayoutModel.singleKeyEffort[3].length).toBe(14)
         expect(ergoPlankLayoutModel.singleKeyEffort[4].length).toBe(11)
     })
 

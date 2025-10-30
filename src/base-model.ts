@@ -173,6 +173,7 @@ export interface RowBasedLayoutModel {
 
     // cumulative values relative to home row
     staggerOffsets: number[];
+    symmetricStagger: boolean;
 
     // to be filled by FlexMapping.mapping30
     thirtyKeyMapping?: LayoutMapping;

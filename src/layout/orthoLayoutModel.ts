@@ -49,6 +49,7 @@ export const orthoLayoutModel: RowBasedLayoutModel = {
     rightHomeIndex: 7,
 
     staggerOffsets: [0, 0, 0, 0],
+    symmetricStagger: true,
 
     mainFingerAssignment: [
         [1, 1, 1, 2, 2, 3, 6, 7, 7, 8, 8, 8],

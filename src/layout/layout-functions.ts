@@ -10,7 +10,7 @@ import {
     RowBasedLayoutModel
 } from "../base-model.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
-import {HarmonicVariant, LayoutOptions} from "../app-model.ts";
+import {HarmonicVariant, LayoutOptions, PlankVariant} from "../app-model.ts";
 import {ansiLayoutModel, ansiWideLayoutModel, splitSpaceBar} from "./ansiLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
@@ -21,6 +21,7 @@ import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 import {harmonic14WideLayoutModel} from "./harmonic14WideLayoutModel.ts";
 import {ergoPlankLayoutModel} from "./ergoPlankLayoutModel.ts";
 import {isCommandKey} from "../mapping/mapping-functions.ts";
+import {katanaLayoutModel} from "./katanaLayoutModel.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
     if (row != KeyboardRows.Home) return false;
@@ -168,6 +169,13 @@ export function getHarmonicVariant(variant: HarmonicVariant) {
     }
 }
 
+export function getPlankVariant(variant: PlankVariant) {
+    switch (variant) {
+        case PlankVariant.KATANA_60: return katanaLayoutModel;
+        case PlankVariant.MAX_WIDTH: return ergoPlankLayoutModel;
+    }
+}
+
 export function getLayoutModel(layoutOptions: LayoutOptions): RowBasedLayoutModel {
     switch (layoutOptions.type) {
         case LayoutType.ANSI:
@@ -178,7 +186,7 @@ export function getLayoutModel(layoutOptions: LayoutOptions): RowBasedLayoutMode
         case LayoutType.Harmonic:
             return getHarmonicVariant(layoutOptions.harmonicVariant);
         case LayoutType.ErgoPlank:
-            return ergoPlankLayoutModel;
+            return getPlankVariant(layoutOptions.plankVariant);
     }
 }
 
