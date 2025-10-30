@@ -1,5 +1,5 @@
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping/mapping-functions.ts";
-import {isHomeKey, lettersAndVIP} from "./layout-functions.ts";
+import {defaultKeyColor, isHomeKey, lettersAndVIP} from "./layout-functions.ts";
 import {
     BigramMovement,
     BigramType,
@@ -27,26 +27,14 @@ export const KeyboardSvg = (props: KeyboardSvgProps) =>
     </div>
 
 interface KeyProps {
-    label: string;
-
-    // labelShift and label3 later added only for non-keyboard-symbol keys.
-    // Actually we only need that for very small keyboards like the Iris... and only for very few keys.
-    // It's unrelated to the main focus of comparing casual key mappings and the Harmonic layout; so leave for later.
-    // labelShifted?: string;
-    // label3?: string;
-
-    row: number; // integer; 0 for the top row (numbers), 4 for the bottom (modifiers).
-    col: number; // those can be fractional, but are measured in 1u from the left-hand side, starting with 0.
-    // thus 0,0 is the top left key (tilde on ANSI, Escape on Harmonic, and Iris)
-    width: number; // measured in units of height, with 1 being the default
-
-    backgroundClass: string;
+    label: string,
+    row: KeyboardRows,
+    col: number, // Measured in key units from the left hand side starting with 0. Can be fractional!
+    width: number,
+    backgroundClass: string,
     // There will be no ribbon element, when there is no ribbon class.
-    // Otherwise, the <rect> will be the same, only the class will be the provided one.
-    ribbonClass?: string;
-    //diff?: MappingChange;
-
-    frequencyCircleRadius?: number;
+    ribbonClass?: string,
+    frequencyCircleRadius?: number,
 }
 
 const keyUnit = 100;
@@ -54,7 +42,7 @@ const keyPadding = 5;
 const keyRibbonPaddingH = 17;
 const keyRibbonPaddingV = 1;
 
-export function Key({col, ribbonClass, backgroundClass, label, row, width, frequencyCircleRadius}: KeyProps) {
+export function Key({label, row, col, width, backgroundClass, ribbonClass, frequencyCircleRadius}: KeyProps) {
     const x = col * keyUnit + keyPadding;
     const y = row * keyUnit + keyPadding;
     const labelClass =
@@ -72,10 +60,6 @@ export function Key({col, ribbonClass, backgroundClass, label, row, width, frequ
             {label}
         </text>
 
-    const bgClass = backgroundClass ? backgroundClass
-        : isCommandKey(label) ? "command-key"
-        : !label ? "unlabeled" : "";
-
     const keyRibbon = ribbonClass &&
         <rect class={"key-ribbon " + ribbonClass}
               x={x + keyRibbonPaddingV}
@@ -87,7 +71,7 @@ export function Key({col, ribbonClass, backgroundClass, label, row, width, frequ
         <circle cx={x + 70} cy={y + 30} r={frequencyCircleRadius} className="frequency-circle"/>;
     return <g>
         <rect
-            className={"key-outline " + bgClass}
+            className={"key-outline " + backgroundClass}
             x={x}
             y={y}
             width={keyUnit * width - 2 * keyPadding}
@@ -141,12 +125,14 @@ function getFingeringClasses(layoutModel: RowBasedLayoutModel, row: number, col:
 
 export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizType}: KeyboardProps) {
     return keyPositions.map(({label, row, col, colPos}) => {
-        const width = layoutModel.keyWidth(row, col);
-        const bgClass = vizType == VisualizationType.LayoutKeyEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
-            : vizType == VisualizationType.LayoutFingering && !isNaN(layoutModel.mainFingerAssignment[row][col])
-                ? getFingeringClasses(layoutModel, row, col, label)
-                : isHomeKey(layoutModel, row, col) ? "home-key"
-                    : "";
+        const slotWidth = layoutModel.keyWidth(row, col);
+        const keyColorFunction = layoutModel.keyColorClass || defaultKeyColor;
+        const bgClass = (vizType == VisualizationType.LayoutKeyEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
+                : vizType == VisualizationType.LayoutFingering && !isNaN(layoutModel.mainFingerAssignment[row][col])
+                    ? getFingeringClasses(layoutModel, row, col, label)
+                    : isHomeKey(layoutModel, row, col) ? "home-key"
+                        : keyColorFunction(label, row, col))
+            || (!label ? "unlabeled" : "");
         const ribbonClass = vizType == VisualizationType.MappingDiff && lettersAndVIP.test(label)
             ? ribbonClassByDiff[mappingDiff[label]]
             : undefined;
@@ -155,13 +141,17 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
             const freq = Math.sqrt(singleCharacterFrequencies[label.toUpperCase()] / singleCharacterFrequencies['E']);
             frequencyCircleRadius = freq * keyUnit / 2;
         }
+        const capWidth = layoutModel.keyCapWidth ? layoutModel.keyCapWidth(row, col) : slotWidth;
+        // this would be a generically better approach than the current left-aligning,
+        // but for the Escape key on ErgoPlank, left-align is actually better.
+        // const capColPos = colPos + (slotWidth - capWidth)/2;
         return <Key
             label={label}
             backgroundClass={bgClass}
             ribbonClass={ribbonClass}
             row={row}
             col={colPos}
-            width={width}
+            width={capWidth}
             frequencyCircleRadius={frequencyCircleRadius}
             key={row + ',' + col}
         />

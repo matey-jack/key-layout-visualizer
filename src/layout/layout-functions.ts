@@ -1,8 +1,8 @@
 import {
     Finger,
     FlexMapping,
-    hand,
-    KeyboardRows,
+    hand, KEY_COLOR,
+    KeyboardRows, KeyColor,
     KeyPosition,
     LayoutMapping,
     LayoutType,
@@ -20,12 +20,18 @@ import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts"
 import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 import {harmonic14WideLayoutModel} from "./harmonic14WideLayoutModel.ts";
 import {ergoPlankLayoutModel} from "./ergoPlankLayoutModel.ts";
+import {isCommandKey} from "../mapping/mapping-functions.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
     if (row != KeyboardRows.Home) return false;
     if (col <= layoutModel.leftHomeIndex && col > layoutModel.leftHomeIndex - 4) return true;
     if (col >= layoutModel.rightHomeIndex && col < layoutModel.rightHomeIndex + 4) return true;
     return false;
+}
+
+export function defaultKeyColor(label: string, _row: number, _col: number): KeyColor {
+    if (isCommandKey(label)) return KEY_COLOR.EDGE;
+    return "";
 }
 
 export function onlySupportsWide(mapping: FlexMapping) {
@@ -45,6 +51,7 @@ export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexM
     }
 }
 
+// todo: merge this with the function that actually selects the applicable mapping using all the current layout options.
 export function hasMatchingMapping(layout: RowBasedLayoutModel, flexMapping: FlexMapping): boolean {
     if (flexMapping.mapping30 || flexMapping.mappingThumb30) return true;
     if (layout.name.includes("ANSI")) {

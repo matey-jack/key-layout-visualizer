@@ -142,13 +142,26 @@ export type LayoutMapping = (string | number | null | [number, number])[][];
 
 export const harmonicStaggerOffsets = [1, 0.5, 0, -0.5];
 
+export const KEY_COLOR = {
+    EDGE: "edge-key",
+    HIGHLIGHT: "highlighted-key",
+}
+
+export type KeyColor = (typeof KEY_COLOR)[keyof typeof KEY_COLOR];
+
 export interface RowBasedLayoutModel {
     name: string;
     description: string;
 
     // 1 unit = width of the smallest key.
     rowStart: (row: KeyboardRows) => number;
+    // Different keyWidth and keyCap with is basically a different way to specify gaps.
+    // It's different gaps than null entries in the keymap, because they are symmetric
+    // and don't add a column in all the layout arrays.
     keyWidth: (row: KeyboardRows, col: number) => number;
+    keyCapWidth?: (row: KeyboardRows, col: number) => number;
+
+    keyColorClass?: (label: string, row: KeyboardRows, col: number) => KeyColor;
 
     // How many columns are to the left of the split line for each row?
     // (We could actually automatically derive this from the finger assignment...)

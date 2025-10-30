@@ -1,7 +1,5 @@
-import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
-
-// todo: data model for gaps between keys and for using a smaller keycap plus gaps on Esc.
-const caseWidth = 15;
+import {FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
+import {defaultKeyColor} from "./layout-functions.ts";
 
 // those values are accumulated by the stagger of 0.25, with the home row being maximal length.
 const widthOfEdgeKey = [1.5, 1.25, 1, 1.75]
@@ -18,7 +16,7 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
     thirtyKeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
         ["↹", 0, 1, 2, 3, 4, "-", null, "=", 5, 6, 7, 8, 9, "⏎"],
-        ["", 0, 1, 2, 3, 4, "`~", "", "\\", 5, 6, 7, 8, 9, "'"],
+        ["⌦", 0, 1, 2, 3, 4, "`~", "", "\\", 5, 6, 7, 8, 9, "'"],
         ["⇧", 0, 1, 2, 3, 4, "", 9, 5, 6, 7, 8, "⇧"],
         ["Ctrl", "Cmd", "", "Alt", "Fn", "⏎", "⍽", "Fn", "AltGr", "Menu", "Cmd", "Ctrl"],
     ],
@@ -26,7 +24,7 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
     thumb30KeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
         ["↹", 0, 1, 2, 3, 4, "=", null, "`~", 5, 6, 7, 8, 9, "⏎"],
-        ["\\", 0, 1, 2, 3, 4, "", "", "", 5, 6, 7, 8, 9, "'"],
+        ["⌦", 0, 1, 2, 3, 4, "", "", "\\", 5, 6, 7, 8, 9, "'"],
         ["⇧", 0, 1, 2, 3, 4, "", "/", 5, 6, 7, 8, "⇧"],
         ["Ctrl", "Cmd", "", "Alt", "Fn", 0, "⍽", "Fn", "AltGr", "Menu", "Cmd", "Ctrl"],
     ],
@@ -109,7 +107,19 @@ export const ergoPlankLayoutModel: RowBasedLayoutModel = {
             }
         }
         return ergoPlankRegularLayoutModel.keyWidth(row, col);
-    }
+    },
+
+    keyCapWidth: (row: KeyboardRows, col: number): number => {
+        // We have this entire concept of keyCapWidth only for the Escape key.
+        // But, let's see: maybe it will be useful elsewhere later.
+        if (row == KeyboardRows.Number && col == 0) return 1;
+        return ergoPlankLayoutModel.keyWidth(row, col);
+    },
+
+    keyColorClass: (label: string, row: KeyboardRows, col: number)=> {
+        if (label == "⏎" || label == "Esc") return KEY_COLOR.HIGHLIGHT;
+        return defaultKeyColor(label, row, col);
+    },
 }
 
 function replaceLast<T>(list: T[], last: T) {

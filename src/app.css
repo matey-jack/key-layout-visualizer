@@ -68,8 +68,12 @@ label.disabled {
     fill: #e7e7e7;
 }
 
-.key-outline.command-key {
+.key-outline.edge-key {
     fill: #729bac;
+}
+
+.key-outline.highlighted-key {
+    fill: #c6b07c;
 }
 
 .key-outline.home-key {
@@ -338,18 +342,6 @@ label.disabled {
 .diff-counter.unchanged {
     border: 1px solid darkgray;
 }
-
-/* colors for the fingering viz
-earthy_colors = {
-    "Dusty Rose": "#D8A39D",       # earthier red
-    "Terracotta": "#D7A86E",       # earthy orange-brown
-    "Warm Clay": "#C6B4A5"         # a warm, soft earth-toned neutral
-    "Moss Yellow": "#DDD88C",      # muted, natural yellow
-    "Sage Green": "#B7C6A3",       # soft, natural green
-    "Foggy Blue": "#A3BFD9",       # desaturated natural blue
-    "Muted Lavender": "#BCA7D4"    # soft violet with grey tones
-}
-*/
 
 .pinky {
     fill: #BCA7D4;

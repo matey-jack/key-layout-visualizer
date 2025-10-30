@@ -1,4 +1,5 @@
-import {Finger, FlexMapping, KeyboardRows, RowBasedLayoutModel, SKE_AWAY, SKE_HOME} from "../base-model.ts";
+import {Finger, FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel, SKE_AWAY, SKE_HOME} from "../base-model.ts";
+import {defaultKeyColor} from "./layout-functions.ts";
 
 const widthOfAnsiBoard = 15;
 
@@ -71,10 +72,10 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         Just to check, that's 8+4+4+5+3+4+2+1+1 key (32 keys) in the three letter rows, which is (11+11+10) per row. ✅
      */
     singleKeyEffort: [
-        [3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, NaN],
-        [NaN, 2.0, 1.0, 1.0, 1.5, 1.5, 1.5, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0, 3.0],
-        [NaN, 0.2, 0.2, 0.2, 0.2, 2, 2, 0.2, 0.2, 0.2, 0.2, 1.5, 2.0],
-        [NaN, 2.0, 2.0, 1.5, 1.5, 3, 1.5, 1.0, 1.5, 1.5, 1.5, NaN],
+        [3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0],
+        [3.0, 2.0, 1.0, 1.0, 1.5, 1.5, 1.5, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0, 3.0],
+        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5, 2.0],
+        [1.5, 2.0, 2.0, 1.5, 1.5, 3.0, 1.5, 1.0, 1.5, 1.5, 1.5, 2.0],
         [NaN, NaN, NaN, 0.2, 1.5, NaN, NaN, NaN],
     ],
 
@@ -100,6 +101,11 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
             return widthOfAnsiBoard - numberOfMiddleKeys - widthOfFirstKey[row];
         }
         return 1;
+    },
+
+    keyColorClass: (label, row, col) => {
+        if (label == "⏎") return KEY_COLOR.EDGE;
+        return defaultKeyColor(label, row, col);
     },
 
     // This split is used by all 'cleave' or split ANSI/ISO boards that I know of.
@@ -158,7 +164,12 @@ export const ansiWideLayoutModel = {
 
 function widenSingleKeyEffort(effort: number[][]) {
     ansiLayoutModel.splitColumns!!.forEach((splitCol, row) => {
-        if (row != KeyboardRows.Bottom) effort[row][splitCol] = SKE_AWAY;
+        if (row != KeyboardRows.Bottom) {
+            const lastCol = ansiLayoutModel.thirtyKeyMapping[row].length - 1;
+            // keys at splitCol have the wrapped-around effort from the right-hand side.
+            effort[row][lastCol] = effort[row][splitCol];
+            effort[row][splitCol] = SKE_AWAY;
+        }
     })
     effort[KeyboardRows.Bottom][4] = SKE_HOME;
     return effort;

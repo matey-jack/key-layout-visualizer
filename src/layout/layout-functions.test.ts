@@ -1,8 +1,22 @@
 import {describe, expect, it} from 'vitest';
 
 import {Finger, Hand, hand, KeyboardRows, MappingChange} from "../base-model.ts";
-import {characterToFinger, diffSummary, diffToBase, fillMapping, mergeMapping,} from "./layout-functions.ts";
-import {normanMapping, qwertyMapping, cozyEnglish, thumbyZero, topNine} from "../mapping/mappings.ts"
+import {
+    characterToFinger,
+    diffSummary,
+    diffToBase,
+    fillMapping,
+    hasMatchingMapping,
+    mergeMapping,
+} from "./layout-functions.ts";
+import {
+    normanMapping,
+    qwertyMapping,
+    cozyEnglish,
+    thumbyZero,
+    topNine,
+    colemakThumbyDMapping
+} from "../mapping/mappings.ts"
 import {ansiLayoutModel} from "./ansiLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
@@ -70,6 +84,12 @@ describe('fillMapping', () => {
     });
 
     // TODO: fullMappings for other Harmonic variants need clean up first
+});
+
+describe('hasMatchingMapping', () => {
+    it('no Thumby mapping on ANSI-narrow', () => {
+        expect(hasMatchingMapping(ansiLayoutModel, colemakThumbyDMapping)).toBeFalsy();
+    }) ;
 });
 
 describe('finger assignment consistency', () => {
