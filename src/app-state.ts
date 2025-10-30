@@ -23,6 +23,15 @@ function modifySplit(opts: LayoutOptions): boolean {
     return opts.split;
 }
 
+function modifyWide(opts: LayoutOptions, mapping: FlexMapping): boolean {
+   if (opts.type == LayoutType.ANSI) {
+       if (!mapping.mapping30 && !mapping.mappingAnsi && (mapping.mappingAnsiWide || mapping.mappingThumb30)) {
+           return true;
+       }
+   }
+   return opts.wideAnsi;
+}
+
 // Function needed, because doing the same in an effect() would already run all the computed() functions
 // with inconsistent data that might crash them.
 function setLayout(
@@ -30,7 +39,7 @@ function setLayout(
     layoutOptionsState: Signal<LayoutOptions>,
     mapping: Signal<FlexMapping>,
 ) {
-    const newLayoutOptions = {...opts, split: modifySplit(opts)};
+    const newLayoutOptions = {...opts, split: modifySplit(opts), ansiWide: modifyWide(opts, mapping.value)};
     const newLayoutModel = getLayoutModel(newLayoutOptions);
     if (!hasMatchingMapping(newLayoutModel, mapping.value)) {
         const mappingName = mapping.value.name.toLowerCase();
@@ -46,7 +55,6 @@ function setLayout(
 export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<LayoutOptions>, layoutModel: RowBasedLayoutModel, mappingState: Signal<FlexMapping>) {
     if (hasMatchingMapping(layoutModel, newMapping)) {
         mappingState.value = newMapping;
-        console.log("accepting mapping on current layout")
         return;
     }
     // we don't have a generic 30-key mapping and no specific mapping for this layout plus options.
@@ -73,7 +81,7 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
         // there is no specific mapping for un-split Ortho...
     }
     // By this point, the current LayoutType does not work.
-    // For now, just switch to split-ortho, because incidentally that currently works with all layouts.
+    // todo: we could iterate through layouts, but we'd need to consider options as well
     layoutOptionsState.value = {...layoutOptionsState.value, type: LayoutType.Ortho, split: true};
     mappingState.value = newMapping;
 }
