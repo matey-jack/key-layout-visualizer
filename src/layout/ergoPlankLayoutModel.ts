@@ -2,7 +2,7 @@ import {FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel} from "../base
 import {defaultKeyColor} from "./layout-functions.ts";
 
 // those values are accumulated by the stagger of 0.25, with the home row being maximal length.
-const widthOfEdgeKey = [1.5, 1.25, 1, 1.75]
+const widthOfEdgeKey = [1.5, 1.25, 1, 1.5]
 
 export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
     name: "ErgoPlank",
@@ -12,20 +12,20 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
     Key cap sizes are harmonized to facilitate customizing the keymap. 
     This is based on the "Harmonic" layout as well as the "Katana" design by RominRonin. `,
 
-    // row lengths: 14, 14, 15, 13, 12
+    // row lengths: 14, 14, 15, 14, 12
     thirtyKeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, "-", null, "=", 5, 6, 7, 8, 9, "⏎"],
-        ["⌦", 0, 1, 2, 3, 4, "`~", "", "\\", 5, 6, 7, 8, 9, "'"],
-        ["⇧", 0, 1, 2, 3, 4, "", 9, 5, 6, 7, 8, "⇧"],
+        ["↹", 0, 1, 2, 3, 4, "-", null, "=", 5, 6, 7, 8, 9, "\\"],
+        ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "'"],
+        ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", 9, 5, 6, 7, 8, "⇧"],
         ["Ctrl", "Cmd", "", "Alt", "Fn", "⏎", "⍽", "Fn", "AltGr", "Menu", "Cmd", "Ctrl"],
     ],
 
     thumb30KeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
         ["↹", 0, 1, 2, 3, 4, "=", null, "`~", 5, 6, 7, 8, 9, "⏎"],
-        ["⌦", 0, 1, 2, 3, 4, "", "", "\\", 5, 6, 7, 8, 9, "'"],
-        ["⇧", 0, 1, 2, 3, 4, "", "/", 5, 6, 7, 8, "⇧"],
+        ["⌦", 0, 1, 2, 3, 4, "⇤", "\\", "⇥", 5, 6, 7, 8, 9, "'"],
+        ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", "/", 5, 6, 7, 8, "⇧"],
         ["Ctrl", "Cmd", "", "Alt", "Fn", 0, "⍽", "Fn", "AltGr", "Menu", "Cmd", "Ctrl"],
     ],
 
@@ -38,7 +38,7 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
         [1, 1, 1, 2, 2, 3, 3, 6, 6, 7, 8, 8, 8, 8],
         [1, 0, 1, 2, 3, 3, 3, 6, 6, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 6, 7, 8, 9, 9],
-        [0, 1, 2, 3, 3, 3, 6, 6, 6, 6, 7, 8, 9],
+        [0, 1, 2, 3, 3, 3, 3, 6, 6, 6, 6, 7, 8, 9],
         [0, 1, 2, 4, 4, 4, 5, 5, 5, 7, 8, 9],
     ],
 
@@ -50,26 +50,26 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
         [3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0],
         [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0],
         [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 3.0, 2, 0.2, 0.2, 0.2, 0.2, 1.5],
-        [1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0],
+        [1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0],
         [3.0, 3.0, 2.0, 1.5, 0.2, 1.0, 1.0, 0.2, 1.5, 2.0, 3.0, 3.0],
     ],
 
     rowStart: (_: KeyboardRows) => 0,
 
     keyWidth: (row: KeyboardRows, col: number): number => {
+        const numCols = ergoPlankLayoutModel.thirtyKeyMapping![row].length;
         if (row == KeyboardRows.Bottom) {
             return 1.25;
         }
-        const numCols = ergoPlankLayoutModel.thirtyKeyMapping![row].length;
         if (col == 0 || col == numCols - 1) {
             return widthOfEdgeKey[row];
         }
         if (row == KeyboardRows.Upper && (col == 7)) {
             return 0.5;
         }
-        if (row == KeyboardRows.Lower && (col == 6)) {
-            return 1.5;
-        }
+        // if (row == KeyboardRows.Lower && (col == 6)) {
+        //     return 1.5;
+        // }
         return 1;
     },
 
@@ -103,18 +103,20 @@ export const ergoPlankLayoutModel: RowBasedLayoutModel = {
                 case 6:
                     return 1.75;
                 case 5:
+                    // todo: make it 1.25 for keyCap flexibility and spread the wasted 0.25u evenly across all 10 bottom row gaps.
+                    // this is going to need another change in the data model.
                     return 1.5;
             }
         }
         return ergoPlankRegularLayoutModel.keyWidth(row, col);
     },
 
-    keyCapWidth: (row: KeyboardRows, col: number): number => {
-        // We have this entire concept of keyCapWidth only for the Escape key.
-        // But, let's see: maybe it will be useful elsewhere later.
-        if (row == KeyboardRows.Number && col == 0) return 1;
-        return ergoPlankLayoutModel.keyWidth(row, col);
-    },
+    // keyCapWidth: (row: KeyboardRows, col: number): number => {
+    //     // We have this entire concept of keyCapWidth only for the Escape key.
+    //     // But, let's see: maybe it will be useful elsewhere later.
+    //     if (row == KeyboardRows.Number && col == 0) return 1;
+    //     return ergoPlankLayoutModel.keyWidth(row, col);
+    // },
 
     keyColorClass: (label: string, row: KeyboardRows, col: number)=> {
         if (label == "⏎" || label == "Esc") return KEY_COLOR.HIGHLIGHT;
