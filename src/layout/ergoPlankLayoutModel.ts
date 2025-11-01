@@ -102,11 +102,11 @@ export const ergoPlankLayoutModel: RowBasedLayoutModel = {
             switch (col) {
                 case 4:
                 case 6:
-                    return 1.75;
-                case 5:
-                    // todo: make it 1.25 for keyCap flexibility and spread the wasted 0.25u evenly across all 10 bottom row gaps.
+                    // todo: make it a standard 1.75 and spread the wasted 0.25u evenly across all 10 bottom row gaps.
                     // this is going to need another change in the data model.
-                    return 1.5;
+                    return 1.75 + 0.125;
+                case 5:
+                    return 1.25;
             }
         }
         return ergoPlankRegularLayoutModel.keyWidth(row, col);
