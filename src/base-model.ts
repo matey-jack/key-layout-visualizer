@@ -22,6 +22,7 @@ export enum KeyboardRows {
 }
 
 export enum VisualizationType {
+    LayoutKeySize,
     LayoutKeyEffort,
     LayoutFingering,
     LayoutAngle,
@@ -32,7 +33,9 @@ export enum VisualizationType {
 }
 
 export const isLayoutViz = (t: VisualizationType) =>
-    [VisualizationType.LayoutKeyEffort, VisualizationType.LayoutFingering, VisualizationType.LayoutAngle].includes(t)
+    [
+        VisualizationType.LayoutKeySize, VisualizationType.LayoutKeyEffort, VisualizationType.LayoutFingering, VisualizationType.LayoutAngle
+    ].includes(t)
 
 export interface FlexMapping {
     name: string;

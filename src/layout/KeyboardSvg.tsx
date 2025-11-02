@@ -123,15 +123,37 @@ function getFingeringClasses(layoutModel: RowBasedLayoutModel, row: number, col:
     return bgClass + " " + borderClass;
 }
 
+function createKeySizeGroups(keyPositions: KeyPosition[], keyCapWidthFn: (row: number, col: number) => number) {
+    const keySizes: number[] = [];
+    for (const key of keyPositions) {
+        const size = keyCapWidthFn(key.row, key.col);
+        if (size != 1 && !keySizes.includes(size)) {
+            keySizes.push(size);
+        }
+    }
+    keySizes.sort();
+    return keySizes;
+}
+
+function getKeySizeClass(keyCapWidth: number, sizeList: number[]) {
+    if (keyCapWidth == 1) return "key-size-square";
+    return "key-size-" + sizeList.indexOf(keyCapWidth);
+}
+
 export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizType}: KeyboardProps) {
+    // need to call the function to properly bind the call to the layout model
+    const keyCapWidthFn = (r: number, c: number) =>
+        layoutModel.keyCapWidth ? layoutModel.keyCapWidth(r, c) : layoutModel.keyWidth(r, c);
+    const keyCapSizes = createKeySizeGroups(keyPositions, keyCapWidthFn);
     return keyPositions.map(({label, row, col, colPos}) => {
-        const slotWidth = layoutModel.keyWidth(row, col);
         const keyColorFunction = layoutModel.keyColorClass || defaultKeyColor;
-        const bgClass = (vizType == VisualizationType.LayoutKeyEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
-                : vizType == VisualizationType.LayoutFingering && !isNaN(layoutModel.mainFingerAssignment[row][col])
-                    ? getFingeringClasses(layoutModel, row, col, label)
-                    : isHomeKey(layoutModel, row, col) ? "home-key"
-                        : keyColorFunction(label, row, col))
+        const keyCapWidth = keyCapWidthFn(row, col);
+        const bgClass = (vizType == VisualizationType.LayoutKeySize ? getKeySizeClass(keyCapWidth, keyCapSizes)
+                : vizType == VisualizationType.LayoutKeyEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
+                    : vizType == VisualizationType.LayoutFingering && !isNaN(layoutModel.mainFingerAssignment[row][col])
+                        ? getFingeringClasses(layoutModel, row, col, label)
+                        : isHomeKey(layoutModel, row, col) ? "home-key"
+                            : keyColorFunction(label, row, col))
             || (!label ? "unlabeled" : "");
         const ribbonClass = vizType == VisualizationType.MappingDiff && lettersAndVIP.test(label)
             ? ribbonClassByDiff[mappingDiff[label]]
@@ -141,17 +163,19 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
             const freq = Math.sqrt(singleCharacterFrequencies[label.toUpperCase()] / singleCharacterFrequencies['E']);
             frequencyCircleRadius = freq * keyUnit / 2;
         }
-        const capWidth = layoutModel.keyCapWidth ? layoutModel.keyCapWidth(row, col) : slotWidth;
         // this would be a generically better approach than the current left-aligning,
         // but for the Escape key on ErgoPlank, left-align is actually better.
         // const capColPos = colPos + (slotWidth - capWidth)/2;
+        if (vizType == VisualizationType.LayoutKeySize) {
+            label = keyCapWidth == 1 ? "" : keyCapWidth + "";
+        }
         return <Key
             label={label}
             backgroundClass={bgClass}
             ribbonClass={ribbonClass}
             row={row}
             col={colPos}
-            width={capWidth}
+            width={keyCapWidth}
             frequencyCircleRadius={frequencyCircleRadius}
             key={row + ',' + col}
         />

@@ -47,6 +47,8 @@ export function DetailsArea({appState}: DetailsAreaProps) {
 
 export function getVizDetails(vizType: VisualizationType, layout: RowBasedLayoutModel, mapping: FlexMapping) {
     switch (vizType) {
+        case VisualizationType.LayoutKeySize:
+            return <KeySizeDetails layout={layout}/>;
         case VisualizationType.LayoutFingering:
             return <FingeringDetails layout={layout}/>;
         case VisualizationType.LayoutAngle:
@@ -101,11 +103,22 @@ export function MappingSummary({mapping, layout}: MappingSummaryProps) {
 
 export function FingeringDetails({layout: _}: { layout: RowBasedLayoutModel }) {
     return <p>
+        Colors on the keys denote which keys will be pressed by the same finger according to the touch-typing method.
+        This allows us to see, how much work each finger has, how far it has to move, and what keys can cause bigram conflicts.
+        <br/>
         Some people will probably hit some of those keys with different fingers. Given the many bigram conflicts and
         general awkwardness of the ANSI layout and Qwerty mapping, it might not even be the same finger for every tap
         on the same key.<br/>
         But however it might be, we need some base model for finger assignment to reason about the typing of bigrams,
         so we'll take this as a start.
+    </p>
+}
+
+export function KeySizeDetails({layout: _}: { layout: RowBasedLayoutModel }) {
+    return <p>
+        Colors on the keys show which keycaps have the same size.<br/>
+        It's easier to swap around to keycaps to different places on the keyboard if many of them share the same size.
+        It also makes production and logistics easier.
     </p>
 }
 

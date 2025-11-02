@@ -133,7 +133,7 @@ export function createAppState(): AppState {
         type: s2i(params.get("layout")) ?? LayoutType.ANSI,
         split: s2b(params.get("split")) ?? false,
         wideAnsi: s2b(params.get("wide")) ?? false,
-        appleAnsi: s2b(params.get("apple")) ?? false,
+        appleAnsi: s2b(params.get("apple")) ?? true,
         harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
         plankVariant: s2i(params.get("plank")) ?? PlankVariant.KATANA_60,
     });

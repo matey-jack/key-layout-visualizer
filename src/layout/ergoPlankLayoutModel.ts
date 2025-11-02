@@ -123,14 +123,14 @@ export const ergoPlankLayoutModel: RowBasedLayoutModel = {
         return ergoPlankRegularLayoutModel.keyWidth(row, col);
     },
 
-    // keyCapWidth: (row: KeyboardRows, col: number): number => {
+    // keyCapWidth(row: KeyboardRows, col: number): number {
     //     // We have this entire concept of keyCapWidth only for the Escape key.
     //     // But, let's see: maybe it will be useful elsewhere later.
     //     if (row == KeyboardRows.Number && col == 0) return 1;
-    //     return ergoPlankLayoutModel.keyWidth(row, col);
+    //     return this.keyWidth(row, col);
     // },
 
-    keyColorClass: (label: string, row: KeyboardRows, col: number)=> {
+    keyColorClass(label: string, row: KeyboardRows, col: number) {
         if (label == "⏎" || label == "Esc") return KEY_COLOR.HIGHLIGHT;
         return defaultKeyColor(label, row, col);
     },

@@ -127,6 +127,38 @@ label.disabled {
     background-color: #f3bfac;
 }
 
+.key-size-0 {
+    fill: #fb7b77;
+}
+
+.key-size-1 {
+    fill: #fdc170;
+}
+
+.key-size-2 {
+    fill: #f3f87f;
+}
+
+.key-size-3 {
+    fill: #98f786;
+}
+
+.key-size-4 {
+    fill: #69ebfc;
+}
+
+.key-size-5 {
+    fill: #6d9efc;
+}
+
+.key-size-6 {
+    fill: #937df8;
+}
+
+.key-size-7 {
+    fill: #f78ef0;
+}
+
 .key-label {
     font-size: 24px;
     font-family: Verdana, sans-serif;

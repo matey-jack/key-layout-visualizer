@@ -30,6 +30,7 @@ export function VisualizationSwitches({vizType}: VisualizationSwitchesProps) {
     return <div class="visualization-switches">
         <div>
             Layout Visualizations:
+            <VizTypeButton vizType={VisualizationType.LayoutKeySize} signal={vizType}>Key Sizes</VizTypeButton>
             <VizTypeButton vizType={VisualizationType.LayoutFingering} signal={vizType}>Fingering</VizTypeButton>
             <VizTypeButton vizType={VisualizationType.LayoutAngle} signal={vizType}>Angle</VizTypeButton>
             <VizTypeButton vizType={VisualizationType.LayoutKeyEffort} signal={vizType}>Single-Key
