@@ -6,6 +6,7 @@ const widthOfEdgeKey = [1, 1.5, 1.25, 1]
 export const katanaLayoutModel: RowBasedLayoutModel = {
     name: "Katana60",
     description: `The original "Katana" design by RominRonin. 
+    An ergonomic keyboard layout that fits into a standard ANSI 60% case.
     Symmetric 0.25 stagger and a hand distance similar to MS Ergonomic Keyboard. `,
 
     // row lengths: 15, 14, 14 (but +1 gap), 15, 12

@@ -119,6 +119,7 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
     params.set("viz", vizType.value.toString());
     params.set("split", layout.split ? "1" : "0");
     params.set("wide", layout.wideAnsi ? "1" : "0");
+    params.set("apple", layout.appleAnsi ? "1" : "0");
     params.set("harmonic", layout.harmonicVariant.toString());
     params.set("plank", layout.plankVariant.toString());
     window.history.pushState(null, "", "#" + params.toString());
@@ -132,6 +133,7 @@ export function createAppState(): AppState {
         type: s2i(params.get("layout")) ?? LayoutType.ANSI,
         split: s2b(params.get("split")) ?? false,
         wideAnsi: s2b(params.get("wide")) ?? false,
+        appleAnsi: s2b(params.get("apple")) ?? false,
         harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
         plankVariant: s2i(params.get("plank")) ?? PlankVariant.KATANA_60,
     });

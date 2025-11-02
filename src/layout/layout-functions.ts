@@ -1,8 +1,10 @@
 import {
     Finger,
     FlexMapping,
-    hand, KEY_COLOR,
-    KeyboardRows, KeyColor,
+    hand,
+    KEY_COLOR,
+    KeyboardRows,
+    KeyColor,
     KeyPosition,
     LayoutMapping,
     LayoutType,
@@ -11,7 +13,7 @@ import {
 } from "../base-model.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
 import {HarmonicVariant, LayoutOptions, PlankVariant} from "../app-model.ts";
-import {ansiLayoutModel, ansiWideLayoutModel, splitSpaceBar} from "./ansiLayoutModel.ts";
+import {getAnsiVariant} from "./ansiLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 import {sum} from "../library/math.ts";
@@ -171,16 +173,17 @@ export function getHarmonicVariant(variant: HarmonicVariant) {
 
 export function getPlankVariant(variant: PlankVariant) {
     switch (variant) {
-        case PlankVariant.KATANA_60: return katanaLayoutModel;
-        case PlankVariant.MAX_WIDTH: return ergoPlankLayoutModel;
+        case PlankVariant.KATANA_60:
+            return katanaLayoutModel;
+        case PlankVariant.MAX_WIDTH:
+            return ergoPlankLayoutModel;
     }
 }
 
 export function getLayoutModel(layoutOptions: LayoutOptions): RowBasedLayoutModel {
     switch (layoutOptions.type) {
         case LayoutType.ANSI:
-            const base = layoutOptions.wideAnsi ? ansiWideLayoutModel : ansiLayoutModel;
-            return layoutOptions.split ? splitSpaceBar(base) : base;
+            return getAnsiVariant(layoutOptions);
         case LayoutType.Ortho:
             return layoutOptions.split ? splitOrthoLayoutModel : orthoLayoutModel;
         case LayoutType.Harmonic:

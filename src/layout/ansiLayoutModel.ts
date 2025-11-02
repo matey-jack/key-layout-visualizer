@@ -1,12 +1,23 @@
 import {Finger, FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel, SKE_AWAY, SKE_HOME} from "../base-model.ts";
 import {defaultKeyColor} from "./layout-functions.ts";
+import {LayoutOptions} from "../app-model.ts";
 
-const widthOfAnsiBoard = 14.5;
+export function getAnsiVariant(layoutOptions: LayoutOptions) {
+    let base = layoutOptions.wideAnsi ? ansiWideLayoutModel : ansiLayoutModel;
+    if (layoutOptions.appleAnsi) {
+        base = {...base, keyboardWidth: 14.5};
+    }
+    return layoutOptions.split ? splitSpaceBar(base) : base;
+}
 
 // those values are accumulated by the stagger of 0.5, 0.25, and 0.5 again.
 const widthOfFirstKey = [1, 1.5, 1.75, 2.25,]
 
-export const ansiLayoutModel: RowBasedLayoutModel = {
+interface AnsiLayoutModel extends RowBasedLayoutModel {
+    keyboardWidth: number;
+}
+
+export const ansiLayoutModel: AnsiLayoutModel = {
     name: "ANSI / Typewriter",
     description: "The ANSI keyboard layout is based on a typewriter keyboard from the 19th century which gradually evolved " +
         "to add some computer-specific keys like Ctrl, Alt, and most importantly the @ sign. " +
@@ -17,6 +28,9 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         "Most keys move together with this hand position so that muscle memory is strongly preserved. " +
         "While it might look very unusual, it actually is very easy to get used to. " +
         "And this setup makes it easier to switch between a laptop and an ergonomic split keyboard. ",
+
+    // Default value, see appleAnsi above.
+    keyboardWidth: 15,
 
     // we use double quotes everywhere, just so that the one key with single quote as value isn't a special case ;)
     thirtyKeyMapping: [
@@ -73,14 +87,14 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
 
     rowStart: (_: KeyboardRows) => 0,
 
-    keyWidth: (row: KeyboardRows, col: number): number => {
+    keyWidth(row: KeyboardRows, col: number): number {
         // source is roughly https://www.wikiwand.com/en/articles/Keyboard_layout#/media/File:ANSI_Keyboard_Layout_Diagram_with_Form_Factor.svg
         // This automatically adapts to both ANSI's 15u and Apple's 14.5u width.
         const numCols = ansiLayoutModel.thirtyKeyMapping![row].length;
         if (row == KeyboardRows.Bottom) {
             const modifierKeyWidth = 1.25;
             // space bar: 6.25 on ANSI, and smaller when we decrease keyboard width.
-            if (col == 3) return widthOfAnsiBoard - 7*modifierKeyWidth;
+            if (col == 3) return this.keyboardWidth - 7 * modifierKeyWidth;
             return modifierKeyWidth;
         }
         if (col == 0) {
@@ -89,7 +103,7 @@ export const ansiLayoutModel: RowBasedLayoutModel = {
         // outer edge keys
         if (col == numCols - 1) {
             const numberOfMiddleKeys = numCols - 2;
-            return widthOfAnsiBoard - numberOfMiddleKeys - widthOfFirstKey[row];
+            return this.keyboardWidth - numberOfMiddleKeys - widthOfFirstKey[row];
         }
         return 1;
     },

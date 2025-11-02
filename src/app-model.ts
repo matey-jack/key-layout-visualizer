@@ -28,6 +28,7 @@ export interface LayoutOptions {
     // This is more of a mapping transformer than an actual layout,
     // but fits here, since the ansiWideLayout is an actual LayoutModel instance.
     wideAnsi: boolean;
+    appleAnsi: boolean;
     harmonicVariant: HarmonicVariant;
     plankVariant: PlankVariant;
 }

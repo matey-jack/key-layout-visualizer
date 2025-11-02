@@ -109,6 +109,8 @@ function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions, mapping}: La
             return <AnsiLayoutOptions
                 wide={layoutOptions.wideAnsi}
                 setWide={(wide) => setLayoutOptions({...layoutOptions, wideAnsi: wide})}
+                apple={layoutOptions.appleAnsi}
+                setApple={(apple) => setLayoutOptions({...layoutOptions, appleAnsi: apple})}
                 mapping={mapping}
             />
         case LayoutType.Harmonic:

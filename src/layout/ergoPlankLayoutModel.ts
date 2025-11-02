@@ -6,11 +6,13 @@ const widthOfEdgeKey = [1.5, 1.25, 1, 1.25]
 
 export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
     name: "ErgoPlank",
-    description: `The most ergonomic key layout that fits into a standard "60%" keyboard case. 
+    description: `"The most ergonomic key layout that fits into a standard "60%" keyboard case."
     Hand distance is maximized. Row stagger is equal to a "cleave-style ergonomic" keyboard.
     Thumb keys are added. 
     Key cap sizes are harmonized to facilitate customizing the keymap. 
-    This is based on the "Harmonic" layout as well as the "Katana" design by RominRonin. `,
+    This is based on the "Harmonic" layout as well as the "Katana" design by RominRonin. 
+    Biggest difference to the Katana is that the Shift keys are closer to the Pinky home position.
+    This is achieved by making the Shift keys bigger and the home row edge key minimally small, i.e. 1u.`,
 
     // row lengths: 14, 14 (but +1 gap!), 15, 14, 12
     thirtyKeyMapping: [
