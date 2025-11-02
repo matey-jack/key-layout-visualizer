@@ -2,7 +2,7 @@ import {FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel} from "../base
 import {defaultKeyColor} from "./layout-functions.ts";
 
 // those values are accumulated by the stagger of 0.25, with the home row being maximal length.
-const widthOfEdgeKey = [1.5, 1.25, 1, 1.5]
+const widthOfEdgeKey = [1.5, 1.25, 1, 1.25]
 
 export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
     name: "ErgoPlank",
@@ -59,6 +59,10 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
     keyWidth: (row: KeyboardRows, col: number): number => {
         const numCols = ergoPlankLayoutModel.thirtyKeyMapping![row].length;
         if (row == KeyboardRows.Bottom) {
+            // using 12 equal 1.25u keys is pretty, but the central ones are hard to reach.
+            // we could use 10 equal 1.5u keys,
+            // that would still be enough keys, but not sure if that improves the center enough.
+            // also I think it's too big for modifiers under the palm.
             return 1.25;
         }
         if (col == 0 || col == numCols - 1) {
@@ -99,12 +103,17 @@ export const ergoPlankLayoutModel: RowBasedLayoutModel = {
     ),
     keyWidth: (row: KeyboardRows, col: number): number => {
         if (row == KeyboardRows.Bottom) {
+            // Having one central key serves the purpose of bringing its neighbors into the "hands-fixed" range of the thumbs.
+            // I saw this not only on the Katana60, but also some conventional keyboards with a split space bar.
+            // The big question is: can we size and position thumb keys such that each thumb can comfortably hit two of them
+            // without moving the hand?
+            // The typical use would be one per thumb as Space or a letter, the other as a modifier or layer key.
             switch (col) {
                 case 4:
                 case 6:
-                    // todo: make it a standard 1.75 and spread the wasted 0.25u evenly across all 10 bottom row gaps.
+                    // todo: make it a standard 1.5 and spread the wasted 0.25u evenly across all 10 bottom row gaps.
                     // this is going to need another change in the data model.
-                    return 1.75 + 0.125;
+                    return 1.5 + 0.125;
                 case 5:
                     return 1.25;
             }

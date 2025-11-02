@@ -57,6 +57,8 @@ missing core features:
 - ErgoPlank and Katana logos to fill the gap
 - Rectangle around the keyboard to signify the HK60 box.
 
+- Apple mode for the ANSI keyboard and a new Layout-Viz layer to count the different keycap sizes
+
 - add some more explanations, especially for:
   + the "wide" mappings
   + Harmonic and Ortho general texts (maybe (i) icon in layout bar). But still repeat that text under the H and O variants.
