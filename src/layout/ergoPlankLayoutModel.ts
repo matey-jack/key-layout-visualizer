@@ -56,7 +56,7 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
         [3.0, 3.0, 2.0, 1.5, 0.2, 1.0, 1.0, 0.2, 1.5, 2.0, 3.0, 3.0],
     ],
 
-    rowStart: (_: KeyboardRows) => 0,
+    rowStart: (row: KeyboardRows) => row >= KeyboardRows.Lower ? 0.25 : 0,
 
     keyWidth: (row: KeyboardRows, col: number): number => {
         const numCols = ergoPlankLayoutModel.thirtyKeyMapping![row].length;
@@ -115,7 +115,7 @@ export const ergoPlankLayoutModel: RowBasedLayoutModel = {
                 case 6:
                     // todo: make it a standard 1.5 and spread the wasted 0.25u evenly across all 10 bottom row gaps.
                     // this is going to need another change in the data model.
-                    return 1.5 + 0.125;
+                    return 1.5; // + 0.125;
                 case 5:
                     return 1.25;
             }

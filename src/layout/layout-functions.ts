@@ -14,7 +14,7 @@ import {
 import {qwertyMapping} from "../mapping/mappings.ts";
 import {HarmonicVariant, LayoutOptions, PlankVariant} from "../app-model.ts";
 import {getAnsiVariant} from "./ansiLayoutModel.ts";
-import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
+import {splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 import {sum} from "../library/math.ts";
 import {harmonic14TraditionalLayoutModel} from "./harmonic14TraditionalLayoutModel.ts";
@@ -185,7 +185,7 @@ export function getLayoutModel(layoutOptions: LayoutOptions): RowBasedLayoutMode
         case LayoutType.ANSI:
             return getAnsiVariant(layoutOptions);
         case LayoutType.Ortho:
-            return layoutOptions.split ? splitOrthoLayoutModel : orthoLayoutModel;
+            return splitOrthoLayoutModel;
         case LayoutType.Harmonic:
             return getHarmonicVariant(layoutOptions.harmonicVariant);
         case LayoutType.ErgoPlank:
@@ -202,16 +202,21 @@ export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean
     const rowWidth = fullMapping.map((row, r) =>
         2 * (horizontalPadding + layoutModel.rowStart(r)) + sum(row.map((_, c) => layoutModel.keyWidth(r, c)))
     );
+    const maxWidth = Math.max(...rowWidth);
     let result: KeyPosition[] = [];
     for (let row = 0; row < 5; row++) {
         let colPos = horizontalPadding + layoutModel.rowStart(row);
+        // Counting the rowStart padding, all rows should be the same width. If our row is narrower than the max,
+        // then we distribute the difference between all the keys.
+        const microGap = (maxWidth - rowWidth[row]) / (fullMapping[row].length - 1);
         // for non-split boards, apply some white space on the left to make them centered.
-        if (!split) colPos += (totalWidth - rowWidth[row]) / 2;
+        if (!split) colPos += (totalWidth - maxWidth) / 2;
         fullMapping[row].forEach((label, col) => {
             // to show the board as split, add some extra space after the split column.
             if (split && layoutModel.splitColumns && (col == layoutModel.splitColumns[row])) {
                 colPos += totalWidth - rowWidth[row];
             }
+
             const finger = layoutModel.mainFingerAssignment[row][col] as Finger;
             if (fullMapping[row][col] != null) {
                 result.push({
@@ -223,7 +228,7 @@ export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean
                     hasAltFinger: layoutModel.hasAltFinger(row, col),
                 });
             }
-            colPos += layoutModel.keyWidth(row, col);
+            colPos += layoutModel.keyWidth(row, col) + microGap;
         });
     }
     return result;
