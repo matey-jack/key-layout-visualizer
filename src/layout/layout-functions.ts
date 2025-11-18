@@ -21,7 +21,7 @@ import {harmonic14TraditionalLayoutModel} from "./harmonic14TraditionalLayoutMod
 import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
 import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 import {harmonic14WideLayoutModel} from "./harmonic14WideLayoutModel.ts";
-import {ergoPlankLayoutModel} from "./ergoPlankLayoutModel.ts";
+import {ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
 import {isCommandKey} from "../mapping/mapping-functions.ts";
 import {katanaLayoutModel} from "./katanaLayoutModel.ts";
 
@@ -176,7 +176,7 @@ export function getPlankVariant(variant: PlankVariant) {
         case PlankVariant.KATANA_60:
             return katanaLayoutModel;
         case PlankVariant.MAX_WIDTH:
-            return ergoPlankLayoutModel;
+            return ergoPlank60LayoutModel;
     }
 }
 

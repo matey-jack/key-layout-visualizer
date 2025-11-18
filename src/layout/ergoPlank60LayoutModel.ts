@@ -5,7 +5,7 @@ import {defaultKeyColor} from "./layout-functions.ts";
 const widthOfEdgeKey = [1.5, 1.25, 1, 1.25]
 
 export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
-    name: "ErgoPlank",
+    name: "ErgoPlank 60",
     description: `"The most ergonomic key layout that fits into a standard "60%" keyboard case."
     Hand distance is maximized. Row stagger is equal to a "cleave-style ergonomic" keyboard.
     Thumb keys are added. 
@@ -59,7 +59,7 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
     rowStart: (row: KeyboardRows) => row >= KeyboardRows.Lower ? 0.25 : 0,
 
     keyWidth: (row: KeyboardRows, col: number): number => {
-        const numCols = ergoPlankLayoutModel.thirtyKeyMapping![row].length;
+        const numCols = ergoPlank60LayoutModel.thirtyKeyMapping![row].length;
         if (row == KeyboardRows.Bottom) {
             // using 12 equal 1.25u keys is pretty, but the central ones are hard to reach.
             // we could use 10 equal 1.5u keys,
@@ -88,7 +88,7 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
     getSpecificMapping: (_: FlexMapping) => undefined,
 }
 
-export const ergoPlankLayoutModel: RowBasedLayoutModel = {
+export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
     ...ergoPlankRegularLayoutModel,
     thirtyKeyMapping: replaceLast(ergoPlankRegularLayoutModel.thirtyKeyMapping!,
         ["Ctrl", "Cmd", "", "Alt", "⏎", "Fn", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"]
