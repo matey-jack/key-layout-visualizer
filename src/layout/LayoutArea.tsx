@@ -3,7 +3,6 @@ import {AppState, LayoutOptions} from "../app-model.ts";
 import {BigramLines, KeyboardSvg, RowBasedKeyboard, StaggerLines} from "./KeyboardSvg.tsx";
 import {fillMapping, getKeyPositions, getLayoutModel} from "./layout-functions.ts";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
-import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
 import {Signal} from "@preact/signals";
 import {PlankLayoutOptions} from "./PlankLayoutOptions.tsx";
@@ -87,11 +86,6 @@ interface LayoutOptionsBarProps {
 
 function LayoutOptionsBar({state}: LayoutOptionsBarProps) {
     return <div class="layout-options-bar-container">
-        <CheckboxWithLabel label="split keyboard"
-                           checked={state.layout.value.split}
-                           onChange={(split) => state.setLayout({...state.layout.value, split})}
-                           disabled={state.layout.value.type != LayoutType.ANSI}
-        />
         <TypeSpecifcLayoutOptions layoutOptions={state.layout.value} setLayoutOptions={state.setLayout} mapping={state.mapping}/>
     </div>
 }
@@ -111,6 +105,8 @@ function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions, mapping}: La
                 setWide={(wide) => setLayoutOptions({...layoutOptions, wideAnsi: wide})}
                 apple={layoutOptions.appleAnsi}
                 setApple={(apple) => setLayoutOptions({...layoutOptions, appleAnsi: apple})}
+                split={layoutOptions.split}
+                setSplit={(split) => setLayoutOptions({...layoutOptions, split})}
                 mapping={mapping}
             />
         case LayoutType.Harmonic:

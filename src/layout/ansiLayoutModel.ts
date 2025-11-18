@@ -168,7 +168,7 @@ export const ansiWideLayoutModel = {
     getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsiWide,
 };
 
-function widenSingleKeyEffort(effort: number[][]) {
+function widenSingleKeyEffort(effort: (number | null)[][]) {
     ansiLayoutModel.splitColumns!!.forEach((splitCol, row) => {
         if (row != KeyboardRows.Bottom) {
             const lastCol = ansiLayoutModel.thirtyKeyMapping![row].length - 1;

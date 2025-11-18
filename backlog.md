@@ -61,7 +61,6 @@ bugs fixed:
 missing core features:
 - "split" option is only relevant for Ansi and should move to Ansi-specific options
 - this means all options now are keyboard layout specific and we should change the layout of the options area to be specific to each layout tab
-
 - ErgoPlank and Katana logos to fill the gap
 - Rectangle around the keyboard to signify the HK60 box.
 
@@ -76,13 +75,14 @@ missing core features:
      * especially Thumby-KU
 
 bugs:
+- split ortho layout broken due to maxWidth logic
 - when switching mappings we correctly set options (which only affects ANSI), but we don't switch Layouts, because there are so many variants to iterate through. But needs to be done at some point.
 - the comparisonBase mapping needs to have definitions on all layouts, thus at least a mapping30 (which is supported everywhere).
    Add that for qwertz and maybe add a full mapping for the ortho board to make the comparison more meaningful.
 - on Thumby / Cozy Keyboard English variant, the apostrophe is counted as "changed on same finger" on the ortho layout, 
   but not on ANSI wide, although it's on the same position.
   It should not be counted as changed on either, because the change is due to the wide layout, not the letter mapping.
-- fix altFinger configuration for Harmonic variants AND show it in finger viz
+- fix altFinger configuration for Harmonic variants AND show it in finger viz ==> or remove Alt-finger stuff from app
 
 refactoring:
 - remove home finger properties; use keyEffort==Home instead.
