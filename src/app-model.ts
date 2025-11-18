@@ -20,6 +20,7 @@ export enum HarmonicVariant {
 export enum PlankVariant {
     MAX_WIDTH, // 15 keys in home row for widest possible hand distance
     KATANA_60, // the original as published by RominRonin.
+    ARROWS, // 16 columns (65%) to make arrow cluster fit in bottom right
 }
 
 export interface LayoutOptions {
@@ -31,6 +32,7 @@ export interface LayoutOptions {
     appleAnsi: boolean;
     harmonicVariant: HarmonicVariant;
     plankVariant: PlankVariant;
+    plankArrows: boolean;
 }
 
 export interface AppState {

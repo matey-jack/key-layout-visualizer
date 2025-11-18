@@ -190,12 +190,13 @@ export interface RowBasedLayoutModel {
     // to be filled by whatever getSpecificMapping() selects
     fullMapping?: LayoutMapping;
 
-    // finger assignment and key effort arrays have the same shape (number of entries in each row) as the LayoutMappings.
-    mainFingerAssignment: Finger[][];
+    // Finger assignment and key effort arrays have the same shape (number of entries in each row) as the LayoutMappings.
+    // 'null' value used for gaps between keys and keys which require the hand off home position (such as the arrow cluster).
+    mainFingerAssignment: (Finger | null)[][];
 
     hasAltFinger: (row: number, col: number) => boolean;
 
-    singleKeyEffort: number[][];
+    singleKeyEffort: (number | null)[][];
 
     getSpecificMapping(flexMapping: FlexMapping): string[] | undefined;
 }

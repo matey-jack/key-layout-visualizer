@@ -22,6 +22,7 @@ import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts"
 import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 import {harmonic14WideLayoutModel} from "./harmonic14WideLayoutModel.ts";
 import {ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
+import {ergoPlank65LayoutModel} from "./ergoPlank65LayoutModel.ts";
 import {isCommandKey} from "../mapping/mapping-functions.ts";
 import {katanaLayoutModel} from "./katanaLayoutModel.ts";
 
@@ -177,6 +178,8 @@ export function getPlankVariant(variant: PlankVariant) {
             return katanaLayoutModel;
         case PlankVariant.MAX_WIDTH:
             return ergoPlank60LayoutModel;
+        case PlankVariant.ARROWS:
+            return ergoPlank65LayoutModel;
     }
 }
 
@@ -202,6 +205,7 @@ export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean
     const rowWidth = fullMapping.map((row, r) =>
         2 * (horizontalPadding + layoutModel.rowStart(r)) + sum(row.map((_, c) => layoutModel.keyWidth(r, c)))
     );
+    // console.log("Row widths: ", rowWidth);
     const maxWidth = Math.max(...rowWidth);
     let result: KeyPosition[] = [];
     for (let row = 0; row < 5; row++) {

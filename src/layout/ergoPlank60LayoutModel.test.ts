@@ -4,9 +4,9 @@ import {ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
 import {fillMapping, getKeyPositions} from "./layout-functions.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
 
-describe('ergoPlankLayoutModel', () => {
+describe('ergoPlank60LayoutModel', () => {
+    const thirtyKeyMapping = ergoPlank60LayoutModel.thirtyKeyMapping!;
     it('thirtyKeyMapping row length', () => {
-        const thirtyKeyMapping = ergoPlank60LayoutModel.thirtyKeyMapping!;
         expect(thirtyKeyMapping[0].length).toBe(14)
         expect(thirtyKeyMapping[1].length).toBe(15)
         expect(thirtyKeyMapping[2].length).toBe(15)
@@ -17,27 +17,21 @@ describe('ergoPlankLayoutModel', () => {
 
     it('thumb30KeyMapping row length', () => {
         const thumb30KeyMapping = ergoPlank60LayoutModel.thumb30KeyMapping!;
-        expect(thumb30KeyMapping[0].length).toBe(14)
-        expect(thumb30KeyMapping[1].length).toBe(15)
-        expect(thumb30KeyMapping[2].length).toBe(15)
-        expect(thumb30KeyMapping[3].length).toBe(14)
-        expect(thumb30KeyMapping[4].length).toBe(11)
+        for (let i = 0; i++; i < 5) {
+            expect(thumb30KeyMapping[i].length).toBe(thirtyKeyMapping[i].length)
+        }
     })
 
     it('mainFingerAssignment row length', () => {
-        expect(ergoPlank60LayoutModel.mainFingerAssignment[0].length).toBe(14)
-        expect(ergoPlank60LayoutModel.mainFingerAssignment[1].length).toBe(15)
-        expect(ergoPlank60LayoutModel.mainFingerAssignment[2].length).toBe(15)
-        expect(ergoPlank60LayoutModel.mainFingerAssignment[3].length).toBe(14)
-        expect(ergoPlank60LayoutModel.mainFingerAssignment[4].length).toBe(11)
+        for (let i = 0; i++; i < 5) {
+            expect(ergoPlank60LayoutModel.mainFingerAssignment[i].length).toBe(thirtyKeyMapping[i].length)
+        }
     })
 
     it('singleKeyEffort row length', () => {
-        expect(ergoPlank60LayoutModel.singleKeyEffort[0].length).toBe(14)
-        expect(ergoPlank60LayoutModel.singleKeyEffort[1].length).toBe(15)
-        expect(ergoPlank60LayoutModel.singleKeyEffort[2].length).toBe(15)
-        expect(ergoPlank60LayoutModel.singleKeyEffort[3].length).toBe(14)
-        expect(ergoPlank60LayoutModel.singleKeyEffort[4].length).toBe(11)
+        for (let i = 0; i++; i < 5) {
+            expect(ergoPlank60LayoutModel.singleKeyEffort[i].length).toBe(thirtyKeyMapping[i].length)
+        }
     })
 
     it('has a gap in the merged mapping', () => {

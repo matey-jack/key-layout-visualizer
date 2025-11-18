@@ -44,6 +44,11 @@ done:
       (The difference to the original Katana is mostly in the bigger Shift keys, while unfortunately also Escape is big.)
    - original Katana with 力 icon, offsets: 0, 0.5, 0.25, 0. Keys: 15, 14, 14, 15.
 
+- Apple mode for the ANSI keyboard and a new Layout-Viz layer to count the different keycap sizes
+
+- prettier coloring of the "edge keys / command keys":
+    + Allow layouts to highlight keys or change the rules on coloring. (Needed for ErgoPlanck to make its Return key visible.)
+
 bugs fixed:
 - Learnability Score for Wide ANSI in Mapping List is changing when I select different mappings =:-[]
 - Frequency for Thumby bigrams should be counted, even if there is no wide layout.
@@ -54,17 +59,15 @@ bugs fixed:
 
 
 missing core features:
+- "split" option is only relevant for Ansi and should move to Ansi-specific options
+- this means all options now are keyboard layout specific and we should change the layout of the options area to be specific to each layout tab
+
 - ErgoPlank and Katana logos to fill the gap
 - Rectangle around the keyboard to signify the HK60 box.
-
-- Apple mode for the ANSI keyboard and a new Layout-Viz layer to count the different keycap sizes
 
 - add some more explanations, especially for:
   + the "wide" mappings
   + Harmonic and Ortho general texts (maybe (i) icon in layout bar). But still repeat that text under the H and O variants.
-
-- prettier coloring of the "edge keys / command keys": 
-    + Allow layouts to highlight keys or change the rules on coloring. (Needed for ErgoPlanck to make its Return key visible.)
 
 - check consistency of all mappings:
    + variants for different layouts should be consistent (only have differences clearly attributed to the layout)

@@ -15,6 +15,6 @@ export function AnsiLayoutOptions({wide, apple, setWide, setApple, mapping}: Ans
     const disabled = onlySupportsWide(mapping.value);
     return <>
         <CheckboxWithLabel label="use wide key mapping" checked={wide} onChange={setWide} disabled={disabled}/>
-        <CheckboxWithLabel label="use Apple form factor" checked={apple} onChange={setApple} disabled={disabled}/>
+        <CheckboxWithLabel label="use Apple form factor" checked={apple} onChange={setApple} disabled={false}/>
     </>
 }

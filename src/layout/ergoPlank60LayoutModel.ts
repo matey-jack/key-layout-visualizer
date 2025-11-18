@@ -1,9 +1,10 @@
 import {FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
 import {defaultKeyColor} from "./layout-functions.ts";
 
-// those values are accumulated by the stagger of 0.25, with the home row being maximal length.
-const widthOfEdgeKey = [1.5, 1.25, 1, 1.25]
-
+/*
+    This version with uniform 1.25u keys in the bottom row is not actually shown in the app.
+    See below for the actual ergoPlank60.
+ */
 export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
     name: "ErgoPlank 60",
     description: `"The most ergonomic key layout that fits into a standard "60%" keyboard case."
@@ -37,8 +38,8 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
     // note that for data model reason, we also have to assign a finger to gaps.
     // but it will never be shown or used in any calulations.
     mainFingerAssignment: [
-        [1, 1, 1, 2, 2, 3, 3, 6, 6, 7, 8, 8, 8, 8],
-        [1, 0, 1, 2, 3, 3, 3, 6, 6, 6, 6, 7, 8, 9, 9],
+        [1, 1, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 8, 8],
+        [1, 0, 1, 2, 3, 3, 3, null, 6, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 6, 7, 8, 9, 9],
         [0, 1, 2, 3, 3, 3, 3, 6, 6, 6, 6, 7, 8, 9],
         [0, 1, 2, 4, 4, 4, 5, 5, 5, 7, 8, 9],
@@ -67,6 +68,7 @@ export const ergoPlankRegularLayoutModel: RowBasedLayoutModel = {
             // also I think it's too big for modifiers under the palm.
             return 1.25;
         }
+        const widthOfEdgeKey = [1.5, 1.25, 1, 1.25]
         if (col == 0 || col == numCols - 1) {
             return widthOfEdgeKey[row];
         }

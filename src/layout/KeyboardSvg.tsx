@@ -89,8 +89,8 @@ export interface KeyboardProps {
     vizType: VisualizationType;
 }
 
-export function getEffortClass(effort: number) {
-    if (isNaN(effort)) return "";
+export function getEffortClass(effort: number | null) {
+    if (effort === null || isNaN(effort)) return "";
     if (effort < 1) return "home-key";
     return "effort-" + (effort * 10);
 }
@@ -116,7 +116,8 @@ const bgClassByFinger: Record<Finger, string> = {
 };
 
 function getFingeringClasses(layoutModel: RowBasedLayoutModel, row: number, col: number, label: string) {
-    const bgClass = bgClassByFinger[layoutModel.mainFingerAssignment[row][col]];
+    const fingerOrNull = layoutModel.mainFingerAssignment[row][col];
+    const bgClass = fingerOrNull === null ? "" : bgClassByFinger[fingerOrNull];
     const borderClass = isHomeKey(layoutModel, row, col) ? "home-key-border"
         : isCommandKey(label) ? "command-key-border"
             : "";
@@ -150,7 +151,7 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
         const keyCapWidth = keyCapWidthFn(row, col);
         const bgClass = (vizType == VisualizationType.LayoutKeySize ? getKeySizeClass(keyCapWidth, keyCapSizes)
                 : vizType == VisualizationType.LayoutKeyEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
-                    : vizType == VisualizationType.LayoutFingering && !isNaN(layoutModel.mainFingerAssignment[row][col])
+                    : vizType == VisualizationType.LayoutFingering && (layoutModel.mainFingerAssignment[row][col] !== null)
                         ? getFingeringClasses(layoutModel, row, col, label)
                         : isHomeKey(layoutModel, row, col) ? "home-key"
                             : keyColorFunction(label, row, col))

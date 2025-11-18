@@ -122,6 +122,8 @@ function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions, mapping}: La
             return <PlankLayoutOptions
                 variant={layoutOptions.plankVariant}
                 setVariant={(variant) => setLayoutOptions({...layoutOptions, plankVariant: variant})}
+                includeArrows={layoutOptions.plankArrows}
+                setIncludeArrows={(arrows: boolean) => setLayoutOptions({...layoutOptions, plankArrows: arrows})}
             />
     }
     return <></>;
