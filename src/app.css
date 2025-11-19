@@ -44,6 +44,7 @@ body {
 .layout-options-button {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
+    border-radius: 4px;
 }
 
 .layout-options-button.selected {
@@ -287,6 +288,7 @@ label.disabled {
 
 .viz-type-button {
     margin: 0.3rem;
+    border-radius: 4px;
 }
 
 .viz-type-button.selected {
