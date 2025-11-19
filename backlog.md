@@ -63,6 +63,7 @@ bugs fixed:
 
 missing variants:
  - EB MidShift vertical Enter (and 1.75u backspace)
+ - EB-max: right Shift "outside" the up arrow, like on my good old ErgoDox!?
 
 missing core features:
 - refactor URL generation/parsing to be type-specific and/or compress smaller options into a single parameter value.

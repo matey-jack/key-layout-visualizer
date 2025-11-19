@@ -98,15 +98,6 @@ export const eb65LayoutModel: RowBasedLayoutModel = {
         // This reduces the number of keys larger than 1.25u compare to the big Enter.
         // There are now two keys of size 1.5 and four keys of 1.75 (Tab, Backspace, bottom row bars).
         switch (row) {
-            case KeyboardRows.Upper:
-                // move Backspace one to the right
-                switch (col) {
-                    case 13:
-                        return 1.75;
-                    case 14:
-                        return 1;
-                }
-                break;
             case KeyboardRows.Home:
                 // split a new key from Enter
                 switch (col) {
@@ -145,12 +136,13 @@ function copyAndModifyKeymap<T>(mapping: T[][], f: (m: T[][]) => T[][]): T[][] {
 }
 
 function movePagingKeysRight(mapping: LayoutMapping): LayoutMapping {
-    mapping[KeyboardRows.Upper][13] = "⌫";
-    mapping[KeyboardRows.Upper][14] = "⇞";
-    mapping[KeyboardRows.Home][6] = "'";
+    mapping[KeyboardRows.Number][14] = "⇤";
+    mapping[KeyboardRows.Number][15] = "⇥";
+    mapping[KeyboardRows.Home][6] = "\\";
     mapping[KeyboardRows.Home][7] = "";
     mapping[KeyboardRows.Home][13] = "⏎";
-    mapping[KeyboardRows.Home][14] = "⇟";
+    mapping[KeyboardRows.Home][14] = "⇞";
+    mapping[KeyboardRows.Lower][15] = "⇟";
     // add a key between the space bars
     mapping[KeyboardRows.Bottom].splice(6, 0, "");
     return mapping;
