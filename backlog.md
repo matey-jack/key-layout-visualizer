@@ -1,11 +1,12 @@
 
-done:
-- switch between keyboard layouts DONE
-- highlight active keyboard layout DONE
-- implement ANSI layout  DONE
-- remove duplicated code between Ansi and Harmonic DONE
+======================== DONE ========================
+
+- switch between keyboard layouts 
+- highlight active keyboard layout 
+- implement ANSI layout  
+- remove duplicated code between Ansi and Harmonic 
 - add narrow/wide option for ANSI
-    - add second layout config DONE
+    - add second layout config 
     - refactor app to hold layout options closer to Keyboard layout component (maybe container components LayoutArea and MappingArea?)
     - mapping list, learning effort, colors 
 - implement Ortho split layout; simply stagger bottom row to get thumb keys.
@@ -47,6 +48,7 @@ done:
  - EB Mid Enter and Big Enter
  - EB MidShift with horizontal and vertical Enter
  - Note the slightly confusing wording: "mid shift" refers to the middle row, whereas "mid enter" refers to a medium size and to a key position not at the edge. 
+ - EB MidShift vertical Enter (and 1.75u backspace)
 
 - Apple mode for the ANSI keyboard and a new Layout-Viz layer to count the different keycap sizes
 
@@ -61,8 +63,15 @@ bugs fixed:
   + when switching to the Harmonic layout with an unsupported mapping already set
   + when switching the Harmonic variant
 
+
+
+======================== TODO ===============================
+
+refactorings:
+ - "ANSI wide" is the only layout option which influencing how keymap metrics are calculated and which keymaps apply.
+   But all the Harmonic and Ergo(Plank|Board) options are filtered through the setLayout mechanism. Is that what we want?
+
 missing variants:
- - EB MidShift vertical Enter (and 1.75u backspace)
  - EB-mid-max: midshift and using the '/' spot for the up arrow, like on my good old ErgoDox!?
 
 missing core features:

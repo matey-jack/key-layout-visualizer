@@ -41,6 +41,12 @@ body {
     justify-items: center;
 }
 
+.plank-layout-options-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    justify-items: center;
+}
+
 .layout-options-button {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
