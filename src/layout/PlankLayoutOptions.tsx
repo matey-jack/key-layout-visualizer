@@ -5,18 +5,24 @@ import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 export interface PlankLayoutOptionsProps {
     variant: PlankVariant;
     setVariant: (variant: PlankVariant) => void;
-    includeArrows: boolean;
-    setIncludeArrows: (arrows: boolean) => void;
+    ep60Arrows: boolean;
+    setEp60Arrows: (arrows: boolean) => void;
+    ep65BigEnter: boolean;
+    setEp65BigEnter: (arrows: boolean) => void;
 }
 
-export function PlankLayoutOptions({variant, setVariant, includeArrows, setIncludeArrows}: PlankLayoutOptionsProps) {
+export function PlankLayoutOptions({variant, setVariant, ep60Arrows, setEp60Arrows, ep65BigEnter, setEp65BigEnter}: PlankLayoutOptionsProps) {
     return <div><div>
         <PlankVariantButton variant={PlankVariant.KATANA_60} currentVariant={variant} setVariant={setVariant}/>
-        <PlankVariantButton variant={PlankVariant.MAX_WIDTH} currentVariant={variant} setVariant={setVariant}/>
-        <PlankVariantButton variant={PlankVariant.ARROWS} currentVariant={variant} setVariant={setVariant}/>
+        <PlankVariantButton variant={PlankVariant.EP60} currentVariant={variant} setVariant={setVariant}/>
+        <PlankVariantButton variant={PlankVariant.EP65} currentVariant={variant} setVariant={setVariant}/>
+        <PlankVariantButton variant={PlankVariant.EP65_MID_SHIFT} currentVariant={variant} setVariant={setVariant}/>
     </div>
-        {variant == PlankVariant.MAX_WIDTH &&
-            <CheckboxWithLabel label="Include arrow keys" checked={includeArrows} onChange={setIncludeArrows}/>
+        {variant == PlankVariant.EP60 &&
+            <CheckboxWithLabel label="Include arrow keys" checked={ep60Arrows} onChange={setEp60Arrows}/>
+        }
+        {variant == PlankVariant.EP65 &&
+            <CheckboxWithLabel label="Big Enter key" checked={ep65BigEnter} onChange={setEp65BigEnter}/>
         }
     </div>
 }
@@ -33,6 +39,6 @@ export function PlankVariantButton({variant, currentVariant, setVariant}: PlankV
         className={"layout-options-button" + selected}
         onClick={() => setVariant(variant)}
     >
-        {getPlankVariant(variant).name}
+        {getPlankVariant(variant, false, false).name}
     </button>
 }

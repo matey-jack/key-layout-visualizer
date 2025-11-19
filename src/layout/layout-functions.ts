@@ -21,10 +21,11 @@ import {harmonic14TraditionalLayoutModel} from "./harmonic14TraditionalLayoutMod
 import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
 import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 import {harmonic14WideLayoutModel} from "./harmonic14WideLayoutModel.ts";
-import {ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
-import {ergoPlank65LayoutModel} from "./ergoPlank65LayoutModel.ts";
+import {ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
+import {eb65BigEnterLayoutModel, eb65LayoutModel} from "./eb65LayoutModel.ts";
 import {isCommandKey} from "../mapping/mapping-functions.ts";
 import {katanaLayoutModel} from "./katanaLayoutModel.ts";
+import {ep65MidshiftLayoutModel} from "./eb65MidshiftLayoutModel.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
     if (row != KeyboardRows.Home) return false;
@@ -172,14 +173,16 @@ export function getHarmonicVariant(variant: HarmonicVariant) {
     }
 }
 
-export function getPlankVariant(variant: PlankVariant) {
+export function getPlankVariant(variant: PlankVariant, ep60Arrows: boolean, ep65BigEnter: boolean) {
     switch (variant) {
         case PlankVariant.KATANA_60:
             return katanaLayoutModel;
-        case PlankVariant.MAX_WIDTH:
-            return ergoPlank60LayoutModel;
-        case PlankVariant.ARROWS:
-            return ergoPlank65LayoutModel;
+        case PlankVariant.EP60:
+            return ep60Arrows ? ep60WithArrowsLayoutModel : ergoPlank60LayoutModel;
+        case PlankVariant.EP65:
+            return ep65BigEnter ? eb65BigEnterLayoutModel : eb65LayoutModel;
+        case PlankVariant.EP65_MID_SHIFT:
+            return ep65MidshiftLayoutModel;
     }
 }
 
@@ -192,7 +195,7 @@ export function getLayoutModel(layoutOptions: LayoutOptions): RowBasedLayoutMode
         case LayoutType.Harmonic:
             return getHarmonicVariant(layoutOptions.harmonicVariant);
         case LayoutType.ErgoPlank:
-            return getPlankVariant(layoutOptions.plankVariant);
+            return getPlankVariant(layoutOptions.plankVariant, layoutOptions.ep60Arrows, layoutOptions.ep65BigEnter);
     }
 }
 
@@ -212,7 +215,8 @@ export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean
         let colPos = horizontalPadding + layoutModel.rowStart(row);
         // Counting the rowStart padding, all rows should be the same width. If our row is narrower than the max,
         // then we distribute the difference between all the keys.
-        const microGap = (maxWidth - rowWidth[row]) / (fullMapping[row].length - 1);
+        // This doesn't apply to the split keyboards, because the thumb cluster row is meant to stick out from the rest.
+        const microGap = split ? 0 : (maxWidth - rowWidth[row]) / (fullMapping[row].length - 1);
         // for non-split boards, apply some white space on the left to make them centered.
         if (!split) colPos += (totalWidth - maxWidth) / 2;
         fullMapping[row].forEach((label, col) => {

@@ -42,7 +42,8 @@ export function getSingleKeyEffort(layoutModel: RowBasedLayoutModel, charMap: st
     charMap.forEach((charMapRow, row) => {
         charMapRow.forEach((char, col) => {
             if (char && freqs[char.toUpperCase()]) {
-                result[char] = layoutModel.singleKeyEffort[row][col];
+                // effort should be non-null for any key that we have a frequency for. 999 should help us find the bug, if not.
+                result[char] = layoutModel.singleKeyEffort[row][col] ?? 999;
             }
         })
     })

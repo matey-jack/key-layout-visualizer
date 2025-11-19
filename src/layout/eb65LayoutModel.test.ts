@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest';
 
-import {ergoPlank65LayoutModel as model} from "./ergoPlank65LayoutModel.ts";
+import {eb65LayoutModel as model} from "./eb65LayoutModel.ts";
 
 describe('ergoPlank65LayoutModel', () => {
     const thirtyKeyMapping = model.thirtyKeyMapping!;

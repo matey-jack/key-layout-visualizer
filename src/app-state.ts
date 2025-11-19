@@ -122,6 +122,7 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
     params.set("apple", layout.appleAnsi ? "1" : "0");
     params.set("harmonic", layout.harmonicVariant.toString());
     params.set("plank", layout.plankVariant.toString());
+    params.set("ep60arrows", layout.ep60Arrows ? "1" : "0")
     window.history.pushState(null, "", "#" + params.toString());
 }
 
@@ -136,6 +137,7 @@ export function createAppState(): AppState {
         appleAnsi: s2b(params.get("apple")) ?? true,
         harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
         plankVariant: s2i(params.get("plank")) ?? PlankVariant.KATANA_60,
+        ep60Arrows: s2b(params.get("ep60arrows")) ?? false,
     });
     const layoutModel = computed(() => getLayoutModel(layoutOptionsState.value))
 

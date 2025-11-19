@@ -1,6 +1,10 @@
 import {FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
 import {defaultKeyColor} from "./layout-functions.ts";
 
+export function getEP60LayoutModel(includeArrows: boolean) {
+    return includeArrows ? ep60WithArrowsLayoutModel : ergoPlank60LayoutModel;
+}
+
 export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
     name: "ErgoPlank 60",
     description: `"The most ergonomic key layout that fits into a standard "60%" keyboard case."
@@ -93,4 +97,46 @@ export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
         if (label == "⏎" || label == "Esc") return KEY_COLOR.HIGHLIGHT;
         return defaultKeyColor(label, row, col);
     },
+}
+
+export const ep60WithArrowsLayoutModel: RowBasedLayoutModel = {
+    ...ergoPlank60LayoutModel,
+    thirtyKeyMapping: replaceLast(ergoPlank60LayoutModel.thirtyKeyMapping!,
+        [null, "Ctrl", "Cmd", "AltGr", "Alt", "⏎", "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]
+    ),
+    thumb30KeyMapping: replaceLast(ergoPlank60LayoutModel.thumb30KeyMapping!,
+        [null, "Ctrl", "Cmd", "AltGr", "Alt", 0, "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]
+    ),
+    // fullMapping: replaceLast(ergoPlankRegularLayoutModel.fullMapping, []),
+    singleKeyEffort: replaceLast(ergoPlank60LayoutModel.singleKeyEffort,
+        [null, 3.0, 3.0, 2.0, 1.5, 0.2, 1.5, 0.2, 1.5, null, null, null, null, null]
+    ),
+    mainFingerAssignment: replaceLast(ergoPlank60LayoutModel.mainFingerAssignment,
+        [null, 0, 1, 2, 4, 4, 5, 5, 5, 7, null, null, null, null, null]
+    ),
+    rowStart: (row: KeyboardRows) => row == KeyboardRows.Lower ? 0.25 : 0,
+    keyWidth: (row: KeyboardRows, col: number): number => {
+        if (row == KeyboardRows.Bottom) {
+            if (col > 9) {
+                return 1;
+            }
+            switch (col) {
+                case 0:
+                case 9:
+                    // gaps
+                    return 0.25;
+                case 5:
+                case 7:
+                    // "space bars"
+                    return 1.5;
+                default:
+                    return 1.25;
+            }
+        }
+        return ergoPlank60LayoutModel.keyWidth(row, col);
+    },
+}
+
+function replaceLast<T>(list: T[], last: T) {
+    return [...list.slice(0, -1), last];
 }

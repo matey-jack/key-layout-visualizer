@@ -18,9 +18,22 @@ export enum HarmonicVariant {
 
 
 export enum PlankVariant {
-    MAX_WIDTH, // 15 keys in home row for widest possible hand distance
+    /*
+       60% layout means 15 key units wide
+    */
     KATANA_60, // the original as published by RominRonin.
-    ARROWS, // 16 columns (65%) to make arrow cluster fit in bottom right
+
+    // vv the "include arrows" flag only applies to this one.
+    EP60, // 15 keys in home row for widest possible hand distance
+
+    /*
+       65% means 16 key units wide and Nav keys in right-most column
+       Main reason for this is to arrange the arrow keys in inverted T shape!
+    */
+    // vv the "big Enter" variant only applies to this one.
+    EP65, // 16 columns (65%) to make arrow cluster fit in bottom right
+
+    EP65_MID_SHIFT, // placing Shift in the home row allows for an "angle-mod" and a little gap towards the arrow keys.
 }
 
 export interface LayoutOptions {
@@ -32,7 +45,8 @@ export interface LayoutOptions {
     appleAnsi: boolean;
     harmonicVariant: HarmonicVariant;
     plankVariant: PlankVariant;
-    plankArrows: boolean;
+    ep60Arrows: boolean;
+    ep65BigEnter: boolean;
 }
 
 export interface AppState {

@@ -118,8 +118,10 @@ function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions, mapping}: La
             return <PlankLayoutOptions
                 variant={layoutOptions.plankVariant}
                 setVariant={(variant) => setLayoutOptions({...layoutOptions, plankVariant: variant})}
-                includeArrows={layoutOptions.plankArrows}
-                setIncludeArrows={(arrows: boolean) => setLayoutOptions({...layoutOptions, plankArrows: arrows})}
+                ep60Arrows={layoutOptions.ep60Arrows}
+                setEp60Arrows={(arrows: boolean) => setLayoutOptions({...layoutOptions, ep60Arrows: arrows})}
+                ep65BigEnter={layoutOptions.ep65BigEnter}
+                setEp65BigEnter={(big: boolean) => setLayoutOptions({...layoutOptions, ep65BigEnter: big})}
             />
     }
     return <></>;

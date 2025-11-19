@@ -40,9 +40,13 @@ done:
     done here ==> https://docs.google.com/spreadsheets/d/1E3uta8rgbxNcu7onwrg5y7bJaWY-TkvE0JlzE-3GAtY/edit?usp=sharing
 
 - ErgoPlank variants:
-   - "Katana max with ANSI bottom row": offsets 0.5, 0.25, 0, 0.5; Keys: 14, 14, 15, 14.
+   - ErgoPlank 60 aka "Katana max with ANSI bottom row": offsets 0.5, 0.25, 0, 0.5; Keys: 14, 14, 15, 14.
       (The difference to the original Katana is mostly in the bigger Shift keys, while unfortunately also Escape is big.)
    - original Katana with 力 icon, offsets: 0, 0.5, 0.25, 0. Keys: 15, 14, 14, 15.
+- Ergoboard variants (all my 65% type variants don't look like a simple Plank anymore, therefore "board".) 
+ - EB Mid Enter and Big Enter
+ - EB MidShift with horizontal and vertical Enter
+ - Note the slightly confusing wording: "mid shift" refers to the middle row, whereas "mid enter" refers to a medium size and to a key position not at the edge. 
 
 - Apple mode for the ANSI keyboard and a new Layout-Viz layer to count the different keycap sizes
 
@@ -57,12 +61,15 @@ bugs fixed:
   + when switching to the Harmonic layout with an unsupported mapping already set
   + when switching the Harmonic variant
 
+missing variants:
+ - EB MidShift vertical Enter (and 1.75u backspace)
 
 missing core features:
-- "split" option is only relevant for Ansi and should move to Ansi-specific options
-- this means all options now are keyboard layout specific and we should change the layout of the options area to be specific to each layout tab
-- ErgoPlank and Katana logos to fill the gap
-- Rectangle around the keyboard to signify the HK60 box.
+- refactor URL generation/parsing to be type-specific and/or compress smaller options into a single parameter value.
+- Fix Harmonic / Katana layout options display; add sub-options for the variants below the variant. 
+  (Using a variant-component which includes the button and the options, which are only visible when the variant is selected.)
+- ErgoPlank and Katana logos to fill the gap, especially Ergoboard 65 Midshift with a nice connection between both gaps.
+- Rectangle around the keyboard to signify the 60% or 65% box.
 
 - add some more explanations, especially for:
   + the "wide" mappings
@@ -75,7 +82,6 @@ missing core features:
      * especially Thumby-KU
 
 bugs:
-- split ortho layout broken due to maxWidth logic
 - when switching mappings we correctly set options (which only affects ANSI), but we don't switch Layouts, because there are so many variants to iterate through. But needs to be done at some point.
 - the comparisonBase mapping needs to have definitions on all layouts, thus at least a mapping30 (which is supported everywhere).
    Add that for qwertz and maybe add a full mapping for the ortho board to make the comparison more meaningful.
