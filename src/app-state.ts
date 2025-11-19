@@ -131,6 +131,7 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
             params.set("plank", layout.plankVariant.toString());
             params.set("ep60arrows", layout.ep60Arrows ? "1" : "0")
             params.set("eb65bigEnter", layout.eb65BigEnter ? "1" : "0")
+            params.set("eb65VerticalEnter", layout.eb65VerticalEnter ? "1" : "0")
             break;
     }
     window.history.pushState(null, "", "#" + params.toString());
@@ -149,6 +150,7 @@ export function createAppState(): AppState {
         plankVariant: s2i(params.get("plank")) ?? PlankVariant.KATANA_60,
         ep60Arrows: s2b(params.get("ep60arrows")) ?? false,
         eb65BigEnter: s2b(params.get("eb65BigEnter")) ?? false,
+        eb65VerticalEnter: s2b(params.get("eb65VerticalEnter")) ?? true,
     });
     const layoutModel = computed(() => getLayoutModel(layoutOptionsState.value))
 

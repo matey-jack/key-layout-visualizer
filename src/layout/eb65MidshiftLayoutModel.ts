@@ -1,7 +1,8 @@
-import {FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
-import {defaultKeyColor} from "./layout-functions.ts";
+import {FlexMapping, KEY_COLOR, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
+import {eb65BigEnterLayoutModel} from "./eb65LayoutModel.ts";
 
-export const ep65MidshiftLayoutModel: RowBasedLayoutModel = {
+export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 MidShift",
     description: `"The most ergonomic key layout that fits into a standard "65%" keyboard case
     and has some gaps around the arrow cluster so your fingers can find it without looking."
@@ -55,7 +56,7 @@ export const ep65MidshiftLayoutModel: RowBasedLayoutModel = {
     rowStart: (_row: KeyboardRows) => 0,
 
     keyWidth: (row: KeyboardRows, col: number): number => {
-        const numCols = ep65MidshiftLayoutModel.thirtyKeyMapping![row].length;
+        const numCols = eb65MidshiftLayoutModel.thirtyKeyMapping![row].length;
         switch (row) {
             case KeyboardRows.Number:
                 // Backspace
@@ -126,4 +127,32 @@ export const ep65MidshiftLayoutModel: RowBasedLayoutModel = {
         if (label == "⏎" || label == "Esc") return KEY_COLOR.HIGHLIGHT;
         return defaultKeyColor(label, row, col);
     },
+}
+
+
+export const eb65VerticalEnterLayoutModel: RowBasedLayoutModel = {
+    ...eb65MidshiftLayoutModel,
+    keyWidth: (row: KeyboardRows, col: number) => {
+        switch (row) {
+            case KeyboardRows.Number:
+                return 1;
+            case KeyboardRows.Upper:
+        }
+        return eb65MidshiftLayoutModel.keyWidth(row, col);
+    },
+    keyCapHeight: (row: KeyboardRows, col: number) => {
+        if (row == KeyboardRows.Upper && col == 14) return 2;
+        return 1;
+    },
+    thirtyKeyMapping: copyAndModifyKeymap(eb65MidshiftLayoutModel.thirtyKeyMapping!!, moveEnter),
+    thumb30KeyMapping: copyAndModifyKeymap(eb65MidshiftLayoutModel.thumb30KeyMapping!!, moveEnter),
+}
+
+function moveEnter(mapping: LayoutMapping): LayoutMapping {
+    mapping[KeyboardRows.Number][14] = "⇞";
+    mapping[KeyboardRows.Number][15] = "⇟";
+    mapping[KeyboardRows.Upper][13] = "⌫";
+    mapping[KeyboardRows.Upper][14] = "⏎";
+    mapping[KeyboardRows.Home][14] = null;
+    return mapping;
 }

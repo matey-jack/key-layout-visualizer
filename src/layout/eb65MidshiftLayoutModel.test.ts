@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest';
 
-import {ep65MidshiftLayoutModel as model} from "./eb65MidshiftLayoutModel.ts";
+import {eb65MidshiftLayoutModel as model} from "./eb65MidshiftLayoutModel.ts";
 import {sum} from "../library/math.ts";
 
 describe('ep65MidshiftLayoutModel', () => {

@@ -47,6 +47,7 @@ export interface LayoutOptions {
     plankVariant: PlankVariant;
     ep60Arrows: boolean;
     eb65BigEnter: boolean;
+    eb65VerticalEnter: boolean;
 }
 
 export interface AppState {

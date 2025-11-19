@@ -159,6 +159,7 @@ export interface RowBasedLayoutModel {
     // and don't add a column in all the layout arrays.
     keyWidth: (row: KeyboardRows, col: number) => number;
     keyCapWidth?: (row: KeyboardRows, col: number) => number;
+    keyCapHeight?: (row: KeyboardRows, col: number) => number;
 
     keyColorClass?: (label: string, row: KeyboardRows, col: number) => KeyColor;
 

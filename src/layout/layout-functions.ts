@@ -25,7 +25,7 @@ import {ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./ergoPlank60La
 import {eb65BigEnterLayoutModel, eb65LayoutModel} from "./eb65LayoutModel.ts";
 import {isCommandKey} from "../mapping/mapping-functions.ts";
 import {katanaLayoutModel} from "./katanaLayoutModel.ts";
-import {ep65MidshiftLayoutModel} from "./eb65MidshiftLayoutModel.ts";
+import {eb65MidshiftLayoutModel, eb65VerticalEnterLayoutModel} from "./eb65MidshiftLayoutModel.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
     if (row != KeyboardRows.Home) return false;
@@ -173,16 +173,16 @@ export function getHarmonicVariant(variant: HarmonicVariant) {
     }
 }
 
-export function getPlankVariant(variant: PlankVariant, ep60Arrows: boolean, ep65BigEnter: boolean) {
-    switch (variant) {
+export function getPlankVariant({plankVariant, ep60Arrows, eb65BigEnter, eb65VerticalEnter}: LayoutOptions) {
+    switch (plankVariant) {
         case PlankVariant.KATANA_60:
             return katanaLayoutModel;
         case PlankVariant.EP60:
             return ep60Arrows ? ep60WithArrowsLayoutModel : ergoPlank60LayoutModel;
         case PlankVariant.EP65:
-            return ep65BigEnter ? eb65BigEnterLayoutModel : eb65LayoutModel;
+            return eb65BigEnter ? eb65BigEnterLayoutModel : eb65LayoutModel;
         case PlankVariant.EP65_MID_SHIFT:
-            return ep65MidshiftLayoutModel;
+            return eb65VerticalEnter ? eb65VerticalEnterLayoutModel : eb65MidshiftLayoutModel;
     }
 }
 
@@ -195,7 +195,7 @@ export function getLayoutModel(layoutOptions: LayoutOptions): RowBasedLayoutMode
         case LayoutType.Harmonic:
             return getHarmonicVariant(layoutOptions.harmonicVariant);
         case LayoutType.ErgoPlank:
-            return getPlankVariant(layoutOptions.plankVariant, layoutOptions.ep60Arrows, layoutOptions.eb65BigEnter);
+            return getPlankVariant(layoutOptions);
     }
 }
 
@@ -244,3 +244,8 @@ export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean
 
 export const getKeyPositionsByLabel = (positions: KeyPosition[]): Record<string, KeyPosition> =>
     Object.fromEntries(positions.map(p => [p.label, p]));
+
+export function copyAndModifyKeymap<T>(mapping: T[][], f: (m: T[][]) => T[][]): T[][] {
+    const newMapping = mapping.map((row) => [...row]);
+    return f(newMapping);
+}

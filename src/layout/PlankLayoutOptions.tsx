@@ -1,4 +1,4 @@
-import {PlankVariant} from "../app-model.ts";
+import {LayoutOptions, PlankVariant} from "../app-model.ts";
 import {getPlankVariant} from "./layout-functions.ts";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 
@@ -39,6 +39,6 @@ export function PlankVariantButton({variant, currentVariant, setVariant}: PlankV
         className={"layout-options-button" + selected}
         onClick={() => setVariant(variant)}
     >
-        {getPlankVariant(variant, false, false).name}
+        {getPlankVariant({plankVariant: variant} as LayoutOptions).name}
     </button>
 }

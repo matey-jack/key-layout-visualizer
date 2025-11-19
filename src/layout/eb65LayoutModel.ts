@@ -1,5 +1,5 @@
 import {FlexMapping, KEY_COLOR, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
-import {defaultKeyColor} from "./layout-functions.ts";
+import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
 
 export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65",
@@ -128,11 +128,7 @@ export const eb65LayoutModel: RowBasedLayoutModel = {
     },
     thirtyKeyMapping: copyAndModifyKeymap(eb65BigEnterLayoutModel.thirtyKeyMapping!!, movePagingKeysRight),
     thumb30KeyMapping: copyAndModifyKeymap(eb65BigEnterLayoutModel.thumb30KeyMapping!!, movePagingKeysRight),
-}
-
-function copyAndModifyKeymap<T>(mapping: T[][], f: (m: T[][]) => T[][]): T[][] {
-    const newMapping = mapping.map((row) => [...row]);
-    return f(newMapping);
+    // todo: finger assignment and key effort!
 }
 
 function movePagingKeysRight(mapping: LayoutMapping): LayoutMapping {

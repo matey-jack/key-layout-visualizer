@@ -31,6 +31,7 @@ interface KeyProps {
     row: KeyboardRows,
     col: number, // Measured in key units from the left hand side starting with 0. Can be fractional!
     width: number,
+    height: number,
     backgroundClass: string,
     // There will be no ribbon element, when there is no ribbon class.
     ribbonClass?: string,
@@ -42,7 +43,7 @@ const keyPadding = 5;
 const keyRibbonPaddingH = 17;
 const keyRibbonPaddingV = 1;
 
-export function Key({label, row, col, width, backgroundClass, ribbonClass, frequencyCircleRadius}: KeyProps) {
+export function Key({label, row, col, width, height, backgroundClass, ribbonClass, frequencyCircleRadius}: KeyProps) {
     const x = col * keyUnit + keyPadding;
     const y = row * keyUnit + keyPadding;
     const labelClass =
@@ -51,7 +52,7 @@ export function Key({label, row, col, width, backgroundClass, ribbonClass, frequ
                 : "";
     const text = (labelClass) ?
         // center all the non-character key labels
-        <text x={x + keyUnit * width / 2} y={y + keyUnit / 2} className={"key-label " + labelClass}>
+        <text x={x + keyUnit * width / 2} y={y + keyUnit * height / 2} className={"key-label " + labelClass}>
             {label}
         </text>
         :
@@ -65,7 +66,7 @@ export function Key({label, row, col, width, backgroundClass, ribbonClass, frequ
               x={x + keyRibbonPaddingV}
               y={y + keyRibbonPaddingH}
               width={keyUnit * width - 2 * (keyPadding + keyRibbonPaddingV)}
-              height={keyUnit - 2 * (keyPadding + keyRibbonPaddingH)}
+              height={keyUnit * height - 2 * (keyPadding + keyRibbonPaddingH)}
         />
     const frequencyCircle = frequencyCircleRadius &&
         <circle cx={x + 70} cy={y + 30} r={frequencyCircleRadius} className="frequency-circle"/>;
@@ -75,7 +76,7 @@ export function Key({label, row, col, width, backgroundClass, ribbonClass, frequ
             x={x}
             y={y}
             width={keyUnit * width - 2 * keyPadding}
-            height={keyUnit - 2 * keyPadding}
+            height={keyUnit * height - 2 * keyPadding}
         />
         {keyRibbon || frequencyCircle}
         {text}
@@ -136,9 +137,10 @@ function createKeySizeGroups(keyPositions: KeyPosition[], keyCapWidthFn: (row: n
     return keySizes;
 }
 
-function getKeySizeClass(keyCapWidth: number, sizeList: number[]) {
-    if (keyCapWidth == 1) return "key-size-square";
-    return "key-size-" + sizeList.indexOf(keyCapWidth);
+function getKeySizeClass(keyCapWidth: number, keyCapHeight: number, sizeList: number[]) {
+    const size = Math.max(keyCapWidth, keyCapHeight);
+    if (size == 1) return "key-size-square";
+    return "key-size-" + sizeList.indexOf(size);
 }
 
 export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizType}: KeyboardProps) {
@@ -149,7 +151,8 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
     return keyPositions.map(({label, row, col, colPos}) => {
         const keyColorFunction = layoutModel.keyColorClass || defaultKeyColor;
         const keyCapWidth = keyCapWidthFn(row, col);
-        const bgClass = (vizType == VisualizationType.LayoutKeySize ? getKeySizeClass(keyCapWidth, keyCapSizes)
+        const keyCapHeight = layoutModel.keyCapHeight ? layoutModel.keyCapHeight(row, col) : 1;
+        const bgClass = (vizType == VisualizationType.LayoutKeySize ? getKeySizeClass(keyCapWidth, keyCapHeight, keyCapSizes)
                 : vizType == VisualizationType.LayoutKeyEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
                     : vizType == VisualizationType.LayoutFingering && (layoutModel.mainFingerAssignment[row][col] !== null)
                         ? getFingeringClasses(layoutModel, row, col, label)
@@ -168,7 +171,9 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
         // but for the Escape key on ErgoPlank, left-align is actually better.
         // const capColPos = colPos + (slotWidth - capWidth)/2;
         if (vizType == VisualizationType.LayoutKeySize) {
-            label = keyCapWidth == 1 ? "" : keyCapWidth + "";
+            label = keyCapWidth > 1 ? keyCapWidth + "" :
+                keyCapHeight > 1 ? keyCapHeight + ""
+                    : "";
         }
         return <Key
             label={label}
@@ -177,6 +182,7 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
             row={row}
             col={colPos}
             width={keyCapWidth}
+            height={keyCapHeight}
             frequencyCircleRadius={frequencyCircleRadius}
             key={row + ',' + col}
         />
