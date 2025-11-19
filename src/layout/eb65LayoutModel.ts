@@ -16,10 +16,10 @@ export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
 
     // row lengths: 16, 15, 14 (with 0.5u gap), 16, bottom TODO
     thirtyKeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "\\", "⇤"],
+        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "\\", "Fn"],
         ["↹", 0, 1, 2, 3, 4, "-", null, 5, 6, 7, 8, 9, "'", "⌫"],
         ["Caps", 0, 1, 2, 3, 4, "⇞", "⇟", 5, 6, 7, 8, 9, "⏎"],
-        ["Fn", "⇧", 0, 1, 2, 3, 4, "=", 9, 5, 6, 7, 8, "⇧", "↑", "⇥"],
+        ["⇤", "⇧", 0, 1, 2, 3, 4, "=", 9, 5, 6, 7, 8, "⇧", "↑", "⇥"],
         [null, "Ctrl", "Cmd", "⌦", "Alt", "⍽", "⍽", "AltGr", "Ctrl", null, "←", "↓", "→"]
     ],
 
@@ -142,6 +142,7 @@ function movePagingKeysRight(mapping: LayoutMapping): LayoutMapping {
     mapping[KeyboardRows.Home][7] = "";
     mapping[KeyboardRows.Home][13] = "⏎";
     mapping[KeyboardRows.Home][14] = "⇞";
+    mapping[KeyboardRows.Lower][0] = "Fn";
     mapping[KeyboardRows.Lower][15] = "⇟";
     // add a key between the space bars
     mapping[KeyboardRows.Bottom].splice(6, 0, "");
