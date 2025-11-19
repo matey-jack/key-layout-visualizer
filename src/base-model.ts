@@ -3,13 +3,9 @@
 
 export enum LayoutType {
     ANSI,
+    Harmonic,
     ErgoPlank,
     Ortho,
-    Harmonic,
-    // If we want a separate button for the Harmonic Traditional and keep all other variants under the label "Harmonic Compact",
-    // we need to think about the HarmonicOptions structure. We could have specific and common options for both tabs, such that
-    // the variants are specific to the "Compact". Any future option can be added to either just one of the tabs or
-    // both via the common child object of the HarmonicOptions.
 }
 
 // Enum values need to be fixed as 0..4 because we have literal arrays indexed with this.

@@ -46,7 +46,7 @@ export interface LayoutOptions {
     harmonicVariant: HarmonicVariant;
     plankVariant: PlankVariant;
     ep60Arrows: boolean;
-    ep65BigEnter: boolean;
+    eb65BigEnter: boolean;
 }
 
 export interface AppState {

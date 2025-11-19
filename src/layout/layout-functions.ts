@@ -195,7 +195,7 @@ export function getLayoutModel(layoutOptions: LayoutOptions): RowBasedLayoutMode
         case LayoutType.Harmonic:
             return getHarmonicVariant(layoutOptions.harmonicVariant);
         case LayoutType.ErgoPlank:
-            return getPlankVariant(layoutOptions.plankVariant, layoutOptions.ep60Arrows, layoutOptions.ep65BigEnter);
+            return getPlankVariant(layoutOptions.plankVariant, layoutOptions.ep60Arrows, layoutOptions.eb65BigEnter);
     }
 }
 

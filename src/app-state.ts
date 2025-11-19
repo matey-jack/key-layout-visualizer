@@ -117,12 +117,22 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
     params.set("layout", layout.type.toString());
     params.set("mapping", mapping.value.techName || mapping.value.name);
     params.set("viz", vizType.value.toString());
-    params.set("split", layout.split ? "1" : "0");
-    params.set("wide", layout.wideAnsi ? "1" : "0");
-    params.set("apple", layout.appleAnsi ? "1" : "0");
-    params.set("harmonic", layout.harmonicVariant.toString());
-    params.set("plank", layout.plankVariant.toString());
-    params.set("ep60arrows", layout.ep60Arrows ? "1" : "0")
+
+    switch (layout.type) {
+        case LayoutType.ANSI:
+            params.set("split", layout.split ? "1" : "0");
+            params.set("wide", layout.wideAnsi ? "1" : "0");
+            params.set("apple", layout.appleAnsi ? "1" : "0");
+            break;
+        case LayoutType.Harmonic:
+            params.set("harmonic", layout.harmonicVariant.toString());
+            break;
+        case LayoutType.ErgoPlank:
+            params.set("plank", layout.plankVariant.toString());
+            params.set("ep60arrows", layout.ep60Arrows ? "1" : "0")
+            params.set("eb65bigEnter", layout.eb65BigEnter ? "1" : "0")
+            break;
+    }
     window.history.pushState(null, "", "#" + params.toString());
 }
 
@@ -138,6 +148,7 @@ export function createAppState(): AppState {
         harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
         plankVariant: s2i(params.get("plank")) ?? PlankVariant.KATANA_60,
         ep60Arrows: s2b(params.get("ep60arrows")) ?? false,
+        eb65BigEnter: s2b(params.get("eb65BigEnter")) ?? false,
     });
     const layoutModel = computed(() => getLayoutModel(layoutOptionsState.value))
 
