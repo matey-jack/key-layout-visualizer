@@ -142,7 +142,7 @@ export function SingleKeyEffortDetails({layout, mapping}: KeyEffortDetailsProps)
             Those are the easiest to type for any shape of keyboard or hand.
         </p>
         <p>
-            The following legend shows the percentage of key strokes (according to English average letter frequency),
+            The following legend shows the percentage (actually permilltage 😅) of key strokes (according to English average letter frequency),
             that fall on each color of letter. I assigned an effort score for each color of letter. By multiplying
             frequency with the score and adding it all up, we get a "total single key effort score" for this keymap in English of
             <b> {weighSingleKeyEffort(layout, charMap, englishFreqs)}</b>.
@@ -172,7 +172,7 @@ export function SingleKeyEffortDetails({layout, mapping}: KeyEffortDetailsProps)
                 Keys that aren't neighbors of home position keys.
             </KeyEffortLegendItem>
         </div>
-        <p><b>Total: {totalEffort}</b></p>
+        <p><b>Total: {totalEffort}</b> – Higher is better!</p>
     </div>
 }
 
@@ -285,7 +285,7 @@ export function BigramEffortDetails({layout, mapping}: BigramEffortDetailsProps)
         <BigramDetailsLegendItem bigramType={BigramType.OtherHand} frequency={freqs[BigramType.OtherHand]}>
             Bigrams typed with fingers of different hands aren't shown either. They make no trouble.
         </BigramDetailsLegendItem>
-        <p><b>Total: {Math.round(total)}</b></p>
+        <p><b>Total: {Math.round(total)}</b> – Lower is better.</p>
         <p class="footnote">
             Only the {4 * bigramRankSize} most frequent bigrams are shown in the keyboard visualization, but all
             available data is used in the calculation of the total score. (Infrequent bigrams have a an inconsequential
