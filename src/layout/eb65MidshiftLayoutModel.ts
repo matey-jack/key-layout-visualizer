@@ -1,5 +1,6 @@
 import {FlexMapping, KEY_COLOR, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
+import {eb65KeyColorClass} from "./eb65AysmLayoutModel.ts";
 
 export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 MidShift",
@@ -122,10 +123,7 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
 
     getSpecificMapping: (_: FlexMapping) => undefined,
 
-    keyColorClass(label: string, row: KeyboardRows, col: number) {
-        if (label == "⏎" || label == "Esc") return KEY_COLOR.HIGHLIGHT;
-        return defaultKeyColor(label, row, col);
-    },
+    keyColorClass: eb65KeyColorClass,
 }
 
 

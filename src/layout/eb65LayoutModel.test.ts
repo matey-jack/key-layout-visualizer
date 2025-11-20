@@ -2,7 +2,7 @@ import {describe, expect, it} from 'vitest';
 
 import {eb65LayoutModel as model} from "./eb65LayoutModel.ts";
 
-describe('ergoPlank65LayoutModel', () => {
+describe('ErgoBoard 65 layout model', () => {
     const thirtyKeyMapping = model.thirtyKeyMapping!;
     it('thirtyKeyMapping row length', () => {
         expect(thirtyKeyMapping[0].length).toBe(16);

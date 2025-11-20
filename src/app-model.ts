@@ -42,6 +42,12 @@ export enum EB65_MidShift_Variant {
     MID_MID,
 }
 
+export enum EB65_LowShift_Variant {
+    WIDE_HANDS,
+    LESS_GAPS,
+    BIG_ENTER,
+}
+
 export interface LayoutOptions {
     type: LayoutType;
     split: boolean;
@@ -52,7 +58,7 @@ export interface LayoutOptions {
     harmonicVariant: HarmonicVariant;
     plankVariant: PlankVariant;
     ep60Arrows: boolean;
-    eb65BigEnter: boolean;
+    eb65LowshiftVariant: EB65_LowShift_Variant;
     eb65MidshiftVariant: EB65_MidShift_Variant;
 }
 

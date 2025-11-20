@@ -1,6 +1,7 @@
 import {FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
 import {defaultKeyColor} from "./layout-functions.ts";
 import {eb65MidshiftLayoutModel} from "./eb65MidshiftLayoutModel.ts";
+import {eb65KeyColorClass} from "./eb65AysmLayoutModel.ts";
 
 export const eb65LayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65",
@@ -19,7 +20,7 @@ export const eb65LayoutModel: RowBasedLayoutModel = {
     thirtyKeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
         ["↹", 0, 1, 2, 3, 4, "=", null, 5, 6, 7, 8, 9, "-", "⌫"],
-        ["Caps", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
+        ["CAPS", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
         ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "↑", null],
         [null, "Ctrl", "Cmd", "⌦", "Alt", "⍽", "", "⍽", "AltGr", "Ctrl", null, "←", "↓", "→"],
     ],
@@ -27,7 +28,7 @@ export const eb65LayoutModel: RowBasedLayoutModel = {
     thumb30KeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
         ["↹", 0, 1, 2, 3, 4, "", null, 5, 6, 7, 8, 9, "=", "⌫"],
-        ["Caps", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
+        ["CAPS", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
         ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
         [null, "Ctrl", "Cmd", "⌦", "Alt", 0, "", "⍽", "AltGr", "Ctrl", null, "←", "↓", "→"],
     ],
@@ -108,10 +109,7 @@ export const eb65LayoutModel: RowBasedLayoutModel = {
 
     getSpecificMapping: (_: FlexMapping) => undefined,
 
-    keyColorClass(label: string, row: KeyboardRows, col: number) {
-        if (label == "⏎" || label == "Esc") return KEY_COLOR.HIGHLIGHT;
-        return defaultKeyColor(label, row, col);
-    },
+    keyColorClass: eb65KeyColorClass,
 }
 
 export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
@@ -119,14 +117,14 @@ export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
     thirtyKeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "\\", "Fn"],
         ["↹", 0, 1, 2, 3, 4, "-", null, 5, 6, 7, 8, 9, "'", "⌫"],
-        ["Caps", 0, 1, 2, 3, 4, "⇞", "⇟", 5, 6, 7, 8, 9, "⏎"],
+        ["CAPS", 0, 1, 2, 3, 4, "⇞", "⇟", 5, 6, 7, 8, 9, "⏎"],
         ["⇤", "⇧", 0, 1, 2, 3, 4, "=", 9, 5, 6, 7, 8, "⇧", "↑", "⇥"],
         [null, "Ctrl", "Cmd", "⌦", "Alt", "⍽", "⍽", "AltGr", "Ctrl", null, "←", "↓", "→"],
     ],
     thumb30KeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "", "⇤"],
         ["↹", 0, 1, 2, 3, 4, "=", null, 5, 6, 7, 8, 9, "'", "⌫"],
-        ["Caps", 0, 1, 2, 3, 4, "⇞", "⇟", 5, 6, 7, 8, 9, "⏎"],
+        ["CAPS", 0, 1, 2, 3, 4, "⇞", "⇟", 5, 6, 7, 8, 9, "⏎"],
         ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", "⇥"],
         [null, "Ctrl", "Cmd", "⌦", "Alt", 0, "⍽", "AltGr", "Ctrl", null, "←", "↓", "→"],
     ],

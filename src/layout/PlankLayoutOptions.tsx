@@ -1,4 +1,4 @@
-import {EB65_MidShift_Variant, LayoutOptions, PlankVariant} from "../app-model.ts";
+import {EB65_LowShift_Variant, EB65_MidShift_Variant, LayoutOptions, PlankVariant} from "../app-model.ts";
 import {getPlankVariant} from "./layout-functions.ts";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {ComponentChildren} from "preact";
@@ -11,12 +11,20 @@ export interface PlankLayoutOptionsProps {
 }
 
 export function PlankLayoutOptions({variant, setVariant, options, setOption}: PlankLayoutOptionsProps) {
-    function midshiftEnterVariant(type: EB65_MidShift_Variant, label: string) {
+    function midshiftVariant(type: EB65_MidShift_Variant, label: string) {
         return <CheckboxWithLabel label={label}
                                   type="radio"
                                   groupName="midshift_variant"
                                   checked={options.eb65MidshiftVariant == type}
                                   onChange={(checked) => checked && setOption({eb65MidshiftVariant: type})}/>
+    }
+
+    function lowshiftVariant(type: EB65_LowShift_Variant, label: string) {
+        return <CheckboxWithLabel label={label}
+                                  type="radio"
+                                  groupName="lowshift_variant"
+                                  checked={options.eb65LowshiftVariant == type}
+                                  onChange={(checked) => checked && setOption({eb65LowshiftVariant: type})}/>
     }
 
     return <div class="plank-layout-options-container">
@@ -27,15 +35,15 @@ export function PlankLayoutOptions({variant, setVariant, options, setOption}: Pl
                                onChange={(arrows: boolean) => setOption({ep60Arrows: arrows})}/>
         </PlankVariantButton>
         <PlankVariantButton variant={PlankVariant.EP65} currentVariant={variant} setVariant={setVariant}>
-            <CheckboxWithLabel label="Big Enter and Space keys"
-                               checked={options.eb65BigEnter}
-                               onChange={(big) => setOption({eb65BigEnter: big})}/>
+            {lowshiftVariant(EB65_LowShift_Variant.WIDE_HANDS, "Wide Hands")}
+            {lowshiftVariant(EB65_LowShift_Variant.LESS_GAPS, "Less Gaps")}
+            {lowshiftVariant(EB65_LowShift_Variant.BIG_ENTER, "Big Enter and Space keys")}
         </PlankVariantButton>
         <PlankVariantButton variant={PlankVariant.EP65_MID_SHIFT} currentVariant={variant} setVariant={setVariant}>
-            {midshiftEnterVariant(EB65_MidShift_Variant.UPPER_ENTER, "Upper Enter key")}
-            {midshiftEnterVariant(EB65_MidShift_Variant.VERTICAL_ENTER, "Vertical Enter key")}
-            {midshiftEnterVariant(EB65_MidShift_Variant.MID_MID, "Home-row Enter key (recommended)")}
-         </PlankVariantButton>
+            {midshiftVariant(EB65_MidShift_Variant.UPPER_ENTER, "Upper Enter key")}
+            {midshiftVariant(EB65_MidShift_Variant.VERTICAL_ENTER, "Vertical Enter key")}
+            {midshiftVariant(EB65_MidShift_Variant.MID_MID, "Home-row Enter key (recommended)")}
+        </PlankVariantButton>
     </div>
 }
 
