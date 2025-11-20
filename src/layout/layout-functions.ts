@@ -31,7 +31,11 @@ import {ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./ergoPlank60La
 import {eb65BigEnterLayoutModel, eb65LowShiftLayoutModel} from "./eb65LowShiftLayoutModel.ts";
 import {isCommandKey} from "../mapping/mapping-functions.ts";
 import {katanaLayoutModel} from "./katanaLayoutModel.ts";
-import {eb65MidshiftLayoutModel, eb65VerticalEnterLayoutModel} from "./eb65MidshiftLayoutModel.ts";
+import {
+    eb65MidshiftLayoutModel,
+    eb65MidshiftRightRetLayoutModel,
+    eb65VerticalEnterLayoutModel
+} from "./eb65MidshiftLayoutModel.ts";
 import {eb65AsymLayoutModel} from "./eb65AysmLayoutModel.ts";
 import {eb65MidshiftMaxWideLayoutModel} from "./eb65MidshiftMaxWideLayoutModel.ts";
 
@@ -207,6 +211,8 @@ export function getPlankVariant({
             switch (eb65MidshiftVariant) {
                 default:
                     return eb65MidshiftLayoutModel;
+                case EB65_MidShift_Variant.RIGHT_ENTER:
+                    return eb65MidshiftRightRetLayoutModel;
                 case EB65_MidShift_Variant.WIDE_HANDS:
                     return eb65MidshiftMaxWideLayoutModel;
                 case  EB65_MidShift_Variant.VERTICAL_ENTER:

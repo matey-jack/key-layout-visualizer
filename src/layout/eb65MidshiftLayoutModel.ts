@@ -1,8 +1,88 @@
 import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 import {copyAndModifyKeymap} from "./layout-functions.ts";
 import {eb65KeyColorClass} from "./eb65AysmLayoutModel.ts";
+import {eb65LowShiftLayoutModel} from "./eb65LowShiftLayoutModel.ts";
 
 export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
+    ...eb65LowShiftLayoutModel,
+    name: "Ergoboard 65 MidShift Wide",
+
+    leftHomeIndex: 4,
+    rightHomeIndex: 10,
+    staggerOffsets: [0.5, 0.25, 0, -0.25],
+
+    // The keymap has a bunch of small differences to the low-shift; enough to make copy-paste-adapt easier than anything more clever.
+    thirtyKeyMapping: [
+        // left-side numbers move to center to make their relative position (from hand home) symmetric to the right side.
+        ["Esc", "`~", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
+        ["↹", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "⌫"],
+        ["⇧", 0, 1, 2, 3, 4, "-", "", "'", 5, 6, 7, 8, 9, "⇧"],
+        ["Ctrl", 0, 1, 2, 3, 4, "=", null, "\\", 9, 5, 6, 7, 8, null, "↑", null],
+        [null, "Cmd", "Fn", "", "⌦", "Alt", "⏎", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
+    ],
+
+    thumb30KeyMapping: [
+        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0"],
+        ["↹", 0, 1, 2, 3, 4, "'", null, 5, 6, 7, 8, 9, "⌫", "⏎", "⇞"],
+        ["⇧", 0, 1, 2, 3, 4, "=", "\\", 5, 6, 7, 8, 9, "⇧", "⇟"],
+        ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", "/", 5, 6, 7, 8, null, "↑", null],
+        [null, "Cmd", "Fn", "⌦", "Alt", 0, "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"],
+    ],
+    keyWidth: (row: KeyboardRows, col: number)=> {
+        switch (row) {
+            case KeyboardRows.Bottom:
+                // The Bottom Row needs customizing to center the space bars under the wider hand position.
+                // arrow keys, always easy:
+                if (col > 11) return 1;
+/*
+    Center between hands is exactly the center of the keyboard, leaving 8u on each side,
+    of which 2.5u are between the inner edges of the index finger home keys.
+    Half of the outer space key (0.75u) should fall inside those 2.5u, leaving 1.75, which is exactly a space bar,
+    so we don't need any central key between space bars.
+    Comitted on the left side are 1.75 space plus 0.5 left indent; total: 2.25u, unassigned: 5.75.
+    Right side has 1.75 space plus 3×1u arrows; total 4.75u, unassigned 3.25.
+    Two 1.25u modifiers on the right are 2.5u, leaving 0.75u for gaps which we'll split evenly.
+    On the left, we could do 3×1.25 + 2×1u to fill the space exactly.
+    Alternative 4×1.25 = 5u with three gaps of 0.25u.
+ */
+                switch (col) {
+                    case 0:
+                        return 0.5;
+                    case 3:
+                    case 4:
+                        return 1;
+                    case 6:
+                    case 7:
+                        return 1.75;
+                    case 9:
+                    case 11:
+                        return 0.75 / 2;
+                    default:
+                        return 1.25;
+                }
+
+            case KeyboardRows.Lower:
+                return keyWidthMidshiftLower(col);
+        }
+        return eb65LowShiftLayoutModel.keyWidth(row, col);
+    }
+}
+
+function keyWidthMidshiftLower(col: number): number {
+    switch (col) {
+        case 0:
+            return 1.25;
+        case 7:
+            return 0.5
+        case 14:
+            return 0.25
+        default:
+            return 1;
+    }
+}
+
+
+export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 MidShift",
     description: `"The most ergonomic key layout that fits into a standard "65%" keyboard case
     and has some gaps around the arrow cluster so your fingers can find it without looking."
@@ -11,8 +91,6 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
     Moving the Shift keys finally allows to stagger even the lower letter row by the same amount as the others
     without having to swap around keymappings there.`,
 
-    // Key sizes are mostly the same as EP65 Midsize Enter, except for 2u Backspace up top.
-    // But the lower row has a regular 0.25 stagger.
     thirtyKeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
         ["↹", 0, 1, 2, 3, 4, "\\", null, 5, 6, 7, 8, 9, "'", "⌫"],
@@ -80,7 +158,7 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
                 }
             case  KeyboardRows.Lower:
                 switch (col) {
-                    case 0: // gaps
+                    case 0:
                         return 1.25;
                     case 7:
                         return 0.5
