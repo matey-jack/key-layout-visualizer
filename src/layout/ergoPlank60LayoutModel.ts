@@ -1,10 +1,6 @@
 import {FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
 import {defaultKeyColor} from "./layout-functions.ts";
 
-export function getEP60LayoutModel(includeArrows: boolean) {
-    return includeArrows ? ep60WithArrowsLayoutModel : ergoPlank60LayoutModel;
-}
-
 export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
     name: "ErgoPlank 60",
     description: `"The most ergonomic key layout that fits into a standard "60%" keyboard case."
@@ -116,25 +112,44 @@ export const ep60WithArrowsLayoutModel: RowBasedLayoutModel = {
     ),
     rowStart: (row: KeyboardRows) => row == KeyboardRows.Lower ? 0.25 : 0,
     keyWidth: (row: KeyboardRows, col: number): number => {
+        /*
+7.5u on each side, thereof 1.5 space and 0.5u for the half of the central key, leaves 5.5u per side.
+Left: 0.25 gap, leaving 5.25, which is 4×1.25 plus 0.25 to split in three small gaps.
+Right: 4u for arrows leaves 1.5u, which is one 1.25u key and a 0.25u gap.
+Much simpler to look at is the old solution where we omit the micro-gaps and increase the central key by 0.25u.
+But this makes the left outer space key harder to hit, because it'd be too far under the palm.
+         */
         if (row == KeyboardRows.Bottom) {
             if (col > 9) {
                 return 1;
             }
+            if (col > 0 && col < 4) {
+                // no small gap between outer space and space!
+                return 1.25 + 0.25/3;
+            }
             switch (col) {
                 case 0:
                 case 9:
-                    // gaps
                     return 0.25;
                 case 5:
                 case 7:
-                    // "space bars"
                     return 1.5;
+                case 6:
+                    return 1;
                 default:
                     return 1.25;
             }
         }
         return ergoPlank60LayoutModel.keyWidth(row, col);
     },
+    keyCapWidth: (row: KeyboardRows, col: number): number => {
+        if (row == KeyboardRows.Bottom) {
+            if (col > 0 && col < 4) {
+                return 1.25;
+            }
+        }
+        return ep60WithArrowsLayoutModel.keyWidth(row, col);
+    }
 }
 
 function replaceLast<T>(list: T[], last: T) {
