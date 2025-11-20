@@ -1,27 +1,31 @@
 type CheckboxWithLabelProps = {
+    type?: "checkbox" | "radio";
     label: string;
-    checked: boolean;
+    // for radio buttons: all within an exclusivity group need the same 'name'.
+    groupName?: string;
     disabled?: boolean;
+    checked: boolean;
     onChange?: (checked: boolean) => void;
 };
 
-export function CheckboxWithLabel(props: CheckboxWithLabelProps) {
+export function CheckboxWithLabel({type = "checkbox", groupName, checked, disabled, label, onChange}: CheckboxWithLabelProps) {
     const handleChange = (e: Event) => {
         const target = e.target as HTMLInputElement;
-        props.onChange?.(target.checked);
+        onChange?.(target.checked);
     };
 
     return (
         <label style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}
-               class={props.disabled ? "disabled" : ""}
+               class={disabled ? "disabled" : ""}
         >
             <input
-                type="checkbox"
-                checked={props.checked}
+                type={type}
+                name={groupName}
+                checked={checked}
                 onChange={handleChange}
-                disabled={props.disabled ?? false}
+                disabled={disabled ?? false}
             />
-            {props.label}
+            {label}
         </label>
     );
 }

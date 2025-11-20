@@ -12,7 +12,7 @@ import {
     RowBasedLayoutModel
 } from "../base-model.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
-import {HarmonicVariant, LayoutOptions, PlankVariant} from "../app-model.ts";
+import {EB65_MidShift_Variant, HarmonicVariant, LayoutOptions, PlankVariant} from "../app-model.ts";
 import {getAnsiVariant} from "./ansiLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
@@ -25,7 +25,11 @@ import {ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./ergoPlank60La
 import {eb65BigEnterLayoutModel, eb65LayoutModel} from "./eb65LayoutModel.ts";
 import {isCommandKey} from "../mapping/mapping-functions.ts";
 import {katanaLayoutModel} from "./katanaLayoutModel.ts";
-import {eb65MidshiftLayoutModel, eb65VerticalEnterLayoutModel} from "./eb65MidshiftLayoutModel.ts";
+import {
+    eb65MidShiftEnterLayoutModel,
+    eb65MidshiftLayoutModel,
+    eb65VerticalEnterLayoutModel
+} from "./eb65MidshiftLayoutModel.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
     if (row != KeyboardRows.Home) return false;
@@ -173,7 +177,7 @@ export function getHarmonicVariant(variant: HarmonicVariant) {
     }
 }
 
-export function getPlankVariant({plankVariant, ep60Arrows, eb65BigEnter, eb65VerticalEnter}: LayoutOptions) {
+export function getPlankVariant({plankVariant, ep60Arrows, eb65BigEnter, eb65MidshiftVariant}: LayoutOptions) {
     switch (plankVariant) {
         case PlankVariant.KATANA_60:
             return katanaLayoutModel;
@@ -182,7 +186,15 @@ export function getPlankVariant({plankVariant, ep60Arrows, eb65BigEnter, eb65Ver
         case PlankVariant.EP65:
             return eb65BigEnter ? eb65BigEnterLayoutModel : eb65LayoutModel;
         case PlankVariant.EP65_MID_SHIFT:
-            return eb65VerticalEnter ? eb65VerticalEnterLayoutModel : eb65MidshiftLayoutModel;
+            switch (eb65MidshiftVariant) {
+                case EB65_MidShift_Variant.UPPER_ENTER:
+                    return eb65MidshiftLayoutModel;
+                case  EB65_MidShift_Variant.VERTICAL_ENTER:
+                    return eb65VerticalEnterLayoutModel;
+                default:
+                    // UI calls this method without variant parameters, so we need a default.
+                    return eb65MidShiftEnterLayoutModel;
+            }
     }
 }
 

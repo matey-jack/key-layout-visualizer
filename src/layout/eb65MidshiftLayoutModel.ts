@@ -1,6 +1,5 @@
 import {FlexMapping, KEY_COLOR, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
-import {eb65BigEnterLayoutModel} from "./eb65LayoutModel.ts";
 
 export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 MidShift",
@@ -18,7 +17,7 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
         ["↹", 0, 1, 2, 3, 4, "'", null, 5, 6, 7, 8, 9, "⏎", "⇞"],
         ["⇧", 0, 1, 2, 3, 4, "=", "-", 5, 6, 7, 8, 9, "⇧", "⇟"],
         ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, null, "↑", null],
-        [null, "Cmd", "", "⌦", "Alt", "⍽", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
+        [null, "Cmd", "Fn", "⌦", "Alt", "⍽", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
     ],
 
     thumb30KeyMapping: [
@@ -26,7 +25,7 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
         ["↹", 0, 1, 2, 3, 4, "'", null, 5, 6, 7, 8, 9, "⏎", "⇞"],
         ["⇧", 0, 1, 2, 3, 4, "=", "\\", 5, 6, 7, 8, 9, "⇧", "⇟"],
         ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, "/", null, "↑", null],
-        [null, "Cmd", "", "⌦", "Alt", 0, "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"],
+        [null, "Cmd", "Fn", "⌦", "Alt", 0, "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"],
     ],
 
     // todo
@@ -60,7 +59,7 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
         switch (row) {
             case KeyboardRows.Number:
                 // Backspace
-                return col == numCols -1 ? 2 : 1;
+                return col == numCols - 1 ? 2 : 1;
             case KeyboardRows.Upper:
                 switch (col) {
                     // the gap
@@ -96,7 +95,7 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
                 }
             case KeyboardRows.Bottom:
                 // arrow keys
-                if (col>10) return 1;
+                if (col > 10) return 1;
                 switch (col) {
                     // indent
                     case 0:
@@ -136,7 +135,6 @@ export const eb65VerticalEnterLayoutModel: RowBasedLayoutModel = {
         switch (row) {
             case KeyboardRows.Number:
                 return 1;
-            case KeyboardRows.Upper:
         }
         return eb65MidshiftLayoutModel.keyWidth(row, col);
     },
@@ -144,15 +142,72 @@ export const eb65VerticalEnterLayoutModel: RowBasedLayoutModel = {
         if (row == KeyboardRows.Upper && col == 14) return 2;
         return 1;
     },
-    thirtyKeyMapping: copyAndModifyKeymap(eb65MidshiftLayoutModel.thirtyKeyMapping!!, moveEnter),
-    thumb30KeyMapping: copyAndModifyKeymap(eb65MidshiftLayoutModel.thumb30KeyMapping!!, moveEnter),
+    thirtyKeyMapping: copyAndModifyKeymap(eb65MidshiftLayoutModel.thirtyKeyMapping!!, moveEnterToVertical),
+    thumb30KeyMapping: copyAndModifyKeymap(eb65MidshiftLayoutModel.thumb30KeyMapping!!, moveEnterToVertical),
 }
 
-function moveEnter(mapping: LayoutMapping): LayoutMapping {
+function moveEnterToVertical(mapping: LayoutMapping): LayoutMapping {
     mapping[KeyboardRows.Number][14] = "⇞";
     mapping[KeyboardRows.Number][15] = "⇟";
     mapping[KeyboardRows.Upper][13] = "⌫";
     mapping[KeyboardRows.Upper][14] = "⏎";
     mapping[KeyboardRows.Home][14] = null;
+    return mapping;
+}
+
+
+export const eb65MidShiftEnterLayoutModel: RowBasedLayoutModel = {
+    ...eb65MidshiftLayoutModel,
+    keyWidth: (row: KeyboardRows, col: number) => {
+        switch (row) {
+            case KeyboardRows.Number:
+                return 1; // Uniform key size; PageUp/Down (or Home/End) instead of 2u Backspace.
+            case KeyboardRows.Upper:
+                switch (col) {
+                    case 13: // a character key
+                        return 1;
+                    case 14: // Backspace
+                        return 1.75
+                }
+                break;
+            case KeyboardRows.Home:
+                switch (col) {
+                    case 13: // Shift
+                        return 1;
+                    case 14: // Enter
+                        return 1.5;
+                }
+                break;
+            // case KeyboardRows.Bottom:
+            //     switch (col) {
+            //         case 5:
+            //         case 6: // space bars, same as largest other key
+            //             return 1.75;
+            //         case 8:
+            //         case 10: // compensate with larger gaps
+            //             return 0.75;
+            //             // TODO: half of that should go to the left side 🤔
+            //     }
+        }
+        return eb65MidshiftLayoutModel.keyWidth(row, col);
+    },
+    // keyCapWidth: (row: KeyboardRows, col: number) => {
+    //     switch (row) {
+    //         case KeyboardRows.Upper:
+    //             if (col == 14) return 1.25;
+    //     }
+    //     return eb65MidShiftEnterLayoutModel.keyWidth(row, col);
+    // },
+    thirtyKeyMapping: copyAndModifyKeymap(eb65MidshiftLayoutModel.thirtyKeyMapping!!, moveEnterToMiddle),
+    thumb30KeyMapping: copyAndModifyKeymap(eb65MidshiftLayoutModel.thumb30KeyMapping!!, moveEnterToMiddle),
+}
+
+function moveEnterToMiddle(mapping: LayoutMapping): LayoutMapping {
+    mapping[KeyboardRows.Number][14] = "⇞";
+    mapping[KeyboardRows.Number][15] = "⇟";
+    mapping[KeyboardRows.Upper][13] = "'";
+    mapping[KeyboardRows.Upper][14] = "⌫";
+    mapping[KeyboardRows.Home][14] = "⏎";
+    // mapping[KeyboardRows.Bottom][8] = "Fn";
     return mapping;
 }

@@ -36,6 +36,12 @@ export enum PlankVariant {
     EP65_MID_SHIFT, // placing Shift in the home row allows for an "angle-mod" and a little gap towards the arrow keys.
 }
 
+export enum EB65_MidShift_Variant {
+    UPPER_ENTER,
+    VERTICAL_ENTER,
+    MID_MID,
+}
+
 export interface LayoutOptions {
     type: LayoutType;
     split: boolean;
@@ -47,7 +53,7 @@ export interface LayoutOptions {
     plankVariant: PlankVariant;
     ep60Arrows: boolean;
     eb65BigEnter: boolean;
-    eb65VerticalEnter: boolean;
+    eb65MidshiftVariant: EB65_MidShift_Variant;
 }
 
 export interface AppState {
