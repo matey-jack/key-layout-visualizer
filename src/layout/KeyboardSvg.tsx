@@ -36,6 +36,7 @@ interface KeyProps {
     // There will be no ribbon element, when there is no ribbon class.
     ribbonClass?: string,
     frequencyCircleRadius?: number,
+    showHomeMarker: boolean,
 }
 
 const keyUnit = 100;
@@ -43,7 +44,7 @@ const keyPadding = 5;
 const keyRibbonPaddingH = 17;
 const keyRibbonPaddingV = 1;
 
-export function Key({label, row, col, width, height, backgroundClass, ribbonClass, frequencyCircleRadius}: KeyProps) {
+export function Key({label, row, col, width, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker}: KeyProps) {
     const x = col * keyUnit + keyPadding;
     const y = row * keyUnit + keyPadding;
     const labelClass =
@@ -70,6 +71,8 @@ export function Key({label, row, col, width, height, backgroundClass, ribbonClas
         />
     const frequencyCircle = frequencyCircleRadius &&
         <circle cx={x + 70} cy={y + 30} r={frequencyCircleRadius} className="frequency-circle"/>;
+    const homeMarker = showHomeMarker &&
+        <circle cx={x + keyUnit / 2} cy={y + keyUnit / 2} r={12} className="home-marker-circle"/>;
     return <g>
         <rect
             className={"key-outline " + backgroundClass}
@@ -78,7 +81,7 @@ export function Key({label, row, col, width, height, backgroundClass, ribbonClas
             width={keyUnit * width - 2 * keyPadding}
             height={keyUnit * height - 2 * keyPadding}
         />
-        {keyRibbon || frequencyCircle}
+        {keyRibbon || frequencyCircle || homeMarker}
         {text}
     </g>
 }
@@ -184,6 +187,7 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
             width={keyCapWidth}
             height={keyCapHeight}
             frequencyCircleRadius={frequencyCircleRadius}
+            showHomeMarker={vizType == VisualizationType.LayoutKeySize && isHomeKey(layoutModel, row, col)}
             key={row + ',' + col}
         />
     })

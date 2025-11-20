@@ -191,6 +191,10 @@ label.disabled {
     fill: #f3eaac;
 }
 
+.home-marker-circle {
+    fill: #9c9c9c;
+}
+
 .bigram-line {
     /* Make all ranks not mentioned below be invisible. */
     stroke-width: 0;
