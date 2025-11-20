@@ -31,21 +31,22 @@ export enum PlankVariant {
        Main reason for this is to arrange the arrow keys in inverted T shape!
     */
     // vv the "big Enter" variant only applies to this one.
-    EP65, // 16 columns (65%) to make arrow cluster fit in bottom right
+    EP65_LOW_SHIFT, // 16 columns (65%) to make arrow cluster fit in bottom right
 
     EP65_MID_SHIFT, // placing Shift in the home row allows for an "angle-mod" and a little gap towards the arrow keys.
-}
-
-export enum EB65_MidShift_Variant {
-    UPPER_ENTER,
-    VERTICAL_ENTER,
-    MID_MID,
 }
 
 export enum EB65_LowShift_Variant {
     WIDE_HANDS,
     LESS_GAPS,
     BIG_ENTER,
+}
+
+export enum EB65_MidShift_Variant {
+    WIDE_HANDS, // Same key sizes as low shift "wide hands", but keymap changed for wider home position.
+    LESS_GAPS, // Same key sizes as low shift "less gaps", but keymap changed for wider home position.
+    RIGHT_ENTER, // Similar key sizes  as low shift "less gaps", same hand position, lower row 0.25 stagger.
+    VERTICAL_ENTER, // Like "right enter", only Enter, Backspace, right Shift change.
 }
 
 export interface LayoutOptions {

@@ -68,13 +68,15 @@ bugs fixed:
 ======================== TODO ===============================
 
 refactorings:
- - "ANSI wide" is the only layout option which influencing how keymap metrics are calculated and which keymaps apply.
-   But all the Harmonic and Ergo(Plank|Board) options are filtered through the setLayout mechanism. Is that what we want?
+ - Refactor the Ergoboard "Mid Shift" variants to be basically "wide mods" of the "Low Shift" variants "Wide Hands" and "Less Gaps". 
 
-missing variants:
- - EB-mid-max: midshift and using the '/' spot for the up arrow, like on my good old ErgoDox!?
+ - 1.75u space key when there's no larger key anywhere else
+
+- "ANSI wide" is the only layout option which influencing how keymap metrics are calculated and which keymaps apply.
+  But all the Harmonic and Ergo(Plank|Board) options are filtered through the setLayout mechanism. Is that what we want?
 
 missing core features:
+- home key marker in the key size viz
 - refactor URL generation/parsing to be type-specific and/or compress smaller options into a single parameter value.
 - Fix Harmonic / Katana layout options display; add sub-options for the variants below the variant. 
   (Using a variant-component which includes the button and the options, which are only visible when the variant is selected.)

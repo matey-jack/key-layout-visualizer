@@ -2,11 +2,19 @@
 // This file should not have any imports from the app.
 
 export enum LayoutType {
-    ANSI,
-    Harmonic,
-    ErgoPlank,
-    Ortho,
+    ANSI,      // irregular stagger
+    Harmonic,  // regular 0.5 stagger
+    ErgoPlank, // regular 0.25 stagger
+    Ortho,     // zero stagger
 }
+
+// Note this depends on enum order, this is why I put it right under the enum!
+export const LayoutTypeNames = [
+    "ANSI / TypeWriter",
+    "Harmonic family",
+    "ErgoPlank / Katana",
+    "Split Ortho",
+];
 
 // Enum values need to be fixed as 0..4 because we have literal arrays indexed with this.
 export enum KeyboardRows {

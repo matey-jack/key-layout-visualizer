@@ -28,15 +28,12 @@ import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts"
 import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 import {harmonic14WideLayoutModel} from "./harmonic14WideLayoutModel.ts";
 import {ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
-import {eb65BigEnterLayoutModel, eb65LayoutModel} from "./eb65LayoutModel.ts";
+import {eb65BigEnterLayoutModel, eb65LowShiftLayoutModel} from "./eb65LowShiftLayoutModel.ts";
 import {isCommandKey} from "../mapping/mapping-functions.ts";
 import {katanaLayoutModel} from "./katanaLayoutModel.ts";
-import {
-    eb65MidShiftEnterLayoutModel,
-    eb65MidshiftLayoutModel,
-    eb65VerticalEnterLayoutModel
-} from "./eb65MidshiftLayoutModel.ts";
+import {eb65MidshiftLayoutModel, eb65VerticalEnterLayoutModel} from "./eb65MidshiftLayoutModel.ts";
 import {eb65AsymLayoutModel} from "./eb65AysmLayoutModel.ts";
+import {eb65MidshiftMaxWideLayoutModel} from "./eb65MidshiftMaxWideLayoutModel.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
     if (row != KeyboardRows.Home) return false;
@@ -184,28 +181,34 @@ export function getHarmonicVariant(variant: HarmonicVariant) {
     }
 }
 
-export function getPlankVariant({plankVariant, ep60Arrows, eb65LowshiftVariant, eb65MidshiftVariant}: LayoutOptions) {
+export function getPlankVariant({
+                                    plankVariant,
+                                    ep60Arrows,
+                                    eb65LowshiftVariant,
+                                    eb65MidshiftVariant
+                                }: Partial<LayoutOptions>): RowBasedLayoutModel {
     switch (plankVariant) {
         case PlankVariant.KATANA_60:
             return katanaLayoutModel;
         case PlankVariant.EP60:
+        default:
             return ep60Arrows ? ep60WithArrowsLayoutModel : ergoPlank60LayoutModel;
-        case PlankVariant.EP65:
+        case PlankVariant.EP65_LOW_SHIFT:
             // UI calls this method without variant parameters, so we need a default.
-             switch (eb65LowshiftVariant) {
-                 default:
-                     return eb65AsymLayoutModel;
-                 case EB65_LowShift_Variant.LESS_GAPS:
-                     return eb65LayoutModel;
-                 case EB65_LowShift_Variant.BIG_ENTER:
-                     return eb65BigEnterLayoutModel;
+            switch (eb65LowshiftVariant) {
+                default:
+                    return eb65AsymLayoutModel;
+                case EB65_LowShift_Variant.LESS_GAPS:
+                    return eb65LowShiftLayoutModel;
+                case EB65_LowShift_Variant.BIG_ENTER:
+                    return eb65BigEnterLayoutModel;
             }
         case PlankVariant.EP65_MID_SHIFT:
             switch (eb65MidshiftVariant) {
                 default:
-                    return eb65MidShiftEnterLayoutModel;
-                case EB65_MidShift_Variant.UPPER_ENTER:
                     return eb65MidshiftLayoutModel;
+                case EB65_MidShift_Variant.WIDE_HANDS:
+                    return eb65MidshiftMaxWideLayoutModel;
                 case  EB65_MidShift_Variant.VERTICAL_ENTER:
                     return eb65VerticalEnterLayoutModel;
             }

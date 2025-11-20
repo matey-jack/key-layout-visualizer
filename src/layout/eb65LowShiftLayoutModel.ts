@@ -1,9 +1,9 @@
-import {FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
-import {defaultKeyColor} from "./layout-functions.ts";
+import {FlexMapping, KEY_COLOR, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
 import {eb65MidshiftLayoutModel} from "./eb65MidshiftLayoutModel.ts";
 import {eb65KeyColorClass} from "./eb65AysmLayoutModel.ts";
 
-export const eb65LayoutModel: RowBasedLayoutModel = {
+export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65",
     description: `"The most ergonomic key layout that fits into a standard "65%" keyboard case 
     and has a traditional inverted-T arrow key cluster."
@@ -19,18 +19,18 @@ export const eb65LayoutModel: RowBasedLayoutModel = {
     // row lengths: 16, 15, 15 (with 0.5u gap), 16, 14
     thirtyKeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, "=", null, 5, 6, 7, 8, 9, "-", "⌫"],
-        ["CAPS", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
+        ["↹", 0, 1, 2, 3, 4, "=", null, 5, 6, 7, 8, 9, "-", "⏎"],
+        ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⌫"],
         ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "↑", null],
-        [null, "Ctrl", "Cmd", "⌦", "Alt", "⍽", "", "⍽", "AltGr", "Ctrl", null, "←", "↓", "→"],
+        [null, "Ctrl", "Cmd", "CAPS", "Alt", "⍽", "", "⍽", "AltGr", "Ctrl", null, "←", "↓", "→"],
     ],
 
     thumb30KeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, "", null, 5, 6, 7, 8, 9, "=", "⌫"],
-        ["CAPS", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
+        ["↹", 0, 1, 2, 3, 4, "", null, 5, 6, 7, 8, 9, "=", "⏎"],
+        ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⌫"],
         ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
-        [null, "Ctrl", "Cmd", "⌦", "Alt", 0, "", "⍽", "AltGr", "Ctrl", null, "←", "↓", "→"],
+        [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "", "⍽", "AltGr", "Ctrl", null, "←", "↓", "→"],
     ],
 
     // todo
@@ -60,7 +60,7 @@ export const eb65LayoutModel: RowBasedLayoutModel = {
     rowStart: (_row: KeyboardRows) => 0,
 
     keyWidth: (row: KeyboardRows, col: number): number => {
-        const lastCol = eb65LayoutModel.thirtyKeyMapping![row].length - 1;
+        const lastCol = eb65LowShiftLayoutModel.thirtyKeyMapping![row].length - 1;
         switch (row) {
             case KeyboardRows.Number:
                 return 1;
@@ -113,21 +113,7 @@ export const eb65LayoutModel: RowBasedLayoutModel = {
 }
 
 export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
-    ...eb65LayoutModel,
-    thirtyKeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "\\", "Fn"],
-        ["↹", 0, 1, 2, 3, 4, "-", null, 5, 6, 7, 8, 9, "'", "⌫"],
-        ["CAPS", 0, 1, 2, 3, 4, "⇞", "⇟", 5, 6, 7, 8, 9, "⏎"],
-        ["⇤", "⇧", 0, 1, 2, 3, 4, "=", 9, 5, 6, 7, 8, "⇧", "↑", "⇥"],
-        [null, "Ctrl", "Cmd", "⌦", "Alt", "⍽", "⍽", "AltGr", "Ctrl", null, "←", "↓", "→"],
-    ],
-    thumb30KeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "", "⇤"],
-        ["↹", 0, 1, 2, 3, 4, "=", null, 5, 6, 7, 8, 9, "'", "⌫"],
-        ["CAPS", 0, 1, 2, 3, 4, "⇞", "⇟", 5, 6, 7, 8, 9, "⏎"],
-        ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", "⇥"],
-        [null, "Ctrl", "Cmd", "⌦", "Alt", 0, "⍽", "AltGr", "Ctrl", null, "←", "↓", "→"],
-    ],
+    ...eb65LowShiftLayoutModel,
     keyWidth: (row: KeyboardRows, col: number): number => {
         const lastCol = eb65BigEnterLayoutModel.thirtyKeyMapping![row].length - 1;
         switch (row) {
@@ -140,6 +126,17 @@ export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
             case KeyboardRows.Bottom:
                 return [0.25, 1.25, 1.25, 1.25, 1.25, 2.5, 2.5, 1.25, 1.25, 0.25, 1, 1, 1][col];
         }
-        return eb65LayoutModel.keyWidth(row, col);
+        return eb65LowShiftLayoutModel.keyWidth(row, col);
     },
+    thirtyKeyMapping: copyAndModifyKeymap(eb65LowShiftLayoutModel.thirtyKeyMapping!!, moveKeys),
+    thumb30KeyMapping: copyAndModifyKeymap(eb65LowShiftLayoutModel.thumb30KeyMapping!!, moveKeys),
+}
+
+function moveKeys(mapping: LayoutMapping): LayoutMapping {
+    mapping[KeyboardRows.Number][7] = "=";
+    mapping[KeyboardRows.Upper][6] = "-";
+    mapping[KeyboardRows.Upper].splice(-2, 2, "'", "⌫");
+    mapping[KeyboardRows.Home].splice(-2, 2, "⏎");
+    mapping[KeyboardRows.Bottom].splice(6, 1);
+    return mapping;
 }

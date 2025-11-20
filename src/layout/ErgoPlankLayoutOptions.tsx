@@ -10,7 +10,7 @@ export interface PlankLayoutOptionsProps {
     setOption: (opts: Partial<LayoutOptions>) => void;
 }
 
-export function PlankLayoutOptions({variant, setVariant, options, setOption}: PlankLayoutOptionsProps) {
+export function ErgoPlankLayoutOptions({variant, setVariant, options, setOption}: PlankLayoutOptionsProps) {
     function midshiftVariant(type: EB65_MidShift_Variant, label: string) {
         return <CheckboxWithLabel label={label}
                                   type="radio"
@@ -34,15 +34,16 @@ export function PlankLayoutOptions({variant, setVariant, options, setOption}: Pl
                                checked={options.ep60Arrows}
                                onChange={(arrows: boolean) => setOption({ep60Arrows: arrows})}/>
         </PlankVariantButton>
-        <PlankVariantButton variant={PlankVariant.EP65} currentVariant={variant} setVariant={setVariant}>
+        <PlankVariantButton variant={PlankVariant.EP65_LOW_SHIFT} currentVariant={variant} setVariant={setVariant} name="Ergoboard 65 Lowshift">
             {lowshiftVariant(EB65_LowShift_Variant.WIDE_HANDS, "Wide Hands")}
             {lowshiftVariant(EB65_LowShift_Variant.LESS_GAPS, "Less Gaps")}
-            {lowshiftVariant(EB65_LowShift_Variant.BIG_ENTER, "Big Enter and Space keys")}
+            {lowshiftVariant(EB65_LowShift_Variant.BIG_ENTER, "Big Enter & Space")}
         </PlankVariantButton>
-        <PlankVariantButton variant={PlankVariant.EP65_MID_SHIFT} currentVariant={variant} setVariant={setVariant}>
-            {midshiftVariant(EB65_MidShift_Variant.UPPER_ENTER, "Upper Enter key")}
+        <PlankVariantButton variant={PlankVariant.EP65_MID_SHIFT} currentVariant={variant} setVariant={setVariant} name="Ergoboard 65 Midshift">
+            {midshiftVariant(EB65_MidShift_Variant.WIDE_HANDS, "Extra Wide Hands")}
+            {midshiftVariant(EB65_MidShift_Variant.LESS_GAPS, "Wide Hands")}
+            {midshiftVariant(EB65_MidShift_Variant.RIGHT_ENTER, "Right-side Enter key")}
             {midshiftVariant(EB65_MidShift_Variant.VERTICAL_ENTER, "Vertical Enter key")}
-            {midshiftVariant(EB65_MidShift_Variant.MID_MID, "Home-row Enter key (recommended)")}
         </PlankVariantButton>
     </div>
 }
@@ -51,17 +52,18 @@ interface PlankVariantButtonProps {
     variant: PlankVariant;
     currentVariant: PlankVariant;
     setVariant: (variant: PlankVariant) => void;
+    name?: string;
     children?: ComponentChildren;
 }
 
-export function PlankVariantButton({variant, currentVariant, setVariant, children}: PlankVariantButtonProps) {
+export function PlankVariantButton({variant, currentVariant, setVariant, name, children}: PlankVariantButtonProps) {
     const selected = variant === currentVariant ? " selected" : "";
     return <div>
         <button
             className={"layout-options-button" + selected}
             onClick={() => setVariant(variant)}
         >
-            {getPlankVariant({plankVariant: variant} as LayoutOptions).name}
+            {name || getPlankVariant({plankVariant: variant}).name}
         </button>
         {selected && children}
     </div>

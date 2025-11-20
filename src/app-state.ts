@@ -157,7 +157,7 @@ export function createAppState(): AppState {
         plankVariant: s2i(params.get("plank")) ?? PlankVariant.KATANA_60,
         ep60Arrows: s2b(params.get("ep60arrows")) ?? false,
         eb65LowshiftVariant: s2i(params.get("eb65ls")) ?? EB65_LowShift_Variant.LESS_GAPS,
-        eb65MidshiftVariant: s2i(params.get("eb65ms")) ?? EB65_MidShift_Variant.MID_MID,
+        eb65MidshiftVariant: s2i(params.get("eb65ms")) ?? EB65_MidShift_Variant.RIGHT_ENTER,
     });
     const layoutModel = computed(() => getLayoutModel(layoutOptionsState.value))
 

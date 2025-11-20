@@ -2,31 +2,31 @@ import {FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel} from "../base
 import {defaultKeyColor} from "./layout-functions.ts";
 
 export const eb65KeyColorClass = (label: string, row: KeyboardRows, col: number)=> {
-    if ("⏎↑↓←→".includes(label) || label == "Esc") return KEY_COLOR.HIGHLIGHT;
+    if (label && "⏎↑↓←→".includes(label) || label == "Esc") return KEY_COLOR.HIGHLIGHT;
     return defaultKeyColor(label, row, col);
 };
 
 export const eb65AsymLayoutModel: RowBasedLayoutModel = {
-    name: "Ergoboard 65 Asymmetric",
-    description: ``,
+    name: "Ergoboard 65 Wide Hands",
+    description: `Widest possible hand position with the arrow cluster and lower row Shift keys.`,
 
     // row lengths: 16, 15, 15 (with 0.5u gap), 16, 14
     thirtyKeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "`~", null, "6", "7", "8", "9", "0", "=", "⇞", "⇟"],
         ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "-", "⏎"],
         ["⌦", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "'", "⌫"],
-        [null, "⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "↑", null],
+        [null, "⇧", 1, 2, 3, 4, 0, "\\", 9, 5, 6, 7, 8, "⇧", "↑", null],
         [null, "Ctrl", "Cmd", "CAPS", "Alt", "⍽", "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
     ],
 
-    // todo
-    // thumb30KeyMapping: [
-    //     ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-    //     ["↹", 0, 1, 2, 3, 4, "", null, 5, 6, 7, 8, 9, "=", "⌫"],
-    //     ["CAPS", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
-    //     ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
-    //     [null, "Ctrl", "Cmd", "⌦", "Alt", 0, "", "⍽", "AltGr", "Ctrl", null, "←", "↓", "→"],
-    // ],
+    thumb30KeyMapping: [
+        ["Esc", "1", "2", "3", "4", "5", "`~", null, "6", "7", "8", "9", "0", "", "⇞", "⇟"],
+        ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "=", "⏎"],
+        ["⌦", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "'", "⌫"],
+        // this modified angle fix works with Quip Thumby and Cozy keymaps. In Colemak Thumby, -B should swap.
+        [null, "⇧", 1, 2, 3, 0, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
+        [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
+    ],
 
     // todo
     fullMapping: [],

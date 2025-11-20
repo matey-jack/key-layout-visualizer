@@ -1,5 +1,5 @@
-import {FlexMapping, KEY_COLOR, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
-import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
+import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {copyAndModifyKeymap} from "./layout-functions.ts";
 import {eb65KeyColorClass} from "./eb65AysmLayoutModel.ts";
 
 export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
@@ -14,16 +14,16 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
     // Key sizes are mostly the same as EP65 Midsize Enter, except for 2u Backspace up top.
     // But the lower row has a regular 0.25 stagger.
     thirtyKeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, "'", null, 5, 6, 7, 8, 9, "⏎", "⇞"],
-        ["⇧", 0, 1, 2, 3, 4, "=", "-", 5, 6, 7, 8, 9, "⇧", "⇟"],
+        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
+        ["↹", 0, 1, 2, 3, 4, "\\", null, 5, 6, 7, 8, 9, "'", "⌫"],
+        ["⇧", 0, 1, 2, 3, 4, "=", "-", 5, 6, 7, 8, 9, "⇧", "⏎"],
         ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, null, "↑", null],
         [null, "Cmd", "Fn", "⌦", "Alt", "⍽", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
     ],
 
     thumb30KeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, "'", null, 5, 6, 7, 8, 9, "⏎", "⇞"],
+        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0"],
+        ["↹", 0, 1, 2, 3, 4, "'", null, 5, 6, 7, 8, 9, "⌫", "⏎", "⇞"],
         ["⇧", 0, 1, 2, 3, 4, "=", "\\", 5, 6, 7, 8, 9, "⇧", "⇟"],
         ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, "/", null, "↑", null],
         [null, "Cmd", "Fn", "⌦", "Alt", 0, "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"],
@@ -59,34 +59,29 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
         const numCols = eb65MidshiftLayoutModel.thirtyKeyMapping![row].length;
         switch (row) {
             case KeyboardRows.Number:
-                // Backspace
-                return col == numCols - 1 ? 2 : 1;
+                return 1;
             case KeyboardRows.Upper:
                 switch (col) {
-                    // the gap
-                    case 7:
+                    case 7: // the gap
                         return 0.5;
-                    // Tap / Enter
                     case 0:
-                    case 13:
+                    case 14: // Tab / Backspace (or Enter)
                         return 1.75;
                     default:
                         return 1;
                 }
             case KeyboardRows.Home:
                 switch (col) {
-                    // Shift
-                    case 0:
-                    case (numCols - 2):
+                    case 0: // Left Shift, Enter
+                    case (numCols - 1):
                         return 1.5;
                     default:
                         return 1;
                 }
             case  KeyboardRows.Lower:
                 switch (col) {
-                    case 0:
+                    case 0: // gaps
                         return 1.25;
-                    // gaps
                     case 7:
                         return 0.5
                     case 14:
@@ -98,16 +93,13 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
                 // arrow keys
                 if (col > 10) return 1;
                 switch (col) {
-                    // indent
-                    case 0:
+                    case 0: // indent
                         return 0.5;
-                    // space bars as big as the largest other key on the board
                     case 5:
-                    case 6:
+                    case 6: // todo: space bars should be 1.75; need to distribute the space
                         return 2;
-                    // right gaps
                     case 8:
-                    case 10:
+                    case 10: // right gaps
                         return 0.5;
                     default:
                         return 1.25;
@@ -131,8 +123,21 @@ export const eb65VerticalEnterLayoutModel: RowBasedLayoutModel = {
     ...eb65MidshiftLayoutModel,
     keyWidth: (row: KeyboardRows, col: number) => {
         switch (row) {
-            case KeyboardRows.Number:
-                return 1;
+            case KeyboardRows.Upper:
+                switch (col) {
+                    case 13: // Backspace
+                        return 1.75;
+                    case 14: // Enter
+                        return 1;
+                }
+                break;
+            case KeyboardRows.Home:
+                switch (col) {
+                    case 13: // Right Shift
+                        return 1.5;
+                    case 14: // gap
+                        return 1;
+                }
         }
         return eb65MidshiftLayoutModel.keyWidth(row, col);
     },
@@ -145,67 +150,8 @@ export const eb65VerticalEnterLayoutModel: RowBasedLayoutModel = {
 }
 
 function moveEnterToVertical(mapping: LayoutMapping): LayoutMapping {
-    mapping[KeyboardRows.Number][14] = "⇞";
-    mapping[KeyboardRows.Number][15] = "⇟";
     mapping[KeyboardRows.Upper][13] = "⌫";
     mapping[KeyboardRows.Upper][14] = "⏎";
     mapping[KeyboardRows.Home][14] = null;
-    return mapping;
-}
-
-
-export const eb65MidShiftEnterLayoutModel: RowBasedLayoutModel = {
-    ...eb65MidshiftLayoutModel,
-    keyWidth: (row: KeyboardRows, col: number) => {
-        switch (row) {
-            case KeyboardRows.Number:
-                return 1; // Uniform key size; PageUp/Down (or Home/End) instead of 2u Backspace.
-            case KeyboardRows.Upper:
-                switch (col) {
-                    case 13: // a character key
-                        return 1;
-                    case 14: // Backspace
-                        return 1.75
-                }
-                break;
-            case KeyboardRows.Home:
-                switch (col) {
-                    case 13: // Shift
-                        return 1;
-                    case 14: // Enter
-                        return 1.5;
-                }
-                break;
-            // case KeyboardRows.Bottom:
-            //     switch (col) {
-            //         case 5:
-            //         case 6: // space bars, same as largest other key
-            //             return 1.75;
-            //         case 8:
-            //         case 10: // compensate with larger gaps
-            //             return 0.75;
-            //             // TODO: half of that should go to the left side 🤔
-            //     }
-        }
-        return eb65MidshiftLayoutModel.keyWidth(row, col);
-    },
-    // keyCapWidth: (row: KeyboardRows, col: number) => {
-    //     switch (row) {
-    //         case KeyboardRows.Upper:
-    //             if (col == 14) return 1.25;
-    //     }
-    //     return eb65MidShiftEnterLayoutModel.keyWidth(row, col);
-    // },
-    thirtyKeyMapping: copyAndModifyKeymap(eb65MidshiftLayoutModel.thirtyKeyMapping!!, moveEnterToMiddle),
-    thumb30KeyMapping: copyAndModifyKeymap(eb65MidshiftLayoutModel.thumb30KeyMapping!!, moveEnterToMiddle),
-}
-
-function moveEnterToMiddle(mapping: LayoutMapping): LayoutMapping {
-    mapping[KeyboardRows.Number][14] = "⇞";
-    mapping[KeyboardRows.Number][15] = "⇟";
-    mapping[KeyboardRows.Upper][13] = "'";
-    mapping[KeyboardRows.Upper][14] = "⌫";
-    mapping[KeyboardRows.Home][14] = "⏎";
-    // mapping[KeyboardRows.Bottom][8] = "Fn";
     return mapping;
 }

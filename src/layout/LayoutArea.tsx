@@ -1,11 +1,11 @@
-import {FlexMapping, LayoutType, VisualizationType} from "../base-model.ts";
+import {FlexMapping, LayoutType, LayoutTypeNames, VisualizationType} from "../base-model.ts";
 import {AppState, LayoutOptions} from "../app-model.ts";
 import {BigramLines, KeyboardSvg, RowBasedKeyboard, StaggerLines} from "./KeyboardSvg.tsx";
 import {fillMapping, getKeyPositions, getLayoutModel} from "./layout-functions.ts";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
 import {Signal} from "@preact/signals";
-import {PlankLayoutOptions} from "./PlankLayoutOptions.tsx";
+import {ErgoPlankLayoutOptions} from "./ErgoPlankLayoutOptions.tsx";
 
 interface LayoutAreaProps {
     appState: AppState;
@@ -51,7 +51,7 @@ function TopBar({layout, setLayout}: TopBarProps) {
         {layoutOrder.map((layoutType) =>
             <TopBarKeyboardTab
                 layoutType={layoutType}
-                layoutName={getLayoutModel({...layout, type: layoutType}).name}
+                layoutName={LayoutTypeNames[layoutType]}
                 currentLayout={layout.type}
                 setLayoutType={(type) => setLayout({...layout, type})}
                 key={layoutType}
@@ -115,7 +115,7 @@ function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions, mapping}: La
                 setVariant={(variant) => setLayoutOptions({...layoutOptions, harmonicVariant: variant})}
             />
         case LayoutType.ErgoPlank:
-            return <PlankLayoutOptions
+            return <ErgoPlankLayoutOptions
                 variant={layoutOptions.plankVariant}
                 setVariant={(variant) => setLayoutOptions({...layoutOptions, plankVariant: variant})}
                 options={layoutOptions}
