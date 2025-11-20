@@ -1,5 +1,6 @@
 import {FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
 import {defaultKeyColor} from "./layout-functions.ts";
+import {eb65MidshiftLayoutModel} from "./eb65MidshiftLayoutModel.ts";
 
 export const eb65LayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65",
@@ -115,5 +116,32 @@ export const eb65LayoutModel: RowBasedLayoutModel = {
 
 export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
     ...eb65LayoutModel,
-    // TODO
+    thirtyKeyMapping: [
+        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "\\", "Fn"],
+        ["↹", 0, 1, 2, 3, 4, "-", null, 5, 6, 7, 8, 9, "'", "⌫"],
+        ["Caps", 0, 1, 2, 3, 4, "⇞", "⇟", 5, 6, 7, 8, 9, "⏎"],
+        ["⇤", "⇧", 0, 1, 2, 3, 4, "=", 9, 5, 6, 7, 8, "⇧", "↑", "⇥"],
+        [null, "Ctrl", "Cmd", "⌦", "Alt", "⍽", "⍽", "AltGr", "Ctrl", null, "←", "↓", "→"],
+    ],
+    thumb30KeyMapping: [
+        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "", "⇤"],
+        ["↹", 0, 1, 2, 3, 4, "=", null, 5, 6, 7, 8, 9, "'", "⌫"],
+        ["Caps", 0, 1, 2, 3, 4, "⇞", "⇟", 5, 6, 7, 8, 9, "⏎"],
+        ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", "⇥"],
+        [null, "Ctrl", "Cmd", "⌦", "Alt", 0, "⍽", "AltGr", "Ctrl", null, "←", "↓", "→"],
+    ],
+    keyWidth: (row: KeyboardRows, col: number): number => {
+        const lastCol = eb65BigEnterLayoutModel.thirtyKeyMapping![row].length - 1;
+        switch (row) {
+            case KeyboardRows.Home:
+                switch (col) {
+                    case lastCol:
+                        return 2.5; // Big Enter
+                }
+                break;
+            case KeyboardRows.Bottom:
+                return [0.25, 1.25, 1.25, 1.25, 1.25, 2.5, 2.5, 1.25, 1.25, 0.25, 1, 1, 1][col];
+        }
+        return eb65LayoutModel.keyWidth(row, col);
+    },
 }
