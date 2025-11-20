@@ -102,9 +102,9 @@ export const eb65LayoutModel: RowBasedLayoutModel = {
                 // split a new key from Enter
                 switch (col) {
                     case 13:
-                        return 1.5;
-                    case 14:
                         return 1;
+                    case 14:
+                        return 1.5;
                 }
                 break;
             case KeyboardRows.Bottom:
@@ -132,14 +132,17 @@ export const eb65LayoutModel: RowBasedLayoutModel = {
 }
 
 function movePagingKeysRight(mapping: LayoutMapping): LayoutMapping {
-    mapping[KeyboardRows.Number][14] = "⇤";
-    mapping[KeyboardRows.Number][15] = "⇥";
-    mapping[KeyboardRows.Home][6] = "\\";
-    mapping[KeyboardRows.Home][7] = "";
-    mapping[KeyboardRows.Home][13] = "⏎";
-    mapping[KeyboardRows.Home][14] = "⇞";
+    mapping[KeyboardRows.Number][14] = "⇞";
+    mapping[KeyboardRows.Number][15] = "⇟";
+    mapping[KeyboardRows.Upper][6] = "=";
+    mapping[KeyboardRows.Upper][13] = "-"; // TODO: this has to be "=" for the thumb30 !
+    mapping[KeyboardRows.Home][6] = "⇤";
+    mapping[KeyboardRows.Home][7] = "⇥";
+    mapping[KeyboardRows.Home][13] = "'";
+    mapping[KeyboardRows.Home][14] = "⏎";
     mapping[KeyboardRows.Lower][0] = "Fn";
-    mapping[KeyboardRows.Lower][15] = "⇟";
+    mapping[KeyboardRows.Lower][7] = "\\";
+    mapping[KeyboardRows.Lower][15] = null;
     // add a key between the space bars
     mapping[KeyboardRows.Bottom].splice(6, 0, "");
     return mapping;

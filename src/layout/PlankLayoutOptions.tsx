@@ -27,7 +27,7 @@ export function PlankLayoutOptions({variant, setVariant, options, setOption}: Pl
                                onChange={(arrows: boolean) => setOption({ep60Arrows: arrows})}/>
         </PlankVariantButton>
         <PlankVariantButton variant={PlankVariant.EP65} currentVariant={variant} setVariant={setVariant}>
-            <CheckboxWithLabel label="Big Enter key"
+            <CheckboxWithLabel label="Big Enter and Space keys"
                                checked={options.eb65BigEnter}
                                onChange={(big) => setOption({eb65BigEnter: big})}/>
         </PlankVariantButton>
