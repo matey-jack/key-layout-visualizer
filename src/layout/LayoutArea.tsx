@@ -14,6 +14,9 @@ interface LayoutAreaProps {
 export function LayoutArea({appState}: LayoutAreaProps) {
     const {layout, layoutModel, mapping, setLayout, mappingDiff, bigramMovements, vizType} = appState;
     const charMap = fillMapping(layoutModel.value, mapping.value);
+    if (layout.value.flipRetRub) {
+        flipRetRub(charMap!);
+    }
     const keyPositions = getKeyPositions(layoutModel.value, layout.value.split, charMap!);
 
     return (
@@ -37,6 +40,16 @@ export function LayoutArea({appState}: LayoutAreaProps) {
             <LayoutOptionsBar state={appState}/>
         </div>
     )
+}
+
+// This mutates the array, contrary the usual immutable value functions we have everywhere else.
+function flipRetRub(charMap: string[][]) {
+    charMap.forEach((charRow) => {
+        charRow.forEach((char, col) => {
+            if (char == "⏎") charRow[col] = "⌫";
+            if (char == "⌫") charRow[col] = "⏎";
+        })
+    })
 }
 
 interface TopBarProps {

@@ -2,7 +2,6 @@ import {EB65_LowShift_Variant, EB65_MidShift_Variant, LayoutOptions, PlankVarian
 import {getPlankVariant} from "./layout-functions.ts";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {ComponentChildren} from "preact";
-import {useState} from "react";
 
 export interface PlankLayoutOptionsProps {
     variant: PlankVariant;
@@ -32,19 +31,21 @@ export function ErgoplankLayoutOptions({variant, setVariant, options, setOption}
                                onChange={(arrows: boolean) => setOption({ep60Arrows: arrows})}/>
         </PlankVariantButton>
 
-        <PlankVariantButton variant={PlankVariant.EP65_LOW_SHIFT}
+        <PlankVariantButton variant={PlankVariant.EB65_LOW_SHIFT}
                             currentVariant={variant} setVariant={setVariant}
                             name="Ergoboard 65 Lowshift">
             {lowshiftVariant(EB65_LowShift_Variant.WIDE_HANDS, "Wide Hands")}
             {lowshiftVariant(EB65_LowShift_Variant.LESS_GAPS, "Less Gaps")}
             {lowshiftVariant(EB65_LowShift_Variant.BIG_ENTER, "Big Enter & Space")}
+            <FlipRetRubButton setOption={setOption} options={options}/>
         </PlankVariantButton>
 
-        <PlankVariantButton variant={PlankVariant.EP65_MID_SHIFT}
+        <PlankVariantButton variant={PlankVariant.EB65_MID_SHIFT}
                             currentVariant={variant} setVariant={setVariant}
                             name="❤️Ergoboard 65 Midshift">
             <EbMidshiftLayoutOptions msVariant={options.eb65MidshiftVariant}
                                      setMsVariant={(v) => setOption({eb65MidshiftVariant: v})}/>
+            <FlipRetRubButton setOption={setOption} options={options}/>
         </PlankVariantButton>
     </div>
 }
@@ -63,10 +64,10 @@ export function EbMidshiftLayoutOptions({msVariant, setMsVariant}: EbMidshiftLay
                                   onChange={(checked) => checked && setMsVariant(msVar)}/>
     }
 
-    const narrowSubvariant = msVariant > EB65_MidShift_Variant.WIDE;
+    const narrowSubvariant = msVariant > EB65_MidShift_Variant.NICELY_WIDE;
     return <>
         {midshiftVariant(EB65_MidShift_Variant.EXTRA_WIDE, "Extra Wide Hands")}
-        {midshiftVariant(EB65_MidShift_Variant.WIDE, "❤️ Wide Hands")}
+        {midshiftVariant(EB65_MidShift_Variant.NICELY_WIDE, "❤️ Wide Hands")}
         <CheckboxWithLabel label="Narrow Hands"
                            type="radio"
                            groupName={"midshift_variant"}
@@ -100,4 +101,16 @@ export function PlankVariantButton({variant, currentVariant, setVariant, name, c
         </button>
         {selected && children}
     </div>
+}
+
+type FlipRetRubButtonProps = {
+    options: LayoutOptions;
+    setOption: (opts: Partial<LayoutOptions>) => void;
+}
+
+function FlipRetRubButton({setOption, options}: FlipRetRubButtonProps) {
+    return <button class="flip-ret-rub-button"
+        onClick={() => setOption({flipRetRub: !options.flipRetRub})}>
+        ⏎ flip ⌫
+    </button>
 }

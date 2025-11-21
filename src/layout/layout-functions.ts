@@ -198,7 +198,7 @@ export function getPlankVariant({
         case PlankVariant.EP60:
         default:
             return ep60Arrows ? ep60WithArrowsLayoutModel : ergoPlank60LayoutModel;
-        case PlankVariant.EP65_LOW_SHIFT:
+        case PlankVariant.EB65_LOW_SHIFT:
             // UI calls this method without variant parameters, so we need a default.
             switch (eb65LowshiftVariant) {
                 default:
@@ -208,7 +208,7 @@ export function getPlankVariant({
                 case EB65_LowShift_Variant.BIG_ENTER:
                     return eb65BigEnterLayoutModel;
             }
-        case PlankVariant.EP65_MID_SHIFT:
+        case PlankVariant.EB65_MID_SHIFT:
             switch (eb65MidshiftVariant) {
                 default:
                     return eb65MidshiftLayoutModel; // "wide hands"

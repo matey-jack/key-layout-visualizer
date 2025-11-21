@@ -17,7 +17,7 @@ export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
         ["↹", 0, 1, 2, 3, 4, "-", null, "=", 5, 6, 7, 8, 9, "\\"],
         ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "'"],
         ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", 9, 5, 6, 7, 8, "⇧"],
-        ["Ctrl", "Cmd", "", "Alt", "⏎", "Fn", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
+        ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
     ],
 
     thumb30KeyMapping: [
@@ -25,7 +25,7 @@ export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
         ["↹", 0, 1, 2, 3, 4, "=", null, "\\", 5, 6, 7, 8, 9, "⏎"],
         ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "'"],
         ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", "/", 5, 6, 7, 8, "⇧"],
-        ["Ctrl", "Cmd", "", "Alt", 0, "Fn", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
+        ["Ctrl", "Cmd", "Fn", "Alt", 0, "", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
     ],
 
     // todo
@@ -58,11 +58,13 @@ export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
     keyWidth: (row: KeyboardRows, col: number): number => {
         const numCols = ergoPlank60LayoutModel.thirtyKeyMapping![row].length;
         if (row == KeyboardRows.Bottom) {
-            // Having one central key serves the purpose of bringing its neighbors into the "hands-fixed" range of the thumbs.
-            // I saw this not only on the Katana60, but also some conventional keyboards with a split space bar.
-            // The big question is: can we size and position thumb keys such that each thumb can comfortably hit two of them
-            // without moving the hand?
-            // The typical use would be one per thumb as Space or a letter, the other as a modifier or layer key.
+            /*
+Both sides have 7.5u space to distribute, of which 0.25 is indent, 1.5 space and 1.25/2 half the central key.
+Currently, we have 0.25 gap + 4×1.25 + 1.5 per side. That's 6.75u not counting the central key.
+So the total diff to spread in microgaps is only 0.25 for the entire width.
+We could be marginally more ergonomic by keeping space and outer space with zero gap
+and spread the 0.125u per side only among the remaining modifier keys.
+             */
             switch (col) {
                 case 4:
                 case 6:

@@ -57,6 +57,15 @@ body {
     border-radius: 4px;
 }
 
+.flip-ret-rub-button {
+    /*margin: 0.5rem;*/
+    margin-top: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-radius: 4px;
+    horiz-align: center;
+}
+
 .layout-options-button.selected {
     background-color: #5cdbef;
     border: 1px solid #003fae;
