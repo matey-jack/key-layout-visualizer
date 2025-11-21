@@ -1,4 +1,4 @@
-import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {Finger, FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel, SKE_AWAY} from "../base-model.ts";
 import {copyAndModifyKeymap} from "./layout-functions.ts";
 import {eb65KeyColorClass} from "./eb65LowshiftWideLayoutModel.ts";
 import {eb65LowShiftLayoutModel} from "./eb65LowShiftLayoutModel.ts";
@@ -28,6 +28,14 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
         ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", "/", 5, 6, 7, 8, null, "↑", null],
         [null, "Cmd", "Fn", "⌦", "Alt", 0, "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"],
     ],
+    mainFingerAssignment: copyAndModifyKeymap(eb65LowShiftLayoutModel.mainFingerAssignment, (matrix) => {
+        matrix[KeyboardRows.Upper].splice(8, 0, Finger.RIndex);
+        matrix[KeyboardRows.Home].splice(7, 0, null);
+        matrix[KeyboardRows.Lower][7] = null;
+        // matrix[KeyboardRows.Lower].splice(8, 1);
+        matrix[KeyboardRows.Bottom].splice(4, 0, Finger.LIndex);
+        return matrix;
+    }),
     keyWidth: (row: KeyboardRows, col: number)=> {
         switch (row) {
             case KeyboardRows.Bottom:
@@ -106,11 +114,11 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
     fullMapping: [],
 
     mainFingerAssignment: [
-        [1, 1, 1, 1, 2, 3, 3, 3, 6, 6, 7, 8, 8, 8, 8],
+        [null, 1, 1, 1, 2, 3, 3, 3, 6, 6, 7, 8, 8, 8, null, null],
         [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 7, 8, 9, 9, null],
-        [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9, null],
+        [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9, 9],
         [0, 0, 1, 2, 3, 3, 3, 3, 6, 6, 6, 7, 8, 9, null, null, null],
-        [null, 0, null, null, 4, 4, 5, 5, null, null, null, null, null, null],
+        [null, 0, null, null, 4, 4, 5, 5, null, 7, null, null, null, null],
     ],
 
     hasAltFinger: (row: number, col: number) =>
@@ -119,10 +127,10 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
     // Only fixed values can be used. See base-model.ts SKE_*
     // 'null' means the hand has to taken off the home-row. Those keys can't be used with letter or prose punctuation.
     singleKeyEffort: [
-        [null, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, null],
-        [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0, null],
-        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, null, null, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5, null],
-        [3.0, 1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0, null, 2.0, null],
+        [null, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, null],
+        [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0],
+        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5, 3.0],
+        [3.0, 1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0, null, null, null],
         [null, 2.0, 1.5, null, 1.0, 0.2, 0.2, 1.0, null, null, null, null, null, null],
     ],
 
@@ -219,8 +227,18 @@ export const eb65CentralEnterLayoutModel: RowBasedLayoutModel = {
         }
         return eb65MidshiftRightRetLayoutModel.keyWidth(row, col);
     },
-    thirtyKeyMapping: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.thirtyKeyMapping!!, moveEnterToCenter),
-    thumb30KeyMapping: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.thumb30KeyMapping!!, moveEnterToCenter),
+    thirtyKeyMapping: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.thirtyKeyMapping!, moveEnterToCenter),
+    thumb30KeyMapping: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.thumb30KeyMapping!, moveEnterToCenter),
+    mainFingerAssignment: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.mainFingerAssignment, (matrix) => {
+        matrix[KeyboardRows.Number][14] = Finger.RPinky;
+        matrix[KeyboardRows.Home][14] = null;
+        return matrix;
+    }),
+    singleKeyEffort: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.singleKeyEffort, (matrix) => {
+        matrix[KeyboardRows.Number][14] = SKE_AWAY;
+        matrix[KeyboardRows.Home][14] = null;
+        return matrix;
+    }),
 }
 
 function moveEnterToCenter(mapping: LayoutMapping): LayoutMapping {

@@ -28,11 +28,11 @@ export const eb65MidshiftMaxWideLayoutModel: RowBasedLayoutModel = {
     fullMapping: [],
 
     mainFingerAssignment: [
-        [1, 1, 1, 1, 2, 3, 3, 3, 6, 6, 7, 8, 8, 8, 8],
-        [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 7, 8, 9, 9, null],
-        [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9, null],
-        [0, 0, 1, 2, 3, 3, 3, 3, 6, 6, 6, 7, 8, 9, null, null, null],
-        [null, 0, null, null, 4, 4, 5, 5, null, null, null, null, null, null],
+        [null, 1, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 8, 8, null, null],
+        [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 6, 7, 8, 9, 9, null],
+        [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 6, 7, 8, 9, 9, null],
+        [0, 0, 1, 2, 3, 3, 3, null, null, 6, 6, 6, 7, 8, 9, null, null, null],
+        [null, 0, null, null, 4, 4, 5, 5, null, 7, null, null, null, null],
     ],
 
     hasAltFinger: (row: number, col: number) =>
@@ -42,10 +42,10 @@ export const eb65MidshiftMaxWideLayoutModel: RowBasedLayoutModel = {
     // 'null' means the hand has to taken off the home-row. Those keys can't be used with letter or prose punctuation.
     singleKeyEffort: [
         [null, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, null],
-        [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0, null],
-        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, null, null, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5, null],
-        [3.0, 1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0, null, 2.0, null],
-        [null, 2.0, 1.5, null, 1.0, 0.2, 0.2, 1.0, null, null, null, null, null, null],
+        [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, null, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0, null],
+        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, null, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5, null],
+        [3.0, 1.0, 1.5, 1.5, 1.0, 2.0, 3.0, null, null, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0, null, 2.0, null],
+        [null, 2.0, 2.0, null, 1.0, 0.2, 0.2, 1.0, null, null, 2.0, null, null, null],
     ],
 
     rowStart: (_row: KeyboardRows) => 0,

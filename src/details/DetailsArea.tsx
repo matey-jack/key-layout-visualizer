@@ -117,7 +117,7 @@ export function FingeringDetails({layout: _}: { layout: RowBasedLayoutModel }) {
 export function KeySizeDetails({layout: _}: { layout: RowBasedLayoutModel }) {
     return <p>
         Colors on the keys show which keycaps have the same size.<br/>
-        It's easier to swap around to keycaps to different places on the keyboard if many of them share the same size.
+        It's easier to swap around keycaps to different places on the keyboard if many of them share the same size.
         It also makes production and logistics easier.
     </p>
 }

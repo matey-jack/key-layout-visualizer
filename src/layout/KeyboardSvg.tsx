@@ -152,12 +152,12 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
         layoutModel.keyCapWidth ? layoutModel.keyCapWidth(r, c) : layoutModel.keyWidth(r, c);
     const keyCapSizes = createKeySizeGroups(keyPositions, keyCapWidthFn);
     return keyPositions.map(({label, row, col, colPos}) => {
-        const keyColorFunction = layoutModel.keyColorClass || defaultKeyColor;
+        const keyColorFunction = (layoutModel.keyColorClass) || defaultKeyColor;
         const keyCapWidth = keyCapWidthFn(row, col);
         const keyCapHeight = layoutModel.keyCapHeight ? layoutModel.keyCapHeight(row, col) : 1;
         const bgClass = (vizType == VisualizationType.LayoutKeySize ? getKeySizeClass(keyCapWidth, keyCapHeight, keyCapSizes)
                 : vizType == VisualizationType.LayoutKeyEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
-                    : vizType == VisualizationType.LayoutFingering && (layoutModel.mainFingerAssignment[row][col] !== null)
+                    : vizType == VisualizationType.LayoutFingering // && (layoutModel.mainFingerAssignment[row][col] !== null)
                         ? getFingeringClasses(layoutModel, row, col, label)
                         : isHomeKey(layoutModel, row, col) ? "home-key"
                             : keyColorFunction(label, row, col))

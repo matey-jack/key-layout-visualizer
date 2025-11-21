@@ -36,11 +36,11 @@ export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
     fullMapping: [],
 
     mainFingerAssignment: [
-        [1, 1, 1, 1, 2, 3, 3, 3, 6, 6, 7, 8, 8, 8, 8, null],
+        [null, 1, 1, 1, 2, 3, 3, 3, 6, 6, 7, 8, 8, 8, null, null],
         [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 7, 8, 9, 9, 9],
-        [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9],
+        [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9, 9],
         [0, 0, 1, 2, 3, 3, 3, 3, 6, 6, 6, 7, 8, 9, null, null],
-        [null, 0, 1, 2, 4, 4, 5, 5, 7, null, null, null, null],
+        [null, 0, 1, 2, 4, 4, 5, 5, null, 7, null, null, null, null],
     ],
 
     hasAltFinger: (row: number, col: number) =>
@@ -49,9 +49,9 @@ export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
     // Only fixed values can be used. See base-model.ts SKE_*
     // 'null' means the hand has to taken off the home-row. Those keys can't be used with letter or prose punctuation.
     singleKeyEffort: [
-        [null, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, null],
+        [null, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, null, null],
         [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0],
-        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
+        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5, 2.0],
         [3.0, 1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0, null, null],
         [null, 2.0, 1.5, null, 1.0, 0.2, 0.2, 1.0, null, null, null, null, null],
     ],
@@ -87,6 +87,7 @@ Center between hands is 7.5 left, 8.5 right.
 Left side has 0.5 indent 4 × 1.25 plus 1.75 = 7.25. Surplus of 0.25.
 Right side has 1.75 + 2 × 1.25 + 1 + 3 = 8.25.
 Let's make the gap 0.5 for better looks and accept spaces to be split slightly off-center.
+Then at least the right outer space key is easy to hit; the left one not so much.
                  */
                 const beforeArrows = 10;
                 switch (col) {
