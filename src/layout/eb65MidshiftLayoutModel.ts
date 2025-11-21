@@ -22,6 +22,7 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
     ],
 
     thumb30KeyMapping: [
+        // todo
         ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0"],
         ["↹", 0, 1, 2, 3, 4, "'", null, 5, 6, 7, 8, 9, "⌫", "⏎", "⇞"],
         ["⇧", 0, 1, 2, 3, 4, "=", "\\", 5, 6, 7, 8, 9, "⇧", "⇟"],
@@ -96,13 +97,14 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
 
     thirtyKeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, "\\", null, 5, 6, 7, 8, 9, "'", "⌫"],
-        ["⇧", 0, 1, 2, 3, 4, "=", "-", 5, 6, 7, 8, 9, "⇧", "⏎"],
+        ["↹", 0, 1, 2, 3, 4, "\\", null, 5, 6, 7, 8, 9, "'", "⏎"],
+        ["⇧", 0, 1, 2, 3, 4, "=", "-", 5, 6, 7, 8, 9, "⇧", "⌫"],
         ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, null, "↑", null],
         [null, "Cmd", "Fn", "⌦", "Alt", "⍽", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
     ],
 
     thumb30KeyMapping: [
+        // todo
         ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0"],
         ["↹", 0, 1, 2, 3, 4, "'", null, 5, 6, 7, 8, 9, "⌫", "⏎", "⇞"],
         ["⇧", 0, 1, 2, 3, 4, "=", "\\", 5, 6, 7, 8, 9, "⇧", "⇟"],
@@ -246,6 +248,7 @@ function moveEnterToCenter(mapping: LayoutMapping): LayoutMapping {
     mapping[KeyboardRows.Number][15] = "⇞";
     mapping[KeyboardRows.Upper][6] = "⏎";
     delete mapping[KeyboardRows.Upper][7];
+    mapping[KeyboardRows.Upper][14] = "⌫";
     mapping[KeyboardRows.Home][14] = "⇟";
     return mapping;
 }
@@ -282,7 +285,6 @@ export const eb65VerticalEnterLayoutModel: RowBasedLayoutModel = {
 
 function moveEnterToVertical(mapping: LayoutMapping): LayoutMapping {
     mapping[KeyboardRows.Upper][13] = "⌫";
-    mapping[KeyboardRows.Upper][14] = "⏎";
     mapping[KeyboardRows.Home][14] = null;
     return mapping;
 }

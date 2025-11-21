@@ -158,7 +158,7 @@ export function createAppState(): AppState {
         ep60Arrows: s2b(params.get("ep60arrows")) ?? false,
         eb65LowshiftVariant: s2i(params.get("eb65ls")) ?? EB65_LowShift_Variant.LESS_GAPS,
         eb65MidshiftVariant: s2i(params.get("eb65ms")) ?? EB65_MidShift_Variant.EXTRA_WIDE,
-        flipRetRub: false,
+        flipRetRub: true, // because default keymaps have Enter in Upper row, but the "big Enter" keymap should show it in Home row at the start.
     });
     const layoutModel = computed(() => getLayoutModel(layoutOptionsState.value))
 

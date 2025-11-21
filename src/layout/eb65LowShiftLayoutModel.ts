@@ -147,8 +147,8 @@ export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
 function moveKeys(mapping: LayoutMapping): LayoutMapping {
     mapping[KeyboardRows.Number][7] = "=";
     mapping[KeyboardRows.Upper][6] = "-";
-    mapping[KeyboardRows.Upper].splice(-2, 2, "'", "⌫");
-    mapping[KeyboardRows.Home].splice(-2, 2, "⏎");
+    mapping[KeyboardRows.Upper].splice(-2, 2, "'", "⏎");
+    mapping[KeyboardRows.Home].splice(-2, 2, "⌫");
     mapping[KeyboardRows.Bottom][8] = null;
     return mapping;
 }
