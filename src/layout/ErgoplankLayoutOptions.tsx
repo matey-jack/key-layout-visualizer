@@ -68,7 +68,7 @@ export function EbMidshiftLayoutOptions({msVariant, setMsVariant}: EbMidshiftLay
     return <>
         {midshiftVariant(EB65_MidShift_Variant.EXTRA_WIDE, "Extra Wide Hands")}
         {midshiftVariant(EB65_MidShift_Variant.NICELY_WIDE, "❤️ Wide Hands")}
-        {msVariant == EB65_MidShift_Variant.NICELY_WIDE &&
+        {msVariant == EB65_MidShift_Variant.NICELY_WIDE && false &&
             <div className="ergoplank-midshift-xl-bars-checkbox">
                 <CheckboxWithLabel label="XL bottom bars" checked={false}/>
             </div>

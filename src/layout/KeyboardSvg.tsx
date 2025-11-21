@@ -4,7 +4,6 @@ import {
     defaultKeyColor, getKeySizeClass,
     isHomeKey,
     keyCapHeight,
-    keyCapSize,
     keyCapWidth,
     lettersAndVIP
 } from "./layout-functions.ts";
