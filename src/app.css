@@ -47,6 +47,11 @@ body {
     justify-items: center;
 }
 
+.ergoplank-midshift-xl-bars-checkbox {
+    margin-top: 0.2rem;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+}
 .ergoplank-midshift-sub-variants-container {
     margin-left: 1rem;
 }

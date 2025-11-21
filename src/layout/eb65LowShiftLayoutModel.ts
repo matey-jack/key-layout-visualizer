@@ -26,7 +26,7 @@ export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
 
     thumb30KeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, "", null, 5, 6, 7, 8, 9, "=", "⏎"],
+        ["↹", 0, 1, 2, 3, 4, null, null, 5, 6, 7, 8, 9, "=", "⏎"],
         ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⌫"],
         ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
         [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
@@ -49,7 +49,7 @@ export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
     // Only fixed values can be used. See base-model.ts SKE_*
     // 'null' means the hand has to taken off the home-row. Those keys can't be used with letter or prose punctuation.
     singleKeyEffort: [
-        [null, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, null, null],
+        [null, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, null, null],
         [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0],
         [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5, 2.0],
         [3.0, 1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0, null, null],
@@ -140,13 +140,13 @@ export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
         }
         return eb65LowShiftLayoutModel.keyWidth(row, col);
     },
-    thirtyKeyMapping: copyAndModifyKeymap(eb65LowShiftLayoutModel.thirtyKeyMapping!!, moveKeys),
-    thumb30KeyMapping: copyAndModifyKeymap(eb65LowShiftLayoutModel.thumb30KeyMapping!!, moveKeys),
+    thirtyKeyMapping: copyAndModifyKeymap(eb65LowShiftLayoutModel.thirtyKeyMapping!!, (m) => moveKeys(m, false)),
+    thumb30KeyMapping: copyAndModifyKeymap(eb65LowShiftLayoutModel.thumb30KeyMapping!!, (m) => moveKeys(m, true)),
 }
 
-function moveKeys(mapping: LayoutMapping): LayoutMapping {
+function moveKeys(mapping: LayoutMapping, thumby: boolean): LayoutMapping {
     mapping[KeyboardRows.Number][7] = "=";
-    mapping[KeyboardRows.Upper][6] = "-";
+    mapping[KeyboardRows.Upper][6] = thumby ? "`~" : "-";
     mapping[KeyboardRows.Upper].splice(-2, 2, "'", "⏎");
     mapping[KeyboardRows.Home].splice(-2, 2, "⌫");
     mapping[KeyboardRows.Bottom][8] = null;

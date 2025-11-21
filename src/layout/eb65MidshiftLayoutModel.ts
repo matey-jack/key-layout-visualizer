@@ -23,11 +23,11 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
 
     thumb30KeyMapping: [
         // todo
-        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0"],
-        ["↹", 0, 1, 2, 3, 4, "'", null, 5, 6, 7, 8, 9, "⌫", "⏎", "⇞"],
-        ["⇧", 0, 1, 2, 3, 4, "=", "\\", 5, 6, 7, 8, 9, "⇧", "⇟"],
-        ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", "/", 5, 6, 7, 8, null, "↑", null],
-        [null, "Cmd", "Fn", "⌦", "Alt", 0, "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"],
+        ["Esc", "`~", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
+        ["↹", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "⌫"],
+        ["⇧", 0, 1, 2, 3, 4, "\\", "", "'", 5, 6, 7, 8, 9, "⇧"],
+        ["Ctrl", 0, 1, 2, 3, 4, "=", "€ ¢ £ ¥", "/", 5, 6, 7, 8, null, "↑", null],
+        [null, "Cmd", "Fn", "⌦", "Alt", 0, "⏎", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"],
     ],
     mainFingerAssignment: copyAndModifyKeymap(eb65LowShiftLayoutModel.mainFingerAssignment, (matrix) => {
         matrix[KeyboardRows.Upper].splice(8, 0, Finger.RIndex);
@@ -37,6 +37,13 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
         matrix[KeyboardRows.Bottom].splice(4, 0, Finger.LIndex);
         return matrix;
     }),
+    singleKeyEffort: [
+        [null, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, null, null],
+        [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0],
+        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5, 2.0],
+        [3.0, 1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0, null, null],
+        [null, 2.0, 1.5, null, null, 1.0, 0.2, 0.2, 1.0, null, 1.5, null, null, null],
+    ],
     keyWidth: (row: KeyboardRows, col: number)=> {
         switch (row) {
             case KeyboardRows.Bottom:
@@ -48,7 +55,7 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
     of which 2.5u are between the inner edges of the index finger home keys.
     Half of the outer space key (0.75u) should fall inside those 2.5u, leaving 1.75, which is exactly a space bar,
     so we don't need any central key between space bars.
-    Comitted on the left side are 1.75 space plus 0.5 left indent; total: 2.25u, unassigned: 5.75.
+    Committed on the left side are 1.75 space plus 0.5 left indent; total: 2.25u, unassigned: 5.75.
     Right side has 1.75 space plus 3×1u arrows; total 4.75u, unassigned 3.25.
     Two 1.25u modifiers on the right are 2.5u, leaving 0.75u for gaps which we'll split evenly.
     On the left, we could do 3×1.25 + 2×1u to fill the space exactly.
@@ -87,13 +94,8 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
 }
 
 export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
-    name: "Ergoboard 65 MidShift",
-    description: `"The most ergonomic key layout that fits into a standard "65%" keyboard case
-    and has some gaps around the arrow cluster so your fingers can find it without looking."
-    Hand distance is still much better than ANSI keyboards. 
-    Row stagger is equal to a "cleave-style ergonomic" keyboard.
-    Moving the Shift keys finally allows to stagger even the lower letter row by the same amount as the others
-    without having to swap around keymappings there.`,
+    name: "Ergoboard 65 MidShift Narrow",
+    description: ``,
 
     thirtyKeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
@@ -104,10 +106,12 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
     ],
 
     thumb30KeyMapping: [
-        // todo
-        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0"],
-        ["↹", 0, 1, 2, 3, 4, "'", null, 5, 6, 7, 8, 9, "⌫", "⏎", "⇞"],
-        ["⇧", 0, 1, 2, 3, 4, "=", "\\", 5, 6, 7, 8, 9, "⇧", "⇟"],
+        // note: thanks to the thumb-letter, we have one less letter and could use a "big" key in the top center.
+        // but layouts can't transform themselves when the keymap changes.
+        // Anyway, the layouts that I want to build don't have this problem, so I won't solve it.
+        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
+        ["↹", 0, 1, 2, 3, 4, null, null, 5, 6, 7, 8, 9, "'", "⏎"],
+        ["⇧", 0, 1, 2, 3, 4, "=", "\\", 5, 6, 7, 8, 9, "⇧", "⌫"],
         ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, "/", null, "↑", null],
         [null, "Cmd", "Fn", "⌦", "Alt", 0, "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"],
     ],

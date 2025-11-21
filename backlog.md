@@ -68,9 +68,16 @@ bugs fixed:
 ======================== TODO ===============================
 
 refactorings:
- - Refactor the Ergoboard "Mid Shift" variants to be basically "wide mods" of the "Low Shift" variants "Wide Hands" and "Less Gaps". 
+ - Turns out that the key/finger/effort matrix is easier to edit by hand than write in abstractions. Copy, paste, adapt, ... and win!
+    Maybe for a good start: write a helper function to generate an initial finger and effort matrix given a layout (by key matrix, keyWidths, and index finger columns).
+    That would be fun to write and be a neat documentation of my fingering and effort theory. But also useless at the moment, since I don't plan to add any new layouts besides HHKB, which will simply copy from ANSI.
 
- - 1.75u space key when there's no larger key anywhere else
+ - Helper functions for creating the key sizes, for instance a function that takes a total width and an edge offset and then returns a list (or function) with two edge keys of the offset, a central gap size, and the remaining 1u keys. For asymmetric layouts two different offsets could be provided. The central gap will be merged with the nearby key to make it central to the layout. So we need to provide the hand positions if we want it to be central to that instead. And a flag to say "don't combine" which many of our non-favorite layouts need.
+ - Helper functions for designing and validating bottom row sizes. It could check the total width and also check if the center (between space bars) aligns.
+ - Maybe best to define all the bottom rows simply as a list.
+ - Only the lower row of Ergoboards won't be covered by the above two functions, because it has the irregular right side. Maybe we could generate a regular lower row and then simply splice a manual `[gap, arrow, gap]` piece in.
+ - Oh, wait: for the entire four non-bottom rows, we could generate from a simple function that takes the stagger, width, and offset for one row. Or alternatively all the offsets. For asym layouts, one offset of the opposite side will be needed. 
+
 
 - "ANSI wide" is the only layout option which influencing how keymap metrics are calculated and which keymaps apply.
   But all the Harmonic and Ergo(Plank|Board) options are filtered through the setLayout mechanism. Is that what we want?
