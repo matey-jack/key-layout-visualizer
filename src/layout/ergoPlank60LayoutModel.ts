@@ -2,7 +2,7 @@ import {FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel} from "../base
 import {defaultKeyColor} from "./layout-functions.ts";
 
 export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
-    name: "ErgoPlank 60",
+    name: "Ergoplank 60",
     description: `"The most ergonomic key layout that fits into a standard "60%" keyboard case."
     Hand distance is maximized. Row stagger is equal to a "cleave-style ergonomic" keyboard.
     Thumb keys are added. 

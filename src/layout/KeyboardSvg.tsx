@@ -171,7 +171,7 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
             frequencyCircleRadius = freq * keyUnit / 2;
         }
         // this would be a generically better approach than the current left-aligning,
-        // but for the Escape key on ErgoPlank, left-align is actually better.
+        // but for the Escape key on Ergoplank, left-align is actually better.
         // const capColPos = colPos + (slotWidth - capWidth)/2;
         if (vizType == VisualizationType.LayoutKeySize) {
             label = keyCapWidth > 1 ? keyCapWidth + "" :

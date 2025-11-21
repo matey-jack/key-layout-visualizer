@@ -4,7 +4,7 @@
 export enum LayoutType {
     ANSI,      // irregular stagger
     Harmonic,  // regular 0.5 stagger
-    ErgoPlank, // regular 0.25 stagger
+    Ergoplank, // regular 0.25 stagger
     Ortho,     // zero stagger
 }
 
@@ -12,7 +12,7 @@ export enum LayoutType {
 export const LayoutTypeNames = [
     "ANSI / TypeWriter",
     "Harmonic family",
-    "ErgoPlank / Katana",
+    "Ergoplank / Katana",
     "Split Ortho",
 ];
 

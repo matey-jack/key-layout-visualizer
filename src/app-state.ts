@@ -22,7 +22,7 @@ import {getBigramMovements} from "./bigrams.ts";
 function modifySplit(opts: LayoutOptions): boolean {
     switch (opts.type) {
         case LayoutType.Harmonic:
-        case LayoutType.ErgoPlank:
+        case LayoutType.Ergoplank:
             return false;
         case LayoutType.Ortho:
             return true;
@@ -134,7 +134,7 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
         case LayoutType.Harmonic:
             params.set("harmonic", layout.harmonicVariant.toString());
             break;
-        case LayoutType.ErgoPlank:
+        case LayoutType.Ergoplank:
             params.set("plank", layout.plankVariant.toString());
             params.set("ep60arrows", layout.ep60Arrows ? "1" : "0")
             params.set("eb65ls", layout.eb65LowshiftVariant.toString())
@@ -157,7 +157,7 @@ export function createAppState(): AppState {
         plankVariant: s2i(params.get("plank")) ?? PlankVariant.KATANA_60,
         ep60Arrows: s2b(params.get("ep60arrows")) ?? false,
         eb65LowshiftVariant: s2i(params.get("eb65ls")) ?? EB65_LowShift_Variant.LESS_GAPS,
-        eb65MidshiftVariant: s2i(params.get("eb65ms")) ?? EB65_MidShift_Variant.RIGHT_ENTER,
+        eb65MidshiftVariant: s2i(params.get("eb65ms")) ?? EB65_MidShift_Variant.EXTRA_WIDE,
     });
     const layoutModel = computed(() => getLayoutModel(layoutOptionsState.value))
 

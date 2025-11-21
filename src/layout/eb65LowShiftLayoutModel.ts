@@ -1,7 +1,6 @@
-import {FlexMapping, KEY_COLOR, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
-import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
-import {eb65MidshiftLayoutModel} from "./eb65MidshiftLayoutModel.ts";
-import {eb65KeyColorClass} from "./eb65AysmLayoutModel.ts";
+import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {copyAndModifyKeymap} from "./layout-functions.ts";
+import {eb65KeyColorClass} from "./eb65LowshiftWideLayoutModel.ts";
 
 export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65",
@@ -22,7 +21,7 @@ export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
         ["↹", 0, 1, 2, 3, 4, "=", null, 5, 6, 7, 8, 9, "-", "⏎"],
         ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⌫"],
         ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "↑", null],
-        [null, "Ctrl", "Cmd", "CAPS", "Alt", "⍽", "", "⍽", "AltGr", "Ctrl", null, "←", "↓", "→"],
+        [null, "Ctrl", "Cmd", "CAPS", "Alt", "⍽", "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
     ],
 
     thumb30KeyMapping: [
@@ -30,7 +29,7 @@ export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
         ["↹", 0, 1, 2, 3, 4, "", null, 5, 6, 7, 8, 9, "=", "⏎"],
         ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⌫"],
         ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
-        [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "", "⍽", "AltGr", "Ctrl", null, "←", "↓", "→"],
+        [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
     ],
 
     // todo
@@ -83,18 +82,25 @@ export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
             case KeyboardRows.Lower:
                 return 1;
             case KeyboardRows.Bottom:
+                /*
+Center between hands is 7.5 left, 8.5 right.
+Left side has 0.5 indent 4 × 1.25 plus 1.75 = 7.25. Surplus of 0.25.
+Right side has 1.75 + 2 × 1.25 + 1 + 3 = 8.25.
+Let's make the gap 0.5 for better looks and accept spaces to be split slightly off-center.
+                 */
+                const beforeArrows = 10;
                 switch (col) {
                     case 0:
-                        return 0.25;
+                        return 0.5;
                     case 5:
-                    case 7:
-                        return 1.75;
                     case 6:
+                        return 1.75;
+                    case beforeArrows - 2:
                         return 1;
-                    case 10:
-                        return 0.75;
+                    case beforeArrows:
+                        return 0.5;
                     default:
-                        return col > 10 ? 1 : 1.25;
+                        return col > beforeArrows ? 1 : 1.25;
                 }
             default:
                 return 1;
@@ -112,6 +118,11 @@ export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
     keyColorClass: eb65KeyColorClass,
 }
 
+// todo: move this where it's actually needed and use it there.
+function isKeyWithMicrogap(col: number) {
+    return col > 0 && col < 4;
+}
+
 export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
     ...eb65LowShiftLayoutModel,
     keyWidth: (row: KeyboardRows, col: number): number => {
@@ -124,7 +135,7 @@ export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
                 }
                 break;
             case KeyboardRows.Bottom:
-                return [0.25, 1.25, 1.25, 1.25, 1.25, 2.5, 2.5, 1.25, 1.25, 0.25, 1, 1, 1][col];
+                return [0.25, 1.25, 1.25, 1, 1.25, 2.5, 2.5, 1.25, 0.25, 1.25, 0.25, 1, 1, 1][col];
         }
         return eb65LowShiftLayoutModel.keyWidth(row, col);
     },
@@ -137,6 +148,6 @@ function moveKeys(mapping: LayoutMapping): LayoutMapping {
     mapping[KeyboardRows.Upper][6] = "-";
     mapping[KeyboardRows.Upper].splice(-2, 2, "'", "⌫");
     mapping[KeyboardRows.Home].splice(-2, 2, "⏎");
-    mapping[KeyboardRows.Bottom].splice(6, 1);
+    mapping[KeyboardRows.Bottom][8] = null;
     return mapping;
 }

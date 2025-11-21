@@ -32,11 +32,12 @@ import {eb65BigEnterLayoutModel, eb65LowShiftLayoutModel} from "./eb65LowShiftLa
 import {isCommandKey} from "../mapping/mapping-functions.ts";
 import {katanaLayoutModel} from "./katanaLayoutModel.ts";
 import {
+    eb65CentralEnterLayoutModel,
     eb65MidshiftLayoutModel,
     eb65MidshiftRightRetLayoutModel,
     eb65VerticalEnterLayoutModel
 } from "./eb65MidshiftLayoutModel.ts";
-import {eb65AsymLayoutModel} from "./eb65AysmLayoutModel.ts";
+import {eb65LowShiftWideLayoutModel} from "./eb65LowshiftWideLayoutModel.ts";
 import {eb65MidshiftMaxWideLayoutModel} from "./eb65MidshiftMaxWideLayoutModel.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
@@ -201,7 +202,7 @@ export function getPlankVariant({
             // UI calls this method without variant parameters, so we need a default.
             switch (eb65LowshiftVariant) {
                 default:
-                    return eb65AsymLayoutModel;
+                    return eb65LowShiftWideLayoutModel;
                 case EB65_LowShift_Variant.LESS_GAPS:
                     return eb65LowShiftLayoutModel;
                 case EB65_LowShift_Variant.BIG_ENTER:
@@ -210,11 +211,14 @@ export function getPlankVariant({
         case PlankVariant.EP65_MID_SHIFT:
             switch (eb65MidshiftVariant) {
                 default:
-                    return eb65MidshiftLayoutModel;
+                    return eb65MidshiftLayoutModel; // "wide hands"
+                case EB65_MidShift_Variant.EXTRA_WIDE:
+                    return eb65MidshiftMaxWideLayoutModel;
+                // below are the "narrow hands" subvariants
+                case EB65_MidShift_Variant.CENTRAL_ENTER:
+                    return eb65CentralEnterLayoutModel;
                 case EB65_MidShift_Variant.RIGHT_ENTER:
                     return eb65MidshiftRightRetLayoutModel;
-                case EB65_MidShift_Variant.WIDE_HANDS:
-                    return eb65MidshiftMaxWideLayoutModel;
                 case  EB65_MidShift_Variant.VERTICAL_ENTER:
                     return eb65VerticalEnterLayoutModel;
             }
@@ -229,7 +233,7 @@ export function getLayoutModel(layoutOptions: LayoutOptions): RowBasedLayoutMode
             return splitOrthoLayoutModel;
         case LayoutType.Harmonic:
             return getHarmonicVariant(layoutOptions.harmonicVariant);
-        case LayoutType.ErgoPlank:
+        case LayoutType.Ergoplank:
             return getPlankVariant(layoutOptions);
     }
 }

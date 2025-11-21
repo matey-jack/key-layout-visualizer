@@ -1,6 +1,6 @@
 import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 import {copyAndModifyKeymap} from "./layout-functions.ts";
-import {eb65KeyColorClass} from "./eb65AysmLayoutModel.ts";
+import {eb65KeyColorClass} from "./eb65LowshiftWideLayoutModel.ts";
 import {eb65LowShiftLayoutModel} from "./eb65LowShiftLayoutModel.ts";
 
 export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
@@ -16,8 +16,8 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
         // left-side numbers move to center to make their relative position (from hand home) symmetric to the right side.
         ["Esc", "`~", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
         ["↹", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "⌫"],
-        ["⇧", 0, 1, 2, 3, 4, "-", "", "'", 5, 6, 7, 8, 9, "⇧"],
-        ["Ctrl", 0, 1, 2, 3, 4, "=", null, "\\", 9, 5, 6, 7, 8, null, "↑", null],
+        ["⇧", 0, 1, 2, 3, 4, "-", "\\", "'", 5, 6, 7, 8, 9, "⇧"],
+        ["Ctrl", 0, 1, 2, 3, 4, "=", "€ ¢ £ ¥", 9, 5, 6, 7, 8, null, "↑", null],
         [null, "Cmd", "Fn", "", "⌦", "Alt", "⏎", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
     ],
 
@@ -62,25 +62,20 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
                 }
 
             case KeyboardRows.Lower:
-                return keyWidthMidshiftLower(col);
+                switch (col) {
+                    case 0:
+                        return 1.25;
+                    case 7:
+                        return 1.5
+                    case 13:
+                        return 0.25
+                    default:
+                        return 1;
+                }
         }
         return eb65LowShiftLayoutModel.keyWidth(row, col);
     }
 }
-
-function keyWidthMidshiftLower(col: number): number {
-    switch (col) {
-        case 0:
-            return 1.25;
-        case 7:
-            return 0.5
-        case 14:
-            return 0.25
-        default:
-            return 1;
-    }
-}
-
 
 export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 MidShift",
@@ -168,17 +163,24 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
                         return 1;
                 }
             case KeyboardRows.Bottom:
+                /*
+Center between hand leaves 7.5u left, 8.5u right.
+Left side has 0.5 indent, 1.75u space bar; 5.25 to spread.
+Let's just increase the indent and put 4 modifiers.
+Right side has three arrows, leaving 5.5u, space bar leaving 3.75u.
+Two mods make 2.5u.
+                 */
                 // arrow keys
                 if (col > 10) return 1;
                 switch (col) {
-                    case 0: // indent
-                        return 0.5;
+                    case 0:
+                        return 0.75;
                     case 5:
-                    case 6: // todo: space bars should be 1.75; need to distribute the space
-                        return 2;
+                    case 6:
+                        return 1.75;
                     case 8:
-                    case 10: // right gaps
-                        return 0.5;
+                    case 10:
+                        return 1.25/2;
                     default:
                         return 1.25;
                 }
@@ -197,8 +199,41 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
 }
 
 
+export const eb65CentralEnterLayoutModel: RowBasedLayoutModel = {
+    ...eb65MidshiftRightRetLayoutModel,
+    keyWidth: (row: KeyboardRows, col: number) => {
+        switch (row) {
+            // todo
+            case KeyboardRows.Upper:
+                if (col === 6) {
+                    return 1.5;
+                }
+                break;
+            case KeyboardRows.Home:
+                switch (col) {
+                    case 13: // Right Shift
+                        return 1.5;
+                    case 14: // Page Down
+                        return 1;
+                }
+        }
+        return eb65MidshiftRightRetLayoutModel.keyWidth(row, col);
+    },
+    thirtyKeyMapping: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.thirtyKeyMapping!!, moveEnterToCenter),
+    thumb30KeyMapping: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.thumb30KeyMapping!!, moveEnterToCenter),
+}
+
+function moveEnterToCenter(mapping: LayoutMapping): LayoutMapping {
+    mapping[KeyboardRows.Number][14] = "\\";
+    mapping[KeyboardRows.Number][15] = "⇞";
+    mapping[KeyboardRows.Upper][6] = "⏎";
+    delete mapping[KeyboardRows.Upper][7];
+    mapping[KeyboardRows.Home][14] = "⇟";
+    return mapping;
+}
+
 export const eb65VerticalEnterLayoutModel: RowBasedLayoutModel = {
-    ...eb65MidshiftLayoutModel,
+    ...eb65MidshiftRightRetLayoutModel,
     keyWidth: (row: KeyboardRows, col: number) => {
         switch (row) {
             case KeyboardRows.Upper:
@@ -213,18 +248,18 @@ export const eb65VerticalEnterLayoutModel: RowBasedLayoutModel = {
                 switch (col) {
                     case 13: // Right Shift
                         return 1.5;
-                    case 14: // gap
+                    case 14: // gap for Enter
                         return 1;
                 }
         }
-        return eb65MidshiftLayoutModel.keyWidth(row, col);
+        return eb65MidshiftRightRetLayoutModel.keyWidth(row, col);
     },
     keyCapHeight: (row: KeyboardRows, col: number) => {
         if (row == KeyboardRows.Upper && col == 14) return 2;
         return 1;
     },
-    thirtyKeyMapping: copyAndModifyKeymap(eb65MidshiftLayoutModel.thirtyKeyMapping!!, moveEnterToVertical),
-    thumb30KeyMapping: copyAndModifyKeymap(eb65MidshiftLayoutModel.thumb30KeyMapping!!, moveEnterToVertical),
+    thirtyKeyMapping: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.thirtyKeyMapping!!, moveEnterToVertical),
+    thumb30KeyMapping: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.thumb30KeyMapping!!, moveEnterToVertical),
 }
 
 function moveEnterToVertical(mapping: LayoutMapping): LayoutMapping {

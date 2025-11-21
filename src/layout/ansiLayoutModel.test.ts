@@ -2,6 +2,7 @@ import {describe, it, expect} from 'vitest';
 
 import {ansiLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
 import {KeyboardRows} from "../base-model.ts";
+import {sum} from "../library/math.ts";
 
 describe('ansiLayoutModel.keyWidth', () => {
     const lastCol = (row: KeyboardRows) =>
@@ -29,10 +30,9 @@ describe('ansiLayoutModel.keyWidth', () => {
 
     it("correct total with of bottom row", () => {
         const row = KeyboardRows.Bottom;
-        const total = ansiLayoutModel.thirtyKeyMapping![row]
-            .map((_, col) => ansiLayoutModel.keyWidth(row, col))
-            .reduce((a, b) => a + b, 0);
-        expect(total).toBeCloseTo(15, 8)
+        const widths = ansiLayoutModel.thirtyKeyMapping![row]
+            .map((_, col) => ansiLayoutModel.keyWidth(row, col));
+        expect(sum(widths)).toBeCloseTo(15, 8)
     });
 
 })

@@ -1,5 +1,5 @@
 import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
-import {eb65KeyColorClass} from "./eb65AysmLayoutModel.ts";
+import {eb65KeyColorClass} from "./eb65LowshiftWideLayoutModel.ts";
 
 export const eb65MidshiftMaxWideLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 MidShift Max Wide",
@@ -10,9 +10,9 @@ export const eb65MidshiftMaxWideLayoutModel: RowBasedLayoutModel = {
     thirtyKeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", null, "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
         ["↹", 0, 1, 2, 3, 4, "`~", "", "\\", 5, 6, 7, 8, 9, "⌫"],
-        ["⇧", 0, 1, 2, 3, 4, "-", "=", null, "'", 5, 6, 7, 8, 9, "⇧"],
-        [null, 0, 1, 2, 3, 4, "⌦", "⇤", "⇥", 9, 5, 6, 7, 8, null, "↑", null],
-        [null, "Ctrl", "Cmd", "Fn", "Alt", "⏎", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
+        ["⇧", 0, 1, 2, 3, 4, "-", "⌦", "'", 5, 6, 7, 8, 9, "⇧"],
+        [null, 0, 1, 2, 3, 4, "=", "⇤", "⇥", 9, 5, 6, 7, 8, null, "↑", null],
+        [null, "Ctrl", "Cmd", "Fn", "Alt", "⏎", " ", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
     ],
 
     // thumb30KeyMapping: [
@@ -71,8 +71,8 @@ export const eb65MidshiftMaxWideLayoutModel: RowBasedLayoutModel = {
                 return 1;
             case KeyboardRows.Home:
                 switch (col) {
-                    case 8:
-                        return 0.5;
+                    case 7:
+                        return 1.5;
                     case lastCol: // Right Shift
                         return 1.5;
                 }
@@ -86,19 +86,29 @@ export const eb65MidshiftMaxWideLayoutModel: RowBasedLayoutModel = {
                 }
                 return 1;
             case KeyboardRows.Bottom:
+                /*
+Center between hands is 7.75u left and 8.25u right.
+Space + half central key is 2.25u.
+Left side has 0.75u indent, leaving 4.75 to spread.
+Let's reduce the indent to 0.5; then 4×1.25u just fits.
+Right side has 3u arrows, leaving 3u to spread.
+Two 1.25u keys leave exactly 2×0.25u for the gaps.
+                 */
                 // arrow keys
-                if (col > 10) return 1;
+                if (col > 11) return 1;
                 // spread a gap between the modifiers
-                if (row == KeyboardRows.Bottom && col > 0 && col < 4) return 1.25 + 0.25/3;
+                // if (col > 0 && col < 4) return 1.25 + 0.25/3;
                 switch (col) {
                     case 0:
-                        return 0.75;
-                    case 5:
-                    case 6:
-                        return 1.75;
-                    case 8:
-                    case 10:
                         return 0.5;
+                    case 5:
+                    case 7:
+                        return 1.75;
+                    case 6:
+                        return 1;
+                    case 9:
+                    case 11:
+                        return 0.25;
                 }
                 return 1.25;
         }
@@ -108,7 +118,7 @@ export const eb65MidshiftMaxWideLayoutModel: RowBasedLayoutModel = {
         return eb65MidshiftMaxWideLayoutModel.keyWidth(row, col);
     },
     leftHomeIndex: 4,
-    rightHomeIndex: 11,
+    rightHomeIndex: 10,
 
     staggerOffsets: [0.5, 0.25, 0, -0.25],
     symmetricStagger: true,

@@ -40,8 +40,8 @@
   (Maybe add the minimum SFB layout from Oxley each with and without thumb letter use as the right fence post for the diagram.)
     done here ==> https://docs.google.com/spreadsheets/d/1E3uta8rgbxNcu7onwrg5y7bJaWY-TkvE0JlzE-3GAtY/edit?usp=sharing
 
-- ErgoPlank variants:
-   - ErgoPlank 60 aka "Katana max with ANSI bottom row": offsets 0.5, 0.25, 0, 0.5; Keys: 14, 14, 15, 14.
+- Ergoplank variants:
+   - Ergoplank 60 aka "Katana max with ANSI bottom row": offsets 0.5, 0.25, 0, 0.5; Keys: 14, 14, 15, 14.
       (The difference to the original Katana is mostly in the bigger Shift keys, while unfortunately also Escape is big.)
    - original Katana with 力 icon, offsets: 0, 0.5, 0.25, 0. Keys: 15, 14, 14, 15.
 - Ergoboard variants (all my 65% type variants don't look like a simple Plank anymore, therefore "board".) 
@@ -80,7 +80,7 @@ missing core features:
 - refactor URL generation/parsing to be type-specific and/or compress smaller options into a single parameter value.
 - Fix Harmonic / Katana layout options display; add sub-options for the variants below the variant. 
   (Using a variant-component which includes the button and the options, which are only visible when the variant is selected.)
-- ErgoPlank and Katana logos to fill the gap, especially Ergoboard 65 Midshift with a nice connection between both gaps.
+- Ergoplank and Katana logos to fill the gap, especially Ergoboard 65 Midshift with a nice connection between both gaps.
 - Rectangle around the keyboard to signify the 60% or 65% box.
 
 - add some more explanations, especially for:

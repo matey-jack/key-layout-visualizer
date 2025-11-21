@@ -64,7 +64,7 @@ export const qweertyMapping: FlexMapping = {
 
 export const ergoFix: FlexMapping = {
     name: "ErgoFix",
-    description: `The changed stagger on the left-hand side of the ErgoPlank keyboard layout 
+    description: `The changed stagger on the left-hand side of the Ergoplank keyboard layout 
     makes the Qwerty letters B and T even harder to access than they already are on Qwerty. 
     Users that are not touch-typing will not notice this small shift in position, 
     but for touch-typists the change is so noticeable and big, that we can as well place the letters somewhere else.

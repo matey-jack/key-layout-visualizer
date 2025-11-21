@@ -5,7 +5,7 @@ import {fillMapping, getKeyPositions, getLayoutModel} from "./layout-functions.t
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
 import {Signal} from "@preact/signals";
-import {ErgoPlankLayoutOptions} from "./ErgoPlankLayoutOptions.tsx";
+import {ErgoplankLayoutOptions} from "./ErgoplankLayoutOptions.tsx";
 
 interface LayoutAreaProps {
     appState: AppState;
@@ -45,7 +45,7 @@ interface TopBarProps {
 }
 
 function TopBar({layout, setLayout}: TopBarProps) {
-    const layoutOrder = [LayoutType.ANSI, LayoutType.Harmonic, LayoutType.ErgoPlank, LayoutType.Ortho];
+    const layoutOrder = [LayoutType.ANSI, LayoutType.Harmonic, LayoutType.Ergoplank, LayoutType.Ortho];
     return <div className="layout-top-bar-container">
         <BlankGridElement/>
         {layoutOrder.map((layoutType) =>
@@ -114,8 +114,8 @@ function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions, mapping}: La
                 variant={layoutOptions.harmonicVariant}
                 setVariant={(variant) => setLayoutOptions({...layoutOptions, harmonicVariant: variant})}
             />
-        case LayoutType.ErgoPlank:
-            return <ErgoPlankLayoutOptions
+        case LayoutType.Ergoplank:
+            return <ErgoplankLayoutOptions
                 variant={layoutOptions.plankVariant}
                 setVariant={(variant) => setLayoutOptions({...layoutOptions, plankVariant: variant})}
                 options={layoutOptions}

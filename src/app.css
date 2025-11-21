@@ -43,13 +43,17 @@ body {
 
 .plank-layout-options-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1.25fr 1.5fr;
     justify-items: center;
 }
 
+.ergoplank-midshift-sub-variants-container {
+    margin-left: 1rem;
+}
+
 .layout-options-button {
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
+    margin: 0.5rem;
+    padding: 0.5rem;
     border-radius: 4px;
 }
 

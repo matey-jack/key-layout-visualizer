@@ -6,8 +6,8 @@ export const eb65KeyColorClass = (label: string, row: KeyboardRows, col: number)
     return defaultKeyColor(label, row, col);
 };
 
-export const eb65AsymLayoutModel: RowBasedLayoutModel = {
-    name: "Ergoboard 65 Wide Hands",
+export const eb65LowShiftWideLayoutModel: RowBasedLayoutModel = {
+    name: "Ergoboard 65 Low Shift / Wide Hands",
     description: `Widest possible hand position with the arrow cluster and lower row Shift keys.`,
 
     // row lengths: 16, 15, 15 (with 0.5u gap), 16, 14
@@ -55,7 +55,7 @@ export const eb65AsymLayoutModel: RowBasedLayoutModel = {
     rowStart: (_row: KeyboardRows) => 0,
 
     keyWidth: (row: KeyboardRows, col: number): number => {
-        const lastCol = eb65AsymLayoutModel.thirtyKeyMapping![row].length - 1;
+        const lastCol = eb65LowShiftWideLayoutModel.thirtyKeyMapping![row].length - 1;
         switch (row) {
             case KeyboardRows.Number:
                 switch (col) {
@@ -91,6 +91,9 @@ export const eb65AsymLayoutModel: RowBasedLayoutModel = {
                 }
                 return 1;
             case KeyboardRows.Bottom:
+                // center between hands is at 7.25 / 8.75.
+                // left side filled perfectly by 0.5 indent + 4×1.25u + 1.75u.
+                const beforeArrows = 10;
                 switch (col) {
                     case 0:
                         return 0.5; // gap
@@ -99,10 +102,10 @@ export const eb65AsymLayoutModel: RowBasedLayoutModel = {
                         return 1.75; // space
                     case 8:
                         return 1; // Fn
-                    case 10:
+                    case beforeArrows:
                         return 0.5; // gap
                 }
-                return col > 10 ? 1 : 1.25;
+                return col > beforeArrows ? 1 : 1.25;
             default:
                 return 1;
         }

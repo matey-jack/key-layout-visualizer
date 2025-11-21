@@ -1,8 +1,9 @@
 import {describe, expect, it} from 'vitest';
 
 import {eb65LowShiftLayoutModel as model} from "./eb65LowShiftLayoutModel.ts";
+import {sum} from "../library/math.ts";
 
-describe('ErgoBoard 65 layout model', () => {
+describe('ErgoBoard 65 Low Shift layout model', () => {
     const thirtyKeyMapping = model.thirtyKeyMapping!;
     it('thirtyKeyMapping row length', () => {
         expect(thirtyKeyMapping[0].length).toBe(16);
@@ -30,4 +31,13 @@ describe('ErgoBoard 65 layout model', () => {
             expect(model.singleKeyEffort[i].length, `row ${i}`).toBe(thirtyKeyMapping[i].length);
         }
     })
+
+    it('key width', () => {
+        for (let r = 0; r < 5; r++) {
+            const widths = model.thirtyKeyMapping![r].map((_, c) => {
+                return model.keyWidth(r, c);
+            });
+            console.log(sum(widths), widths);
+        }
+    });
 });
