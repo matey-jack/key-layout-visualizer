@@ -276,6 +276,8 @@ export const eb65VerticalEnterLayoutModel: RowBasedLayoutModel = {
                     case 14: // gap for Enter
                         return 1;
                 }
+            // Note that the 2u vertical Enter key also entitles us to a 2u space bar,
+            // but this would make the outer space harder to reach, so I'm not doing it.
         }
         return eb65MidshiftRightRetLayoutModel.keyWidth(row, col);
     },

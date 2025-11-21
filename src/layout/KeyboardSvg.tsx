@@ -140,22 +140,25 @@ function createKeySizeGroups(keyPositions: KeyPosition[], keyCapWidthFn: (row: n
     return keySizes;
 }
 
-function getKeySizeClass(keyCapWidth: number, keyCapHeight: number, sizeList: number[]) {
-    const size = Math.max(keyCapWidth, keyCapHeight);
-    if (size == 1) return "key-size-square";
-    return "key-size-" + sizeList.indexOf(size);
+function getKeySizeClass(keyCapSize: number, sizeList: number[]) {
+    if (keyCapSize == 1) return "key-size-square";
+    return "key-size-" + sizeList.indexOf(keyCapSize);
 }
 
 export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizType}: KeyboardProps) {
     // need to call the function to properly bind the call to the layout model
     const keyCapWidthFn = (r: number, c: number) =>
         layoutModel.keyCapWidth ? layoutModel.keyCapWidth(r, c) : layoutModel.keyWidth(r, c);
-    const keyCapSizes = createKeySizeGroups(keyPositions, keyCapWidthFn);
+    const keyCapSizeFn= (r: number, c: number) =>
+        Math.max(layoutModel.keyCapHeight ? layoutModel.keyCapHeight(r, c) : 1, keyCapWidthFn(r, c));
+    const keyCapSizes = createKeySizeGroups(keyPositions, keyCapSizeFn);
+
     return keyPositions.map(({label, row, col, colPos}) => {
         const keyColorFunction = (layoutModel.keyColorClass) || defaultKeyColor;
         const keyCapWidth = keyCapWidthFn(row, col);
         const keyCapHeight = layoutModel.keyCapHeight ? layoutModel.keyCapHeight(row, col) : 1;
-        const bgClass = (vizType == VisualizationType.LayoutKeySize ? getKeySizeClass(keyCapWidth, keyCapHeight, keyCapSizes)
+        const keyCapSize = Math.max(keyCapWidth, keyCapHeight);
+        const bgClass = (vizType == VisualizationType.LayoutKeySize ? getKeySizeClass(keyCapSize, keyCapSizes)
                 : vizType == VisualizationType.LayoutKeyEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
                     : vizType == VisualizationType.LayoutFingering // && (layoutModel.mainFingerAssignment[row][col] !== null)
                         ? getFingeringClasses(layoutModel, row, col, label)
@@ -173,10 +176,9 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
         // this would be a generically better approach than the current left-aligning,
         // but for the Escape key on Ergoplank, left-align is actually better.
         // const capColPos = colPos + (slotWidth - capWidth)/2;
+
         if (vizType == VisualizationType.LayoutKeySize) {
-            label = keyCapWidth > 1 ? keyCapWidth + "" :
-                keyCapHeight > 1 ? keyCapHeight + ""
-                    : "";
+            label = keyCapSize > 1 ? keyCapSize + "" : "";
         }
         return <Key
             label={label}
