@@ -396,6 +396,48 @@ label.disabled {
     background-color: #c35221;
 }
 
+.keysize-counter-item {
+    display: inline-block;
+    text-align: center;
+    width: 3rem;
+    padding: 0.3rem;
+    margin: 0.2rem;
+    margin-right: 0.5rem;
+    border: 1px solid black;
+}
+
+.keysize-counter-item.key-size-0 {
+    background: #fb7b77;
+}
+
+.keysize-counter-item.key-size-1 {
+    background: #fdc170;
+}
+
+.keysize-counter-item.key-size-2 {
+    background: #f3f87f;
+}
+
+.keysize-counter-item.key-size-3 {
+    background: #98f786;
+}
+
+.keysize-counter-item.key-size-4 {
+    background: #69ebfc;
+}
+
+.keysize-counter-item.key-size-5 {
+    background: #6d9efc;
+}
+
+.keysize-counter-item.key-size-6 {
+    background: #937df8;
+}
+
+.keysize-counter-item.key-size-7 {
+    background: #f78ef0;
+}
+
 .diff-counter {
     display: inline-block;
     text-align: center;

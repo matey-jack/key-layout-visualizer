@@ -1,5 +1,13 @@
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping/mapping-functions.ts";
-import {defaultKeyColor, isHomeKey, lettersAndVIP} from "./layout-functions.ts";
+import {
+    createKeySizeGroups,
+    defaultKeyColor, getKeySizeClass,
+    isHomeKey,
+    keyCapHeight,
+    keyCapSize,
+    keyCapWidth,
+    lettersAndVIP
+} from "./layout-functions.ts";
 import {
     BigramMovement,
     BigramType,
@@ -128,37 +136,14 @@ function getFingeringClasses(layoutModel: RowBasedLayoutModel, row: number, col:
     return bgClass + " " + borderClass;
 }
 
-function createKeySizeGroups(keyPositions: KeyPosition[], keyCapWidthFn: (row: number, col: number) => number) {
-    const keySizes: number[] = [];
-    for (const key of keyPositions) {
-        const size = keyCapWidthFn(key.row, key.col);
-        if (size != 1 && !keySizes.includes(size)) {
-            keySizes.push(size);
-        }
-    }
-    keySizes.sort();
-    return keySizes;
-}
-
-function getKeySizeClass(keyCapSize: number, sizeList: number[]) {
-    if (keyCapSize == 1) return "key-size-square";
-    return "key-size-" + sizeList.indexOf(keyCapSize);
-}
-
 export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizType}: KeyboardProps) {
-    // need to call the function to properly bind the call to the layout model
-    const keyCapWidthFn = (r: number, c: number) =>
-        layoutModel.keyCapWidth ? layoutModel.keyCapWidth(r, c) : layoutModel.keyWidth(r, c);
-    const keyCapSizeFn= (r: number, c: number) =>
-        Math.max(layoutModel.keyCapHeight ? layoutModel.keyCapHeight(r, c) : 1, keyCapWidthFn(r, c));
-    const keyCapSizes = createKeySizeGroups(keyPositions, keyCapSizeFn);
-
+    const keyCapSizes = createKeySizeGroups(layoutModel);
     return keyPositions.map(({label, row, col, colPos}) => {
         const keyColorFunction = (layoutModel.keyColorClass) || defaultKeyColor;
-        const keyCapWidth = keyCapWidthFn(row, col);
-        const keyCapHeight = layoutModel.keyCapHeight ? layoutModel.keyCapHeight(row, col) : 1;
-        const keyCapSize = Math.max(keyCapWidth, keyCapHeight);
-        const bgClass = (vizType == VisualizationType.LayoutKeySize ? getKeySizeClass(keyCapSize, keyCapSizes)
+        const capWidth = keyCapWidth(layoutModel, row, col);
+        const capHeight = keyCapHeight(layoutModel, row, col);
+        const capSize = Math.max(capWidth, capHeight);
+        const bgClass = (vizType == VisualizationType.LayoutKeySize ? getKeySizeClass(capSize, keyCapSizes)
                 : vizType == VisualizationType.LayoutKeyEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
                     : vizType == VisualizationType.LayoutFingering // && (layoutModel.mainFingerAssignment[row][col] !== null)
                         ? getFingeringClasses(layoutModel, row, col, label)
@@ -178,7 +163,7 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
         // const capColPos = colPos + (slotWidth - capWidth)/2;
 
         if (vizType == VisualizationType.LayoutKeySize) {
-            label = keyCapSize > 1 ? keyCapSize + "" : "";
+            label = capSize > 1 ? capSize + "" : "";
         }
         return <Key
             label={label}
@@ -186,8 +171,8 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
             ribbonClass={ribbonClass}
             row={row}
             col={colPos}
-            width={keyCapWidth}
-            height={keyCapHeight}
+            width={capWidth}
+            height={capHeight}
             frequencyCircleRadius={frequencyCircleRadius}
             showHomeMarker={vizType == VisualizationType.LayoutKeySize && isHomeKey(layoutModel, row, col)}
             key={row + ',' + col}

@@ -52,6 +52,35 @@ export function defaultKeyColor(label: string, _row: number, _col: number): KeyC
     return "";
 }
 
+export const keyCapWidth = (lm: RowBasedLayoutModel, r: KeyboardRows, c: number)=>
+    lm.keyCapWidth ? lm.keyCapWidth(r, c) : lm.keyWidth(r, c);
+
+export const keyCapHeight = (lm: RowBasedLayoutModel, r: KeyboardRows, c: number)=>
+    lm.keyCapHeight ? lm.keyCapHeight(r, c) : 1;
+
+// This is needed in this form somewhere and I don't want to refactor that 🤷‍♀️
+export const keyCapSize = (lm: RowBasedLayoutModel)=>
+    ((r: KeyboardRows, c: number)=> Math.max(keyCapHeight(lm, r, c), keyCapWidth(lm, r, c)));
+
+export function createKeySizeGroups(layoutM: RowBasedLayoutModel) {
+    const keySizes: number[] = [];
+    (layoutM.thirtyKeyMapping || layoutM.fullMapping)!.forEach((row, r) => {
+        row.forEach((label, c) => {
+            const size = keyCapSize(layoutM)(r, c);
+            if (label !== null && size != 1 && !keySizes.includes(size)) {
+                keySizes.push(size);
+            }
+        })
+    });
+    keySizes.sort();
+    return keySizes;
+}
+
+export function getKeySizeClass(keyCapSize: number, sizeList: number[]) {
+    if (keyCapSize == 1) return "key-size-square";
+    return "key-size-" + sizeList.indexOf(keyCapSize);
+}
+
 export function onlySupportsWide(mapping: FlexMapping) {
     return !mapping.mapping30 && !mapping.mappingAnsi;
 }

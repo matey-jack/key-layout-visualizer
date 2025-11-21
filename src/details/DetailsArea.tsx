@@ -13,7 +13,14 @@ import {
     VisualizationType
 } from "../base-model.ts";
 import {AppState} from "../app-model.ts";
-import {compatibilityScore, diffSummary, diffToBase, fillMapping} from "../layout/layout-functions.ts";
+import {
+    compatibilityScore,
+    createKeySizeGroups,
+    diffSummary,
+    diffToBase,
+    fillMapping, getKeySizeClass,
+    keyCapSize
+} from "../layout/layout-functions.ts";
 import {TruncatedText} from "../components/TruncatedText.tsx";
 import {bigramClassByType, getEffortClass} from "../layout/KeyboardSvg.tsx";
 import {ComponentChildren} from "preact";
@@ -104,7 +111,8 @@ export function MappingSummary({mapping, layout}: MappingSummaryProps) {
 export function FingeringDetails({layout: _}: { layout: RowBasedLayoutModel }) {
     return <p>
         Colors on the keys denote which keys will be pressed by the same finger according to the touch-typing method.
-        This allows us to see, how much work each finger has, how far it has to move, and what keys can cause bigram conflicts.
+        This allows us to see, how much work each finger has, how far it has to move, and what keys can cause bigram
+        conflicts.
         <br/>
         Some people will probably hit some of those keys with different fingers. Given the many bigram conflicts and
         general awkwardness of the ANSI layout and Qwerty mapping, it might not even be the same finger for every tap
@@ -114,12 +122,52 @@ export function FingeringDetails({layout: _}: { layout: RowBasedLayoutModel }) {
     </p>
 }
 
-export function KeySizeDetails({layout: _}: { layout: RowBasedLayoutModel }) {
-    return <p>
+function countKeysBySize(layoutM: RowBasedLayoutModel) {
+    const counts = new Map<number, number>();
+    (layoutM.thirtyKeyMapping || layoutM.fullMapping)!.forEach((row, r) => {
+        row.forEach((label, c) => {
+            if (label !== null) {
+                const size = keyCapSize(layoutM)(r, c);
+                counts.set(size, (counts.get(size) ?? 0) + 1);
+            }
+        })
+    })
+    return counts;
+}
+
+export function KeySizeDetails({layout}: { layout: RowBasedLayoutModel }) {
+    const countsBySize = countKeysBySize(layout);
+    const total = sum([...countsBySize.values()]);
+    const sizeList = createKeySizeGroups(layout);
+    return <div><p>
         Colors on the keys show which keycaps have the same size.<br/>
         It's easier to swap around keycaps to different places on the keyboard if many of them share the same size.
         It also makes production and logistics easier.
     </p>
+        <div>
+            <KeySizeDetailsLegendItem size={1} count={countsBySize.get(1)!} sizeList={sizeList}/>
+            {sizeList.map((s) =>
+                <KeySizeDetailsLegendItem size={s} count={countsBySize.get(s)!} sizeList={sizeList}/>
+            )}
+            <div>Total: {total} keys.</div>
+        </div>
+    </div>
+}
+
+type KeySizeDetailsLegendItemProps = {
+    size: number;
+    sizeList: number[];
+    count: number;
+    children?: ComponentChildren;
+}
+
+export function KeySizeDetailsLegendItem({size, count, sizeList}: KeySizeDetailsLegendItemProps) {
+    return <div>
+        <div class={"keysize-counter-item " + getKeySizeClass(size, sizeList)}>
+            {size}
+        </div>
+        – {count} keys.
+    </div>
 }
 
 interface KeyEffortDetailsProps {
@@ -138,13 +186,16 @@ export function SingleKeyEffortDetails({layout, mapping}: KeyEffortDetailsProps)
     return <div>
         <p>
             There is always some individual bias in determining how hard or easy each key on the board is to reach from
-            the home position, which is why the statistic on the left shows only the usage of the eight or nine home keys.
+            the home position, which is why the statistic on the left shows only the usage of the eight or nine home
+            keys.
             Those are the easiest to type for any shape of keyboard or hand.
         </p>
         <p>
-            The following legend shows the percentage (actually permilltage 😅) of key strokes (according to English average letter frequency),
+            The following legend shows the percentage (actually permilltage 😅) of key strokes (according to English
+            average letter frequency),
             that fall on each color of letter. I assigned an effort score for each color of letter. By multiplying
-            frequency with the score and adding it all up, we get a "total single key effort score" for this keymap in English of
+            frequency with the score and adding it all up, we get a "total single key effort score" for this keymap in
+            English of
             <b> {weighSingleKeyEffort(layout, charMap, englishFreqs)}</b>.
         </p>
         <div>
@@ -258,11 +309,13 @@ export function BigramEffortDetails({layout, mapping}: BigramEffortDetailsProps)
             Like for single-key effort, the weighted sum is the total Typing Effort Score for bigrams.
         </p>
         <BigramDetailsLegendItem bigramType={BigramType.SameFinger} frequency={freqs[BigramType.SameFinger]}>
-            "Same-finger Bigram": The worst thing to happen is having to use the same finger subsequently on different keys.
+            "Same-finger Bigram": The worst thing to happen is having to use the same finger subsequently on different
+            keys.
             We count this as highest effort.
         </BigramDetailsLegendItem>
         <BigramDetailsLegendItem bigramType={BigramType.AltFinger} frequency={freqs[BigramType.AltFinger]}>
-            "Alt-Fingering": When the keyboard layout makes it easy to type some keys with another finger, the single finger bottleneck
+            "Alt-Fingering": When the keyboard layout makes it easy to type some keys with another finger, the single
+            finger bottleneck
             can be avoided. (Maybe you noticed yourself typing "er", "cd", or "un" with two different fingers, although
             strict touch-typing rules assign the same finger to both keys.)
         </BigramDetailsLegendItem>
@@ -275,7 +328,8 @@ export function BigramEffortDetails({layout, mapping}: BigramEffortDetailsProps)
             Two keys on neighboring rows are no extra effort.
         </BigramDetailsLegendItem>
         <BigramDetailsLegendItem bigramType={BigramType.SameRow} frequency={freqs[BigramType.SameRow]}>
-            "Generalized Rolls": Two keys on the same row are so easy and fun to type, that many key maps try to maximize those.
+            "Generalized Rolls": Two keys on the same row are so easy and fun to type, that many key maps try to
+            maximize those.
         </BigramDetailsLegendItem>
         <BigramDetailsLegendItem bigramType={BigramType.InvolvesThumb} frequency={freqs[BigramType.InvolvesThumb]}>
             Bigrams where one letter is on a thumb key are not shown, because (most people's) thumbs move
@@ -303,7 +357,7 @@ interface BigramDetailsLegendItemProps {
 export function BigramDetailsLegendItem({bigramType, frequency, children}: BigramDetailsLegendItemProps) {
     return <div>
         <div class={"bigram-effort-legend-item " + bigramClassByType[bigramType]}>
-            {Math.round(frequency??0)}
+            {Math.round(frequency ?? 0)}
         </div>
         [Score: {bigramEffort[bigramType]}] {children}
     </div>
