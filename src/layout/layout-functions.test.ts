@@ -3,6 +3,7 @@ import {describe, expect, it} from 'vitest';
 import {Finger, Hand, hand, KeyboardRows, MappingChange} from "../base-model.ts";
 import {
     characterToFinger,
+    copyAndModifyKeymap,
     diffSummary,
     diffToBase,
     fillMapping,
@@ -90,6 +91,43 @@ describe('hasMatchingMapping', () => {
     it('no Thumby mapping on ANSI-narrow', () => {
         expect(hasMatchingMapping(ansiLayoutModel, colemakThumbyDMapping)).toBeFalsy();
     }) ;
+});
+
+describe('copyAndModifyKeymap', () => {
+    it('returns a modified copy without mutating the original matrix', () => {
+        const original = [
+            ['a', 'b'],
+            ['c', 'd'],
+        ];
+        const updated = copyAndModifyKeymap(original, (matrix) => {
+            matrix[0][1] = 'x';
+            matrix.push(['e']);
+            return matrix;
+        });
+
+        expect(updated).toEqual([
+            ['a', 'x'],
+            ['c', 'd'],
+            ['e'],
+        ]);
+        expect(original).toEqual([
+            ['a', 'b'],
+            ['c', 'd'],
+        ]);
+    });
+
+    it('creates new row references before invoking the modifier', () => {
+        const original = [
+            ['a', 'b'],
+            ['c', 'd'],
+        ];
+        copyAndModifyKeymap(original, (matrix) => {
+            expect(matrix).not.toBe(original);
+            expect(matrix[0]).not.toBe(original[0]);
+            expect(matrix[1]).not.toBe(original[1]);
+            return matrix;
+        });
+    });
 });
 
 describe('finger assignment consistency', () => {
