@@ -149,7 +149,7 @@ export function KeySizeDetails({layout}: { layout: RowBasedLayoutModel }) {
             {sizeList.map((s) =>
                 <KeySizeDetailsLegendItem size={s} count={countsBySize.get(s)!} sizeList={sizeList}/>
             )}
-            <div>Total: {total} keys.</div>
+            <div><div class="keysize-counter-item"><b>Total</b></div> – {total} keys.</div>
         </div>
     </div>
 }
