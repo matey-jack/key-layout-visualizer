@@ -1,7 +1,7 @@
 import {FlexMapping, LayoutType, LayoutTypeNames, VisualizationType} from "../base-model.ts";
 import {AppState, LayoutOptions} from "../app-model.ts";
 import {BigramLines, KeyboardSvg, RowBasedKeyboard, StaggerLines} from "./KeyboardSvg.tsx";
-import {fillMapping, getKeyPositions, getLayoutModel} from "./layout-functions.ts";
+import {fillMapping, getKeyPositions} from "./layout-functions.ts";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
 import {Signal} from "@preact/signals";

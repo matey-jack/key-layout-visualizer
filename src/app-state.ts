@@ -12,9 +12,9 @@ import {
     diffToBase,
     fillMapping,
     getKeyPositions,
-    getLayoutModel,
     hasMatchingMapping
 } from "./layout/layout-functions.ts";
+import {getLayoutModel} from "./layout-selection.ts";
 import {allMappings, colemakMapping, qwertyMapping} from "./mapping/mappings.ts";
 import {getBigramMovements} from "./bigrams.ts";
 

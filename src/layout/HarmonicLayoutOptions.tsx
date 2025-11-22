@@ -1,5 +1,5 @@
 import {HarmonicVariant} from "../app-model.ts";
-import {getHarmonicVariant} from "./layout-functions.ts";
+import {getHarmonicVariant} from "../layout-selection.ts";
 
 export interface HarmonicLayoutOptionsProps {
     variant: HarmonicVariant;

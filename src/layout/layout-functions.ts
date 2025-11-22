@@ -7,38 +7,12 @@ import {
     KeyColor,
     KeyPosition,
     LayoutMapping,
-    LayoutType,
     MappingChange,
     RowBasedLayoutModel
 } from "../base-model.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
-import {
-    EB65_LowShift_Variant,
-    EB65_MidShift_Variant,
-    HarmonicVariant,
-    LayoutOptions,
-    PlankVariant
-} from "../app-model.ts";
-import {getAnsiVariant} from "./ansiLayoutModel.ts";
-import {splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
-import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 import {sum} from "../library/math.ts";
-import {harmonic14TraditionalLayoutModel} from "./harmonic14TraditionalLayoutModel.ts";
-import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
-import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
-import {harmonic14WideLayoutModel} from "./harmonic14WideLayoutModel.ts";
-import {ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
-import {eb65BigEnterLayoutModel, eb65LowShiftLayoutModel} from "./eb65LowShiftLayoutModel.ts";
 import {isCommandKey} from "../mapping/mapping-functions.ts";
-import {katanaLayoutModel} from "./katanaLayoutModel.ts";
-import {
-    eb65CentralEnterLayoutModel,
-    eb65MidshiftLayoutModel,
-    eb65MidshiftRightRetLayoutModel,
-    eb65VerticalEnterLayoutModel
-} from "./eb65MidshiftLayoutModel.ts";
-import {eb65LowShiftWideLayoutModel} from "./eb65LowshiftWideLayoutModel.ts";
-import {eb65MidshiftMaxWideLayoutModel} from "./eb65MidshiftMaxWideLayoutModel.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
     if (row != KeyboardRows.Home) return false;
@@ -203,73 +177,6 @@ export function compatibilityScore(diffSummy: Record<MappingChange, number>): nu
     return diffSummy[MappingChange.SameFinger] * 0.5 +
         diffSummy[MappingChange.SameHand] * 1.0 +
         diffSummy[MappingChange.SwapHands] * 2.0;
-}
-
-export function getHarmonicVariant(variant: HarmonicVariant) {
-    switch (variant) {
-        case HarmonicVariant.H14_Wide:
-            return harmonic14WideLayoutModel;
-        case HarmonicVariant.H14_Traditional:
-            return harmonic14TraditionalLayoutModel;
-        case HarmonicVariant.H13_Wide:
-            return harmonic13WideLayoutModel;
-        case HarmonicVariant.H13_MidShift:
-            return harmonic13MidShiftLayoutModel;
-        case HarmonicVariant.H12:
-            return harmonic12LayoutModel;
-    }
-}
-
-export function getPlankVariant({
-                                    plankVariant,
-                                    ep60Arrows,
-                                    eb65LowshiftVariant,
-                                    eb65MidshiftVariant
-                                }: Partial<LayoutOptions>): RowBasedLayoutModel {
-    switch (plankVariant) {
-        case PlankVariant.KATANA_60:
-            return katanaLayoutModel;
-        case PlankVariant.EP60:
-        default:
-            return ep60Arrows ? ep60WithArrowsLayoutModel : ergoPlank60LayoutModel;
-        case PlankVariant.EB65_LOW_SHIFT:
-            // UI calls this method without variant parameters, so we need a default.
-            switch (eb65LowshiftVariant) {
-                default:
-                    return eb65LowShiftWideLayoutModel;
-                case EB65_LowShift_Variant.LESS_GAPS:
-                    return eb65LowShiftLayoutModel;
-                case EB65_LowShift_Variant.BIG_ENTER:
-                    return eb65BigEnterLayoutModel;
-            }
-        case PlankVariant.EB65_MID_SHIFT:
-            switch (eb65MidshiftVariant) {
-                default:
-                    return eb65MidshiftLayoutModel; // "wide hands"
-                case EB65_MidShift_Variant.EXTRA_WIDE:
-                    return eb65MidshiftMaxWideLayoutModel;
-                // below are the "narrow hands" subvariants
-                case EB65_MidShift_Variant.CENTRAL_ENTER:
-                    return eb65CentralEnterLayoutModel;
-                case EB65_MidShift_Variant.RIGHT_ENTER:
-                    return eb65MidshiftRightRetLayoutModel;
-                case  EB65_MidShift_Variant.VERTICAL_ENTER:
-                    return eb65VerticalEnterLayoutModel;
-            }
-    }
-}
-
-export function getLayoutModel(layoutOptions: LayoutOptions): RowBasedLayoutModel {
-    switch (layoutOptions.type) {
-        case LayoutType.ANSI:
-            return getAnsiVariant(layoutOptions);
-        case LayoutType.Ortho:
-            return splitOrthoLayoutModel;
-        case LayoutType.Harmonic:
-            return getHarmonicVariant(layoutOptions.harmonicVariant);
-        case LayoutType.Ergoplank:
-            return getPlankVariant(layoutOptions);
-    }
 }
 
 // keep in sync with KeyboardSvg.viewBox
