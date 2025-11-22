@@ -917,6 +917,7 @@ export const maltronMapping: FlexMapping = {
     name: "Maltron",
     sourceUrl: "https://www.maltron.com/the-maltron-letter-layout-advantage.html",
     sourceLinkTitle: "Maltron Company Website",
+    localMaximum: true,
     description: `Before the keyboard mapping community existed, the Maltron company produced and marketed keyboards that 
     had their own letter mapping... and remarkably with a letter on a thumb key! 
     This is designed exclusively for a split ortho board and I'll leave it at that.`,

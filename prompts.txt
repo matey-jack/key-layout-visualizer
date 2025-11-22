@@ -6,3 +6,13 @@ Don't fix the layout models that are inconsistent. I will do it later myself.
 For reporting the names of LMs in the test, use their .name property.
 When names are repeated, add specific .name properties to the LMs which are lacking them.
 
+---
+
+In the MappingArea, add a checkbox (using components/CheckboxWithLabel.tsx) with label "show all mappings".
+By default, this should be switched off, and the mapping list below should only show mappings with the localMaximum flag and Qwerty (standard).
+When the flag is on, the list should look exactly as it does now.
+But when it's off, don't show color backgrounds in the list, except for the currently selected mapping.
+
+Started 21:34
+
+Keep the signal for this local to the MappingList. (I did that myself, as well as another fix.)
