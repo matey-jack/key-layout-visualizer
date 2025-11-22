@@ -1,6 +1,5 @@
 import {Finger, FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel, SKE_AWAY} from "../base-model.ts";
-import {copyAndModifyKeymap} from "./layout-functions.ts";
-import {eb65KeyColorClass} from "./eb65LowshiftWideLayoutModel.ts";
+import {copyAndModifyKeymap, eb65KeyColorClass} from "./layout-functions.ts";
 import {eb65LowShiftLayoutModel} from "./eb65LowShiftLayoutModel.ts";
 
 export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {

@@ -1,5 +1,6 @@
 import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
-import {eb65KeyColorClass} from "./eb65LowshiftWideLayoutModel.ts";
+
+import {eb65KeyColorClass} from "./layout-functions.ts";
 
 export const eb65MidshiftMaxWideLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 MidShift Max Wide",

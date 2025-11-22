@@ -1,6 +1,5 @@
 import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
-import {copyAndModifyKeymap} from "./layout-functions.ts";
-import {eb65KeyColorClass} from "./eb65LowshiftWideLayoutModel.ts";
+import {copyAndModifyKeymap, eb65KeyColorClass} from "./layout-functions.ts";
 
 export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65",

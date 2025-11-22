@@ -38,7 +38,7 @@ describe('ergoPlank60LayoutModel', () => {
         const charMap = fillMapping(ergoPlank60LayoutModel, qwertyMapping)!;
         expect(charMap[1]).toEqual(['↹', 'q', 'w', 'e', 'r', 't', '-', null,  '=', 'y', 'u', 'i', 'o', 'p', '\\']);
         const keyPositions = getKeyPositions(ergoPlank60LayoutModel, false, charMap);
-        console.log(keyPositions.slice(14 + 5, 14 + 8));
+        // console.log(keyPositions.slice(14 + 5, 14 + 8));
         // the key after the gap
         expect(keyPositions[21].colPos).toEqual(8.75);
     });

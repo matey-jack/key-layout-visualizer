@@ -1,10 +1,5 @@
-import {FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
-import {defaultKeyColor} from "./layout-functions.ts";
-
-export const eb65KeyColorClass = (label: string, row: KeyboardRows, col: number)=> {
-    if (label && "⏎↑↓←→".includes(label) || label == "Esc") return KEY_COLOR.HIGHLIGHT;
-    return defaultKeyColor(label, row, col);
-};
+import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
+import {eb65KeyColorClass} from "./layout-functions.ts";
 
 export const eb65LowShiftWideLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 Low Shift / Wide Hands",
