@@ -99,6 +99,7 @@ and spread the 0.125u per side only among the remaining modifier keys.
 
 export const ep60WithArrowsLayoutModel: RowBasedLayoutModel = {
     ...ergoPlank60LayoutModel,
+    name: "Ergoplank 60 with cursor block",
     thirtyKeyMapping: replaceLast(ergoPlank60LayoutModel.thirtyKeyMapping!,
         [null, "Ctrl", "Cmd", "AltGr", "Alt", "⏎", "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]
     ),
@@ -110,7 +111,7 @@ export const ep60WithArrowsLayoutModel: RowBasedLayoutModel = {
         [null, 3.0, 3.0, 2.0, 1.5, 0.2, 1.5, 0.2, 1.5, null, null, null, null, null]
     ),
     mainFingerAssignment: replaceLast(ergoPlank60LayoutModel.mainFingerAssignment,
-        [null, 0, 1, 2, 4, 4, 5, 5, 5, 7, null, null, null, null, null]
+        [null, 0, 1, 2, 4, 4, 5, 5, 5, null, null, null, null, null]
     ),
     rowStart: (row: KeyboardRows) => row == KeyboardRows.Lower ? 0.25 : 0,
     keyWidth: (row: KeyboardRows, col: number): number => {

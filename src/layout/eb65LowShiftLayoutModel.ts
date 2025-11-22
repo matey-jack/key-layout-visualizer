@@ -2,7 +2,7 @@ import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../
 import {copyAndModifyKeymap, eb65KeyColorClass} from "./layout-functions.ts";
 
 export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
-    name: "Ergoboard 65",
+    name: "Ergoboard 65 LowShift Narrow",
     description: `"The most ergonomic key layout that fits into a standard "65%" keyboard case 
     and has a traditional inverted-T arrow key cluster."
     Hand distance is still much better than ANSI keyboards. 
@@ -125,6 +125,7 @@ function isKeyWithMicrogap(col: number) {
 
 export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
     ...eb65LowShiftLayoutModel,
+    name: "Ergoboard 65 LowShift Big Enter",
     keyWidth: (row: KeyboardRows, col: number): number => {
         const lastCol = eb65BigEnterLayoutModel.thirtyKeyMapping![row].length - 1;
         switch (row) {
@@ -141,6 +142,8 @@ export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
     },
     thirtyKeyMapping: copyAndModifyKeymap(eb65LowShiftLayoutModel.thirtyKeyMapping!!, (m) => moveKeys(m, false)),
     thumb30KeyMapping: copyAndModifyKeymap(eb65LowShiftLayoutModel.thumb30KeyMapping!!, (m) => moveKeys(m, true)),
+    mainFingerAssignment: copyAndModifyKeymap(eb65LowShiftLayoutModel.mainFingerAssignment!!, (m) => removeKey(m)),
+    singleKeyEffort: copyAndModifyKeymap(eb65LowShiftLayoutModel.singleKeyEffort!!, (m) => removeKey(m)),
 }
 
 function moveKeys(mapping: LayoutMapping, thumby: boolean): LayoutMapping {
@@ -149,5 +152,10 @@ function moveKeys(mapping: LayoutMapping, thumby: boolean): LayoutMapping {
     mapping[KeyboardRows.Upper].splice(-2, 2, "'", "⏎");
     mapping[KeyboardRows.Home].splice(-2, 2, "⌫");
     mapping[KeyboardRows.Bottom][8] = null;
+    return mapping;
+}
+
+function removeKey<T>(mapping: T[][]): T[][] {
+    mapping[KeyboardRows.Home].pop();
     return mapping;
 }

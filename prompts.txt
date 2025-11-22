@@ -1,0 +1,8 @@
+Please remove all automatic tests which specifically test that one layout model has correct array-shape for the matrices thirthyKeyMapping, thumb30KeyMapping, finger assignment, and key effort.
+Instead, create a new "layout-models.test.ts" which checks the matrix shape generically for all layouts, similar to src/mapping/mappings.test.ts
+Tests should not expect specific row lengths for each layout model (LM).
+Just check that all the matrices in each LM have the same size.
+Don't fix the layout models that are inconsistent. I will do it later myself.
+For reporting the names of LMs in the test, use their .name property.
+When names are repeated, add specific .name properties to the LMs which are lacking them.
+

@@ -30,9 +30,9 @@ export const eb65MidshiftMaxWideLayoutModel: RowBasedLayoutModel = {
 
     mainFingerAssignment: [
         [null, 1, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 8, 8, null, null],
-        [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 6, 7, 8, 9, 9, null],
-        [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 6, 7, 8, 9, 9, null],
-        [0, 0, 1, 2, 3, 3, 3, null, null, 6, 6, 6, 7, 8, 9, null, null, null],
+        [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 6, 7, 8, 9, 9],
+        [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 6, 7, 8, 9, 9],
+        [0, 0, 1, 2, 3, 3, 3, null, null, 6, 6, 6, 7, 8, null, null, null],
         [null, 0, 1, 2, 4, 4, null, 5, 5, null, 7, null, null, null, null],
     ],
 

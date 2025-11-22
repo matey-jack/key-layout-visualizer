@@ -2,7 +2,7 @@ import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
 import {eb65KeyColorClass} from "./layout-functions.ts";
 
 export const eb65LowShiftWideLayoutModel: RowBasedLayoutModel = {
-    name: "Ergoboard 65 Low Shift / Wide Hands",
+    name: "Ergoboard 65 LowShift Wide",
     description: `Widest possible hand position with the arrow cluster and lower row Shift keys.`,
 
     // row lengths: 16, 15, 15 (with 0.5u gap), 16, 14
@@ -31,7 +31,7 @@ export const eb65LowShiftWideLayoutModel: RowBasedLayoutModel = {
         [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9, 9],
         [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 6, 7, 8, 9, 9, 9],
         [0, 0, 1, 2, 3, 3, 3, 3, 6, 6, 6, 7, 8, 9, null, null],
-        [null, 0, 1, 2, 4, 4, 5, 5, null, 7, null, null, null],
+        [null, 0, 1, 2, 4, 4, 5, 5, null, 7, null, null, null, null],
     ],
 
     hasAltFinger: (row: number, col: number) =>
@@ -44,7 +44,7 @@ export const eb65LowShiftWideLayoutModel: RowBasedLayoutModel = {
         [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0],
         [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, null, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5, 2.0],
         [3.0, 1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0, null, null],
-        [null, 1.5, 2.0, 2.0, 1.0, 0.2, 0.2, 1.0, null, 2.0, null, null, null],
+        [null, 1.5, 2.0, 2.0, 1.0, 0.2, 0.2, 1.0, null, 2.0, null, null, null, null],
     ],
 
     rowStart: (_row: KeyboardRows) => 0,

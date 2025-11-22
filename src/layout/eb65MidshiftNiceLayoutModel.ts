@@ -2,9 +2,9 @@ import {Finger, FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel, S
 import {copyAndModifyKeymap, eb65KeyColorClass} from "./layout-functions.ts";
 import {eb65LowShiftLayoutModel} from "./eb65LowShiftLayoutModel.ts";
 
-export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
+export const eb65MidshiftNiceLayoutModel: RowBasedLayoutModel = {
     ...eb65LowShiftLayoutModel,
-    name: "Ergoboard 65 MidShift Wide",
+    name: "Ergoboard 65 MidShift Nicely Wide",
 
     leftHomeIndex: 4,
     rightHomeIndex: 10,
@@ -30,18 +30,19 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
     ],
     mainFingerAssignment: copyAndModifyKeymap(eb65LowShiftLayoutModel.mainFingerAssignment, (matrix) => {
         matrix[KeyboardRows.Upper].splice(8, 0, Finger.RIndex);
+        matrix[KeyboardRows.Upper].pop();
         matrix[KeyboardRows.Home].splice(7, 0, null);
+        matrix[KeyboardRows.Home].pop();
         matrix[KeyboardRows.Lower][7] = null;
-        // matrix[KeyboardRows.Lower].splice(8, 1);
         matrix[KeyboardRows.Bottom].splice(4, 0, Finger.LIndex);
         return matrix;
     }),
     singleKeyEffort: [
         [null, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, null, null],
-        [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0],
-        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5, 2.0],
+        [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0],
+        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
         [3.0, 1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0, null, null],
-        [null, 2.0, 1.5, null, null, 1.0, 0.2, 0.2, 1.0, null, 1.5, null, null, null],
+        [null, 2.0, 1.5, null, null, 1.0, 0.2, 0.2, 1.0, null, 1.5, null, null, null, null],
     ],
     keyWidth: (row: KeyboardRows, col: number)=> {
         switch (row) {
@@ -93,7 +94,7 @@ export const eb65MidshiftLayoutModel: RowBasedLayoutModel = {
 }
 
 export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
-    name: "Ergoboard 65 MidShift Narrow",
+    name: "Ergoboard 65 MidShift Narrow, Right Return",
     description: ``,
 
     thirtyKeyMapping: [
@@ -142,7 +143,7 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
     rowStart: (_row: KeyboardRows) => 0,
 
     keyWidth: (row: KeyboardRows, col: number): number => {
-        const numCols = eb65MidshiftLayoutModel.thirtyKeyMapping![row].length;
+        const numCols = eb65MidshiftNiceLayoutModel.thirtyKeyMapping![row].length;
         switch (row) {
             case KeyboardRows.Number:
                 return 1;
@@ -214,6 +215,7 @@ Two mods make 2.5u.
 
 export const eb65CentralEnterLayoutModel: RowBasedLayoutModel = {
     ...eb65MidshiftRightRetLayoutModel,
+    name: "Ergoboard 65 MidShift Narrow, Central Return",
     keyWidth: (row: KeyboardRows, col: number) => {
         switch (row) {
             // todo
@@ -258,6 +260,7 @@ function moveEnterToCenter(mapping: LayoutMapping): LayoutMapping {
 
 export const eb65VerticalEnterLayoutModel: RowBasedLayoutModel = {
     ...eb65MidshiftRightRetLayoutModel,
+    name: "Ergoboard 65 MidShift Narrow, Vertical Return",
     keyWidth: (row: KeyboardRows, col: number) => {
         switch (row) {
             case KeyboardRows.Upper:

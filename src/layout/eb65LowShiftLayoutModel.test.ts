@@ -4,34 +4,6 @@ import {eb65LowShiftLayoutModel as model} from "./eb65LowShiftLayoutModel.ts";
 import {sum} from "../library/math.ts";
 
 describe('ErgoBoard 65 Low Shift layout model', () => {
-    const thirtyKeyMapping = model.thirtyKeyMapping!;
-    it('thirtyKeyMapping row length', () => {
-        expect(thirtyKeyMapping[0].length).toBe(16);
-        expect(thirtyKeyMapping[1].length).toBe(15);
-        expect(thirtyKeyMapping[2].length).toBe(15);
-        expect(thirtyKeyMapping[3].length).toBe(16);
-        expect(thirtyKeyMapping[4].length).toBe(14);
-
-    })
-
-    it('thumb30KeyMapping row length', () => {
-        for (let i = 0; i < 5; i++) {
-            expect(model.thumb30KeyMapping![i].length, `row ${i}`).toBe(thirtyKeyMapping[i].length);
-        }
-    })
-
-    it('mainFingerAssignment row length', () => {
-        for (let i = 0; i < 5; i++) {
-            expect(model.mainFingerAssignment[i].length, `row ${i}`).toBe(thirtyKeyMapping[i].length);
-        }
-    })
-
-    it('singleKeyEffort row length', () => {
-        for (let i = 0; i < 5; i++) {
-            expect(model.singleKeyEffort[i].length, `row ${i}`).toBe(thirtyKeyMapping[i].length);
-        }
-    })
-
     it('key width', () => {
         for (let r = 0; r < 5; r++) {
             const widths = model.thirtyKeyMapping![r].map((_, c) => {

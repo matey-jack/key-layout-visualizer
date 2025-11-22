@@ -19,10 +19,10 @@ import {eb65LowShiftWideLayoutModel} from "./layout/eb65LowshiftWideLayoutModel.
 import {eb65LowShiftLayoutModel, eb65BigEnterLayoutModel} from "./layout/eb65LowShiftLayoutModel.ts";
 import {
     eb65CentralEnterLayoutModel,
-    eb65MidshiftLayoutModel,
+    eb65MidshiftNiceLayoutModel,
     eb65MidshiftRightRetLayoutModel,
     eb65VerticalEnterLayoutModel
-} from "./layout/eb65MidshiftLayoutModel.ts";
+} from "./layout/eb65MidshiftNiceLayoutModel.ts";
 import {eb65MidshiftMaxWideLayoutModel} from "./layout/eb65MidshiftMaxWideLayoutModel.ts";
 
 export function getHarmonicVariant(variant: HarmonicVariant): RowBasedLayoutModel {
@@ -66,7 +66,7 @@ export function getPlankVariant({
         case PlankVariant.EB65_MID_SHIFT:
             switch (eb65MidshiftVariant) {
                 default:
-                    return eb65MidshiftLayoutModel; // "wide hands"
+                    return eb65MidshiftNiceLayoutModel; // "wide hands"
                 case EB65_MidShift_Variant.EXTRA_WIDE:
                     return eb65MidshiftMaxWideLayoutModel;
                 // below are the "narrow hands" subvariants
