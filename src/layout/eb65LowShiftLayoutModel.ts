@@ -1,5 +1,5 @@
 import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
-import {copyAndModifyKeymap, eb65KeyColorClass} from "./layout-functions.ts";
+import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 
 export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 LowShift Narrow",
@@ -115,7 +115,7 @@ Then at least the right outer space key is easy to hit; the left one not so much
 
     getSpecificMapping: (_: FlexMapping) => undefined,
 
-    keyColorClass: eb65KeyColorClass,
+    keyColorClass: keyColorHighlightsClass,
 }
 
 // todo: move this where it's actually needed and use it there.

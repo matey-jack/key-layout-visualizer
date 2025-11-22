@@ -14,16 +14,20 @@ import {harmonic13MidShiftLayoutModel} from "./layout/harmonic13MidshiftLayoutMo
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
-import {ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./layout/ergoPlank60LayoutModel.ts";
+import {
+    ep60addAngleMod,
+    ep60WithArrowsLayoutModel,
+    ergoPlank60AnsiAngleLayoutModel
+} from "./layout/ergoPlank60LayoutModel.ts";
 import {eb65LowShiftWideLayoutModel} from "./layout/eb65LowshiftWideLayoutModel.ts";
-import {eb65LowShiftLayoutModel, eb65BigEnterLayoutModel} from "./layout/eb65LowShiftLayoutModel.ts";
+import {eb65BigEnterLayoutModel, eb65LowShiftLayoutModel} from "./layout/eb65LowShiftLayoutModel.ts";
 import {
     eb65CentralEnterLayoutModel,
     eb65MidshiftNiceLayoutModel,
     eb65MidshiftRightRetLayoutModel,
     eb65VerticalEnterLayoutModel
 } from "./layout/eb65MidshiftNiceLayoutModel.ts";
-import {eb65MidshiftMaxWideLayoutModel} from "./layout/eb65MidshiftMaxWideLayoutModel.ts";
+import {eb65MidshiftExtraWideLayoutModel} from "./layout/eb65MidshiftExtraWideLayoutModel.ts";
 
 export function getHarmonicVariant(variant: HarmonicVariant): RowBasedLayoutModel {
     switch (variant) {
@@ -41,18 +45,15 @@ export function getHarmonicVariant(variant: HarmonicVariant): RowBasedLayoutMode
     }
 }
 
-export function getPlankVariant({
-                                    plankVariant,
-                                    ep60Arrows,
-                                    eb65LowshiftVariant,
-                                    eb65MidshiftVariant
-                                }: Partial<LayoutOptions>): RowBasedLayoutModel {
+export function getPlankVariant(opts: Partial<LayoutOptions>): RowBasedLayoutModel {
+    const {plankVariant, ep60Arrows, ep60ansiAngle, eb65LowshiftVariant, eb65MidshiftVariant} = opts;
     switch (plankVariant) {
         case PlankVariant.KATANA_60:
             return katanaLayoutModel;
         case PlankVariant.EP60:
         default:
-            return ep60Arrows ? ep60WithArrowsLayoutModel : ergoPlank60LayoutModel;
+            let ep60LM = ep60Arrows ? ep60WithArrowsLayoutModel : ergoPlank60AnsiAngleLayoutModel;
+            return ep60ansiAngle ? ep60LM : ep60addAngleMod(ep60LM);
         case PlankVariant.EB65_LOW_SHIFT:
             // UI calls this method without variant parameters, so we need a default.
             switch (eb65LowshiftVariant) {
@@ -68,7 +69,7 @@ export function getPlankVariant({
                 default:
                     return eb65MidshiftNiceLayoutModel; // "wide hands"
                 case EB65_MidShift_Variant.EXTRA_WIDE:
-                    return eb65MidshiftMaxWideLayoutModel;
+                    return eb65MidshiftExtraWideLayoutModel;
                 // below are the "narrow hands" subvariants
                 case EB65_MidShift_Variant.CENTRAL_ENTER:
                     return eb65CentralEnterLayoutModel;

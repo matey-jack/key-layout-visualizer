@@ -1,8 +1,8 @@
-import {FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
-import {defaultKeyColor} from "./layout-functions.ts";
+import {FlexMapping, KEY_COLOR, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {copyAndModifyKeymap, defaultKeyColor, keyColorHighlightsClass} from "./layout-functions.ts";
 
-export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
-    name: "Ergoplank 60",
+export const ergoPlank60AnsiAngleLayoutModel: RowBasedLayoutModel = {
+    name: "Ergoplank 60 ANSI angle",
     description: `"The most ergonomic key layout that fits into a standard "60%" keyboard case."
     Hand distance is maximized. Row stagger is equal to a "cleave-style ergonomic" keyboard.
     Thumb keys are added. 
@@ -56,7 +56,7 @@ export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
     rowStart: (row: KeyboardRows) => row >= KeyboardRows.Lower ? 0.25 : 0,
 
     keyWidth: (row: KeyboardRows, col: number): number => {
-        const numCols = ergoPlank60LayoutModel.thirtyKeyMapping![row].length;
+        const numCols = ergoPlank60AnsiAngleLayoutModel.thirtyKeyMapping![row].length;
         if (row == KeyboardRows.Bottom) {
             /*
 Both sides have 7.5u space to distribute, of which 0.25 is indent, 1.5 space and 1.25/2 half the central key.
@@ -91,26 +91,42 @@ and spread the 0.125u per side only among the remaining modifier keys.
 
     getSpecificMapping: (_: FlexMapping) => undefined,
 
-    keyColorClass(label: string, row: KeyboardRows, col: number) {
-        if (label == "⏎" || label == "Esc") return KEY_COLOR.HIGHLIGHT;
-        return defaultKeyColor(label, row, col);
-    },
+    keyColorClass: keyColorHighlightsClass,
+}
+
+export function ep60addAngleMod(lm: RowBasedLayoutModel): RowBasedLayoutModel {
+    return {
+        ...lm,
+        name: "Ergoplank 60",
+        thirtyKeyMapping: copyAndModifyKeymap(lm.thirtyKeyMapping!, ansifyKeymap),
+        thumb30KeyMapping: copyAndModifyKeymap(lm.thumb30KeyMapping!, ansifyKeymap),
+        fullMapping: copyAndModifyKeymap(lm.fullMapping!, ansifyKeymap),
+        // Now we could go to 0.25 stagger without making Z awkward to type and put ⌦ on the newly fusioned 1.5u central key...
+        // but this key fusion removes one key from the board and we'd end up having
+    }
+}
+
+function ansifyKeymap(keymap: LayoutMapping): LayoutMapping {
+    keymap[KeyboardRows.Home][0] = [-1, 0];
+    const lower = keymap[KeyboardRows.Lower];
+    keymap[KeyboardRows.Lower] = [...lower.slice(1, 6), '⌦', ...lower.slice(6)];
+    return keymap;
 }
 
 export const ep60WithArrowsLayoutModel: RowBasedLayoutModel = {
-    ...ergoPlank60LayoutModel,
+    ...ergoPlank60AnsiAngleLayoutModel,
     name: "Ergoplank 60 with cursor block",
-    thirtyKeyMapping: replaceLast(ergoPlank60LayoutModel.thirtyKeyMapping!,
+    thirtyKeyMapping: replaceLast(ergoPlank60AnsiAngleLayoutModel.thirtyKeyMapping!,
         [null, "Ctrl", "Cmd", "AltGr", "Alt", "⏎", "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]
     ),
-    thumb30KeyMapping: replaceLast(ergoPlank60LayoutModel.thumb30KeyMapping!,
+    thumb30KeyMapping: replaceLast(ergoPlank60AnsiAngleLayoutModel.thumb30KeyMapping!,
         [null, "Ctrl", "Cmd", "AltGr", "Alt", 0, "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]
     ),
     // fullMapping: replaceLast(ergoPlankRegularLayoutModel.fullMapping, []),
-    singleKeyEffort: replaceLast(ergoPlank60LayoutModel.singleKeyEffort,
+    singleKeyEffort: replaceLast(ergoPlank60AnsiAngleLayoutModel.singleKeyEffort,
         [null, 3.0, 3.0, 2.0, 1.5, 0.2, 1.5, 0.2, 1.5, null, null, null, null, null]
     ),
-    mainFingerAssignment: replaceLast(ergoPlank60LayoutModel.mainFingerAssignment,
+    mainFingerAssignment: replaceLast(ergoPlank60AnsiAngleLayoutModel.mainFingerAssignment,
         [null, 0, 1, 2, 4, 4, 5, 5, 5, null, null, null, null, null]
     ),
     rowStart: (row: KeyboardRows) => row == KeyboardRows.Lower ? 0.25 : 0,
@@ -143,7 +159,7 @@ But this makes the left outer space key harder to hit, because it'd be too far u
                     return 1.25;
             }
         }
-        return ergoPlank60LayoutModel.keyWidth(row, col);
+        return ergoPlank60AnsiAngleLayoutModel.keyWidth(row, col);
     },
     keyCapWidth: (row: KeyboardRows, col: number): number => {
         if (row == KeyboardRows.Bottom) {

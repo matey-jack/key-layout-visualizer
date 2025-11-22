@@ -1,5 +1,5 @@
 import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
-import {eb65KeyColorClass} from "./layout-functions.ts";
+import {keyColorHighlightsClass} from "./layout-functions.ts";
 
 export const eb65LowShiftWideLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 LowShift Wide",
@@ -113,5 +113,5 @@ export const eb65LowShiftWideLayoutModel: RowBasedLayoutModel = {
     symmetricStagger: true,
 
     getSpecificMapping: (_: FlexMapping) => undefined,
-    keyColorClass: eb65KeyColorClass,
+    keyColorClass: keyColorHighlightsClass,
 }

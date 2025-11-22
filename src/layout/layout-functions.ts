@@ -55,7 +55,7 @@ export function getKeySizeClass(keyCapSize: number, sizeList: number[]) {
     return "key-size-" + sizeList.indexOf(keyCapSize);
 }
 
-export const eb65KeyColorClass = (label: string, row: KeyboardRows, col: number) => {
+export const keyColorHighlightsClass = (label: string, row: KeyboardRows, col: number) => {
     if (label && "⏎↑↓←→".includes(label) || label == "Esc") return KEY_COLOR.HIGHLIGHT;
     return defaultKeyColor(label, row, col);
 };

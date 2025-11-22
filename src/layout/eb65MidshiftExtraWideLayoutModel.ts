@@ -1,8 +1,8 @@
 import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
 
-import {eb65KeyColorClass} from "./layout-functions.ts";
+import {keyColorHighlightsClass} from "./layout-functions.ts";
 
-export const eb65MidshiftMaxWideLayoutModel: RowBasedLayoutModel = {
+export const eb65MidshiftExtraWideLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 MidShift Max Wide",
     description: ``,
 
@@ -13,7 +13,7 @@ export const eb65MidshiftMaxWideLayoutModel: RowBasedLayoutModel = {
         ["↹", 0, 1, 2, 3, 4, "`~", "", "\\", 5, 6, 7, 8, 9, "⌫"],
         ["⇧", 0, 1, 2, 3, 4, "-", "⌦", "'", 5, 6, 7, 8, 9, "⇧"],
         [null, 0, 1, 2, 3, 4, "=", "⇤", "⇥", 9, 5, 6, 7, 8, null, "↑", null],
-        [null, "Ctrl", "Cmd", "Fn", "Alt", "⏎", " ", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
+        [null, "Ctrl", "Cmd", "Fn", "Alt", "⏎", "", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
     ],
 
     // thumb30KeyMapping: [
@@ -52,7 +52,7 @@ export const eb65MidshiftMaxWideLayoutModel: RowBasedLayoutModel = {
     rowStart: (_row: KeyboardRows) => 0,
 
     keyWidth: (row: KeyboardRows, col: number): number => {
-        const lastCol = eb65MidshiftMaxWideLayoutModel.thirtyKeyMapping![row].length - 1;
+        const lastCol = eb65MidshiftExtraWideLayoutModel.thirtyKeyMapping![row].length - 1;
         switch (row) {
             case KeyboardRows.Number:
                 switch (col) {
@@ -116,7 +116,7 @@ Two 1.25u keys leave exactly 2×0.25u for the gaps.
     },
     keyCapWidth: (row: KeyboardRows, col: number) => {
         if (row == KeyboardRows.Bottom && col > 0 && col < 4) return 1.25;
-        return eb65MidshiftMaxWideLayoutModel.keyWidth(row, col);
+        return eb65MidshiftExtraWideLayoutModel.keyWidth(row, col);
     },
     leftHomeIndex: 4,
     rightHomeIndex: 10,
@@ -126,5 +126,5 @@ Two 1.25u keys leave exactly 2×0.25u for the gaps.
 
     getSpecificMapping: (_: FlexMapping) => undefined,
 
-    keyColorClass: eb65KeyColorClass,
+    keyColorClass: keyColorHighlightsClass,
 }

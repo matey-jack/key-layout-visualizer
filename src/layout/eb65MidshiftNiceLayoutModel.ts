@@ -1,5 +1,5 @@
 import {Finger, FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel, SKE_AWAY} from "../base-model.ts";
-import {copyAndModifyKeymap, eb65KeyColorClass} from "./layout-functions.ts";
+import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 import {eb65LowShiftLayoutModel} from "./eb65LowShiftLayoutModel.ts";
 
 export const eb65MidshiftNiceLayoutModel: RowBasedLayoutModel = {
@@ -209,7 +209,7 @@ Two mods make 2.5u.
 
     getSpecificMapping: (_: FlexMapping) => undefined,
 
-    keyColorClass: eb65KeyColorClass,
+    keyColorClass: keyColorHighlightsClass,
 }
 
 

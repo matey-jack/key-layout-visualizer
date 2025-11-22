@@ -15,4 +15,10 @@ But when it's off, don't show color backgrounds in the list, except for the curr
 
 Started 21:34
 
-Keep the signal for this local to the MappingList. (I did that myself, as well as another fix.)
+"Keep the signal for this local to the MappingList." (I did that myself, as well as another fix.)
+
+---
+
+In the ErgoplankLayoutOptions, under "Ergoplank 60" add another checkbox labeled "ANSI angle", disabled by default.
+Add a state "ep60ansiAngle: boolean" for this in the LayoutOptions object, with encoding in the URL as "ep60ansi".
+
