@@ -149,7 +149,7 @@ export function KeySizeDetails({layout}: { layout: RowBasedLayoutModel }) {
             {sizeList.map((s) =>
                 <KeySizeDetailsLegendItem size={s} count={countsBySize.get(s)!} sizeList={sizeList}/>
             )}
-            <div><div class="keysize-counter-item"><b>Total</b></div> – {total} keys.</div>
+            <div><div class="keysize-legend-item"><b>Total</b></div> – {total} keys.</div>
         </div>
     </div>
 }
@@ -163,7 +163,7 @@ type KeySizeDetailsLegendItemProps = {
 
 export function KeySizeDetailsLegendItem({size, count, sizeList}: KeySizeDetailsLegendItemProps) {
     return <div>
-        <div class={"keysize-counter-item " + getKeySizeClass(size, sizeList)}>
+        <div class={"keysize-legend-item " + getKeySizeClass(size, sizeList)}>
             {size}
         </div>
         – {count} keys.
@@ -198,7 +198,7 @@ export function SingleKeyEffortDetails({layout, mapping}: KeyEffortDetailsProps)
             English of
             <b> {weighSingleKeyEffort(layout, charMap, englishFreqs)}</b>.
         </p>
-        <div>
+        <table>
             <KeyEffortLegendItem score={SKE_HOME} frequency={freqsByEffort[SKE_HOME]}>
                 Home position, including the thumb keys, if present.
             </KeyEffortLegendItem>
@@ -222,7 +222,7 @@ export function SingleKeyEffortDetails({layout, mapping}: KeyEffortDetailsProps)
             <KeyEffortLegendItem score={SKE_AWAY} frequency={freqsByEffort[SKE_AWAY]}>
                 Keys that aren't neighbors of home position keys.
             </KeyEffortLegendItem>
-        </div>
+        </table>
         <p><b>Total: {totalEffort}</b> – Higher is better!</p>
     </div>
 }
@@ -234,10 +234,11 @@ interface KeyEffortLegendItem {
 }
 
 export function KeyEffortLegendItem({frequency, score, children}: KeyEffortLegendItem) {
-    return <div>
-        <div class={"key-effort-legend-item " + getEffortClass(score)}>{Math.round(frequency ?? 0)}</div>
-        [Score: {score.toFixed(1)}] {children}
-    </div>
+    return <tr>
+        <td class={"key-effort-legend-item " + getEffortClass(score)}>{Math.round(frequency ?? 0)}</td>
+        <td>[Score:&nbsp;{score.toFixed(1)}]</td>
+        <td>{children}</td>
+    </tr>
 }
 
 interface DiffDetailsProps {
@@ -285,7 +286,7 @@ interface DiffEntryProps {
 
 export function DiffEntry({count, description, counterClass}: DiffEntryProps) {
     return <div>
-        <div class={`diff-counter ${counterClass}`}>{count}</div>
+        <div class={`diff-legend-item ${counterClass}`}>{count}</div>
         {description}
     </div>
 }
