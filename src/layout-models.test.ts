@@ -1,5 +1,5 @@
 import {describe, expect, it} from "vitest";
-import {RowBasedLayoutModel} from "./base-model.ts";
+import {KeyboardRows, RowBasedLayoutModel} from "./base-model.ts";
 import {ansiLayoutModel, ansiWideLayoutModel} from "./layout/ansiLayoutModel.ts";
 import {eb65BigEnterLayoutModel, eb65LowShiftLayoutModel} from "./layout/eb65LowShiftLayoutModel.ts";
 import {eb65LowShiftWideLayoutModel} from "./layout/eb65LowshiftWideLayoutModel.ts";
@@ -18,6 +18,7 @@ import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLa
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./layout/orthoLayoutModel.ts";
+import {sum} from "./library/math.ts";
 
 const layoutModels: Array<RowBasedLayoutModel> = [
     ansiLayoutModel,
@@ -57,26 +58,14 @@ function expectMatrixShape(matrix: unknown[][], lengths: number[], label: string
     });
 }
 
+function rowWidth(model: RowBasedLayoutModel, row: KeyboardRows) {
+    return 2 * model.rowStart(row)
+        + sum(model.thirtyKeyMapping![row].map((_: any, col) =>
+            model.keyWidth(row, col)
+        ))
+}
+
 describe('RowBasedLayoutModel matrix shapes', () => {
-    it("arrays work", () => {
-        const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-        console.log(arr);
-        arr.splice(8, 0, 66);
-        console.log(arr);
-        arr.pop();
-        console.log(arr);
-    });
-
-    it("is so weird", () => {
-        const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-        const container = [[], arr, []];
-        console.log(container[1]);
-        container[1].splice(8, 0, 66);
-        console.log(container[1]);
-        container[1].pop();
-        console.log(container[1]);
-    });
-
     layoutModels.forEach((model) => {
         describe(model.name, () => {
             const rowLengths = getExpectedRowLengths(model);
@@ -87,8 +76,8 @@ describe('RowBasedLayoutModel matrix shapes', () => {
                 });
             }
 
-            if (model.fullMapping) {
-                it('thumb30KeyMapping matches expected shape', () => {
+            if (model.fullMapping?.length) {
+                it('fullMapping matches expected shape', () => {
                     expectMatrixShape(model.fullMapping!, rowLengths, "thumb30KeyMapping");
                 });
             }
@@ -105,6 +94,15 @@ describe('RowBasedLayoutModel matrix shapes', () => {
 
             it('singleKeyEffort matches expected shape', () => {
                 expectMatrixShape(model.singleKeyEffort, rowLengths, "singleKeyEffort");
+            });
+
+            it.skipIf(model.name.includes('Split'))
+            ('keyWidth adds up to same number', () => {
+                const numberRowWidth = rowWidth(model, KeyboardRows.Number);
+                for (let row = 0; row <= KeyboardRows.Bottom; row++) {
+                    if (model.name == "Ergoplank 60" && row == KeyboardRows.Bottom) continue;
+                    expect(rowWidth(model, row)).toBeCloseTo(numberRowWidth);
+                }
             });
         });
     });
