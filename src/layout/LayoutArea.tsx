@@ -14,7 +14,7 @@ interface LayoutAreaProps {
 export function LayoutArea({appState}: LayoutAreaProps) {
     const {layout, layoutModel, mapping, setLayout, mappingDiff, bigramMovements, vizType} = appState;
     const charMap = fillMapping(layoutModel.value, mapping.value);
-    if (layout.value.flipRetRub) {
+    if (layout.value.type == LayoutType.Ergoplank && layoutModel.value.name.includes("Ergo") && layout.value.flipRetRub) {
         flipRetRub(charMap!);
     }
     let split = layout.value.type == LayoutType.Ergosplit
@@ -118,8 +118,8 @@ function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions, mapping}: La
             return <AnsiLayoutOptions
                 wide={layoutOptions.ansiWide}
                 setWide={(wide) => setLayoutOptions({...layoutOptions, ansiWide: wide})}
-                apple={layoutOptions.ansiApple}
-                setApple={(apple) => setLayoutOptions({...layoutOptions, ansiApple: apple})}
+                variant={layoutOptions.ansiVariant}
+                setVariant={(variant) => setLayoutOptions({...layoutOptions, ansiVariant: variant})}
                 split={layoutOptions.ansiSplit}
                 setSplit={(split) => setLayoutOptions({...layoutOptions, ansiSplit: split})}
                 mapping={mapping}

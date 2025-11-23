@@ -1,11 +1,29 @@
-import {Finger, FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel, SKE_AWAY, SKE_HOME} from "../base-model.ts";
-import {defaultKeyColor} from "./layout-functions.ts";
-import {LayoutOptions} from "../app-model.ts";
+import {
+    Finger,
+    FlexMapping,
+    KEY_COLOR,
+    KeyboardRows,
+    LayoutMapping,
+    RowBasedLayoutModel,
+    SKE_AWAY,
+    SKE_HOME
+} from "../base-model.ts";
+import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
+import {AnsiVariant, LayoutOptions} from "../app-model.ts";
 
 export function getAnsiVariant(layoutOptions: LayoutOptions) {
-    let base = layoutOptions.ansiWide ? ansiWideLayoutModel : ansiLayoutModel;
-    if (layoutOptions.ansiApple) {
-        base = {...base, keyboardWidth: 14.5};
+    let base: AnsiLayoutModel = layoutOptions.ansiWide ? ansiWideLayoutModel : ansiLayoutModel;
+    switch (layoutOptions.ansiVariant) {
+        case AnsiVariant.ANSI_IBM:
+            break;
+        case AnsiVariant.ANSI_APPLE:
+            base = {...base, keyboardWidth: 14.5};
+            break;
+        case AnsiVariant.ANSI_HHKB:
+            base = createHHKB(base);
+            break;
+        case AnsiVariant.ANSI_AHKB:
+        // coming soon...
     }
     return layoutOptions.ansiSplit ? splitSpaceBar(base) : base;
 }
@@ -240,9 +258,59 @@ function duplicateBottomMiddle<T>(mapping: T[][], bottomIdx: number, middleIdx: 
     ];
 }
 
-export function createHHKB(lm: RowBasedLayoutModel) {
+export function createHHKB(lm: AnsiLayoutModel): AnsiLayoutModel {
     return {
         ...lm,
-        name: lm.name.replace("ANSI", "Happy Hacker Keyboard")
-    }
+        name: lm.name.replace("ANSI", "Happy Hacker Keyboard"),
+        thirtyKeyMapping: copyAndModifyKeymap(lm.thirtyKeyMapping!, splitKeys),
+        thumb30KeyMapping: undefined,
+        fullMapping: lm.fullMapping && copyAndModifyKeymap(lm.fullMapping!, splitKeys),
+        mainFingerAssignment: copyAndModifyKeymap(lm.mainFingerAssignment, (m) => {
+            m[KeyboardRows.Number].push(Finger.RRing);
+            m[KeyboardRows.Lower].push(null);
+            return m;
+        }),
+        singleKeyEffort: copyAndModifyKeymap(lm.singleKeyEffort, (m) => {
+            m[KeyboardRows.Number].push(SKE_AWAY);
+            m[KeyboardRows.Lower].push(null);
+            return m;
+        }),
+        keyWidth(row: number, col: number) {
+            switch (row) {
+                case KeyboardRows.Number:
+                    return 1;
+                case KeyboardRows.Lower:
+                    // no '-1' because the modified one has an added key, we just avoid the reference to the object under construction.
+                    const last = lm.thirtyKeyMapping![row].length;
+                    switch (col) {
+                        case last:
+                            return 1;
+                        case last - 1:
+                            return lm.keyWidth(row, col) - 1;
+                    }
+                    break;
+                case KeyboardRows.Bottom:
+                    // sum of key widths is 11u, leaving 4u to split between the indentation gaps.
+                    return [1.5, 1, 1.5, 6, 1.5, 1, 2.5][col];
+            }
+            return lm.keyWidth(row, col);
+        },
+        // HHKB can use the generic wide keymap with "thirtyKeyMapping", but specific key maps that need a thumb key.
+        getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsi,
+    };
+}
+
+function splitKeys(matrix: LayoutMapping): LayoutMapping {
+    matrix[KeyboardRows.Number].pop();
+    const bslKey = matrix[KeyboardRows.Upper].pop()!;
+    const newKey: (string | [number, number]) = typeof bslKey === "number" ? [1, bslKey] : bslKey;
+    matrix[KeyboardRows.Number].push(newKey);
+    matrix[KeyboardRows.Number].push("`~");
+    matrix[KeyboardRows.Home][0] = "Ctrl";
+    matrix[KeyboardRows.Upper].push("⌫");
+    matrix[KeyboardRows.Lower].push("Fn");
+    // explicit gaps instead of "rowStart", because both sides are different.
+    // and still the space bar is not centered, *sigh*.
+    matrix[KeyboardRows.Bottom] = [null, "Alt", "Cmd", "⍽", "Cmd", "Alt", null];
+    return matrix
 }

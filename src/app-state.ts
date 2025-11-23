@@ -1,6 +1,7 @@
 import {FlexMapping, LayoutType, RowBasedLayoutModel, VisualizationType} from "./base-model.ts";
 import {computed, effect, signal, Signal} from "@preact/signals";
 import {
+    AnsiVariant,
     AppState,
     EB65_LowShift_Variant,
     EB65_MidShift_Variant,
@@ -13,14 +14,26 @@ import {getLayoutModel} from "./layout-selection.ts";
 import {allMappings, colemakMapping, qwertyMapping} from "./mapping/mappings.ts";
 import {getBigramMovements} from "./bigrams.ts";
 
-function modifyWide(mapping: FlexMapping, ansiWide: boolean): boolean {
-    if (mapping.mapping30 && mapping.mappingAnsi) {
-        return ansiWide;
+function modifyWide(mapping: FlexMapping, opts: LayoutOptions): boolean {
+    if (opts.ansiVariant === AnsiVariant.ANSI_AHKB) {
+        // flag is not used for AHKB, but we flip for transparency in the UI and also to stay on "wide" mode when
+        // switching to another variant.
+        return true;
+    }
+    if (mapping.mapping30 || mapping.mappingAnsi) {
+        return opts.ansiWide;
     }
     if (mapping.mappingAnsiWide || mapping.mappingThumb30) {
         return true;
     }
-    return ansiWide;
+    return opts.ansiWide;
+}
+
+function modifySplit(opts: LayoutOptions) {
+    if (opts.ansiVariant === AnsiVariant.ANSI_HHKB) {
+        return false;
+    }
+    return opts.ansiSplit;
 }
 
 // Function needed, because doing the same in an effect() would already run all the computed() functions
@@ -31,7 +44,11 @@ function setLayout(
     mapping: Signal<FlexMapping>,
 ) {
     const newLayoutOptions = (opts.type == LayoutType.ANSI)
-        ? {...opts, ansiWide: modifyWide(mapping.value, opts.ansiWide)}
+        ? {
+        ...opts,
+            ansiWide: modifyWide(mapping.value, opts),
+            ansiSplit: modifySplit(opts),
+        }
         : opts;
     const newLayoutModel = getLayoutModel(newLayoutOptions);
     if (!hasMatchingMapping(newLayoutModel, mapping.value)) {
@@ -50,23 +67,27 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
         mappingState.value = newMapping;
         return;
     }
-    // we don't have a generic 30-key mapping and no specific mapping for this layout plus options.
+    // We don't have a generic 30-key mapping and no specific mapping for this layout plus options.
     // so, first check if there is a matching mapping by just changing the options.
-    if (layoutModel.name.includes("ANSI")) {
+    if (layoutOptionsState.value.type === LayoutType.ANSI) {
         // TODO: can't test this, because no such FlexMappings exist yet.
         if (newMapping.mappingAnsi) {
             layoutOptionsState.value = {...layoutOptionsState.value, ansiWide: false};
             mappingState.value = newMapping;
             return;
         }
-        if (newMapping.mappingAnsiWide || newMapping.mappingThumb30) {
+        if ((newMapping.mappingAnsiWide || newMapping.mappingThumb30)) {
+            if (layoutOptionsState.value.ansiVariant === AnsiVariant.ANSI_HHKB) {
+                layoutOptionsState.value = {...layoutOptionsState.value, ansiVariant: AnsiVariant.ANSI_APPLE};
+            }
             layoutOptionsState.value = {...layoutOptionsState.value, ansiWide: true};
             mappingState.value = newMapping;
             return;
         }
     }
     // By this point, the current LayoutType does not work.
-    // todo: we could iterate through layouts, but we'd need to consider options as well
+    // todo: we could iterate through layouts, but we'd need to consider options as well.
+    // Currently, Maltron is the only keyMap that doesn't have a generic 30-key map, thus we know that Ergosplit covers every keymap.
     layoutOptionsState.value = {...layoutOptionsState.value, type: LayoutType.Ergosplit};
     mappingState.value = newMapping;
 }
@@ -84,6 +105,15 @@ function s2i(value: string | null): number | null {
     const i = Number(value);
     if (!Number.isFinite(i)) return null;
     return i;
+}
+
+function s2AnsiVariant(value: number | null, appleValue: boolean | null): AnsiVariant {
+    const isValidAnsiVariant = (variant: number | null): variant is AnsiVariant =>
+        variant !== null && variant >= AnsiVariant.ANSI_IBM && variant <= AnsiVariant.ANSI_AHKB;
+    if (isValidAnsiVariant(value)) return value;
+    // Support legacy URLs that only encoded IBM vs Apple as a boolean.
+    if (appleValue === null) return AnsiVariant.ANSI_APPLE;
+    return appleValue ? AnsiVariant.ANSI_APPLE : AnsiVariant.ANSI_IBM;
 }
 
 function getMappingByName(name: string | null): FlexMapping {
@@ -107,7 +137,7 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
         case LayoutType.ANSI:
             params.set("split", layout.ansiSplit ? "1" : "0");
             params.set("wide", layout.ansiWide ? "1" : "0");
-            params.set("apple", layout.ansiApple ? "1" : "0");
+            params.set("ansi", layout.ansiVariant.toString());
             break;
         case LayoutType.Harmonic:
             params.set("harmonic", layout.harmonicVariant.toString());
@@ -126,12 +156,15 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
 // let's just have one.
 export function createAppState(): AppState {
     const params = new URLSearchParams(window.location.hash.slice(1));
+    const ansiVariant = s2AnsiVariant(s2i(params.get("ansi")), s2b(params.get("apple")));
+    const ansiWideParam = s2b(params.get("wide")) ?? false;
+    const ansiWide = ansiVariant === AnsiVariant.ANSI_AHKB ? true : ansiWideParam;
     // important to use ?? because (the falsy) 0 is a proper value that should not trigger the default.
-    const layoutOptionsState: Signal = signal<LayoutOptions>({
+    const layoutOptionsState: Signal<LayoutOptions> = signal<LayoutOptions>({
         type: s2i(params.get("layout")) ?? LayoutType.ANSI,
-        ansiApple: s2b(params.get("apple")) ?? true,
+        ansiVariant,
         ansiSplit: s2b(params.get("split")) ?? false,
-        ansiWide: s2b(params.get("wide")) ?? false,
+        ansiWide,
         harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
         plankVariant: s2i(params.get("plank")) ?? PlankVariant.EP60,
         ep60Arrows: s2b(params.get("ep60arrows")) ?? false,

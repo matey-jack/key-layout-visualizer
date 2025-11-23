@@ -31,7 +31,19 @@ In the AnsiLayoutOptions, replace the checkbox "use Apple form factor" with a se
  - HHKB
  - AHKB
 
-Connect them to the value "ansiVariant" in the LayoutOptions object and remove "ansiApple" from there.
+Connect them to the value "ansiVariant" in the LayoutOptions object and in the URL handling, replace "ansiApple" with "ansiVariant".
 
-When
+In app-state.ts setLayout(), force 'ansiWide = true' when AHKB is selected.
+Also disable the checkbox "use wide key mapping" (in the checked state) when AHKB is selected.
+
+# follow-up
+
+Instead of just checking the "wide" button for AHKB on the UI, it should be set to true in the global setLayout function.
+Similarly, when HHKB is selected, set "ansiSplit = false" in setLayout() and disable the checkbox in the UI.
+(Note that I changed some files, please read everything again.)
+
+Finally, I did it myself again, because Codex created much more code than what was needed.
+
+---
+
 

@@ -99,7 +99,7 @@ export function ep60addAngleMod(lm: RowBasedLayoutModel): RowBasedLayoutModel {
         thumb30KeyMapping: copyAndModifyKeymap(lm.thumb30KeyMapping!, angleModKeymap),
         fullMapping: lm.fullMapping && copyAndModifyKeymap(lm.fullMapping!, angleModKeymap),
         // Now we could go to 0.25 stagger without making Z awkward to type and put ⌦ on the newly fusioned 1.5u central key...
-        // but this key fusion removes one key from the board and we'd end up having
+        // but this key fusion removes one key from the board which makes it hard to place Home/End without moving a lot of stuff around.
     }
 }
 
