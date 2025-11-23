@@ -5,7 +5,7 @@ export enum LayoutType {
     ANSI,      // irregular stagger
     Harmonic,  // regular 0.5 stagger
     Ergoplank, // regular 0.25 stagger
-    Ortho,     // zero stagger
+    Ergosplit,     // zero stagger
 }
 
 // Note this depends on enum order, this is why I put it right under the enum!

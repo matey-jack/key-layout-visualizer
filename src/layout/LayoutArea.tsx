@@ -17,7 +17,9 @@ export function LayoutArea({appState}: LayoutAreaProps) {
     if (layout.value.flipRetRub) {
         flipRetRub(charMap!);
     }
-    const keyPositions = getKeyPositions(layoutModel.value, layout.value.split, charMap!);
+    let split = layout.value.type == LayoutType.Ergosplit
+        || layout.value.type == LayoutType.ANSI && layout.value.ansiSplit;
+    const keyPositions = getKeyPositions(layoutModel.value, split, charMap!);
 
     return (
         <div>
@@ -30,7 +32,7 @@ export function LayoutArea({appState}: LayoutAreaProps) {
                     vizType={vizType.value}
                 />
                 {vizType.value == VisualizationType.LayoutAngle &&
-                    <StaggerLines layoutModel={layoutModel.value} layoutSplit={layout.value.split}
+                    <StaggerLines layoutModel={layoutModel.value} layoutSplit={split}
                                   keyPositions={keyPositions}/>
                 }
                 {vizType.value == VisualizationType.MappingBigrams &&
@@ -58,7 +60,7 @@ interface TopBarProps {
 }
 
 function TopBar({layout, setLayout}: TopBarProps) {
-    const layoutOrder = [LayoutType.ANSI, LayoutType.Harmonic, LayoutType.Ergoplank, LayoutType.Ortho];
+    const layoutOrder = [LayoutType.ANSI, LayoutType.Harmonic, LayoutType.Ergoplank, LayoutType.Ergosplit];
     return <div className="layout-top-bar-container">
         <BlankGridElement/>
         {layoutOrder.map((layoutType) =>
@@ -114,12 +116,12 @@ function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions, mapping}: La
     switch (layoutOptions.type) {
         case LayoutType.ANSI:
             return <AnsiLayoutOptions
-                wide={layoutOptions.wideAnsi}
-                setWide={(wide) => setLayoutOptions({...layoutOptions, wideAnsi: wide})}
-                apple={layoutOptions.appleAnsi}
-                setApple={(apple) => setLayoutOptions({...layoutOptions, appleAnsi: apple})}
-                split={layoutOptions.split}
-                setSplit={(split) => setLayoutOptions({...layoutOptions, split})}
+                wide={layoutOptions.ansiWide}
+                setWide={(wide) => setLayoutOptions({...layoutOptions, ansiWide: wide})}
+                apple={layoutOptions.ansiApple}
+                setApple={(apple) => setLayoutOptions({...layoutOptions, ansiApple: apple})}
+                split={layoutOptions.ansiSplit}
+                setSplit={(split) => setLayoutOptions({...layoutOptions, ansiSplit: split})}
                 mapping={mapping}
             />
         case LayoutType.Harmonic:

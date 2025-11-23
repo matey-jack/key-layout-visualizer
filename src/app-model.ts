@@ -2,6 +2,13 @@ import {ReadonlySignal, Signal} from "@preact/signals";
 import {MappingChange, RowBasedLayoutModel, FlexMapping, BigramMovement} from "./base-model.ts";
 import {LayoutType, VisualizationType} from "./base-model.ts";
 
+export enum AnsiVariant {
+    ANSI_IBM,
+    ANSI_APPLE,
+    ANSI_HHKB,
+    ANSI_AHKB,
+}
+
 /*
     Just for the sake of disambiguating, I classify all Harmonic variants by their total width in key units first,
     and then by the number of keys in the home row. A "wide Harmonic" has as many keys in the home row as the width of the board.
@@ -52,11 +59,12 @@ export enum EB65_MidShift_Variant {
 
 export interface LayoutOptions {
     type: LayoutType;
-    split: boolean;
+    ansiSplit: boolean;
     // This is more of a mapping transformer than an actual layout,
     // but fits here, since the ansiWideLayout is an actual LayoutModel instance.
-    wideAnsi: boolean;
-    appleAnsi: boolean;
+    ansiWide: boolean;
+    ansiApple: boolean; // todo: replace by ansiVariant
+    // ansiVariant: AnsiVariant;
     harmonicVariant: HarmonicVariant;
     plankVariant: PlankVariant;
     ep60Arrows: boolean;

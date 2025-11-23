@@ -85,7 +85,7 @@ export function getLayoutModel(layoutOptions: LayoutOptions): RowBasedLayoutMode
     switch (layoutOptions.type) {
         case LayoutType.ANSI:
             return getAnsiVariant(layoutOptions);
-        case LayoutType.Ortho:
+        case LayoutType.Ergosplit:
             return splitOrthoLayoutModel;
         case LayoutType.Harmonic:
             return getHarmonicVariant(layoutOptions.harmonicVariant);

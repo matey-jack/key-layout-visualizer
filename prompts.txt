@@ -22,3 +22,16 @@ Started 21:34
 In the ErgoplankLayoutOptions, under "Ergoplank 60", add another checkbox labeled "ANSI angle", disabled by default.
 Add a state "ep60ansiAngle: boolean" for this in the LayoutOptions object, with encoding in the URL as "ep60ansi".
 Not that getPlankVariant() in layout-selection.ts already uses this.
+
+---
+
+In the AnsiLayoutOptions, replace the checkbox "use Apple form factor" with a set of three radio buttons:
+ - IBM
+ - Apple
+ - HHKB
+ - AHKB
+
+Connect them to the value "ansiVariant" in the LayoutOptions object and remove "ansiApple" from there.
+
+When
+

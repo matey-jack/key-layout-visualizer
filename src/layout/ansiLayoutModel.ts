@@ -3,11 +3,11 @@ import {defaultKeyColor} from "./layout-functions.ts";
 import {LayoutOptions} from "../app-model.ts";
 
 export function getAnsiVariant(layoutOptions: LayoutOptions) {
-    let base = layoutOptions.wideAnsi ? ansiWideLayoutModel : ansiLayoutModel;
-    if (layoutOptions.appleAnsi) {
+    let base = layoutOptions.ansiWide ? ansiWideLayoutModel : ansiLayoutModel;
+    if (layoutOptions.ansiApple) {
         base = {...base, keyboardWidth: 14.5};
     }
-    return layoutOptions.split ? splitSpaceBar(base) : base;
+    return layoutOptions.ansiSplit ? splitSpaceBar(base) : base;
 }
 
 // those values are accumulated by the stagger of 0.5, 0.25, and 0.5 again.

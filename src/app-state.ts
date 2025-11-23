@@ -8,35 +8,19 @@ import {
     LayoutOptions,
     PlankVariant
 } from "./app-model.ts";
-import {
-    diffToBase,
-    fillMapping,
-    getKeyPositions,
-    hasMatchingMapping
-} from "./layout/layout-functions.ts";
+import {diffToBase, fillMapping, getKeyPositions, hasMatchingMapping} from "./layout/layout-functions.ts";
 import {getLayoutModel} from "./layout-selection.ts";
 import {allMappings, colemakMapping, qwertyMapping} from "./mapping/mappings.ts";
 import {getBigramMovements} from "./bigrams.ts";
 
-// returns new split value, if the layout only supports one
-function modifySplit(opts: LayoutOptions): boolean {
-    switch (opts.type) {
-        case LayoutType.Harmonic:
-        case LayoutType.Ergoplank:
-            return false;
-        case LayoutType.Ortho:
-            return true;
+function modifyWide(mapping: FlexMapping, ansiWide: boolean): boolean {
+    if (mapping.mapping30 && mapping.mappingAnsi) {
+        return ansiWide;
     }
-    return opts.split;
-}
-
-function modifyWide(opts: LayoutOptions, mapping: FlexMapping): boolean {
-   if (opts.type == LayoutType.ANSI) {
-       if (!mapping.mapping30 && !mapping.mappingAnsi && (mapping.mappingAnsiWide || mapping.mappingThumb30)) {
-           return true;
-       }
-   }
-   return opts.wideAnsi;
+    if (mapping.mappingAnsiWide || mapping.mappingThumb30) {
+        return true;
+    }
+    return ansiWide;
 }
 
 // Function needed, because doing the same in an effect() would already run all the computed() functions
@@ -46,7 +30,9 @@ function setLayout(
     layoutOptionsState: Signal<LayoutOptions>,
     mapping: Signal<FlexMapping>,
 ) {
-    const newLayoutOptions = {...opts, split: modifySplit(opts), ansiWide: modifyWide(opts, mapping.value)};
+    const newLayoutOptions = (opts.type == LayoutType.ANSI)
+        ? {...opts, ansiWide: modifyWide(mapping.value, opts.ansiWide)}
+        : opts;
     const newLayoutModel = getLayoutModel(newLayoutOptions);
     if (!hasMatchingMapping(newLayoutModel, mapping.value)) {
         const mappingName = mapping.value.name.toLowerCase();
@@ -69,27 +55,19 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
     if (layoutModel.name.includes("ANSI")) {
         // TODO: can't test this, because no such FlexMappings exist yet.
         if (newMapping.mappingAnsi) {
-            layoutOptionsState.value = {...layoutOptionsState.value, wideAnsi: false};
+            layoutOptionsState.value = {...layoutOptionsState.value, ansiWide: false};
             mappingState.value = newMapping;
             return;
         }
         if (newMapping.mappingAnsiWide || newMapping.mappingThumb30) {
-            layoutOptionsState.value = {...layoutOptionsState.value, wideAnsi: true};
+            layoutOptionsState.value = {...layoutOptionsState.value, ansiWide: true};
             mappingState.value = newMapping;
             return;
         }
-    }
-    if (layoutModel.name.includes("Ortho")) {
-        if (newMapping.mappingSplitOrtho) {
-            layoutOptionsState.value = {...layoutOptionsState.value, split: true};
-            mappingState.value = newMapping;
-            return;
-        }
-        // there is no specific mapping for un-split Ortho...
     }
     // By this point, the current LayoutType does not work.
     // todo: we could iterate through layouts, but we'd need to consider options as well
-    layoutOptionsState.value = {...layoutOptionsState.value, type: LayoutType.Ortho, split: true};
+    layoutOptionsState.value = {...layoutOptionsState.value, type: LayoutType.Ergosplit};
     mappingState.value = newMapping;
 }
 
@@ -127,9 +105,9 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
 
     switch (layout.type) {
         case LayoutType.ANSI:
-            params.set("split", layout.split ? "1" : "0");
-            params.set("wide", layout.wideAnsi ? "1" : "0");
-            params.set("apple", layout.appleAnsi ? "1" : "0");
+            params.set("split", layout.ansiSplit ? "1" : "0");
+            params.set("wide", layout.ansiWide ? "1" : "0");
+            params.set("apple", layout.ansiApple ? "1" : "0");
             break;
         case LayoutType.Harmonic:
             params.set("harmonic", layout.harmonicVariant.toString());
@@ -151,9 +129,9 @@ export function createAppState(): AppState {
     // important to use ?? because (the falsy) 0 is a proper value that should not trigger the default.
     const layoutOptionsState: Signal<LayoutOptions> = signal({
         type: s2i(params.get("layout")) ?? LayoutType.ANSI,
-        split: s2b(params.get("split")) ?? false,
-        wideAnsi: s2b(params.get("wide")) ?? false,
-        appleAnsi: s2b(params.get("apple")) ?? true,
+        ansiApple: s2b(params.get("apple")) ?? true,
+        ansiSplit: s2b(params.get("split")) ?? false,
+        ansiWide: s2b(params.get("wide")) ?? false,
         harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
         plankVariant: s2i(params.get("plank")) ?? PlankVariant.EP60,
         ep60Arrows: s2b(params.get("ep60arrows")) ?? false,
@@ -173,7 +151,7 @@ export function createAppState(): AppState {
     const bigramMovements = computed(() => {
         const charMap = fillMapping(layoutModel.value, mappingState.value);
         return getBigramMovements(
-            getKeyPositions(layoutModel.value, layoutOptionsState.value.split, charMap!),
+            getKeyPositions(layoutModel.value, layoutOptionsState.value.ansiSplit, charMap!),
             `get bigrams for visualization of ${mappingState.value.name} on ${layoutModel.value.name}`);
     });
     effect(() => updateUrlParams(layoutOptionsState.value, mappingState, vizType));
