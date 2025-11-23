@@ -1,6 +1,6 @@
 import {describe, expect, it} from "vitest";
 import {KeyboardRows, RowBasedLayoutModel} from "./base-model.ts";
-import {ansiLayoutModel, ansiWideLayoutModel} from "./layout/ansiLayoutModel.ts";
+import {ansiLayoutModel, ansiWideLayoutModel, createHHKB} from "./layout/ansiLayoutModel.ts";
 import {eb65BigEnterLayoutModel, eb65LowShiftLayoutModel} from "./layout/eb65LowShiftLayoutModel.ts";
 import {eb65LowShiftWideLayoutModel} from "./layout/eb65LowshiftWideLayoutModel.ts";
 import {
@@ -19,10 +19,13 @@ import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {orthoLayoutModel, splitOrthoLayoutModel} from "./layout/orthoLayoutModel.ts";
 import {sum} from "./library/math.ts";
+import {ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
 
 const layoutModels: Array<RowBasedLayoutModel> = [
     ansiLayoutModel,
     ansiWideLayoutModel,
+    createHHKB(ansiLayoutModel),
+    ahkbLayoutModel,
     eb65LowShiftLayoutModel,
     eb65BigEnterLayoutModel,
     eb65LowShiftWideLayoutModel,
@@ -101,7 +104,7 @@ describe('RowBasedLayoutModel matrix shapes', () => {
                 const numberRowWidth = rowWidth(model, KeyboardRows.Number);
                 for (let row = 0; row <= KeyboardRows.Bottom; row++) {
                     if (model.name.startsWith("Ergoplank 60")  && row == KeyboardRows.Bottom) continue;
-                    expect(rowWidth(model, row)).toBeCloseTo(numberRowWidth);
+                    expect(rowWidth(model, row), `row ${row}`).toBeCloseTo(numberRowWidth);
                 }
             });
         });

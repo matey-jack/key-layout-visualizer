@@ -10,6 +10,7 @@ import {
 } from "../base-model.ts";
 import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
 import {AnsiVariant, LayoutOptions} from "../app-model.ts";
+import {ahkbLayoutModel} from "./ahkbLayoutModel.ts";
 
 export function getAnsiVariant(layoutOptions: LayoutOptions) {
     let base: AnsiLayoutModel = layoutOptions.ansiWide ? ansiWideLayoutModel : ansiLayoutModel;
@@ -23,7 +24,8 @@ export function getAnsiVariant(layoutOptions: LayoutOptions) {
             base = createHHKB(base);
             break;
         case AnsiVariant.ANSI_AHKB:
-        // coming soon...
+            // no need to split the space bar, because it's already split
+            return ahkbLayoutModel;
     }
     return layoutOptions.ansiSplit ? splitSpaceBar(base) : base;
 }
@@ -99,7 +101,7 @@ export const ansiLayoutModel: AnsiLayoutModel = {
         [3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0],
         [3.0, 2.0, 1.0, 1.0, 1.5, 1.5, 1.5, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0, 3.0],
         [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5, 2.0],
-        [1.5, 2.0, 2.0, 1.5, 1.5, 3.0, 1.5, 1.0, 1.5, 1.5, 1.5, 2.0],
+        [1.5, 2.0, 2.0, 1.5, 1.5, 3.0, 1.5, 1.0, 1.5, 1.5, 1.0, 2.0],
         [NaN, NaN, NaN, 0.2, 1.5, NaN, NaN, NaN],
     ],
 
@@ -268,11 +270,13 @@ export function createHHKB(lm: AnsiLayoutModel): AnsiLayoutModel {
         mainFingerAssignment: copyAndModifyKeymap(lm.mainFingerAssignment, (m) => {
             m[KeyboardRows.Number].push(Finger.RRing);
             m[KeyboardRows.Lower].push(null);
+            m[KeyboardRows.Bottom] = [null, Finger.LPinky, Finger.LRing, Finger.RThumb, Finger.RMiddle, Finger.RRing, null];
             return m;
         }),
         singleKeyEffort: copyAndModifyKeymap(lm.singleKeyEffort, (m) => {
             m[KeyboardRows.Number].push(SKE_AWAY);
             m[KeyboardRows.Lower].push(null);
+            m[KeyboardRows.Bottom] = [null, null, null, SKE_HOME, null, null, null];
             return m;
         }),
         keyWidth(row: number, col: number) {
