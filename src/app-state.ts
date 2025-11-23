@@ -137,6 +137,7 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
         case LayoutType.Ergoplank:
             params.set("plank", layout.plankVariant.toString());
             params.set("ep60arrows", layout.ep60Arrows ? "1" : "0")
+            params.set("ep60ansi", layout.ep60ansiAngle ? "1" : "0")
             params.set("eb65ls", layout.eb65LowshiftVariant.toString())
             params.set("eb65ms", layout.eb65MidshiftVariant.toString())
             break;
@@ -156,6 +157,7 @@ export function createAppState(): AppState {
         harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
         plankVariant: s2i(params.get("plank")) ?? PlankVariant.EP60,
         ep60Arrows: s2b(params.get("ep60arrows")) ?? false,
+        ep60ansiAngle: s2b(params.get("ep60ansi")) ?? false,
         eb65LowshiftVariant: s2i(params.get("eb65ls")) ?? EB65_LowShift_Variant.LESS_GAPS,
         eb65MidshiftVariant: s2i(params.get("eb65ms")) ?? EB65_MidShift_Variant.EXTRA_WIDE,
         flipRetRub: true, // because default keymaps have Enter in Upper row, but the "big Enter" keymap should show it in Home row at the start.

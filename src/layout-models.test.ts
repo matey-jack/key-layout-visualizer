@@ -100,7 +100,7 @@ describe('RowBasedLayoutModel matrix shapes', () => {
             ('keyWidth adds up to same number', () => {
                 const numberRowWidth = rowWidth(model, KeyboardRows.Number);
                 for (let row = 0; row <= KeyboardRows.Bottom; row++) {
-                    if (model.name == "Ergoplank 60" && row == KeyboardRows.Bottom) continue;
+                    if (model.name.startsWith("Ergoplank 60")  && row == KeyboardRows.Bottom) continue;
                     expect(rowWidth(model, row)).toBeCloseTo(numberRowWidth);
                 }
             });

@@ -26,9 +26,13 @@ export function ErgoplankLayoutOptions({variant, setVariant, options, setOption}
                             currentVariant={variant} setVariant={setVariant}
                             name="❤️ Ergoplank 60"
         >
+            <CheckboxWithLabel label="ANSI angle"
+                               checked={options.ep60ansiAngle}
+                               onChange={(angle) => setOption({ep60ansiAngle: angle})}/>
             <CheckboxWithLabel label="Include arrow keys"
                                checked={options.ep60Arrows}
                                onChange={(arrows: boolean) => setOption({ep60Arrows: arrows})}/>
+            <FlipRetRubButton setOption={setOption} options={options}/>
         </PlankVariantButton>
 
         <PlankVariantButton variant={PlankVariant.EB65_LOW_SHIFT}

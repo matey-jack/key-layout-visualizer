@@ -28,9 +28,6 @@ export const ergoPlank60AnsiAngleLayoutModel: RowBasedLayoutModel = {
         ["Ctrl", "Cmd", "Fn", "Alt", 0, "", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
     ],
 
-    // todo
-    fullMapping: [],
-
     // note that for data model reason, we also have to assign a finger to gaps.
     // but it will never be shown or used in any calulations.
     mainFingerAssignment: [
@@ -98,18 +95,20 @@ export function ep60addAngleMod(lm: RowBasedLayoutModel): RowBasedLayoutModel {
     return {
         ...lm,
         name: "Ergoplank 60",
-        thirtyKeyMapping: copyAndModifyKeymap(lm.thirtyKeyMapping!, ansifyKeymap),
-        thumb30KeyMapping: copyAndModifyKeymap(lm.thumb30KeyMapping!, ansifyKeymap),
-        fullMapping: copyAndModifyKeymap(lm.fullMapping!, ansifyKeymap),
+        thirtyKeyMapping: copyAndModifyKeymap(lm.thirtyKeyMapping!, angleModKeymap),
+        thumb30KeyMapping: copyAndModifyKeymap(lm.thumb30KeyMapping!, angleModKeymap),
+        fullMapping: lm.fullMapping && copyAndModifyKeymap(lm.fullMapping!, angleModKeymap),
         // Now we could go to 0.25 stagger without making Z awkward to type and put ⌦ on the newly fusioned 1.5u central key...
         // but this key fusion removes one key from the board and we'd end up having
     }
 }
 
-function ansifyKeymap(keymap: LayoutMapping): LayoutMapping {
-    keymap[KeyboardRows.Home][0] = [-1, 0];
+function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
+    keymap[KeyboardRows.Home][0] = [1, 0];
+    keymap[KeyboardRows.Home][7] = '⌦';
     const lower = keymap[KeyboardRows.Lower];
-    keymap[KeyboardRows.Lower] = [...lower.slice(1, 6), '⌦', ...lower.slice(6)];
+    const lMiddle = 6;
+    keymap[KeyboardRows.Lower] = ['⇧', ...lower.slice(2, lMiddle), '`~', ...lower.slice(lMiddle)];
     return keymap;
 }
 
