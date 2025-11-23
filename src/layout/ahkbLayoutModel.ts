@@ -14,6 +14,14 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
         ["Ctrl", "Cmd", "CAPS", "Alt", "⏎ Enter", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
     ],
 
+    thumb30KeyMapping: [
+        ["⎋ Exit", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "CAPS"],
+        ["↹", 0, 1, 2, 3, 4, "=", "`~", 5, 6, 7, 8, 9, "⌫"],
+        ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'"],
+        ["⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧"],
+        ["Ctrl", "Cmd", "Alt", 0, "⏎ Enter", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
+    ],
+
     mainFingerAssignment: [
         [1, 1, 1, 2, 2, 3, 3, 6, 6, 7, 8, 8, 8, 8],
         [1, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9, 8, 8],

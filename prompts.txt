@@ -46,4 +46,18 @@ Finally, I did it myself again, because Codex created much more code than what w
 
 ---
 
+Have a look at ergoPlank60LayoutModel.ts and how the thumb30KeyMapping there differs from the thirtyKeyMapping.
+You can also check some other layouts, in particular ansiLayoutModel.
+Now, implement the thumb30KeyMapping for the ahkbLayoutModel, derived from its ahkb's thirtyKeyMapping.
 
+---
+
+Have a look at ErgoplankLayoutOptions.tsx and ergoPlank60LayoutModel.ts.
+Your task is to implement a similar "angle mod" feature for the AHKB layout.
+The checkbox should appear below the "AHKB" radio button if and only if the latter is selected.
+(Implemented in AnsiLayoutOptions.tsx.)
+The rotation of letters should be done in a similar way:
+ - the second letter from lower row goes to first position of home row
+ - five characters from the lower row move left by one step
+ - (and this is different from the Ergoplank) the delete symbol ⌦ moves between \ and / on the lower row.
+   (Note that / is represented by the '9' position of the logical keymap filled into the layout keymap.)
