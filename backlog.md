@@ -54,6 +54,9 @@
 
 - prettier coloring of the "edge keys / command keys":
     + Allow layouts to highlight keys or change the rules on coloring. (Needed for ErgoPlanck to make its Return key visible.)
+- home key marker in the key size viz
+- refactor URL generation/parsing to be type-specific
+- Ergoplank / Katana layout options have sub-options for the variants below the variant. 
 
 bugs fixed:
 - Learnability Score for Wide ANSI in Mapping List is changing when I select different mappings =:-[]
@@ -68,25 +71,22 @@ bugs fixed:
 ======================== TODO ===============================
 
 refactorings:
+ - Maybe best to define all the bottom rows simply as a list.
+
  - Turns out that the key/finger/effort matrix is easier to edit by hand than write in abstractions. Copy, paste, adapt, ... and win!
     Maybe for a good start: write a helper function to generate an initial finger and effort matrix given a layout (by key matrix, keyWidths, and index finger columns).
     That would be fun to write and be a neat documentation of my fingering and effort theory. But also useless at the moment, since I don't plan to add any new layouts besides HHKB, which will simply copy from ANSI.
 
- - Helper functions for creating the key sizes, for instance a function that takes a total width and an edge offset and then returns a list (or function) with two edge keys of the offset, a central gap size, and the remaining 1u keys. For asymmetric layouts two different offsets could be provided. The central gap will be merged with the nearby key to make it central to the layout. So we need to provide the hand positions if we want it to be central to that instead. And a flag to say "don't combine" which many of our non-favorite layouts need.
- - Helper functions for designing and validating bottom row sizes. It could check the total width and also check if the center (between space bars) aligns.
- - Maybe best to define all the bottom rows simply as a list.
+ - Helper functions for creating the key sizes:
+   * a function that takes a total width and an edge offset and then returns a list (or function) with two edge keys of the offset, a central gap size, and the remaining 1u keys. 
+   * For asymmetric layouts two different offsets could be provided. The central gap will be merged with the nearby key to make it central to the layout. So we need to provide the hand positions if we want it to be central to that instead. And a flag to say "don't combine" which many of our non-favorite layouts need.
+
  - Only the lower row of Ergoboards won't be covered by the above two functions, because it has the irregular right side. Maybe we could generate a regular lower row and then simply splice a manual `[gap, arrow, gap]` piece in.
- - Oh, wait: for the entire four non-bottom rows, we could generate from a simple function that takes the stagger, width, and offset for one row. Or alternatively all the offsets. For asym layouts, one offset of the opposite side will be needed. 
 
-
-- "ANSI wide" is the only layout option which influencing how keymap metrics are calculated and which keymaps apply.
-  But all the Harmonic and Ergo(Plank|Board) options are filtered through the setLayout mechanism. Is that what we want?
+ - "ANSI wide" is the only layout option which influences how keymap metrics are calculated and which keymaps apply.
+   But all the Harmonic and Ergo(Plank|Board) options are filtered through the setLayout mechanism. Is that what we want?
 
 missing core features:
-- home key marker in the key size viz
-- refactor URL generation/parsing to be type-specific and/or compress smaller options into a single parameter value.
-- Fix Harmonic / Katana layout options display; add sub-options for the variants below the variant. 
-  (Using a variant-component which includes the button and the options, which are only visible when the variant is selected.)
 - Ergoplank and Katana logos to fill the gap, especially Ergoboard 65 Midshift with a nice connection between both gaps.
 - Rectangle around the keyboard to signify the 60% or 65% box.
 

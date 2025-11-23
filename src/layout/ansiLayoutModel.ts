@@ -21,7 +21,7 @@ export const ansiLayoutModel: AnsiLayoutModel = {
     name: "ANSI / Typewriter",
     description: "The ANSI keyboard layout is based on a typewriter keyboard from the 19th century which gradually evolved " +
         "to add some computer-specific keys like Ctrl, Alt, and most importantly the @ sign. " +
-        "This layout has keys of widely varying widths and an awkward stagger of 0.5, 0.25, and again 0.25 between the rows. " +
+        "This layout has keys of widely varying widths and an awkward stagger of 0.5, 0.25, and again 0.5 between the rows. " +
         "This curiosity still dates back to old typewriter days when each key's middle needed to have a non-intersecting lever underneath to operate its type element. " +
         "To make this ancient layout a bit more user-friendly, some smart people have come up with the \"wide key mapping\" variant, " +
         "which moves the right hand's home position by one key to the right. " +
@@ -238,4 +238,11 @@ function duplicateBottomMiddle<T>(mapping: T[][], bottomIdx: number, middleIdx: 
         ...mapping.slice(0, bottomIdx).map((row) => [...row]),
         [...bottom.slice(0, middleIdx), bottom[middleIdx], bottom[middleIdx], ...bottom.slice(middleIdx + 1)],
     ];
+}
+
+export function createHHKB(lm: RowBasedLayoutModel) {
+    return {
+        ...lm,
+        name: lm.name.replace("ANSI", "Happy Hacker Keyboard")
+    }
 }

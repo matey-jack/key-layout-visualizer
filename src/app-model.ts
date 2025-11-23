@@ -68,7 +68,7 @@ export interface LayoutOptions {
     harmonicVariant: HarmonicVariant;
     plankVariant: PlankVariant;
     ep60Arrows: boolean;
-    ep60ansiAngle: boolean;
+    ep60angleMod: boolean;
     eb65LowshiftVariant: EB65_LowShift_Variant;
     eb65MidshiftVariant: EB65_MidShift_Variant;
     flipRetRub: boolean;
