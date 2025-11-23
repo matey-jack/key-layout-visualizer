@@ -83,8 +83,8 @@ export function MappingListItem({layout, mapping, selectedMapping, appState, sho
         } / {charMap && sumKeyFrequenciesByEffort(layout, charMap, spanishFreqs)[SKE_HOME]
         } / {charMap && sumKeyFrequenciesByEffort(layout, charMap, germanFreqs)[SKE_HOME]}
         </td>
-        <td>{movements && weighBigramTypes(movements, [BigramType.AltFinger, BigramType.SameFinger])}
-            / {movements && weighBigramTypes(movements, [BigramType.OppositeRow])}
+        <td>{movements && weighBigramTypes(movements, [BigramType.AltFinger, BigramType.SameFinger])
+        } / {movements && weighBigramTypes(movements, [BigramType.OppositeRow])}
         </td>
     </tr>
 }
