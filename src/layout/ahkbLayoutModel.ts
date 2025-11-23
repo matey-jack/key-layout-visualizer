@@ -1,5 +1,5 @@
-import {FlexMapping, KEY_COLOR, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
-import {defaultKeyColor} from "./layout-functions.ts";
+import {FlexMapping, KEY_COLOR, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
 
 export const ahkbLayoutModel: RowBasedLayoutModel = {
     name: "AHKB, a wide-hand, split space keyboard with traditional typewriter row staggering.",
@@ -88,4 +88,33 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
     symmetricStagger: false,
 
     getSpecificMapping: (_: FlexMapping) => undefined,
+}
+
+export function ahkbAddAngleMod(lm: RowBasedLayoutModel = ahkbLayoutModel): RowBasedLayoutModel {
+    return {
+        ...lm,
+        name: `${lm.name} angle mod`,
+        thirtyKeyMapping: lm.thirtyKeyMapping && copyAndModifyKeymap(lm.thirtyKeyMapping, angleModKeymap),
+        thumb30KeyMapping: lm.thumb30KeyMapping && copyAndModifyKeymap(lm.thumb30KeyMapping, angleModKeymap),
+        fullMapping: lm.fullMapping && copyAndModifyKeymap(lm.fullMapping, angleModKeymap),
+        keyColorClass(label: string, row: KeyboardRows, col: number) {
+           if (label.includes("⌦")) {
+                return KEY_COLOR.EDGE;
+            }
+            return lm.keyColorClass!(label, row, col);
+        },
+    };
+}
+
+function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
+    const lowerRow = keymap[KeyboardRows.Lower];
+    keymap[KeyboardRows.Home][0] = [1, 0];
+    lowerRow.splice(1, 1);
+
+    const backslashIndex = lowerRow.indexOf("\\");
+    const insertIndex = backslashIndex >= 0 ? backslashIndex + 1 : 1;
+    lowerRow.splice(insertIndex, 0, "⌦");
+
+    keymap[KeyboardRows.Lower] = lowerRow;
+    return keymap;
 }

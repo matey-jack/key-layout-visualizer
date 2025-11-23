@@ -64,10 +64,10 @@ export interface LayoutOptions {
     // but fits here, since the ansiWideLayout is an actual LayoutModel instance.
     ansiWide: boolean;
     ansiVariant: AnsiVariant;
+    angleMod: boolean;
     harmonicVariant: HarmonicVariant;
     plankVariant: PlankVariant;
     ep60Arrows: boolean;
-    ep60angleMod: boolean;
     eb65LowshiftVariant: EB65_LowShift_Variant;
     eb65MidshiftVariant: EB65_MidShift_Variant;
     flipRetRub: boolean;

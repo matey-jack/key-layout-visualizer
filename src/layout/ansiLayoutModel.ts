@@ -10,7 +10,7 @@ import {
 } from "../base-model.ts";
 import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
 import {AnsiVariant, LayoutOptions} from "../app-model.ts";
-import {ahkbLayoutModel} from "./ahkbLayoutModel.ts";
+import {ahkbAddAngleMod, ahkbLayoutModel} from "./ahkbLayoutModel.ts";
 
 export function getAnsiVariant(layoutOptions: LayoutOptions) {
     let base: AnsiLayoutModel = layoutOptions.ansiWide ? ansiWideLayoutModel : ansiLayoutModel;
@@ -25,7 +25,7 @@ export function getAnsiVariant(layoutOptions: LayoutOptions) {
             break;
         case AnsiVariant.ANSI_AHKB:
             // no need to split the space bar, because it's already split
-            return ahkbLayoutModel;
+            return layoutOptions.angleMod ? ahkbAddAngleMod(ahkbLayoutModel) : ahkbLayoutModel;
     }
     return layoutOptions.ansiSplit ? splitSpaceBar(base) : base;
 }

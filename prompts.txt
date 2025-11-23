@@ -61,3 +61,7 @@ The rotation of letters should be done in a similar way:
  - five characters from the lower row move left by one step
  - (and this is different from the Ergoplank) the delete symbol ⌦ moves between \ and / on the lower row.
    (Note that / is represented by the '9' position of the logical keymap filled into the layout keymap.)
+
+# follow-up
+
+Merge the two 'angleMod' layout flags into one that is just called "angleMod" and applied for both layouts.

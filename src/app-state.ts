@@ -107,15 +107,6 @@ function s2i(value: string | null): number | null {
     return i;
 }
 
-function s2AnsiVariant(value: number | null, appleValue: boolean | null): AnsiVariant {
-    const isValidAnsiVariant = (variant: number | null): variant is AnsiVariant =>
-        variant !== null && variant >= AnsiVariant.ANSI_IBM && variant <= AnsiVariant.ANSI_AHKB;
-    if (isValidAnsiVariant(value)) return value;
-    // Support legacy URLs that only encoded IBM vs Apple as a boolean.
-    if (appleValue === null) return AnsiVariant.ANSI_APPLE;
-    return appleValue ? AnsiVariant.ANSI_APPLE : AnsiVariant.ANSI_IBM;
-}
-
 function getMappingByName(name: string | null): FlexMapping {
     if (name) {
         const found = allMappings.find(
@@ -145,30 +136,28 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
         case LayoutType.Ergoplank:
             params.set("plank", layout.plankVariant.toString());
             params.set("ep60arrows", layout.ep60Arrows ? "1" : "0")
-            params.set("ep60ansi", layout.ep60angleMod ? "1" : "0")
             params.set("eb65ls", layout.eb65LowshiftVariant.toString())
             params.set("eb65ms", layout.eb65MidshiftVariant.toString())
             break;
     }
+    params.set("angle", layout.angleMod ? "1" : "0");
     window.history.pushState(null, "", "#" + params.toString());
 }
 
 // let's just have one.
 export function createAppState(): AppState {
     const params = new URLSearchParams(window.location.hash.slice(1));
-    const ansiVariant = s2AnsiVariant(s2i(params.get("ansi")), s2b(params.get("apple")));
-    const ansiWideParam = s2b(params.get("wide")) ?? false;
-    const ansiWide = ansiVariant === AnsiVariant.ANSI_AHKB ? true : ansiWideParam;
+    const ansiVariant = s2i(params.get("ansi")) ?? AnsiVariant.ANSI_APPLE;
     // important to use ?? because (the falsy) 0 is a proper value that should not trigger the default.
     const layoutOptionsState: Signal<LayoutOptions> = signal<LayoutOptions>({
         type: s2i(params.get("layout")) ?? LayoutType.ANSI,
         ansiVariant,
         ansiSplit: s2b(params.get("split")) ?? false,
-        ansiWide,
+        ansiWide: ansiVariant === AnsiVariant.ANSI_AHKB ? true : s2b(params.get("wide")) ?? false,
+        angleMod: s2b(params.get("angle")) ?? false,
         harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
         plankVariant: s2i(params.get("plank")) ?? PlankVariant.EP60,
         ep60Arrows: s2b(params.get("ep60arrows")) ?? false,
-        ep60angleMod: s2b(params.get("ep60ansi")) ?? false,
         eb65LowshiftVariant: s2i(params.get("eb65ls")) ?? EB65_LowShift_Variant.LESS_GAPS,
         eb65MidshiftVariant: s2i(params.get("eb65ms")) ?? EB65_MidShift_Variant.EXTRA_WIDE,
         // todo: this is weird for the Ergoplank. Let's change all the Ergoboard keymaps, so this can be 'false' again.

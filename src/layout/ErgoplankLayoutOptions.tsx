@@ -27,8 +27,8 @@ export function ErgoplankLayoutOptions({variant, setVariant, options, setOption}
                             name="❤️ Ergoplank 60"
         >
             <CheckboxWithLabel label="angle mod"
-                               checked={options.ep60angleMod}
-                               onChange={(angle) => setOption({ep60angleMod: angle})}/>
+                               checked={options.angleMod}
+                               onChange={(angle) => setOption({angleMod: angle})}/>
             <CheckboxWithLabel label="Include arrow keys"
                                checked={options.ep60Arrows}
                                onChange={(arrows: boolean) => setOption({ep60Arrows: arrows})}/>

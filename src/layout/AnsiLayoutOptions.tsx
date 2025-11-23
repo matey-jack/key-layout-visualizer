@@ -8,14 +8,16 @@ export interface AnsiLayoutOptionsProps {
     wide: boolean;
     variant: AnsiVariant;
     split: boolean;
+    angleMod: boolean;
     setWide: (wide: boolean) => void;
     setVariant: (variant: AnsiVariant) => void;
     setSplit: (split: boolean) => void;
+    setAngleMod: (angle: boolean) => void;
     mapping: Signal<FlexMapping>;
 }
 
 export function AnsiLayoutOptions(props: AnsiLayoutOptionsProps) {
-    const {wide, variant, split, setWide, setVariant, setSplit, mapping} = props;
+    const {wide, variant, split, setWide, setVariant, setSplit, mapping, angleMod, setAngleMod} = props;
     const wideDisabled = onlySupportsWide(mapping.value) || variant === AnsiVariant.ANSI_AHKB;
     const splitDisabled = variant === AnsiVariant.ANSI_HHKB;
     const variantOptions = [
@@ -29,17 +31,29 @@ export function AnsiLayoutOptions(props: AnsiLayoutOptionsProps) {
         <CheckboxWithLabel label="split keyboard" checked={split} onChange={setSplit} disabled={splitDisabled}/>
         <CheckboxWithLabel label="use wide key mapping" checked={wide} onChange={setWide} disabled={wideDisabled}/>
         <div class="ansi-layout-variant-options">
-            {variantOptions.map((option) =>
-                <CheckboxWithLabel
-                    key={option.variant}
-                    type="radio"
-                    groupName="ansi-variant"
-                    label={option.label}
-                    checked={variant === option.variant}
-                    onChange={(checked) => checked && setVariant(option.variant)}
-                    disabled={false}
-                />
-            )}
+            {variantOptions.map((option) => {
+                const checked = variant === option.variant;
+                const isAhkb = option.variant === AnsiVariant.ANSI_AHKB;
+                return <div class="ansi-variant-option" key={option.variant}>
+                    <CheckboxWithLabel
+                        type="radio"
+                        groupName="ansi-variant"
+                        label={option.label}
+                        checked={checked}
+                        onChange={(isChecked) => isChecked && setVariant(option.variant)}
+                        disabled={false}
+                    />
+                    {isAhkb && checked &&
+                        <div class="ansi-ahkb-angle-option">
+                            <CheckboxWithLabel
+                                label="angle mod"
+                                checked={angleMod}
+                                onChange={setAngleMod}
+                            />
+                        </div>
+                    }
+                </div>
+            })}
         </div>
     </div>
 }

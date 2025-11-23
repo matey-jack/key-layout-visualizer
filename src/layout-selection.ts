@@ -46,14 +46,14 @@ export function getHarmonicVariant(variant: HarmonicVariant): RowBasedLayoutMode
 }
 
 export function getPlankVariant(opts: Partial<LayoutOptions>): RowBasedLayoutModel {
-    const {plankVariant, ep60Arrows, ep60angleMod, eb65LowshiftVariant, eb65MidshiftVariant} = opts;
+    const {plankVariant, ep60Arrows, angleMod, eb65LowshiftVariant, eb65MidshiftVariant} = opts;
     switch (plankVariant) {
         case PlankVariant.KATANA_60:
             return katanaLayoutModel;
         case PlankVariant.EP60:
         default:
             let ep60LM = ep60Arrows ? ep60WithArrowsLayoutModel : ergoPlank60AnsiAngleLayoutModel;
-            return ep60angleMod ? ep60addAngleMod(ep60LM) : ep60LM;
+            return angleMod ? ep60addAngleMod(ep60LM) : ep60LM;
         case PlankVariant.EB65_LOW_SHIFT:
             // UI calls this method without variant parameters, so we need a default.
             switch (eb65LowshiftVariant) {

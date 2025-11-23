@@ -120,6 +120,8 @@ function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions, mapping}: La
                 setWide={(wide) => setLayoutOptions({...layoutOptions, ansiWide: wide})}
                 variant={layoutOptions.ansiVariant}
                 setVariant={(variant) => setLayoutOptions({...layoutOptions, ansiVariant: variant})}
+                angleMod={layoutOptions.angleMod}
+                setAngleMod={(angleMod) => setLayoutOptions({...layoutOptions, angleMod})}
                 split={layoutOptions.ansiSplit}
                 setSplit={(split) => setLayoutOptions({...layoutOptions, ansiSplit: split})}
                 mapping={mapping}
