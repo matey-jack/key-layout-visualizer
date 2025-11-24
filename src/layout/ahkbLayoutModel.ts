@@ -11,7 +11,7 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
 
     // Keyboard width is 14.5u which gives 14 keys in top three rows, 13 in the lower row, and 10 in the bottom.
     thirtyKeyMapping: [
-        ["⎋ Exit", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "`~"],
+        ["⎋ Exit", "1", "2", "3", "4", "5", "`~", "6", "7", "8", "9", "0", "[", "]"],
         ["↹", 0, 1, 2, 3, 4, "-", "=", 5, 6, 7, 8, 9, "⌫"],
         ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'"],
         ["⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧"],
