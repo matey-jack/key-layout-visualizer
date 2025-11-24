@@ -85,3 +85,20 @@ Take into account where the getSymmetricOdd and -Even functions can be useful.
 
 Change the function 'rowStart' in RowBasedLayoutModel to be a constant array instead. All layout models should have an entry like 'rowStart: [0, 0, 0, 0, 0],' or 'rowStart: [0, 0, 0, 0, 0.5]' reflecting exactly the current behavior.
 Change all the layout models and all usages of 'rowStart'. You do not need to add or leave code that still supports the old functional definition.
+
+---
+
+add the angleMod checkbox and layout variant for the eb65 low shift wide hands layout.
+
+postscript: I should have told it to add an empty function for actually modifying the layout, that would have been faster and I fixed that function manually anyway.
+
+---
+
+The characters
+
+---
+
+function getKeyPositions() in layout-functions.ts, many tests, and maybe other relevant places currently have a pattern to iterate over a keymap matrix and then use the row and col to get the key width from the keyWidths matrix.
+When I am changing some layouts and hot-reloading, both matrices can be inconsistent, which leads to display errors.
+Please change the code (also in tests) so that the keyWidths matrix is always the basis for iterations and the key maps are indexed by row and col, using a default value like "??" when the array access returns `undefined`.
+(Handling of `null` should not be changed.)
