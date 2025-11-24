@@ -1,5 +1,5 @@
 import {FlexMapping, LayoutType, LayoutTypeNames, VisualizationType} from "../base-model.ts";
-import {AppState, LayoutOptions} from "../app-model.ts";
+import {AnsiVariant, AppState, LayoutOptions, PlankVariant} from "../app-model.ts";
 import {BigramLines, KeyboardSvg, RowBasedKeyboard, StaggerLines} from "./KeyboardSvg.tsx";
 import {fillMapping, getKeyPositions} from "./layout-functions.ts";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
@@ -11,10 +11,20 @@ interface LayoutAreaProps {
     appState: AppState;
 }
 
+function layoutSupportsFlipRetRub(options: LayoutOptions) {
+    switch (options.type) {
+        case LayoutType.Ergoplank:
+            return options.plankVariant >= PlankVariant.EP60;
+        case LayoutType.ANSI:
+            return options.ansiVariant === AnsiVariant.ANSI_AHKB;
+    }
+    return false;
+}
+
 export function LayoutArea({appState}: LayoutAreaProps) {
     const {layout, layoutModel, mapping, setLayout, mappingDiff, bigramMovements, vizType} = appState;
     const charMap = fillMapping(layoutModel.value, mapping.value);
-    if (layout.value.type == LayoutType.Ergoplank && layoutModel.value.name.includes("Ergo") && layout.value.flipRetRub) {
+    if (layoutSupportsFlipRetRub(layout.value) && layout.value.flipRetRub) {
         flipRetRub(charMap!);
     }
     let split = layout.value.type == LayoutType.Ergosplit
@@ -45,11 +55,23 @@ export function LayoutArea({appState}: LayoutAreaProps) {
 }
 
 // This mutates the array, contrary the usual immutable value functions we have everywhere else.
-function flipRetRub(charMap: string[][]) {
-    charMap.forEach((charRow) => {
+function flipRetRub(charMap: (string | null)[][]) {
+    let enterLabel: string;
+    let enterPosition: [number, number];
+    charMap.forEach((charRow, row) => {
         charRow.forEach((char, col) => {
-            if (char == "⏎") charRow[col] = "⌫";
-            if (char == "⌫") charRow[col] = "⏎";
+            if (char && char.includes("⏎")) {
+                enterLabel = char;
+                enterPosition = [row, col];
+                charRow[col] = "⌫";
+            }
+        })
+    })
+    charMap.forEach((charRow, row) => {
+        charRow.forEach((char, col) => {
+            if (char == "⌫" && row != enterPosition[0] && col != enterPosition[1]) {
+                charRow[col] = enterLabel;
+            }
         })
     })
 }

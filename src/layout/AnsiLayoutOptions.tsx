@@ -4,6 +4,8 @@ import {FlexMapping} from "../base-model.ts";
 import {onlySupportsWide} from "./layout-functions.ts";
 import {AnsiVariant, LayoutOptions} from "../app-model.ts";
 
+import {FlipRetRubButton} from "./components/FlipRetRubButton.tsx";
+
 export interface AnsiLayoutOptionsProps {
     options: LayoutOptions;
     setOption: (opts: Partial<LayoutOptions>) => void;
@@ -50,6 +52,7 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
                                 checked={angleMod}
                                 onChange={(angleMod) => setOption({angleMod})}
                             />
+                            <FlipRetRubButton setOption={setOption} options={options}/>
                         </div>
                     }
                 </div>

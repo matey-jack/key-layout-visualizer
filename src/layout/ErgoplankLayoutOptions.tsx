@@ -2,6 +2,7 @@ import {EB65_LowShift_Variant, EB65_MidShift_Variant, LayoutOptions, PlankVarian
 import {getPlankVariant} from "../layout-selection.ts";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {ComponentChildren} from "preact";
+import {FlipRetRubButton} from "./components/FlipRetRubButton.tsx";
 
 export interface PlankLayoutOptionsProps {
     options: LayoutOptions;
@@ -114,14 +115,3 @@ export function PlankVariantButton({variant, currentVariant, setVariant, name, c
     </div>
 }
 
-type FlipRetRubButtonProps = {
-    options: LayoutOptions;
-    setOption: (opts: Partial<LayoutOptions>) => void;
-}
-
-function FlipRetRubButton({setOption, options}: FlipRetRubButtonProps) {
-    return <button class="flip-ret-rub-button"
-        onClick={() => setOption({flipRetRub: !options.flipRetRub})}>
-        ⏎ flip ⌫
-    </button>
-}
