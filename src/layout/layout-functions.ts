@@ -27,7 +27,7 @@ export function defaultKeyColor(label: string, _row: number, _col: number): KeyC
 }
 
 export const keyCapWidth = (lm: RowBasedLayoutModel, r: KeyboardRows, c: number)=>
-    lm.keyCapWidth && lm.keyCapWidth(r, c) ? lm.keyCapWidth(r, c)! : lm.keyWidth(r, c);
+    lm.keyCapWidth && lm.keyCapWidth(r, c) ? lm.keyCapWidth(r, c)! : lm.keyWidths[r][c];
 
 export const keyCapHeight = (lm: RowBasedLayoutModel, r: KeyboardRows, c: number)=>
     lm.keyCapHeight ? lm.keyCapHeight(r, c) : 1;
@@ -186,7 +186,7 @@ const horizontalPadding = 0.5;
 
 export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean, fullMapping: string[][]): KeyPosition[] {
     const rowWidth = fullMapping.map((row, r) =>
-        2 * (horizontalPadding + layoutModel.rowIndent[r]) + sum(row.map((_, c) => layoutModel.keyWidth(r, c) ?? 1))
+        2 * (horizontalPadding + layoutModel.rowIndent[r]) + sum(row.map((_, c) => layoutModel.keyWidths[r][c] ?? 1))
     );
     // console.log("Row widths: ", rowWidth);
     // todo: remove this again and replace with Microgaps from keyWidth.ts
@@ -217,7 +217,7 @@ export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean
                     hasAltFinger: layoutModel.hasAltFinger(row, col),
                 });
             }
-            colPos += layoutModel.keyWidth(row, col) + microGap;
+            colPos += layoutModel.keyWidths[row][col] + microGap;
         });
     }
     return result;

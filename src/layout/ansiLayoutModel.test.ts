@@ -4,34 +4,34 @@ import {ansiIBMLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
 import {KeyboardRows} from "../base-model.ts";
 import {sum} from "../library/math.ts";
 
-describe('ansiLayoutModel.keyWidth', () => {
+describe('ansiLayoutModel.keyWidths', () => {
     const lastCol = (row: KeyboardRows) =>
         ansiIBMLayoutModel.thirtyKeyMapping![row].length - 1;
 
     it("correct with of Backspace", () => {
         const row = KeyboardRows.Number;
-        expect(ansiIBMLayoutModel.keyWidth(row, lastCol(row))).toBe(2)
+        expect(ansiIBMLayoutModel.keyWidths[row][lastCol(row)]).toBe(2)
     });
 
     it("correct with of \\", () => {
         const row = KeyboardRows.Upper;
-        expect(ansiIBMLayoutModel.keyWidth(row, lastCol(row))).toBe(1.5)
+        expect(ansiIBMLayoutModel.keyWidths[row][lastCol(row)]).toBe(1.5)
     });
 
     it("correct with of Enter", () => {
         const row = KeyboardRows.Home;
-        expect(ansiIBMLayoutModel.keyWidth(row, lastCol(row))).toBe(2.25)
+        expect(ansiIBMLayoutModel.keyWidths[row][lastCol(row)]).toBe(2.25)
     });
 
     it("correct with of right Shift", () => {
         const row = KeyboardRows.Lower;
-        expect(ansiIBMLayoutModel.keyWidth(row, lastCol(row))).toBe(2.75)
+        expect(ansiIBMLayoutModel.keyWidths[row][lastCol(row)]).toBe(2.75)
     });
 
     it("correct total with of bottom row", () => {
         const row = KeyboardRows.Bottom;
         const widths = ansiIBMLayoutModel.thirtyKeyMapping![row]
-            .map((_, col) => ansiIBMLayoutModel.keyWidth(row, col));
+            .map((_, col) => ansiIBMLayoutModel.keyWidths[row][col]);
         expect(sum(widths)).toBeCloseTo(15, 8)
     });
 

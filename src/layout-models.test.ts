@@ -65,7 +65,7 @@ function expectMatrixShape(matrix: unknown[][], lengths: number[], label: string
 function rowWidth(model: RowBasedLayoutModel, row: KeyboardRows) {
     return 2 * model.rowIndent[row]
         + sum(model.thirtyKeyMapping![row].map((_: any, col) =>
-            model.keyWidth(row, col)
+            model.keyWidths[row][col]
         ))
 }
 
@@ -107,7 +107,7 @@ describe('RowBasedLayoutModel matrix shapes', () => {
             });
 
             it.skipIf(model.name.includes('Split'))
-            ('keyWidth adds up to same number', () => {
+            ('keyWidths add up to same number', () => {
                 const numberRowWidth = rowWidth(model, KeyboardRows.Number);
                 for (let row = 0; row <= KeyboardRows.Bottom; row++) {
                     if (model.name.startsWith("Ergoplank 60") && row == KeyboardRows.Bottom) continue;

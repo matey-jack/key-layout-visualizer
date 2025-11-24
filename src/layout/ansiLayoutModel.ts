@@ -221,17 +221,17 @@ export const splitSpaceBar = (baseModel: RowBasedLayoutModel): RowBasedLayoutMod
         // because keyboard makers don't know about the wide layout.
         mainFingerAssignment[KeyboardRows.Upper][6] = Finger.RIndex;
     }
+    const keyWidths = duplicateBottomMiddle(baseModel.keyWidths, KeyboardRows.Bottom, middleIdx);
+    const splitWidth = keyWidths[KeyboardRows.Bottom][middleIdx] / 2;
+    keyWidths[KeyboardRows.Bottom][middleIdx] = splitWidth;
+    keyWidths[KeyboardRows.Bottom][middleIdx + 1] = splitWidth;
     return {
         ...baseModel,
         fullMapping: baseModel.fullMapping && duplicateBottomMiddle(baseModel.fullMapping, KeyboardRows.Bottom, middleIdx),
         thirtyKeyMapping: baseModel.thirtyKeyMapping && duplicateBottomMiddle(baseModel.thirtyKeyMapping, KeyboardRows.Bottom, middleIdx),
         thumb30KeyMapping: baseModel.thumb30KeyMapping && duplicateBottomMiddle(baseModel.thumb30KeyMapping, KeyboardRows.Bottom, middleIdx),
         singleKeyEffort: duplicateBottomMiddle(baseModel.singleKeyEffort, KeyboardRows.Bottom, middleIdx),
-        keyWidth: (row: number, col: number): number => {
-            if (row != KeyboardRows.Bottom) return baseModel.keyWidth(row, col);
-            if (col < middleIdx || col > middleIdx + 1) return baseModel.keyWidth(row, col);
-            return baseModel.keyWidth(row, middleIdx) / 2;
-        },
+        keyWidths,
         mainFingerAssignment,
     };
 }
