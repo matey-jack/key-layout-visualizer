@@ -4,13 +4,14 @@ import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {ComponentChildren} from "preact";
 
 export interface PlankLayoutOptionsProps {
-    variant: PlankVariant;
-    setVariant: (variant: PlankVariant) => void;
     options: LayoutOptions;
     setOption: (opts: Partial<LayoutOptions>) => void;
 }
 
-export function ErgoplankLayoutOptions({variant, setVariant, options, setOption}: PlankLayoutOptionsProps) {
+export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsProps) {
+    const variant = options.plankVariant;
+    const setVariant = (plankVariant: PlankVariant) => setOption({plankVariant});
+
     function lowshiftVariant(v: EB65_LowShift_Variant, label: string) {
         return <CheckboxWithLabel label={label}
                                   type="radio"

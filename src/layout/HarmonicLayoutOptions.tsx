@@ -1,12 +1,15 @@
-import {HarmonicVariant} from "../app-model.ts";
+import {HarmonicVariant, LayoutOptions} from "../app-model.ts";
 import {getHarmonicVariant} from "../layout-selection.ts";
 
 export interface HarmonicLayoutOptionsProps {
-    variant: HarmonicVariant;
-    setVariant: (variant: HarmonicVariant) => void;
+    options: LayoutOptions;
+    setOption: (opts: Partial<LayoutOptions>) => void;
 }
 
-export function HarmonicLayoutOptions({variant, setVariant}: HarmonicLayoutOptionsProps) {
+export function HarmonicLayoutOptions({options, setOption}: HarmonicLayoutOptionsProps) {
+    const variant = options.harmonicVariant;
+    const setVariant = (harmonicVariant: HarmonicVariant) => setOption({harmonicVariant});
+
     return <div>
         <HarmonicVariantButton variant={HarmonicVariant.H14_Wide} currentVariant={variant} setVariant={setVariant}/>
         <HarmonicVariantButton variant={HarmonicVariant.H14_Traditional} currentVariant={variant} setVariant={setVariant}/>

@@ -65,3 +65,9 @@ The rotation of letters should be done in a similar way:
 # follow-up
 
 Merge the two 'angleMod' layout flags into one that is just called "angleMod" and applied for both layouts.
+
+---
+
+In LayoutArea.tsx change the TypeSpecificOptions component and its children, so that for any LayoutOptions,
+only 'options' and 'setOption' (singular, taking a Partial<LayoutOptions> as in the Ergoplank case) are passed as parameters to the child components.
+Other parameters like "mapping" should not be changed.

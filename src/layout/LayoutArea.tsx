@@ -113,30 +113,24 @@ interface LayoutOptionsProps {
 }
 
 function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions, mapping}: LayoutOptionsProps) {
+    const setOption = (opts: Partial<LayoutOptions>) => setLayoutOptions({...layoutOptions, ...opts});
+
     switch (layoutOptions.type) {
         case LayoutType.ANSI:
             return <AnsiLayoutOptions
-                wide={layoutOptions.ansiWide}
-                setWide={(wide) => setLayoutOptions({...layoutOptions, ansiWide: wide})}
-                variant={layoutOptions.ansiVariant}
-                setVariant={(variant) => setLayoutOptions({...layoutOptions, ansiVariant: variant})}
-                angleMod={layoutOptions.angleMod}
-                setAngleMod={(angleMod) => setLayoutOptions({...layoutOptions, angleMod})}
-                split={layoutOptions.ansiSplit}
-                setSplit={(split) => setLayoutOptions({...layoutOptions, ansiSplit: split})}
+                options={layoutOptions}
+                setOption={setOption}
                 mapping={mapping}
             />
         case LayoutType.Harmonic:
             return <HarmonicLayoutOptions
-                variant={layoutOptions.harmonicVariant}
-                setVariant={(variant) => setLayoutOptions({...layoutOptions, harmonicVariant: variant})}
+                options={layoutOptions}
+                setOption={setOption}
             />
         case LayoutType.Ergoplank:
             return <ErgoplankLayoutOptions
-                variant={layoutOptions.plankVariant}
-                setVariant={(variant) => setLayoutOptions({...layoutOptions, plankVariant: variant})}
                 options={layoutOptions}
-                setOption={(opts: Partial<LayoutOptions>) => setLayoutOptions({...layoutOptions, ...opts})}
+                setOption={setOption}
             />
     }
     return <></>;
