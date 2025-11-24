@@ -109,10 +109,6 @@ export const ansiIBMLayoutModel: RowBasedLayoutModel = {
         [1.25, 1.25, 1.25, 1.25, 6.25, 1.25, 1.25, 1.25],
     ],
 
-    keyWidth(row: KeyboardRows, col: number): number {
-         return this.keyWidths[row][col];
-    },
-
     keyColorClass: (label, row, col) => {
         if (label == "⏎") return KEY_COLOR.EDGE;
         return defaultKeyColor(label, row, col);

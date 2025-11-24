@@ -2,7 +2,7 @@ import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
 import {keyColorHighlightsClass} from "./layout-functions.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 
-const eb65LowShiftWideKeyWidths = new SymmetricKeyWidth(16, zeroIndent);
+const keyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
 export const eb65LowShiftWideLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 LowShift Wide",
@@ -50,19 +50,15 @@ export const eb65LowShiftWideLayoutModel: RowBasedLayoutModel = {
         [null, 1.5, 2.0, 2.0, 1.0, 0.2, 0.2, 1.0, null, 2.0, null, null, null, null],
     ],
 
-    rowIndent: [0, 0, 0, 0, 0],
+    rowIndent: keyWidths.rowIndent,
 
     keyWidths: [
-        eb65LowShiftWideKeyWidths.row(KeyboardRows.Number, 1.5, 1),
-        eb65LowShiftWideKeyWidths.row(KeyboardRows.Upper, 1.25, 1.75),
-        eb65LowShiftWideKeyWidths.row(KeyboardRows.Home, 1, 1.5, 7.25),
+        keyWidths.row(KeyboardRows.Number, 1.5, 1),
+        keyWidths.row(KeyboardRows.Upper, 1.25, 1.75),
+        keyWidths.row(KeyboardRows.Home, 1, 1.5, 7.25),
         [0.5, 1.25, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.25, 1, 1],
         [0.5, 1.25, 1.25, 1.25, 1.25, 1.75, 1.75, 1.25, 1, 1.25, 0.5, 1, 1, 1],
     ],
-    keyWidth(row: KeyboardRows, col: number): number {
-        return this.keyWidths[row][col];
-    },
-
     leftHomeIndex: 4,
     rightHomeIndex: 10,
 

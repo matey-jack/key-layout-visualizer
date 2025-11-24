@@ -3,8 +3,8 @@ import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
 import {keyColorHighlightsClass} from "./layout-functions.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 
-// zeroIndent works, because the actually indented colums aren't symmetric and indented manually with gaps.
-const KeyWidths = new SymmetricKeyWidth(16, zeroIndent, 7.75);
+// zeroIndent works, because the actually indented columns aren't symmetric and indented manually with gaps.
+const keyWidths = new SymmetricKeyWidth(16, zeroIndent, 7.75);
 
 export const eb65MidshiftExtraWideLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 MidShift Max Wide",
@@ -61,18 +61,15 @@ export const eb65MidshiftExtraWideLayoutModel: RowBasedLayoutModel = {
         [null, 2.0, 2.0, null, 1.0, 0.2, 0.2, 1.0, null, null, 2.0, null, null, null, null],
     ],
 
-    rowIndent: [0, 0, 0, 0, 0],
+    rowIndent: keyWidths.rowIndent,
 
     keyWidths: [
-        KeyWidths.row(KeyboardRows.Number, 1.5, 1),
-        KeyWidths.row(KeyboardRows.Upper, 1.25, 1.75),
-        KeyWidths.row(KeyboardRows.Home, 1, 1.5),
+        keyWidths.row(KeyboardRows.Number, 1.5, 1),
+        keyWidths.row(KeyboardRows.Upper, 1.25, 1.75),
+        keyWidths.row(KeyboardRows.Home, 1, 1.5),
         [0.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.25, 1, 1],
         [0.5, 1.25, 1.25, 1.25, 1.25, 1.75, 1, 1.75, 1.25, 0.25, 1.25, 0.25, 1, 1, 1],
     ],
-    keyWidth(row: KeyboardRows, col: number): number {
-        return this.keyWidths[row][col];
-    },
     keyCapWidth(row: KeyboardRows, col: number) {
         if (row == KeyboardRows.Bottom && col > 0 && col < 4) return 1.25;
         return this.keyWidths![row][col];

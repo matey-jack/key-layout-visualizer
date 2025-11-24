@@ -68,9 +68,6 @@ export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
         // todo: consider using a 1u center like on the arrow-cluster version.
         mirrorOdd(1.25, 1.25, 1.25, 1.25, 1.5, 1.25),
     ],
-    keyWidth(row: KeyboardRows, col: number) {
-        return this.keyWidths[row][col];
-    },
 
     leftHomeIndex: 4,
     rightHomeIndex: 10,

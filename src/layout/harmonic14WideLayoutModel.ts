@@ -10,7 +10,7 @@ const fullMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Alt", 0, "⍽", "⏎", 1, 2, "Fn", "Ctrl"],
 ]; // total of 63 keys, compared to 62 in the Harmonic 13. (Another bottom bar config could yield one or two more ;-). )
 
-const harmonic14WideKeywidths = new MonotonicKeyWidth(14, [0, 0, 0, 0, 0.5], "H14W");
+const keyWidths = new MonotonicKeyWidth(14, [0, 0, 0, 0, 0.5], "H14W");
 
 export const harmonic14WideLayoutModel: RowBasedLayoutModel = {
     name: "Harmonic 14 Macro",
@@ -41,19 +41,15 @@ export const harmonic14WideLayoutModel: RowBasedLayoutModel = {
     ],
     fullMapping,
 
-    rowIndent: [0, 0, 0, 0, 0.5],
+    rowIndent: keyWidths.rowIndent,
 
     keyWidths: [
-        harmonic14WideKeywidths.row(0, 1),
-        harmonic14WideKeywidths.row(1, 1.5),
-        harmonic14WideKeywidths.row(2, 1),
-        harmonic14WideKeywidths.row(3, 1.5),
+        keyWidths.row(0, 1),
+        keyWidths.row(1, 1.5),
+        keyWidths.row(2, 1),
+        keyWidths.row(3, 1.5),
         mirror(1.5, 1, 1, 1, 2),
     ],
-    keyWidth(row: number, col: number){
-        return this.keyWidths[row][col];
-    },
-
     // You'll notice that it's the same as in ANSI, making it easy to use both.
     splitColumns: [7, 6, 7, 7, 5],
 

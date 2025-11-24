@@ -44,7 +44,7 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
         [2.0, null, null, 1.0, 0.2, 0.2, 1.0, null, null, 2.0],
     ],
 
-    rowIndent: [0, 0, 0.25, 0.25, 0.5],
+    rowIndent: ahkbKeyWidth.rowIndent,
 
     keyWidths: [
         ahkbKeyWidth.row(0, 1.5, 1),
@@ -55,10 +55,6 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
         // 7.25 per side minus 3 minus 3.75 = 0.5 gap
         mirror(1.25, 1.25, 1.25, 1.5, 1.5),
     ],
-    keyWidth(row: KeyboardRows, col: number): number {
-        return this.keyWidths[row][col];
-    },
-
     keyColorClass(label: string, row: KeyboardRows, col: number) {
         if (label === "↹") {
             return "";

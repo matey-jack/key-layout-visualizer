@@ -2,7 +2,7 @@ import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 
-const eb65LowShiftKeyWidths = new SymmetricKeyWidth(16, zeroIndent);
+const keyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
 export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 LowShift Narrow",
@@ -58,19 +58,15 @@ export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
         [null, 2.0, 1.5, null, 1.0, 0.2, 0.2, 1.0, null, null, null, null, null, null],
     ],
 
-    rowIndent: [0, 0, 0, 0, 0],
+    rowIndent: keyWidths.rowIndent,
 
     keyWidths: [
-        eb65LowShiftKeyWidths.row(KeyboardRows.Number, 1),
-        eb65LowShiftKeyWidths.row(KeyboardRows.Upper, 1.75),
-        eb65LowShiftKeyWidths.row(KeyboardRows.Home, 1.5),
-        eb65LowShiftKeyWidths.row(KeyboardRows.Lower, 1),
+        keyWidths.row(KeyboardRows.Number, 1),
+        keyWidths.row(KeyboardRows.Upper, 1.75),
+        keyWidths.row(KeyboardRows.Home, 1.5),
+        keyWidths.row(KeyboardRows.Lower, 1),
         [0.5, 1.25, 1.25, 1.25, 1.25, 1.75, 1.75, 1.25, 1, 1.25, 0.5, 1, 1, 1],
     ],
-    keyWidth(row: KeyboardRows, col: number): number {
-        return this.keyWidths[row][col];
-    },
-
     leftHomeIndex: 4,
     rightHomeIndex: 9,
 
@@ -92,9 +88,6 @@ export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
         matrix[KeyboardRows.Bottom] = [0.25, 1.25, 1.25, 1, 1.25, 2.5, 2.5, 1.25, 0.25, 1.25, 0.25, 1, 1, 1];
         return matrix;
     }),
-    keyWidth(row: KeyboardRows, col: number): number {
-        return this.keyWidths![row][col];
-    },
     thirtyKeyMapping: copyAndModifyKeymap(eb65LowShiftLayoutModel.thirtyKeyMapping!!, (m) => moveKeys(m, false)),
     thumb30KeyMapping: copyAndModifyKeymap(eb65LowShiftLayoutModel.thumb30KeyMapping!!, (m) => moveKeys(m, true)),
     mainFingerAssignment: copyAndModifyKeymap(eb65LowShiftLayoutModel.mainFingerAssignment!!, (m) => removeKey(m)),

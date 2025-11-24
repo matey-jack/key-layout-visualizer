@@ -47,10 +47,6 @@ export const harmonic12LayoutModel: RowBasedLayoutModel = {
         h12KeyWidth.row(KeyboardRows.Lower, 1.5),
         mirror(1.5, 1, 1, 1, 1.5),
     ],
-    keyWidth(row: number, col: number) {
-        return this.keyWidths[row][col];
-    },
-
     splitColumns: [6, 6, 6, 5, 5],
 
     leftHomeIndex: 4,

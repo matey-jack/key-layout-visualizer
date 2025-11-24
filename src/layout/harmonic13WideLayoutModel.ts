@@ -51,10 +51,6 @@ export const harmonic13WideLayoutModel: RowBasedLayoutModel = {
         h13wKeyWidth.row(3, 1.5),
         mirror(1.5, 1, 1, 1, 1.5),
     ],
-    keyWidth(row: number, col: number) {
-        return this.keyWidths[row][col];
-    },
-
     // You'll notice that it's the same as in ANSI, making it easy to use both.
     splitColumns: [7, 6, 6, 6, 5],
 

@@ -54,7 +54,7 @@ export const katanaLayoutModel: RowBasedLayoutModel = {
         [3.0, 3.0, 2.0, 1.0, 0.2, 1.5, 0.2, 1.0, null, null, null, null],
     ],
 
-    rowIndent: [0, 0, 0, 0, 0],
+    rowIndent: katanaKeyWidths.rowIndent,
 
     keyWidths: [
         katanaKeyWidths.row(KeyboardRows.Number, 1),
@@ -63,10 +63,6 @@ export const katanaLayoutModel: RowBasedLayoutModel = {
         katanaKeyWidths.row(KeyboardRows.Lower, 1),
         [1, 1.25, 1.25, 1.25, 2.25, 1, 2, 1, 1, 1, 1, 1],
     ],
-    keyWidth(row: KeyboardRows, col: number): number {
-        return this.keyWidths[row][col];
-    },
-
     leftHomeIndex: 4,
     rightHomeIndex: 10,
 

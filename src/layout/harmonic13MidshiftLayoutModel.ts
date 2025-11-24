@@ -53,10 +53,6 @@ export const harmonic13MidShiftLayoutModel: RowBasedLayoutModel = {
         h13msKeyWidth.row(KeyboardRows.Lower, 1),
         mirror(1.5, 1, 1, 1.5, 1.5),
     ],
-    keyWidth(row: number, col: number) {
-        return this.keyWidths[row][col];
-    },
-
     splitColumns: [6, 6, 6, 7, 5],
 
     leftHomeIndex: 4,

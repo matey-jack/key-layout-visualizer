@@ -69,9 +69,6 @@ export const eb65MidshiftNiceLayoutModel: RowBasedLayoutModel = {
          */
         [0.5, 1.25, 1.25, 1, 1, 1.25, 1.75, 1.75, 1.25, 0.75/2, 1.25, 0.75/2, 1, 1, 1],
     ],
-    keyWidth(row: KeyboardRows, col: number) {
-        return this.keyWidths[row][col];
-    }
 }
 
 

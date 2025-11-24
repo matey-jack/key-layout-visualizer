@@ -51,10 +51,6 @@ export const harmonic14TraditionalLayoutModel: RowBasedLayoutModel = {
         h14tKeyWidth.row(0, 2),
         mirrorOdd(1.5, 1, 1, 1, 1, 3),
     ],
-    keyWidth(row: number, col: number){
-        return this.keyWidths[row][col];
-    },
-
     // You'll notice that it's the same as in ANSI, making it easy to use both.
     splitColumns: [7, 7, 6, 6, 5],
 

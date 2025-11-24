@@ -168,12 +168,9 @@ export interface RowBasedLayoutModel {
     // Different keyWidth and keyCap with is basically a different way to specify gaps.
     // It's different gaps than null entries in the keymap, because they are symmetric
     // and don't add a column in all the layout arrays.
-    keyWidth: (row: KeyboardRows, col: number) => number;
+    keyWidths: number[][];
     keyCapWidth?: (row: KeyboardRows, col: number) => (number | undefined);
     keyCapHeight?: (row: KeyboardRows, col: number) => number;
-
-    // array of keyWidths which is supposed to replace the keyWidth function
-    keyWidths: number[][];
 
     keyColorClass?: (label: string, row: KeyboardRows, col: number) => KeyColor;
 

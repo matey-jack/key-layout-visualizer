@@ -59,9 +59,6 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
         [1.25, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 1, 0.25, 1, 1],
         [0.5, 1.25, 1.25, 1.25, 1.25, 1.75, 1.75, 1.25, 0.75, 1.25, 0.75, 1, 1, 1]
     ],
-    keyWidth(row: KeyboardRows, col: number): number {
-        return this.keyWidths![row][col];
-    },
 
     leftHomeIndex: 4,
     rightHomeIndex: 9,
@@ -82,9 +79,6 @@ export const eb65CentralEnterLayoutModel: RowBasedLayoutModel = {
         matrix[KeyboardRows.Home][14] = 1;
         return matrix;
     }),
-    keyWidth(row: KeyboardRows, col: number) {
-        return this.keyWidths![row][col];
-    },
     thirtyKeyMapping: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.thirtyKeyMapping!, moveEnterToCenter),
     thumb30KeyMapping: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.thumb30KeyMapping!, moveEnterToCenter),
     mainFingerAssignment: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.mainFingerAssignment, (matrix) => {
@@ -119,9 +113,6 @@ export const eb65VerticalEnterLayoutModel: RowBasedLayoutModel = {
         matrix[KeyboardRows.Home][14] = 1;     // gap for Enter
         return matrix;
     }),
-    keyWidth(row: KeyboardRows, col: number) {
-        return this.keyWidths![row][col];
-    },
     keyCapHeight: (row: KeyboardRows, col: number) => {
         if (row == KeyboardRows.Upper && col == 14) return 2;
         return 1;
