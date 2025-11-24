@@ -14,7 +14,7 @@ const fullMapping: LayoutMapping = [
 
 const h13msKeyWidth = new MonotonicKeyWidth(13, zeroIndent, "H13MS");
 
-export const harmonic13MidShiftLayoutModel: RowBasedLayoutModel = {
+export const harmonic13MidshiftLayoutModel: RowBasedLayoutModel = {
     name: "Harmonic 13 MidShift",
     description: "The Harmonic MidShift variant will be interesting for all fans of the \"angle mod\" – " +
         "moving the left-bottom row one step to the left to type it with the same staggering angle as the right bottom. " +

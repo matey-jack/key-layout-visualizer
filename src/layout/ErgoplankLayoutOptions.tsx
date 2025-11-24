@@ -14,11 +14,13 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
     const setVariant = (plankVariant: PlankVariant) => setOption({plankVariant});
 
     function lowshiftVariant(v: EB65_LowShift_Variant, label: string) {
-        return <CheckboxWithLabel label={label}
-                                  type="radio"
-                                  groupName="lowshift_variant"
-                                  checked={options.eb65LowshiftVariant == v}
-                                  onChange={(checked) => checked && setOption({eb65LowshiftVariant: v})}/>
+        return <div class="ergoplank-lowshift-variants-container">
+            <CheckboxWithLabel label={label}
+                               type="radio"
+                               groupName="lowshift_variant"
+                               checked={options.eb65LowshiftVariant == v}
+                               onChange={(checked) => checked && setOption({eb65LowshiftVariant: v})}/>
+        </div>
     }
 
     return <div class="plank-layout-options-container">
@@ -41,6 +43,13 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
                             currentVariant={variant} setVariant={setVariant}
                             name="Ergoboard 65 Lowshift">
             {lowshiftVariant(EB65_LowShift_Variant.WIDE_HANDS, "Wide Hands")}
+            {options.eb65LowshiftVariant === EB65_LowShift_Variant.WIDE_HANDS &&
+                <div class="ergoplank-angle-mod-checkbox">
+                    <CheckboxWithLabel label="angle mod"
+                                       checked={options.angleMod}
+                                       onChange={(angle) => setOption({angleMod: angle})}/>
+                </div>
+            }
             {lowshiftVariant(EB65_LowShift_Variant.LESS_GAPS, "Less Gaps")}
             {lowshiftVariant(EB65_LowShift_Variant.BIG_ENTER, "Big Enter & Space")}
             <FlipRetRubButton setOption={setOption} options={options}/>

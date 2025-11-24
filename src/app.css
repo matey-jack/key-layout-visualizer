@@ -55,6 +55,14 @@ body {
 .ergoplank-midshift-sub-variants-container {
     margin-left: 1rem;
 }
+.ergoplank-lowshift-variants-container {
+    margin-top: 0.35rem;
+}
+
+.ergoplank-angle-mod-checkbox {
+    margin-left: 1.25rem;
+    margin-top: 0.15rem;
+}
 
 .layout-options-button {
     margin: 0.5rem;

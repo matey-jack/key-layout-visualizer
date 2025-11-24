@@ -1,15 +1,18 @@
 import {describe, expect, it} from "vitest";
 import {KeyboardRows, RowBasedLayoutModel} from "./base-model.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./layout/ansiLayoutModel.ts";
-import {eb65BigEnterLayoutModel, eb65LowShiftLayoutModel} from "./layout/eb65LowShiftLayoutModel.ts";
-import {eb65LowShiftWideLayoutModel} from "./layout/eb65LowshiftWideLayoutModel.ts";
+import {eb65BigEnterLayoutModel, eb65LowshiftLayoutModel} from "./layout/eb65LowshiftLayoutModel.ts";
+import {
+    eb65LowshiftWideAngleModLayoutModel,
+    eb65LowshiftWideLayoutModel
+} from "./layout/eb65LowshiftWideLayoutModel.ts";
 import {
     eb65MidshiftNiceLayoutModel
 } from "./layout/eb65MidshiftNiceLayoutModel.ts";
 import {eb65MidshiftExtraWideLayoutModel} from "./layout/eb65MidshiftExtraWideLayoutModel.ts";
 import {ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./layout/ergoPlank60LayoutModel.ts";
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
-import {harmonic13MidShiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
+import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
 import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLayoutModel.ts";
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
@@ -28,9 +31,10 @@ const layoutModels: Array<RowBasedLayoutModel> = [
     ansiWideLayoutModel,
     createHHKB(ansiIBMLayoutModel),
     ahkbLayoutModel,
-    eb65LowShiftLayoutModel,
+    eb65LowshiftLayoutModel,
     eb65BigEnterLayoutModel,
-    eb65LowShiftWideLayoutModel,
+    eb65LowshiftWideLayoutModel,
+    eb65LowshiftWideAngleModLayoutModel,
     eb65MidshiftNiceLayoutModel,
     eb65MidshiftRightRetLayoutModel,
     eb65CentralEnterLayoutModel,
@@ -40,7 +44,7 @@ const layoutModels: Array<RowBasedLayoutModel> = [
     ep60WithArrowsLayoutModel,
     harmonic12LayoutModel,
     harmonic13WideLayoutModel,
-    harmonic13MidShiftLayoutModel,
+    harmonic13MidshiftLayoutModel,
     harmonic14WideLayoutModel,
     harmonic14TraditionalLayoutModel,
     katanaLayoutModel,

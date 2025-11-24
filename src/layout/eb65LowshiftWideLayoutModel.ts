@@ -1,10 +1,10 @@
-import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
-import {keyColorHighlightsClass} from "./layout-functions.ts";
+import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 const keyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
-export const eb65LowShiftWideLayoutModel: RowBasedLayoutModel = {
+export const eb65LowshiftWideLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 LowShift Wide",
     description: `Widest possible hand position with the arrow cluster and lower row Shift keys.`,
 
@@ -13,7 +13,7 @@ export const eb65LowShiftWideLayoutModel: RowBasedLayoutModel = {
         ["Esc", "1", "2", "3", "4", "5", "`~", null, "6", "7", "8", "9", "0", "=", "⇞", "⇟"],
         ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "-", "⏎"],
         ["⌦", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "'", "⌫"],
-        [null, "⇧", 1, 2, 3, 4, 0, "\\", 9, 5, 6, 7, 8, "⇧", "↑", null],
+        [null, "⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "↑", null],
         [null, "Ctrl", "Cmd", "CAPS", "Alt", "⍽", "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
     ],
 
@@ -21,8 +21,7 @@ export const eb65LowShiftWideLayoutModel: RowBasedLayoutModel = {
         ["Esc", "1", "2", "3", "4", "5", "`~", null, "6", "7", "8", "9", "0", "", "⇞", "⇟"],
         ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "=", "⏎"],
         ["⌦", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "'", "⌫"],
-        // this modified angle fix works with Quip Thumby and Cozy keymaps. In Colemak Thumby, -B should swap.
-        [null, "⇧", 1, 2, 3, 0, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
+        [null, "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
         [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
     ],
 
@@ -65,3 +64,19 @@ export const eb65LowShiftWideLayoutModel: RowBasedLayoutModel = {
     getSpecificMapping: (_: FlexMapping) => undefined,
     keyColorClass: keyColorHighlightsClass,
 }
+
+function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
+    keymap[KeyboardRows.Home][0] = [1, 0];  // qwerty Z
+    const lowerRow = keymap[KeyboardRows.Lower];
+    lowerRow.splice(2, 1); // remove Z
+    lowerRow.splice(7, 0, "⌦");
+    return keymap;
+}
+
+export const eb65LowshiftWideAngleModLayoutModel: RowBasedLayoutModel = {
+    ...eb65LowshiftWideLayoutModel,
+    name: `${eb65LowshiftWideLayoutModel.name} angle mod`,
+    thirtyKeyMapping: copyAndModifyKeymap(eb65LowshiftWideLayoutModel.thirtyKeyMapping!, angleModKeymap),
+    thumb30KeyMapping: copyAndModifyKeymap(eb65LowshiftWideLayoutModel.thumb30KeyMapping!, angleModKeymap),
+    fullMapping: eb65LowshiftWideLayoutModel.fullMapping && copyAndModifyKeymap(eb65LowshiftWideLayoutModel.fullMapping!, angleModKeymap),
+};

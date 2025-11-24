@@ -10,7 +10,7 @@ import {getAnsiVariant} from "./layout/ansiLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
 import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLayoutModel.ts";
-import {harmonic13MidShiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
+import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
@@ -19,8 +19,11 @@ import {
     ep60WithArrowsLayoutModel,
     ergoPlank60LayoutModel
 } from "./layout/ergoPlank60LayoutModel.ts";
-import {eb65LowShiftWideLayoutModel} from "./layout/eb65LowshiftWideLayoutModel.ts";
-import {eb65BigEnterLayoutModel, eb65LowShiftLayoutModel} from "./layout/eb65LowShiftLayoutModel.ts";
+import {
+    eb65LowshiftWideAngleModLayoutModel,
+    eb65LowshiftWideLayoutModel
+} from "./layout/eb65LowshiftWideLayoutModel.ts";
+import {eb65BigEnterLayoutModel, eb65LowshiftLayoutModel} from "./layout/eb65LowshiftLayoutModel.ts";
 import {
     eb65MidshiftNiceLayoutModel
 } from "./layout/eb65MidshiftNiceLayoutModel.ts";
@@ -40,7 +43,7 @@ export function getHarmonicVariant(variant: HarmonicVariant): RowBasedLayoutMode
         case HarmonicVariant.H13_Wide:
             return harmonic13WideLayoutModel;
         case HarmonicVariant.H13_MidShift:
-            return harmonic13MidShiftLayoutModel;
+            return harmonic13MidshiftLayoutModel;
         case HarmonicVariant.H12:
         default:
             return harmonic12LayoutModel;
@@ -60,9 +63,9 @@ export function getPlankVariant(opts: Partial<LayoutOptions>): RowBasedLayoutMod
             // UI calls this method without variant parameters, so we need a default.
             switch (eb65LowshiftVariant) {
                 default:
-                    return eb65LowShiftWideLayoutModel;
+                    return angleMod ? eb65LowshiftWideAngleModLayoutModel : eb65LowshiftWideLayoutModel;
                 case EB65_LowShift_Variant.LESS_GAPS:
-                    return eb65LowShiftLayoutModel;
+                    return eb65LowshiftLayoutModel;
                 case EB65_LowShift_Variant.BIG_ENTER:
                     return eb65BigEnterLayoutModel;
             }

@@ -21,7 +21,7 @@ import {
 import {ansiIBMLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./splitOrthoLayoutModel.ts";
-import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
+import {harmonic13MidshiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
 import {harmonic14TraditionalLayoutModel} from "./harmonic14TraditionalLayoutModel.ts";
 import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 import {harmonic14WideLayoutModel} from "./harmonic14WideLayoutModel.ts";
@@ -37,7 +37,7 @@ export const allLayoutModels = [
     harmonic14WideLayoutModel,
     harmonic14TraditionalLayoutModel,
     harmonic13WideLayoutModel,
-    harmonic13MidShiftLayoutModel,
+    harmonic13MidshiftLayoutModel,
     harmonic12LayoutModel,
     katanaLayoutModel,
     ergoPlank60LayoutModel,
