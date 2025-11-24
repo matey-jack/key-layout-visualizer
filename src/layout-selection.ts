@@ -7,7 +7,7 @@ import {
     PlankVariant
 } from "./app-model.ts";
 import {getAnsiVariant} from "./layout/ansiLayoutModel.ts";
-import {splitOrthoLayoutModel} from "./layout/orthoLayoutModel.ts";
+import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
 import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLayoutModel.ts";
 import {harmonic13MidShiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
@@ -17,7 +17,7 @@ import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {
     ep60addAngleMod,
     ep60WithArrowsLayoutModel,
-    ergoPlank60AnsiAngleLayoutModel
+    ergoPlank60LayoutModel
 } from "./layout/ergoPlank60LayoutModel.ts";
 import {eb65LowShiftWideLayoutModel} from "./layout/eb65LowshiftWideLayoutModel.ts";
 import {eb65BigEnterLayoutModel, eb65LowShiftLayoutModel} from "./layout/eb65LowShiftLayoutModel.ts";
@@ -52,7 +52,7 @@ export function getPlankVariant(opts: Partial<LayoutOptions>): RowBasedLayoutMod
             return katanaLayoutModel;
         case PlankVariant.EP60:
         default:
-            let ep60LM = ep60Arrows ? ep60WithArrowsLayoutModel : ergoPlank60AnsiAngleLayoutModel;
+            let ep60LM = ep60Arrows ? ep60WithArrowsLayoutModel : ergoPlank60LayoutModel;
             return angleMod ? ep60addAngleMod(ep60LM) : ep60LM;
         case PlankVariant.EB65_LOW_SHIFT:
             // UI calls this method without variant parameters, so we need a default.

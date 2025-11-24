@@ -54,7 +54,7 @@ export const katanaLayoutModel: RowBasedLayoutModel = {
         [3.0, 3.0, 2.0, 1.0, 0.2, 1.5, 0.2, 1.0, null, null, null, null],
     ],
 
-    rowStart: [0, 0, 0, 0, 0],
+    rowIndent: [0, 0, 0, 0, 0],
 
     keyWidth: (row: KeyboardRows, col: number): number => {
         const numCols = katanaLayoutModel.thirtyKeyMapping![row].length;

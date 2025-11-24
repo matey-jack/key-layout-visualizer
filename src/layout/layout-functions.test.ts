@@ -20,7 +20,7 @@ import {
 } from "../mapping/mappings.ts"
 import {ansiIBMLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
-import {splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
+import {splitOrthoLayoutModel} from "./splitOrthoLayoutModel.ts";
 import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
 import {harmonic14TraditionalLayoutModel} from "./harmonic14TraditionalLayoutModel.ts";
 import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
@@ -47,7 +47,7 @@ export const allLayoutModels = [
 
 function hasLettersNumbersAndProsePunctuation(filledMapping: string[][]) {
     const allChars = filledMapping.flat()
-        .filter((entry) => entry.length == 1)
+        .filter((entry) => entry && entry.length == 1)
         .sort()
     expect(allChars).to.include.members("abcdefghijklmnopqrstuvwxyz".split(''));
     expect(allChars).to.include.members("0123456789".split(''));

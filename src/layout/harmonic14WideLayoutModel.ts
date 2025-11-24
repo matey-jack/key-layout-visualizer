@@ -1,4 +1,5 @@
 import {FlexMapping, harmonicStaggerOffsets, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {mirror, MonotonicKeyWidth} from "./keyWidth.ts";
 
 const fullMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, 1, 2], // 14 keys
@@ -8,6 +9,8 @@ const fullMapping: LayoutMapping = [
     // 2×(2u space/enter, 3×1u, 1.5u at the + 0.5u chamfer), makes 2×5=10 keys.
     ["Ctrl", "Cmd", "Alt", 0, "⍽", "⏎", 1, 2, "Fn", "Ctrl"],
 ]; // total of 63 keys, compared to 62 in the Harmonic 13. (Another bottom bar config could yield one or two more ;-). )
+
+const harmonic14WideKeywidths = new MonotonicKeyWidth(14, [0, 0, 0, 0, 0.5], "H14W");
 
 export const harmonic14WideLayoutModel: RowBasedLayoutModel = {
     name: "Harmonic 14 Macro",
@@ -38,16 +41,17 @@ export const harmonic14WideLayoutModel: RowBasedLayoutModel = {
     ],
     fullMapping,
 
-    rowStart: [0, 0, 0, 0, 0.5],
+    rowIndent: [0, 0, 0, 0, 0.5],
 
-    keyWidth: (row: number, col: number) => {
-        // outer edge keys
-        if ((row == KeyboardRows.Upper || row == KeyboardRows.Lower || row == KeyboardRows.Bottom) &&
-            (col == 0 || col == fullMapping[row].length - 1)) return 1.5;
-        // space and enter
-        if (row == KeyboardRows.Bottom && (col == 4 || col == 5)) return 2;
-        // all others
-        return 1;
+    keyWidths: [
+        harmonic14WideKeywidths.row(0, 1),
+        harmonic14WideKeywidths.row(1, 1.5),
+        harmonic14WideKeywidths.row(2, 1),
+        harmonic14WideKeywidths.row(3, 1.5),
+        mirror(1.5, 1, 1, 1, 2),
+    ],
+    keyWidth(row: number, col: number){
+        return this.keyWidths[row][col];
     },
 
     // You'll notice that it's the same as in ANSI, making it easy to use both.

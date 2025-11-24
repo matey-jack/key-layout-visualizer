@@ -1,7 +1,10 @@
 import {FlexMapping, KEY_COLOR, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 import {copyAndModifyKeymap, defaultKeyColor, keyColorHighlightsClass} from "./layout-functions.ts";
+import {mirrorOdd, SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 
-export const ergoPlank60AnsiAngleLayoutModel: RowBasedLayoutModel = {
+const keyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0.25, 0.25]);
+
+export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
     name: "Ergoplank 60 ANSI angle",
     description: `"The most ergonomic key layout that fits into a standard "60%" keyboard case."
     Hand distance is maximized. Row stagger is equal to a "cleave-style ergonomic" keyboard.
@@ -50,34 +53,24 @@ export const ergoPlank60AnsiAngleLayoutModel: RowBasedLayoutModel = {
         [3.0, 3.0, 2.0, 1.5, 0.2, 1.5, 0.2, 1.5, 2.0, 3.0, 3.0],
     ],
 
-    rowStart: [0, 0, 0, 0.25, 0.25],
+    rowIndent: keyWidths.rowIndent,
 
-    keyWidth: (row: KeyboardRows, col: number): number => {
-        const numCols = ergoPlank60AnsiAngleLayoutModel.thirtyKeyMapping![row].length;
-        if (row == KeyboardRows.Bottom) {
-            /*
+    keyWidths: [
+        keyWidths.row(0, 1.5),
+        keyWidths.row(1, 1.25),
+        keyWidths.row(2, 1),
+        keyWidths.row(3, 1.25),
+        /*
 Both sides have 7.5u space to distribute, of which 0.25 is indent, 1.5 space and 1.25/2 half the central key.
 Currently, we have 0.25 gap + 4×1.25 + 1.5 per side. That's 6.75u not counting the central key.
 So the total diff to spread in microgaps is only 0.25 for the entire width.
 We could be marginally more ergonomic by keeping space and outer space with zero gap
 and spread the 0.125u per side only among the remaining modifier keys.
-             */
-            switch (col) {
-                case 4:
-                case 6:
-                    return 1.5;
-                default:
-                    return 1.25;
-            }
-        }
-        const widthOfEdgeKey = [1.5, 1.25, 1, 1.25];
-        if (col == 0 || col == numCols - 1) {
-            return widthOfEdgeKey[row];
-        }
-        if (row == KeyboardRows.Upper && col == 7) {
-            return 0.5;
-        }
-        return 1;
+         */
+        mirrorOdd(1.25, 1.25, 1.25, 1.25, 1.5, 1.25),
+    ],
+    keyWidth(row: KeyboardRows, col: number) {
+        return this.keyWidths[row][col];
     },
 
     leftHomeIndex: 4,
@@ -113,22 +106,22 @@ function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
 }
 
 export const ep60WithArrowsLayoutModel: RowBasedLayoutModel = {
-    ...ergoPlank60AnsiAngleLayoutModel,
+    ...ergoPlank60LayoutModel,
     name: "Ergoplank 60 with cursor block",
-    thirtyKeyMapping: replaceLast(ergoPlank60AnsiAngleLayoutModel.thirtyKeyMapping!,
+    thirtyKeyMapping: replaceLast(ergoPlank60LayoutModel.thirtyKeyMapping!,
         [null, "Ctrl", "Cmd", "AltGr", "Alt", "⏎", "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]
     ),
-    thumb30KeyMapping: replaceLast(ergoPlank60AnsiAngleLayoutModel.thumb30KeyMapping!,
+    thumb30KeyMapping: replaceLast(ergoPlank60LayoutModel.thumb30KeyMapping!,
         [null, "Ctrl", "Cmd", "AltGr", "Alt", 0, "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]
     ),
     // fullMapping: replaceLast(ergoPlankRegularLayoutModel.fullMapping, []),
-    singleKeyEffort: replaceLast(ergoPlank60AnsiAngleLayoutModel.singleKeyEffort,
+    singleKeyEffort: replaceLast(ergoPlank60LayoutModel.singleKeyEffort,
         [null, 3.0, 3.0, 2.0, 1.5, 0.2, 1.5, 0.2, 1.5, null, null, null, null, null]
     ),
-    mainFingerAssignment: replaceLast(ergoPlank60AnsiAngleLayoutModel.mainFingerAssignment,
+    mainFingerAssignment: replaceLast(ergoPlank60LayoutModel.mainFingerAssignment,
         [null, 0, 1, 2, 4, 4, 5, 5, 5, null, null, null, null, null]
     ),
-    rowStart: [0, 0, 0, 0.25, 0],
+    rowIndent: [0, 0, 0, 0.25, 0],
     keyWidth: (row: KeyboardRows, col: number): number => {
         /*
 7.5u on each side, thereof 1.5 space and 0.5u for the half of the central key, leaves 5.5u per side.
@@ -158,7 +151,7 @@ But this makes the left outer space key harder to hit, because it'd be too far u
                     return 1.25;
             }
         }
-        return ergoPlank60AnsiAngleLayoutModel.keyWidth(row, col);
+        return ergoPlank60LayoutModel.keyWidth(row, col);
     },
     keyCapWidth: (row: KeyboardRows, col: number): number => {
         if (row == KeyboardRows.Bottom) {

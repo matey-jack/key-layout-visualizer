@@ -55,7 +55,7 @@ export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
         [null, 2.0, 1.5, null, 1.0, 0.2, 0.2, 1.0, null, null, null, null, null, null],
     ],
 
-    rowStart: [0, 0, 0, 0, 0],
+    rowIndent: [0, 0, 0, 0, 0],
 
     keyWidth: (row: KeyboardRows, col: number): number => {
         const lastCol = eb65LowShiftLayoutModel.thirtyKeyMapping![row].length - 1;

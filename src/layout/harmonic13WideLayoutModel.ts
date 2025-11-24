@@ -1,4 +1,5 @@
 import {FlexMapping, harmonicStaggerOffsets, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {mirror, MonotonicKeyWidth} from "./keyWidth.ts";
 
 const fullMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, 1], // 13 keys
@@ -7,6 +8,8 @@ const fullMapping: LayoutMapping = [
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"], // 12 keys
     ["Ctrl", "Cmd", "Alt", 0, "⍽", "⏎", 1, "AltGr", "Fn", "Ctrl"], // 10 keys
 ];
+
+const h13wKeyWidth = new MonotonicKeyWidth(13, [0, 0, 0, 0, 0.5], "H13T");
 
 export const harmonic13WideLayoutModel: RowBasedLayoutModel = {
     name: "Harmonic 13 Balance",
@@ -39,17 +42,17 @@ export const harmonic13WideLayoutModel: RowBasedLayoutModel = {
     ],
     fullMapping,
 
-    // chamfer bottom row, because pinky can't reach all the way into the corner.
-    rowStart: [0, 0, 0, 0, 0.5],
+    rowIndent: h13wKeyWidth.rowIndent,
 
-    keyWidth: (row: number, col: number) => {
-        // outer edge keys
-        if ((row == KeyboardRows.Upper || row == KeyboardRows.Lower || row == KeyboardRows.Bottom) &&
-            (col == 0 || col == fullMapping[row].length - 1)) return 1.5;
-        // space and enter
-        if (row == KeyboardRows.Bottom && (col == 4 || col == 5)) return 1.5;
-        // all others
-        return 1;
+    keyWidths: [
+        h13wKeyWidth.row(0, 1),
+        h13wKeyWidth.row(1, 1.5),
+        h13wKeyWidth.row(2, 1),
+        h13wKeyWidth.row(3, 1.5),
+        mirror(1.5, 1, 1, 1, 1.5),
+    ],
+    keyWidth(row: number, col: number) {
+        return this.keyWidths[row][col];
     },
 
     // You'll notice that it's the same as in ANSI, making it easy to use both.

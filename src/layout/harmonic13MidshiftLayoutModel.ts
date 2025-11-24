@@ -11,6 +11,7 @@ const fullMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Alt", 0, "⍽", "⏎", 1, "AltGr", "Fn", "Ctrl"],
 ];
 
+
 export const harmonic13MidShiftLayoutModel: RowBasedLayoutModel = {
     name: "Harmonic 13 MidShift",
     description: "The Harmonic MidShift variant will be interesting for all fans of the \"angle mod\" – " +
@@ -41,7 +42,7 @@ export const harmonic13MidShiftLayoutModel: RowBasedLayoutModel = {
     ],
     fullMapping,
 
-    rowStart: [0, 0, 0, 0, 0],
+    rowIndent: [0, 0, 0, 0, 0],
 
     keyWidth: (row: number, col: number) => {
         // outer edge keys

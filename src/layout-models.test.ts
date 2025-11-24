@@ -17,7 +17,7 @@ import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
 import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLayoutModel.ts";
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
-import {splitOrthoLayoutModel} from "./layout/orthoLayoutModel.ts";
+import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 import {sum} from "./library/math.ts";
 import {ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
 

@@ -8,7 +8,7 @@ export const isKeyboardSymbol = (label: string) => keyboardSymbols.includes(labe
 
 // Let's just both allow names and symbols for some key, since this is currently only for formatting the label nicely.
 const keyboardNames = [
-    "Esc", "Tab", "Backspace", "CAPS", "Delete", "Enter", "Space", "Shift", "Ctrl", "Alt", "Fn", "Cmd", "AltGr", "Menu",
+    "Esc", "Tab", "Backspace", "CAPS", "Delete", "Enter", "Space", "Shift", "Ctrl", "Alt", "Fn", "Cmd", "Opt", "AltGr", "Menu",
 ];
 
 export const isKeyName = (label: string) => keyboardNames.includes(label);

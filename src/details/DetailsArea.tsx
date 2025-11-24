@@ -198,7 +198,7 @@ export function SingleKeyEffortDetails({layout, mapping}: KeyEffortDetailsProps)
             English of
             <b> {weighSingleKeyEffort(layout, charMap, englishFreqs)}</b>.
         </p>
-        <table>
+        <table><tbody>
             <KeyEffortLegendItem score={SKE_HOME} frequency={freqsByEffort[SKE_HOME]}>
                 Home position, including the thumb keys, if present.
             </KeyEffortLegendItem>
@@ -222,7 +222,7 @@ export function SingleKeyEffortDetails({layout, mapping}: KeyEffortDetailsProps)
             <KeyEffortLegendItem score={SKE_AWAY} frequency={freqsByEffort[SKE_AWAY]}>
                 Keys that aren't neighbors of home position keys.
             </KeyEffortLegendItem>
-        </table>
+        </tbody></table>
         <p><b>Total: {totalEffort}</b> – Higher is better!</p>
     </div>
 }

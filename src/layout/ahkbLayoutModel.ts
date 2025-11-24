@@ -1,10 +1,13 @@
 import {FlexMapping, KEY_COLOR, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
-import {getSymmetricEven} from "../library/utils.ts";
+import {mirror, MonotonicKeyWidth} from "./keyWidth.ts";
+
+const ahkbKeyWidth = new MonotonicKeyWidth(14.5, [0, 0, 0.25, 0.25, 0.5], "AHKB");
 
 export const ahkbLayoutModel: RowBasedLayoutModel = {
-    name: "AHKB, a wide-hand, split space keyboard with traditional typewriter row staggering.",
-    description: `Apple ❤ HHKB: when keyboard layouts meet and mate.`,
+    name: "AHKB",
+    description: `A wide-hand, split space keyboard with traditional typewriter row staggering.
+    Apple ❤ HHKB: when keyboard layouts meet and mate.`,
 
     // Keyboard width is 14.5u which gives 14 keys in top three rows, 13 in the lower row, and 10 in the bottom.
     thirtyKeyMapping: [
@@ -41,24 +44,19 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
         [2.0, null, null, 1.0, 0.2, 0.2, 1.0, null, null, 2.0],
     ],
 
-    rowStart: [0, 0, 0.25, 0.25, 0.5],
+    rowIndent: [0, 0, 0.25, 0.25, 0.5],
 
+    keyWidths: [
+        ahkbKeyWidth.row(0, 1.5, 1),
+        ahkbKeyWidth.row(1, 1, 1.5),
+        ahkbKeyWidth.row(2, 1),
+        ahkbKeyWidth.row(3, 1.5),
+        // 14.5 total with, 1.5u space and outer space, 3 × 1.25 per side.
+        // 7.25 per side minus 3 minus 3.75 = 0.5 gap
+        mirror(1.25, 1.25, 1.25, 1.5, 1.5),
+    ],
     keyWidth(row: KeyboardRows, col: number): number {
-        const lastCol = ahkbLayoutModel.thirtyKeyMapping![row].length - 1;
-        switch (row) {
-            case KeyboardRows.Number:
-                return (col == 0) ? 1.5 : 1;
-            case KeyboardRows.Upper:
-                return (col == lastCol) ? 1.5 : 1;
-            case KeyboardRows.Home:
-                return 1;
-            case KeyboardRows.Lower:
-                return (col == 0 || col == lastCol) ? 1.5 : 1;
-            case KeyboardRows.Bottom:
-                // 14.5 total with, 1.5u space and outer space, 3 × 1.25 per side.
-                // 7.25 per side minus 3 minus 3.75 = 0.5 gap
-                return getSymmetricEven([1.25, 1.25, 1.25, 1.5, 1.5], col);
-        }
+        return this.keyWidths[row][col];
     },
 
     keyColorClass(label: string, row: KeyboardRows, col: number) {
@@ -76,7 +74,7 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
         return defaultKeyColor(label, row, col);
     },
 
-    splitColumns: [7, 6, 6, 6, 4],
+    splitColumns: [7, 7, 7, 7, 5],
 
     leftHomeIndex: 4,
     rightHomeIndex: 9,

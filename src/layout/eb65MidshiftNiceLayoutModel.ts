@@ -1,6 +1,10 @@
 import {Finger, FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel, SKE_AWAY} from "../base-model.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 import {eb65LowShiftLayoutModel} from "./eb65LowShiftLayoutModel.ts";
+import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
+
+// the indent on the bottom is not symmetric, thus managed manually via gaps.
+const eb65NiceKeyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
 export const eb65MidshiftNiceLayoutModel: RowBasedLayoutModel = {
     ...eb65LowShiftLayoutModel,
@@ -44,52 +48,29 @@ export const eb65MidshiftNiceLayoutModel: RowBasedLayoutModel = {
         [3.0, 1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0, null, null],
         [null, 2.0, 1.5, null, null, 1.0, 0.2, 0.2, 1.0, null, 1.5, null, null, null, null],
     ],
-    keyWidth: (row: KeyboardRows, col: number)=> {
-        switch (row) {
-            case KeyboardRows.Bottom:
-                // The Bottom Row needs customizing to center the space bars under the wider hand position.
-                // arrow keys, always easy:
-                if (col > 11) return 1;
-/*
-    Center between hands is exactly the center of the keyboard, leaving 8u on each side,
-    of which 2.5u are between the inner edges of the index finger home keys.
-    Half of the outer space key (0.75u) should fall inside those 2.5u, leaving 1.75, which is exactly a space bar,
-    so we don't need any central key between space bars.
-    Committed on the left side are 1.75 space plus 0.5 left indent; total: 2.25u, unassigned: 5.75.
-    Right side has 1.75 space plus 3×1u arrows; total 4.75u, unassigned 3.25.
-    Two 1.25u modifiers on the right are 2.5u, leaving 0.75u for gaps which we'll split evenly.
-    On the left, we could do 3×1.25 + 2×1u to fill the space exactly.
-    Alternative 4×1.25 = 5u with three gaps of 0.25u.
- */
-                switch (col) {
-                    case 0:
-                        return 0.5;
-                    case 3:
-                    case 4:
-                        return 1;
-                    case 6:
-                    case 7:
-                        return 1.75;
-                    case 9:
-                    case 11:
-                        return 0.75 / 2;
-                    default:
-                        return 1.25;
-                }
 
-            case KeyboardRows.Lower:
-                switch (col) {
-                    case 0:
-                        return 1.25;
-                    case 7:
-                        return 1.5
-                    case 13:
-                        return 0.25
-                    default:
-                        return 1;
-                }
-        }
-        return eb65LowShiftLayoutModel.keyWidth(row, col);
+    keyWidths: [
+        eb65NiceKeyWidths.row(0, 1),
+        eb65NiceKeyWidths.row(1, 1.75),
+        eb65NiceKeyWidths.row(2, 1.5),
+        eb65NiceKeyWidths.row(3, 1.25)
+            .slice(0, -2)
+            .concat(0.25, 1, 1),
+        /*
+            Center between hands is exactly the center of the keyboard, leaving 8u on each side,
+            of which 2.5u are between the inner edges of the index finger home keys.
+            Half of the outer space key (0.75u) should fall inside those 2.5u, leaving 1.75, which is exactly a space bar,
+            so we don't need any central key between space bars.
+            Committed on the left side are 1.75 space plus 0.5 left indent; total: 2.25u, unassigned: 5.75.
+            Right side has 1.75 space plus 3×1u arrows; total 4.75u, unassigned 3.25.
+            Two 1.25u modifiers on the right are 2.5u, leaving 0.75u for gaps which we'll split evenly.
+            On the left, we could do 3×1.25 + 2×1u to fill the space exactly.
+            Alternative 4×1.25 = 5u with three gaps of 0.25u.
+         */
+        [0.5, 1.25, 1.25, 1, 1, 1.25, 1.75, 1.75, 1.25, 0.75/2, 1.25, 0.75/2, 1, 1, 1],
+    ],
+    keyWidth(row: KeyboardRows, col: number) {
+        return this.keyWidths[row][col];
     }
 }
 
@@ -140,7 +121,7 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
         [null, 2.0, 1.5, null, 1.0, 0.2, 0.2, 1.0, null, null, null, null, null, null],
     ],
 
-    rowStart: [0, 0, 0, 0, 0],
+    rowIndent: [0, 0, 0, 0, 0],
 
     keyWidth: (row: KeyboardRows, col: number): number => {
         const numCols = eb65MidshiftNiceLayoutModel.thirtyKeyMapping![row].length;

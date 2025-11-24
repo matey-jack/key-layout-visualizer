@@ -11,14 +11,15 @@ import {
 import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
 import {AnsiVariant, LayoutOptions} from "../app-model.ts";
 import {ahkbAddAngleMod, ahkbLayoutModel} from "./ahkbLayoutModel.ts";
+import {mirrorOdd, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 export function getAnsiVariant(layoutOptions: LayoutOptions) {
-    let base: AnsiLayoutModel = layoutOptions.ansiWide ? ansiWideLayoutModel : ansiLayoutModel;
+    let base: RowBasedLayoutModel = layoutOptions.ansiWide ? ansiWideLayoutModel : ansiIBMLayoutModel;
     switch (layoutOptions.ansiVariant) {
         case AnsiVariant.ANSI_IBM:
             break;
         case AnsiVariant.ANSI_APPLE:
-            base = {...base, keyboardWidth: 14.5};
+            base = createApple(base);
             break;
         case AnsiVariant.ANSI_HHKB:
             base = createHHKB(base);
@@ -30,15 +31,10 @@ export function getAnsiVariant(layoutOptions: LayoutOptions) {
     return layoutOptions.ansiSplit ? splitSpaceBar(base) : base;
 }
 
-// those values are accumulated by the stagger of 0.5, 0.25, and 0.5 again.
-const widthOfFirstKey = [1, 1.5, 1.75, 2.25,]
+const ibmKeyWidths = new MonotonicKeyWidth(15, zeroIndent, "ANSI/IBM");
 
-interface AnsiLayoutModel extends RowBasedLayoutModel {
-    keyboardWidth: number;
-}
-
-export const ansiLayoutModel: AnsiLayoutModel = {
-    name: "ANSI / Typewriter",
+export const ansiIBMLayoutModel: RowBasedLayoutModel = {
+    name: "ANSI",
     description: "The ANSI keyboard layout is based on a typewriter keyboard from the 19th century which gradually evolved " +
         "to add some computer-specific keys like Ctrl, Alt, and most importantly the @ sign. " +
         "This layout has keys of widely varying widths and an awkward stagger of 0.5, 0.25, and again 0.5 between the rows. " +
@@ -48,9 +44,6 @@ export const ansiLayoutModel: AnsiLayoutModel = {
         "Most keys move together with this hand position so that muscle memory is strongly preserved. " +
         "While it might look very unusual, it actually is very easy to get used to. " +
         "And this setup makes it easier to switch between a laptop and an ergonomic split keyboard. ",
-
-    // Default value, see appleAnsi above.
-    keyboardWidth: 15,
 
     // we use double quotes everywhere, just so that the one key with single quote as value isn't a special case ;)
     thirtyKeyMapping: [
@@ -105,27 +98,19 @@ export const ansiLayoutModel: AnsiLayoutModel = {
         [NaN, NaN, NaN, 0.2, 1.5, NaN, NaN, NaN],
     ],
 
-    rowStart: [0, 0, 0, 0, 0],
+    rowIndent: ibmKeyWidths.rowIndent,
+
+    keyWidths: [
+        // source is roughly https://www.wikiwand.com/en/articles/Keyboard_layout#/media/File:ANSI_Keyboard_Layout_Diagram_with_Form_Factor.svg
+        ibmKeyWidths.row(0, 1, 2),
+        ibmKeyWidths.row(1, 1.5, 1.5),
+        ibmKeyWidths.row(2, 1.75, 2.25),
+        ibmKeyWidths.row(3, 2.25, 2.75),
+        [1.25, 1.25, 1.25, 1.25, 6.25, 1.25, 1.25, 1.25],
+    ],
 
     keyWidth(row: KeyboardRows, col: number): number {
-        // source is roughly https://www.wikiwand.com/en/articles/Keyboard_layout#/media/File:ANSI_Keyboard_Layout_Diagram_with_Form_Factor.svg
-        // This automatically adapts to both ANSI's 15u and Apple's 14.5u width.
-        const numCols = ansiLayoutModel.thirtyKeyMapping![row].length;
-        if (row == KeyboardRows.Bottom) {
-            const modifierKeyWidth = 1.25;
-            // space bar: 6.25 on ANSI, and smaller when we decrease keyboard width.
-            if (col == 3) return this.keyboardWidth - 7 * modifierKeyWidth;
-            return modifierKeyWidth;
-        }
-        if (col == 0) {
-            return widthOfFirstKey[row];
-        }
-        // outer edge keys
-        if (col == numCols - 1) {
-            const numberOfMiddleKeys = numCols - 2;
-            return this.keyboardWidth - numberOfMiddleKeys - widthOfFirstKey[row];
-        }
-        return 1;
+         return this.keyWidths[row][col];
     },
 
     keyColorClass: (label, row, col) => {
@@ -147,7 +132,7 @@ export const ansiLayoutModel: AnsiLayoutModel = {
 }
 
 export const ansiWideLayoutModel = {
-    ...ansiLayoutModel,
+    ...ansiIBMLayoutModel,
     name: "ANSI with wide hand position",
     rightHomeIndex: 8,
     thirtyKeyMapping: [
@@ -168,7 +153,7 @@ export const ansiWideLayoutModel = {
     ],
     fullMapping: [
         ["`~", "1", "2", "3", "4", "5", "6", 0, "7", "8", "9", "0", 1, "⌫"],
-        ...ansiLayoutModel.fullMapping!.slice(1),
+        ...ansiIBMLayoutModel.fullMapping!.slice(1),
     ],
     mainFingerAssignment: [
         [1, 1, 1, 2, 2, 3, 3, 6, 6, 6, 7, 8, 8, 8],
@@ -183,15 +168,15 @@ export const ansiWideLayoutModel = {
 
     // moveRightHand now only used here. maybe just make this array explicit as well.
     singleKeyEffort: widenSingleKeyEffort(
-        moveRightHand(ansiLayoutModel.singleKeyEffort, ansiLayoutModel.splitColumns!!)
+        moveRightHand(ansiIBMLayoutModel.singleKeyEffort, ansiIBMLayoutModel.splitColumns!!)
     ),
     getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsiWide,
 };
 
 function widenSingleKeyEffort(effort: (number | null)[][]) {
-    ansiLayoutModel.splitColumns!!.forEach((splitCol, row) => {
+    ansiIBMLayoutModel.splitColumns!!.forEach((splitCol, row) => {
         if (row != KeyboardRows.Bottom) {
-            const lastCol = ansiLayoutModel.thirtyKeyMapping![row].length - 1;
+            const lastCol = ansiIBMLayoutModel.thirtyKeyMapping![row].length - 1;
             // keys at splitCol have the wrapped-around effort from the right-hand side.
             effort[row][lastCol] = effort[row][splitCol];
             effort[row][splitCol] = SKE_AWAY;
@@ -260,7 +245,30 @@ function duplicateBottomMiddle<T>(mapping: T[][], bottomIdx: number, middleIdx: 
     ];
 }
 
-export function createHHKB(lm: AnsiLayoutModel): AnsiLayoutModel {
+export function createApple(lm: RowBasedLayoutModel): RowBasedLayoutModel
+{
+    const addAppleBottom = (matrix: LayoutMapping) => {
+        matrix[KeyboardRows.Bottom] = mirrorOdd("Ctrl", "Opt", "Cmd", "⍽");
+        return matrix;
+    };
+    return {
+        ...lm,
+        keyWidths: copyAndModifyKeymap(ansiIBMLayoutModel.keyWidths, (matrix) => {
+            matrix.pop();
+            matrix.forEach((row) => {
+                row[row.length-1] = row[row.length-1] - 0.5;
+            })
+            matrix.push(mirrorOdd(1.5, 1.25, 1.5, 6));
+            return matrix;
+        }),
+        thumb30KeyMapping: ansiIBMLayoutModel.thumb30KeyMapping && copyAndModifyKeymap(ansiIBMLayoutModel.thumb30KeyMapping!, addAppleBottom),
+        thirtyKeyMapping: copyAndModifyKeymap(ansiIBMLayoutModel.thirtyKeyMapping!, addAppleBottom),
+        fullMapping: ansiIBMLayoutModel.fullMapping && copyAndModifyKeymap(ansiIBMLayoutModel.fullMapping!, addAppleBottom),
+        // todo: fingering and key effort for new bottom row.
+    };
+}
+
+export function createHHKB(lm: RowBasedLayoutModel): RowBasedLayoutModel {
     return {
         ...lm,
         name: lm.name.replace("ANSI", "Happy Hacker Keyboard"),
@@ -279,32 +287,21 @@ export function createHHKB(lm: AnsiLayoutModel): AnsiLayoutModel {
             m[KeyboardRows.Bottom] = [null, null, null, SKE_HOME, null, null, null];
             return m;
         }),
-        keyWidth(row: number, col: number) {
-            switch (row) {
-                case KeyboardRows.Number:
-                    return 1;
-                case KeyboardRows.Lower:
-                    // no '-1' because the modified one has an added key, we just avoid the reference to the object under construction.
-                    const last = lm.thirtyKeyMapping![row].length;
-                    switch (col) {
-                        case last:
-                            return 1;
-                        case last - 1:
-                            return lm.keyWidth(row, col) - 1;
-                    }
-                    break;
-                case KeyboardRows.Bottom:
-                    // sum of key widths is 11u, leaving 4u to split between the indentation gaps.
-                    return [1.5, 1, 1.5, 6, 1.5, 1, 2.5][col];
-            }
-            return lm.keyWidth(row, col);
-        },
+        keyWidths: copyAndModifyKeymap(ansiIBMLayoutModel.keyWidths, (matrix) => {
+            matrix[KeyboardRows.Number].pop();
+            matrix[KeyboardRows.Number].push(1, 1);
+            const oldShift = matrix[KeyboardRows.Lower].pop()!
+            matrix[KeyboardRows.Lower].push(oldShift - 1, 1);
+            matrix[KeyboardRows.Bottom] = [1.5, 1, 1.5, 6, 1.5, 1, 2.5];
+            return matrix;
+        }),
         // HHKB can use the generic wide keymap with "thirtyKeyMapping", but specific key maps that need a thumb key.
         getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsi,
     };
 }
 
 function splitKeys(matrix: LayoutMapping): LayoutMapping {
+    matrix[KeyboardRows.Number][0] = "Esc";
     matrix[KeyboardRows.Number].pop();
     const bslKey = matrix[KeyboardRows.Upper].pop()!;
     const newKey: (string | [number, number]) = typeof bslKey === "number" ? [1, bslKey] : bslKey;
@@ -313,8 +310,7 @@ function splitKeys(matrix: LayoutMapping): LayoutMapping {
     matrix[KeyboardRows.Home][0] = "Ctrl";
     matrix[KeyboardRows.Upper].push("⌫");
     matrix[KeyboardRows.Lower].push("Fn");
-    // explicit gaps instead of "rowStart", because both sides are different.
-    // and still the space bar is not centered, *sigh*.
+    // Explicit gaps instead of "rowStart", because both sides are different, which almost centers the spacebar between thumbs, btw.
     matrix[KeyboardRows.Bottom] = [null, "Alt", "Cmd", "⍽", "Cmd", "Alt", null];
     return matrix
 }
