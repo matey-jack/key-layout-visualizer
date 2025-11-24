@@ -60,13 +60,8 @@ export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
         keyWidths.row(1, 1.25),
         keyWidths.row(2, 1),
         keyWidths.row(3, 1.25),
-        // Both sides have 7.5u space to distribute, of which 0.25 is indent, 1.5 space and 1.25/2 half the central key.
-        // Currently, we have 0.25 gap + 4×1.25 + 1.5 per side. That's 6.75u not counting the central key.
-        // So the total diff to spread in microgaps is only 0.25 for the entire width.
-        // We could be marginally more ergonomic by keeping space and outer space with zero gap
-        // and spread the 0.125u per side only among the remaining modifier keys.
-        // todo: consider using a 1u center like on the arrow-cluster version.
-        mirrorOdd(1.25, 1.25, 1.25, 1.25, 1.5, 1.25),
+        // With 0.25 indent and 0.5u from the central 1u key, both halves have exactly 7.5u
+        mirrorOdd(1.5, 1.25, 1.25, 1.25, 1.5, 1),
     ],
 
     leftHomeIndex: 4,

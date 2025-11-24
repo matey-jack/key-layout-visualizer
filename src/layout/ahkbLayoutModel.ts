@@ -53,7 +53,7 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
         ahkbKeyWidth.row(3, 1.5),
         // 14.5 total with, 1.5u space and outer space, 3 × 1.25 per side.
         // 7.25 per side minus 3 minus 3.75 = 0.5 gap
-        mirror(1.25, 1.25, 1.25, 1.5, 1.5),
+        mirror(1.5, 1.25, 1.25, 1.25, 1.5),
     ],
     keyColorClass(label: string, row: KeyboardRows, col: number) {
         if (label === "↹") {
