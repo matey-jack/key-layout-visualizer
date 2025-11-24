@@ -57,19 +57,20 @@ export function LayoutArea({appState}: LayoutAreaProps) {
 // This mutates the array, contrary the usual immutable value functions we have everywhere else.
 function flipRetRub(charMap: (string | null)[][]) {
     let enterLabel: string;
-    let enterPosition: [number, number];
-    charMap.forEach((charRow, row) => {
-        charRow.forEach((char, col) => {
+    // Just because we use a different label for Enter on one keyboard, we have to find that to preserve it.
+    charMap.forEach((charRow) => {
+        charRow.forEach((char) => {
             if (char && char.includes("⏎")) {
                 enterLabel = char;
-                enterPosition = [row, col];
-                charRow[col] = "⌫";
             }
         })
     })
-    charMap.forEach((charRow, row) => {
+    charMap.forEach((charRow) => {
         charRow.forEach((char, col) => {
-            if (char == "⌫" && row != enterPosition[0] && col != enterPosition[1]) {
+            if (char && char.includes("⏎")) {
+                charRow[col] = "⌫";
+            }
+            if (char == "⌫") {
                 charRow[col] = enterLabel;
             }
         })
@@ -123,7 +124,8 @@ interface LayoutOptionsBarProps {
 
 function LayoutOptionsBar({state}: LayoutOptionsBarProps) {
     return <div class="layout-options-bar-container">
-        <TypeSpecifcLayoutOptions layoutOptions={state.layout.value} setLayoutOptions={state.setLayout} mapping={state.mapping}/>
+        <TypeSpecifcLayoutOptions layoutOptions={state.layout.value} setLayoutOptions={state.setLayout}
+                                  mapping={state.mapping}/>
     </div>
 }
 
