@@ -29,9 +29,6 @@ export const katanaLayoutModel: RowBasedLayoutModel = {
     //     ["Hack", "Ctrl", "Alt", "Cmd", 0, "⍽", "⌦", "AltGr", "Menu", "Cmd", "Ctrl"],
     // ],
 
-    // todo
-    fullMapping: [],
-
     // note that for data model reason, we also have to assign a finger to gaps.
     // but it will never be shown or used in any calulations.
     mainFingerAssignment: [
