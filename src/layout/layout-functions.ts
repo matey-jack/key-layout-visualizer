@@ -189,17 +189,11 @@ export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean
         2 * (horizontalPadding + layoutModel.rowIndent[r]) + sum(row.map((_, c) => layoutModel.keyWidths[r][c] ?? 1))
     );
     // console.log("Row widths: ", rowWidth);
-    // todo: remove this again and replace with Microgaps from keyWidth.ts
-    const maxWidth = Math.max(...rowWidth);
     let result: KeyPosition[] = [];
     for (let row = 0; row < 5; row++) {
         let colPos = horizontalPadding + layoutModel.rowIndent[row];
-        // Counting the rowStart padding, all rows should be the same width. If our row is narrower than the max,
-        // then we distribute the difference between all the keys.
-        // This doesn't apply to the split keyboards, because the thumb cluster row is meant to stick out from the rest.
-        const microGap = split ? 0 : (maxWidth - rowWidth[row]) / (fullMapping[row].length - 1);
         // for non-split boards, apply some white space on the left to make them centered.
-        if (!split) colPos += (totalWidth - maxWidth) / 2;
+        if (!split) colPos += (totalWidth - rowWidth[row]) / 2;
         fullMapping[row].forEach((label, col) => {
             // to show the board as split, add some extra space after the split column.
             if (split && layoutModel.splitColumns && (col == layoutModel.splitColumns[row])) {
@@ -217,7 +211,7 @@ export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean
                     hasAltFinger: layoutModel.hasAltFinger(row, col),
                 });
             }
-            colPos += layoutModel.keyWidths[row][col] + microGap;
+            colPos += layoutModel.keyWidths[row][col];
         });
     }
     return result;
