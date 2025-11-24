@@ -1,7 +1,5 @@
 import {Finger, FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel, SKE_AWAY} from "../base-model.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
-import {eb65LowShiftLayoutModel} from "./eb65LowShiftLayoutModel.ts";
-import {eb65MidshiftNiceLayoutModel} from "./eb65MidshiftNiceLayoutModel.ts";
 
 export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 MidShift Narrow, Right Return",
@@ -52,10 +50,15 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
 
     rowIndent: [0, 0, 0, 0, 0],
 
-    keyWidths: copyAndModifyKeymap(eb65MidshiftNiceLayoutModel.keyWidths, (matrix) => {
-        matrix[KeyboardRows.Bottom] = eb65LowShiftLayoutModel.keyWidths[KeyboardRows.Bottom];
-        return matrix;
-    }),
+    // Turns out that my genius gap-creation logic doesn't apply here, because those three layouts explicitly prefer
+    // smaller gaps, to have more 1u keys for mapping characters onto them. So let's just brute it today.
+    keyWidths: [
+        Array(16).fill(1),
+        [1.75, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 1, 1.75],
+        [1.5, ...Array(13).fill(1), 1.5],
+        [1.25, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 1, 0.25, 1, 1],
+        [0.5, 1.25, 1.25, 1.25, 1.25, 1.75, 1.75, 1.25, 0.75, 1.25, 0.75, 1, 1, 1]
+    ],
     keyWidth(row: KeyboardRows, col: number): number {
         return this.keyWidths![row][col];
     },

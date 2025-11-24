@@ -29,7 +29,7 @@ import {
     eb65CentralEnterLayoutModel,
     eb65MidshiftRightRetLayoutModel,
     eb65VerticalEnterLayoutModel
-} from "./layout/eb65MidshiftAltLayoutModels.ts";
+} from "./layout/eb65MidshiftNarrowLayoutModels.ts";
 
 export function getHarmonicVariant(variant: HarmonicVariant): RowBasedLayoutModel {
     switch (variant) {

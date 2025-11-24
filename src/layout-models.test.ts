@@ -21,7 +21,7 @@ import {
     eb65CentralEnterLayoutModel,
     eb65MidshiftRightRetLayoutModel,
     eb65VerticalEnterLayoutModel
-} from "./layout/eb65MidshiftAltLayoutModels.ts";
+} from "./layout/eb65MidshiftNarrowLayoutModels.ts";
 
 const layoutModels: Array<RowBasedLayoutModel> = [
     ansiIBMLayoutModel,
