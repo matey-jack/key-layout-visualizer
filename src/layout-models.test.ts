@@ -1,6 +1,6 @@
 import {describe, expect, it} from "vitest";
 import {KeyboardRows, RowBasedLayoutModel} from "./base-model.ts";
-import {ansiLayoutModel, ansiWideLayoutModel, createHHKB} from "./layout/ansiLayoutModel.ts";
+import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./layout/ansiLayoutModel.ts";
 import {eb65BigEnterLayoutModel, eb65LowShiftLayoutModel} from "./layout/eb65LowShiftLayoutModel.ts";
 import {eb65LowShiftWideLayoutModel} from "./layout/eb65LowshiftWideLayoutModel.ts";
 import {
@@ -10,21 +10,21 @@ import {
     eb65VerticalEnterLayoutModel
 } from "./layout/eb65MidshiftNiceLayoutModel.ts";
 import {eb65MidshiftExtraWideLayoutModel} from "./layout/eb65MidshiftExtraWideLayoutModel.ts";
-import {ep60WithArrowsLayoutModel, ergoPlank60AnsiAngleLayoutModel} from "./layout/ergoPlank60LayoutModel.ts";
+import {ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./layout/ergoPlank60LayoutModel.ts";
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidShiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
 import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLayoutModel.ts";
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
-import {orthoLayoutModel, splitOrthoLayoutModel} from "./layout/orthoLayoutModel.ts";
+import {splitOrthoLayoutModel} from "./layout/orthoLayoutModel.ts";
 import {sum} from "./library/math.ts";
 import {ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
 
 const layoutModels: Array<RowBasedLayoutModel> = [
-    ansiLayoutModel,
+    ansiIBMLayoutModel,
     ansiWideLayoutModel,
-    createHHKB(ansiLayoutModel),
+    createHHKB(ansiIBMLayoutModel),
     ahkbLayoutModel,
     eb65LowShiftLayoutModel,
     eb65BigEnterLayoutModel,
@@ -34,7 +34,7 @@ const layoutModels: Array<RowBasedLayoutModel> = [
     eb65CentralEnterLayoutModel,
     eb65VerticalEnterLayoutModel,
     eb65MidshiftExtraWideLayoutModel,
-    ergoPlank60AnsiAngleLayoutModel,
+    ergoPlank60LayoutModel,
     ep60WithArrowsLayoutModel,
     harmonic12LayoutModel,
     harmonic13WideLayoutModel,
@@ -42,7 +42,6 @@ const layoutModels: Array<RowBasedLayoutModel> = [
     harmonic14WideLayoutModel,
     harmonic14TraditionalLayoutModel,
     katanaLayoutModel,
-    orthoLayoutModel,
     splitOrthoLayoutModel,
 ];
 
@@ -62,7 +61,7 @@ function expectMatrixShape(matrix: unknown[][], lengths: number[], label: string
 }
 
 function rowWidth(model: RowBasedLayoutModel, row: KeyboardRows) {
-    return 2 * model.rowStart[row]
+    return 2 * model.rowIndent[row]
         + sum(model.thirtyKeyMapping![row].map((_: any, col) =>
             model.keyWidth(row, col)
         ))
@@ -72,6 +71,12 @@ describe('RowBasedLayoutModel matrix shapes', () => {
     layoutModels.forEach((model) => {
         describe(model.name, () => {
             const rowLengths = getExpectedRowLengths(model);
+
+            if (model.keyWidths) {
+                it('thirtyKeyMapping matches expected shape', () => {
+                    expectMatrixShape(model.keyWidths, rowLengths, "keyWidths");
+                });
+            }
 
             if (model.thirtyKeyMapping) {
                 it('thirtyKeyMapping matches expected shape', () => {
@@ -103,7 +108,7 @@ describe('RowBasedLayoutModel matrix shapes', () => {
             ('keyWidth adds up to same number', () => {
                 const numberRowWidth = rowWidth(model, KeyboardRows.Number);
                 for (let row = 0; row <= KeyboardRows.Bottom; row++) {
-                    if (model.name.startsWith("Ergoplank 60")  && row == KeyboardRows.Bottom) continue;
+                    if (model.name.startsWith("Ergoplank 60") && row == KeyboardRows.Bottom) continue;
                     expect(rowWidth(model, row), `row ${row}`).toBeCloseTo(numberRowWidth);
                 }
             });

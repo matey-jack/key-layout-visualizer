@@ -18,23 +18,31 @@ import {
     topNine,
     colemakThumbyDMapping
 } from "../mapping/mappings.ts"
-import {ansiLayoutModel} from "./ansiLayoutModel.ts";
+import {ansiIBMLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
-import {orthoLayoutModel, splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
+import {splitOrthoLayoutModel} from "./orthoLayoutModel.ts";
 import {harmonic13MidShiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
 import {harmonic14TraditionalLayoutModel} from "./harmonic14TraditionalLayoutModel.ts";
 import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 import {harmonic14WideLayoutModel} from "./harmonic14WideLayoutModel.ts";
+import {katanaLayoutModel} from "./katanaLayoutModel.ts";
+import {ahkbLayoutModel} from "./ahkbLayoutModel.ts";
+import {ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
+import {eb65MidshiftNiceLayoutModel} from "./eb65MidshiftNiceLayoutModel.ts";
 
 export const allLayoutModels = [
-    ansiLayoutModel,
+    ansiIBMLayoutModel,
+    createHHKB(ansiIBMLayoutModel),
+    ahkbLayoutModel,
     harmonic14WideLayoutModel,
     harmonic14TraditionalLayoutModel,
     harmonic13WideLayoutModel,
     harmonic13MidShiftLayoutModel,
     harmonic12LayoutModel,
-    orthoLayoutModel,
-    splitOrthoLayoutModel
+    katanaLayoutModel,
+    ergoPlank60LayoutModel,
+    eb65MidshiftNiceLayoutModel,
+    splitOrthoLayoutModel,
 ];
 
 function hasLettersNumbersAndProsePunctuation(filledMapping: string[][]) {
@@ -71,7 +79,7 @@ describe('fillMapping', () => {
     });
 
     it(`ANSI full layout maps all important characters`, () => {
-        hasLettersNumbersAndProsePunctuation(mergeMapping(ansiLayoutModel.fullMapping!, thumbyZero.mappingAnsi!));
+        hasLettersNumbersAndProsePunctuation(mergeMapping(ansiIBMLayoutModel.fullMapping!, thumbyZero.mappingAnsi!));
     });
 
     // this is currently not used in the app, but let's keep it working
@@ -89,7 +97,7 @@ describe('fillMapping', () => {
 
 describe('hasMatchingMapping', () => {
     it('no Thumby mapping on ANSI-narrow', () => {
-        expect(hasMatchingMapping(ansiLayoutModel, colemakThumbyDMapping)).toBeFalsy();
+        expect(hasMatchingMapping(ansiIBMLayoutModel, colemakThumbyDMapping)).toBeFalsy();
     }) ;
 });
 
@@ -161,7 +169,7 @@ describe('hand function', () => {
 
 describe('diffToQwerty', () => {
     it('works for Norman', () => {
-        const normanDiff = diffToBase(ansiLayoutModel, normanMapping)
+        const normanDiff = diffToBase(ansiIBMLayoutModel, normanMapping)
         expect(normanDiff['k']).toBe(MappingChange.SwapHands);
         expect(normanDiff['r']).toBe(MappingChange.SwapHands);
         expect(normanDiff['p']).toBe(MappingChange.SameHand);
@@ -179,8 +187,8 @@ describe('diffToQwerty', () => {
 });
 
 describe('characterToFinger for ANSI Qwerty', () => {
-    const layoutMapping = fillMapping(ansiLayoutModel, qwertyMapping);
-    const fingering = ansiLayoutModel.mainFingerAssignment;
+    const layoutMapping = fillMapping(ansiIBMLayoutModel, qwertyMapping);
+    const fingering = ansiIBMLayoutModel.mainFingerAssignment;
     const actual = characterToFinger(fingering, layoutMapping!);
 
     it('maps number row characters to correct fingers', () => {
