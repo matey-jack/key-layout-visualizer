@@ -1,5 +1,6 @@
 import {FlexMapping, KEY_COLOR, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
+import {getSymmetricEven} from "../library/utils.ts";
 
 export const ahkbLayoutModel: RowBasedLayoutModel = {
     name: "AHKB, a wide-hand, split space keyboard with traditional typewriter row staggering.",
@@ -59,8 +60,7 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
             case KeyboardRows.Bottom:
                 // 14.5 total with, 1.5u space and outer space, 3 × 1.25 per side.
                 // 7.25 per side minus 3 minus 3.75 = 0.5 gap
-                const c = col > 4 ? 9 - col : col;
-                return [1.25, 1.25, 1.25, 1.5, 1.5][c];
+                return getSymmetricEven([1.25, 1.25, 1.25, 1.5, 1.5], col);
         }
     },
 

@@ -64,7 +64,7 @@ body {
 
 .flip-ret-rub-button {
     /*margin: 0.5rem;*/
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     border-radius: 4px;
@@ -78,6 +78,10 @@ body {
 
 .layout-options-bar-container label {
     display: block;
+}
+
+.ansi-ahkb-options-container {
+    margin: 0.5rem;
 }
 
 label.disabled {

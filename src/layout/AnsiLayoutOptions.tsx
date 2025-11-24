@@ -46,7 +46,7 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
                         disabled={false}
                     />
                     {isAhkb && checked &&
-                        <div class="ansi-ahkb-angle-option">
+                        <div class="ansi-ahkb-options-container">
                             <CheckboxWithLabel
                                 label="angle mod"
                                 checked={angleMod}
