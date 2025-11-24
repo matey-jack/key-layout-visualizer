@@ -65,6 +65,9 @@ export const eb65MidshiftExtraWideLayoutModel: RowBasedLayoutModel = {
     keyWidths: [
         eb65MidshiftExtraWideKeyWidths.row(KeyboardRows.Number, 1.5, 1),
         eb65MidshiftExtraWideKeyWidths.row(KeyboardRows.Upper, 1.25, 1.75),
+        // todo: something like this should work:
+        //eb65MidshiftExtraWideKeyWidths.row(KeyboardRows.Home, 1, 1.5, ),
+        // maybe need a new unit test case to check what's going wrong there.
         [1, 1, 1, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1, 1, 1.5],
         [0.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.25, 1, 1],
         [0.5, 1.25, 1.25, 1.25, 1.25, 1.75, 1, 1.75, 1.25, 0.25, 1.25, 0.25, 1, 1, 1],

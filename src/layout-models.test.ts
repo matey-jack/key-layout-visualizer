@@ -4,10 +4,7 @@ import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./layout/ansi
 import {eb65BigEnterLayoutModel, eb65LowShiftLayoutModel} from "./layout/eb65LowShiftLayoutModel.ts";
 import {eb65LowShiftWideLayoutModel} from "./layout/eb65LowshiftWideLayoutModel.ts";
 import {
-    eb65CentralEnterLayoutModel,
-    eb65MidshiftNiceLayoutModel,
-    eb65MidshiftRightRetLayoutModel,
-    eb65VerticalEnterLayoutModel
+    eb65MidshiftNiceLayoutModel
 } from "./layout/eb65MidshiftNiceLayoutModel.ts";
 import {eb65MidshiftExtraWideLayoutModel} from "./layout/eb65MidshiftExtraWideLayoutModel.ts";
 import {ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./layout/ergoPlank60LayoutModel.ts";
@@ -20,6 +17,11 @@ import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 import {sum} from "./library/math.ts";
 import {ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
+import {
+    eb65CentralEnterLayoutModel,
+    eb65MidshiftRightRetLayoutModel,
+    eb65VerticalEnterLayoutModel
+} from "./layout/eb65MidshiftAltLayoutModels.ts";
 
 const layoutModels: Array<RowBasedLayoutModel> = [
     ansiIBMLayoutModel,
