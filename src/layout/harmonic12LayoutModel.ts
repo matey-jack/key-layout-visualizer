@@ -1,5 +1,5 @@
 import {FlexMapping, harmonicStaggerOffsets, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
-import {MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
+import {mirror, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 const fullMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0], // 12 keys
@@ -45,7 +45,7 @@ export const harmonic12LayoutModel: RowBasedLayoutModel = {
         h12KeyWidth.row(KeyboardRows.Upper, 1.5),
         h12KeyWidth.row(KeyboardRows.Home, 1),
         h12KeyWidth.row(KeyboardRows.Lower, 1.5),
-        [1.5, 1, 1, 1, 1.5, 1.5, 1, 1, 1, 1.5],
+        mirror(1.5, 1, 1, 1, 1.5),
     ],
     keyWidth(row: number, col: number) {
         return this.keyWidths[row][col];
