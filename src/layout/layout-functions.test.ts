@@ -141,7 +141,7 @@ describe('copyAndModifyKeymap', () => {
 describe('finger assignment consistency', () => {
     allLayoutModels.forEach((model) => {
         it(model.name, () => {
-            model.fullMapping!.forEach((mappingRow, r) => {
+            (model.fullMapping || model.thirtyKeyMapping)!.forEach((mappingRow, r) => {
                 expect(mappingRow.length, `${model.name} ${KeyboardRows[r]}Row`).toBe(model.mainFingerAssignment[r].length)
             });
         });
@@ -151,7 +151,7 @@ describe('finger assignment consistency', () => {
 describe('key effort consistency', () => {
     allLayoutModels.forEach((model) => {
         it(model.name, () => {
-            model.fullMapping!.forEach((mappingRow, r) => {
+            (model.fullMapping || model.thirtyKeyMapping)!.forEach((mappingRow, r) => {
                 expect(model.singleKeyEffort[r].length, `${model.name} ${KeyboardRows[r]}Row`).toBe(mappingRow.length)
             });
         });

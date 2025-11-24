@@ -273,8 +273,11 @@ export function createHHKB(lm: RowBasedLayoutModel): RowBasedLayoutModel {
         ...lm,
         name: lm.name.replace("ANSI", "Happy Hacker Keyboard"),
         thirtyKeyMapping: copyAndModifyKeymap(lm.thirtyKeyMapping!, splitKeys),
+        // HHKB doesn't work with thumb key.
         thumb30KeyMapping: undefined,
-        fullMapping: lm.fullMapping && copyAndModifyKeymap(lm.fullMapping!, splitKeys),
+        fullMapping: undefined,
+        getSpecificMapping: (_: FlexMapping) => undefined,
+
         mainFingerAssignment: copyAndModifyKeymap(lm.mainFingerAssignment, (m) => {
             m[KeyboardRows.Number].push(Finger.RRing);
             m[KeyboardRows.Lower].push(null);
@@ -295,8 +298,6 @@ export function createHHKB(lm: RowBasedLayoutModel): RowBasedLayoutModel {
             matrix[KeyboardRows.Bottom] = [1.5, 1, 1.5, 6, 1.5, 1, 2.5];
             return matrix;
         }),
-        // HHKB can use the generic wide keymap with "thirtyKeyMapping", but specific key maps that need a thumb key.
-        getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsi,
     };
 }
 

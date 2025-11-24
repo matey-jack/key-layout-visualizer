@@ -106,10 +106,6 @@ export class SymmetricKeyWidth {
 // You can also chain them together to provide micro-gaps in several rows.
 export type KeyCapWidthsFn = (row: KeyboardRows, col: number, next?: KeyCapWidthsFn) => number;
 
-// Use this if you don't have any exceptions to specify.
-// keyCapSize will then be taken from keySize.
-export const boringKeyCapWidth = (_r: KeyboardRows, _c: number): undefined => undefined;
-
 /*
     Micro gaps are added by making keyWidth slightly higher (it's actually a key switch distance, only we don't call it that),
     and then using keyCapWidth as the actual keyWidth.
@@ -121,10 +117,9 @@ export const boringKeyCapWidth = (_r: KeyboardRows, _c: number): undefined => un
 export class MicroGapKeyWidths {
     readonly keyWidths: number[];
     readonly keyCapWidths: number[];
-    readonly keyCapWidthsFn: KeyCapWidthsFn;
 
     constructor(
-        row: KeyboardRows,
+        readonly row: KeyboardRows,
         // Both arrays must have the same length.
         // A group width can be null or NaN to signify: use keys directly with no microgaps.
         // The most typical use-case has only one group with an actual groupWidth
@@ -134,26 +129,30 @@ export class MicroGapKeyWidths {
         // needed for the keyCapWidths function
     ) {
         this.keyCapWidths = keyWidthsPerGroup.flat();
-        this.keyCapWidthsFn = (r: KeyboardRows, col: number, next?: KeyCapWidthsFn) => {
-            if (r == row) {
-                return this.keyCapWidths[col];
-            }
-            if (next) {
-                return next(r, col);
-            }
-            return 1;
-        }
         this.keyWidths = [];
         groupWidths.forEach((groupWidth, i) => {
             const kWidths = keyWidthsPerGroup[i];
             if (!groupWidth) {
                 this.keyWidths.push(...kWidths);
+            } else {
+                const remainder = groupWidth - sum(kWidths);
+                kWidths.forEach((kw) => {
+                    this.keyWidths.push(kw + remainder / kWidths.length);
+                })
             }
-            const remainder = groupWidth - sum(kWidths);
-            kWidths.forEach((kw) => {
-                this.keyWidths.push(kw + remainder / kWidths.length);
-            })
         });
+    }
+
+    keyCapWidthsFn(next?: KeyCapWidthsFn) {
+        return (r: KeyboardRows, col: number) => {
+            if (r == this.row) {
+                return this.keyCapWidths[col];
+            }
+            if (next) {
+                return next(r, col);
+            }
+            return undefined;
+        }
     }
 }
 

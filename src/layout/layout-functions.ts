@@ -27,7 +27,7 @@ export function defaultKeyColor(label: string, _row: number, _col: number): KeyC
 }
 
 export const keyCapWidth = (lm: RowBasedLayoutModel, r: KeyboardRows, c: number)=>
-    lm.keyCapWidth ? lm.keyCapWidth(r, c) : lm.keyWidth(r, c);
+    lm.keyCapWidth && lm.keyCapWidth(r, c) ? lm.keyCapWidth(r, c)! : lm.keyWidth(r, c);
 
 export const keyCapHeight = (lm: RowBasedLayoutModel, r: KeyboardRows, c: number)=>
     lm.keyCapHeight ? lm.keyCapHeight(r, c) : 1;
