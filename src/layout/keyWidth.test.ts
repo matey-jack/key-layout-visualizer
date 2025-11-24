@@ -16,6 +16,10 @@ describe('symmetric keyWidth gap position', () => {
        expect(sym.row(1, 1, 1.5)).toEqual([1, 1, 0.5, 1, 1.5]);
        expect(sym.row(1, 1.75)).toEqual([1.75, 1.5, 1.75]);
    });
+   it('creates a big gap as in EB LS Wide', () => {
+       const sym = new SymmetricKeyWidth(6, zeroIndent, 2.75);
+       expect(sym.row(0, 1, 1.5)).toEqual([1, 1, 1.5, 1, 1.5]);
+   });
 });
 
 describe('MicroGapKeyWidths', () => {
