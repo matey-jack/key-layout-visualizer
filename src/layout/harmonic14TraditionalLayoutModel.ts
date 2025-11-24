@@ -39,7 +39,7 @@ export const harmonic14TraditionalLayoutModel: RowBasedLayoutModel = {
     ],
     fullMapping,
 
-    rowStart: (_: number) => 0,
+    rowStart: [0, 0, 0, 0, 0],
 
     keyWidth: (row: number, col: number) => {
         // outer edge keys

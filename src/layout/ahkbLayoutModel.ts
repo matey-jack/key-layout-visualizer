@@ -41,10 +41,7 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
         [2.0, null, null, 1.0, 0.2, 0.2, 1.0, null, null, 2.0],
     ],
 
-    rowStart: (row: KeyboardRows) =>
-        (row == KeyboardRows.Bottom) ? 0.5 :
-            (row >= KeyboardRows.Home) ? 0.25
-                : 0,
+    rowStart: [0, 0, 0.25, 0.25, 0.5],
 
     keyWidth(row: KeyboardRows, col: number): number {
         const lastCol = ahkbLayoutModel.thirtyKeyMapping![row].length - 1;

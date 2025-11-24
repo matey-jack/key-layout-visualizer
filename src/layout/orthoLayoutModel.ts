@@ -36,7 +36,7 @@ export const orthoLayoutModel: RowBasedLayoutModel = {
         ["Ctrl", "Cmd", 0, 1, "Alt", "⍽", "AltGr", 2, 3, "Fn", "Ctrl"],
     ],
 
-    rowStart: (_: KeyboardRows) => 0,
+    rowStart: [0, 0, 0, 0, 0],
 
     keyWidth: (row: KeyboardRows, col: number): number =>
         ((row == KeyboardRows.Bottom) && (col == 5)) ? 2 : 1,
@@ -116,7 +116,7 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
         ["Ctrl", "Cmd", 0, "Alt", 1, "⍽", "⏎", 2, "AltGr", 3, "Fn", "Ctrl"],
     ],
 
-    rowStart: (row: KeyboardRows) => (row == KeyboardRows.Bottom) ? 1 : 0,
+    rowStart: [0, 0, 0, 0, 1],
     keyWidth: (_row: KeyboardRows, _col: number): number => 1,
 
     mainFingerAssignment: [

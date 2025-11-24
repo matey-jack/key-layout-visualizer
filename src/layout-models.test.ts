@@ -62,7 +62,7 @@ function expectMatrixShape(matrix: unknown[][], lengths: number[], label: string
 }
 
 function rowWidth(model: RowBasedLayoutModel, row: KeyboardRows) {
-    return 2 * model.rowStart(row)
+    return 2 * model.rowStart[row]
         + sum(model.thirtyKeyMapping![row].map((_: any, col) =>
             model.keyWidth(row, col)
         ))

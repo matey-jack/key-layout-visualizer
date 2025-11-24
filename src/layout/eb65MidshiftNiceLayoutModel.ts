@@ -140,7 +140,7 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
         [null, 2.0, 1.5, null, 1.0, 0.2, 0.2, 1.0, null, null, null, null, null, null],
     ],
 
-    rowStart: (_row: KeyboardRows) => 0,
+    rowStart: [0, 0, 0, 0, 0],
 
     keyWidth: (row: KeyboardRows, col: number): number => {
         const numCols = eb65MidshiftNiceLayoutModel.thirtyKeyMapping![row].length;

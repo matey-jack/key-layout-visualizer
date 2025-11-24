@@ -40,7 +40,7 @@ export const harmonic13WideLayoutModel: RowBasedLayoutModel = {
     fullMapping,
 
     // chamfer bottom row, because pinky can't reach all the way into the corner.
-    rowStart: (row: number) => (row == KeyboardRows.Bottom) ? 0.5 : 0,
+    rowStart: [0, 0, 0, 0, 0.5],
 
     keyWidth: (row: number, col: number) => {
         // outer edge keys

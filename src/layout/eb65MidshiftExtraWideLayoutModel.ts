@@ -57,7 +57,7 @@ export const eb65MidshiftExtraWideLayoutModel: RowBasedLayoutModel = {
         [null, 2.0, 2.0, null, 1.0, 0.2, 0.2, 1.0, null, null, 2.0, null, null, null, null],
     ],
 
-    rowStart: (_row: KeyboardRows) => 0,
+    rowStart: [0, 0, 0, 0, 0],
 
     keyWidth: (row: KeyboardRows, col: number): number => {
         const lastCol = eb65MidshiftExtraWideLayoutModel.thirtyKeyMapping![row].length - 1;

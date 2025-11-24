@@ -50,7 +50,7 @@ export const ergoPlank60AnsiAngleLayoutModel: RowBasedLayoutModel = {
         [3.0, 3.0, 2.0, 1.5, 0.2, 1.5, 0.2, 1.5, 2.0, 3.0, 3.0],
     ],
 
-    rowStart: (row: KeyboardRows) => row >= KeyboardRows.Lower ? 0.25 : 0,
+    rowStart: [0, 0, 0, 0.25, 0.25],
 
     keyWidth: (row: KeyboardRows, col: number): number => {
         const numCols = ergoPlank60AnsiAngleLayoutModel.thirtyKeyMapping![row].length;
@@ -128,7 +128,7 @@ export const ep60WithArrowsLayoutModel: RowBasedLayoutModel = {
     mainFingerAssignment: replaceLast(ergoPlank60AnsiAngleLayoutModel.mainFingerAssignment,
         [null, 0, 1, 2, 4, 4, 5, 5, 5, null, null, null, null, null]
     ),
-    rowStart: (row: KeyboardRows) => row == KeyboardRows.Lower ? 0.25 : 0,
+    rowStart: [0, 0, 0, 0.25, 0],
     keyWidth: (row: KeyboardRows, col: number): number => {
         /*
 7.5u on each side, thereof 1.5 space and 0.5u for the half of the central key, leaves 5.5u per side.

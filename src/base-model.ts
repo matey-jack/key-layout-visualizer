@@ -161,7 +161,9 @@ export interface RowBasedLayoutModel {
     description: string;
 
     // 1 unit = width of the smallest key.
-    rowStart: (row: KeyboardRows) => number;
+    // This defines symmetric indentation applied to both sides of the keyboard row.
+    // For indentation on one side only, insert a gap ('null' in the keymap) instead.
+    rowStart: [number, number, number, number, number];
     // Different keyWidth and keyCap with is basically a different way to specify gaps.
     // It's different gaps than null entries in the keymap, because they are symmetric
     // and don't add a column in all the layout arrays.

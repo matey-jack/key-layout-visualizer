@@ -105,7 +105,7 @@ export const ansiLayoutModel: AnsiLayoutModel = {
         [NaN, NaN, NaN, 0.2, 1.5, NaN, NaN, NaN],
     ],
 
-    rowStart: (_: KeyboardRows) => 0,
+    rowStart: [0, 0, 0, 0, 0],
 
     keyWidth(row: KeyboardRows, col: number): number {
         // source is roughly https://www.wikiwand.com/en/articles/Keyboard_layout#/media/File:ANSI_Keyboard_Layout_Diagram_with_Form_Factor.svg

@@ -186,13 +186,13 @@ const horizontalPadding = 0.5;
 
 export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean, fullMapping: string[][]): KeyPosition[] {
     const rowWidth = fullMapping.map((row, r) =>
-        2 * (horizontalPadding + layoutModel.rowStart(r)) + sum(row.map((_, c) => layoutModel.keyWidth(r, c)))
+        2 * (horizontalPadding + layoutModel.rowStart[r]) + sum(row.map((_, c) => layoutModel.keyWidth(r, c)))
     );
     // console.log("Row widths: ", rowWidth);
     const maxWidth = Math.max(...rowWidth);
     let result: KeyPosition[] = [];
     for (let row = 0; row < 5; row++) {
-        let colPos = horizontalPadding + layoutModel.rowStart(row);
+        let colPos = horizontalPadding + layoutModel.rowStart[row];
         // Counting the rowStart padding, all rows should be the same width. If our row is narrower than the max,
         // then we distribute the difference between all the keys.
         // This doesn't apply to the split keyboards, because the thumb cluster row is meant to stick out from the rest.

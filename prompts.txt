@@ -71,3 +71,17 @@ Merge the two 'angleMod' layout flags into one that is just called "angleMod" an
 In LayoutArea.tsx change the TypeSpecificOptions component and its children, so that for any LayoutOptions,
 only 'options' and 'setOption' (singular, taking a Partial<LayoutOptions> as in the Ergoplank case) are passed as parameters to the child components.
 Other parameters like "mapping" should not be changed.
+
+---
+
+Have a look at all the constants in files in src/layouts which implement the RowBasedKeyboardLayout.
+Compare the different ways in which the keyWidth function is implemented.
+Suggest how the code could be shortened while still being readable and keeping implementation style similar.
+Take into account where the getSymmetricOdd and -Even functions can be useful.
+
+==> I read the advice and then decided for my own architecture instead.
+
+---
+
+Change the function 'rowStart' in RowBasedLayoutModel to be a constant array instead. All layout models should have an entry like 'rowStart: [0, 0, 0, 0, 0],' or 'rowStart: [0, 0, 0, 0, 0.5]' reflecting exactly the current behavior.
+Change all the layout models and all usages of 'rowStart'. You do not need to add or leave code that still supports the old functional definition.

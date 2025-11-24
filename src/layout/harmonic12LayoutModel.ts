@@ -35,7 +35,7 @@ export const harmonic12LayoutModel: RowBasedLayoutModel = {
     ],
     fullMapping,
 
-    rowStart: (_: KeyboardRows) => 0,
+    rowStart: [0, 0, 0, 0, 0],
 
     keyWidth: (row: number, col: number) => {
         // outer edge keys

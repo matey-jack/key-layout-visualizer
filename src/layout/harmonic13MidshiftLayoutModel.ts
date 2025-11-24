@@ -41,7 +41,7 @@ export const harmonic13MidShiftLayoutModel: RowBasedLayoutModel = {
     ],
     fullMapping,
 
-    rowStart: (_row: number) => 0,
+    rowStart: [0, 0, 0, 0, 0],
 
     keyWidth: (row: number, col: number) => {
         // outer edge keys
