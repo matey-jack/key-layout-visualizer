@@ -1,5 +1,8 @@
 import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
 import {keyColorHighlightsClass} from "./layout-functions.ts";
+import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
+
+const eb65LowShiftWideKeyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
 export const eb65LowShiftWideLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 LowShift Wide",
@@ -49,61 +52,15 @@ export const eb65LowShiftWideLayoutModel: RowBasedLayoutModel = {
 
     rowIndent: [0, 0, 0, 0, 0],
 
-    keyWidth: (row: KeyboardRows, col: number): number => {
-        const lastCol = eb65LowShiftWideLayoutModel.thirtyKeyMapping![row].length - 1;
-        switch (row) {
-            case KeyboardRows.Number:
-                switch (col) {
-                    case 0:
-                        return 1.5; // Escape
-                    case 7:
-                        return 0.5; // gap
-                }
-                return 1;
-            case KeyboardRows.Upper:
-                switch (col) {
-                    case 0:
-                        return 1.25; // Tab
-                    case lastCol:
-                        return 1.75; // Backspace
-                }
-                return 1;
-            case KeyboardRows.Home:
-                switch (col) {
-                    case 7:
-                        return 0.5;
-                    case lastCol:
-                        return 1.5; // Enter
-                }
-                return 1;
-            case KeyboardRows.Lower:
-                switch (col) {
-                    case 0:
-                        return 0.5; // gap
-                    case 1:
-                    case 13:
-                        return 1.25; // Shift
-                }
-                return 1;
-            case KeyboardRows.Bottom:
-                // center between hands is at 7.25 / 8.75.
-                // left side filled perfectly by 0.5 indent + 4×1.25u + 1.75u.
-                const beforeArrows = 10;
-                switch (col) {
-                    case 0:
-                        return 0.5; // gap
-                    case 5:
-                    case 6:
-                        return 1.75; // space
-                    case 8:
-                        return 1; // Fn
-                    case beforeArrows:
-                        return 0.5; // gap
-                }
-                return col > beforeArrows ? 1 : 1.25;
-            default:
-                return 1;
-        }
+    keyWidths: [
+        eb65LowShiftWideKeyWidths.row(KeyboardRows.Number, 1.5, 1),
+        eb65LowShiftWideKeyWidths.row(KeyboardRows.Upper, 1.25, 1.75),
+        eb65LowShiftWideKeyWidths.row(KeyboardRows.Home, 1, 1.5, 7.25),
+        [0.5, 1.25, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.25, 1, 1],
+        [0.5, 1.25, 1.25, 1.25, 1.25, 1.75, 1.75, 1.25, 1, 1.25, 0.5, 1, 1, 1],
+    ],
+    keyWidth(row: KeyboardRows, col: number): number {
+        return this.keyWidths[row][col];
     },
 
     leftHomeIndex: 4,

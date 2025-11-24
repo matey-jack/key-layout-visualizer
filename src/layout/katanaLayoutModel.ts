@@ -1,7 +1,7 @@
 import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
+import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 
-// those values are accumulated by the stagger of 0.25, with the home row being maximal length.
-const widthOfEdgeKey = [1, 1.5, 1.25, 1]
+const katanaKeyWidths = new SymmetricKeyWidth(15, zeroIndent);
 
 export const katanaLayoutModel: RowBasedLayoutModel = {
     name: "Katana 60",
@@ -56,21 +56,15 @@ export const katanaLayoutModel: RowBasedLayoutModel = {
 
     rowIndent: [0, 0, 0, 0, 0],
 
-    keyWidth: (row: KeyboardRows, col: number): number => {
-        const numCols = katanaLayoutModel.thirtyKeyMapping![row].length;
-        if (row == KeyboardRows.Bottom) {
-            if (col == 0 || col == 5 || col >= 7) return 1;
-            if (col == 4) return 2.25;
-            if (col == 6) return 2;
-            return 1.25;
-        }
-        if (col == 0 || col == numCols - 1) {
-            return widthOfEdgeKey[row];
-        }
-        if (row == KeyboardRows.Home && (col == 7)) {
-            return 0.5;
-        }
-        return 1;
+    keyWidths: [
+        katanaKeyWidths.row(KeyboardRows.Number, 1),
+        katanaKeyWidths.row(KeyboardRows.Upper, 1.5),
+        katanaKeyWidths.row(KeyboardRows.Home, 1.25),
+        katanaKeyWidths.row(KeyboardRows.Lower, 1),
+        [1, 1.25, 1.25, 1.25, 2.25, 1, 2, 1, 1, 1, 1, 1],
+    ],
+    keyWidth(row: KeyboardRows, col: number): number {
+        return this.keyWidths[row][col];
     },
 
     leftHomeIndex: 4,

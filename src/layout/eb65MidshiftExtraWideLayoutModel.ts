@@ -1,6 +1,9 @@
 import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
 
 import {keyColorHighlightsClass} from "./layout-functions.ts";
+import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
+
+const eb65MidshiftExtraWideKeyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
 export const eb65MidshiftExtraWideLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 MidShift Max Wide",
@@ -59,72 +62,19 @@ export const eb65MidshiftExtraWideLayoutModel: RowBasedLayoutModel = {
 
     rowIndent: [0, 0, 0, 0, 0],
 
-    keyWidth: (row: KeyboardRows, col: number): number => {
-        const lastCol = eb65MidshiftExtraWideLayoutModel.thirtyKeyMapping![row].length - 1;
-        switch (row) {
-            case KeyboardRows.Number:
-                switch (col) {
-                    case 0:
-                        return 1.5; // Escape
-                    case 7:
-                        return 0.5; // gap
-                }
-                return 1;
-            case KeyboardRows.Upper:
-                switch (col) {
-                    case 0:
-                        return 1.25; // Tab
-                    case lastCol:
-                        return 1.75; // Backspace or Enter
-                }
-                return 1;
-            case KeyboardRows.Home:
-                switch (col) {
-                    case 7:
-                        return 1.5;
-                    case lastCol: // Right Shift
-                        return 1.5;
-                }
-                return 1;
-            case  KeyboardRows.Lower:
-                switch (col) {
-                    case 0:
-                        return 0.75;
-                    case 14:
-                        return 0.25
-                }
-                return 1;
-            case KeyboardRows.Bottom:
-                /*
-Center between hands is 7.75u left and 8.25u right.
-Space + half central key is 2.25u.
-Left side has 0.75u indent, leaving 4.75 to spread.
-Let's reduce the indent to 0.5; then 4×1.25u just fits.
-Right side has 3u arrows, leaving 3u to spread.
-Two 1.25u keys leave exactly 2×0.25u for the gaps.
-                 */
-                // arrow keys
-                if (col > 11) return 1;
-                // spread a gap between the modifiers
-                // if (col > 0 && col < 4) return 1.25 + 0.25/3;
-                switch (col) {
-                    case 0:
-                        return 0.5;
-                    case 5:
-                    case 7:
-                        return 1.75;
-                    case 6:
-                        return 1;
-                    case 9:
-                    case 11:
-                        return 0.25;
-                }
-                return 1.25;
-        }
+    keyWidths: [
+        eb65MidshiftExtraWideKeyWidths.row(KeyboardRows.Number, 1.5, 1),
+        eb65MidshiftExtraWideKeyWidths.row(KeyboardRows.Upper, 1.25, 1.75),
+        [1, 1, 1, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1, 1, 1.5],
+        [0.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.25, 1, 1],
+        [0.5, 1.25, 1.25, 1.25, 1.25, 1.75, 1, 1.75, 1.25, 0.25, 1.25, 0.25, 1, 1, 1],
+    ],
+    keyWidth(row: KeyboardRows, col: number): number {
+        return this.keyWidths[row][col];
     },
-    keyCapWidth: (row: KeyboardRows, col: number) => {
+    keyCapWidth(row: KeyboardRows, col: number) {
         if (row == KeyboardRows.Bottom && col > 0 && col < 4) return 1.25;
-        return eb65MidshiftExtraWideLayoutModel.keyWidth(row, col);
+        return this.keyWidths![row][col];
     },
     leftHomeIndex: 4,
     rightHomeIndex: 10,

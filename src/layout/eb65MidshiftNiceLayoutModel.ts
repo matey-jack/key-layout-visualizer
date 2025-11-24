@@ -123,63 +123,12 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
 
     rowIndent: [0, 0, 0, 0, 0],
 
-    keyWidth: (row: KeyboardRows, col: number): number => {
-        const numCols = eb65MidshiftNiceLayoutModel.thirtyKeyMapping![row].length;
-        switch (row) {
-            case KeyboardRows.Number:
-                return 1;
-            case KeyboardRows.Upper:
-                switch (col) {
-                    case 7: // the gap
-                        return 0.5;
-                    case 0:
-                    case 14: // Tab / Backspace (or Enter)
-                        return 1.75;
-                    default:
-                        return 1;
-                }
-            case KeyboardRows.Home:
-                switch (col) {
-                    case 0: // Left Shift, Enter
-                    case (numCols - 1):
-                        return 1.5;
-                    default:
-                        return 1;
-                }
-            case  KeyboardRows.Lower:
-                switch (col) {
-                    case 0:
-                        return 1.25;
-                    case 7:
-                        return 0.5
-                    case 14:
-                        return 0.25
-                    default:
-                        return 1;
-                }
-            case KeyboardRows.Bottom:
-                /*
-Center between hand leaves 7.5u left, 8.5u right.
-Left side has 0.5 indent, 1.75u space bar; 5.25 to spread.
-Let's just increase the indent and put 4 modifiers.
-Right side has three arrows, leaving 5.5u, space bar leaving 3.75u.
-Two mods make 2.5u.
-                 */
-                // arrow keys
-                if (col > 10) return 1;
-                switch (col) {
-                    case 0:
-                        return 0.75;
-                    case 5:
-                    case 6:
-                        return 1.75;
-                    case 8:
-                    case 10:
-                        return 1.25/2;
-                    default:
-                        return 1.25;
-                }
-        }
+    keyWidths: copyAndModifyKeymap(eb65MidshiftNiceLayoutModel.keyWidths, (matrix) => {
+        matrix[KeyboardRows.Bottom] = eb65LowShiftLayoutModel.keyWidths[KeyboardRows.Bottom];
+        return matrix;
+    }),
+    keyWidth(row: KeyboardRows, col: number): number {
+        return this.keyWidths![row][col];
     },
 
     leftHomeIndex: 4,
@@ -197,23 +146,14 @@ Two mods make 2.5u.
 export const eb65CentralEnterLayoutModel: RowBasedLayoutModel = {
     ...eb65MidshiftRightRetLayoutModel,
     name: "Ergoboard 65 MidShift Narrow, Central Return",
-    keyWidth: (row: KeyboardRows, col: number) => {
-        switch (row) {
-            // todo
-            case KeyboardRows.Upper:
-                if (col === 6) {
-                    return 1.5;
-                }
-                break;
-            case KeyboardRows.Home:
-                switch (col) {
-                    case 13: // Right Shift
-                        return 1.5;
-                    case 14: // Page Down
-                        return 1;
-                }
-        }
-        return eb65MidshiftRightRetLayoutModel.keyWidth(row, col);
+    keyWidths: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.keyWidths!, (matrix) => {
+        matrix[KeyboardRows.Upper][6] = 1.5;
+        matrix[KeyboardRows.Home][13] = 1.5;
+        matrix[KeyboardRows.Home][14] = 1;
+        return matrix;
+    }),
+    keyWidth(row: KeyboardRows, col: number) {
+        return this.keyWidths![row][col];
     },
     thirtyKeyMapping: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.thirtyKeyMapping!, moveEnterToCenter),
     thumb30KeyMapping: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.thumb30KeyMapping!, moveEnterToCenter),
@@ -242,27 +182,15 @@ function moveEnterToCenter(mapping: LayoutMapping): LayoutMapping {
 export const eb65VerticalEnterLayoutModel: RowBasedLayoutModel = {
     ...eb65MidshiftRightRetLayoutModel,
     name: "Ergoboard 65 MidShift Narrow, Vertical Return",
-    keyWidth: (row: KeyboardRows, col: number) => {
-        switch (row) {
-            case KeyboardRows.Upper:
-                switch (col) {
-                    case 13: // Backspace
-                        return 1.75;
-                    case 14: // Enter
-                        return 1;
-                }
-                break;
-            case KeyboardRows.Home:
-                switch (col) {
-                    case 13: // Right Shift
-                        return 1.5;
-                    case 14: // gap for Enter
-                        return 1;
-                }
-            // Note that the 2u vertical Enter key also entitles us to a 2u space bar,
-            // but this would make the outer space harder to reach, so I'm not doing it.
-        }
-        return eb65MidshiftRightRetLayoutModel.keyWidth(row, col);
+    keyWidths: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.keyWidths!, (matrix) => {
+        matrix[KeyboardRows.Upper][13] = 1.75; // Backspace
+        matrix[KeyboardRows.Upper][14] = 1;    // Enter
+        matrix[KeyboardRows.Home][13] = 1.5;   // Shift
+        matrix[KeyboardRows.Home][14] = 1;     // gap for Enter
+        return matrix;
+    }),
+    keyWidth(row: KeyboardRows, col: number) {
+        return this.keyWidths![row][col];
     },
     keyCapHeight: (row: KeyboardRows, col: number) => {
         if (row == KeyboardRows.Upper && col == 14) return 2;

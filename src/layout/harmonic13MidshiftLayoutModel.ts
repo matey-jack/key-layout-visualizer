@@ -1,4 +1,5 @@
 import {FlexMapping, harmonicStaggerOffsets, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 const fullMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"], // 12 keys
@@ -11,6 +12,7 @@ const fullMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Alt", 0, "⍽", "⏎", 1, "AltGr", "Fn", "Ctrl"],
 ];
 
+const h13msKeyWidth = new MonotonicKeyWidth(13, zeroIndent, "H13MS");
 
 export const harmonic13MidShiftLayoutModel: RowBasedLayoutModel = {
     name: "Harmonic 13 MidShift",
@@ -42,16 +44,17 @@ export const harmonic13MidShiftLayoutModel: RowBasedLayoutModel = {
     ],
     fullMapping,
 
-    rowIndent: [0, 0, 0, 0, 0],
+    rowIndent: h13msKeyWidth.rowIndent,
 
-    keyWidth: (row: number, col: number) => {
-        // outer edge keys
-        if ((row == KeyboardRows.Number || row == KeyboardRows.Home || row == KeyboardRows.Bottom) &&
-            (col == 0 || col == fullMapping[row].length - 1)) return 1.5;
-        // space and enter and neighboring keys
-        if (row == KeyboardRows.Bottom && ([3, 4, 5, 6].includes(col))) return 1.5;
-        // all others
-        return 1;
+    keyWidths: [
+        h13msKeyWidth.row(KeyboardRows.Number, 1.5),
+        h13msKeyWidth.row(KeyboardRows.Upper, 1),
+        h13msKeyWidth.row(KeyboardRows.Home, 1.5),
+        h13msKeyWidth.row(KeyboardRows.Lower, 1),
+        [1.5, 1, 1, 1.5, 1.5, 1.5, 1.5, 1, 1, 1.5],
+    ],
+    keyWidth(row: number, col: number) {
+        return this.keyWidths[row][col];
     },
 
     splitColumns: [6, 6, 6, 7, 5],

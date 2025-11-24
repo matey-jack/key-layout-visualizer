@@ -44,7 +44,9 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
 
     rowIndent: [0, 0, 0, 0, 1],
     keyWidths: fullMapping!.map((row) => row.map((_) => 1)),
-    keyWidth: (_row: KeyboardRows, _col: number): number => 1,
+    keyWidth(row: KeyboardRows, col: number): number {
+        return this.keyWidths[row][col];
+    },
 
     splitColumns: [6, 6, 6, 6, 6],
 

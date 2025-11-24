@@ -1,4 +1,5 @@
 import {FlexMapping, harmonicStaggerOffsets, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 const fullMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0], // 12 keys
@@ -7,6 +8,8 @@ const fullMapping: LayoutMapping = [
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧"], // 11 keys
     ["Ctrl", "Cmd", "Alt", 0, "⍽", "⏎", 1, "AltGr", "Fn", "Ctrl"], // 10 keys
 ];
+
+const h12KeyWidth = new MonotonicKeyWidth(12, zeroIndent, "H12");
 
 export const harmonic12LayoutModel: RowBasedLayoutModel = {
     name: "Harmonic 12 Mini",
@@ -35,17 +38,17 @@ export const harmonic12LayoutModel: RowBasedLayoutModel = {
     ],
     fullMapping,
 
-    rowIndent: [0, 0, 0, 0, 0],
+    rowIndent: h12KeyWidth.rowIndent,
 
-    keyWidth: (row: number, col: number) => {
-        // outer edge keys
-        if ((row == KeyboardRows.Upper || row == KeyboardRows.Lower || row == KeyboardRows.Bottom) &&
-            (col == 0 || col == fullMapping[row].length - 1)) return 1.5;
-        // space and enter
-        // TODO: This makes the bottom row staggering to be incorrect. But maybe this is just fine?
-        if (row == KeyboardRows.Bottom && ([4, 5].includes(col))) return 1.5;
-        // all others
-        return 1;
+    keyWidths: [
+        h12KeyWidth.row(KeyboardRows.Number, 1),
+        h12KeyWidth.row(KeyboardRows.Upper, 1.5),
+        h12KeyWidth.row(KeyboardRows.Home, 1),
+        h12KeyWidth.row(KeyboardRows.Lower, 1.5),
+        [1.5, 1, 1, 1, 1.5, 1.5, 1, 1, 1, 1.5],
+    ],
+    keyWidth(row: number, col: number) {
+        return this.keyWidths[row][col];
     },
 
     splitColumns: [6, 6, 6, 5, 5],

@@ -1,5 +1,8 @@
 import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
+import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
+
+const eb65LowShiftKeyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
 export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 LowShift Narrow",
@@ -57,54 +60,15 @@ export const eb65LowShiftLayoutModel: RowBasedLayoutModel = {
 
     rowIndent: [0, 0, 0, 0, 0],
 
-    keyWidth: (row: KeyboardRows, col: number): number => {
-        const lastCol = eb65LowShiftLayoutModel.thirtyKeyMapping![row].length - 1;
-        switch (row) {
-            case KeyboardRows.Number:
-                return 1;
-            case KeyboardRows.Upper:
-                switch (col) {
-                    case 0:
-                    case lastCol:
-                        return 1.75; // Tab and Backspace
-                    case 7:
-                        return 0.5; // the gap
-                }
-                return 1;
-            case KeyboardRows.Home:
-                switch (col) {
-                    case 0:
-                    case lastCol:
-                        return 1.5; // Caps and Enter
-                }
-                return 1;
-            case KeyboardRows.Lower:
-                return 1;
-            case KeyboardRows.Bottom:
-                /*
-Center between hands is 7.5 left, 8.5 right.
-Left side has 0.5 indent 4 × 1.25 plus 1.75 = 7.25. Surplus of 0.25.
-Right side has 1.75 + 2 × 1.25 + 1 + 3 = 8.25.
-Let's make the gap 0.5 for better looks and accept spaces to be split slightly off-center.
-Then at least the right outer space key is easy to hit; the left one not so much.
-                 */
-                const beforeArrows = 10;
-                switch (col) {
-                    case 0:
-                        return 0.5;
-                    case 5:
-                    case 6:
-                        return 1.75;
-                    case beforeArrows - 2:
-                        return 1;
-                    case beforeArrows:
-                        return 0.5;
-                    default:
-                        return col > beforeArrows ? 1 : 1.25;
-                }
-            default:
-                return 1;
-        }
+    keyWidths: [
+        eb65LowShiftKeyWidths.row(KeyboardRows.Number, 1),
+        eb65LowShiftKeyWidths.row(KeyboardRows.Upper, 1.75),
+        eb65LowShiftKeyWidths.row(KeyboardRows.Home, 1.5),
+        eb65LowShiftKeyWidths.row(KeyboardRows.Lower, 1),
+        [0.5, 1.25, 1.25, 1.25, 1.25, 1.75, 1.75, 1.25, 1, 1.25, 0.5, 1, 1, 1],
+    ],
+    keyWidth(row: KeyboardRows, col: number): number {
+        return this.keyWidths[row][col];
     },
 
     leftHomeIndex: 4,
@@ -118,27 +82,17 @@ Then at least the right outer space key is easy to hit; the left one not so much
     keyColorClass: keyColorHighlightsClass,
 }
 
-// todo: move this where it's actually needed and use it there.
-function isKeyWithMicrogap(col: number) {
-    return col > 0 && col < 4;
-}
-
 export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
     ...eb65LowShiftLayoutModel,
     name: "Ergoboard 65 LowShift Big Enter",
-    keyWidth: (row: KeyboardRows, col: number): number => {
-        const lastCol = eb65BigEnterLayoutModel.thirtyKeyMapping![row].length - 1;
-        switch (row) {
-            case KeyboardRows.Home:
-                switch (col) {
-                    case lastCol:
-                        return 2.5; // Big Enter
-                }
-                break;
-            case KeyboardRows.Bottom:
-                return [0.25, 1.25, 1.25, 1, 1.25, 2.5, 2.5, 1.25, 0.25, 1.25, 0.25, 1, 1, 1][col];
-        }
-        return eb65LowShiftLayoutModel.keyWidth(row, col);
+    keyWidths: copyAndModifyKeymap(eb65LowShiftLayoutModel.keyWidths, (matrix) => {
+        const home = matrix[KeyboardRows.Home];
+        home[home.length - 1] = 2.5;
+        matrix[KeyboardRows.Bottom] = [0.25, 1.25, 1.25, 1, 1.25, 2.5, 2.5, 1.25, 0.25, 1.25, 0.25, 1, 1, 1];
+        return matrix;
+    }),
+    keyWidth(row: KeyboardRows, col: number): number {
+        return this.keyWidths![row][col];
     },
     thirtyKeyMapping: copyAndModifyKeymap(eb65LowShiftLayoutModel.thirtyKeyMapping!!, (m) => moveKeys(m, false)),
     thumb30KeyMapping: copyAndModifyKeymap(eb65LowShiftLayoutModel.thumb30KeyMapping!!, (m) => moveKeys(m, true)),
