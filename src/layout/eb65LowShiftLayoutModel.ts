@@ -86,8 +86,9 @@ export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
     ...eb65LowShiftLayoutModel,
     name: "Ergoboard 65 LowShift Big Enter",
     keyWidths: copyAndModifyKeymap(eb65LowShiftLayoutModel.keyWidths, (matrix) => {
-        const home = matrix[KeyboardRows.Home];
-        home[home.length - 1] = 2.5;
+        const homeRow = matrix[KeyboardRows.Home];
+        homeRow.pop();
+        homeRow[homeRow.length - 1] = 2.5;
         matrix[KeyboardRows.Bottom] = [0.25, 1.25, 1.25, 1, 1.25, 2.5, 2.5, 1.25, 0.25, 1.25, 0.25, 1, 1, 1];
         return matrix;
     }),
