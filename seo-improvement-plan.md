@@ -10,7 +10,7 @@
 | 4 | **Add canonical URL** - `<link rel="canonical" href="https://matey-jack.github.io/key-layout-visualizer/">` | 3 | 1 | ✅ |
 | 5 | **Add structured data (JSON-LD)** - WebApplication or SoftwareApplication schema for rich search results | 3 | 2 | |
 | 6 | **Add keywords in title** - Expand to include searchable terms: "Keyboard Layout Visualizer - Compare QWERTY, Colemak, Ortho & Ergonomic Mappings" | 4 | 1 | ✅ |
-| 7 | **Add sitemap.xml and robots.txt** in `docs/` | 2 | 1 | |
+| 7 | **Add sitemap.xml and robots.txt** in `docs/` | 2 | 1 | ✅ |
 | 8 | **Pre-render / SSG** - Use a prerendering plugin to generate static HTML with actual content for crawlers | 5 | 4 | |
 
 **Impact/Effort scale:** 1=low, 5=high
