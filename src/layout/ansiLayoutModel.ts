@@ -66,6 +66,17 @@ export const ansiIBMLayoutModel: RowBasedLayoutModel = {
         ["Ctrl", "Cmd", "Alt", "⍽", 0, 1, "Fn", "Ctrl"],
     ],
 
+    rowIndent: ibmKeyWidths.rowIndent,
+
+    keyWidths: [
+        // source is roughly https://www.wikiwand.com/en/articles/Keyboard_layout#/media/File:ANSI_Keyboard_Layout_Diagram_with_Form_Factor.svg
+        ibmKeyWidths.row(0, 1, 2),
+        ibmKeyWidths.row(1, 1.5, 1.5),
+        ibmKeyWidths.row(2, 1.75, 2.25),
+        ibmKeyWidths.row(3, 2.25, 2.75),
+        [1.25, 1.25, 1.25, 6.25, 1.25, 1.25, 1.25, 1.25],
+    ],
+
     mainFingerAssignment: [
         [1, 1, 1, 2, 2, 3, 3, 6, 6, 7, 8, 8, 8, 8],
         [1, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9, 8, 8],
@@ -73,9 +84,6 @@ export const ansiIBMLayoutModel: RowBasedLayoutModel = {
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 5, 7, 8, 9, 9],
     ],
-
-    hasAltFinger: (row: number, col: number) =>
-        (row == KeyboardRows.Lower) && ([1, 2, 3, 7, 8, 9].includes(col)),
 
     /*
         0.2 for Home Keys (incl. thumb, if present) – 8 or 9 keys, since I don't have any layout proposal with two thumbs hitting letters.
@@ -95,19 +103,11 @@ export const ansiIBMLayoutModel: RowBasedLayoutModel = {
         [3.0, 2.0, 1.0, 1.0, 1.5, 1.5, 1.5, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0, 3.0],
         [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5, 2.0],
         [1.5, 2.0, 2.0, 1.5, 1.5, 3.0, 1.5, 1.0, 1.5, 1.5, 1.0, 2.0],
-        [NaN, NaN, NaN, 0.2, 1.5, NaN, NaN, NaN],
+        [2.0, 2.0, NaN, 0.2, 3.0, NaN, 2.0, 2.0],
     ],
 
-    rowIndent: ibmKeyWidths.rowIndent,
-
-    keyWidths: [
-        // source is roughly https://www.wikiwand.com/en/articles/Keyboard_layout#/media/File:ANSI_Keyboard_Layout_Diagram_with_Form_Factor.svg
-        ibmKeyWidths.row(0, 1, 2),
-        ibmKeyWidths.row(1, 1.5, 1.5),
-        ibmKeyWidths.row(2, 1.75, 2.25),
-        ibmKeyWidths.row(3, 2.25, 2.75),
-        [1.25, 1.25, 1.25, 1.25, 6.25, 1.25, 1.25, 1.25],
-    ],
+    hasAltFinger: (row: number, col: number) =>
+        (row == KeyboardRows.Lower) && ([1, 2, 3, 7, 8, 9].includes(col)),
 
     keyColorClass: (label, row, col) => {
         if (label == "⏎") return KEY_COLOR.EDGE;
@@ -162,42 +162,15 @@ export const ansiWideLayoutModel = {
     hasAltFinger: (row: number, col: number) =>
         (row == KeyboardRows.Lower) && ([1, 2, 3, 8, 9, 10].includes(col)),
 
-    // moveRightHand now only used here. maybe just make this array explicit as well.
-    singleKeyEffort: widenSingleKeyEffort(
-        moveRightHand(ansiIBMLayoutModel.singleKeyEffort, ansiIBMLayoutModel.splitColumns!!)
-    ),
+    singleKeyEffort: [
+        [3, 3, 2, 2, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3],
+        [3, 2, 1, 1, 1.5, 1.5, 3, 1.5, 1.5, 1, 1, 2, 2, 3],
+        [1.5, 0.2, 0.2, 0.2, 0.2, 2, 3, 2, 0.2, 0.2, 0.2, 0.2, 1.5],
+        [1.5, 2, 2, 1.5, 1.5, 3, 3, 1.5, 1, 1.5, 1.5, 1],
+        [2, 2, null, 0.2, 1.5, null, 2, 2]
+    ],
     getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsiWide,
 };
-
-function widenSingleKeyEffort(effort: (number | null)[][]) {
-    ansiIBMLayoutModel.splitColumns!!.forEach((splitCol, row) => {
-        if (row != KeyboardRows.Bottom) {
-            const lastCol = ansiIBMLayoutModel.thirtyKeyMapping![row].length - 1;
-            // keys at splitCol have the wrapped-around effort from the right-hand side.
-            effort[row][lastCol] = effort[row][splitCol];
-            effort[row][splitCol] = SKE_AWAY;
-        }
-    })
-    effort[KeyboardRows.Bottom][4] = SKE_HOME;
-    return effort;
-}
-
-function moveRightHand<T>(mapping: T[][], splitColumns: number[]): T[][] {
-    // How many columns are moving to the right?
-    // The key just after those will "jump" into the center of the board.
-    const movedColumns = [5, 7, 5, 4];
-
-    return mapping.map((layoutRow, row) => {
-        if (!movedColumns[row]) return [...layoutRow];
-        const jumpingColumn = splitColumns[row] + movedColumns[row];
-        return [
-            layoutRow.slice(0, splitColumns[row]),
-            layoutRow[jumpingColumn],
-            layoutRow.slice(splitColumns[row], jumpingColumn),
-            layoutRow.slice(jumpingColumn + 1),
-        ].flat() as T[];
-    })
-}
 
 /* Duplicate the middle key in the bottom row.
    Set both clones to:
@@ -241,26 +214,32 @@ function duplicateBottomMiddle<T>(mapping: T[][], bottomIdx: number, middleIdx: 
     ];
 }
 
-export function createApple(lm: RowBasedLayoutModel): RowBasedLayoutModel
-{
+export function createApple(lm: RowBasedLayoutModel): RowBasedLayoutModel {
     const addAppleBottom = (matrix: LayoutMapping) => {
         matrix[KeyboardRows.Bottom] = mirrorOdd("Ctrl", "Opt", "Cmd", "⍽");
         return matrix;
     };
     return {
         ...lm,
-        keyWidths: copyAndModifyKeymap(ansiIBMLayoutModel.keyWidths, (matrix) => {
+        keyWidths: copyAndModifyKeymap(lm.keyWidths, (matrix) => {
             matrix.pop();
             matrix.forEach((row) => {
-                row[row.length-1] = row[row.length-1] - 0.5;
+                row[row.length - 1] = row[row.length - 1] - 0.5;
             })
             matrix.push(mirrorOdd(1.5, 1.25, 1.5, 6));
             return matrix;
         }),
-        thumb30KeyMapping: ansiIBMLayoutModel.thumb30KeyMapping && copyAndModifyKeymap(ansiIBMLayoutModel.thumb30KeyMapping!, addAppleBottom),
-        thirtyKeyMapping: copyAndModifyKeymap(ansiIBMLayoutModel.thirtyKeyMapping!, addAppleBottom),
-        fullMapping: ansiIBMLayoutModel.fullMapping && copyAndModifyKeymap(ansiIBMLayoutModel.fullMapping!, addAppleBottom),
-        // todo: fingering and key effort for new bottom row.
+        thumb30KeyMapping: lm.thumb30KeyMapping && copyAndModifyKeymap(lm.thumb30KeyMapping!, addAppleBottom),
+        thirtyKeyMapping: copyAndModifyKeymap(lm.thirtyKeyMapping!, addAppleBottom),
+        fullMapping: lm.fullMapping && copyAndModifyKeymap(lm.fullMapping!, addAppleBottom),
+        mainFingerAssignment: copyAndModifyKeymap(lm.mainFingerAssignment, (matrix) => {
+            matrix[KeyboardRows.Bottom] = [0, 0, 1, 5, 7, 8, 9];
+            return matrix;
+        }),
+        singleKeyEffort: copyAndModifyKeymap(lm.singleKeyEffort, (matrix) => {
+            matrix[KeyboardRows.Bottom] = [2.0, null, null, 0.2, null, null, 2.0];
+            return matrix;
+        }),
     };
 }
 

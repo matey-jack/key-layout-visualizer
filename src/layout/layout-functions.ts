@@ -185,23 +185,29 @@ const totalWidth = 17;
 const horizontalPadding = 0.5;
 
 export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean, fullMapping: string[][]): KeyPosition[] {
-    const rowWidth = fullMapping.map((row, r) =>
-        2 * (horizontalPadding + layoutModel.rowIndent[r]) + sum(row.map((_, c) => layoutModel.keyWidths[r][c] ?? 1))
+    const getLabel = (row: number, col: number) => {
+        const mappingRow = fullMapping[row];
+        const label = mappingRow ? mappingRow[col] : undefined;
+        return label === undefined ? "??" : label;
+    };
+
+    const rowWidth = layoutModel.keyWidths.map((widthRow, r) =>
+        2 * (horizontalPadding + layoutModel.rowIndent[r]) + sum(widthRow.map((w) => w ?? 1))
     );
-    // console.log("Row widths: ", rowWidth);
-    let result: KeyPosition[] = [];
-    for (let row = 0; row < 5; row++) {
+
+    const result: KeyPosition[] = [];
+    layoutModel.keyWidths.forEach((widthRow, row) => {
         let colPos = horizontalPadding + layoutModel.rowIndent[row];
-        // for non-split boards, apply some white space on the left to make them centered.
         if (!split) colPos += (totalWidth - rowWidth[row]) / 2;
-        fullMapping[row].forEach((label, col) => {
-            // to show the board as split, add some extra space after the split column.
-            if (split && layoutModel.splitColumns && (col == layoutModel.splitColumns[row])) {
+
+        widthRow.forEach((keyWidth, col) => {
+            if (split && layoutModel.splitColumns && col === layoutModel.splitColumns[row]) {
                 colPos += totalWidth - rowWidth[row];
             }
 
+            const label = getLabel(row, col);
             const finger = layoutModel.mainFingerAssignment[row][col] as Finger;
-            if (fullMapping[row][col] != null) {
+            if (label != null) {
                 result.push({
                     label,
                     row,
@@ -211,9 +217,9 @@ export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean
                     hasAltFinger: layoutModel.hasAltFinger(row, col),
                 });
             }
-            colPos += layoutModel.keyWidths[row][col];
+            colPos += keyWidth ?? 1;
         });
-    }
+    });
     return result;
 }
 

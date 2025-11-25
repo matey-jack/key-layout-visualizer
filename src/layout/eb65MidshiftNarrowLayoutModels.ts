@@ -7,8 +7,8 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
 
     thirtyKeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, "\\", null, 5, 6, 7, 8, 9, "'", "⏎"],
-        ["⇧", 0, 1, 2, 3, 4, "=", "-", 5, 6, 7, 8, 9, "⇧", "⌫"],
+        ["↹", 0, 1, 2, 3, 4, "\\", null, 5, 6, 7, 8, 9, "'", "⌫"],
+        ["⇧", 0, 1, 2, 3, 4, "=", "-", 5, 6, 7, 8, 9, "⇧", "⏎"],
         ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, null, "↑", null],
         [null, "Cmd", "Fn", "⌦", "Alt", "⍽", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
     ],
@@ -18,8 +18,8 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
         // but layouts can't transform themselves when the keymap changes.
         // Anyway, the layouts that I want to build don't have this problem, so I won't solve it.
         ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, null, null, 5, 6, 7, 8, 9, "'", "⏎"],
-        ["⇧", 0, 1, 2, 3, 4, "=", "\\", 5, 6, 7, 8, 9, "⇧", "⌫"],
+        ["↹", 0, 1, 2, 3, 4, null, null, 5, 6, 7, 8, 9, "'", "⌫"],
+        ["⇧", 0, 1, 2, 3, 4, "=", "\\", 5, 6, 7, 8, 9, "⇧", "⏎"],
         ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, "/", null, "↑", null],
         [null, "Cmd", "Fn", "⌦", "Alt", 0, "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"],
     ],
@@ -71,7 +71,7 @@ export const eb65CentralEnterLayoutModel: RowBasedLayoutModel = {
     ...eb65MidshiftRightRetLayoutModel,
     name: "Ergoboard 65 MidShift Narrow, Central Return",
     keyWidths: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.keyWidths!, (matrix) => {
-        matrix[KeyboardRows.Upper][6] = 1.5;
+        matrix[KeyboardRows.Upper].splice(6, 2, 1.5);
         matrix[KeyboardRows.Home][13] = 1.5;
         matrix[KeyboardRows.Home][14] = 1;
         return matrix;
@@ -80,11 +80,13 @@ export const eb65CentralEnterLayoutModel: RowBasedLayoutModel = {
     thumb30KeyMapping: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.thumb30KeyMapping!, moveEnterToCenter),
     mainFingerAssignment: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.mainFingerAssignment, (matrix) => {
         matrix[KeyboardRows.Number][14] = Finger.RPinky;
+        matrix[KeyboardRows.Upper].splice(6, 1);
         matrix[KeyboardRows.Home][14] = null;
         return matrix;
     }),
     singleKeyEffort: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.singleKeyEffort, (matrix) => {
         matrix[KeyboardRows.Number][14] = SKE_AWAY;
+        matrix[KeyboardRows.Upper].splice(6, 1);
         matrix[KeyboardRows.Home][14] = null;
         return matrix;
     }),
@@ -93,9 +95,7 @@ export const eb65CentralEnterLayoutModel: RowBasedLayoutModel = {
 function moveEnterToCenter(mapping: LayoutMapping): LayoutMapping {
     mapping[KeyboardRows.Number][14] = "\\";
     mapping[KeyboardRows.Number][15] = "⇞";
-    mapping[KeyboardRows.Upper][6] = "⏎";
-    delete mapping[KeyboardRows.Upper][7];
-    mapping[KeyboardRows.Upper][14] = "⌫";
+    mapping[KeyboardRows.Upper].splice(6, 2, "⏎");
     mapping[KeyboardRows.Home][14] = "⇟";
     return mapping;
 }
@@ -119,6 +119,7 @@ export const eb65VerticalEnterLayoutModel: RowBasedLayoutModel = {
 }
 
 function moveEnterToVertical(mapping: LayoutMapping): LayoutMapping {
+    mapping[KeyboardRows.Upper][14] = "⏎";
     mapping[KeyboardRows.Upper][13] = "⌫";
     mapping[KeyboardRows.Home][14] = null;
     return mapping;

@@ -52,11 +52,10 @@ const layoutModels: Array<RowBasedLayoutModel> = [
 ];
 
 function getExpectedRowLengths(model: RowBasedLayoutModel): number[] {
-    const reference = model.thirtyKeyMapping ?? model.fullMapping ?? model.thumb30KeyMapping;
-    if (!reference || reference.length === 0) {
-        throw new Error(`Layout ${model.name} does not define a reference mapping for shape validation.`);
+    if (!model.keyWidths?.length) {
+        throw new Error(`Layout ${model.name} does not define keyWidths for shape validation.`);
     }
-    return reference.map((row) => row.length);
+    return model.keyWidths.map((row) => row.length);
 }
 
 function expectMatrixShape(matrix: unknown[][], lengths: number[], label: string) {
@@ -68,9 +67,7 @@ function expectMatrixShape(matrix: unknown[][], lengths: number[], label: string
 
 function rowWidth(model: RowBasedLayoutModel, row: KeyboardRows) {
     return 2 * model.rowIndent[row]
-        + sum(model.thirtyKeyMapping![row].map((_: any, col) =>
-            model.keyWidths[row][col]
-        ))
+        + sum(model.keyWidths[row].map((width) => width ?? 1))
 }
 
 describe('RowBasedLayoutModel matrix shapes', () => {
@@ -78,27 +75,21 @@ describe('RowBasedLayoutModel matrix shapes', () => {
         describe(model.name, () => {
             const rowLengths = getExpectedRowLengths(model);
 
-            if (model.keyWidths) {
-                it('thirtyKeyMapping matches expected shape', () => {
-                    expectMatrixShape(model.keyWidths, rowLengths, "keyWidths");
-                });
-            }
-
             if (model.thirtyKeyMapping) {
                 it('thirtyKeyMapping matches expected shape', () => {
                     expectMatrixShape(model.thirtyKeyMapping!, rowLengths, "thirtyKeyMapping");
                 });
             }
 
-            if (model.fullMapping?.length) {
-                it('fullMapping matches expected shape', () => {
-                    expectMatrixShape(model.fullMapping!, rowLengths, "thumb30KeyMapping");
-                });
-            }
-
             if (model.thumb30KeyMapping) {
                 it('thumb30KeyMapping matches expected shape', () => {
                     expectMatrixShape(model.thumb30KeyMapping!, rowLengths, "thumb30KeyMapping");
+                });
+            }
+
+            if (model.fullMapping) {
+                it('fullMapping matches expected shape', () => {
+                    expectMatrixShape(model.fullMapping!, rowLengths, "thumb30KeyMapping");
                 });
             }
 

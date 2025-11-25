@@ -94,7 +94,9 @@ postscript: I should have told it to add an empty function for actually modifyin
 
 ---
 
-The characters
+The characters "⌫" and "⏎" are currently mapped inconsistenty in the layout models of the Ergoboard family (and only those, not Ergoplank or others). Can you change the keymap constants, such that:
+ - when currently both "⌫" and "⏎" are mapped in the last column of number/upper/home row, then "⌫" should be mapped above "⏎".
+ - when currently one of them is in the last column of said rows and the other is in the bottom row, then "⌫" should be in the last column above and "⏎" should be in the bottom row.
 
 ---
 
@@ -102,3 +104,8 @@ function getKeyPositions() in layout-functions.ts, many tests, and maybe other r
 When I am changing some layouts and hot-reloading, both matrices can be inconsistent, which leads to display errors.
 Please change the code (also in tests) so that the keyWidths matrix is always the basis for iterations and the key maps are indexed by row and col, using a default value like "??" when the array access returns `undefined`.
 (Handling of `null` should not be changed.)
+
+while it's thinking: to get started, search for patterns like "fullMapping.forEach", "thirtyKeyMapping.map" and similar.
+
+---
+

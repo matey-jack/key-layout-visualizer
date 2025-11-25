@@ -20,16 +20,16 @@ export const eb65LowshiftLayoutModel: RowBasedLayoutModel = {
     // row lengths: 16, 15, 15 (with 0.5u gap), 16, 14
     thirtyKeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, "=", null, 5, 6, 7, 8, 9, "-", "⏎"],
-        ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⌫"],
+        ["↹", 0, 1, 2, 3, 4, "=", null, 5, 6, 7, 8, 9, "-", "⌫"],
+        ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
         ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "↑", null],
         [null, "Ctrl", "Cmd", "CAPS", "Alt", "⍽", "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
     ],
 
     thumb30KeyMapping: [
         ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, null, null, 5, 6, 7, 8, 9, "=", "⏎"],
-        ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⌫"],
+        ["↹", 0, 1, 2, 3, 4, null, null, 5, 6, 7, 8, 9, "=", "⌫"],
+        ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
         ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
         [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
     ],
@@ -94,8 +94,8 @@ export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
 function moveKeys(mapping: LayoutMapping, thumby: boolean): LayoutMapping {
     mapping[KeyboardRows.Number][7] = "=";
     mapping[KeyboardRows.Upper][6] = thumby ? "`~" : "-";
-    mapping[KeyboardRows.Upper].splice(-2, 2, "'", "⏎");
-    mapping[KeyboardRows.Home].splice(-2, 2, "⌫");
+    mapping[KeyboardRows.Upper].splice(-2, 2, "'", "⌫");
+    mapping[KeyboardRows.Home].splice(-2, 2, "⏎");
     mapping[KeyboardRows.Bottom][8] = null;
     return mapping;
 }

@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest';
 
-import {Finger, Hand, hand, KeyboardRows, MappingChange} from "../base-model.ts";
+import {Finger, Hand, hand, KeyboardRows, MappingChange, RowBasedLayoutModel} from "../base-model.ts";
 import {
     characterToFinger,
     copyAndModifyKeymap,
@@ -8,6 +8,7 @@ import {
     diffToBase,
     fillMapping,
     hasMatchingMapping,
+    getKeyPositions,
     mergeMapping,
 } from "./layout-functions.ts";
 import {
@@ -141,8 +142,8 @@ describe('copyAndModifyKeymap', () => {
 describe('finger assignment consistency', () => {
     allLayoutModels.forEach((model) => {
         it(model.name, () => {
-            (model.fullMapping || model.thirtyKeyMapping)!.forEach((mappingRow, r) => {
-                expect(mappingRow.length, `${model.name} ${KeyboardRows[r]}Row`).toBe(model.mainFingerAssignment[r].length)
+            model.keyWidths.forEach((widthRow, r) => {
+                expect(model.mainFingerAssignment[r].length, `${model.name} ${KeyboardRows[r]}Row`).toBe(widthRow.length);
             });
         });
     });
@@ -151,10 +152,70 @@ describe('finger assignment consistency', () => {
 describe('key effort consistency', () => {
     allLayoutModels.forEach((model) => {
         it(model.name, () => {
-            (model.fullMapping || model.thirtyKeyMapping)!.forEach((mappingRow, r) => {
-                expect(model.singleKeyEffort[r].length, `${model.name} ${KeyboardRows[r]}Row`).toBe(mappingRow.length)
+            model.keyWidths.forEach((widthRow, r) => {
+                expect(model.singleKeyEffort[r].length, `${model.name} ${KeyboardRows[r]}Row`).toBe(widthRow.length);
             });
         });
+    });
+});
+
+describe('getKeyPositions', () => {
+    const inconsistentLayout: RowBasedLayoutModel = {
+        name: "Inconsistent layout",
+        description: "Test layout with mapping gaps",
+        rowIndent: [0, 0, 0, 0, 0] as [number, number, number, number, number],
+        keyWidths: [
+            [1, 1],
+            [1],
+            [1],
+            [1],
+            [1],
+        ],
+        keyCapWidth: undefined,
+        keyCapHeight: undefined,
+        keyColorClass: undefined,
+        splitColumns: undefined,
+        leftHomeIndex: 0,
+        rightHomeIndex: 0,
+        staggerOffsets: [0, 0, 0, 0, 0],
+        symmetricStagger: true,
+        thirtyKeyMapping: undefined,
+        thumb30KeyMapping: undefined,
+        fullMapping: undefined,
+        mainFingerAssignment: [
+            [Finger.LPinky, Finger.LRing],
+            [Finger.LMiddle],
+            [Finger.LIndex],
+            [Finger.RIndex],
+            [Finger.RMiddle],
+        ],
+        hasAltFinger: () => false,
+        singleKeyEffort: [
+            [1, 1],
+            [1],
+            [1],
+            [1],
+            [1],
+        ],
+        getSpecificMapping: () => undefined,
+    };
+
+    it('iterates keyWidths and falls back to ?? for undefined mapping entries', () => {
+        const incompleteMapping = [
+            ['A'],
+            [],
+            [null],
+            ['C'],
+        ] as unknown as string[][];
+
+        const positions = getKeyPositions(inconsistentLayout, false, incompleteMapping);
+        expect(positions.map((p) => [p.row, p.col, p.label])).toEqual([
+            [KeyboardRows.Number, 0, 'A'],
+            [KeyboardRows.Number, 1, '??'],
+            [KeyboardRows.Upper, 0, '??'],
+            [KeyboardRows.Lower, 0, 'C'],
+            [KeyboardRows.Bottom, 0, '??'],
+        ]);
     });
 });
 
