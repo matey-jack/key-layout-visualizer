@@ -74,6 +74,10 @@ bugs fixed:
 ======================== TODO ===============================
 
 refactorings:
+ - instead of the current keyboard-specific keymaps, keep only thirty and thumbThirty, and put all the rest into a list of pairs [keyboardLayout, specificMapping]. 
+    This should make it much easier to select the next-best layout if the current one does not support the keymap: we can simply "walk up the variant tree". 
+    Similarly, when switching layout or layout options, we can do a similarity search (by the first word of the keymap name) for a matching keymap.
+
  - Turns out that the key/finger/effort matrix is easier to edit by hand than write in abstractions. Copy, paste, adapt, ... and win!
     Maybe for a good start: write a helper function to generate an initial finger and effort matrix given a layout (by key matrix, keyWidths, and index finger columns).
     That would be fun to write and be a neat documentation of my fingering and effort theory. But also useless at the moment, since I don't plan to add any new layouts besides HHKB, which will simply copy from ANSI.
@@ -96,6 +100,8 @@ missing core features:
      * especially Thumby-KU
 
 bugs:
+- select AHKB, then select qwerty wide. crash!
+
 - fullLayout on ANSI doesn't work with HHKB and AHKB – function setLayout needs to be adapted to switch to IBM or Apple in this case!
 - when switching mappings we correctly set options (which only affects ANSI), but we don't switch Layouts, because there are so many variants to iterate through. But needs to be done at some point.
 - the comparisonBase mapping needs to have definitions on all layouts, thus at least a mapping30 (which is supported everywhere).
