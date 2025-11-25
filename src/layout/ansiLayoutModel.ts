@@ -219,6 +219,10 @@ export function createApple(lm: RowBasedLayoutModel): RowBasedLayoutModel {
         matrix[KeyboardRows.Bottom] = mirrorOdd("Ctrl", "Opt", "Cmd", "⍽");
         return matrix;
     };
+    const addAppleThumbyBottom = (matrix: LayoutMapping) => {
+        matrix[KeyboardRows.Bottom] = ["Ctrl", "Opt", "Cmd", "⍽", 0, "Cmd", "Opt"];
+        return matrix;
+    };
     return {
         ...lm,
         keyWidths: copyAndModifyKeymap(lm.keyWidths, (matrix) => {
@@ -229,9 +233,9 @@ export function createApple(lm: RowBasedLayoutModel): RowBasedLayoutModel {
             matrix.push(mirrorOdd(1.5, 1.25, 1.5, 6));
             return matrix;
         }),
-        thumb30KeyMapping: lm.thumb30KeyMapping && copyAndModifyKeymap(lm.thumb30KeyMapping!, addAppleBottom),
         thirtyKeyMapping: copyAndModifyKeymap(lm.thirtyKeyMapping!, addAppleBottom),
-        fullMapping: lm.fullMapping && copyAndModifyKeymap(lm.fullMapping!, addAppleBottom),
+        thumb30KeyMapping: lm.thumb30KeyMapping && copyAndModifyKeymap(lm.thumb30KeyMapping!, addAppleThumbyBottom),
+        fullMapping: lm.fullMapping && copyAndModifyKeymap(lm.fullMapping!, addAppleThumbyBottom),
         mainFingerAssignment: copyAndModifyKeymap(lm.mainFingerAssignment, (matrix) => {
             matrix[KeyboardRows.Bottom] = [0, 0, 1, 5, 7, 8, 9];
             return matrix;

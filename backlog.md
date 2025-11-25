@@ -57,6 +57,9 @@
 - home key marker in the key size viz
 - refactor URL generation/parsing to be type-specific
 - Ergoplank / Katana layout options have sub-options for the variants below the variant. 
+- refactored to awesome keyWidth functions which automatically calculate the gaps for symmetrically staggered keyboards.
+  Wasted a whole day without adding user-visible content. But was fun to do and I am proud of the new-found simplicity!
+
 
 bugs fixed:
 - Learnability Score for Wide ANSI in Mapping List is changing when I select different mappings =:-[]
@@ -71,17 +74,9 @@ bugs fixed:
 ======================== TODO ===============================
 
 refactorings:
- - Maybe best to define all the bottom rows simply as a list.
-
  - Turns out that the key/finger/effort matrix is easier to edit by hand than write in abstractions. Copy, paste, adapt, ... and win!
     Maybe for a good start: write a helper function to generate an initial finger and effort matrix given a layout (by key matrix, keyWidths, and index finger columns).
     That would be fun to write and be a neat documentation of my fingering and effort theory. But also useless at the moment, since I don't plan to add any new layouts besides HHKB, which will simply copy from ANSI.
-
- - Helper functions for creating the key sizes:
-   * a function that takes a total width and an edge offset and then returns a list (or function) with two edge keys of the offset, a central gap size, and the remaining 1u keys. 
-   * For asymmetric layouts two different offsets could be provided. The central gap will be merged with the nearby key to make it central to the layout. So we need to provide the hand positions if we want it to be central to that instead. And a flag to say "don't combine" which many of our non-favorite layouts need.
-
- - Only the lower row of Ergoboards won't be covered by the above two functions, because it has the irregular right side. Maybe we could generate a regular lower row and then simply splice a manual `[gap, arrow, gap]` piece in.
 
  - "ANSI wide" is the only layout option which influences how keymap metrics are calculated and which keymaps apply.
    But all the Harmonic and Ergo(Plank|Board) options are filtered through the setLayout mechanism. Is that what we want?
@@ -101,6 +96,7 @@ missing core features:
      * especially Thumby-KU
 
 bugs:
+- fullLayout on ANSI doesn't work with HHKB and AHKB – function setLayout needs to be adapted to switch to IBM or Apple in this case!
 - when switching mappings we correctly set options (which only affects ANSI), but we don't switch Layouts, because there are so many variants to iterate through. But needs to be done at some point.
 - the comparisonBase mapping needs to have definitions on all layouts, thus at least a mapping30 (which is supported everywhere).
    Add that for qwertz and maybe add a full mapping for the ortho board to make the comparison more meaningful.
