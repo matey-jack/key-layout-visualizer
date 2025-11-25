@@ -6,8 +6,7 @@ export default defineConfig({
     base: '/key-layout-visualizer/',
     plugins: [preact()],
     build: {
-        // because Github pages only takes it from here
-        outDir: 'docs',
+        outDir: 'dist',
     },
     server: {
         port: 3000,
