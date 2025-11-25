@@ -1,0 +1,1 @@
+.. when googling for "key layout vizualizer". However, the app itself does not show up in the search results. Please look at the source code and also the resulting @docs/index.html to check what can be done to make the app more search engine-friendly. Make a list of recommendations, ranked independently by impact and effort.
