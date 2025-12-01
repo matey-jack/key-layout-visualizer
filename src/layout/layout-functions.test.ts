@@ -7,19 +7,25 @@ import {
     diffSummary,
     diffToBase,
     fillMapping,
+    fillMappingNew,
+    findMatchingKeymapType,
+    getLayoutKeymapTypes,
+    getMappingKeymapTypes,
     hasMatchingMapping,
+    hasMatchingMappingNew,
     getKeyPositions,
     mergeMapping,
 } from "./layout-functions.ts";
 import {
     normanMapping,
     qwertyMapping,
+    colemakMapping,
     cozyEnglish,
     thumbyZero,
     topNine,
     colemakThumbyDMapping
 } from "../mapping/mappings.ts"
-import {ansiIBMLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
+import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./splitOrthoLayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
@@ -100,6 +106,100 @@ describe('hasMatchingMapping', () => {
     it('no Thumby mapping on ANSI-narrow', () => {
         expect(hasMatchingMapping(ansiIBMLayoutModel, colemakThumbyDMapping)).toBeFalsy();
     }) ;
+});
+
+// --- NEW: Tests for keymap type system ---
+
+describe('new keymap type system - findMatchingKeymapType', () => {
+    it('finds 30key match between qwertyMapping and ansiIBMLayoutModel', () => {
+        const match = findMatchingKeymapType(ansiIBMLayoutModel, qwertyMapping);
+        expect(match).toBeDefined();
+        expect(match!.supported.typeId).toBe("30key");
+        expect(match!.flexData).toEqual(qwertyMapping.mappings!["30key"]);
+    });
+
+    it('finds ansiWide match for colemakMapping on ansiWideLayoutModel', () => {
+        const match = findMatchingKeymapType(ansiWideLayoutModel, colemakMapping);
+        expect(match).toBeDefined();
+        expect(match!.supported.typeId).toBe("ansiWide");
+    });
+
+    it('finds splitOrtho match for qwertyMapping on splitOrthoLayoutModel', () => {
+        const match = findMatchingKeymapType(splitOrthoLayoutModel, qwertyMapping);
+        expect(match).toBeDefined();
+        // qwertyMapping only has 30key, splitOrtho supports splitOrtho > thumb30 > 30key
+        expect(match!.supported.typeId).toBe("30key");
+    });
+
+    it('returns undefined when no mappings property exists', () => {
+        const match = findMatchingKeymapType(ansiIBMLayoutModel, normanMapping);
+        expect(match).toBeUndefined(); // normanMapping doesn't have new mappings property
+    });
+});
+
+describe('new keymap type system - fillMappingNew', () => {
+    it('produces same result as fillMapping for qwerty on ANSI', () => {
+        const oldResult = fillMapping(ansiIBMLayoutModel, qwertyMapping);
+        const newResult = fillMappingNew(ansiIBMLayoutModel, qwertyMapping);
+        expect(newResult).toEqual(oldResult);
+    });
+
+    it('produces same result as fillMapping for qwerty on splitOrtho', () => {
+        const oldResult = fillMapping(splitOrthoLayoutModel, qwertyMapping);
+        const newResult = fillMappingNew(splitOrthoLayoutModel, qwertyMapping);
+        expect(newResult).toEqual(oldResult);
+    });
+
+    it('falls back to old system for mappings without new property', () => {
+        const result = fillMappingNew(ansiIBMLayoutModel, normanMapping);
+        expect(result).toBeDefined();
+        // Should use old system since normanMapping doesn't have mappings property
+    });
+});
+
+describe('new keymap type system - hasMatchingMappingNew', () => {
+    it('returns true for qwertyMapping on ansiIBMLayoutModel', () => {
+        expect(hasMatchingMappingNew(ansiIBMLayoutModel, qwertyMapping)).toBe(true);
+    });
+
+    it('returns true for qwertyMapping on splitOrthoLayoutModel', () => {
+        expect(hasMatchingMappingNew(splitOrthoLayoutModel, qwertyMapping)).toBe(true);
+    });
+
+    it('falls back to old system for mappings without new property', () => {
+        expect(hasMatchingMappingNew(ansiIBMLayoutModel, normanMapping)).toBe(true);
+    });
+});
+
+describe('new keymap type system - helper functions', () => {
+    it('getLayoutKeymapTypes returns correct types for ansiIBMLayoutModel', () => {
+        const types = getLayoutKeymapTypes(ansiIBMLayoutModel);
+        expect(types).toContain("ansi");
+        expect(types).toContain("30key");
+    });
+
+    it('getLayoutKeymapTypes returns correct types for splitOrthoLayoutModel', () => {
+        const types = getLayoutKeymapTypes(splitOrthoLayoutModel);
+        expect(types).toContain("splitOrtho");
+        expect(types).toContain("thumb30");
+        expect(types).toContain("30key");
+    });
+
+    it('getMappingKeymapTypes returns correct types for qwertyMapping', () => {
+        const types = getMappingKeymapTypes(qwertyMapping);
+        expect(types).toContain("30key");
+    });
+
+    it('getMappingKeymapTypes returns correct types for colemakMapping', () => {
+        const types = getMappingKeymapTypes(colemakMapping);
+        expect(types).toContain("30key");
+        expect(types).toContain("ansiWide");
+    });
+
+    it('getMappingKeymapTypes returns empty array for mappings without new property', () => {
+        const types = getMappingKeymapTypes(normanMapping);
+        expect(types).toEqual([]);
+    });
 });
 
 describe('copyAndModifyKeymap', () => {

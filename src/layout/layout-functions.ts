@@ -5,10 +5,12 @@ import {
     KEY_COLOR,
     KeyboardRows,
     KeyColor,
+    KeymapTypeId,
     KeyPosition,
     LayoutMapping,
     MappingChange,
-    RowBasedLayoutModel
+    RowBasedLayoutModel,
+    SupportedKeymapType
 } from "../base-model.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
 import {sum} from "../library/math.ts";
@@ -81,6 +83,71 @@ export function hasMatchingMapping(layout: RowBasedLayoutModel, flexMapping: Fle
     if (flexMapping.mapping30 && layout.thirtyKeyMapping) return true;
     if (flexMapping.mappingThumb30 && layout.thumb30KeyMapping) return true;
     return !!layout.getSpecificMapping(flexMapping);
+}
+
+// --- NEW: Functions using the new keymap type system ---
+
+/**
+ * Find the first matching keymap type between a layout and a flex mapping.
+ * Returns the matched SupportedKeymapType entry and the flex mapping data, or undefined if no match.
+ */
+export function findMatchingKeymapType(
+    layout: RowBasedLayoutModel,
+    flexMapping: FlexMapping
+): { supported: SupportedKeymapType; flexData: string[] } | undefined {
+    if (!layout.supportedKeymapTypes || !flexMapping.mappings) {
+        return undefined;
+    }
+    for (const supported of layout.supportedKeymapTypes) {
+        const flexData = flexMapping.mappings[supported.typeId];
+        if (flexData) {
+            return { supported, flexData };
+        }
+    }
+    return undefined;
+}
+
+/**
+ * NEW: Fill mapping using the new keymap type system.
+ * Falls back to old system if new properties are not available.
+ */
+export function fillMappingNew(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): string[][] | undefined {
+    // Try new system first
+    const match = findMatchingKeymapType(layoutModel, flexMapping);
+    if (match) {
+        // For specific types (not 30key/thumb30), we need a fallback for unlabeled keys
+        const fallbackMapping = layoutModel.supportedKeymapTypes?.find(s => s.typeId === "30key")?.frameMapping;
+        return mergeMapping(match.supported.frameMapping, ["", ...match.flexData], fallbackMapping);
+    }
+    // Fall back to old system
+    return fillMapping(layoutModel, flexMapping);
+}
+
+/**
+ * NEW: Check if layout and mapping have a match using the new keymap type system.
+ * Falls back to old system if new properties are not available.
+ */
+export function hasMatchingMappingNew(layout: RowBasedLayoutModel, flexMapping: FlexMapping): boolean {
+    // Try new system first
+    if (findMatchingKeymapType(layout, flexMapping)) {
+        return true;
+    }
+    // Fall back to old system
+    return hasMatchingMapping(layout, flexMapping);
+}
+
+/**
+ * Get all keymap type IDs supported by a layout (new system only).
+ */
+export function getLayoutKeymapTypes(layout: RowBasedLayoutModel): KeymapTypeId[] {
+    return layout.supportedKeymapTypes?.map(s => s.typeId) ?? [];
+}
+
+/**
+ * Get all keymap type IDs defined by a flex mapping (new system only).
+ */
+export function getMappingKeymapTypes(flexMapping: FlexMapping): KeymapTypeId[] {
+    return flexMapping.mappings ? Object.keys(flexMapping.mappings) as KeymapTypeId[] : [];
 }
 
 // Thanks to those, we can keep the flex mappings as simple strings. (Which I think is more readable.)

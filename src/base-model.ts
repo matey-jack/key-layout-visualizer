@@ -1,6 +1,31 @@
 // Base types to be used in the entire app.
 // This file should not have any imports from the app.
 
+// --- Keymap Type System (new) ---
+
+export interface KeymapType {
+    id: string;
+    // Number of keys per row, used for validation
+    keysPerRow: number[];
+    description?: string;
+}
+
+// Registry of all known keymap types
+export const KEYMAP_TYPES = {
+    "30key": { id: "30key", keysPerRow: [10, 10, 10], description: "3×10 core letter keys" },
+    "thumb30": { id: "thumb30", keysPerRow: [10, 10, 9, 1], description: "3×10 with thumb key replacing slash" },
+    "ansi": { id: "ansi", keysPerRow: [2, 13, 11, 10, 2], description: "Full ANSI layout" },
+    "ansiWide": { id: "ansiWide", keysPerRow: [2, 13, 11, 10, 2], description: "ANSI wide hand position" },
+    // Note: splitOrtho row 0 is empty (placeholder), rows 1-4 have the actual flex keys
+    "splitOrtho": { id: "splitOrtho", keysPerRow: [0, 11, 11, 10, 4], description: "Split ortholinear" },
+    "harmonic13wide": { id: "harmonic13wide", keysPerRow: [2, 12, 13, 12, 2], description: "Harmonic 13-wide" },
+    "harmonic14t": { id: "harmonic14t", keysPerRow: [1, 14, 13, 12, 4], description: "Harmonic 14 traditional" },
+} as const satisfies Record<string, KeymapType>;
+
+export type KeymapTypeId = keyof typeof KEYMAP_TYPES;
+
+// --- End Keymap Type System ---
+
 export enum LayoutType {
     ANSI,      // irregular stagger
     Harmonic,  // regular 0.5 stagger
@@ -58,6 +83,10 @@ export interface FlexMapping {
             TODO: we might add a switch for the user to see also the generic one in that case.
         There can also be mappings that work only on a specific layout.
      */
+
+    // NEW: unified mappings property indexed by KeymapTypeId
+    // Will replace all the individual mapping properties below once migration is complete.
+    mappings?: Partial<Record<KeymapTypeId, string[]>>;
 
     // This is 3 rows of 10 characters – just the keys that most published key mappings are remapping.
     // It leaves some great improvements untapped, but transfers more easily between different keyboard layouts.
@@ -156,6 +185,12 @@ export const KEY_COLOR = {
 
 export type KeyColor = (typeof KEY_COLOR)[keyof typeof KEY_COLOR];
 
+// NEW: Entry for supportedKeymapTypes array
+export interface SupportedKeymapType {
+    typeId: KeymapTypeId;
+    frameMapping: LayoutMapping;
+}
+
 export interface RowBasedLayoutModel {
     name: string;
     description: string;
@@ -185,6 +220,11 @@ export interface RowBasedLayoutModel {
     // cumulative values relative to home row
     staggerOffsets: number[];
     symmetricStagger: boolean;
+
+    // NEW: Supported keymap types in preference order.
+    // The first matching type between layout and FlexMapping is used.
+    // Will replace thirtyKeyMapping, thumb30KeyMapping, fullMapping, and getSpecificMapping once migration is complete.
+    supportedKeymapTypes?: SupportedKeymapType[];
 
     // to be filled by FlexMapping.mapping30
     thirtyKeyMapping?: LayoutMapping;

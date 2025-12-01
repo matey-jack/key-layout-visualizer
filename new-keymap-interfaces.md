@@ -15,14 +15,18 @@ Desired state:
 
 # Implementation Plan
 
+While the code contains both old and new logic, fillMapping() should be written to prefer the new mapping types if available, fall back to old logic.
+Likewise, setMapping and setLayout in app-state.ts can ignore some requested change of mapping or layout if that leads to a missing match. We can add the new logic there last. We just need to avoid crashes due to mismatching layout and mapping being set.
+In @DetailView.tsx MappingSummary(), we should show the currently used KeymapType.
+
 ## Phase 1: Define the new keymapType system
 
-1. **Create `KeymapTypeDefinition` interface** in `base-model.ts`:
-   - `id: string` — unique identifier (e.g., `"30key"`, `"thumb30"`, `"ansi"`, `"ansiWide"`, `"splitOrtho"`, `"harmonic13wide"`, `"harmonic14t"`)
+1. **Create `KeymapType` interface** in `base-model.ts`:
+   - `id: string` — unique identifier (e.g., `"ansi30"`, `"thumb30"`, `"ansi"`, `"ansiWide"`, `"splitOrtho"`, `"harmonic13wide"`, `"harmonic14t"`)
    - `rows: number[]` — number of keys per row (for validation)
    - `description?: string` — human-readable description
 
-2. **Create a registry of all keymapTypes** as a `Record<string, KeymapTypeDefinition>` constant.
+2. **Create a registry of all keymapTypes** as a `Record<string, KeymapType>` constant.
 
 ## Phase 2: Refactor `FlexMapping`
 
@@ -79,7 +83,7 @@ Desired state:
 
 ```typescript
 // New type definition for keymap types
-export interface KeymapTypeDefinition {
+export interface KeymapType {
     id: string;
     // Number of keys per row, used for validation
     keysPerRow: number[];
@@ -87,8 +91,8 @@ export interface KeymapTypeDefinition {
 }
 
 // Registry of all known keymap types
-export const KEYMAP_TYPES: Record<string, KeymapTypeDefinition> = {
-    "30key": { id: "30key", keysPerRow: [10, 10, 10], description: "3×10 core letter keys" },
+export const KEYMAP_TYPES: Record<string, KeymapType> = {
+    "ansi30": { id: "ansi30", keysPerRow: [10, 10, 10], description: "3×10 core letter keys" },
     "thumb30": { id: "thumb30", keysPerRow: [10, 10, 9, 1], description: "3×10 with thumb key replacing slash" },
     "ansi": { id: "ansi", keysPerRow: [13, 13, 11, 10], description: "Full ANSI layout" },
     "ansiWide": { id: "ansiWide", keysPerRow: [13, 13, 11, 10], description: "ANSI wide hand position" },
@@ -107,7 +111,7 @@ export interface FlexMapping {
     comparisonBase?: FlexMapping;
 
     // Key mappings indexed by keymapType ID
-    // At least one entry required. Example: { "30key": [...], "ansiWide": [...] }
+    // At least one entry required. Example: { "ansi30": [...], "ansiWide": [...] }
     mappings: Partial<Record<string, string[]>>;
 }
 

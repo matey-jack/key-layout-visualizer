@@ -1,4 +1,4 @@
-import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
+import {FlexMapping, KeyboardRows, RowBasedLayoutModel, SupportedKeymapType} from "../base-model.ts";
 
 // I arbitrarily decide that the top (number) row shall not be changed by the flex mapping.
 // But there has to be an empty list in the mapping to keep the format consistent with the algorithms.
@@ -68,5 +68,25 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
         [NaN, 2.0, 2.0, 1.5, 0.2, 0.2, 0.2, 0.2, 1.5, 2.0, 2.0, NaN],
     ],
 
+    // NEW: unified keymap type support
+    supportedKeymapTypes: [
+        { typeId: "splitOrtho", frameMapping: fullMapping },
+        { typeId: "thumb30", frameMapping: [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+            ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "Ctrl"],
+            ["Cmd", "", "`", "=", "Alt", "⍽", "⏎", 0, "AltGr", "Menu", "\\", "Fn"],
+        ]},
+        { typeId: "30key", frameMapping: [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "-"],
+            ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+            ["Ctrl", "Cmd", "=", "\\", "Alt", "⍽", "⏎", "AltGr", "Menu", "`", "Fn", "Ctrl"],
+        ]},
+    ] as SupportedKeymapType[],
+
+    // OLD: kept for backward compatibility
     getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingSplitOrtho,
 }

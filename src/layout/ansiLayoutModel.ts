@@ -6,7 +6,8 @@ import {
     LayoutMapping,
     RowBasedLayoutModel,
     SKE_AWAY,
-    SKE_HOME
+    SKE_HOME,
+    SupportedKeymapType
 } from "../base-model.ts";
 import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
 import {AnsiVariant, LayoutOptions} from "../app-model.ts";
@@ -124,6 +125,25 @@ export const ansiIBMLayoutModel: RowBasedLayoutModel = {
     staggerOffsets: [-0.75, -0.25, 0, 0.5],
     symmetricStagger: false,
 
+    // NEW: unified keymap type support
+    supportedKeymapTypes: [
+        { typeId: "ansi", frameMapping: [
+            ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, 1, "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+            ["Ctrl", "Cmd", "Alt", "⍽", 0, 1, "Fn", "Ctrl"],
+        ]},
+        { typeId: "30key", frameMapping: [
+            ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "[", "]", "\\"],
+            ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+            ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
+        ]},
+    ] as SupportedKeymapType[],
+
+    // OLD: kept for backward compatibility
     getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsi,
 }
 
@@ -169,6 +189,33 @@ export const ansiWideLayoutModel = {
         [1.5, 2, 2, 1.5, 1.5, 3, 3, 1.5, 1, 1.5, 1.5, 1],
         [2, 2, null, 0.2, 1.5, null, 2, 2]
     ],
+
+    // NEW: unified keymap type support
+    supportedKeymapTypes: [
+        { typeId: "ansiWide", frameMapping: [
+            ["`~", "1", "2", "3", "4", "5", "6", 0, "7", "8", "9", "0", 1, "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+            ["Ctrl", "Cmd", "Alt", "⍽", 0, 1, "Fn", "Ctrl"],
+        ]},
+        { typeId: "thumb30", frameMapping: [
+            ["Esc", "1", "2", "3", "4", "5", "6", "`~", "7", "8", "9", "0", "=", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "'", "\\"],
+            ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, '/', 5, 6, 7, 8, "⇧"],
+            ["Ctrl", "Cmd", "Alt", "⍽", 0, "AltGr", "Fn", "Ctrl"],
+        ]},
+        { typeId: "30key", frameMapping: [
+            ["`~", "1", "2", "3", "4", "5", "6", "=", "7", "8", "9", "0", "-", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "'", "\\"],
+            ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
+            ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
+        ]},
+    ] as SupportedKeymapType[],
+
+    // OLD: kept for backward compatibility
     getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsiWide,
 };
 

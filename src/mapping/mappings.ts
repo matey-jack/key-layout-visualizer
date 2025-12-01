@@ -42,6 +42,15 @@ export const qwertyMapping: FlexMapping = {
     a different mapping in their whole life. At the same time it is also extra-ordinary bad for touch-typing, 
     because frequently used letters are not in the center. `,
     sourceUrl: "https://en.wikipedia.org/wiki/QWERTY",
+    // NEW: unified mappings property
+    mappings: {
+        "30key": [
+            "qwert" + "yuiop",
+            "asdfg" + "hjkl;",
+            "zxcvb" + "nm,./",
+        ],
+    },
+    // OLD: kept for backward compatibility during migration
     mapping30: [
         "qwert" + "yuiop",
         "asdfg" + "hjkl;",
@@ -54,6 +63,16 @@ export const qweertyMapping: FlexMapping = {
     description: `This mapping does not move any key, but simply provides an additional key mapping for E on a thumb key. 
         It is not made for practical use, but simply to show the effect of the thumb key on the typing metrics.
         Or for people to just try how a thumb key would feel. `,
+    // NEW: unified mappings property
+    mappings: {
+        "thumb30": [
+            "qw-rt" + "yuiop",
+            "asdfg" + "hjkl;",
+            "zxcvb" + "nm,.",
+            "e"
+        ],
+    },
+    // OLD: kept for backward compatibility during migration
     mappingThumb30: [
         "qw-rt" + "yuiop",
         "asdfg" + "hjkl;",
@@ -74,6 +93,15 @@ export const ergoFix: FlexMapping = {
     since all the 11 most frequent letters in English texts are now on the home row or above.`,
     // if someone now feels that the UN single-finger bigram is annoying, they can go all the way to right-hand Cozy
     // by also swapping KUI and OL.
+    // NEW: unified mappings property
+    mappings: {
+        "30key": [
+            "qwerb" + "yuiop",
+            "asdfg" + "hnklt",
+            "zxcv;" + "jm,./",
+        ],
+    },
+    // OLD: kept for backward compatibility during migration
     mapping30: [
         "qwerb" + "yuiop",
         "asdfg" + "hnklt",
@@ -94,6 +122,17 @@ export const qwertyWideMapping: FlexMapping = {
     For a fun laptop version, [] could be replaced by Home/End and \\ by Delete. 
     Far better to have those keys in standard positions (instead of random model-dependent Laptop positions),
     because the characters can as well be accessible on the AltGr layer.`,
+    // NEW: unified mappings property
+    mappings: {
+        "ansiWide": [
+            "[=",
+            "qwert" + "]" + "yuiop-\\",
+            "asdfg" + ";" + "jnkl'",
+            "zxcvb" + "/" + "hm,.",
+            "⌥≡",
+        ],
+    },
+    // OLD: kept for backward compatibility during migration
     mappingAnsiWide: [
         "[=",
         "qwert" + "]" + "yuiop-\\",
@@ -110,6 +149,16 @@ export const enTryMapping: FlexMapping = {
         "Additionally provides synergy, because the common EN/NE bigrams don't require you to pinch your hand. ",
     // Writing upper and lower row as three strings emphasizes the center columns of the Harmonic and ANSI keyboards.
     // On Ortho and Harmonic Narrow, it will just be 5 + 5 on each side.
+    // NEW: unified mappings property
+    mappings: {
+        "thumb30": [
+            "qwbrt" + "y" + "uiop",
+            "asdfg" + "hnkl;",
+            "zxcv" + "-" + "jm,.",
+            "e",
+        ],
+    },
+    // OLD: kept for backward compatibility during migration
     mappingThumb30: [
         "qwbrt" + "y" + "uiop",
         "asdfg" + "hnkl;",
@@ -430,6 +479,23 @@ export const cozyEnglish = {
     We swap T to the right hand and suddenly get very good metrics given very little changes from the original Qwerty.
     There's also an additional KU swap which makes U easier to type and more importantly removes NU and HU SFBs 
     which could be alt-fingered in Qwerty, but become annoyingly noticeable once the N is so easy to type. `,
+    // NEW: unified mappings property
+    mappings: {
+        "splitOrtho": [
+            "",
+            "qwbf'" + "ykulp-",
+            "asdrg" + "hniot;",
+            "zxcv=" + "jm,./",
+            "⇤\\e⇥",
+        ],
+        "thumb30": [
+            "qwbf;" + "y" + "kulp",
+            "asdrg" + "hniot",
+            "zxcv" + "-" + "jm,.",
+            "e",
+        ],
+    },
+    // OLD: kept for backward compatibility during migration
     mappingThumb30: [
         "qwbf;" + "y" + "kulp",
         "asdrg" + "hniot",
@@ -798,6 +864,22 @@ export const colemakMapping: FlexMapping = {
         "It also pioneered the idea of leaving some crucial-for-shortcuts keys in their place. " +
         "Colemak places a strong emphasis on avoiding single-finger bigram conflicts at the cost of many letters changing fingers. ",
     sourceUrl: "https://colemak.com/",
+    // NEW: unified mappings property
+    mappings: {
+        "30key": [
+            "qwfpg" + "jluy;",
+            "arstd" + "hneio",
+            "zxcvb" + "km,./",
+        ],
+        "ansiWide": [
+            "=-",
+            "qwfpg" + "[" + "jluy;'\\",
+            "arstd" + "]" + "hneio",
+            "zxcvb" + "/" + "km,.",
+            "⌥≡"
+        ],
+    },
+    // OLD: kept for backward compatibility during migration
     mapping30: [
         "qwfpg" + "jluy;",
         "arstd" + "hneio",
