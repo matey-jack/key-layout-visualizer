@@ -27,8 +27,8 @@ export const KEYMAP_TYPES: Record<KeymapTypeId, KeymapType> = {
     [KeymapTypeId.Ansi]: { id: KeymapTypeId.Ansi, keysPerRow: [2, 13, 11, 10, 2], description: "Full ANSI layout" },
     [KeymapTypeId.AnsiWide]: { id: KeymapTypeId.AnsiWide, keysPerRow: [2, 13, 11, 10, 2], description: "ANSI wide hand position" },
     [KeymapTypeId.SplitOrtho]: { id: KeymapTypeId.SplitOrtho, keysPerRow: [0, 11, 11, 10, 4], description: "Split ortholinear" },
-    [KeymapTypeId.Harmonic13Wide]: { id: KeymapTypeId.Harmonic13Wide, keysPerRow: [2, 12, 13, 12, 2], description: "Harmonic 13-wide" },
-    [KeymapTypeId.Harmonic14T]: { id: KeymapTypeId.Harmonic14T, keysPerRow: [1, 14, 13, 12, 4], description: "Harmonic 14 traditional" },
+    [KeymapTypeId.Harmonic13Wide]: { id: KeymapTypeId.Harmonic13Wide, keysPerRow: [2, 10, 13, 10, 2], description: "Harmonic 13-wide" },
+    [KeymapTypeId.Harmonic14T]: { id: KeymapTypeId.Harmonic14T, keysPerRow: [1, 13, 11, 10, 4], description: "Harmonic 14 traditional" },
 };
 
 // --- End Keymap Type System ---

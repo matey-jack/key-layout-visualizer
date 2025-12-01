@@ -152,22 +152,6 @@ export const ansiWideLayoutModel = {
     ...ansiIBMLayoutModel,
     name: "ANSI with wide hand position",
     rightHomeIndex: 8,
-    thirtyKeyMapping: [
-        // https://colemakmods.github.io/ergonomic-mods/wide.html
-        ["`~", "1", "2", "3", "4", "5", "6", "=", "7", "8", "9", "0", "-", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "'", "\\"],
-        ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
-        // note how 9 is flipped here, as well.
-        ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-        ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
-    ],
-    thumb30KeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "6", "`~", "7", "8", "9", "0", "=", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "'", "\\"],
-        ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
-        ["⇧", 0, 1, 2, 3, 4, '/', 5, 6, 7, 8, "⇧"],
-        ["Ctrl", "Cmd", "Alt", "⍽", 0, "AltGr", "Fn", "Ctrl"],
-    ],
     fullMapping: [
         ["`~", "1", "2", "3", "4", "5", "6", 0, "7", "8", "9", "0", 1, "⌫"],
         ...ansiIBMLayoutModel.fullMapping!.slice(1),
@@ -193,6 +177,7 @@ export const ansiWideLayoutModel = {
 
     // NEW: unified keymap type support
     supportedKeymapTypes: [
+        // TODO: check this AI generated thing against my expectations
         { typeId: KeymapTypeId.AnsiWide, frameMapping: [
             ["`~", "1", "2", "3", "4", "5", "6", 0, "7", "8", "9", "0", 1, "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
@@ -200,20 +185,22 @@ export const ansiWideLayoutModel = {
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
             ["Ctrl", "Cmd", "Alt", "⍽", 0, 1, "Fn", "Ctrl"],
         ]},
-        { typeId: KeymapTypeId.Thumb30, frameMapping: [
-            ["Esc", "1", "2", "3", "4", "5", "6", "`~", "7", "8", "9", "0", "=", "⌫"],
-            ["↹", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "'", "\\"],
-            ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
-            ["⇧", 0, 1, 2, 3, 4, '/', 5, 6, 7, 8, "⇧"],
-            ["Ctrl", "Cmd", "Alt", "⍽", 0, "AltGr", "Fn", "Ctrl"],
-        ]},
         { typeId: KeymapTypeId.Ansi30, frameMapping: [
+            // https://colemakmods.github.io/ergonomic-mods/wide.html
             ["`~", "1", "2", "3", "4", "5", "6", "=", "7", "8", "9", "0", "-", "⌫"],
             ["↹", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "'", "\\"],
             ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
+            // note how 9 is flipped here, as well.
             ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
             ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
         ]},
+        { typeId: KeymapTypeId.Thumb30, frameMapping: [
+                ["Esc", "1", "2", "3", "4", "5", "6", "`~", "7", "8", "9", "0", "=", "⌫"],
+                ["↹", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "'", "\\"],
+                ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
+                ["⇧", 0, 1, 2, 3, 4, '/', 5, 6, 7, 8, "⇧"],
+                ["Ctrl", "Cmd", "Alt", "⍽", 0, "AltGr", "Fn", "Ctrl"],
+            ]},
     ],
 
     // OLD: kept for backward compatibility

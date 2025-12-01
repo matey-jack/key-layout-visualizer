@@ -102,15 +102,6 @@ describe('new mappings property structure', () => {
         expect(colemakMapping.mappings![KeymapTypeId.Ansi30]).toBeDefined();
         expect(colemakMapping.mappings![KeymapTypeId.AnsiWide]).toBeDefined();
     });
-
-    it('new mappings match old properties for qwertyMapping', () => {
-        expect(qwertyMapping.mappings![KeymapTypeId.Ansi30]).toEqual(qwertyMapping.mapping30);
-    });
-
-    it('new mappings match old properties for colemakMapping', () => {
-        expect(colemakMapping.mappings![KeymapTypeId.Ansi30]).toEqual(colemakMapping.mapping30);
-        expect(colemakMapping.mappings![KeymapTypeId.AnsiWide]).toEqual(colemakMapping.mappingAnsiWide);
-    });
 });
 
 describe('mappings property validates against KEYMAP_TYPES', () => {

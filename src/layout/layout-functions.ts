@@ -235,8 +235,8 @@ export function diffSummary(diff: Record<string, MappingChange>): Record<Mapping
 }
 
 export function diffToBase(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): Record<string, MappingChange> {
-    const a = fillMapping(layoutModel, flexMapping);
-    const b = fillMapping(layoutModel, flexMapping.comparisonBase ?? qwertyMapping);
+    const a = fillMappingNew(layoutModel, flexMapping);
+    const b = fillMappingNew(layoutModel, flexMapping.comparisonBase ?? qwertyMapping);
     return diffMappings(layoutModel, a!, b!);
 }
 

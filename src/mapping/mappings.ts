@@ -654,7 +654,7 @@ export const topNine: FlexMapping = {
         ],
         [KeymapTypeId.AnsiWide]: [
             "=\\",
-            "qwdfb" + "-y" + "kulp'",
+            "qwdfb" + "-y" + "kulp'⌫",
             "asrtg" + "/;nioh",
             "zxcv" + "[]" + "jm,.",
             "e⌥",
@@ -1065,7 +1065,7 @@ export const rsthdMapping: FlexMapping = {
         ],
         [KeymapTypeId.AnsiWide]: [
             "=\\",
-            "jcyfk" + "-" + "zl,uq'",
+            "jcyfk" + "-" + "zl,uq'⌫",
             "rsthd" + "b" + "mnaio",
             "/vgp" + "[]" + "xw.;",
             "e⌥",
