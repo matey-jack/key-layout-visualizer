@@ -9,13 +9,16 @@
     "build": "tsc -b && vite build && npx tsx scripts/generate-seo-content.ts",
     "preview": "vite preview",
     "test": "node ./node_modules/vitest/vitest.mjs run",
-    "tests": "vitest run"
+    "tests": "vitest run",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "@preact/signals": "^2.2.0",
     "preact": "^10.26.5"
   },
   "devDependencies": {
+    "@playwright/test": "^1.48.2",
     "@preact/preset-vite": "^2.10.1",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/preact": "^3.2.4",
