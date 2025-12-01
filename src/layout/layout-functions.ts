@@ -158,8 +158,8 @@ export function diffSummary(diff: Record<string, MappingChange>): Record<Mapping
     };
     const relevantDiff = Object.entries(diff).filter(
         ([char, _change]) => lettersAndVIP.test(char)
-    ).map((
-        [_char, change]) => change
+    ).map(
+        ([_char, change]) => change
     );
     relevantDiff.forEach((change) => {
         result[change]++;
