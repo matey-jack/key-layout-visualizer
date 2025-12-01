@@ -11,7 +11,7 @@ import {
 } from "./app-model.ts";
 import {diffToBase, fillMapping, getKeyPositions, hasMatchingMapping} from "./layout/layout-functions.ts";
 import {getLayoutModel} from "./layout-selection.ts";
-import {allMappings, colemakMapping, qwertyMapping} from "./mapping/mappings.ts";
+import {allMappings, qwertyMapping} from "./mapping/mappings.ts";
 import {getBigramMovements} from "./bigrams.ts";
 
 function modifyWide(mapping: FlexMapping, opts: LayoutOptions): boolean {
@@ -46,22 +46,36 @@ function setLayout(
     layoutOptionsState: Signal<LayoutOptions>,
     mapping: Signal<FlexMapping>,
 ) {
+    // Wide and split are not available for all ANSI variants, so adapt them to the current variant.
     const newLayoutOptions = (opts.type == LayoutType.ANSI)
         ? {
-        ...opts,
+            ...opts,
             ansiWide: modifyWide(mapping.value, opts),
             ansiSplit: modifySplit(opts),
         }
         : opts;
     const newLayoutModel = getLayoutModel(newLayoutOptions);
     if (!hasMatchingMapping(newLayoutModel, mapping.value)) {
-        const mappingName = mapping.value.name.toLowerCase();
-        if (mappingName.includes("colemak")) {
-            mapping.value = colemakMapping;
-        } else {
+        // We go through a fallback chain to find a matching mapping that is not too far from the previous one.
+        const seen = new Set<string>();
+        let candidate = mapping.value.fallback;
+        while (candidate && !seen.has(candidate.name) && !hasMatchingMapping(newLayoutModel, candidate)) {
+            seen.add(candidate.name);
+            candidate = candidate.fallback;
+        }
+        if (candidate && hasMatchingMapping(newLayoutModel, candidate)) {
+            mapping.value = candidate;
+        } else if (hasMatchingMapping(newLayoutModel, qwertyMapping)) {
             mapping.value = qwertyMapping;
+        } else {
+            // Search all mappings for the first one that matches
+            const match = allMappings.find(m => hasMatchingMapping(newLayoutModel, m));
+            if (match) {
+                mapping.value = match;
+            }
         }
     }
+    // end of code to be changed
     layoutOptionsState.value = newLayoutOptions;
 }
 

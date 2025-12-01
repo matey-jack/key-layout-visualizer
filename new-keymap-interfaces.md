@@ -71,7 +71,7 @@ IN PROGRESS: some Layout Models have the new fields and also still have the old 
     - Use the new generic `findCompatibleLayout()` / `findCompatibleMapping()` functions
     - Remove special cases for Colemak, ANSI variants, etc.
 
-12. **Remove `modifyWide()` and `onlySupportsWide()`** or generalize them based on keymapTypes.
+12. (removed)
 
 ## Phase 6: Update tests
 
