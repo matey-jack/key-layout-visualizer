@@ -36,8 +36,11 @@ function modifySplit(opts: LayoutOptions) {
     return opts.ansiSplit;
 }
 
-// Function needed, because doing the same in an effect() would already run all the computed() functions
-// with inconsistent data that might crash them.
+/**
+ * This function sets the keyboard layout model and options.
+ * It also changes the FlexMapping, if the current one does not fit on the new layout.
+ * (This is why we need a setter function and don't expose the raw signal in the app state!)
+ */
 function setLayout(
     opts: LayoutOptions,
     layoutOptionsState: Signal<LayoutOptions>,
@@ -62,6 +65,12 @@ function setLayout(
     layoutOptionsState.value = newLayoutOptions;
 }
 
+/**
+ * This function sets the FlexMapping and changes the layout model if the current one doesn't support the new mapping.
+ * We try to change the layout as little as possible: first try to switch options (such as ANSI wide) only,
+ * then try another layout variant, only as fallback use an entirely different layout type.
+ * (This is why we need a setter function and don't expose the raw signal in the app state!)
+ */
 export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<LayoutOptions>, layoutModel: RowBasedLayoutModel, mappingState: Signal<FlexMapping>) {
     if (hasMatchingMapping(layoutModel, newMapping)) {
         mappingState.value = newMapping;

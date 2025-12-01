@@ -21,18 +21,19 @@ In @DetailView.tsx MappingSummary(), we should show the currently used KeymapTyp
 
 ## Phase 1: Define the new keymapType system
 
-1. **Create `KeymapType` interface** in `base-model.ts`:
+1. DONE **Create `KeymapType` interface** in `base-model.ts`:
    - `id: string` — unique identifier (e.g., `"ansi30"`, `"thumb30"`, `"ansi"`, `"ansiWide"`, `"splitOrtho"`, `"harmonic13wide"`, `"harmonic14t"`)
    - `rows: number[]` — number of keys per row (for validation)
    - `description?: string` — human-readable description
 
-2. **Create a registry of all keymapTypes** as a `Record<string, KeymapType>` constant.
+2. DONE **Create a registry of all keymapTypes** as a `Record<string, KeymapType>` constant.
 
 ## Phase 2: Refactor `FlexMapping`
 
 3. **Replace individual mapping properties** with a single `mappings` record:
    - Remove: `mapping30`, `mappingThumb30`, `mappingAnsi`, `mappingAnsiWide`, `mappingSplitOrtho`, `mappingHarmonic13wide`, `mappingHarmonic14t`
    - Add: `mappings: Record<string, string[]>` — keys are keymapType IDs
+IN PROGRESS: some FlexMappings have the new fields and also still have the old fields.
 
 4. **Migrate all existing FlexMapping definitions** in `mappings.ts` to use the new structure.
 
@@ -42,17 +43,18 @@ In @DetailView.tsx MappingSummary(), we should show the currently used KeymapTyp
    - Remove: `thirtyKeyMapping`, `thumb30KeyMapping`, `fullMapping`, `getSpecificMapping()`
    - Add: `supportedKeymapTypes: Array<{ typeId: string; frameMapping: LayoutMapping }>`
    - The array order defines preference (first match wins)
+IN PROGRESS: some Layout Models have the new fields and also still have the old fields.
 
 6. **Migrate all layout model files** to the new structure.
 
 ## Phase 4: Update matching logic
 
-7. **Rewrite `fillMapping()` in `layout-functions.ts`**:
+7. DONE **Rewrite `fillMapping()` in `layout-functions.ts`**:
    - Iterate through `layout.supportedKeymapTypes` in order
    - For each, check if `flexMapping.mappings[typeId]` exists
    - Return the first match
 
-8. **Rewrite `hasMatchingMapping()`**: 
+8. DONE **Rewrite `hasMatchingMapping()`**: 
    - Return true if any typeId in `layout.supportedKeymapTypes` exists in `flexMapping.mappings`
 
 9. **Create new `findCompatibleLayout()` function**:

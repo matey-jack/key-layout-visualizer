@@ -1,4 +1,4 @@
-# Two main keys per thumb. With unplit spacebar, that's one less in for one hand!
+# Two main keys per thumb. With unsplit spacebar, that's one less in for one hand!
 
 When the space bar is split and the two keys are 2u or less, there will be one more key on each side that is very accessible to the thumb
 and can serve as a home key for a letter or anything else.

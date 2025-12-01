@@ -1,7 +1,7 @@
 // Base types to be used in the entire app.
 // This file should not have any imports from the app.
 
-// --- Keymap Type System (new) ---
+// --- Keymap Type System ---
 
 export enum KeymapTypeId {
     Ansi30 = "ansi30",
@@ -26,7 +26,6 @@ export const KEYMAP_TYPES: Record<KeymapTypeId, KeymapType> = {
     [KeymapTypeId.Thumb30]: { id: KeymapTypeId.Thumb30, keysPerRow: [10, 10, 9, 1], description: "3×10 with thumb key replacing slash" },
     [KeymapTypeId.Ansi]: { id: KeymapTypeId.Ansi, keysPerRow: [2, 13, 11, 10, 2], description: "Full ANSI layout" },
     [KeymapTypeId.AnsiWide]: { id: KeymapTypeId.AnsiWide, keysPerRow: [2, 13, 11, 10, 2], description: "ANSI wide hand position" },
-    // Note: splitOrtho row 0 is empty (placeholder), rows 1-4 have the actual flex keys
     [KeymapTypeId.SplitOrtho]: { id: KeymapTypeId.SplitOrtho, keysPerRow: [0, 11, 11, 10, 4], description: "Split ortholinear" },
     [KeymapTypeId.Harmonic13Wide]: { id: KeymapTypeId.Harmonic13Wide, keysPerRow: [2, 12, 13, 12, 2], description: "Harmonic 13-wide" },
     [KeymapTypeId.Harmonic14T]: { id: KeymapTypeId.Harmonic14T, keysPerRow: [1, 14, 13, 12, 4], description: "Harmonic 14 traditional" },
