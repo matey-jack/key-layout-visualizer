@@ -175,37 +175,39 @@ export const qwertzMapping: FlexMapping = {
     sourceUrl: "https://en.wikipedia.org/wiki/QWERTZ",
     // This is not correct, but needed as diffing base for the Cozy German mapping that is only defined as a mapping30.
     // Otherwise, the app will crash just by switching to Ortho layout on any mapping. :/
-    mapping30: [
-        "qwert" + "zuiop",
-        "asdfg" + "jnkl;",
-        "yxcvb" + "hm,./",
-    ],
-    mappingAnsi: [
-        "ß´",
-        "qwert" + "zuiopü+#",
-        "asdfg" + "hjklöä",  // there is # on the ISO key here
-        "yxcvb" + "nm,.-",   // and <> on the ISO key here
-        "⌥≡"
-    ],
-    mappingAnsiWide: [
-        "´ß",
-        "qwert" + "+" + "zuiopüä",
-        "asdfg" + "#hjklö",  // there is ä on the ISO key here
-        "yxcvb" + "-nm,.",   // and <> on the ISO key here
-        "⌥≡"
-    ],
-    // We have one less key above the bottom on the Harmonic 14T than on ANSI, and one taken up by Escape,
-    // but we have two character keys in the bottom, so it checks out to 100% coverage!
-    mappingHarmonic14t: [
-        "ß",
-        "qwert" + "+z" + "uiopüä",
-        "asdfg" + "#" + "hjklö",
-        "yxcvb" + "-" + "nm,.",
-        "^⌥´≡"
-    ]
+    mappings: {
+        [KeymapTypeId.Ansi30]: [
+            "qwert" + "zuiop",
+            "asdfg" + "jnkl;",
+            "yxcvb" + "hm,./",
+        ],
+        [KeymapTypeId.Ansi]: [
+            "ß´",
+            "qwert" + "zuiopü+#",
+            "asdfg" + "hjklöä",  // there is # on the ISO key here
+            "yxcvb" + "nm,.-",   // and <> on the ISO key here
+            "⌥≡"
+        ],
+        [KeymapTypeId.AnsiWide]: [
+            "´ß",
+            "qwert" + "+" + "zuiopüä",
+            "asdfg" + "#hjklö",  // there is ä on the ISO key here
+            "yxcvb" + "-nm,.",   // and <> on the ISO key here
+            "⌥≡"
+        ],
+        // We have one less key above the bottom on the Harmonic 14T than on ANSI, and one taken up by Escape,
+        // but we have two character keys in the bottom, so it checks out to 100% coverage!
+        [KeymapTypeId.Harmonic14T]: [
+            "ß",
+            "qwert" + "+z" + "uiopüä",
+            "asdfg" + "#" + "hjklö",
+            "yxcvb" + "-" + "nm,.",
+            "^⌥´≡"
+        ]
+    }
 }
 
-export const normanMapping = {
+export const normanMapping: FlexMapping = {
     name: "Norman",
     sourceUrl: "https://normanlayout.info/index.html",
     description: "Norman has the heaviest focus on minimizing finger movement among all the mappings in this comparison. " +
@@ -217,14 +219,16 @@ export const normanMapping = {
 
     // I think this would be prettier (and one less letter change to learn) with `p` in its ancient position and `;`
     // where `p` is here. But Norman's creator considers the new `p` position to be 25% easier to reach and thus the move.
-    mapping30: [
-        "qwdfk" + "jurl;",
-        "asetg" + "ynioh",
-        "zxcvb" + "pm,./",
-    ]
+    mappings: {
+        [KeymapTypeId.Ansi30]: [
+            "qwdfk" + "jurl;",
+            "asetg" + "ynioh",
+            "zxcvb" + "pm,./",
+        ]
+    }
 }
 
-export const minimak4Mapping = {
+export const minimak4Mapping: FlexMapping = {
     name: "Minimak 4-key",
     techName: "Minimak-4",
     sourceUrl: "https://github.com/binaryphile/www.minimak.org/blob/master/media/minimak_4_key.png",
@@ -232,35 +236,41 @@ export const minimak4Mapping = {
     description: "Minimak partitions its key remapping in three steps, so that you can learn the mapping incrementally. " +
         "Thanks to the many same-finger changes this trick actually works with all of the mappings in this app, " +
         "but Minimak get credit for making it explicit.",
-    mapping30: [
-        "qwdrk" + "yuiop",
-        "astfg" + "hjel;",
-        "zxcvb" + "nm,./",
-    ]
+    mappings: {
+        [KeymapTypeId.Ansi30]: [
+            "qwdrk" + "yuiop",
+            "astfg" + "hjel;",
+            "zxcvb" + "nm,./",
+        ]
+    }
 }
 
-export const minimak8Mapping = {
+export const minimak8Mapping: FlexMapping = {
     ...minimak4Mapping,
     name: "Minimak 8-key",
     techName: "Minimak-8",
     sourceUrl: "https://github.com/binaryphile/www.minimak.org/blob/master/media/minimak_8_key.png",
-    mapping30: [
-        "qwdrk" + "yuilp",
-        "astfg" + "hneo;",
-        "zxcvb" + "jm,./",
-    ]
+    mappings: {
+        [KeymapTypeId.Ansi30]: [
+            "qwdrk" + "yuilp",
+            "astfg" + "hneo;",
+            "zxcvb" + "jm,./",
+        ]
+    }
 }
 
-export const minimakFullMapping = {
+export const minimakFullMapping: FlexMapping = {
     ...minimak4Mapping,
     name: "Minimak Full (12-key)",
     techName: "Minimak-12",
     sourceUrl: "https://github.com/binaryphile/www.minimak.org/blob/master/media/minimak.png",
-    mapping30: [
-        "qwdfk" + "yuil;",
-        "astrg" + "hneop",
-        "zxcvb" + "jm,./",
-    ]
+    mappings: {
+        [KeymapTypeId.Ansi30]: [
+            "qwdfk" + "yuil;",
+            "astrg" + "hneop",
+            "zxcvb" + "jm,./",
+        ]
+    }
 }
 
 // I omit the plain "flip" version, because I think that the JN swap is essential to avoid a lot of vertical 
@@ -269,7 +279,7 @@ export const minimakFullMapping = {
 // mINUte, commUNIty, UNIversal, contINUe, ecONOmic, traINIng. The lateral movement to Qwerty N even moves the hand away from 
 // home row letters, see ONLy, thINK, KNOw, ONLine, ...)
 // Nobody should waste time with a UN swap! (Especially, since U's position on the upper row is quite befitting for its frequency!)
-export const qwertyFlipTwistMapping = {
+export const qwertyFlipTwistMapping: FlexMapping = {
     name: "Qwerty Flip/Twist",
     techName: "Qwerty-FlipTwist",
     localMaximum: true,
@@ -277,14 +287,16 @@ export const qwertyFlipTwistMapping = {
     description: "The genius mapping that anyone can remember after seeing it only one time. " +
         "Absolutely minimal learning; much better typing than Qwerty; and anyone can still use your relabled keyboard, " +
         "because flipped keys are so close to where people look for them. ",
-    mapping30: [
-        "qwdfg" + "yukl;",
-        "asert" + "hniop",
-        "zxcvb" + "jm,./",
-    ]
+    mappings: {
+        [KeymapTypeId.Ansi30]: [
+            "qwdfg" + "yukl;",
+            "asert" + "hniop",
+            "zxcvb" + "jm,./",
+        ]
+    }
 }
 
-export const qwertyFlipTwistThumbMapping = {
+export const qwertyFlipTwistThumbMapping: FlexMapping = {
     name: "Qwerty Flip/Twist + Thumb",
     techName: "Qwerty-FlipTwist-Thumb",
     sourceUrl: "",
@@ -294,44 +306,50 @@ export const qwertyFlipTwistThumbMapping = {
     This mapping changes no more letters than Qwerty Flip/Spin, but has much better metrics that can also be felt in practice. 
     It has great bigram metrics, but it's single key metrics depend a lot on how one values the central home columns. 
      (Currently on my split ortho keyboard they feel just as easy to reach as the best non-home keys...)`,
-    mappingThumb30: [
-        "qwbfg" + "yukl;",
-        "asdrt" + "hniop",
-        "zxcv" + "-" + "jm,.",
-        "e"
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwbfg" + "yukl;",
+            "asdrt" + "hniop",
+            "zxcv" + "-" + "jm,.",
+            "e"
+        ]
+    }
 }
 
-export const qwertyFlipTwistThumbFlingR = {
+export const qwertyFlipTwistThumbFlingR: FlexMapping = {
     name: "Qwerty Flip/Twist + Thumb + Fling R",
     techName: "Qwerty-FlipTwist-Thumb-Fling-R",
     sourceUrl: "",
     description: `Instead of Qwerty Flip/Twist's OLP "Spin" to improve right pinky use, we do a hand-swap (aka "fling") of R 
     which brings all top nine letters to a home key and simultaneously removes a lot of SFBs. `,
-    mappingThumb30: [
-        "qwbf;" + "yuklp",
-        "asdtg" + "hnior",
-        "zxcv" + "-" + "jm,.",
-        "e"
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwbf;" + "yuklp",
+            "asdtg" + "hnior",
+            "zxcv" + "-" + "jm,.",
+            "e"
+        ]
+    }
 }
 
-export const qwertyFlipTwistThumbFlingT = {
+export const qwertyFlipTwistThumbFlingT: FlexMapping = {
     name: "Qwerty Flip/Twist + Thumb + Fling T",
     techName: "Qwerty-FlipTwist-Thumb-Fling-T",
     sourceUrl: "",
     description: `Instead of Qwerty Flip/Twist's OLP "Spin" to improve right pinky use, we do a hand-swap (aka "fling") of T 
     which brings all top nine letters to a home key and simultaneously removes a lot of SFBs. 
     We can see how the Cozy Keyboard mapping derives from this one...`,
-    mappingThumb30: [
-        "qwbf;" + "yuklp",
-        "asdrg" + "hniot",
-        "zxcv" + "-" + "jm,.",
-        "e"
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwbf;" + "yuklp",
+            "asdrg" + "hniot",
+            "zxcv" + "-" + "jm,.",
+            "e"
+        ]
+    }
 }
 
-export const qwertyFlipTwistThumbT = {
+export const qwertyFlipTwistThumbT: FlexMapping = {
     name: "Qwerty Flip/Twist + Thumb-T",
     techName: "Qwerty-FlipTwist-Thumb-T",
     sourceUrl: "",
@@ -340,27 +358,31 @@ export const qwertyFlipTwistThumbT = {
     This mapping changes no more letters than Qwerty Flip/Spin, but has much better metrics that can also be felt in practice. 
     Good single-key metrics and bad SFBs from E on its Qwerty finger. 
     This could be improved by swapping E to the right pinky... and that is basically the Qwpr mapping. `,
-    mappingThumb30: [
-        "qwdfb" + "yukl;",
-        "aserg" + "hniop",
-        "zxcv" + "-" + "jm,.",
-        "t"
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwdfb" + "yukl;",
+            "aserg" + "hniop",
+            "zxcv" + "-" + "jm,.",
+            "t"
+        ]
+    }
 }
 
-export const qwertyFlipTwistThumbR = {
+export const qwertyFlipTwistThumbR: FlexMapping = {
     name: "Qwerty Flip/Twist + Thumb-R",
     techName: "Qwerty-FlipTwist-Thumb-R",
     sourceUrl: "",
     description: `We build on the genius of Qwerty Flip and make it into a real ten-finger mapping. 
     This alternative moves R to the thumb to break the overuse of the index finger and the RT bigram conflict. 
     This mapping changes no more letters than Qwerty Flip/Spin, but has much better metrics that can also be felt in practice. '`,
-    mappingThumb30: [
-        "qwdfb" + "yukl;",
-        "asetg" + "hniop",
-        "zxcv" + "-" + "jm,.",
-        "r"
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwdfb" + "yukl;",
+            "asetg" + "hniop",
+            "zxcv" + "-" + "jm,.",
+            "r"
+        ]
+    }
 }
 
 /**
@@ -386,91 +408,103 @@ export const qwertyFlipTwistThumbR = {
  (But comparing the relative improvement in typing effort vs learning effort, the lower hanging fruit also offer more gain!)
  */
 
-export const qwertyFlipTwistSpinMapping = {
+export const qwertyFlipTwistSpinMapping: FlexMapping = {
     name: "Qwerty Flip/Twist/Spin",
     techName: "Qwerty-FlipTwistSpin",
     sourceUrl: "https://nick-gravgaard.com/qwerty-flip/",
     description: "A nice spin on the Flip/Twist mapping which improves typing a bit more.",
-    mapping30: [
-        "qwdfg" + "yukp;",
-        "asert" + "hniol",
-        "zxcvb" + "jm,./",
-    ]
+    mappings: {
+        [KeymapTypeId.Ansi30]: [
+            "qwdfg" + "yukp;",
+            "asert" + "hniol",
+            "zxcvb" + "jm,./",
+        ]
+    }
 }
 
-export const etniMapping = {
+export const etniMapping: FlexMapping = {
     name: "ETNI",
     sourceUrl: "https://stevep99.github.io/etni",
     description: "A hot take which takes the home positions for the longer fingers on the upper letter row " +
         "(while keeping Index and Pinky finger home on the middle row). " +
         "Earns the prize for least changes to learn for people that are already touch-typing. " +
         "Judge yourself if this is comfortable for you. ",
-    mapping30: [
-        "qwefp" + "yuio;",
-        "asdtg" + "hnklr",
-        "zxcvb" + "jm,./",
-    ]
+    mappings: {
+        [KeymapTypeId.Ansi30]: [
+            "qwefp" + "yuio;",
+            "asdtg" + "hnklr",
+            "zxcvb" + "jm,./",
+        ]
+    }
 }
 
-export const quipperMapping = {
+export const quipperMapping: FlexMapping = {
     name: "Quipper aka Qwpr",
     techName: "Qwpr",
     localMaximum: true,
     sourceUrl: "https://sourceforge.net/p/qwpr/wiki/Home/",
     description: "By placing 'e' on the right pinky, this mapping avoids a lot of bigram conflicts, " +
         "since no other letter is on that finger. ",
-    mapping30: [
-        "qwprf" + "yukl;",
-        "asdtg" + "hnioe",
-        "zxcvb" + "jm,./",
-    ]
+    mappings: {
+        [KeymapTypeId.Ansi30]: [
+            "qwprf" + "yukl;",
+            "asdtg" + "hnioe",
+            "zxcvb" + "jm,./",
+        ]
+    }
 }
 
-export const quipperThumbRMapping = {
+export const quipperThumbRMapping: FlexMapping = {
     name: "Quipper with Thumb-R",
     techName: "Qwp-Thumb-R",
     description: `We super-charge Quipper by placing R on the thumb and B in R's old spot. 
     This means that the Quipper Home-Row stays unchanged, 
     making it a super-easy upgrade with a lot of benefits both in single-key effort and avoided bigram conflicts. 
     Interestingly, we end up with very similar metrics to The Cozy Keyboard, despite rotating the very frequent letters E, T, and R. `,
-    mappingThumb30: [
-        "qwpbf" + "yukl;",
-        "asdtg" + "hnioe",
-        "zxcv" + "-" + "jm,.",
-        "r"
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwpbf" + "yukl;",
+            "asdtg" + "hnioe",
+            "zxcv" + "-" + "jm,.",
+            "r"
+        ]
+    }
 }
 
-export const quipperThumbTMapping = {
+export const quipperThumbTMapping: FlexMapping = {
     name: "Quipper with Thumb-T",
     techName: "Qwp-Thumb-T",
     description: `We super-charge Quipper by placing T on the thumb, R on T's home spot, and B in R's old spot. 
     This means that the Quipper Home-Row stays unchanged, 
     making it a super-easy upgrade with a lot of benefits both in single-key effort and avoided bigram conflicts. 
     Interestingly, we end up with very similar metrics to The Cozy Keyboard, despite rotating the very frequent letters E, T, and R. `,
-    mappingThumb30: [
-        "qwpbf" + "yukl;",
-        "asdrg" + "hnioe",
-        "zxcv" + "-" + "jm,.",
-        "t"
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwpbf" + "yukl;",
+            "asdrg" + "hnioe",
+            "zxcv" + "-" + "jm,.",
+            "t"
+        ]
+    }
 }
 
-export const quipperThumbyMapping = {
+export const quipperThumbyMapping: FlexMapping = {
     name: "Quipper Thumby",
     localMaximum: true,
     description: `With the Thumb T and the KU swap, Quipper Thumby is an excellent well-rounded mapping. 
     Great typing metrics for little learning effort! (Disclaimer: I haven't actually typed with this letter map.)`,
-    mappingThumb30: [
-        "qwpbf" + "ykul;",
-        "asdrg" + "hnioe",
-        "zxcv" + "-" + "jm,.",
-        "t"
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwpbf" + "ykul;",
+            "asdrg" + "hnioe",
+            "zxcv" + "-" + "jm,.",
+            "t"
+        ]
+    }
 }
 
 
-export const cozyEnglish = {
+export const cozyEnglish: FlexMapping = {
     name: "The Cozy Keyboard, English variant",
     techName: "cozy-english",
     localMaximum: true,
@@ -479,7 +513,6 @@ export const cozyEnglish = {
     We swap T to the right hand and suddenly get very good metrics given very little changes from the original Qwerty.
     There's also an additional KU swap which makes U easier to type and more importantly removes NU and HU SFBs 
     which could be alt-fingered in Qwerty, but become annoyingly noticeable once the N is so easy to type. `,
-    // NEW: unified mappings property
     mappings: {
         [KeymapTypeId.SplitOrtho]: [
             "",
@@ -495,20 +528,6 @@ export const cozyEnglish = {
             "e",
         ],
     },
-    // OLD: kept for backward compatibility during migration
-    mappingThumb30: [
-        "qwbf;" + "y" + "kulp",
-        "asdrg" + "hniot",
-        "zxcv" + "-" + "jm,.",
-        "e",
-    ],
-    mappingSplitOrtho: [
-        "",
-        "qwbf'" + "ykulp-",
-        "asdrg" + "hniot;",
-        "zxcv=" + "jm,./",
-        "⇤\\e⇥",
-    ],
 }
 
 export const cozyGerman: FlexMapping = {
@@ -522,82 +541,94 @@ export const cozyGerman: FlexMapping = {
         "This reflects German letter frequencies and also makes it a bit easier to switch " +
         "from the legacy Qwerty/Qwertz mapping. ",
     comparisonBase: qwertzMapping,
-    mappingThumb30: [
-        "qwbf-" + "z" + "kuop",
-        "asdrg" + "hnilt",
-        "yxcv" + ";" + "jm,.",
-        "e",
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwbf-" + "z" + "kuop",
+            "asdrg" + "hnilt",
+            "yxcv" + ";" + "jm,.",
+            "e",
+        ]
+    }
 }
 
-export const cozyPlusP = {
+export const cozyPlusP: FlexMapping = {
     name: "Cozy plus P",
     description: `Trying out Qwpr's P-Fling which also keeps B on the traditional finger. 
     Qwpr needs this swap because of the PE bigram, but for Thumby it has no benefits.`,
-    mappingThumb30: [
-        "qwpfb" + "y" + "kul;",
-        "asdrg" + "hniot",
-        "zxcv" + "-" + "jm,.",
-        "e",
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwpfb" + "y" + "kul;",
+            "asdrg" + "hniot",
+            "zxcv" + "-" + "jm,.",
+            "e",
+        ]
+    }
 }
 
-export const cozyPlusC = {
+export const cozyPlusC: FlexMapping = {
     name: "Cozy plus C",
     description: `Swapping C to a better position on its traditions finger improves the single-key metrics 
     and also keeps B on the traditional finger. `,
-    mappingThumb30: [
-        "qwcfb" + "y" + "kulp",
-        "asdrg" + "hniot",
-        "zx;v" + "-" + "jm,.",
-        "e",
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwcfb" + "y" + "kulp",
+            "asdrg" + "hniot",
+            "zx;v" + "-" + "jm,.",
+            "e",
+        ]
+    }
 }
 
-export const cozyPlusCH = {
+export const cozyPlusCH: FlexMapping = {
     name: "Cozy plus C and H",
     description: `Swapping C and H on same finger to better positions improves the single-key metrics, 
     but doesn't have significant impact in practical experience. 
     Especially on my ortho keyboard, the old and new H positions are similarly easy to reach. `,
-    mappingThumb30: [
-        "qwcfb" + "y" + "kulp",
-        "asdrg" + "mniot",
-        "zx;v" + "-" + "jh,.",
-        "e",
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwcfb" + "y" + "kulp",
+            "asdrg" + "mniot",
+            "zx;v" + "-" + "jh,.",
+            "e",
+        ]
+    }
 }
 
-export const cozyFlingH = {
+export const cozyFlingH: FlexMapping = {
     name: "Cozy, fling H",
     description: `(Just an experiment, NOT a recommended variant.) 
     The Cozy Keyboard has great bigram conflict avoidance due to flipping T to the right hand. 
     This variant tries improving H's position without having to move D or S as Top Nine does. 
     It's a nice try, but neither single nor bigram score approaches the values of Top Nine RST.`,
-    mappingThumb30: [
-        "qwfhb" + "y" + "kulp",
-        "asdrg" + ";niot",
-        "zxcv" + "-" + "jm,.",
-        "e",
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwfhb" + "y" + "kulp",
+            "asdrg" + ";niot",
+            "zxcv" + "-" + "jm,.",
+            "e",
+        ]
+    }
 }
 
-export const thumbyZero = {
+export const thumbyZero: FlexMapping = {
     name: "Thumby Zero",
     description: "Simply puts E on the best key of the board and rescues B from the worst key of the board. ",
-    mappingThumb30: [
-        "qwbrt" + "y" + "uiop",
-        "asdfg" + "hjkl;",
-        "zxcv" + "-" + "nm,.",
-        "e",
-    ],
     // TODO: provide separate Ansi wide variant that can include some slight punctuation improvements.
-    mappingAnsi: [
-        "=\\",
-        "qwbrt" + "yuiop[]_",
-        "asdfg" + "hjkl;'",
-        "zxcv-" + "nm,./",
-        "e⌥",
-    ],
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwbrt" + "y" + "uiop",
+            "asdfg" + "hjkl;",
+            "zxcv" + "-" + "nm,.",
+            "e",
+        ],
+        [KeymapTypeId.Ansi]: [
+            "=\\",
+            "qwbrt" + "yuiop[]_",
+            "asdfg" + "hjkl;'",
+            "zxcv-" + "nm,./",
+            "e⌥",
+        ]
+    }
 }
 
 export const thumbyNero: FlexMapping = {
@@ -606,11 +637,13 @@ export const thumbyNero: FlexMapping = {
         "This makes it possible to try out using just ordinary KLC layouts, no other tools or manual registry changes required. " +
         "I think that this swap is the most effective single change to Qwerty, because it also improves all the bigrams " +
         "between N and the upper row right hand vowels (UIO) as well as nk/kn. ",
-    mapping30: [
-        "qwert" + "yuiop",
-        "asdfg" + "hnkl;",
-        "zxcvb" + "jm,./",
-    ],
+    mappings: {
+        [KeymapTypeId.Ansi30]: [
+            "qwert" + "yuiop",
+            "asdfg" + "hnkl;",
+            "zxcvb" + "jm,./",
+        ]
+    }
 }
 
 export const topNine: FlexMapping = {
@@ -633,40 +666,42 @@ export const topNine: FlexMapping = {
     But at least the straw man allows us to see that the actual winning (well-rounded) mappings are not so far away from
     the theoretical optimum! Which is what the experiment was all about! `,
 
-    mappingThumb30: [
-        "qwdfb" + "y" + "kulp",
-        "asrtg" + "-nioh",
-        "zxcv" + ";" + "jm,.",
-        "e",
-    ],
-    mappingAnsiWide: [
-        "=\\",
-        "qwdfb" + "-y" + "kulp'",
-        "asrtg" + "/;nioh",
-        "zxcv" + "[]" + "jm,.",
-        "e⌥",
-    ],
-    mappingSplitOrtho: [
-        "",
-        "qwdfb" + "ykulp=",
-        "asrtg" + "-nioh'",
-        "zxcv;" + "jm,./",
-        "⇤\\e⇥",
-    ],
-    mappingHarmonic13wide: [
-        "[]",
-        "wdfb" + "-=" + "kulp",
-        "qasrtg" + ";" + "jnioh'",
-        "zxcv" + "\\/" + "ym,.",
-        "`e",
-    ],
-    mappingHarmonic14t: [
-        "`",
-        "qwdfb" + "-=" + "kulp'\\",
-        "asrtg" + ";" + "jnioh",
-        "zxcv" + "[]" + "ym,.",
-        "/e⌥≡",
-    ],
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwdfb" + "y" + "kulp",
+            "asrtg" + "-nioh",
+            "zxcv" + ";" + "jm,.",
+            "e",
+        ],
+        [KeymapTypeId.AnsiWide]: [
+            "=\\",
+            "qwdfb" + "-y" + "kulp'",
+            "asrtg" + "/;nioh",
+            "zxcv" + "[]" + "jm,.",
+            "e⌥",
+        ],
+        [KeymapTypeId.SplitOrtho]: [
+            "",
+            "qwdfb" + "ykulp=",
+            "asrtg" + "-nioh'",
+            "zxcv;" + "jm,./",
+            "⇤\\e⇥",
+        ],
+        [KeymapTypeId.Harmonic13Wide]: [
+            "[]",
+            "wdfb" + "-=" + "kulp",
+            "qasrtg" + ";" + "jnioh'",
+            "zxcv" + "\\/" + "ym,.",
+            "`e",
+        ],
+        [KeymapTypeId.Harmonic14T]: [
+            "`",
+            "qwdfb" + "-=" + "kulp'\\",
+            "asrtg" + ";" + "jnioh",
+            "zxcv" + "[]" + "ym,.",
+            "/e⌥≡",
+        ],
+    }
 }
 
 export const topNineLeftThumb: FlexMapping = {
@@ -677,87 +712,93 @@ export const topNineLeftThumb: FlexMapping = {
     And Top Nine Left uses this symmetry to provide a highly performant mapping where all the letters 
     are on the same hand as in Qwerty. 
     (Unlike shown on the keyboard above, the space bar should be on the other thumb.) `,
-    mappingSplitOrtho: [
-        "",
-        "qwdfb" + "ykulp-",
-        "asrtg" + "=nioh'",
-        "zxcv;" + "jm,./",
-        "⇤e\\⇥",
-    ],
-    mappingHarmonic13wide: [
-        "[]",
-        "wdfb" + "-=" + "kulp",
-        "qasrtg" + ";" + "jnioh'",
-        "zxcv" + "\\/" + "ym,.",
-        "e`",
-    ],
+    mappings: {
+        [KeymapTypeId.SplitOrtho]: [
+            "",
+            "qwdfb" + "ykulp-",
+            "asrtg" + "=nioh'",
+            "zxcv;" + "jm,./",
+            "⇤e\\⇥",
+        ],
+        [KeymapTypeId.Harmonic13Wide]: [
+            "[]",
+            "wdfb" + "-=" + "kulp",
+            "qasrtg" + ";" + "jnioh'",
+            "zxcv" + "\\/" + "ym,.",
+            "e`",
+        ],
+    },
     // TODO: add a flex slot for the space bar on ANSI?
 }
 
-export const top9t = {
+export const top9t: FlexMapping = {
     name: "Top Nine T",
     description: "Swapping the order of RT (from Qwerty) to TR improves the RD and RT bigrams, " +
         "but brings new problems with RF, RB, RG, and CT.",
-    mappingThumb30: [
-        "qwdfb" + "y" + "kulp",
-        "astrg" + "-nioh",
-        "zxcv" + ";" + "jm,.",
-        "e",
-    ],
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwdfb" + "y" + "kulp",
+            "astrg" + "-nioh",
+            "zxcv" + ";" + "jm,.",
+            "e",
+        ]
+    }
 };
 
-export const top9u = {
+export const top9u: FlexMapping = {
     name: "Top Nine U",
     description: "Instead of swapping UK to improve the UN bigram, we swap UY. " +
         "This is a same-finger swap generally, but allows alt-fingering the UN bigram. ",
-    mappingThumb30: [
-        "qwdfb" + "u" + "yklp",
-        "asrtg" + "-nioh",
-        "zxcv" + ";" + "jm,.",
-        "e",
-    ],
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwdfb" + "u" + "yklp",
+            "asrtg" + "-nioh",
+            "zxcv" + ";" + "jm,.",
+            "e",
+        ]
+    }
 };
 
 export const topNineDifferentSymbols: FlexMapping = {
     name: "Top Nine variant",
     description: `TODO: check what's actually different here.`,
-    mappingThumb30: [
-        "qwdfb" + "ykulp",
-        "asrtg" + ";nioh",
-        "zxcv-" + "jm,.",
-        "e",
-    ],
-
-    mappingAnsiWide: [
-        "[`",
-        "qwdfb" + "]y" + "kulp'\\",
-        "asrtg" + "=" + ";nioh",
-        "zxcv" + "-/" + "jm,.",
-        "e⌥",
-    ],
-
-    // The following are unrelated to the Top Nine variant; just brainstorming some ideas about better use of keys for navigation instead of tech punctuation.
-    mappingHarmonic13wide: [
-        "⇞⇟",
-        "wdfb" + "-=" + "kulp",
-        "qasrtg" + ";" + "ynioh'",
-        "zxcv" + "⇤⇥" + "jm,.",
-        "/e",
-    ],
-    mappingHarmonic14t: [
-        "=",
-        "qwdfb" + "-'" + "kulp⇞⇟",
-        "asrtg" + ";" + "jnioh",
-        "zxcv" + "⇤⇥" + "ym,.",
-        "/e⌥≡",
-    ],
-    mappingSplitOrtho: [
-        "",
-        "qwdfb" + "ykulp-",
-        "asrtg" + ";nioh'",
-        "zxcv=" + "jm,./",
-        "⇤\\e⇥",
-    ],
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwdfb" + "ykulp",
+            "asrtg" + ";nioh",
+            "zxcv-" + "jm,.",
+            "e",
+        ],
+        [KeymapTypeId.AnsiWide]: [
+            "[`",
+            "qwdfb" + "]y" + "kulp'\\",
+            "asrtg" + "=" + ";nioh",
+            "zxcv" + "-/" + "jm,.",
+            "e⌥",
+        ],
+        // The following are unrelated to the Top Nine variant; just brainstorming some ideas about better use of keys for navigation instead of tech punctuation.
+        [KeymapTypeId.Harmonic13Wide]: [
+            "⇞⇟",
+            "wdfb" + "-=" + "kulp",
+            "qasrtg" + ";" + "ynioh'",
+            "zxcv" + "⇤⇥" + "jm,.",
+            "/e",
+        ],
+        [KeymapTypeId.Harmonic14T]: [
+            "=",
+            "qwdfb" + "-'" + "kulp⇞⇟",
+            "asrtg" + ";" + "jnioh",
+            "zxcv" + "⇤⇥" + "ym,.",
+            "/e⌥≡",
+        ],
+        [KeymapTypeId.SplitOrtho]: [
+            "",
+            "qwdfb" + "ykulp-",
+            "asrtg" + ";nioh'",
+            "zxcv=" + "jm,./",
+            "⇤\\e⇥",
+        ],
+    }
 }
 
 export const top9rst: FlexMapping = {
@@ -765,25 +806,29 @@ export const top9rst: FlexMapping = {
     description: "(Just an experiment, NOT a recommended variant.) " +
         "Top Nine's DR conflict is especially painful for Qwerty users, so we sacrifice the otherwise unchanged position of S to improve this. " +
         "(And yep, somewhat ironically, we obtain Colemak' s left-hand home row.) ",
-    mappingThumb30: [
-        "qwdfb" + "ykulp",
-        "arstg" + ";nioh",
-        "zxcv-" + "jm,.",
-        "e",
-    ],
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwdfb" + "ykulp",
+            "arstg" + ";nioh",
+            "zxcv-" + "jm,.",
+            "e",
+        ]
+    }
 };
 
-export const top9kul = {
+export const top9kul: FlexMapping = {
     name: "Top Nine KU-L",
     description: "(Just an experiment, NOT a recommended variant.) " +
         "One more finger swap to remove the strong ol/lo bigram conflict. " +
         "I wouldn't want to actually use this, so it's just there to show the improvement in bigram scores. ",
-    mappingThumb30: [
-        "qwdfb" + "yku-p",
-        "asrtg" + "lnioh",
-        "zxcv;" + "jm,.",
-        "e",
-    ],
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwdfb" + "yku-p",
+            "asrtg" + "lnioh",
+            "zxcv;" + "jm,.",
+            "e",
+        ]
+    }
 }
 
 /*  Port of my personal German letter map.
@@ -795,7 +840,7 @@ export const top9kul = {
     confusion. Similarly, a secondary tap/hold Fn on the Esc key. This would be so much better than my overloadings of `öy-`
     on the Iris at the moment.)
  */
-export const gemuetlichesMapping = {
+export const gemuetlichesMapping: FlexMapping = {
     name: "Die Gemütliche Tastatur",
     description: "Full mapping of The Cozy Keyboard, German variant. " +
         "Shows how I map Umlauts and punctuation on ANSI keyboards and the Ergodox. " +
@@ -805,56 +850,55 @@ export const gemuetlichesMapping = {
     comparisonBase: qwertzMapping,
 
     // I actually used this mapping on an ISO keyboard, so the right pinky keys are a bit different!
-    mappingAnsiWide: [
-        "´ß",
-        "qwbfö" + "+zkuopüä",
-        "asdrg" + "'hnilt",
-        "yxcv/" + "-jm,.",
-        "e⌥"
-    ],
-
-    mappingAnsi: [
-        "´ß",
-        "qwbfö" + "zkuopü+'",
-        "asdrg" + "hniltä",
-        "yxcv/" + "jm,.-",
-        "e⌥"
-    ],
-
-    mappingSplitOrtho: [
-        "",
-        "qwbf'" + "zkuopü",
-        "asdrg" + "hniltä",
-        "yxcv/" + "jm,.-",
-        "ö⌦" + "e+"
-    ],
-
-    // TODO: We could define a "base for diffing" field here that contains the default German Qwertz mapping.
-    //       Then the diff counts should be correct. (We'll have to contort it to ANSI though, because this app will not implement ISO.)
-    /*
-         The Harmonic port of this mapping changes less than Qwerty, because it is already made for a wide home position.
-         Changed chars are üzj+
-         ü sends away + because there is one less physical key on the upper row.
-         J and - simply swap places, both keep their finger and direction assignment.
-         (Alternatively swap also Q and J to improve the positioning for frequency.)
-         Finally, with `Z` I am not completely sure: it's still a bit awkward to think about this "new" left off-home position
-         although the symmetric position on the right has always been a character key in ANSI, even a letter in German.
-         TODO: align those mappings with modifications made on other variants. In particular the Q overspill to the home row.
-     */
-    mappingHarmonic13wide: [
-        "´ß",
-        "qwbf" + "öü" + "kuop",
-        "zasdrg" + "'" + "hniltä",
-        "yxcv" + "/-" + "jm,.",
-        "+e"
-    ],
-    mappingHarmonic14: [
-        "ß",
-        "qwbfö" + "´ä" + "zkuopü",
-        "asdrg" + "'" + "hnilt",
-        "yxcv" + "/-" + "jm,.",
-        "\\e+"
-    ],
+    mappings: {
+        [KeymapTypeId.AnsiWide]: [
+            "´ß",
+            "qwbfö" + "+zkuopüä",
+            "asdrg" + "'hnilt",
+            "yxcv/" + "-jm,.",
+            "e⌥"
+        ],
+        [KeymapTypeId.Ansi]: [
+            "´ß",
+            "qwbfö" + "zkuopü+'",
+            "asdrg" + "hniltä",
+            "yxcv/" + "jm,.-",
+            "e⌥"
+        ],
+        [KeymapTypeId.SplitOrtho]: [
+            "",
+            "qwbf'" + "zkuopü",
+            "asdrg" + "hniltä",
+            "yxcv/" + "jm,.-",
+            "ö⌦" + "e+"
+        ],
+        // TODO: We could define a "base for diffing" field here that contains the default German Qwertz mapping.
+        //       Then the diff counts should be correct. (We'll have to contort it to ANSI though, because this app will not implement ISO.)
+        /*
+             The Harmonic port of this mapping changes less than Qwerty, because it is already made for a wide home position.
+             Changed chars are üzj+
+             ü sends away + because there is one less physical key on the upper row.
+             J and - simply swap places, both keep their finger and direction assignment.
+             (Alternatively swap also Q and J to improve the positioning for frequency.)
+             Finally, with `Z` I am not completely sure: it's still a bit awkward to think about this "new" left off-home position
+             although the symmetric position on the right has always been a character key in ANSI, even a letter in German.
+             TODO: align those mappings with modifications made on other variants. In particular the Q overspill to the home row.
+          */
+        [KeymapTypeId.Harmonic13Wide]: [
+            "´ß",
+            "qwbf" + "öü" + "kuop",
+            "zasdrg" + "'" + "hniltä",
+            "yxcv" + "/-" + "jm,.",
+            "+e"
+        ],
+        [KeymapTypeId.Harmonic14T]: [
+            "ß",
+            "qwbfö" + "´ä" + "zkuopü",
+            "asdrg" + "'" + "hnilt",
+            "yxcv" + "/-" + "jm,.",
+            "\\e+"
+        ],
+    }
 }
 
 export const colemakMapping: FlexMapping = {
@@ -864,13 +908,14 @@ export const colemakMapping: FlexMapping = {
         "It also pioneered the idea of leaving some crucial-for-shortcuts keys in their place. " +
         "Colemak places a strong emphasis on avoiding single-finger bigram conflicts at the cost of many letters changing fingers. ",
     sourceUrl: "https://colemak.com/",
-    // NEW: unified mappings property
     mappings: {
         [KeymapTypeId.Ansi30]: [
             "qwfpg" + "jluy;",
             "arstd" + "hneio",
             "zxcvb" + "km,./",
         ],
+        // This is the first published version of any wide mapping that I know of.
+        // It originated the idea of flipping the right-hand column of symbols to the center.
         [KeymapTypeId.AnsiWide]: [
             "=-",
             "qwfpg" + "[" + "jluy;'\\",
@@ -879,22 +924,6 @@ export const colemakMapping: FlexMapping = {
             "⌥≡"
         ],
     },
-    // OLD: kept for backward compatibility during migration
-    mapping30: [
-        "qwfpg" + "jluy;",
-        "arstd" + "hneio",
-        "zxcvb" + "km,./",
-    ],
-
-    // This is the first published version of any wide mapping that I know of.
-    // It originated the idea of flipping the right-hand column of symbols to the center.
-    mappingAnsiWide: [
-        "=-",
-        "qwfpg" + "[" + "jluy;'\\",
-        "arstd" + "]" + "hneio",
-        "zxcvb" + "/" + "km,.",
-        "⌥≡"
-    ],
 }
 
 export const colemakDhMapping: FlexMapping = {
@@ -907,28 +936,28 @@ export const colemakDhMapping: FlexMapping = {
         "That idea is valid, but the resulting tiny and much further away shift key is a no-go for me. " +
         "Shown here is the version for the ANSI keyboard which additionally moves Z to the middle column.) ",
     sourceUrl: "https://colemakmods.github.io/mod-dh/",
-    mapping30: [
-        "qwfpb" + "jluy;",
-        "arstg" + "mneio",
-        "xcdvz" + "kh,./",
-    ],
-
-    mappingAnsiWide: [
-        "=-",
-        "qwfpb" + "[" + "jluy;'\\",
-        "arstg" + "]" + "mneio",
-        "xcdvz" + "/" + "kh,.",
-        "⌥≡"
-    ],
-
-    // Due to Angle Mod, the Ortho version has a flip: https://colemakmods.github.io/mod-dh/keyboards.html
-    mappingSplitOrtho: [
-        "",
-        "qwfpb" + "jluy;-",
-        "arstg" + "mneio'",
-        "zxcdv" + "kh,./",
-        "⇤\\=⇥",
-    ]
+    mappings: {
+        [KeymapTypeId.Ansi30]: [
+            "qwfpb" + "jluy;",
+            "arstg" + "mneio",
+            "xcdvz" + "kh,./",
+        ],
+        [KeymapTypeId.AnsiWide]: [
+            "=-",
+            "qwfpb" + "[" + "jluy;'\\",
+            "arstg" + "]" + "mneio",
+            "xcdvz" + "/" + "kh,.",
+            "⌥≡"
+        ],
+        // Due to Angle Mod, the Ortho version has a flip: https://colemakmods.github.io/mod-dh/keyboards.html
+        [KeymapTypeId.SplitOrtho]: [
+            "",
+            "qwfpb" + "jluy;-",
+            "arstg" + "mneio'",
+            "zxcdv" + "kh,./",
+            "⇤\\=⇥",
+        ]
+    }
 }
 
 export const colemakThumbyDMapping: FlexMapping = {
@@ -939,12 +968,14 @@ export const colemakThumbyDMapping: FlexMapping = {
         "(And it doesn't need all the shuffling of Colemak-DH on the left hand, while optionally allowing for " +
         "the HM swap on the right hand, depending on preference.) ",
     sourceUrl: "https://colemak.com/",
-    mappingThumb30: [
-        "qwfpg" + "jluy;",
-        "arst-" + "hndio",
-        "zxcvb" + "km,.",
-        "e"
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwfpg" + "jluy;",
+            "arst-" + "hndio",
+            "zxcvb" + "km,.",
+            "e"
+        ]
+    }
 }
 
 export const colemakThumbyHMapping: FlexMapping = {
@@ -957,12 +988,14 @@ export const colemakThumbyHMapping: FlexMapping = {
     TODO: make a custom version of this for the Harmonic 13 MidShift, because that's the only board to properly represent the angle mod. 
     And a custom version for ortho, same reason.`,
     // comparisonBase: colemakDhMapping,
-    mappingThumb30: [
-        "qwfpb" + "jluy;",
-        "arstg" + "-nhio",
-        "xcdvz" + "km,.",
-        "e"
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwfpb" + "jluy;",
+            "arstg" + "-nhio",
+            "xcdvz" + "km,.",
+            "e"
+        ]
+    }
 }
 
 export const colemakThumbyNMapping: FlexMapping = {
@@ -972,12 +1005,14 @@ export const colemakThumbyNMapping: FlexMapping = {
     TODO: make a custom version of this for the Harmonic 13 MidShift, because that's the only board to properly represent the angle mod. 
     And a custom version for ortho, same reason.`,
     // comparisonBase: colemakDhMapping,
-    mappingThumb30: [
-        "qwfpb" + "jlyu;",
-        "arstg" + "-hnio",
-        "xcdvz" + "km,.",
-        "e"
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwfpb" + "jlyu;",
+            "arstg" + "-hnio",
+            "xcdvz" + "km,.",
+            "e"
+        ]
+    }
 }
 
 export const colemakThumbyLMapping: FlexMapping = {
@@ -985,12 +1020,14 @@ export const colemakThumbyLMapping: FlexMapping = {
     description: `Just a test to compare metrics. Turns out that moving L to the home row does not cause less bigram conflicts. `,
     // It's worse than Thumby-H, so we don't show it in the app :D
     // comparisonBase: colemakDhMapping,
-    mappingThumb30: [
-        "qwfpb" + "j-uy;",
-        "arstg" + "mnlio",
-        "xcdvz" + "kh,.",
-        "e"
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwfpb" + "j-uy;",
+            "arstg" + "mnlio",
+            "xcdvz" + "kh,.",
+            "e"
+        ]
+    }
 }
 
 // There are too many contemporary mappings and I have no good way to select representative ones,
@@ -1003,13 +1040,15 @@ export const maltronMapping: FlexMapping = {
     description: `Before the keyboard mapping community existed, the Maltron company produced and marketed keyboards that 
     had their own letter mapping... and remarkably with a letter on a thumb key! 
     This is designed exclusively for a split ortho board and I'll leave it at that.`,
-    mappingSplitOrtho: [
-        "",
-        "qpycb" + "vmuzl=",
-        "anisf" + "dthor'",
-        ".,jg;" + "/wk-x",
-        "⇤\\e⇥",
-    ],
+    mappings: {
+        [KeymapTypeId.SplitOrtho]: [
+            "",
+            "qpycb" + "vmuzl=",
+            "anisf" + "dthor'",
+            ".,jg;" + "/wk-x",
+            "⇤\\e⇥",
+        ]
+    }
 }
 
 export const rsthdMapping: FlexMapping = {
@@ -1029,25 +1068,27 @@ export const rsthdMapping: FlexMapping = {
     //     "/vgpb" + "xw.;'",
     //     "e"
     // ],
-    mapping30: [
-        "jcyfk" + "zlou;",
-        "rsthd" + "mneia",
-        "qvgpb" + "xw,./"
-    ],
-    mappingAnsiWide: [
-        "=\\",
-        "jcyfk" + "-" + "zl,uq'",
-        "rsthd" + "b" + "mnaio",
-        "/vgp" + "[]" + "xw.;",
-        "e⌥",
-    ],
-    mappingSplitOrtho: [
-        "",
-        "jcyfk" + "zl,uq-",
-        "rsthd" + "mnaio=",
-        "/vgpb" + "xw.;'",
-        "⇤\\e⇥",
-    ],
+    mappings: {
+        [KeymapTypeId.Ansi30]: [
+            "jcyfk" + "zlou;",
+            "rsthd" + "mneia",
+            "qvgpb" + "xw,./"
+        ],
+        [KeymapTypeId.AnsiWide]: [
+            "=\\",
+            "jcyfk" + "-" + "zl,uq'",
+            "rsthd" + "b" + "mnaio",
+            "/vgp" + "[]" + "xw.;",
+            "e⌥",
+        ],
+        [KeymapTypeId.SplitOrtho]: [
+            "",
+            "jcyfk" + "zl,uq-",
+            "rsthd" + "mnaio=",
+            "/vgpb" + "xw.;'",
+            "⇤\\e⇥",
+        ]
+    }
 }
 
 // straw man mappings to represent the limit of what's possible in SFBs (bigram effort).
@@ -1063,12 +1104,14 @@ export const snthMapping: FlexMapping = {
      because even their creator has moved on. 
      But SNTH stands out on https://cyanophage.github.io/ as the mapping with the lowest SFB.
      (My version here looks different because of constraints of my data model.)`,
-    mappingThumb30: [
-        "xpdmq" + "-you,",
-        "snthv" + "gcaei",
-        "fbklj" + "zw;.",
-        "r"
-    ]
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "xpdmq" + "-you,",
+            "snthv" + "gcaei",
+            "fbklj" + "zw;.",
+            "r"
+        ]
+    }
 }
 
 export const rtnaMapping: FlexMapping = {
@@ -1076,11 +1119,13 @@ export const rtnaMapping: FlexMapping = {
     sourceUrl: "https://docs.google.com/document/d/1_a5Nzbkwyk1o0bvTctZrtgsee9jSP-6I0q3A0_9Mzm0/edit?tab=t.0",
     sourceLinkTitle: "The Keyboard Layouts doc, v2",
     description: `See the last page of the linked document. It was actually made as a straw man. `,
-    mapping30: [
-        "xdh.q" + "bfouj",
-        "rtna;" + "gweis",
-        "lkm,/" + "pczyv",
-    ]
+    mappings: {
+        [KeymapTypeId.Ansi30]: [
+            "xdh.q" + "bfouj",
+            "rtna;" + "gweis",
+            "lkm,/" + "pczyv",
+        ]
+    }
 }
 
 export const allMappings: FlexMapping[] = [
