@@ -92,24 +92,24 @@ describe('flex mappings consistency', () => {
 // --- New KeymapType system tests ---
 
 describe('new mappings property structure', () => {
-    it('qwertyMapping has mappings property with 30key', () => {
+    it('qwertyMapping has mappings property with Ansi30', () => {
         expect(qwertyMapping.mappings).toBeDefined();
-        expect(qwertyMapping.mappings!["30key"]).toBeDefined();
+        expect(qwertyMapping.mappings![KeymapTypeId.Ansi30]).toBeDefined();
     });
 
-    it('colemakMapping has mappings property with 30key and ansiWide', () => {
+    it('colemakMapping has mappings property with Ansi30 and AnsiWide', () => {
         expect(colemakMapping.mappings).toBeDefined();
-        expect(colemakMapping.mappings!["30key"]).toBeDefined();
-        expect(colemakMapping.mappings!["ansiWide"]).toBeDefined();
+        expect(colemakMapping.mappings![KeymapTypeId.Ansi30]).toBeDefined();
+        expect(colemakMapping.mappings![KeymapTypeId.AnsiWide]).toBeDefined();
     });
 
     it('new mappings match old properties for qwertyMapping', () => {
-        expect(qwertyMapping.mappings!["30key"]).toEqual(qwertyMapping.mapping30);
+        expect(qwertyMapping.mappings![KeymapTypeId.Ansi30]).toEqual(qwertyMapping.mapping30);
     });
 
     it('new mappings match old properties for colemakMapping', () => {
-        expect(colemakMapping.mappings!["30key"]).toEqual(colemakMapping.mapping30);
-        expect(colemakMapping.mappings!["ansiWide"]).toEqual(colemakMapping.mappingAnsiWide);
+        expect(colemakMapping.mappings![KeymapTypeId.Ansi30]).toEqual(colemakMapping.mapping30);
+        expect(colemakMapping.mappings![KeymapTypeId.AnsiWide]).toEqual(colemakMapping.mappingAnsiWide);
     });
 });
 

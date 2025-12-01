@@ -116,7 +116,7 @@ export function fillMappingNew(layoutModel: RowBasedLayoutModel, flexMapping: Fl
     const match = findMatchingKeymapType(layoutModel, flexMapping);
     if (match) {
         // For specific types (not 30key/thumb30), we need a fallback for unlabeled keys
-        const fallbackMapping = layoutModel.supportedKeymapTypes?.find(s => s.typeId === "30key")?.frameMapping;
+        const fallbackMapping = layoutModel.supportedKeymapTypes?.find(s => s.typeId === KeymapTypeId.Ansi30)?.frameMapping;
         return mergeMapping(match.supported.frameMapping, ["", ...match.flexData], fallbackMapping);
     }
     // Fall back to old system

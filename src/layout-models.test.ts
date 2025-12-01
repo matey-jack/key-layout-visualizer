@@ -158,8 +158,8 @@ function countPlaceholdersByFlexRow(frameMapping: unknown[][], flexRowOffset: nu
  * 30key and thumb30 FlexMappings are prepended with "" when merged, so offset is 1.
  * Full layout types (ansi, ansiWide, splitOrtho, etc.) have no offset.
  */
-function getFlexRowOffset(typeId: string): number {
-    return (typeId === "30key" || typeId === "thumb30") ? 1 : 0;
+function getFlexRowOffset(typeId: KeymapTypeId): number {
+    return (typeId === KeymapTypeId.Ansi30 || typeId === KeymapTypeId.Thumb30) ? 1 : 0;
 }
 
 describe('supportedKeymapTypes frame mapping validation', () => {

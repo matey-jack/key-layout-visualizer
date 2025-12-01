@@ -33,7 +33,7 @@
 
  */
 
-import {FlexMapping} from "../base-model.ts";
+import {FlexMapping, KeymapTypeId} from "../base-model.ts";
 
 export const qwertyMapping: FlexMapping = {
     name: "Qwerty – US and world-wide standard",
@@ -44,7 +44,7 @@ export const qwertyMapping: FlexMapping = {
     sourceUrl: "https://en.wikipedia.org/wiki/QWERTY",
     // NEW: unified mappings property
     mappings: {
-        "30key": [
+        [KeymapTypeId.Ansi30]: [
             "qwert" + "yuiop",
             "asdfg" + "hjkl;",
             "zxcvb" + "nm,./",
@@ -65,7 +65,7 @@ export const qweertyMapping: FlexMapping = {
         Or for people to just try how a thumb key would feel. `,
     // NEW: unified mappings property
     mappings: {
-        "thumb30": [
+        [KeymapTypeId.Thumb30]: [
             "qw-rt" + "yuiop",
             "asdfg" + "hjkl;",
             "zxcvb" + "nm,.",
@@ -95,7 +95,7 @@ export const ergoFix: FlexMapping = {
     // by also swapping KUI and OL.
     // NEW: unified mappings property
     mappings: {
-        "30key": [
+        [KeymapTypeId.Ansi30]: [
             "qwerb" + "yuiop",
             "asdfg" + "hnklt",
             "zxcv;" + "jm,./",
@@ -124,7 +124,7 @@ export const qwertyWideMapping: FlexMapping = {
     because the characters can as well be accessible on the AltGr layer.`,
     // NEW: unified mappings property
     mappings: {
-        "ansiWide": [
+        [KeymapTypeId.AnsiWide]: [
             "[=",
             "qwert" + "]" + "yuiop-\\",
             "asdfg" + ";" + "jnkl'",
@@ -151,7 +151,7 @@ export const enTryMapping: FlexMapping = {
     // On Ortho and Harmonic Narrow, it will just be 5 + 5 on each side.
     // NEW: unified mappings property
     mappings: {
-        "thumb30": [
+        [KeymapTypeId.Thumb30]: [
             "qwbrt" + "y" + "uiop",
             "asdfg" + "hnkl;",
             "zxcv" + "-" + "jm,.",
@@ -481,14 +481,14 @@ export const cozyEnglish = {
     which could be alt-fingered in Qwerty, but become annoyingly noticeable once the N is so easy to type. `,
     // NEW: unified mappings property
     mappings: {
-        "splitOrtho": [
+        [KeymapTypeId.SplitOrtho]: [
             "",
             "qwbf'" + "ykulp-",
             "asdrg" + "hniot;",
             "zxcv=" + "jm,./",
             "⇤\\e⇥",
         ],
-        "thumb30": [
+        [KeymapTypeId.Thumb30]: [
             "qwbf;" + "y" + "kulp",
             "asdrg" + "hniot",
             "zxcv" + "-" + "jm,.",
@@ -866,12 +866,12 @@ export const colemakMapping: FlexMapping = {
     sourceUrl: "https://colemak.com/",
     // NEW: unified mappings property
     mappings: {
-        "30key": [
+        [KeymapTypeId.Ansi30]: [
             "qwfpg" + "jluy;",
             "arstd" + "hneio",
             "zxcvb" + "km,./",
         ],
-        "ansiWide": [
+        [KeymapTypeId.AnsiWide]: [
             "=-",
             "qwfpg" + "[" + "jluy;'\\",
             "arstd" + "]" + "hneio",

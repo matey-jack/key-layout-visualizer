@@ -3,26 +3,34 @@
 
 // --- Keymap Type System (new) ---
 
+export enum KeymapTypeId {
+    Ansi30 = "ansi30",
+    Thumb30 = "thumb30",
+    Ansi = "ansi",
+    AnsiWide = "ansiWide",
+    SplitOrtho = "splitOrtho",
+    Harmonic13Wide = "harmonic13wide",
+    Harmonic14T = "harmonic14t",
+}
+
 export interface KeymapType {
-    id: string;
+    id: KeymapTypeId;
     // Number of keys per row, used for validation
     keysPerRow: number[];
     description?: string;
 }
 
 // Registry of all known keymap types
-export const KEYMAP_TYPES = {
-    "30key": { id: "30key", keysPerRow: [10, 10, 10], description: "3×10 core letter keys" },
-    "thumb30": { id: "thumb30", keysPerRow: [10, 10, 9, 1], description: "3×10 with thumb key replacing slash" },
-    "ansi": { id: "ansi", keysPerRow: [2, 13, 11, 10, 2], description: "Full ANSI layout" },
-    "ansiWide": { id: "ansiWide", keysPerRow: [2, 13, 11, 10, 2], description: "ANSI wide hand position" },
+export const KEYMAP_TYPES: Record<KeymapTypeId, KeymapType> = {
+    [KeymapTypeId.Ansi30]: { id: KeymapTypeId.Ansi30, keysPerRow: [10, 10, 10], description: "3×10 core letter keys" },
+    [KeymapTypeId.Thumb30]: { id: KeymapTypeId.Thumb30, keysPerRow: [10, 10, 9, 1], description: "3×10 with thumb key replacing slash" },
+    [KeymapTypeId.Ansi]: { id: KeymapTypeId.Ansi, keysPerRow: [2, 13, 11, 10, 2], description: "Full ANSI layout" },
+    [KeymapTypeId.AnsiWide]: { id: KeymapTypeId.AnsiWide, keysPerRow: [2, 13, 11, 10, 2], description: "ANSI wide hand position" },
     // Note: splitOrtho row 0 is empty (placeholder), rows 1-4 have the actual flex keys
-    "splitOrtho": { id: "splitOrtho", keysPerRow: [0, 11, 11, 10, 4], description: "Split ortholinear" },
-    "harmonic13wide": { id: "harmonic13wide", keysPerRow: [2, 12, 13, 12, 2], description: "Harmonic 13-wide" },
-    "harmonic14t": { id: "harmonic14t", keysPerRow: [1, 14, 13, 12, 4], description: "Harmonic 14 traditional" },
-} as const satisfies Record<string, KeymapType>;
-
-export type KeymapTypeId = keyof typeof KEYMAP_TYPES;
+    [KeymapTypeId.SplitOrtho]: { id: KeymapTypeId.SplitOrtho, keysPerRow: [0, 11, 11, 10, 4], description: "Split ortholinear" },
+    [KeymapTypeId.Harmonic13Wide]: { id: KeymapTypeId.Harmonic13Wide, keysPerRow: [2, 12, 13, 12, 2], description: "Harmonic 13-wide" },
+    [KeymapTypeId.Harmonic14T]: { id: KeymapTypeId.Harmonic14T, keysPerRow: [1, 14, 13, 12, 4], description: "Harmonic 14 traditional" },
+};
 
 // --- End Keymap Type System ---
 

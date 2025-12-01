@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest';
 
-import {Finger, Hand, hand, KeyboardRows, MappingChange, RowBasedLayoutModel} from "../base-model.ts";
+import {Finger, Hand, hand, KeyboardRows, KeymapTypeId, MappingChange, RowBasedLayoutModel} from "../base-model.ts";
 import {
     characterToFinger,
     copyAndModifyKeymap,
@@ -111,24 +111,24 @@ describe('hasMatchingMapping', () => {
 // --- NEW: Tests for keymap type system ---
 
 describe('new keymap type system - findMatchingKeymapType', () => {
-    it('finds 30key match between qwertyMapping and ansiIBMLayoutModel', () => {
+    it('finds Ansi30 match between qwertyMapping and ansiIBMLayoutModel', () => {
         const match = findMatchingKeymapType(ansiIBMLayoutModel, qwertyMapping);
         expect(match).toBeDefined();
-        expect(match!.supported.typeId).toBe("30key");
-        expect(match!.flexData).toEqual(qwertyMapping.mappings!["30key"]);
+        expect(match!.supported.typeId).toBe(KeymapTypeId.Ansi30);
+        expect(match!.flexData).toEqual(qwertyMapping.mappings![KeymapTypeId.Ansi30]);
     });
 
-    it('finds ansiWide match for colemakMapping on ansiWideLayoutModel', () => {
+    it('finds AnsiWide match for colemakMapping on ansiWideLayoutModel', () => {
         const match = findMatchingKeymapType(ansiWideLayoutModel, colemakMapping);
         expect(match).toBeDefined();
-        expect(match!.supported.typeId).toBe("ansiWide");
+        expect(match!.supported.typeId).toBe(KeymapTypeId.AnsiWide);
     });
 
-    it('finds splitOrtho match for qwertyMapping on splitOrthoLayoutModel', () => {
+    it('finds Ansi30 match for qwertyMapping on splitOrthoLayoutModel', () => {
         const match = findMatchingKeymapType(splitOrthoLayoutModel, qwertyMapping);
         expect(match).toBeDefined();
-        // qwertyMapping only has 30key, splitOrtho supports splitOrtho > thumb30 > 30key
-        expect(match!.supported.typeId).toBe("30key");
+        // qwertyMapping only has Ansi30, splitOrtho supports splitOrtho > thumb30 > Ansi30
+        expect(match!.supported.typeId).toBe(KeymapTypeId.Ansi30);
     });
 
     it('returns undefined when no mappings property exists', () => {
@@ -174,26 +174,26 @@ describe('new keymap type system - hasMatchingMappingNew', () => {
 describe('new keymap type system - helper functions', () => {
     it('getLayoutKeymapTypes returns correct types for ansiIBMLayoutModel', () => {
         const types = getLayoutKeymapTypes(ansiIBMLayoutModel);
-        expect(types).toContain("ansi");
-        expect(types).toContain("30key");
+        expect(types).toContain(KeymapTypeId.Ansi);
+        expect(types).toContain(KeymapTypeId.Ansi30);
     });
 
     it('getLayoutKeymapTypes returns correct types for splitOrthoLayoutModel', () => {
         const types = getLayoutKeymapTypes(splitOrthoLayoutModel);
-        expect(types).toContain("splitOrtho");
-        expect(types).toContain("thumb30");
-        expect(types).toContain("30key");
+        expect(types).toContain(KeymapTypeId.SplitOrtho);
+        expect(types).toContain(KeymapTypeId.Thumb30);
+        expect(types).toContain(KeymapTypeId.Ansi30);
     });
 
     it('getMappingKeymapTypes returns correct types for qwertyMapping', () => {
         const types = getMappingKeymapTypes(qwertyMapping);
-        expect(types).toContain("30key");
+        expect(types).toContain(KeymapTypeId.Ansi30);
     });
 
     it('getMappingKeymapTypes returns correct types for colemakMapping', () => {
         const types = getMappingKeymapTypes(colemakMapping);
-        expect(types).toContain("30key");
-        expect(types).toContain("ansiWide");
+        expect(types).toContain(KeymapTypeId.Ansi30);
+        expect(types).toContain(KeymapTypeId.AnsiWide);
     });
 
     it('getMappingKeymapTypes returns empty array for mappings without new property', () => {
