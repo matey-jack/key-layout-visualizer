@@ -77,6 +77,7 @@ export interface FlexMapping {
     name: string;
     techName?: string;
     localMaximum?: boolean,
+    fallback?: FlexMapping,
     description?: string;
     sourceUrl?: string;
     sourceLinkTitle?: string;

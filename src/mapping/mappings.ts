@@ -42,7 +42,6 @@ export const qwertyMapping: FlexMapping = {
     a different mapping in their whole life. At the same time it is also extra-ordinary bad for touch-typing, 
     because frequently used letters are not in the center. `,
     sourceUrl: "https://en.wikipedia.org/wiki/QWERTY",
-    // NEW: unified mappings property
     mappings: {
         [KeymapTypeId.Ansi30]: [
             "qwert" + "yuiop",
@@ -50,12 +49,6 @@ export const qwertyMapping: FlexMapping = {
             "zxcvb" + "nm,./",
         ],
     },
-    // OLD: kept for backward compatibility during migration
-    mapping30: [
-        "qwert" + "yuiop",
-        "asdfg" + "hjkl;",
-        "zxcvb" + "nm,./",
-    ],
 }
 
 export const qweertyMapping: FlexMapping = {
@@ -63,7 +56,6 @@ export const qweertyMapping: FlexMapping = {
     description: `This mapping does not move any key, but simply provides an additional key mapping for E on a thumb key. 
         It is not made for practical use, but simply to show the effect of the thumb key on the typing metrics.
         Or for people to just try how a thumb key would feel. `,
-    // NEW: unified mappings property
     mappings: {
         [KeymapTypeId.Thumb30]: [
             "qw-rt" + "yuiop",
@@ -72,13 +64,7 @@ export const qweertyMapping: FlexMapping = {
             "e"
         ],
     },
-    // OLD: kept for backward compatibility during migration
-    mappingThumb30: [
-        "qw-rt" + "yuiop",
-        "asdfg" + "hjkl;",
-        "zxcvb" + "nm,.",
-        "e"
-    ],
+    fallback: qwertyMapping,
 }
 
 export const ergoFix: FlexMapping = {
@@ -93,7 +79,6 @@ export const ergoFix: FlexMapping = {
     since all the 11 most frequent letters in English texts are now on the home row or above.`,
     // if someone now feels that the UN single-finger bigram is annoying, they can go all the way to right-hand Cozy
     // by also swapping KUI and OL.
-    // NEW: unified mappings property
     mappings: {
         [KeymapTypeId.Ansi30]: [
             "qwerb" + "yuiop",
@@ -101,12 +86,6 @@ export const ergoFix: FlexMapping = {
             "zxcv;" + "jm,./",
         ],
     },
-    // OLD: kept for backward compatibility during migration
-    mapping30: [
-        "qwerb" + "yuiop",
-        "asdfg" + "hnklt",
-        "zxcv;" + "jm,./",
-    ],
 }
 
 export const qwertyWideMapping: FlexMapping = {
@@ -122,7 +101,6 @@ export const qwertyWideMapping: FlexMapping = {
     For a fun laptop version, [] could be replaced by Home/End and \\ by Delete. 
     Far better to have those keys in standard positions (instead of random model-dependent Laptop positions),
     because the characters can as well be accessible on the AltGr layer.`,
-    // NEW: unified mappings property
     mappings: {
         [KeymapTypeId.AnsiWide]: [
             "[=",
@@ -132,14 +110,7 @@ export const qwertyWideMapping: FlexMapping = {
             "⌥≡",
         ],
     },
-    // OLD: kept for backward compatibility during migration
-    mappingAnsiWide: [
-        "[=",
-        "qwert" + "]" + "yuiop-\\",
-        "asdfg" + ";" + "jnkl'",
-        "zxcvb" + "/" + "hm,.",
-        "⌥≡",
-    ],
+    fallback: qwertyMapping,
     // don't define mapping30, so the app switches automatically into wide mode and only shows this on the ANSI keyboard.
 }
 
@@ -149,7 +120,6 @@ export const enTryMapping: FlexMapping = {
         "Additionally provides synergy, because the common EN/NE bigrams don't require you to pinch your hand. ",
     // Writing upper and lower row as three strings emphasizes the center columns of the Harmonic and ANSI keyboards.
     // On Ortho and Harmonic Narrow, it will just be 5 + 5 on each side.
-    // NEW: unified mappings property
     mappings: {
         [KeymapTypeId.Thumb30]: [
             "qwbrt" + "y" + "uiop",
@@ -158,14 +128,7 @@ export const enTryMapping: FlexMapping = {
             "e",
         ],
     },
-    // OLD: kept for backward compatibility during migration
-    mappingThumb30: [
-        "qwbrt" + "y" + "uiop",
-        "asdfg" + "hnkl;",
-        "zxcv" + "-" + "jm,.",
-        "e",
-    ],
-    // TODO: maybe provide this as ANSI full mapping to minimize insignificant differences in punctuation and modifier keys.
+    fallback: qwertyMapping,
 }
 
 export const qwertzMapping: FlexMapping = {
@@ -225,7 +188,7 @@ export const normanMapping: FlexMapping = {
             "asetg" + "ynioh",
             "zxcvb" + "pm,./",
         ]
-    }
+    },
 }
 
 export const minimak4Mapping: FlexMapping = {
@@ -313,7 +276,8 @@ export const qwertyFlipTwistThumbMapping: FlexMapping = {
             "zxcv" + "-" + "jm,.",
             "e"
         ]
-    }
+    },
+    fallback: qwertyFlipTwistMapping,
 }
 
 export const qwertyFlipTwistThumbFlingR: FlexMapping = {
@@ -329,7 +293,8 @@ export const qwertyFlipTwistThumbFlingR: FlexMapping = {
             "zxcv" + "-" + "jm,.",
             "e"
         ]
-    }
+    },
+    fallback: qwertyFlipTwistMapping,
 }
 
 export const qwertyFlipTwistThumbFlingT: FlexMapping = {
@@ -346,7 +311,8 @@ export const qwertyFlipTwistThumbFlingT: FlexMapping = {
             "zxcv" + "-" + "jm,.",
             "e"
         ]
-    }
+    },
+    fallback: qwertyFlipTwistMapping,
 }
 
 export const qwertyFlipTwistThumbT: FlexMapping = {
@@ -365,7 +331,8 @@ export const qwertyFlipTwistThumbT: FlexMapping = {
             "zxcv" + "-" + "jm,.",
             "t"
         ]
-    }
+    },
+    fallback: qwertyFlipTwistMapping,
 }
 
 export const qwertyFlipTwistThumbR: FlexMapping = {
@@ -382,7 +349,8 @@ export const qwertyFlipTwistThumbR: FlexMapping = {
             "zxcv" + "-" + "jm,.",
             "r"
         ]
-    }
+    },
+    fallback: qwertyFlipTwistMapping,
 }
 
 /**
@@ -468,7 +436,8 @@ export const quipperThumbRMapping: FlexMapping = {
             "zxcv" + "-" + "jm,.",
             "r"
         ]
-    }
+    },
+    fallback: quipperMapping,
 }
 
 export const quipperThumbTMapping: FlexMapping = {
@@ -485,7 +454,8 @@ export const quipperThumbTMapping: FlexMapping = {
             "zxcv" + "-" + "jm,.",
             "t"
         ]
-    }
+    },
+    fallback: quipperMapping,
 }
 
 export const quipperThumbyMapping: FlexMapping = {
@@ -500,7 +470,8 @@ export const quipperThumbyMapping: FlexMapping = {
             "zxcv" + "-" + "jm,.",
             "t"
         ]
-    }
+    },
+    fallback: quipperMapping,
 }
 
 
@@ -528,6 +499,7 @@ export const cozyEnglish: FlexMapping = {
             "e",
         ],
     },
+    fallback: qwertyFlipTwistMapping,
 }
 
 export const cozyGerman: FlexMapping = {
@@ -548,7 +520,8 @@ export const cozyGerman: FlexMapping = {
             "yxcv" + ";" + "jm,.",
             "e",
         ]
-    }
+    },
+    fallback: qwertzMapping,
 }
 
 export const cozyPlusP: FlexMapping = {
@@ -562,7 +535,8 @@ export const cozyPlusP: FlexMapping = {
             "zxcv" + "-" + "jm,.",
             "e",
         ]
-    }
+    },
+    fallback: cozyEnglish,
 }
 
 export const cozyPlusC: FlexMapping = {
@@ -576,7 +550,8 @@ export const cozyPlusC: FlexMapping = {
             "zx;v" + "-" + "jm,.",
             "e",
         ]
-    }
+    },
+    fallback: cozyEnglish,
 }
 
 export const cozyPlusCH: FlexMapping = {
@@ -591,7 +566,8 @@ export const cozyPlusCH: FlexMapping = {
             "zx;v" + "-" + "jh,.",
             "e",
         ]
-    }
+    },
+    fallback: cozyEnglish,
 }
 
 export const cozyFlingH: FlexMapping = {
@@ -607,7 +583,8 @@ export const cozyFlingH: FlexMapping = {
             "zxcv" + "-" + "jm,.",
             "e",
         ]
-    }
+    },
+    fallback: cozyEnglish,
 }
 
 export const thumbyZero: FlexMapping = {
@@ -628,7 +605,8 @@ export const thumbyZero: FlexMapping = {
             "zxcv-" + "nm,./",
             "e⌥",
         ]
-    }
+    },
+    fallback: qwertyMapping,
 }
 
 export const thumbyNero: FlexMapping = {
@@ -665,6 +643,7 @@ export const topNine: FlexMapping = {
     And the over-focus on English also reduces the scores for German.
     But at least the straw man allows us to see that the actual winning (well-rounded) mappings are not so far away from
     the theoretical optimum! Which is what the experiment was all about! `,
+    fallback: qwertyFlipTwistMapping,
 
     mappings: {
         [KeymapTypeId.Thumb30]: [
@@ -728,7 +707,7 @@ export const topNineLeftThumb: FlexMapping = {
             "e`",
         ],
     },
-    // TODO: add a flex slot for the space bar on ANSI?
+    fallback: topNine,
 }
 
 export const top9t: FlexMapping = {
@@ -742,7 +721,8 @@ export const top9t: FlexMapping = {
             "zxcv" + ";" + "jm,.",
             "e",
         ]
-    }
+    },
+    fallback: topNine,
 };
 
 export const top9u: FlexMapping = {
@@ -756,7 +736,8 @@ export const top9u: FlexMapping = {
             "zxcv" + ";" + "jm,.",
             "e",
         ]
-    }
+    },
+    fallback: topNine,
 };
 
 export const topNineDifferentSymbols: FlexMapping = {
@@ -798,7 +779,8 @@ export const topNineDifferentSymbols: FlexMapping = {
             "zxcv=" + "jm,./",
             "⇤\\e⇥",
         ],
-    }
+    },
+    fallback: topNine,
 }
 
 export const top9rst: FlexMapping = {
@@ -813,7 +795,8 @@ export const top9rst: FlexMapping = {
             "zxcv-" + "jm,.",
             "e",
         ]
-    }
+    },
+    fallback: topNine,
 };
 
 export const top9kul: FlexMapping = {
@@ -828,7 +811,8 @@ export const top9kul: FlexMapping = {
             "zxcv;" + "jm,.",
             "e",
         ]
-    }
+    },
+    fallback: topNine,
 }
 
 /*  Port of my personal German letter map.
@@ -898,7 +882,8 @@ export const gemuetlichesMapping: FlexMapping = {
             "yxcv" + "/-" + "jm,.",
             "\\e+"
         ],
-    }
+    },
+    fallback: qwertzMapping,
 }
 
 export const colemakMapping: FlexMapping = {
@@ -975,7 +960,8 @@ export const colemakThumbyDMapping: FlexMapping = {
             "zxcvb" + "km,.",
             "e"
         ]
-    }
+    },
+    fallback: colemakMapping,
 }
 
 export const colemakThumbyHMapping: FlexMapping = {
@@ -995,7 +981,8 @@ export const colemakThumbyHMapping: FlexMapping = {
             "xcdvz" + "km,.",
             "e"
         ]
-    }
+    },
+    fallback: colemakMapping,
 }
 
 export const colemakThumbyNMapping: FlexMapping = {
@@ -1012,7 +999,8 @@ export const colemakThumbyNMapping: FlexMapping = {
             "xcdvz" + "km,.",
             "e"
         ]
-    }
+    },
+    fallback: colemakMapping,
 }
 
 export const colemakThumbyLMapping: FlexMapping = {
@@ -1027,7 +1015,8 @@ export const colemakThumbyLMapping: FlexMapping = {
             "xcdvz" + "kh,.",
             "e"
         ]
-    }
+    },
+    fallback: colemakMapping,
 }
 
 // There are too many contemporary mappings and I have no good way to select representative ones,
@@ -1048,7 +1037,7 @@ export const maltronMapping: FlexMapping = {
             ".,jg;" + "/wk-x",
             "⇤\\e⇥",
         ]
-    }
+    },
 }
 
 export const rsthdMapping: FlexMapping = {
@@ -1111,7 +1100,7 @@ export const snthMapping: FlexMapping = {
             "fbklj" + "zw;.",
             "r"
         ]
-    }
+    },
 }
 
 export const rtnaMapping: FlexMapping = {
