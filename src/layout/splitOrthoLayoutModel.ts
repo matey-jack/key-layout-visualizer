@@ -19,27 +19,6 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
     // more splitties here: https://jhelvy.shinyapps.io/splitkbcompare/
     // if it's down, you can run it locally: https://github.com/jhelvy/splitKbCompare
 
-    // Mapping Enter as a thumb key allows `'` to stay in its Qwerty position.
-    // We use the freed space to improve `-` position, since this is the third most frequently used punctuation character.
-    thirtyKeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "-"],
-        ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
-        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-        ["Ctrl", "Cmd", "=", "\\", "Alt", "⍽", "⏎", "AltGr", "Menu", "`", "Fn", "Ctrl"],
-    ],
-
-    // I like Shift in the home row.
-    // TODO: provide a separate option for this and not depend on the thumb-letter!
-    thumb30KeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
-        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-        ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "Ctrl"],
-        ["Cmd", "", "`", "=", "Alt", "⍽", "⏎", 0, "AltGr", "Menu", "\\", "Fn"],
-    ],
-    fullMapping,
-
     hasAltFinger: (_r, _c) => false,
 
     rowIndent: [0, 0, 0, 0, 1],
@@ -68,25 +47,27 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
         [NaN, 2.0, 2.0, 1.5, 0.2, 0.2, 0.2, 0.2, 1.5, 2.0, 2.0, NaN],
     ],
 
-    // NEW: unified keymap type support
     supportedKeymapTypes: [
         {typeId: KeymapTypeId.SplitOrtho, frameMapping: fullMapping},
         {
-            typeId: KeymapTypeId.Thumb30, frameMapping: [
-                ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-                ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
-                ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-                ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "Ctrl"],
-                ["Cmd", "", "`", "=", "Alt", "⍽", "⏎", 0, "AltGr", "Menu", "\\", "Fn"],
-            ]
-        },
-        {
             typeId: KeymapTypeId.Ansi30, frameMapping: [
+                // Mapping Enter as a thumb key allows `'` to stay in its Qwerty position.
+                // We use the freed space to improve `-` position, since this is the third most frequently used punctuation character.
                 ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
                 ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "-"],
                 ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
                 ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
                 ["Ctrl", "Cmd", "=", "\\", "Alt", "⍽", "⏎", "AltGr", "Menu", "`", "Fn", "Ctrl"],
+            ]
+        },
+        {
+            typeId: KeymapTypeId.Thumb30, frameMapping: [
+                // Shift in Home Row is the more ergonomic choice... just haven't done it in the other mapping to showcase more options.
+                ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+                ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+                ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+                ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "Ctrl"],
+                ["Cmd", "", "`", "=", "Alt", "⍽", "⏎", 0, "AltGr", "Menu", "\\", "Fn"],
             ]
         },
     ],

@@ -1,7 +1,7 @@
 import {describe, it, expect} from 'vitest';
 
 import {ansiIBMLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
-import {KeyboardRows} from "../base-model.ts";
+import {KeyboardRows, KeymapTypeId} from "../base-model.ts";
 import {sum} from "../library/math.ts";
 
 describe('ansiLayoutModel.keyWidths', () => {
@@ -46,9 +46,12 @@ describe('ansiWideLayoutModel', () => {
         ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
     ];
 
+    const thirtyKeyMapping = ansiWideLayoutModel.supportedKeymapTypes.filter(
+        (m) => m.typeId == KeymapTypeId.Ansi30
+    ).map((m) => m.frameMapping).pop()!;
     for (let row = 0; row < 5; row++) {
         it(`correct ${KeyboardRows[row]} row`, () => {
-            expect(ansiWideLayoutModel.thirtyKeyMapping[row])
+            expect(thirtyKeyMapping[row])
                 .toStrictEqual(expectedLayoutMapping[row])
         });
     }

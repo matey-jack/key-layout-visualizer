@@ -1,4 +1,4 @@
-import {RowBasedLayoutModel} from "../base-model.ts";
+import {KeymapTypeId, RowBasedLayoutModel, SupportedKeymapType} from "../base-model.ts";
 import {eb65LowshiftLayoutModel} from "./eb65LowshiftLayoutModel.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 
@@ -13,23 +13,6 @@ export const eb65MidshiftNiceLayoutModel: RowBasedLayoutModel = {
     rightHomeIndex: 10,
     staggerOffsets: [0.5, 0.25, 0, -0.25],
 
-    // The keymap has a bunch of small differences to the low-shift; enough to make copy-paste-adapt easier than anything more clever.
-    thirtyKeyMapping: [
-        // left-side numbers move to center to make their relative position (from hand home) symmetric to the right side.
-        ["Esc", "`~", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "⌫"],
-        ["⇧", 0, 1, 2, 3, 4, "-", "\\", "'", 5, 6, 7, 8, 9, "⇧"],
-        ["Ctrl", 0, 1, 2, 3, 4, "=", "€ ¢ £ ¥", 9, 5, 6, 7, 8, null, "↑", null],
-        [null, "Cmd", "Fn", "⌦", "Alt", "⏎", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
-    ],
-
-    thumb30KeyMapping: [
-        ["Esc", "`~", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "⌫"],
-        ["⇧", 0, 1, 2, 3, 4, "\\", "€ £ ¥", "'", 5, 6, 7, 8, 9, "⇧"],
-        ["Ctrl", 0, 1, 2, 3, 4, "=", "⌦", "/", 5, 6, 7, 8, null, "↑", null],
-        [null, "Cmd", "Fn", "Alt", 0, "⏎", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"],
-    ],
     mainFingerAssignment: [
         [null, 1, 1, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 8, null, null],
         [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 7, 8, 9, 9, 9],
@@ -43,6 +26,25 @@ export const eb65MidshiftNiceLayoutModel: RowBasedLayoutModel = {
         [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
         [3.0, 1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0, null, null],
         [null, 2.0, 1.5, 1.5, 1.0, 0.2, 0.2, 1.0, null, 1.5, null, null, null, null],
+    ],
+
+    supportedKeymapTypes: [
+        // The keymap has a bunch of small differences to the low-shift; enough to make copy-paste-adapt easier than anything more clever.
+        // left-side numbers move to center to make their relative position (from hand home) symmetric to the right side.
+        { typeId: KeymapTypeId.Ansi30, frameMapping: [
+            ["Esc", "`~", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
+            ["↹", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "⌫"],
+            ["⇧", 0, 1, 2, 3, 4, "-", "\\", "'", 5, 6, 7, 8, 9, "⇧"],
+            ["Ctrl", 0, 1, 2, 3, 4, "=", "€ ¢ £ ¥", 9, 5, 6, 7, 8, null, "↑", null],
+            [null, "Cmd", "Fn", "⌦", "Alt", "⏎", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
+        ]},
+        { typeId: KeymapTypeId.Thumb30, frameMapping: [
+            ["Esc", "`~", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
+            ["↹", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "⌫"],
+            ["⇧", 0, 1, 2, 3, 4, "\\", "€ £ ¥", "'", 5, 6, 7, 8, 9, "⇧"],
+            ["Ctrl", 0, 1, 2, 3, 4, "=", "⌦", "/", 5, 6, 7, 8, null, "↑", null],
+            [null, "Cmd", "Fn", "Alt", 0, "⏎", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"],
+        ]},
     ],
 
     keyWidths:

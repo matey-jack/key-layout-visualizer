@@ -1,4 +1,4 @@
-import {FlexMapping, KeyboardRows, RowBasedLayoutModel} from "../base-model.ts";
+import {FlexMapping, KeyboardRows, KeymapTypeId, RowBasedLayoutModel, SupportedKeymapType} from "../base-model.ts";
 
 import {keyColorHighlightsClass} from "./layout-functions.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
@@ -9,33 +9,6 @@ const keyWidths = new SymmetricKeyWidth(16, zeroIndent, 7.75);
 export const eb65MidshiftExtraWideLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 MidShift Max Wide",
     description: ``,
-
-    // Key sizes are mostly the same as EB65 Lowshift Midsize Enter, except for 2u Backspace up top.
-    // But the lower row has a regular 0.25 stagger.
-    thirtyKeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "[", null, "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, "`~", "", "\\", 5, 6, 7, 8, 9, "⌫"],
-        ["⇧", 0, 1, 2, 3, 4, "-", "⌦", "'", 5, 6, 7, 8, 9, "⇧"],
-        [null, 0, 1, 2, 3, 4, "=", "⇤", "⇥", 9, 5, 6, 7, 8, null, "↑", null],
-        [null, "Ctrl", "Cmd", "Fn", "Alt", "⏎", "", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
-    ],
-
-    thumb30KeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "[", null, "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, "`~", "Fn", "", 5, 6, 7, 8, 9, "⌫"],
-        ["⇧", 0, 1, 2, 3, 4, "=", "⌦", "'", 5, 6, 7, 8, 9, "⇧"],
-        [null, 0, 1, 2, 3, 4, "\\", "⇤", "⇥", "/", 5, 6, 7, 8, null, "↑", null],
-        [null, "Ctrl", "Cmd", "Alt", 0, "⏎", "", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
-    ],
-
-    // thumb30KeyMapping: [
-    //     // todo
-    //     ["Esc", "1", "2", "3", "4", "5", "[", null, "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-    //     ["↹", 0, 1, 2, 3, 4, "`~", "'", 5, 6, 7, 8, 9, "⌫", "⏎"],
-    //     ["⇧", 0, 1, 2, 3, 4, "=", "\\", 5, 6, 7, 8, 9, "⇧"],
-    //     ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, "/", null, "↑", null],
-    //     [null, "Cmd", "Fn", "⌦", "Alt", 0, "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"],
-    // ],
 
     mainFingerAssignment: [
         [null, 1, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 8, 8, null, null],
@@ -60,6 +33,8 @@ export const eb65MidshiftExtraWideLayoutModel: RowBasedLayoutModel = {
 
     rowIndent: keyWidths.rowIndent,
 
+    // Key sizes are mostly the same as EB65 Lowshift Midsize Enter, except for 2u Backspace up top.
+    // But the lower row has a regular 0.25 stagger.
     keyWidths: [
         keyWidths.row(KeyboardRows.Number, 1.5, 1),
         keyWidths.row(KeyboardRows.Upper, 1.25, 1.75),
@@ -76,6 +51,23 @@ export const eb65MidshiftExtraWideLayoutModel: RowBasedLayoutModel = {
 
     staggerOffsets: [0.5, 0.25, 0, -0.25],
     symmetricStagger: true,
+
+    supportedKeymapTypes: [
+        { typeId: KeymapTypeId.Ansi30, frameMapping: [
+            ["Esc", "1", "2", "3", "4", "5", "[", null, "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
+            ["↹", 0, 1, 2, 3, 4, "`~", "", "\\", 5, 6, 7, 8, 9, "⌫"],
+            ["⇧", 0, 1, 2, 3, 4, "-", "⌦", "'", 5, 6, 7, 8, 9, "⇧"],
+            [null, 0, 1, 2, 3, 4, "=", "⇤", "⇥", 9, 5, 6, 7, 8, null, "↑", null],
+            [null, "Ctrl", "Cmd", "Fn", "Alt", "⏎", "", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
+        ]},
+        { typeId: KeymapTypeId.Thumb30, frameMapping: [
+            ["Esc", "1", "2", "3", "4", "5", "[", null, "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
+            ["↹", 0, 1, 2, 3, 4, "`~", "Fn", "", 5, 6, 7, 8, 9, "⌫"],
+            ["⇧", 0, 1, 2, 3, 4, "=", "⌦", "'", 5, 6, 7, 8, 9, "⇧"],
+            [null, 0, 1, 2, 3, 4, "\\", "⇤", "⇥", "/", 5, 6, 7, 8, null, "↑", null],
+            [null, "Ctrl", "Cmd", "Alt", 0, "⏎", "", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
+        ]},
+    ],
 
     getSpecificMapping: (_: FlexMapping) => undefined,
 

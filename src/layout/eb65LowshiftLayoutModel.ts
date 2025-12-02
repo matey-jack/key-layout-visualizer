@@ -1,4 +1,4 @@
-import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {FlexMapping, KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 
@@ -18,22 +18,6 @@ export const eb65LowshiftLayoutModel: RowBasedLayoutModel = {
     because you can easily map Return on one of those bottom-row bars.`,
 
     // row lengths: 16, 15, 15 (with 0.5u gap), 16, 14
-    thirtyKeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, "=", null, 5, 6, 7, 8, 9, "-", "⌫"],
-        ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
-        ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "↑", null],
-        [null, "Ctrl", "Cmd", "CAPS", "Alt", "⍽", "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
-    ],
-
-    thumb30KeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, null, null, 5, 6, 7, 8, 9, "=", "⌫"],
-        ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
-        ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
-        [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
-    ],
-
     mainFingerAssignment: [
         [null, 1, 1, 1, 2, 3, 3, 3, 6, 6, 7, 8, 8, 8, null, null],
         [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 7, 8, 9, 9, 9],
@@ -69,6 +53,29 @@ export const eb65LowshiftLayoutModel: RowBasedLayoutModel = {
 
     staggerOffsets: [0.5, 0.25, 0, -0.5],
     symmetricStagger: true,
+
+    supportedKeymapTypes: [
+        {
+            typeId: KeymapTypeId.Ansi30,
+            frameMapping: [
+                ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
+                ["↹", 0, 1, 2, 3, 4, "=", null, 5, 6, 7, 8, 9, "-", "⌫"],
+                ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
+                ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "↑", null],
+                [null, "Ctrl", "Cmd", "CAPS", "Alt", "⍽", "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
+            ]
+        },
+        {
+            typeId: KeymapTypeId.Thumb30,
+            frameMapping: [
+                ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
+                ["↹", 0, 1, 2, 3, 4, null, null, 5, 6, 7, 8, 9, "=", "⌫"],
+                ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
+                ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
+                [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
+            ]
+        },
+    ],
 
     getSpecificMapping: (_: FlexMapping) => undefined,
 

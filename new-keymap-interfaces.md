@@ -41,6 +41,9 @@ In @DetailView.tsx MappingSummary(), we should show the currently used KeymapTyp
 5. **Replace frame mapping properties** with a `supportedKeymapTypes` array:
    - Remove: `thirtyKeyMapping`, `thumb30KeyMapping`, `fullMapping`, `getSpecificMapping()`
    - Add: `supportedKeymapTypes: Array<{ typeId: string; frameMapping: LayoutMapping }>`
+     - `thirtyKeyMapping` becomes KeymapTypeId.Ansi30
+     - `thumb30KeyMapping` (if present) becomes KeymapTypeId.Thumb30
+     - and `fullMapping` (if present) is mapped specific to the keyboard type.  
    - The array order defines preference (first match wins)
    - List of all layout models can be inferred from [layout-selection.ts](src/layout-selection.ts)
 IN PROGRESS: some Layout Models have the new fields and also still have the old fields.

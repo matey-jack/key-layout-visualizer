@@ -1,28 +1,9 @@
-import {Finger, FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel, SKE_AWAY} from "../base-model.ts";
+import {Finger, FlexMapping, KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutModel, SKE_AWAY, SupportedKeymapType} from "../base-model.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 
 export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 MidShift Narrow, Right Return",
     description: ``,
-
-    thirtyKeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, "\\", null, 5, 6, 7, 8, 9, "'", "⌫"],
-        ["⇧", 0, 1, 2, 3, 4, "=", "-", 5, 6, 7, 8, 9, "⇧", "⏎"],
-        ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, null, "↑", null],
-        [null, "Cmd", "Fn", "⌦", "Alt", "⍽", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
-    ],
-
-    thumb30KeyMapping: [
-        // note: thanks to the thumb-letter, we have one less letter and could use a "big" key in the top center.
-        // but layouts can't transform themselves when the keymap changes.
-        // Anyway, the layouts that I want to build don't have this problem, so I won't solve it.
-        ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, null, null, 5, 6, 7, 8, 9, "'", "⌫"],
-        ["⇧", 0, 1, 2, 3, 4, "=", "\\", 5, 6, 7, 8, 9, "⇧", "⏎"],
-        ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, "/", null, "↑", null],
-        [null, "Cmd", "Fn", "⌦", "Alt", 0, "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"],
-    ],
 
     mainFingerAssignment: [
         [null, 1, 1, 1, 2, 3, 3, 3, 6, 6, 7, 8, 8, 8, null, null],
@@ -35,8 +16,6 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
     hasAltFinger: (row: number, col: number) =>
         (row == KeyboardRows.Lower) && ([1, 2, 3, 7, 8, 9].includes(col)),
 
-    // Only fixed values can be used. See base-model.ts SKE_*
-    // 'null' means the hand has to taken off the home-row. Those keys can't be used with letter or prose punctuation.
     singleKeyEffort: [
         [null, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, null, null],
         [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0],
@@ -62,6 +41,26 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
 
     staggerOffsets: [0.5, 0.25, 0, -0.25],
     symmetricStagger: true,
+
+    supportedKeymapTypes: [
+        { typeId: KeymapTypeId.Ansi30, frameMapping: [
+            ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
+            ["↹", 0, 1, 2, 3, 4, "\\", null, 5, 6, 7, 8, 9, "'", "⌫"],
+            ["⇧", 0, 1, 2, 3, 4, "=", "-", 5, 6, 7, 8, 9, "⇧", "⏎"],
+            ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, null, "↑", null],
+            [null, "Cmd", "Fn", "⌦", "Alt", "⍽", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
+        ]},
+        // note: thanks to the thumb-letter, we have one less letter above the bottom row and could use a "big" key in the top center.
+        // but layouts can't transform themselves when the keymap changes.
+        // Anyway, my favorite layouts don't have this problem, so I won't solve it.
+        { typeId: KeymapTypeId.Thumb30, frameMapping: [
+            ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
+            ["↹", 0, 1, 2, 3, 4, null, null, 5, 6, 7, 8, 9, "'", "⌫"],
+            ["⇧", 0, 1, 2, 3, 4, "=", "\\", 5, 6, 7, 8, 9, "⇧", "⏎"],
+            ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, "/", null, "↑", null],
+            [null, "Cmd", "Fn", "⌦", "Alt", 0, "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"],
+        ]},
+    ],
 
     getSpecificMapping: (_: FlexMapping) => undefined,
 
