@@ -4,6 +4,22 @@ import {MicroGapKeyWidths, mirrorOdd, SymmetricKeyWidth} from "./keyWidth.ts";
 
 const keyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0.25, 0.25]);
 
+const thirtyKeyMapping: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, "-", null, "=", 5, 6, 7, 8, 9, "\\"],
+    ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "'"],
+    ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", 9, 5, 6, 7, 8, "⇧"],
+    ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
+];
+
+const thumb30KeyMapping: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, "=", null, "\\", 5, 6, 7, 8, 9, "⏎"],
+    ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "'"],
+    ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", "/", 5, 6, 7, 8, "⇧"],
+    ["Ctrl", "Cmd", "Fn", "Alt", 0, "", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
+];
+
 export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
     name: "Ergoplank 60 ANSI angle",
     description: `"The most ergonomic key layout that fits into a standard "60%" keyboard case."
@@ -13,24 +29,8 @@ export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
     This is based on the "Harmonic" layout as well as the "Katana" design by RominRonin. 
     Biggest difference to the Katana is that the Shift keys are closer to the Pinky home position.
     This is achieved by making the Shift keys bigger and the home row edge key minimally small, i.e. 1u.`,
-
+    thirtyKeyMapping, thumb30KeyMapping,
     // row lengths: 14, 14 (but +1 gap!), 15, 14, 11
-    thirtyKeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, "-", null, "=", 5, 6, 7, 8, 9, "\\"],
-        ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "'"],
-        ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", 9, 5, 6, 7, 8, "⇧"],
-        ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
-    ],
-
-    thumb30KeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, "=", null, "\\", 5, 6, 7, 8, 9, "⏎"],
-        ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "'"],
-        ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", "/", 5, 6, 7, 8, "⇧"],
-        ["Ctrl", "Cmd", "Fn", "Alt", 0, "", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
-    ],
-
     // note that for data model reason, we also have to assign a finger to gaps.
     // but it will never be shown or used in any calulations.
     mainFingerAssignment: [

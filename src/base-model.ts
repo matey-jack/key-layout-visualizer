@@ -197,7 +197,6 @@ export const KEY_COLOR = {
 
 export type KeyColor = (typeof KEY_COLOR)[keyof typeof KEY_COLOR];
 
-// NEW: Entry for supportedKeymapTypes array
 export interface SupportedKeymapType {
     typeId: KeymapTypeId;
     frameMapping: LayoutMapping;
@@ -233,7 +232,6 @@ export interface RowBasedLayoutModel {
     staggerOffsets: number[];
     symmetricStagger: boolean;
 
-    // NEW: Supported keymap types in preference order.
     // The first matching type between layout and FlexMapping is used.
     // Will replace thirtyKeyMapping, thumb30KeyMapping, fullMapping, and getSpecificMapping once migration is complete.
     supportedKeymapTypes?: SupportedKeymapType[];
