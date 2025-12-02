@@ -30,15 +30,15 @@ export function defaultKeyColor(label: string, _row: number, _col: number): KeyC
     return "";
 }
 
-export const keyCapWidth = (lm: RowBasedLayoutModel, r: KeyboardRows, c: number)=>
+export const keyCapWidth = (lm: RowBasedLayoutModel, r: KeyboardRows, c: number) =>
     lm.keyCapWidth && lm.keyCapWidth(r, c) ? lm.keyCapWidth(r, c)! : lm.keyWidths[r][c];
 
-export const keyCapHeight = (lm: RowBasedLayoutModel, r: KeyboardRows, c: number)=>
+export const keyCapHeight = (lm: RowBasedLayoutModel, r: KeyboardRows, c: number) =>
     lm.keyCapHeight ? lm.keyCapHeight(r, c) : 1;
 
 // This is needed in this form somewhere and I don't want to refactor that 🤷‍♀️
-export const keyCapSize = (lm: RowBasedLayoutModel)=>
-    ((r: KeyboardRows, c: number)=> Math.max(keyCapHeight(lm, r, c), keyCapWidth(lm, r, c)));
+export const keyCapSize = (lm: RowBasedLayoutModel) =>
+    ((r: KeyboardRows, c: number) => Math.max(keyCapHeight(lm, r, c), keyCapWidth(lm, r, c)));
 
 export function createKeySizeGroups(layoutM: RowBasedLayoutModel) {
     const keySizes: number[] = [];
@@ -99,7 +99,7 @@ export function findMatchingKeymapType(
     for (const supported of layout.supportedKeymapTypes) {
         const flexData = flexMapping.mappings[supported.typeId];
         if (flexData) {
-            return { supported, flexData };
+            return {supported, flexData};
         }
     }
     return undefined;
@@ -161,12 +161,17 @@ export const mergeMapping = (
 ): string[][] =>
     layoutMapping.map((layoutRow, r) =>
         layoutRow.map((layoutValue, c) => {
-                const v = Array.isArray(layoutValue) ? flexMapping[r + layoutValue[0]][layoutValue[1]]
-                    : (typeof layoutValue === 'number') ? flexMapping[r][layoutValue]
-                        : layoutValue as string;
-                if (v == leaveEmpty) return "";
-                if (v == useFallback) return (fallbackMapping ? fallbackMapping[r][c] as string : "");
-                return keyLabelShortcuts[v] ?? v;
+                try {
+                    const v = Array.isArray(layoutValue) ? flexMapping[r + layoutValue[0]][layoutValue[1]]
+                        : (typeof layoutValue === 'number') ? flexMapping[r][layoutValue]
+                            : layoutValue as string;
+                    if (v == leaveEmpty) return "";
+                    if (v == useFallback) return (fallbackMapping ? fallbackMapping[r][c] as string : "");
+                    return keyLabelShortcuts[v] ?? v;
+                } catch (e) {
+                    console.error(`Row ${r}, Col ${c}, Frame value: ${layoutValue}`, e);
+                    throw e;
+                }
             }
         )
     )
