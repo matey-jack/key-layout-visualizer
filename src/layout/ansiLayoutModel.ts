@@ -53,7 +53,10 @@ export const ansiIBMLayoutModel: RowBasedLayoutModel = {
         ibmKeyWidths.row(1, 1.5, 1.5),
         ibmKeyWidths.row(2, 1.75, 2.25),
         ibmKeyWidths.row(3, 2.25, 2.75),
-        [1.25, 1.25, 1.25, 6.25, 1.25, 1.25, 1.25, 1.25],
+        [1.5, 1.25, 1.25, 5.75, 1.25, 1.25, 1.25, 1.5],
+        // In the 1980s it was mirrorOdd(1.5, 1.125, 1.5, 6.75), with the smallest being a gap.
+        // That actually makes more sense than the HHKB. But I think, Apple's bottom row is the nicest out of the most common ones.
+        // Or maybe the gap was 1u and the space bar 7u?
     ],
 
     mainFingerAssignment: [

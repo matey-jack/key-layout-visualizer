@@ -26,7 +26,6 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
     Apple ❤ HHKB: when keyboard layouts meet and mate.`,
 
     // Keyboard width is 14.5u which gives 14 keys in top three rows, 13 in the lower row, and 10 in the bottom.
-
     mainFingerAssignment: [
         [1, 1, 1, 2, 2, 3, 3, 6, 6, 7, 8, 8, 8, 8],
         [1, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9, 8, 8],
