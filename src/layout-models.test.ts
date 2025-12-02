@@ -108,21 +108,20 @@ describe('RowBasedLayoutModel matrix shapes', () => {
  * For frame mappings, we count placeholders across the entire frame mapping,
  * grouped by the row they reference in the FlexMapping.
  */
-function countPlaceholdersByFlexRow(frameMapping: unknown[][]): Map<number, number[]> {
+function collectPlaceholdersByFlexRow(frameMapping: unknown[][]): Map<number, number[]> {
     const result = new Map<number, number[]>();
-    
+    for (let i = 0; i <= KeyboardRows.Bottom; i++) {
+        result.set(i, []);
+    }
     frameMapping.forEach((row, rowIndex) => {
         row.forEach((v) => {
             if (typeof v === "number") {
                 // Simple number: references same row in FlexMapping
-                const flexRow = rowIndex;
-                if (!result.has(flexRow)) result.set(flexRow, []);
-                result.get(flexRow)!.push(v);
+                result.get(rowIndex)!.push(v);
             } else if (Array.isArray(v)) {
                 // Tuple [rowOffset, col]: references row (rowIndex + offset) in FlexMapping
                 const flexRow = rowIndex + v[0];
                 if (flexRow >= 0) {
-                    if (!result.has(flexRow)) result.set(flexRow, []);
                     result.get(flexRow)!.push(v[1]);
                 }
             }
@@ -133,9 +132,7 @@ function countPlaceholdersByFlexRow(frameMapping: unknown[][]): Map<number, numb
 }
 
 describe('supportedKeymapTypes frame mapping validation', () => {
-     const layoutsWithNewProperty = layoutModels.filter(m => m.supportedKeymapTypes?.length);
-
-     layoutsWithNewProperty.forEach((model) => {
+     layoutModels.forEach((model) => {
          describe(model.name, () => {
              model.supportedKeymapTypes!.forEach(({ typeId, frameMapping }) => {
                  const keymapType = KEYMAP_TYPES[typeId as KeymapTypeId];
@@ -143,16 +140,16 @@ describe('supportedKeymapTypes frame mapping validation', () => {
                  it(`${typeId}/${typeId}: placeholder count matches KEYMAP_TYPES.keysPerRow`, () => {
                      expect(keymapType, `Unknown keymap type: ${typeId}`).toBeDefined();
                      
-                     const placeholdersByRow = countPlaceholdersByFlexRow(frameMapping);
+                     const placeholdersByRow = collectPlaceholdersByFlexRow(frameMapping);
                      
                      keymapType.keysPerRow.forEach((expected, flexRowIndex) => {
-                         const placeholders = placeholdersByRow.get(flexRowIndex) ?? [];
+                         const placeholders = placeholdersByRow.get(flexRowIndex)!;
                          expect(placeholders.length, `FlexMapping row ${flexRowIndex} placeholder count`).toBe(expected);
                      });
                  });
 
                  it(`${typeId}: placeholder values are sequential 0..N-1 per FlexMapping row`, () => {
-                     const placeholdersByRow = countPlaceholdersByFlexRow(frameMapping);
+                     const placeholdersByRow = collectPlaceholdersByFlexRow(frameMapping);
                      
                      keymapType.keysPerRow.forEach((expected, flexRowIndex) => {
                          if (expected === 0) return; // skip empty rows

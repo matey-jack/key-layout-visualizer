@@ -486,7 +486,6 @@ export const cozyEnglish: FlexMapping = {
     which could be alt-fingered in Qwerty, but become annoyingly noticeable once the N is so easy to type. `,
     mappings: {
         [KeymapTypeId.SplitOrtho]: [
-            "",
             "qwbf'" + "ykulp-",
             "asdrg" + "hniot;",
             "zxcv=" + "jm,./",
@@ -660,7 +659,6 @@ export const topNine: FlexMapping = {
             "e⌥",
         ],
         [KeymapTypeId.SplitOrtho]: [
-            "",
             "qwdfb" + "ykulp=",
             "asrtg" + "-nioh'",
             "zxcv;" + "jm,./",
@@ -693,7 +691,6 @@ export const topNineLeftThumb: FlexMapping = {
     (Unlike shown on the keyboard above, the space bar should be on the other thumb.) `,
     mappings: {
         [KeymapTypeId.SplitOrtho]: [
-            "",
             "qwdfb" + "ykulp-",
             "asrtg" + "=nioh'",
             "zxcv;" + "jm,./",
@@ -773,7 +770,6 @@ export const topNineDifferentSymbols: FlexMapping = {
             "/e⌥≡",
         ],
         [KeymapTypeId.SplitOrtho]: [
-            "",
             "qwdfb" + "ykulp-",
             "asrtg" + ";nioh'",
             "zxcv=" + "jm,./",
@@ -850,7 +846,6 @@ export const gemuetlichesMapping: FlexMapping = {
             "e⌥"
         ],
         [KeymapTypeId.SplitOrtho]: [
-            "",
             "qwbf'" + "zkuopü",
             "asdrg" + "hniltä",
             "yxcv/" + "jm,.-",
@@ -936,7 +931,6 @@ export const colemakDhMapping: FlexMapping = {
         ],
         // Due to Angle Mod, the Ortho version has a flip: https://colemakmods.github.io/mod-dh/keyboards.html
         [KeymapTypeId.SplitOrtho]: [
-            "",
             "qwfpb" + "jluy;-",
             "arstg" + "mneio'",
             "zxcdv" + "kh,./",
@@ -1031,7 +1025,6 @@ export const maltronMapping: FlexMapping = {
     This is designed exclusively for a split ortho board and I'll leave it at that.`,
     mappings: {
         [KeymapTypeId.SplitOrtho]: [
-            "",
             "qpycb" + "vmuzl=",
             "anisf" + "dthor'",
             ".,jg;" + "/wk-x",
@@ -1071,7 +1064,6 @@ export const rsthdMapping: FlexMapping = {
             "e⌥",
         ],
         [KeymapTypeId.SplitOrtho]: [
-            "",
             "jcyfk" + "zl,uq-",
             "rsthd" + "mnaio=",
             "/vgpb" + "xw.;'",

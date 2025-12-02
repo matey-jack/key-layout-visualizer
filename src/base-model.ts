@@ -55,13 +55,21 @@ export interface KeymapType {
 
 // Registry of all known keymap types
 export const KEYMAP_TYPES: Record<KeymapTypeId, KeymapType> = {
-    [KeymapTypeId.Ansi30]: {id: KeymapTypeId.Ansi30, keysPerRow: [0, 10, 10, 10, 0], description: "3×10 core letter keys"},
+    [KeymapTypeId.Ansi30]: {
+        id: KeymapTypeId.Ansi30,
+        keysPerRow: [0, 10, 10, 10, 0],
+        description: "3×10 core letter keys"
+    },
     [KeymapTypeId.Thumb30]: {
         id: KeymapTypeId.Thumb30,
         keysPerRow: [0, 10, 10, 9, 1],
         description: "3×10 with thumb key replacing slash"
     },
-    [KeymapTypeId.Ansi]: {id: KeymapTypeId.Ansi, keysPerRow: [2, 13, 11, 10, 2], description: "Full ANSI layout"},
+    [KeymapTypeId.Ansi]: {
+        id: KeymapTypeId.Ansi,
+        keysPerRow: [2, 13, 11, 10, 2],
+        description: "Full ANSI layout"
+    },
     [KeymapTypeId.AnsiWide]: {
         id: KeymapTypeId.AnsiWide,
         keysPerRow: [2, 13, 11, 10, 2],
@@ -72,7 +80,11 @@ export const KEYMAP_TYPES: Record<KeymapTypeId, KeymapType> = {
         keysPerRow: [0, 11, 11, 10, 4],
         description: "Split ortholinear"
     },
-    [KeymapTypeId.Harmonic12]: {id: KeymapTypeId.Harmonic12, keysPerRow: [10, 10, 10], description: "Harmonic 12 mini"},
+    [KeymapTypeId.Harmonic12]: {
+        id: KeymapTypeId.Harmonic12,
+        keysPerRow: [1, 9, 12, 9, 2],
+        description: "Harmonic 12 mini"
+    },
     [KeymapTypeId.Harmonic13Wide]: {
         id: KeymapTypeId.Harmonic13Wide,
         keysPerRow: [2, 10, 13, 10, 2],
@@ -80,7 +92,7 @@ export const KEYMAP_TYPES: Record<KeymapTypeId, KeymapType> = {
     },
     [KeymapTypeId.Harmonic13MS]: {
         id: KeymapTypeId.Harmonic13MS,
-        keysPerRow: [2, 10, 13, 10, 2],
+        keysPerRow: [0, 12, 10, 11, 2],
         description: "Harmonic 13 midshift"
     },
     [KeymapTypeId.Harmonic14T]: {

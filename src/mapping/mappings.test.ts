@@ -20,15 +20,15 @@ describe('mappings property validates against KEYMAP_TYPES', () => {
 
     mappingsWithNewProperty.forEach((mapping) => {
         Object.entries(mapping.mappings!).forEach(([typeId, rows]) => {
+            const keymapType = KEYMAP_TYPES[typeId as KeymapTypeId];
+            const expectedKeysPerRow = keymapType.keysPerRow.filter((count) => count > 0);
             it(`${mapping.name} – ${typeId} – row count matches KEYMAP_TYPES`, () => {
-                const keymapType = KEYMAP_TYPES[typeId as KeymapTypeId];
                 expect(keymapType, `Unknown keymap type: ${typeId}`).toBeDefined();
-                expect(rows!.length, "number of rows").toBe(keymapType.keysPerRow.length);
+                expect(rows!.length, "number of rows").toBe(expectedKeysPerRow.length);
             });
 
             it(`${mapping.name} – ${typeId} – keys per row match KEYMAP_TYPES`, () => {
-                const keymapType = KEYMAP_TYPES[typeId as KeymapTypeId];
-                keymapType.keysPerRow.forEach((expected, rowIndex) => {
+                expectedKeysPerRow.forEach((expected, rowIndex) => {
                     expect(rows![rowIndex].length, `row ${rowIndex}`).toBe(expected);
                 });
             });

@@ -8,15 +8,6 @@ import {
 } from "../base-model.ts";
 import {mirror, MonotonicKeyWidth} from "./keyWidth.ts";
 
-const fullMapping: LayoutMapping = [
-    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, 1, 2], // 14 keys
-    ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⌫"], // 13 keys
-    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], // 14 keys
-    ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⇧"], // 13 keys
-    // 2×(2u space/enter, 3×1u, 1.5u at the + 0.5u chamfer), makes 2×5=10 keys.
-    ["Ctrl", "Cmd", "Alt", 0, "⍽", "⏎", 1, 2, "Fn", "Ctrl"],
-]; // total of 63 keys, compared to 62 in the Harmonic 13. (Another bottom bar config could yield one or two more ;-). )
-
 const keyWidths = new MonotonicKeyWidth(14, [0, 0, 0, 0, 0.5], "H14W");
 
 export const harmonic14WideLayoutModel: RowBasedLayoutModel = {
@@ -48,7 +39,6 @@ export const harmonic14WideLayoutModel: RowBasedLayoutModel = {
     symmetricStagger: true,
 
     supportedKeymapTypes: [
-        {typeId: KeymapTypeId.Harmonic14T, frameMapping: fullMapping},
         {
             typeId: KeymapTypeId.Ansi30,
             frameMapping: [

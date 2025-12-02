@@ -4,7 +4,7 @@ import {
     hand,
     KEY_COLOR,
     KeyboardRows,
-    KeyColor,
+    KeyColor, KEYMAP_TYPES,
     KeymapTypeId,
     KeyPosition,
     LayoutMapping,
@@ -111,9 +111,13 @@ export function findMatchingKeymapType(
 export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): string[][] | undefined {
     const match = findMatchingKeymapType(layoutModel, flexMapping);
     if (match) {
-        // For specific types (not 30key/thumb30), we need a fallback for unlabeled keys
-        const fallbackMapping = layoutModel.supportedKeymapTypes?.find(s => s.typeId === KeymapTypeId.Ansi30)?.frameMapping;
-        return mergeMapping(match.supported.frameMapping, ["", ...match.flexData], fallbackMapping);
+        const fallbackMapping = layoutModel.supportedKeymapTypes
+            ?.find(s => s.typeId === KeymapTypeId.Ansi30)
+            ?.frameMapping;
+        const flexData = (KEYMAP_TYPES[match.supported.typeId].keysPerRow[0] == 0)
+            ? ["", ...match.flexData]
+            : match.flexData;
+        return mergeMapping(match.supported.frameMapping, flexData, fallbackMapping);
     }
     return undefined;
 }

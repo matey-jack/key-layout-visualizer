@@ -1,11 +1,4 @@
-import {
-    FlexMapping,
-    harmonicStaggerOffsets,
-    KeyboardRows,
-    KeymapTypeId,
-    LayoutMapping,
-    RowBasedLayoutModel
-} from "../base-model.ts";
+import {harmonicStaggerOffsets, KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 import {mirrorOdd, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 const fullMapping: LayoutMapping = [
