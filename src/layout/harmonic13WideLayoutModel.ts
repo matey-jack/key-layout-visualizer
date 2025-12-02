@@ -1,4 +1,4 @@
-import {FlexMapping, harmonicStaggerOffsets, KeyboardRows, LayoutMapping, RowBasedLayoutModel, SupportedKeymapType} from "../base-model.ts";
+import {FlexMapping, harmonicStaggerOffsets, KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutModel, SupportedKeymapType} from "../base-model.ts";
 import {mirror, MonotonicKeyWidth} from "./keyWidth.ts";
 
 const fullMapping: LayoutMapping = [
@@ -20,28 +20,6 @@ export const harmonic13WideLayoutModel: RowBasedLayoutModel = {
         "yet the hand home position is one key further apart, allowing for arms to relax and shoulders to open. " +
         "This also puts a bit of typing load on the index fingers and less on the pinkies. ",
 
-    thirtyKeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="],
-        // By moving the left-most letter from the upper row to the left-most key of the center row,
-        // we keep the relative-to-home position of the other keys as on ANSI.
-        // (And the moved letter has a very similar movement (left instead of up-left) on the same finger.)
-        ["↹", 1, 2, 3, 4, "`", 5, 6, 7, 8, 9, "⌫"],
-        [[-1, 0], 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, 9, "'"],
-        // The move of key 9 to the middle is a change required to keep the key-to-finger assignments the same as on the ANSI layout.
-        // This is caused by moving the right home row to the right where the Enter key is removed.
-        // But below, Shift is still there.
-        ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-        ["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl"],
-    ],
-    thumb30KeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "[", "]"],
-        ["↹", 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "⌫"],
-        [[-1, 0], 0, 1, 2, 3, 4, "`", 5, 6, 7, 8, 9, "'"],
-        ["⇧", 0, 1, 2, 3, 4, "/", 5, 6, 7, 8, "⇧"],
-        ["Ctrl", "Cmd", "Alt", "\\", "⍽", "⏎", 0, "AltGr", "Fn", "Ctrl"],
-    ],
-    fullMapping,
-
     rowIndent: h13wKeyWidth.rowIndent,
 
     keyWidths: [
@@ -59,6 +37,30 @@ export const harmonic13WideLayoutModel: RowBasedLayoutModel = {
 
     staggerOffsets: harmonicStaggerOffsets,
     symmetricStagger: true,
+
+    supportedKeymapTypes: [
+        { typeId: KeymapTypeId.Harmonic13Wide, frameMapping: fullMapping },
+        {
+            typeId: KeymapTypeId.Ansi30,
+            frameMapping: [
+                ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="],
+                // By moving the left-most letter from the upper row to the left-most key of the center row,
+                // we keep the relative-to-home position of the other keys as on ANSI.
+                // (And the moved letter has a very similar movement (left instead of up-left) on the same finger.)
+                ["↹", 1, 2, 3, 4, "`", 5, 6, 7, 8, 9, "⌫"],
+                [[-1, 0], 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, 9, "'"],
+                ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
+                ["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl"],
+            ]
+        },
+        { typeId: KeymapTypeId.Thumb30, frameMapping: [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "[", "]"],
+            ["↹", 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "⌫"],
+            [[-1, 0], 0, 1, 2, 3, 4, "`", 5, 6, 7, 8, 9, "'"],
+            ["⇧", 0, 1, 2, 3, 4, "/", 5, 6, 7, 8, "⇧"],
+            ["Ctrl", "Cmd", "Alt", "\\", "⍽", "⏎", 0, "AltGr", "Fn", "Ctrl"],
+        ]},
+    ],
 
     mainFingerAssignment: [
         [1, 1, 2, 2, 3, 3, 3, 6, 6, 7, 7, 8, 8],

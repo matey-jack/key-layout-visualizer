@@ -1,4 +1,11 @@
-import {FlexMapping, harmonicStaggerOffsets, KeyboardRows, LayoutMapping, RowBasedLayoutModel, SupportedKeymapType} from "../base-model.ts";
+import {
+    FlexMapping,
+    harmonicStaggerOffsets,
+    KeyboardRows,
+    KeymapTypeId,
+    LayoutMapping,
+    RowBasedLayoutModel
+} from "../base-model.ts";
 import {mirror, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 const fullMapping: LayoutMapping = [
@@ -26,23 +33,6 @@ export const harmonic13MidshiftLayoutModel: RowBasedLayoutModel = {
         "Using mostly square keys makes the board slightly narrower than an ANSI-based 60% keyboard, " +
         "yet the hand home position is one key further apart, allowing for arms to relax and shoulders to open. " +
         "This also puts a bit of typing load on the index fingers and less on the pinkies. ",
-    // https://colemakmods.github.io/ergonomic-mods/angle.html
-
-    thirtyKeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "="],
-        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-        ["⇤", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "⇥"],
-        ["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl"],
-    ],
-    thumb30KeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "="],
-        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-        ["⇤", 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, "/", "⇥"],
-        ["Ctrl", "Cmd", "Alt", "`", "⍽", "⏎", 0, "AltGr", "Fn", "Ctrl"],
-    ],
-    fullMapping,
 
     rowIndent: h13msKeyWidth.rowIndent,
 
@@ -60,6 +50,30 @@ export const harmonic13MidshiftLayoutModel: RowBasedLayoutModel = {
 
     staggerOffsets: harmonicStaggerOffsets,
     symmetricStagger: true,
+
+    supportedKeymapTypes: [
+        {typeId: KeymapTypeId.Harmonic13MS, frameMapping: fullMapping},
+        {
+            typeId: KeymapTypeId.Ansi30,
+            frameMapping: [
+                ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+                ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "="],
+                ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+                ["⇤", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "⇥"],
+                ["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl"],
+            ]
+        },
+        {
+            typeId: KeymapTypeId.Thumb30,
+            frameMapping: [
+                ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+                ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "="],
+                ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+                ["⇤", 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, "/", "⇥"],
+                ["Ctrl", "Cmd", "Alt", "`", "⍽", "⏎", 0, "AltGr", "Fn", "Ctrl"],
+            ]
+        },
+    ],
 
     mainFingerAssignment: [
         [1, 1, 2, 2, 3, 3, 6, 6, 7, 7, 8, 8],
