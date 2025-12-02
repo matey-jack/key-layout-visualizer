@@ -75,23 +75,12 @@ describe('RowBasedLayoutModel matrix shapes', () => {
         describe(model.name, () => {
             const rowLengths = getExpectedRowLengths(model);
 
-            if (model.thirtyKeyMapping) {
-                it('thirtyKeyMapping matches expected shape', () => {
-                    expectMatrixShape(model.thirtyKeyMapping!, rowLengths, "thirtyKeyMapping");
+            model.supportedKeymapTypes.forEach(({typeId, frameMapping}) => {
+                it(`${typeId} matches expected shape`, () => {
+                    expectMatrixShape(frameMapping, rowLengths, "thirtyKeyMapping");
                 });
-            }
 
-            if (model.thumb30KeyMapping) {
-                it('thumb30KeyMapping matches expected shape', () => {
-                    expectMatrixShape(model.thumb30KeyMapping!, rowLengths, "thumb30KeyMapping");
-                });
-            }
-
-            if (model.fullMapping) {
-                it('fullMapping matches expected shape', () => {
-                    expectMatrixShape(model.fullMapping!, rowLengths, "thumb30KeyMapping");
-                });
-            }
+            });
 
             it('mainFingerAssignment matches expected shape', () => {
                 expectMatrixShape(model.mainFingerAssignment, rowLengths, "mainFingerAssignment");
@@ -118,30 +107,20 @@ describe('RowBasedLayoutModel matrix shapes', () => {
 /**
  * For frame mappings, we count placeholders across the entire frame mapping,
  * grouped by the row they reference in the FlexMapping.
- * 
- * For 30key and thumb30 types, the FlexMapping data is prepended with an empty row 
- * when merged (see mergeMapping), so frame row indices are offset by 1 from FlexMapping indices.
- * For full layout types (ansi, ansiWide, splitOrtho, etc.), there's no offset.
- * 
- * Simple number placeholders reference the same row index in the merged FlexMapping.
- * Tuple placeholders [rowOffset, col] reference a different row (current + offset).
  */
-function countPlaceholdersByFlexRow(frameMapping: unknown[][], flexRowOffset: number): Map<number, number[]> {
+function countPlaceholdersByFlexRow(frameMapping: unknown[][]): Map<number, number[]> {
     const result = new Map<number, number[]>();
     
     frameMapping.forEach((row, rowIndex) => {
         row.forEach((v) => {
             if (typeof v === "number") {
-                // Simple number: references same row in merged FlexMapping
-                // Subtract offset to get the actual FlexMapping row index
-                const flexRow = rowIndex - flexRowOffset;
-                if (flexRow >= 0) {
-                    if (!result.has(flexRow)) result.set(flexRow, []);
-                    result.get(flexRow)!.push(v);
-                }
+                // Simple number: references same row in FlexMapping
+                const flexRow = rowIndex;
+                if (!result.has(flexRow)) result.set(flexRow, []);
+                result.get(flexRow)!.push(v);
             } else if (Array.isArray(v)) {
-                // Tuple [rowOffset, col]: references row (rowIndex + offset) in merged FlexMapping
-                const flexRow = rowIndex + v[0] - flexRowOffset;
+                // Tuple [rowOffset, col]: references row (rowIndex + offset) in FlexMapping
+                const flexRow = rowIndex + v[0];
                 if (flexRow >= 0) {
                     if (!result.has(flexRow)) result.set(flexRow, []);
                     result.get(flexRow)!.push(v[1]);
@@ -153,48 +132,38 @@ function countPlaceholdersByFlexRow(frameMapping: unknown[][], flexRowOffset: nu
     return result;
 }
 
-/**
- * Get the row offset for a keymap type.
- * 30key and thumb30 FlexMappings are prepended with "" when merged, so offset is 1.
- * Full layout types (ansi, ansiWide, splitOrtho, etc.) have no offset.
- */
-function getFlexRowOffset(typeId: KeymapTypeId): number {
-    return (typeId === KeymapTypeId.Ansi30 || typeId === KeymapTypeId.Thumb30) ? 1 : 0;
-}
-
 describe('supportedKeymapTypes frame mapping validation', () => {
-    const layoutsWithNewProperty = layoutModels.filter(m => m.supportedKeymapTypes?.length);
+     const layoutsWithNewProperty = layoutModels.filter(m => m.supportedKeymapTypes?.length);
 
-    layoutsWithNewProperty.forEach((model) => {
-        describe(model.name, () => {
-            model.supportedKeymapTypes!.forEach(({ typeId, frameMapping }) => {
-                const keymapType = KEYMAP_TYPES[typeId as KeymapTypeId];
-                const flexRowOffset = getFlexRowOffset(typeId);
+     layoutsWithNewProperty.forEach((model) => {
+         describe(model.name, () => {
+             model.supportedKeymapTypes!.forEach(({ typeId, frameMapping }) => {
+                 const keymapType = KEYMAP_TYPES[typeId as KeymapTypeId];
 
-                it(`${typeId}: placeholder count matches KEYMAP_TYPES.keysPerRow`, () => {
-                    expect(keymapType, `Unknown keymap type: ${typeId}`).toBeDefined();
-                    
-                    const placeholdersByRow = countPlaceholdersByFlexRow(frameMapping, flexRowOffset);
-                    
-                    keymapType.keysPerRow.forEach((expected, flexRowIndex) => {
-                        const placeholders = placeholdersByRow.get(flexRowIndex) ?? [];
-                        expect(placeholders.length, `FlexMapping row ${flexRowIndex} placeholder count`).toBe(expected);
-                    });
-                });
+                 it(`${typeId}/${typeId}: placeholder count matches KEYMAP_TYPES.keysPerRow`, () => {
+                     expect(keymapType, `Unknown keymap type: ${typeId}`).toBeDefined();
+                     
+                     const placeholdersByRow = countPlaceholdersByFlexRow(frameMapping);
+                     
+                     keymapType.keysPerRow.forEach((expected, flexRowIndex) => {
+                         const placeholders = placeholdersByRow.get(flexRowIndex) ?? [];
+                         expect(placeholders.length, `FlexMapping row ${flexRowIndex} placeholder count`).toBe(expected);
+                     });
+                 });
 
-                it(`${typeId}: placeholder values are sequential 0..N-1 per FlexMapping row`, () => {
-                    const placeholdersByRow = countPlaceholdersByFlexRow(frameMapping, flexRowOffset);
-                    
-                    keymapType.keysPerRow.forEach((expected, flexRowIndex) => {
-                        if (expected === 0) return; // skip empty rows
-                        
-                        const placeholders = placeholdersByRow.get(flexRowIndex) ?? [];
-                        const expectedSequence = Array.from({ length: expected }, (_, i) => i);
-                        const sorted = [...placeholders].sort((a, b) => a - b);
-                        expect(sorted, `FlexMapping row ${flexRowIndex} placeholders should be 0..${expected - 1}`).toEqual(expectedSequence);
-                    });
-                });
-            });
-        });
-    });
-});
+                 it(`${typeId}: placeholder values are sequential 0..N-1 per FlexMapping row`, () => {
+                     const placeholdersByRow = countPlaceholdersByFlexRow(frameMapping);
+                     
+                     keymapType.keysPerRow.forEach((expected, flexRowIndex) => {
+                         if (expected === 0) return; // skip empty rows
+                         
+                         const placeholders = placeholdersByRow.get(flexRowIndex) ?? [];
+                         const expectedSequence = Array.from({ length: expected }, (_, i) => i);
+                         const sorted = [...placeholders].sort((a, b) => a - b);
+                         expect(sorted, `FlexMapping row ${flexRowIndex} placeholders should be 0..${expected - 1}`).toEqual(expectedSequence);
+                     });
+                 });
+             });
+         });
+     });
+ });

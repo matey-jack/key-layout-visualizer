@@ -46,17 +46,19 @@ export enum KeymapTypeId {
 
 export interface KeymapType {
     id: KeymapTypeId;
-    // Number of keys per row, used for validation
+    // Number of mapping spots per row, used for validation.
+    // A row with 0 mapping spots is fully defined by the frame mapping.
+    // The FlexMappings entirely omit this row in their matrices.
     keysPerRow: number[];
     description?: string;
 }
 
 // Registry of all known keymap types
 export const KEYMAP_TYPES: Record<KeymapTypeId, KeymapType> = {
-    [KeymapTypeId.Ansi30]: {id: KeymapTypeId.Ansi30, keysPerRow: [10, 10, 10], description: "3×10 core letter keys"},
+    [KeymapTypeId.Ansi30]: {id: KeymapTypeId.Ansi30, keysPerRow: [0, 10, 10, 10, 0], description: "3×10 core letter keys"},
     [KeymapTypeId.Thumb30]: {
         id: KeymapTypeId.Thumb30,
-        keysPerRow: [10, 10, 9, 1],
+        keysPerRow: [0, 10, 10, 9, 1],
         description: "3×10 with thumb key replacing slash"
     },
     [KeymapTypeId.Ansi]: {id: KeymapTypeId.Ansi, keysPerRow: [2, 13, 11, 10, 2], description: "Full ANSI layout"},
