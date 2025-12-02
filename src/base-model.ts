@@ -258,8 +258,7 @@ export interface RowBasedLayoutModel {
     staggerOffsets: number[];
     symmetricStagger: boolean;
 
-    // The first matching type between layout and FlexMapping is used.
-    // Will replace thirtyKeyMapping, thumb30KeyMapping, fullMapping, and getSpecificMapping once migration is complete.
+    // More specific keymap types should be first in the list, so they will be preferred over the generic ones.
     supportedKeymapTypes: SupportedKeymapType[];
 
     // Finger assignment and key effort arrays have the same shape (number of entries in each row) as the LayoutMappings.

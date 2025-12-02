@@ -104,15 +104,6 @@ export const ansiIBMLayoutModel: RowBasedLayoutModel = {
     symmetricStagger: false,
 
     supportedKeymapTypes: [
-        {
-            typeId: KeymapTypeId.Ansi30, frameMapping: [
-                ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "⌫"],
-                ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "[", "]", "\\"],
-                ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⏎"],
-                ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-                ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
-            ]
-        },
         // arbitrary decision to include two thumb keys in the mapping.
         // (One for a letter and one more to move AltGr to, if desired.)
         // Exclude CapsLock from the flex mapping, because it distracts from the lettering changes,
@@ -122,6 +113,15 @@ export const ansiIBMLayoutModel: RowBasedLayoutModel = {
                 ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, 1, "⌫"],
                 ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                 ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"],
+                ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+                ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
+            ]
+        },
+        {
+            typeId: KeymapTypeId.Ansi30, frameMapping: [
+                ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "⌫"],
+                ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "[", "]", "\\"],
+                ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⏎"],
                 ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
                 ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
             ]
