@@ -9,27 +9,7 @@ import {
     SKE_HOME
 } from "../base-model.ts";
 import {copyAndModifyKeymap, defaultKeyColor, getAnsi30mapping} from "./layout-functions.ts";
-import {AnsiVariant, LayoutOptions} from "../app-model.ts";
-import {ahkbAddAngleMod, ahkbLayoutModel} from "./ahkbLayoutModel.ts";
 import {mirrorOdd, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
-
-export function getAnsiVariant(layoutOptions: LayoutOptions) {
-    let base: RowBasedLayoutModel = layoutOptions.ansiWide ? ansiWideLayoutModel : ansiIBMLayoutModel;
-    switch (layoutOptions.ansiVariant) {
-        case AnsiVariant.ANSI_IBM:
-            break;
-        case AnsiVariant.ANSI_APPLE:
-            base = createApple(base);
-            break;
-        case AnsiVariant.ANSI_HHKB:
-            base = createHHKB(base);
-            break;
-        case AnsiVariant.ANSI_AHKB:
-            // no need to split the space bar, because it's already split
-            return layoutOptions.angleMod ? ahkbAddAngleMod(ahkbLayoutModel) : ahkbLayoutModel;
-    }
-    return layoutOptions.ansiSplit ? splitSpaceBar(base) : base;
-}
 
 const ibmKeyWidths = new MonotonicKeyWidth(15, zeroIndent, "ANSI/IBM");
 

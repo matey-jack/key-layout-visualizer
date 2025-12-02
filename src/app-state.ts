@@ -18,12 +18,12 @@ function modifyWide(mapping: FlexMapping, opts: LayoutOptions): boolean {
     // TODO: this would be much simpler if we restricted the "wide" checkbox to be only shown under the IBM option,
     //       Or even simpler with a separate variant "IBM wide-hands".
     switch (opts.ansiVariant) {
-        case AnsiVariant.ANSI_AHKB:
+        case AnsiVariant.AHKB:
             // Flag is not used for AHKB, but we flip for transparency in the UI and also to stay on "wide" mode when
             // switching to another variant.
             return true;
-        case AnsiVariant.ANSI_APPLE:
-        case AnsiVariant.ANSI_HHKB:
+        case AnsiVariant.APPLE:
+        case AnsiVariant.HHKB:
             // Long space bar on those keyboards doesn't work well with an extra thumb key.
             return false;
     }
@@ -38,7 +38,7 @@ function modifyWide(mapping: FlexMapping, opts: LayoutOptions): boolean {
 }
 
 function modifySplit(opts: LayoutOptions) {
-    if (opts.ansiVariant === AnsiVariant.ANSI_HHKB) {
+    if (opts.ansiVariant === AnsiVariant.HHKB) {
         return false;
     }
     return opts.ansiSplit;
@@ -108,8 +108,8 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
             return;
         }
         if ((newMapping.mappings[KeymapTypeId.AnsiWide] || newMapping.mappings[KeymapTypeId.Thumb30])) {
-            if (layoutOptionsState.value.ansiVariant === AnsiVariant.ANSI_HHKB) {
-                layoutOptionsState.value = {...layoutOptionsState.value, ansiVariant: AnsiVariant.ANSI_APPLE};
+            if (layoutOptionsState.value.ansiVariant === AnsiVariant.HHKB) {
+                layoutOptionsState.value = {...layoutOptionsState.value, ansiVariant: AnsiVariant.APPLE};
             }
             layoutOptionsState.value = {...layoutOptionsState.value, ansiWide: true};
             mappingState.value = newMapping;
@@ -177,13 +177,13 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
 // let's just have one.
 export function createAppState(): AppState {
     const params = new URLSearchParams(window.location.hash.slice(1));
-    const ansiVariant = s2i(params.get("ansi")) ?? AnsiVariant.ANSI_APPLE;
+    const ansiVariant = s2i(params.get("ansi")) ?? AnsiVariant.APPLE;
     // important to use ?? because (the falsy) 0 is a proper value that should not trigger the default.
     const layoutOptionsState: Signal<LayoutOptions> = signal<LayoutOptions>({
         type: s2i(params.get("layout")) ?? LayoutType.ANSI,
         ansiVariant,
         ansiSplit: s2b(params.get("split")) ?? false,
-        ansiWide: ansiVariant === AnsiVariant.ANSI_AHKB ? true : s2b(params.get("wide")) ?? false,
+        ansiWide: ansiVariant === AnsiVariant.AHKB ? true : s2b(params.get("wide")) ?? false,
         angleMod: s2b(params.get("angle")) ?? false,
         harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
         plankVariant: s2i(params.get("plank")) ?? PlankVariant.EP60,

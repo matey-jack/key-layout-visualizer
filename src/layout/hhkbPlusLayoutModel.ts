@@ -1,0 +1,71 @@
+import {FlexMapping, KEY_COLOR, KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {copyAndModifyKeymap, defaultKeyColor, keyColorHighlightsClass} from "./layout-functions.ts";
+import {mirror, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
+
+const ahkbKeyWidth = new MonotonicKeyWidth(15, [0, 0, 0, 0, 0.75], "AHKB");
+
+const thirtyKeyMapping: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, "-", "=", "'", 5, 6, 7, 8, 9, "⇞"],
+    ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "⏎"],
+    ["⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "⇟"],
+    ["Ctrl", "Cmd", null, "Alt", "⍽", "⍽", "AltGr", null, "Fn", "Ctrl"],
+];
+
+const thumb30KeyMapping: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, "=", "`~", "'", 5, 6, 7, 8, 9, "⇞"],
+    ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "⏎"],
+    ["⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "⇟"],
+    ["Ctrl", "Cmd", null, "Alt", 0, "⍽", "AltGr", null, "Fn", "Ctrl"],
+];
+
+export const hhkbPlusLayoutModel: RowBasedLayoutModel = {
+    name: "HHKB+",
+    description: `Continuing HHKB's idea of splitting large keys, we can obtain 
+    a wide-hand, split-space keyboard with traditional typewriter row staggering.`,
+
+    // Keyboard width is 15u which gives 14 keys in top three rows, 13 in the lower row, and 10 in the bottom.
+    keyWidths: [
+        ahkbKeyWidth.row(0, 1.5), // 14 keys
+        ahkbKeyWidth.row(1, 1),   // 15 keys
+        ahkbKeyWidth.row(2, 1.25),// 14 keys
+        [1.75, ...Array(11).fill(1), 1.25, 1], // 14 keys
+        mirror(1.5, 1.5, 0.5, 1.5, 1.75),
+    ],
+
+    mainFingerAssignment: [
+        [1, 1, 1, 2, 2, 3, 3, 6, 6, 7, 7, 8, 8, 8],
+        [1, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9, 8],
+        [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9],
+        [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9],
+        [0, 1, null, 4, 4, 5, 5, null, 8, 9],
+    ],
+
+    singleKeyEffort: [
+        [3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0],
+        [3.0, 2.0, 1.0, 1.0, 1.5, 1.5, 3.0, 3.0, 1.5, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0],
+        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
+        [1.0, 2.0, 2.0, 1.5, 1.5, 3.0, 3.0, 3.0, 1.5, 1.0, 1.5, 1.5, 1.0, 3.0],
+        [2.0, 2.0, null, 1.0, 0.2, 0.2, 1.0, null, 2.0, 2.0],
+    ],
+
+    hasAltFinger: (_r: number, _c: number) => false,
+
+    rowIndent: ahkbKeyWidth.rowIndent,
+
+    keyColorClass: keyColorHighlightsClass,
+
+    splitColumns: [7, 7, 7, 7, 5],
+
+    leftHomeIndex: 4,
+    rightHomeIndex: 9,
+
+    staggerOffsets: [-0.75, -0.25, 0, 0.5],
+    symmetricStagger: false,
+
+    supportedKeymapTypes: [
+        {typeId: KeymapTypeId.Ansi30, frameMapping: thirtyKeyMapping},
+        {typeId: KeymapTypeId.Thumb30, frameMapping: thumb30KeyMapping},
+    ],
+}

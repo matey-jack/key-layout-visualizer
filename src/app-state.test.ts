@@ -35,7 +35,7 @@ describe("setLayout", () => {
         appState.setLayout({...appState.layout.value, type: LayoutType.Ergoplank});
         appState.setMapping(cozyEnglish);
         // when
-        appState.setLayout({...appState.layout.value, type: LayoutType.ANSI, ansiVariant: AnsiVariant.ANSI_IBM});
+        appState.setLayout({...appState.layout.value, type: LayoutType.ANSI, ansiVariant: AnsiVariant.IBM});
         // then
         expect(appState.layout.value.ansiWide).toBe(true);
     })

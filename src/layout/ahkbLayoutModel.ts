@@ -1,8 +1,8 @@
-import {FlexMapping, KEY_COLOR, KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {KEY_COLOR, KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
 import {mirror, MonotonicKeyWidth} from "./keyWidth.ts";
 
-const ahkbKeyWidth = new MonotonicKeyWidth(14.5, [0, 0, 0.25, 0.25, 0.5], "AHKB");
+const ahkbKeyWidth = new MonotonicKeyWidth(14.5, [0, 0, 0.25, 0.25, 0.5], "AHKB Narrow");
 
 const thirtyKeyMapping: LayoutMapping = [
     ["⎋ Exit", "1", "2", "3", "4", "5", "`~", "6", "7", "8", "9", "0", "[", "]"],
@@ -26,26 +26,6 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
     Apple ❤ HHKB: when keyboard layouts meet and mate.`,
 
     // Keyboard width is 14.5u which gives 14 keys in top three rows, 13 in the lower row, and 10 in the bottom.
-    mainFingerAssignment: [
-        [1, 1, 1, 2, 2, 3, 3, 6, 6, 7, 8, 8, 8, 8],
-        [1, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9, 8, 8],
-        [0, 0, 1, 2, 3, 3, 3, 6, 6, 7, 8, 9, 9, 9],
-        [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
-        [0, null, null, 4, 4, 5, 5, null, null, 9],
-    ],
-
-    hasAltFinger: (_r: number, _c: number) => false,
-
-    singleKeyEffort: [
-        [3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0],
-        [3.0, 2.0, 1.0, 1.0, 1.5, 1.5, 3.0, 3.0, 1.5, 1.5, 1.0, 1.0, 2.0, 2.0],
-        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
-        [1.5, 2.0, 2.0, 1.5, 1.5, 3.0, 3.0, 3.0, 1.5, 1.0, 1.5, 1.5, 1.0],
-        [2.0, null, null, 1.0, 0.2, 0.2, 1.0, null, null, 2.0],
-    ],
-
-    rowIndent: ahkbKeyWidth.rowIndent,
-
     keyWidths: [
         ahkbKeyWidth.row(0, 1.5, 1),
         ahkbKeyWidth.row(1, 1, 1.5),
@@ -55,6 +35,26 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
         // 7.25 per side minus 3 minus 3.75 = 0.5 gap
         mirror(1.5, 1.25, 1.25, 1.25, 1.5),
     ],
+
+    rowIndent: ahkbKeyWidth.rowIndent,
+    hasAltFinger: (_r: number, _c: number) => false,
+
+    mainFingerAssignment: [
+        [1, 1, 1, 2, 2, 3, 3, 6, 6, 7, 8, 8, 8, 8],
+        [1, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9],
+        [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9],
+        [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9],
+        [0, null, null, 4, 4, 5, 5, null, null, 9],
+    ],
+
+    singleKeyEffort: [
+        [3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0],
+        [3.0, 2.0, 1.0, 1.0, 1.5, 1.5, 3.0, 3.0, 1.5, 1.5, 1.0, 1.0, 2.0, 2.0],
+        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
+        [1.0, 2.0, 2.0, 1.5, 1.5, 3.0, 3.0, 3.0, 1.5, 1.0, 1.5, 1.5, 1.0],
+        [2.0, null, null, 1.0, 0.2, 0.2, 1.0, null, null, 2.0],
+    ],
+
     keyColorClass(label: string, row: KeyboardRows, col: number) {
         if (label === "↹") {
             return "";

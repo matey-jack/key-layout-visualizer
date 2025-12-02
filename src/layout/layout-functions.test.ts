@@ -9,7 +9,6 @@ import {
     fillMapping,
     findMatchingKeymapType,
     getAnsi30mapping,
-    getFrameMapping,
     getKeyPositions,
     getLayoutKeymapTypes,
     getMappingKeymapTypes,
@@ -37,11 +36,13 @@ import {katanaLayoutModel} from "./katanaLayoutModel.ts";
 import {ahkbLayoutModel} from "./ahkbLayoutModel.ts";
 import {ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
 import {eb65MidshiftNiceLayoutModel} from "./eb65MidshiftNiceLayoutModel.ts";
+import {hhkbPlusLayoutModel} from "./hhkbPlusLayoutModel.ts";
 
 export const allLayoutModels = [
     ansiIBMLayoutModel,
     createHHKB(ansiIBMLayoutModel),
     ahkbLayoutModel,
+    hhkbPlusLayoutModel,
     harmonic14WideLayoutModel,
     harmonic14TraditionalLayoutModel,
     harmonic13WideLayoutModel,

@@ -1,12 +1,12 @@
 import {LayoutType, RowBasedLayoutModel} from "./base-model.ts";
 import {
+    AnsiVariant,
     EB65_LowShift_Variant,
     EB65_MidShift_Variant,
     HarmonicVariant,
     LayoutOptions,
     PlankVariant
 } from "./app-model.ts";
-import {getAnsiVariant} from "./layout/ansiLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
 import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLayoutModel.ts";
@@ -14,25 +14,28 @@ import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutMo
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
-import {
-    ep60addAngleMod,
-    ep60WithArrowsLayoutModel,
-    ergoPlank60LayoutModel
-} from "./layout/ergoPlank60LayoutModel.ts";
+import {ep60addAngleMod, ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./layout/ergoPlank60LayoutModel.ts";
 import {
     eb65LowshiftWideAngleModLayoutModel,
     eb65LowshiftWideLayoutModel
 } from "./layout/eb65LowshiftWideLayoutModel.ts";
 import {eb65BigEnterLayoutModel, eb65LowshiftLayoutModel} from "./layout/eb65LowshiftLayoutModel.ts";
-import {
-    eb65MidshiftNiceLayoutModel
-} from "./layout/eb65MidshiftNiceLayoutModel.ts";
+import {eb65MidshiftNiceLayoutModel} from "./layout/eb65MidshiftNiceLayoutModel.ts";
 import {eb65MidshiftExtraWideLayoutModel} from "./layout/eb65MidshiftExtraWideLayoutModel.ts";
 import {
     eb65CentralEnterLayoutModel,
     eb65MidshiftRightRetLayoutModel,
     eb65VerticalEnterLayoutModel
 } from "./layout/eb65MidshiftNarrowLayoutModels.ts";
+import {ahkbAddAngleMod, ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
+import {
+    ansiIBMLayoutModel,
+    ansiWideLayoutModel,
+    createApple,
+    createHHKB,
+    splitSpaceBar
+} from "./layout/ansiLayoutModel.ts";
+import {hhkbPlusLayoutModel} from "./layout/hhkbPlusLayoutModel.ts";
 
 export function getHarmonicVariant(variant: HarmonicVariant): RowBasedLayoutModel {
     switch (variant) {
@@ -84,6 +87,26 @@ export function getPlankVariant(opts: Partial<LayoutOptions>): RowBasedLayoutMod
                     return eb65VerticalEnterLayoutModel;
             }
     }
+}
+
+export function getAnsiVariant(layoutOptions: LayoutOptions) {
+    let base: RowBasedLayoutModel = layoutOptions.ansiWide ? ansiWideLayoutModel : ansiIBMLayoutModel;
+    switch (layoutOptions.ansiVariant) {
+        case AnsiVariant.IBM:
+            break;
+        case AnsiVariant.APPLE:
+            base = createApple(base);
+            break;
+        case AnsiVariant.HHKB:
+            base = createHHKB(base);
+            break;
+        // no need to split the space bar, because it's already split
+        case AnsiVariant.HHKB_PLUS:
+            return hhkbPlusLayoutModel;
+        case AnsiVariant.AHKB:
+            return layoutOptions.angleMod ? ahkbAddAngleMod(ahkbLayoutModel) : ahkbLayoutModel;
+    }
+    return layoutOptions.ansiSplit ? splitSpaceBar(base) : base;
 }
 
 export function getLayoutModel(layoutOptions: LayoutOptions): RowBasedLayoutModel {

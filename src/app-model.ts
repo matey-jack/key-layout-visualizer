@@ -3,10 +3,11 @@ import {MappingChange, RowBasedLayoutModel, FlexMapping, BigramMovement} from ".
 import {LayoutType, VisualizationType} from "./base-model.ts";
 
 export enum AnsiVariant {
-    ANSI_IBM,
-    ANSI_APPLE,
-    ANSI_HHKB,
-    ANSI_AHKB,
+    IBM,
+    APPLE,
+    HHKB,
+    HHKB_PLUS,
+    AHKB,
 }
 
 /*

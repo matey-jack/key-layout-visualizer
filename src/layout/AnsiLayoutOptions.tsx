@@ -14,13 +14,14 @@ export interface AnsiLayoutOptionsProps {
 
 export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptionsProps) {
     const {ansiWide, ansiVariant, ansiSplit, angleMod} = options;
-    const wideDisabled = onlySupportsWide(mapping.value) || ansiVariant === AnsiVariant.ANSI_AHKB;
-    const splitDisabled = ansiVariant === AnsiVariant.ANSI_HHKB;
+    const wideDisabled = onlySupportsWide(mapping.value) || ansiVariant === AnsiVariant.AHKB;
+    const splitDisabled = ansiVariant === AnsiVariant.HHKB;
     const variantOptions = [
-        {variant: AnsiVariant.ANSI_IBM, label: "IBM"},
-        {variant: AnsiVariant.ANSI_APPLE, label: "Apple"},
-        {variant: AnsiVariant.ANSI_HHKB, label: "HHKB"},
-        {variant: AnsiVariant.ANSI_AHKB, label: "AHKB"},
+        {variant: AnsiVariant.IBM, label: "IBM"},
+        {variant: AnsiVariant.APPLE, label: "Apple"},
+        {variant: AnsiVariant.HHKB, label: "HHKB"},
+        {variant: AnsiVariant.HHKB_PLUS, label: "HHKB+"},
+        {variant: AnsiVariant.AHKB, label: "AHKB"},
     ];
 
     return <div class="ansi-layout-options-container">
@@ -35,7 +36,7 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
         <div class="ansi-layout-variant-options">
             {variantOptions.map((option) => {
                 const checked = ansiVariant === option.variant;
-                const isAhkb = option.variant === AnsiVariant.ANSI_AHKB;
+                const isAhkb = option.variant === AnsiVariant.AHKB;
                 return <div class="ansi-variant-option" key={option.variant}>
                     <CheckboxWithLabel
                         type="radio"

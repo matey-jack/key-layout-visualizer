@@ -16,7 +16,7 @@ function layoutSupportsFlipRetRub(options: LayoutOptions) {
         case LayoutType.Ergoplank:
             return options.plankVariant >= PlankVariant.EP60;
         case LayoutType.ANSI:
-            return options.ansiVariant === AnsiVariant.ANSI_AHKB;
+            return options.ansiVariant === AnsiVariant.AHKB;
     }
     return false;
 }
