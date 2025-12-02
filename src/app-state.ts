@@ -98,11 +98,11 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
         mappingState.value = newMapping;
         return;
     }
-    // We don't have a generic 30-key mapping and no specific mapping for this layout plus options.
-    // so, first check if there is a matching mapping by just changing the options.
+    // For ANSI we can change the 'wide' flag or pick another variant to find a layout model for the selected mapping.
     if (layoutOptionsState.value.type === LayoutType.ANSI) {
         // TODO: can't test this, because no such FlexMappings exist yet.
         if (newMapping.mappings[KeymapTypeId.Ansi] ) {
+            // ANSI keymap fits any
             layoutOptionsState.value = {...layoutOptionsState.value, ansiWide: false};
             mappingState.value = newMapping;
             return;
@@ -116,8 +116,7 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
             return;
         }
     }
-    // By this point, the current LayoutType does not work.
-    // todo: we could iterate through layouts, but we'd need to consider options as well.
+    const fallbackLayouts = []
     // Currently, Maltron is the only keyMap that doesn't have a generic 30-key map, thus we know that Ergosplit covers every keymap.
     layoutOptionsState.value = {...layoutOptionsState.value, type: LayoutType.Ergosplit};
     mappingState.value = newMapping;

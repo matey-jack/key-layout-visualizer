@@ -123,7 +123,7 @@ export const ansiIBMLayoutModel: RowBasedLayoutModel = {
                 ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                 ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"],
                 ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-                ["Ctrl", "Cmd", "Alt", "⍽", 0, 1, "Fn", "Ctrl"],
+                ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
             ]
         },
     ],
@@ -157,7 +157,6 @@ export const ansiWideLayoutModel = {
 
         supportedKeymapTypes:
             [
-                // TODO: check this AI generated thing against my expectations
                 {
                     typeId: KeymapTypeId.AnsiWide,
                     frameMapping: [

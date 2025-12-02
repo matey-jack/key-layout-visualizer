@@ -4,7 +4,8 @@ import {
     hand,
     KEY_COLOR,
     KeyboardRows,
-    KeyColor, KEYMAP_TYPES,
+    KeyColor,
+    KEYMAP_TYPES,
     KeymapTypeId,
     KeyPosition,
     LayoutMapping,
@@ -15,6 +16,7 @@ import {
 import {qwertyMapping} from "../mapping/mappings.ts";
 import {sum} from "../library/math.ts";
 import {isCommandKey} from "../mapping/mapping-functions.ts";
+import {ansiIBMLayoutModel} from "./ansiLayoutModel.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
     if (row != KeyboardRows.Home) return false;
@@ -67,20 +69,18 @@ export function onlySupportsWide(mapping: FlexMapping) {
     return !mapping.mappings[KeymapTypeId.Ansi30] && !mapping.mappings[KeymapTypeId.Ansi30];
 }
 
-
-
-export function getAnsi30mapping(layout: RowBasedLayoutModel): (LayoutMapping | undefined) {
-    for (const type of layout.supportedKeymapTypes) {
-        if (type.typeId == KeymapTypeId.Ansi30) return type.frameMapping;
-    }
-    return undefined;
+export function getFrameMapping(model: RowBasedLayoutModel = ansiIBMLayoutModel, type: KeymapTypeId): (LayoutMapping | undefined) {
+    return model.supportedKeymapTypes.filter(
+        (t) => t.typeId == type
+    )[0]?.frameMapping;
 }
 
-export function getThumb30mapping(layout: RowBasedLayoutModel): (LayoutMapping | undefined) {
-    for (const type of layout.supportedKeymapTypes) {
-        if (type.typeId == KeymapTypeId.Thumb30) return type.frameMapping;
-    }
-    return undefined;
+export function getAnsi30mapping(model: RowBasedLayoutModel): (LayoutMapping | undefined) {
+    return getFrameMapping(model, KeymapTypeId.Ansi30);
+}
+
+export function getThumb30mapping(model: RowBasedLayoutModel): (LayoutMapping | undefined) {
+    return getFrameMapping(model, KeymapTypeId.Thumb30);
 }
 
 // --- NEW: Functions using the new keymap type system ---

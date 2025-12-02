@@ -149,7 +149,6 @@ export const qwertzMapping: FlexMapping = {
             "qwert" + "zuiopü+#",
             "asdfg" + "hjklöä",  // there is # on the ISO key here
             "yxcvb" + "nm,.-",   // and <> on the ISO key here
-            "⌥≡"
         ],
         [KeymapTypeId.AnsiWide]: [
             "´ß",
@@ -589,7 +588,6 @@ export const cozyFlingH: FlexMapping = {
 export const thumbyZero: FlexMapping = {
     name: "Thumby Zero",
     description: "Simply puts E on the best key of the board and rescues B from the worst key of the board. ",
-    // TODO: provide separate Ansi wide variant that can include some slight punctuation improvements.
     mappings: {
         [KeymapTypeId.Thumb30]: [
             "qwbrt" + "y" + "uiop",
@@ -597,11 +595,11 @@ export const thumbyZero: FlexMapping = {
             "zxcv" + "-" + "nm,.",
             "e",
         ],
-        [KeymapTypeId.Ansi]: [
-            "=\\",
-            "qwbrt" + "yuiop[]_",
-            "asdfg" + "hjkl;'",
-            "zxcv-" + "nm,./",
+        [KeymapTypeId.AnsiWide]: [
+            "[]",
+            "qwbrt" + "=yuiop\\_",
+            "asdfg" + "'hjkl;",
+            "zxcv-" + "/nm,.",
             "e⌥",
         ]
     },
@@ -838,21 +836,12 @@ export const gemuetlichesMapping: FlexMapping = {
             "yxcv/" + "-jm,.",
             "e⌥"
         ],
-        [KeymapTypeId.Ansi]: [
-            "´ß",
-            "qwbfö" + "zkuopü+'",
-            "asdrg" + "hniltä",
-            "yxcv/" + "jm,.-",
-            "e⌥"
-        ],
         [KeymapTypeId.SplitOrtho]: [
             "qwbf'" + "zkuopü",
             "asdrg" + "hniltä",
             "yxcv/" + "jm,.-",
             "ö⌦" + "e+"
         ],
-        // TODO: We could define a "base for diffing" field here that contains the default German Qwertz mapping.
-        //       Then the diff counts should be correct. (We'll have to contort it to ANSI though, because this app will not implement ISO.)
         /*
              The Harmonic port of this mapping changes less than Qwerty, because it is already made for a wide home position.
              Changed chars are üzj+

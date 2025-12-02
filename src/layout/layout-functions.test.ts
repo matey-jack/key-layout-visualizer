@@ -8,20 +8,23 @@ import {
     diffToBase,
     fillMapping,
     findMatchingKeymapType,
+    getAnsi30mapping,
+    getFrameMapping,
+    getKeyPositions,
     getLayoutKeymapTypes,
     getMappingKeymapTypes,
+    getThumb30mapping,
     hasMatchingMapping,
-    getKeyPositions,
-    mergeMapping, getAnsi30mapping, getThumb30mapping,
+    mergeMapping,
 } from "./layout-functions.ts";
 import {
-    normanMapping,
-    qwertyMapping,
     colemakMapping,
+    colemakThumbyDMapping,
     cozyEnglish,
+    normanMapping,
+    qwertyMapping, qwertzMapping,
     thumbyZero,
-    topNine,
-    colemakThumbyDMapping
+    topNine
 } from "../mapping/mappings.ts"
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
@@ -83,31 +86,25 @@ describe('fillMapping', () => {
         }
     });
 
-    const genericKeymapTypes = [KeymapTypeId.Ansi30, KeymapTypeId.Thumb30];
-    it(`ANSI full layout maps all important characters`, () => {
-        ansiIBMLayoutModel.supportedKeymapTypes?.forEach((type) => {
-            if (!genericKeymapTypes.includes(type.typeId)) {
-                hasLettersNumbersAndProsePunctuation(mergeMapping(type.frameMapping, thumbyZero.mappings[KeymapTypeId.Ansi]!));
-            }
-        })
-    });
+    it(`ANSI wide layout maps all important characters`, () => {
+        const ansiWideFrameMapping = getFrameMapping(ansiIBMLayoutModel, KeymapTypeId.AnsiWide)!;
+        hasLettersNumbersAndProsePunctuation(mergeMapping(ansiWideFrameMapping, thumbyZero.mappings[KeymapTypeId.AnsiWide]!));
+    })
 
-    // this is currently not used in the app, but let's keep it working
+    it(`ANSI layout maps all important characters`, () => {
+        const frameMapping = getFrameMapping(ansiIBMLayoutModel, KeymapTypeId.Ansi)!;
+        hasLettersNumbersAndProsePunctuation(mergeMapping(frameMapping, qwertzMapping.mappings[KeymapTypeId.Ansi]!));
+    })
+
     it(`Split Ortho full layout maps all important characters`, () => {
-        splitOrthoLayoutModel.supportedKeymapTypes?.forEach((type) => {
-            if (!genericKeymapTypes.includes(type.typeId)) {
-                hasLettersNumbersAndProsePunctuation(mergeMapping(type.frameMapping, cozyEnglish.mappings[KeymapTypeId.SplitOrtho]!));
-            }
-        })
+        const frameMapping = getFrameMapping(splitOrthoLayoutModel, KeymapTypeId.SplitOrtho)!;
+        hasLettersNumbersAndProsePunctuation(mergeMapping(frameMapping, cozyEnglish.mappings[KeymapTypeId.SplitOrtho]!));
     });
 
     // this is currently not used in the app, but let's keep it working
     it(`Harmonic 13 wide full layout maps all important characters`, () => {
-        harmonic13WideLayoutModel.supportedKeymapTypes?.forEach((type) => {
-            if (!genericKeymapTypes.includes(type.typeId)) {
-                hasLettersNumbersAndProsePunctuation(mergeMapping(type.frameMapping, topNine.mappings[KeymapTypeId.Harmonic13Wide]!));
-            }
-        })
+        const frameMapping = getFrameMapping(harmonic13WideLayoutModel, KeymapTypeId.Harmonic13Wide)!;
+        hasLettersNumbersAndProsePunctuation(mergeMapping(frameMapping, topNine.mappings[KeymapTypeId.Harmonic13Wide]!));
     });
 
     // TODO: fullMappings for other Harmonic variants need clean up first
@@ -116,7 +113,7 @@ describe('fillMapping', () => {
 describe('hasMatchingMapping', () => {
     it('no Thumby mapping on ANSI-narrow', () => {
         expect(hasMatchingMapping(ansiIBMLayoutModel, colemakThumbyDMapping)).toBeFalsy();
-    }) ;
+    });
 });
 
 // --- NEW: Tests for keymap type system ---
