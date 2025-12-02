@@ -71,7 +71,4 @@ export const splitOrthoLayoutModel: RowBasedLayoutModel = {
             ]
         },
     ],
-
-    // OLD: kept for backward compatibility
-    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingSplitOrtho,
 }

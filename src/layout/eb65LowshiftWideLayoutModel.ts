@@ -66,7 +66,6 @@ export const eb65LowshiftWideLayoutModel: RowBasedLayoutModel = {
         {typeId: KeymapTypeId.Thumb30, frameMapping: thumb30KeyMapping},
     ],
 
-    getSpecificMapping: (_: FlexMapping) => undefined,
     keyColorClass: keyColorHighlightsClass,
 }
 

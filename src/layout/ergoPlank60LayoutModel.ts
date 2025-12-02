@@ -74,8 +74,6 @@ export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
         {typeId: KeymapTypeId.Thumb30, frameMapping: thumb30FrameMapping},
     ],
 
-    getSpecificMapping: (_: FlexMapping) => undefined,
-
     keyColorClass: keyColorHighlightsClass,
 }
 

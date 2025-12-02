@@ -47,27 +47,6 @@ export const ansiIBMLayoutModel: RowBasedLayoutModel = {
         "While it might look very unusual, it actually is very easy to get used to. " +
         "And this setup makes it easier to switch between a laptop and an ergonomic split keyboard. ",
 
-    // we use double quotes everywhere, just so that the one key with single quote as value isn't a special case ;)
-    thirtyKeyMapping: [
-        ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "⌫"],
-        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "[", "]", "\\"],
-        ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⏎"],
-        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-        ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
-    ],
-
-    // arbitrary decision to include two thumb keys in the mapping.
-    // (One for a letter and one more to move AltGr to, if desired.)
-    // Exclude CapsLock from the flex mapping, because it distracts from the lettering changes,
-    // especially when showing the diff with Qwerty.
-    fullMapping: [
-        ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, 1, "⌫"],
-        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"],
-        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-        ["Ctrl", "Cmd", "Alt", "⍽", 0, 1, "Fn", "Ctrl"],
-    ],
-
     rowIndent: ibmKeyWidths.rowIndent,
 
     keyWidths: [
@@ -126,8 +105,18 @@ export const ansiIBMLayoutModel: RowBasedLayoutModel = {
     staggerOffsets: [-0.75, -0.25, 0, 0.5],
     symmetricStagger: false,
 
-    // NEW: unified keymap type support
     supportedKeymapTypes: [
+        { typeId: KeymapTypeId.Ansi30, frameMapping: [
+                ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "⌫"],
+                ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "[", "]", "\\"],
+                ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⏎"],
+                ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+                ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
+            ]},
+        // arbitrary decision to include two thumb keys in the mapping.
+        // (One for a letter and one more to move AltGr to, if desired.)
+        // Exclude CapsLock from the flex mapping, because it distracts from the lettering changes,
+        // especially when showing the diff with Qwerty.
         { typeId: KeymapTypeId.Ansi, frameMapping: [
             ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, 1, "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
@@ -135,17 +124,7 @@ export const ansiIBMLayoutModel: RowBasedLayoutModel = {
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
             ["Ctrl", "Cmd", "Alt", "⍽", 0, 1, "Fn", "Ctrl"],
         ]},
-        { typeId: KeymapTypeId.Ansi30, frameMapping: [
-            ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "⌫"],
-            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "[", "]", "\\"],
-            ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⏎"],
-            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
-        ]},
     ],
-
-    // OLD: kept for backward compatibility
-    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsi,
 }
 
 export const ansiWideLayoutModel = {
@@ -175,7 +154,6 @@ export const ansiWideLayoutModel = {
         [2, 2, null, 0.2, 1.5, null, 2, 2]
     ],
 
-    // NEW: unified keymap type support
     supportedKeymapTypes: [
         // TODO: check this AI generated thing against my expectations
         { typeId: KeymapTypeId.AnsiWide, frameMapping: [
@@ -202,9 +180,6 @@ export const ansiWideLayoutModel = {
                 ["Ctrl", "Cmd", "Alt", "⍽", 0, "AltGr", "Fn", "Ctrl"],
             ]},
     ],
-
-    // OLD: kept for backward compatibility
-    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingAnsiWide,
 };
 
 /* Duplicate the middle key in the bottom row.

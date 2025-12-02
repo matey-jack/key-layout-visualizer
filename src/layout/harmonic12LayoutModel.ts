@@ -90,7 +90,4 @@ export const harmonic12LayoutModel: RowBasedLayoutModel = {
         [NaN, 1.5, 1.5, 1, 1.5, 3, 1.5, 1, 1.5, 1.5, NaN],
         [NaN, NaN, NaN, 1.0, 0.2, 0.2, 1.0, NaN, NaN, NaN],
     ],
-
-    // rely on Thumb30 only
-    getSpecificMapping: (_: FlexMapping) => undefined,
 }

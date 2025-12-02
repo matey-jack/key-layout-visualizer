@@ -56,6 +56,4 @@ export const katanaLayoutModel: RowBasedLayoutModel = {
             ["Fn", "Ctrl", "Cmd", "Alt", "⍽", "⌦", "⍽", "AltGr", "←", "↑", "↓", "→"],
         ]},
     ],
-
-    getSpecificMapping: (_: FlexMapping) => undefined,
 }

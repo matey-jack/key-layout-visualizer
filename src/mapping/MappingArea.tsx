@@ -1,5 +1,5 @@
 import {AppState} from "../app-model.ts";
-import {BigramType, FlexMapping, MappingChange, RowBasedLayoutModel, SKE_HOME} from "../base-model.ts";
+import {BigramType, FlexMapping, KeymapTypeId, MappingChange, RowBasedLayoutModel, SKE_HOME} from "../base-model.ts";
 import {Signal, useSignal} from "@preact/signals";
 import {allMappings, qwertyMapping} from "./mappings.ts";
 import {
@@ -67,7 +67,7 @@ interface MappingListItemProps {
 export function MappingListItem({layout, mapping, selectedMapping, appState, showAllMappings}: MappingListItemProps) {
     const selectedClass = selectedMapping.value.name === mapping.name ? " selected" : "";
     const recommendedClass = mapping.localMaximum && showAllMappings ? " recommended" : "";
-    const thumbLetterClass = !!mapping.mapping30 ? " thumb-letter" : "";
+    const thumbLetterClass = !!mapping.mappings[KeymapTypeId.Ansi30] ? " thumb-letter" : "";
     const charMap = fillMapping(layout, mapping);
     const movements = charMap && getBigramMovements(
         getKeyPositions(layout, false, charMap),

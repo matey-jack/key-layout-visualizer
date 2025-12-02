@@ -3,10 +3,11 @@ import {describe, it, expect} from 'vitest';
 import {ansiIBMLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
 import {KeyboardRows, KeymapTypeId} from "../base-model.ts";
 import {sum} from "../library/math.ts";
+import {getAnsi30mapping} from "./layout-functions.ts";
 
 describe('ansiLayoutModel.keyWidths', () => {
     const lastCol = (row: KeyboardRows) =>
-        ansiIBMLayoutModel.thirtyKeyMapping![row].length - 1;
+        getAnsi30mapping(ansiIBMLayoutModel)![row].length - 1;
 
     it("correct with of Backspace", () => {
         const row = KeyboardRows.Number;
@@ -30,7 +31,7 @@ describe('ansiLayoutModel.keyWidths', () => {
 
     it("correct total with of bottom row", () => {
         const row = KeyboardRows.Bottom;
-        const widths = ansiIBMLayoutModel.thirtyKeyMapping![row]
+        const widths = getAnsi30mapping(ansiIBMLayoutModel)![row]
             .map((_, col) => ansiIBMLayoutModel.keyWidths[row][col]);
         expect(sum(widths)).toBeCloseTo(15, 8)
     });

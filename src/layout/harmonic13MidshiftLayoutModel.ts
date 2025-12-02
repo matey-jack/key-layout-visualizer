@@ -95,7 +95,4 @@ export const harmonic13MidshiftLayoutModel: RowBasedLayoutModel = {
         [3.0, 1.5, 1.5, 1.5, 1.0, 1.5, 3.0, 1.5, 1.0, 1.5, 1.5, 1.5, 3.0],
         [NaN, NaN, NaN, 1.5, 0.2, 0.2, 1.5, NaN, NaN, NaN],
     ],
-
-    // rely on Thumb30 only
-    getSpecificMapping: (_: FlexMapping) => undefined,
 }

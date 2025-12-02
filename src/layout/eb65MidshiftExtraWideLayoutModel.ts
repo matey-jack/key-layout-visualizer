@@ -69,7 +69,5 @@ export const eb65MidshiftExtraWideLayoutModel: RowBasedLayoutModel = {
         ]},
     ],
 
-    getSpecificMapping: (_: FlexMapping) => undefined,
-
     keyColorClass: keyColorHighlightsClass,
 }

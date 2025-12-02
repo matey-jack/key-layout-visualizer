@@ -3,9 +3,38 @@
 
 // --- Keymap Type System ---
 
+/*
+ * There are two generic keymap types: ansi30 and thumb30 which map just the central 30 keys: 26 letters and 4 punctuation charaters.
+ *
+ * And then there are some keyboard layout specific key maps which allow to remap all character keys and some other keys as well.
+ */
 export enum KeymapTypeId {
+    /** Ansi30 keymap
+     This is 3 rows of 10 characters – just the keys that most published key mappings are remapping.
+     It leaves some great improvements untapped, but transfers more easily between different keyboard layouts.
+     (Which is an ironic prevision of fate, since ortho keyboards only became really popular after many
+     of the classical layouts were invented...)
+     This mapping should include 26 letters plus the punctuation characters `;,./`.
+     */
     Ansi30 = "ansi30",
+    /* ^^^
+        The fact that traditional keyboard mappings just swap things around those thirty positions is also some legacy
+        not based on science. On the ANSI/Qwerty layout keys `'` and to less extend even `[` are easier to reach than `B`
+        and just as easy as J and V, but still traditional mappings don't use them.
+        Also, character-wise, the hyphen is used in English as much or more as semi-colon and slash (depending on personal
+        style maybe). In any case, the hyphen has more reason to be part of the "core keys" than [] and \.
+     */
+
+
+    /** Thumb30 keymap
+     Keys per row: 10, 10, 9 plus one thumb key.
+     Includes 26 letters plus the punctuation characters `;,.-`.
+     Other punctuation is placed by the Layout-specific mapping.
+     For rationale see //thumb30-mapping-format.md
+     */
     Thumb30 = "thumb30",
+
+    // All the boring rest.
     Ansi = "ansi",
     AnsiWide = "ansiWide",
     SplitOrtho = "splitOrtho",
@@ -24,15 +53,39 @@ export interface KeymapType {
 
 // Registry of all known keymap types
 export const KEYMAP_TYPES: Record<KeymapTypeId, KeymapType> = {
-    [KeymapTypeId.Ansi30]: { id: KeymapTypeId.Ansi30, keysPerRow: [10, 10, 10], description: "3×10 core letter keys" },
-    [KeymapTypeId.Thumb30]: { id: KeymapTypeId.Thumb30, keysPerRow: [10, 10, 9, 1], description: "3×10 with thumb key replacing slash" },
-    [KeymapTypeId.Ansi]: { id: KeymapTypeId.Ansi, keysPerRow: [2, 13, 11, 10, 2], description: "Full ANSI layout" },
-    [KeymapTypeId.AnsiWide]: { id: KeymapTypeId.AnsiWide, keysPerRow: [2, 13, 11, 10, 2], description: "ANSI wide hand position" },
-    [KeymapTypeId.SplitOrtho]: { id: KeymapTypeId.SplitOrtho, keysPerRow: [0, 11, 11, 10, 4], description: "Split ortholinear" },
-    [KeymapTypeId.Harmonic12]: { id: KeymapTypeId.Harmonic12, keysPerRow: [10, 10, 10], description: "Harmonic 12 mini" },
-    [KeymapTypeId.Harmonic13Wide]: { id: KeymapTypeId.Harmonic13Wide, keysPerRow: [2, 10, 13, 10, 2], description: "Harmonic 13 wide" },
-    [KeymapTypeId.Harmonic13MS]: { id: KeymapTypeId.Harmonic13MS, keysPerRow: [2, 10, 13, 10, 2], description: "Harmonic 13 midshift" },
-    [KeymapTypeId.Harmonic14T]: { id: KeymapTypeId.Harmonic14T, keysPerRow: [1, 13, 11, 10, 4], description: "Harmonic 14 traditional" },
+    [KeymapTypeId.Ansi30]: {id: KeymapTypeId.Ansi30, keysPerRow: [10, 10, 10], description: "3×10 core letter keys"},
+    [KeymapTypeId.Thumb30]: {
+        id: KeymapTypeId.Thumb30,
+        keysPerRow: [10, 10, 9, 1],
+        description: "3×10 with thumb key replacing slash"
+    },
+    [KeymapTypeId.Ansi]: {id: KeymapTypeId.Ansi, keysPerRow: [2, 13, 11, 10, 2], description: "Full ANSI layout"},
+    [KeymapTypeId.AnsiWide]: {
+        id: KeymapTypeId.AnsiWide,
+        keysPerRow: [2, 13, 11, 10, 2],
+        description: "ANSI wide hand position"
+    },
+    [KeymapTypeId.SplitOrtho]: {
+        id: KeymapTypeId.SplitOrtho,
+        keysPerRow: [0, 11, 11, 10, 4],
+        description: "Split ortholinear"
+    },
+    [KeymapTypeId.Harmonic12]: {id: KeymapTypeId.Harmonic12, keysPerRow: [10, 10, 10], description: "Harmonic 12 mini"},
+    [KeymapTypeId.Harmonic13Wide]: {
+        id: KeymapTypeId.Harmonic13Wide,
+        keysPerRow: [2, 10, 13, 10, 2],
+        description: "Harmonic 13 wide"
+    },
+    [KeymapTypeId.Harmonic13MS]: {
+        id: KeymapTypeId.Harmonic13MS,
+        keysPerRow: [2, 10, 13, 10, 2],
+        description: "Harmonic 13 midshift"
+    },
+    [KeymapTypeId.Harmonic14T]: {
+        id: KeymapTypeId.Harmonic14T,
+        keysPerRow: [1, 13, 11, 10, 4],
+        description: "Harmonic 14 traditional"
+    },
 };
 
 // --- End Keymap Type System ---
@@ -87,48 +140,7 @@ export interface FlexMapping {
     sourceLinkTitle?: string;
     // used for showing the learning diff
     comparisonBase?: FlexMapping;
-
-    /*
-        Key mappings can be defined generically or layout-specific or both.
-        Generic mappings can be shown on all layouts.
-        Specific mappings override the generic one for one layout if both are defined.
-            TODO: we might add a switch for the user to see also the generic one in that case.
-        There can also be mappings that work only on a specific layout.
-     */
-
-    // NEW: unified mappings property indexed by KeymapTypeId
-    // Will replace all the individual mapping properties below once migration is complete.
     mappings: Partial<Record<KeymapTypeId, string[]>>;
-
-    // This is 3 rows of 10 characters – just the keys that most published key mappings are remapping.
-    // It leaves some great improvements untapped, but transfers more easily between different keyboard layouts.
-    // (Which is an ironic prevision of fate, since ortho keyboards only became really popular after many
-    // of the classical layouts were invented...)
-    // This mapping should include 26 letters plus the punctuation characters `;,./`.
-    mapping30?: string[];
-    /* ^^^
-        The fact that traditional keyboard mappings just swap things around those thirty positions is also some legacy
-        not based on science. On the ANSI/Qwerty layout keys `'` and to less extend even `[` are easier to reach than `B`
-        and just as easy as J and V, but still traditional mappings don't use them.
-        Also, character-wise, the hyphen is used in English as much or more as semi-colon and slash (depending on personal
-        style maybe). In any case, the hyphen has more reason to be part of the "core keys" than [] and \.
-     */
-
-    // Keys per row: 10, 10, 9 plus one thumb key.
-    // Includes 26 letters plus the punctuation characters `;,.-`.
-    // Other punctuation is placed by the Layout-specific mapping.
-    // Note that this uses another "frame mapping" than 'mapping30', so it's an opportunity to modernize also the non-core
-    // key arrangement a little!
-    // For rationale see //thumb30-mapping-format.md
-    mappingThumb30?: string[];
-
-    // for correct dimensions, see the layout model files
-    mappingAnsi?: string[];
-    mappingAnsiWide?: string[];
-    mappingSplitOrtho?: string[];
-    mappingHarmonic13wide?: string[];
-    mappingHarmonic14t?: string[];
-    // mappingHarmonic13MS?: string[];
 }
 
 export enum Finger {
@@ -234,19 +246,7 @@ export interface RowBasedLayoutModel {
 
     // The first matching type between layout and FlexMapping is used.
     // Will replace thirtyKeyMapping, thumb30KeyMapping, fullMapping, and getSpecificMapping once migration is complete.
-    supportedKeymapTypes?: SupportedKeymapType[];
-
-    // to be filled by FlexMapping.mapping30
-    thirtyKeyMapping?: LayoutMapping;
-
-    // to be filled by FlexMapping.mappingThumb30
-    // As a guideline `-` should be mapped closer to the top and right hand, so it's closer to its old position and also
-    // the `=+` key. (The latter being important for tapping Ctrl with + and - to zoom in and out.
-    // Ctrl held with one hand, + and - tapped with the other.)
-    thumb30KeyMapping?: LayoutMapping;
-
-    // to be filled by whatever getSpecificMapping() selects
-    fullMapping?: LayoutMapping;
+    supportedKeymapTypes: SupportedKeymapType[];
 
     // Finger assignment and key effort arrays have the same shape (number of entries in each row) as the LayoutMappings.
     // 'null' value used for gaps between keys and keys which require the hand off home position (such as the arrow cluster).
@@ -255,8 +255,6 @@ export interface RowBasedLayoutModel {
     hasAltFinger: (row: number, col: number) => boolean;
 
     singleKeyEffort: (number | null)[][];
-
-    getSpecificMapping(flexMapping: FlexMapping): string[] | undefined;
 }
 
 // this is the format that we received as JSON array

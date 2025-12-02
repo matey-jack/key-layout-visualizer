@@ -92,6 +92,4 @@ export const harmonic14TraditionalLayoutModel: RowBasedLayoutModel = {
         [1.0, 1.5, 1.5, 1.0, 1.5, 3.0, 3.0, 1.5, 1.0, 1.5, 1.5, 1.0],
         [NaN, NaN, 1.5, 1.0, 0.2, 1.0, 0.2, 1.0, 1.5, NaN, NaN],
     ],
-
-    getSpecificMapping: (f: FlexMapping) => f.mappingHarmonic14t,
 }

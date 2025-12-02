@@ -74,12 +74,12 @@ describe('fillMapping', () => {
     allLayoutModels.forEach((model) => {
         if (getAnsi30mapping(model)) {
             it(`${model.name} 30-key frame maps all important characters`, () => {
-                hasLettersNumbersAndProsePunctuation(mergeMapping(getAnsi30mapping(model)!, ["", ...qwertyMapping.mapping30!]));
+                hasLettersNumbersAndProsePunctuation(mergeMapping(getAnsi30mapping(model)!, ["", ...qwertyMapping.mappings[KeymapTypeId.Ansi30]!]));
             });
         }
         if (getThumb30mapping(model)) {
             it(`${model.name} Thumb30 frame maps all important characters`, () => {
-                hasLettersNumbersAndProsePunctuation(mergeMapping(getThumb30mapping(model)!, ["", ...cozyEnglish.mappingThumb30!]));
+                hasLettersNumbersAndProsePunctuation(mergeMapping(getThumb30mapping(model)!, ["", ...cozyEnglish.mappings[KeymapTypeId.Thumb30]!]));
             });
         }
     });
@@ -286,9 +286,7 @@ describe('getKeyPositions', () => {
         rightHomeIndex: 0,
         staggerOffsets: [0, 0, 0, 0, 0],
         symmetricStagger: true,
-        thirtyKeyMapping: undefined,
-        thumb30KeyMapping: undefined,
-        fullMapping: undefined,
+        supportedKeymapTypes: [],
         mainFingerAssignment: [
             [Finger.LPinky, Finger.LRing],
             [Finger.LMiddle],
@@ -304,7 +302,6 @@ describe('getKeyPositions', () => {
             [1],
             [1],
         ],
-        getSpecificMapping: () => undefined,
     };
 
     it('iterates keyWidths and falls back to ?? for undefined mapping entries', () => {

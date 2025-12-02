@@ -81,8 +81,6 @@ export const harmonic13WideLayoutModel: RowBasedLayoutModel = {
         [NaN, 1.5, 1.5, 1.5, 1.5, 3, 3, 1.5, 1.5, 1.5, 1.5, NaN],
         [NaN, NaN, NaN, 1.0, 0.2, 1.0, 0.2, NaN, NaN, NaN],
     ],
-
-    getSpecificMapping: (flexMapping: FlexMapping) => flexMapping.mappingHarmonic13wide,
 }
 
 // NOT USED IN APP YET

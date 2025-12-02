@@ -83,8 +83,6 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
         {typeId: KeymapTypeId.Ansi30, frameMapping: thirtyKeyMapping},
         {typeId: KeymapTypeId.Thumb30, frameMapping: thumb30KeyMapping},
     ],
-
-    getSpecificMapping: (_: FlexMapping) => undefined,
 }
 
 export function ahkbAddAngleMod(lm: RowBasedLayoutModel = ahkbLayoutModel): RowBasedLayoutModel {
