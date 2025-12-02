@@ -30,12 +30,11 @@ In @DetailView.tsx MappingSummary(), we should show the currently used KeymapTyp
 
 ## Phase 2: Refactor `FlexMapping`
 
-3. **Replace individual mapping properties** with a single `mappings` record:
+3. DONE **Replace individual mapping properties** with a single `mappings` record:
    - Remove: `mapping30`, `mappingThumb30`, `mappingAnsi`, `mappingAnsiWide`, `mappingSplitOrtho`, `mappingHarmonic13wide`, `mappingHarmonic14t`
    - Add: `mappings: Record<string, string[]>` — keys are keymapType IDs
-IN PROGRESS: some FlexMappings have the new fields and also still have the old fields.
 
-4. **Migrate all existing FlexMapping definitions** in `mappings.ts` to use the new structure.
+4. DONE **Migrate all existing FlexMapping definitions** in `mappings.ts` to use the new structure.
 
 ## Phase 3: Refactor `RowBasedLayoutModel`
 
@@ -43,6 +42,7 @@ IN PROGRESS: some FlexMappings have the new fields and also still have the old f
    - Remove: `thirtyKeyMapping`, `thumb30KeyMapping`, `fullMapping`, `getSpecificMapping()`
    - Add: `supportedKeymapTypes: Array<{ typeId: string; frameMapping: LayoutMapping }>`
    - The array order defines preference (first match wins)
+   - List of all layout models can be inferred from [layout-selection.ts](src/layout-selection.ts)
 IN PROGRESS: some Layout Models have the new fields and also still have the old fields.
 
 6. **Migrate all layout model files** to the new structure.
@@ -57,11 +57,11 @@ IN PROGRESS: some Layout Models have the new fields and also still have the old 
 8. DONE **Rewrite `hasMatchingMapping()`**: 
    - Return true if any typeId in `layout.supportedKeymapTypes` exists in `flexMapping.mappings`
 
-9. **Create new `findCompatibleLayout()` function**:
+9. DONE **Create new `findCompatibleLayout()` function**:
    - Given a FlexMapping and list of all layouts, find the best matching layout
    - Use similarity heuristics (same LayoutType preferred, then by keymapType overlap)
 
-10. **Create new `findCompatibleMapping()` function**:
+10. DONE **Create new `findCompatibleMapping()` function**:
     - Given a RowBasedLayoutModel and list of all mappings, find the best matching mapping
     - Prefer mappings with specific support, then generic ones
 
@@ -75,7 +75,7 @@ IN PROGRESS: some Layout Models have the new fields and also still have the old 
 
 ## Phase 6: Update tests
 
-13. **Update `mappings.test.ts`** to validate mappings against their declared keymapType row counts.
+13. DONE **Update `mappings.test.ts`** to validate mappings against their declared keymapType row counts.
 
 14. **Add tests for the new matching/fallback logic**.
 
