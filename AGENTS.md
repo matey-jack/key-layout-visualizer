@@ -23,7 +23,9 @@ The data model consists of:
 
 ## Testing
 
-- `npm test` - Runs tests, can be called by AI agents.
+We are running on Windows and any Shell commands need to work on Windows.
+
+- `npm test` - Runs tests, can be called by AI agents, but don't redirect or pipe outputs.
 - `npm run e2e` - Run all Playwright tests, can be called by AI agents.
 - `npm run e2e:ui` - Run tests with UI mode for debugging, only for human use!
 

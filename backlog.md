@@ -88,6 +88,8 @@ refactorings:
 missing core features:
 - Ergoplank and Katana logos to fill the gap, especially Ergoboard 65 Midshift with a nice connection between both gaps.
 - Rectangle around the keyboard to signify the 60% or 65% box.
+- AHKB should be minimal: just Apple layout with both Shift keys begetting a 1u external key. Or even a 1.25 to be used as Ctrl/Cmd?!
+- new name for current AHKB ==> AHKB-Wide?!
 
 - add some more explanations, especially for:
   + the "wide" mappings

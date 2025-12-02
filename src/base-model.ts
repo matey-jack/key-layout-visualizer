@@ -94,7 +94,7 @@ export interface FlexMapping {
 
     // NEW: unified mappings property indexed by KeymapTypeId
     // Will replace all the individual mapping properties below once migration is complete.
-    mappings?: Partial<Record<KeymapTypeId, string[]>>;
+    mappings: Partial<Record<KeymapTypeId, string[]>>;
 
     // This is 3 rows of 10 characters – just the keys that most published key mappings are remapping.
     // It leaves some great improvements untapped, but transfers more easily between different keyboard layouts.

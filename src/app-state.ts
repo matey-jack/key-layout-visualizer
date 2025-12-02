@@ -1,4 +1,4 @@
-import {FlexMapping, LayoutType, RowBasedLayoutModel, VisualizationType} from "./base-model.ts";
+import {FlexMapping, KeymapTypeId, LayoutType, RowBasedLayoutModel, VisualizationType} from "./base-model.ts";
 import {computed, effect, signal, Signal} from "@preact/signals";
 import {
     AnsiVariant,
@@ -15,15 +15,23 @@ import {allMappings, qwertyMapping} from "./mapping/mappings.ts";
 import {getBigramMovements} from "./bigrams.ts";
 
 function modifyWide(mapping: FlexMapping, opts: LayoutOptions): boolean {
-    if (opts.ansiVariant === AnsiVariant.ANSI_AHKB) {
-        // flag is not used for AHKB, but we flip for transparency in the UI and also to stay on "wide" mode when
-        // switching to another variant.
-        return true;
+    // TODO: this would be much simpler if we restricted the "wide" checkbox to be only shown under the IBM option,
+    //       Or even simpler with a separate variant "IBM wide-hands".
+    switch (opts.ansiVariant) {
+        case AnsiVariant.ANSI_AHKB:
+            // Flag is not used for AHKB, but we flip for transparency in the UI and also to stay on "wide" mode when
+            // switching to another variant.
+            return true;
+        case AnsiVariant.ANSI_APPLE:
+        case AnsiVariant.ANSI_HHKB:
+            // Long space bar on those keyboards doesn't work well with an extra thumb key.
+            return false;
     }
-    if (mapping.mapping30 || mapping.mappingAnsi) {
+    // ANSI_IBM: force wide mode when there is no non-wide keymap, but there is a wide keymap available.
+    if (mapping.mappings[KeymapTypeId.Ansi30] || mapping.mappings[KeymapTypeId.Ansi]) {
         return opts.ansiWide;
     }
-    if (mapping.mappingAnsiWide || mapping.mappingThumb30) {
+    if (mapping.mappings[KeymapTypeId.AnsiWide] || mapping.mappings[KeymapTypeId.Thumb30]) {
         return true;
     }
     return opts.ansiWide;
