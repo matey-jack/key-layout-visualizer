@@ -1,4 +1,4 @@
-import {FlexMapping, KeyboardRows, RowBasedLayoutModel, SupportedKeymapType} from "../base-model.ts";
+import {FlexMapping, KeyboardRows, KeymapTypeId, RowBasedLayoutModel, SupportedKeymapType} from "../base-model.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 const katanaKeyWidths = new SymmetricKeyWidth(15, zeroIndent);
@@ -10,31 +10,10 @@ export const katanaLayoutModel: RowBasedLayoutModel = {
     Symmetric 0.25 stagger and a hand distance similar to MS Ergonomic Keyboard. `,
 
     // row lengths: 15, 14, 14 (but +1 gap), 15, 12
-    // I'd swap ";" and "'" in the keymap, but that transcends the box of the data model.
-    // It's the bane of Qwerty that ";" is considered part of the core layout, but "'" and "-" are not.
-    thirtyKeyMapping: [
-        ["Esc", "`~", "1", "2", "3", "4", "5", "lock", "6", "7", "8", "9", "0", "-", "="],
-        ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "⌫"],
-        ["'", 0, 1, 2, 3, 4, "⇤", null, "⇞", 5, 6, 7, 8, 9, "⏎"],
-        ["⇧", 0, 1, 2, 3, 4, "⇥", "ins", "⇟", 5, 6, 7, 8, 9, "⇧"],
-        ["Fn", "Ctrl", "Cmd", "Alt", "⍽", "⌦", "⍽", "AltGr", "←", "↑", "↓", "→"],
-    ],
-
-    // todo
-    // thumb30KeyMapping: [
-    //     ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
-    //     ["↹", 0, 1, 2, 3, 4, "=", null, "`~", 5, 6, 7, 8, 9, "⏎"],
-    //     ["", 0, 1, 2, 3, 4, "⇤", "\\", "⇥", 5, 6, 7, 8, 9, "'"],
-    //     ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", "/", 5, 6, 7, 8, "⇧"],
-    //     ["Hack", "Ctrl", "Alt", "Cmd", 0, "⍽", "⌦", "AltGr", "Menu", "Cmd", "Ctrl"],
-    // ],
-
-    // note that for data model reason, we also have to assign a finger to gaps.
-    // but it will never be shown or used in any calulations.
     mainFingerAssignment: [
         [1, 1, 1, 2, 2, 3, 3, 6, 6, 6, 7, 8, 8, 8, 8],
         [1, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9],
-        [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 6, 7, 8, 9, 9],
+        [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 6, 7, 8, 9, 9],
         [0, 1, 2, 4, 4, 5, 5, 5, 6, 7, 8, 9],
     ],
@@ -65,6 +44,18 @@ export const katanaLayoutModel: RowBasedLayoutModel = {
 
     staggerOffsets: [0.75, 0.25, 0, -0.25],
     symmetricStagger: true,
+
+    supportedKeymapTypes: [
+        // I'd swap ";" and "'" in the keymap, but that transcends the box of the data model.
+        // It's the bane of Qwerty that ";" is considered part of the core layout, but "'" and "-" are not.
+        { typeId: KeymapTypeId.Ansi30, frameMapping: [
+            ["Esc", "`~", "1", "2", "3", "4", "5", "lock", "6", "7", "8", "9", "0", "-", "="],
+            ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "⌫"],
+            ["'", 0, 1, 2, 3, 4, "⇤", null, "⇞", 5, 6, 7, 8, 9, "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, "⇥", "ins", "⇟", 5, 6, 7, 8, 9, "⇧"],
+            ["Fn", "Ctrl", "Cmd", "Alt", "⍽", "⌦", "⍽", "AltGr", "←", "↑", "↓", "→"],
+        ]},
+    ],
 
     getSpecificMapping: (_: FlexMapping) => undefined,
 }
