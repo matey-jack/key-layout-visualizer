@@ -4,12 +4,12 @@ import {RowBasedKeyboard} from './KeyboardSvg.tsx';
 import {qwertyMapping} from "../mapping/mappings.ts";
 import {VisualizationType} from "../base-model.ts";
 import {ansiIBMLayoutModel} from "./ansiLayoutModel.ts";
-import {fillMappingNew, getKeyPositions} from "./layout-functions.ts";
+import {fillMapping, getKeyPositions} from "./layout-functions.ts";
 
 // Test key rendering
 describe('Key rendering', () => {
     it('renders correct number of keys for ANSI', () => {
-        const charMap = fillMappingNew(ansiIBMLayoutModel, qwertyMapping);
+        const charMap = fillMapping(ansiIBMLayoutModel, qwertyMapping);
         const keyPositions = getKeyPositions(ansiIBMLayoutModel, true, charMap!)
         const {container} = render(<RowBasedKeyboard
             layoutModel={ansiIBMLayoutModel}

@@ -6,12 +6,11 @@ import {
     copyAndModifyKeymap,
     diffSummary,
     diffToBase,
-    fillMappingNew,
+    fillMapping,
     findMatchingKeymapType,
     getLayoutKeymapTypes,
     getMappingKeymapTypes,
     hasMatchingMapping,
-    hasMatchingMappingNew,
     getKeyPositions,
     mergeMapping, getAnsi30mapping, getThumb30mapping,
 } from "./layout-functions.ts";
@@ -63,7 +62,7 @@ function hasLettersNumbersAndProsePunctuation(filledMapping: string[][]) {
 
 describe('fillMapping', () => {
     it('Harmonic 13 wide layout 30-key qwerty exact test', () => {
-        const actual = fillMappingNew(harmonic13WideLayoutModel, qwertyMapping)!;
+        const actual = fillMapping(harmonic13WideLayoutModel, qwertyMapping)!;
         expect(actual[0]).toStrictEqual(["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="]);
         expect(actual[1]).toStrictEqual(["↹", "w", "e", "r", "t", "`", "y", "u", "i", "o", "p", "⌫",]);
         expect(actual[2]).toStrictEqual(["q", "a", "s", "d", "f", "g", "\\", "h", "j", "k", "l", ";", "'"]);
@@ -151,19 +150,19 @@ describe('new keymap type system - findMatchingKeymapType', () => {
 
 describe('new keymap type system - fillMappingNew', () => {
     it('produces same result as fillMapping for qwerty on ANSI', () => {
-        const oldResult = fillMappingNew(ansiIBMLayoutModel, qwertyMapping);
-        const newResult = fillMappingNew(ansiIBMLayoutModel, qwertyMapping);
+        const oldResult = fillMapping(ansiIBMLayoutModel, qwertyMapping);
+        const newResult = fillMapping(ansiIBMLayoutModel, qwertyMapping);
         expect(newResult).toEqual(oldResult);
     });
 
     it('produces same result as fillMapping for qwerty on splitOrtho', () => {
-        const oldResult = fillMappingNew(splitOrthoLayoutModel, qwertyMapping);
-        const newResult = fillMappingNew(splitOrthoLayoutModel, qwertyMapping);
+        const oldResult = fillMapping(splitOrthoLayoutModel, qwertyMapping);
+        const newResult = fillMapping(splitOrthoLayoutModel, qwertyMapping);
         expect(newResult).toEqual(oldResult);
     });
 
     it('falls back to old system for mappings without new property', () => {
-        const result = fillMappingNew(ansiIBMLayoutModel, normanMapping);
+        const result = fillMapping(ansiIBMLayoutModel, normanMapping);
         expect(result).toBeDefined();
         // Should use old system since normanMapping doesn't have mappings property
     });
@@ -171,15 +170,15 @@ describe('new keymap type system - fillMappingNew', () => {
 
 describe('new keymap type system - hasMatchingMappingNew', () => {
     it('returns true for qwertyMapping on ansiIBMLayoutModel', () => {
-        expect(hasMatchingMappingNew(ansiIBMLayoutModel, qwertyMapping)).toBe(true);
+        expect(hasMatchingMapping(ansiIBMLayoutModel, qwertyMapping)).toBe(true);
     });
 
     it('returns true for qwertyMapping on splitOrthoLayoutModel', () => {
-        expect(hasMatchingMappingNew(splitOrthoLayoutModel, qwertyMapping)).toBe(true);
+        expect(hasMatchingMapping(splitOrthoLayoutModel, qwertyMapping)).toBe(true);
     });
 
     it('falls back to old system for mappings without new property', () => {
-        expect(hasMatchingMappingNew(ansiIBMLayoutModel, normanMapping)).toBe(true);
+        expect(hasMatchingMapping(ansiIBMLayoutModel, normanMapping)).toBe(true);
     });
 });
 
@@ -352,7 +351,7 @@ describe('diffToQwerty', () => {
 });
 
 describe('characterToFinger for ANSI Qwerty', () => {
-    const layoutMapping = fillMappingNew(ansiIBMLayoutModel, qwertyMapping);
+    const layoutMapping = fillMapping(ansiIBMLayoutModel, qwertyMapping);
     const fingering = ansiIBMLayoutModel.mainFingerAssignment;
     const actual = characterToFinger(fingering, layoutMapping!);
 

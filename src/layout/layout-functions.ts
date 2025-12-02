@@ -67,24 +67,7 @@ export function onlySupportsWide(mapping: FlexMapping) {
     return !mapping.mappings[KeymapTypeId.Ansi30] && !mapping.mappings[KeymapTypeId.Ansi30];
 }
 
-export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): string[][] | undefined {
-    const fullFlexMapping = layoutModel.getSpecificMapping(flexMapping)
-    if (fullFlexMapping) {
-        return mergeMapping(layoutModel.fullMapping!, fullFlexMapping, layoutModel.thirtyKeyMapping);
-    }
-    if (layoutModel.thumb30KeyMapping && flexMapping.mappingThumb30) {
-        return mergeMapping(layoutModel.thumb30KeyMapping, ["", ...flexMapping.mappingThumb30]);
-    }
-    if (layoutModel.thirtyKeyMapping && flexMapping.mapping30) {
-        return mergeMapping(layoutModel.thirtyKeyMapping, ["", ...flexMapping.mapping30!]);
-    }
-}
 
-export function hasMatchingMapping(layout: RowBasedLayoutModel, flexMapping: FlexMapping): boolean {
-    if (flexMapping.mapping30 && layout.thirtyKeyMapping) return true;
-    if (flexMapping.mappingThumb30 && layout.thumb30KeyMapping) return true;
-    return !!layout.getSpecificMapping(flexMapping);
-}
 
 export function getAnsi30mapping(layout: RowBasedLayoutModel): (LayoutMapping | undefined) {
     for (const type of layout.supportedKeymapTypes) {
@@ -123,32 +106,23 @@ export function findMatchingKeymapType(
 }
 
 /**
- * NEW: Fill mapping using the new keymap type system.
- * Falls back to old system if new properties are not available.
+ * Fill mapping using the new keymap type system.
  */
-export function fillMappingNew(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): string[][] | undefined {
-    // Try new system first
+export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): string[][] | undefined {
     const match = findMatchingKeymapType(layoutModel, flexMapping);
     if (match) {
         // For specific types (not 30key/thumb30), we need a fallback for unlabeled keys
         const fallbackMapping = layoutModel.supportedKeymapTypes?.find(s => s.typeId === KeymapTypeId.Ansi30)?.frameMapping;
         return mergeMapping(match.supported.frameMapping, ["", ...match.flexData], fallbackMapping);
     }
-    // Fall back to old system
-    return fillMapping(layoutModel, flexMapping);
+    return undefined;
 }
 
 /**
- * NEW: Check if layout and mapping have a match using the new keymap type system.
- * Falls back to old system if new properties are not available.
+ * Check if layout and mapping have a match using the new keymap type system.
  */
-export function hasMatchingMappingNew(layout: RowBasedLayoutModel, flexMapping: FlexMapping): boolean {
-    // Try new system first
-    if (findMatchingKeymapType(layout, flexMapping)) {
-        return true;
-    }
-    // Fall back to old system
-    return hasMatchingMapping(layout, flexMapping);
+export function hasMatchingMapping(layout: RowBasedLayoutModel, flexMapping: FlexMapping): boolean {
+    return !!findMatchingKeymapType(layout, flexMapping);
 }
 
 /**
@@ -250,8 +224,8 @@ export function diffSummary(diff: Record<string, MappingChange>): Record<Mapping
 }
 
 export function diffToBase(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): Record<string, MappingChange> {
-    const a = fillMappingNew(layoutModel, flexMapping);
-    const b = fillMappingNew(layoutModel, flexMapping.comparisonBase ?? qwertyMapping);
+    const a = fillMapping(layoutModel, flexMapping);
+    const b = fillMapping(layoutModel, flexMapping.comparisonBase ?? qwertyMapping);
     return diffMappings(layoutModel, a!, b!);
 }
 
