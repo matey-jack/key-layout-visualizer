@@ -64,7 +64,7 @@ export const keyColorHighlightsClass = (label: string, row: KeyboardRows, col: n
 };
 
 export function onlySupportsWide(mapping: FlexMapping) {
-    return !mapping.mapping30 && !mapping.mappingAnsi;
+    return !mapping.mappings[KeymapTypeId.Ansi30] && !mapping.mappings[KeymapTypeId.Ansi30];
 }
 
 export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): string[][] | undefined {

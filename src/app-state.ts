@@ -102,12 +102,12 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
     // so, first check if there is a matching mapping by just changing the options.
     if (layoutOptionsState.value.type === LayoutType.ANSI) {
         // TODO: can't test this, because no such FlexMappings exist yet.
-        if (newMapping.mappingAnsi) {
+        if (newMapping.mappings[KeymapTypeId.Ansi] ) {
             layoutOptionsState.value = {...layoutOptionsState.value, ansiWide: false};
             mappingState.value = newMapping;
             return;
         }
-        if ((newMapping.mappingAnsiWide || newMapping.mappingThumb30)) {
+        if ((newMapping.mappings[KeymapTypeId.AnsiWide] || newMapping.mappings[KeymapTypeId.Thumb30])) {
             if (layoutOptionsState.value.ansiVariant === AnsiVariant.ANSI_HHKB) {
                 layoutOptionsState.value = {...layoutOptionsState.value, ansiVariant: AnsiVariant.ANSI_APPLE};
             }
