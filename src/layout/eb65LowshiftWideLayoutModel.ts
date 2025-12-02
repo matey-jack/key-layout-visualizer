@@ -1,30 +1,30 @@
-import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {FlexMapping, KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 const keyWidths = new SymmetricKeyWidth(16, zeroIndent);
+
+const thirtyKeyMapping: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "`~", null, "6", "7", "8", "9", "0", "=", "⇞", "⇟"],
+    ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "-", "⌫"],
+    ["⌦", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
+    [null, "⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "↑", null],
+    [null, "Ctrl", "Cmd", "CAPS", "Alt", "⍽", "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
+];
+
+const thumb30KeyMapping: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "`~", null, "6", "7", "8", "9", "0", "", "⇞", "⇟"],
+    ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "=", "⌫"],
+    ["⌦", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
+    [null, "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
+    [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
+];
 
 export const eb65LowshiftWideLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 LowShift Wide",
     description: `Widest possible hand position with the arrow cluster and lower row Shift keys.`,
 
     // row lengths: 16, 15, 15 (with 0.5u gap), 16, 14
-    thirtyKeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "`~", null, "6", "7", "8", "9", "0", "=", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "-", "⌫"],
-        ["⌦", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
-        [null, "⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "↑", null],
-        [null, "Ctrl", "Cmd", "CAPS", "Alt", "⍽", "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
-    ],
-
-    thumb30KeyMapping: [
-        ["Esc", "1", "2", "3", "4", "5", "`~", null, "6", "7", "8", "9", "0", "", "⇞", "⇟"],
-        ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "=", "⌫"],
-        ["⌦", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
-        [null, "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
-        [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
-    ],
-
     mainFingerAssignment: [
         [1, 1, 1, 1, 2, 3, 3, 3, 6, 6, 7, 8, 8, 8, null, null],
         [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9, 9],
@@ -61,6 +61,11 @@ export const eb65LowshiftWideLayoutModel: RowBasedLayoutModel = {
     staggerOffsets: [0.5, 0.25, 0, -0.5],
     symmetricStagger: true,
 
+    supportedKeymapTypes: [
+        {typeId: KeymapTypeId.Ansi30, frameMapping: thirtyKeyMapping},
+        {typeId: KeymapTypeId.Thumb30, frameMapping: thumb30KeyMapping},
+    ],
+
     getSpecificMapping: (_: FlexMapping) => undefined,
     keyColorClass: keyColorHighlightsClass,
 }
@@ -76,7 +81,8 @@ function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
 export const eb65LowshiftWideAngleModLayoutModel: RowBasedLayoutModel = {
     ...eb65LowshiftWideLayoutModel,
     name: `${eb65LowshiftWideLayoutModel.name} angle mod`,
-    thirtyKeyMapping: copyAndModifyKeymap(eb65LowshiftWideLayoutModel.thirtyKeyMapping!, angleModKeymap),
-    thumb30KeyMapping: copyAndModifyKeymap(eb65LowshiftWideLayoutModel.thumb30KeyMapping!, angleModKeymap),
-    fullMapping: eb65LowshiftWideLayoutModel.fullMapping && copyAndModifyKeymap(eb65LowshiftWideLayoutModel.fullMapping!, angleModKeymap),
+    supportedKeymapTypes: eb65LowshiftWideLayoutModel.supportedKeymapTypes?.map(supported => ({
+        ...supported,
+        frameMapping: copyAndModifyKeymap(supported.frameMapping, angleModKeymap),
+    })),
 };

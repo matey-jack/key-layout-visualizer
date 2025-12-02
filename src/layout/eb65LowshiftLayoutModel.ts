@@ -1,4 +1,4 @@
-import {FlexMapping, KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 
@@ -18,6 +18,7 @@ const thumb30FrameMapping: LayoutMapping = [
     ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
     [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
 ];
+
 export const eb65LowshiftLayoutModel: RowBasedLayoutModel = {
     name: "Ergoboard 65 LowShift Narrow",
     description: `"The most ergonomic key layout that fits into a standard "65%" keyboard case 
@@ -73,8 +74,6 @@ export const eb65LowshiftLayoutModel: RowBasedLayoutModel = {
         {typeId: KeymapTypeId.Thumb30, frameMapping: thumb30FrameMapping},
     ],
 
-    getSpecificMapping: (_: FlexMapping) => undefined,
-
     keyColorClass: keyColorHighlightsClass,
 }
 
@@ -88,8 +87,17 @@ export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
         matrix[KeyboardRows.Bottom] = [0.25, 1.25, 1.25, 1, 1.25, 2.5, 2.5, 1.25, 0.25, 1.25, 0.25, 1, 1, 1];
         return matrix;
     }),
-    thirtyKeyMapping: copyAndModifyKeymap(ansi30FrameMapping, (m) => moveKeys(m, false)),
-    thumb30KeyMapping: copyAndModifyKeymap(thumb30FrameMapping, (m) => moveKeys(m, true)),
+    supportedKeymapTypes: [
+        {
+            typeId: KeymapTypeId.Ansi30,
+            frameMapping: copyAndModifyKeymap(ansi30FrameMapping, (m) => moveKeys(m, false))
+        },
+        {
+            typeId: KeymapTypeId.Thumb30,
+            frameMapping: copyAndModifyKeymap(thumb30FrameMapping, (m) => moveKeys(m, true))
+        },
+    ],
+
     mainFingerAssignment: copyAndModifyKeymap(eb65LowshiftLayoutModel.mainFingerAssignment!!, (m) => removeKey(m)),
     singleKeyEffort: copyAndModifyKeymap(eb65LowshiftLayoutModel.singleKeyEffort!!, (m) => removeKey(m)),
 }

@@ -62,8 +62,6 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
         ]},
     ],
 
-    getSpecificMapping: (_: FlexMapping) => undefined,
-
     keyColorClass: keyColorHighlightsClass,
 }
 export const eb65CentralEnterLayoutModel: RowBasedLayoutModel = {
@@ -75,8 +73,10 @@ export const eb65CentralEnterLayoutModel: RowBasedLayoutModel = {
         matrix[KeyboardRows.Home][14] = 1;
         return matrix;
     }),
-    thirtyKeyMapping: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.thirtyKeyMapping!, moveEnterToCenter),
-    thumb30KeyMapping: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.thumb30KeyMapping!, moveEnterToCenter),
+    supportedKeymapTypes: eb65MidshiftRightRetLayoutModel.supportedKeymapTypes?.map(supported => ({
+        ...supported,
+        frameMapping: copyAndModifyKeymap(supported.frameMapping, moveEnterToCenter),
+    })),
     mainFingerAssignment: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.mainFingerAssignment, (matrix) => {
         matrix[KeyboardRows.Number][14] = Finger.RPinky;
         matrix[KeyboardRows.Upper].splice(6, 1);
@@ -113,8 +113,10 @@ export const eb65VerticalEnterLayoutModel: RowBasedLayoutModel = {
         if (row == KeyboardRows.Upper && col == 14) return 2;
         return 1;
     },
-    thirtyKeyMapping: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.thirtyKeyMapping!!, moveEnterToVertical),
-    thumb30KeyMapping: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.thumb30KeyMapping!!, moveEnterToVertical),
+    supportedKeymapTypes: eb65MidshiftRightRetLayoutModel.supportedKeymapTypes?.map(supported => ({
+        ...supported,
+        frameMapping: copyAndModifyKeymap(supported.frameMapping, moveEnterToVertical),
+    })),
 }
 
 function moveEnterToVertical(mapping: LayoutMapping): LayoutMapping {

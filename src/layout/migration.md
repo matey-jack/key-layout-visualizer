@@ -246,6 +246,7 @@ These can be migrated straightforwardly by adding `supportedKeymapTypes` propert
 - eb65MidshiftRightRetLayoutModel
 - eb65VerticalEnterLayoutModel
 - splitOrthoLayoutModel
+===> ALL DONE 
 
 **Total**: 14 layouts
 
