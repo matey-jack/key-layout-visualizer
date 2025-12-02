@@ -87,16 +87,16 @@ export function hasMatchingMapping(layout: RowBasedLayoutModel, flexMapping: Fle
 }
 
 export function getAnsi30mapping(layout: RowBasedLayoutModel): (LayoutMapping | undefined) {
-    layout.supportedKeymapTypes?.forEach((type) => {
+    for (const type of layout.supportedKeymapTypes) {
         if (type.typeId == KeymapTypeId.Ansi30) return type.frameMapping;
-    })
+    }
     return undefined;
 }
 
 export function getThumb30mapping(layout: RowBasedLayoutModel): (LayoutMapping | undefined) {
-    layout.supportedKeymapTypes?.forEach((type) => {
+    for (const type of layout.supportedKeymapTypes) {
         if (type.typeId == KeymapTypeId.Thumb30) return type.frameMapping;
-    })
+    }
     return undefined;
 }
 

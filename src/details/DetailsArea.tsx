@@ -128,7 +128,7 @@ export function FingeringDetails({layout: _}: { layout: RowBasedLayoutModel }) {
 
 function countKeysBySize(layoutM: RowBasedLayoutModel) {
     const counts = new Map<number, number>();
-    (layoutM.thirtyKeyMapping || layoutM.fullMapping)!.forEach((row, r) => {
+    (layoutM.supportedKeymapTypes[0].frameMapping)!.forEach((row, r) => {
         row.forEach((label, c) => {
             if (label !== null) {
                 const size = keyCapSize(layoutM)(r, c);
