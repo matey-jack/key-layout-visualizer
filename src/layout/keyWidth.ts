@@ -1,5 +1,5 @@
 import {KeyboardRows} from "../base-model.ts";
-import {sum} from "../library/math.ts";
+import {frac, sum} from "../library/math.ts";
 
 
 export const zeroIndent: [number, number, number, number, number] = [0, 0, 0, 0, 0]; // Array(5).fill(0); is a type error.
@@ -31,8 +31,9 @@ export class MonotonicKeyWidth {
     // Right-edge key-width only needs to be specified if >= 2.
     // If omitted, a fitting value between 1 and <2 will be calculated.
     row(row: KeyboardRows, leftEdge: number, rightEdge?: number) {
-        rightEdge = rightEdge || leftEdge;
-        const remainingWidth = this.kbWidth - leftEdge - rightEdge - 2 * this.rowIndent[row];
+        const totalKeyWidth = this.kbWidth - 2 * this.rowIndent[row];
+        rightEdge = rightEdge || 1 + frac(totalKeyWidth - leftEdge);
+        const remainingWidth = totalKeyWidth - leftEdge - rightEdge;
         if (remainingWidth != Math.floor(remainingWidth)) {
             console.log(`ERROR: ${this.kbName} row ${row}: remaining width ${remainingWidth} is not integer!`);
         }

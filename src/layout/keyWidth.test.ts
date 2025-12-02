@@ -1,5 +1,5 @@
 import {describe, it, expect, vi} from "vitest";
-import {SymmetricKeyWidth, zeroIndent, MicroGapKeyWidths} from "./keyWidth.ts";
+import {SymmetricKeyWidth, zeroIndent, MicroGapKeyWidths, MonotonicKeyWidth} from "./keyWidth.ts";
 import {KeyboardRows} from "../base-model.ts";
 
 describe('symmetric keyWidth gap position', () => {
@@ -20,6 +20,13 @@ describe('symmetric keyWidth gap position', () => {
        const sym = new SymmetricKeyWidth(6, zeroIndent, 2.75);
        expect(sym.row(0, 1, 1.5)).toEqual([1, 1, 1.5, 1, 1.5]);
    });
+});
+
+describe('monotonic keyWidth', () => {
+    it('calculates right edge key width', () => {
+        const kw = new MonotonicKeyWidth(5, zeroIndent, 'test');
+        expect(kw.row(0, 1.25)).toEqual([1.25, 1, 1, 1.75]);
+    });
 });
 
 describe('MicroGapKeyWidths', () => {

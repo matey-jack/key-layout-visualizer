@@ -30,7 +30,7 @@ export const harmonic14TraditionalLayoutModel: RowBasedLayoutModel = {
         h14tKeyWidth.row(0, 1.5),
         h14tKeyWidth.row(0, 1),
         h14tKeyWidth.row(0, 1.5),
-        h14tKeyWidth.row(0, 2),
+        h14tKeyWidth.row(0, 2, 2),
         mirrorOdd(1.5, 1, 1, 1, 1, 3),
     ],
     // You'll notice that it's the same as in ANSI, making it easy to use both.
