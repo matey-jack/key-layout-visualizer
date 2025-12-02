@@ -40,7 +40,8 @@ export const keyCapSize = (lm: RowBasedLayoutModel)=>
 
 export function createKeySizeGroups(layoutM: RowBasedLayoutModel) {
     const keySizes: number[] = [];
-    (layoutM.thirtyKeyMapping || layoutM.fullMapping)!.forEach((row, r) => {
+    const frameMapping = layoutM.supportedKeymapTypes?.[0].frameMapping!;
+    frameMapping.forEach((row, r) => {
         row.forEach((label, c) => {
             const size = keyCapSize(layoutM)(r, c);
             if (label !== null && size != 1 && !keySizes.includes(size)) {
@@ -83,6 +84,20 @@ export function hasMatchingMapping(layout: RowBasedLayoutModel, flexMapping: Fle
     if (flexMapping.mapping30 && layout.thirtyKeyMapping) return true;
     if (flexMapping.mappingThumb30 && layout.thumb30KeyMapping) return true;
     return !!layout.getSpecificMapping(flexMapping);
+}
+
+export function getAnsi30mapping(layout: RowBasedLayoutModel): (LayoutMapping | undefined) {
+    layout.supportedKeymapTypes?.forEach((type) => {
+        if (type.typeId == KeymapTypeId.Ansi30) return type.frameMapping;
+    })
+    return undefined;
+}
+
+export function getThumb30mapping(layout: RowBasedLayoutModel): (LayoutMapping | undefined) {
+    layout.supportedKeymapTypes?.forEach((type) => {
+        if (type.typeId == KeymapTypeId.Thumb30) return type.frameMapping;
+    })
+    return undefined;
 }
 
 // --- NEW: Functions using the new keymap type system ---

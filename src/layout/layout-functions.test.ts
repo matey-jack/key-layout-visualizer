@@ -13,7 +13,7 @@ import {
     hasMatchingMapping,
     hasMatchingMappingNew,
     getKeyPositions,
-    mergeMapping,
+    mergeMapping, getAnsi30mapping, getThumb30mapping,
 } from "./layout-functions.ts";
 import {
     normanMapping,
@@ -72,30 +72,43 @@ describe('fillMapping', () => {
     });
 
     allLayoutModels.forEach((model) => {
-        if (model.thirtyKeyMapping) {
+        if (getAnsi30mapping(model)) {
             it(`${model.name} 30-key frame maps all important characters`, () => {
-                hasLettersNumbersAndProsePunctuation(mergeMapping(model.thirtyKeyMapping!, ["", ...qwertyMapping.mapping30!]));
+                hasLettersNumbersAndProsePunctuation(mergeMapping(getAnsi30mapping(model)!, ["", ...qwertyMapping.mapping30!]));
             });
         }
-        if (model.thumb30KeyMapping) {
+        if (getThumb30mapping(model)) {
             it(`${model.name} Thumb30 frame maps all important characters`, () => {
-                hasLettersNumbersAndProsePunctuation(mergeMapping(model.thumb30KeyMapping!, ["", ...cozyEnglish.mappingThumb30!]));
+                hasLettersNumbersAndProsePunctuation(mergeMapping(getThumb30mapping(model)!, ["", ...cozyEnglish.mappingThumb30!]));
             });
         }
     });
 
+    const genericKeymapTypes = [KeymapTypeId.Ansi30, KeymapTypeId.Thumb30];
     it(`ANSI full layout maps all important characters`, () => {
-        hasLettersNumbersAndProsePunctuation(mergeMapping(ansiIBMLayoutModel.fullMapping!, thumbyZero.mappingAnsi!));
+        ansiIBMLayoutModel.supportedKeymapTypes?.forEach((type) => {
+            if (!genericKeymapTypes.includes(type.typeId)) {
+                hasLettersNumbersAndProsePunctuation(mergeMapping(type.frameMapping, thumbyZero.mappings[KeymapTypeId.Ansi]!));
+            }
+        })
     });
 
     // this is currently not used in the app, but let's keep it working
     it(`Split Ortho full layout maps all important characters`, () => {
-        hasLettersNumbersAndProsePunctuation(mergeMapping(splitOrthoLayoutModel.fullMapping!, cozyEnglish.mappingSplitOrtho!));
+        splitOrthoLayoutModel.supportedKeymapTypes?.forEach((type) => {
+            if (!genericKeymapTypes.includes(type.typeId)) {
+                hasLettersNumbersAndProsePunctuation(mergeMapping(type.frameMapping, cozyEnglish.mappings[KeymapTypeId.SplitOrtho]!));
+            }
+        })
     });
 
     // this is currently not used in the app, but let's keep it working
     it(`Harmonic 13 wide full layout maps all important characters`, () => {
-        hasLettersNumbersAndProsePunctuation(mergeMapping(harmonic13WideLayoutModel.fullMapping!, topNine.mappingHarmonic13wide!));
+        harmonic13WideLayoutModel.supportedKeymapTypes?.forEach((type) => {
+            if (!genericKeymapTypes.includes(type.typeId)) {
+                hasLettersNumbersAndProsePunctuation(mergeMapping(type.frameMapping, topNine.mappings[KeymapTypeId.Harmonic13Wide]!));
+            }
+        })
     });
 
     // TODO: fullMappings for other Harmonic variants need clean up first

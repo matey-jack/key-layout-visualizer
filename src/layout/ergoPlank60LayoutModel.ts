@@ -1,10 +1,10 @@
-import {FlexMapping, KeyboardRows, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {FlexMapping, KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 import {MicroGapKeyWidths, mirrorOdd, SymmetricKeyWidth} from "./keyWidth.ts";
 
 const keyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0.25, 0.25]);
 
-const thirtyKeyMapping: LayoutMapping = [
+const ansi30FrameMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, "-", null, "=", 5, 6, 7, 8, 9, "\\"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "'"],
@@ -12,7 +12,7 @@ const thirtyKeyMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
 ];
 
-const thumb30KeyMapping: LayoutMapping = [
+const thumb30FrameMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, "=", null, "\\", 5, 6, 7, 8, 9, "⏎"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "'"],
@@ -29,7 +29,6 @@ export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
     This is based on the "Harmonic" layout as well as the "Katana" design by RominRonin. 
     Biggest difference to the Katana is that the Shift keys are closer to the Pinky home position.
     This is achieved by making the Shift keys bigger and the home row edge key minimally small, i.e. 1u.`,
-    thirtyKeyMapping, thumb30KeyMapping,
     // row lengths: 14, 14 (but +1 gap!), 15, 14, 11
     // note that for data model reason, we also have to assign a finger to gaps.
     // but it will never be shown or used in any calulations.
@@ -70,6 +69,11 @@ export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
     staggerOffsets: [0.5, 0.25, 0, -0.5],
     symmetricStagger: true,
 
+    supportedKeymapTypes: [
+        {typeId: KeymapTypeId.Ansi30, frameMapping: ansi30FrameMapping},
+        {typeId: KeymapTypeId.Thumb30, frameMapping: thumb30FrameMapping},
+    ],
+
     getSpecificMapping: (_: FlexMapping) => undefined,
 
     keyColorClass: keyColorHighlightsClass,
@@ -79,9 +83,10 @@ export function ep60addAngleMod(lm: RowBasedLayoutModel): RowBasedLayoutModel {
     return {
         ...lm,
         name: "Ergoplank 60",
-        thirtyKeyMapping: copyAndModifyKeymap(lm.thirtyKeyMapping!, angleModKeymap),
-        thumb30KeyMapping: copyAndModifyKeymap(lm.thumb30KeyMapping!, angleModKeymap),
-        fullMapping: lm.fullMapping && copyAndModifyKeymap(lm.fullMapping!, angleModKeymap),
+        supportedKeymapTypes: lm.supportedKeymapTypes?.map(supported => ({
+            ...supported,
+            frameMapping: copyAndModifyKeymap(supported.frameMapping, angleModKeymap),
+        })),
         // Now we could go to 0.25 stagger without making Z awkward to type and put ⌦ on the newly fusioned 1.5u central key...
         // but this key fusion removes one key from the board which makes it hard to place Home/End without moving a lot of stuff around.
     }
@@ -110,13 +115,17 @@ const ep60bottomArrowsMGap = new MicroGapKeyWidths(
 export const ep60WithArrowsLayoutModel: RowBasedLayoutModel = {
     ...ergoPlank60LayoutModel,
     name: "Ergoplank 60 with cursor block",
-    thirtyKeyMapping: replaceLast(ergoPlank60LayoutModel.thirtyKeyMapping!,
-        [null, "Ctrl", "Cmd", "AltGr", "Alt", "⏎", "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]
-    ),
-    thumb30KeyMapping: replaceLast(ergoPlank60LayoutModel.thumb30KeyMapping!,
-        [null, "Ctrl", "Cmd", "AltGr", "Alt", 0, "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]
-    ),
-    // fullMapping: replaceLast(ergoPlankRegularLayoutModel.fullMapping, []),
+    supportedKeymapTypes: [
+        {
+            typeId: KeymapTypeId.Ansi30,
+            frameMapping: replaceLast(ansi30FrameMapping, [null, "Ctrl", "Cmd", "AltGr", "Alt", "⏎", "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"])
+        },
+        {
+            typeId: KeymapTypeId.Thumb30,
+            frameMapping: replaceLast(thumb30FrameMapping, [null, "Ctrl", "Cmd", "AltGr", "Alt", 0, "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"])
+        },
+    ],
+
     singleKeyEffort: replaceLast(ergoPlank60LayoutModel.singleKeyEffort,
         [null, 3.0, 3.0, 2.0, 1.5, 0.2, 1.5, 0.2, 1.5, null, null, null, null, null]
     ),
