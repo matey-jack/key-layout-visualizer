@@ -68,6 +68,9 @@ bugs fixed:
 - handle Harmonic variants without a matching mapping:
   + when switching to the Harmonic layout with an unsupported mapping already set
   + when switching the Harmonic variant
+- select AHKB, then select qwerty wide. crash!
+- fullLayout on ANSI doesn't work with HHKB and AHKB – function setLayout needs to be adapted to switch to IBM or Apple in this case!
+- when switching mappings we correctly set options (which only affects ANSI), but we don't switch Layouts, because there are so many variants to iterate through. But needs to be done at some point.
 
 
 
@@ -103,10 +106,7 @@ missing core features:
      * especially Thumby-KU
 
 bugs:
-- select AHKB, then select qwerty wide. crash!
-
-- fullLayout on ANSI doesn't work with HHKB and AHKB – function setLayout needs to be adapted to switch to IBM or Apple in this case!
-- when switching mappings we correctly set options (which only affects ANSI), but we don't switch Layouts, because there are so many variants to iterate through. But needs to be done at some point.
+- bigram lines are misplaced on Ergosplit
 - the comparisonBase mapping needs to have definitions on all layouts, thus at least a mapping30 (which is supported everywhere).
    Add that for qwertz and maybe add a full mapping for the ortho board to make the comparison more meaningful.
 - on Thumby / Cozy Keyboard English variant, the apostrophe is counted as "changed on same finger" on the ortho layout, 

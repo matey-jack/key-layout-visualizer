@@ -16,7 +16,6 @@ import {
 import {qwertyMapping} from "../mapping/mappings.ts";
 import {sum} from "../library/math.ts";
 import {isCommandKey} from "../mapping/mapping-functions.ts";
-import {ansiIBMLayoutModel} from "./ansiLayoutModel.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
     if (row != KeyboardRows.Home) return false;
@@ -59,7 +58,7 @@ export function onlySupportsWide(mapping: FlexMapping) {
     return !mapping.mappings[KeymapTypeId.Ansi30] && !mapping.mappings[KeymapTypeId.Ansi30];
 }
 
-export function getFrameMapping(model: RowBasedLayoutModel = ansiIBMLayoutModel, type: KeymapTypeId): (LayoutMapping | undefined) {
+export function getFrameMapping(model: RowBasedLayoutModel, type: KeymapTypeId): (LayoutMapping | undefined) {
     return model.supportedKeymapTypes.filter(
         (t) => t.typeId == type
     )[0]?.frameMapping;
