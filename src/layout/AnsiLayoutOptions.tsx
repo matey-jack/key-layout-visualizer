@@ -20,7 +20,7 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
         {variant: AnsiVariant.IBM, label: "IBM"},
         {variant: AnsiVariant.APPLE, label: "Apple"},
         {variant: AnsiVariant.HHKB, label: "HHKB"},
-        {variant: AnsiVariant.HHKB_PLUS, label: "HHKB+"},
+        {variant: AnsiVariant.XHKB, label: "XHKB"},
         {variant: AnsiVariant.AHKB, label: "AHKB"},
     ];
 

@@ -20,12 +20,14 @@ const thumb30KeyMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "", "Alt", 0, "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
 ];
 
-export const hhkbPlusLayoutModel: RowBasedLayoutModel = {
-    name: "HHKB+",
-    description: `Continuing HHKB's idea of splitting large keys, we can obtain 
-    a wide-hand, split-space keyboard with traditional typewriter row staggering.`,
+export const xhkbLayoutModel: RowBasedLayoutModel = {
+    name: "XHKB",
+    description: `The eXhilarted Hacking Keyboard continues HHKB's idea of splitting large keys to a point that
+    delivers us a layout with ergonomically wider hand positions and some extra keys that can be used for navigation 
+    or whatever you like. And to top it off, let's also split the space bar to create two great thumb keys per side.
+    Using only four keycap sizes, the XHKB is the most versatile keyboard with traditional typewriter row staggering 
+    and the classic 60% box shape.`,
 
-    // Keyboard width is 15u which gives 14 keys in top three rows, 13 in the lower row, and 10 in the bottom.
     keyWidths: [
         ahkbKeyWidth.row(0, 1.5), // 14 keys
         ahkbKeyWidth.row(1, 1),   // 15 keys

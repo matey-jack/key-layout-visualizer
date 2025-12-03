@@ -25,14 +25,14 @@ import {
     eb65MidshiftRightRetLayoutModel,
     eb65VerticalEnterLayoutModel
 } from "./layout/eb65MidshiftNarrowLayoutModels.ts";
-import {hhkbPlusLayoutModel} from "./layout/hhkbPlusLayoutModel.ts";
+import {xhkbLayoutModel} from "./layout/xhkbLayoutModel.ts";
 
 const layoutModels: Array<RowBasedLayoutModel> = [
     ansiIBMLayoutModel,
     ansiWideLayoutModel,
     createHHKB(ansiIBMLayoutModel),
     ahkbLayoutModel,
-    hhkbPlusLayoutModel,
+    xhkbLayoutModel,
     eb65LowshiftLayoutModel,
     eb65BigEnterLayoutModel,
     eb65LowshiftWideLayoutModel,

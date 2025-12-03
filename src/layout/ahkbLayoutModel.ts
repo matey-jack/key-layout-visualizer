@@ -22,7 +22,11 @@ const thumb30KeyMapping: LayoutMapping = [
 
 export const ahkbLayoutModel: RowBasedLayoutModel = {
     name: "AHKB",
-    description: `A wide-hand, split space keyboard with traditional typewriter row staggering.
+    description: `Less different key sizes make a board more customizable by allowing keycaps to be swapped to different places.
+    Using just two keycap sizes, the AHKB get as close as one can to the famous OLKB keyboards with all square keys.
+    But it still features the traditional typewriter row staggering which some love, some hate, but for sure everybody is used to.
+    Additionally, the AHKB offers an ergonomically wider hand position and a short split space bar creating two nice thumb keys for each hand.
+    If you want even better ergonomics, give up that obsolete typewriter stagger and try the Ergoplank or Ergoboard! 
     Apple ❤ HHKB: when keyboard layouts meet and mate.`,
 
     // Keyboard width is 14.5u which gives 14 keys in top three rows, 13 in the lower row, and 10 in the bottom.
