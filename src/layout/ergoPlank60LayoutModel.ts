@@ -1,6 +1,6 @@
-import {FlexMapping, KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
-import {MicroGapKeyWidths, mirrorOdd, SymmetricKeyWidth} from "./keyWidth.ts";
+import {mirrorOdd, SymmetricKeyWidth} from "./keyWidth.ts";
 
 const keyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0, 0.25]);
 
@@ -99,17 +99,6 @@ function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
     return keymap;
 }
 
-const ep60bottomArrowsMGap = new MicroGapKeyWidths(
-    4,
-    [NaN, 4, NaN],
-    // 7.5u on each side, thereof 1.5 space and 0.5u for the half of the central key, leaves 5.5u per side.
-    // Left: 0.25 gap, leaving 5.25, which is 4×1.25 plus 0.25 to split in three small gaps.
-    // Right: 4u for arrows leaves 1.5u, which is one 1.25u key and a 0.25u gap.
-    // Much simpler to look at is the old solution where we omit the micro-gaps and increase the central key by 0.25u.
-    // But this makes the left outer space key harder to hit, because it'd be too far under the palm.
-    [[0.25], [1.25, 1.25, 1.25], [1.25, 1.5, 1, 1.5, 1.25, 0.25, 1, 1, 1, 1]]
-);
-
 export const ep60WithArrowsLayoutModel: RowBasedLayoutModel = {
     ...ergoPlank60LayoutModel,
     name: "Ergoplank 60 with cursor block",
@@ -131,10 +120,11 @@ export const ep60WithArrowsLayoutModel: RowBasedLayoutModel = {
         [null, 0, 1, 2, 4, 4, 5, 5, 5, null, null, null, null, null]
     ),
     // remove the bottom row indent
-    rowIndent: [0, 0, 0, 0.25, 0],
-    keyWidths: replaceLast(ergoPlank60LayoutModel.keyWidths, ep60bottomArrowsMGap.keyWidths),
-
-    keyCapWidth: ep60bottomArrowsMGap.keyCapWidthsFn(),
+    rowIndent: [0, 0, 0, 0, 0],
+    keyWidths: replaceLast(
+        ergoPlank60LayoutModel.keyWidths,
+        [0.25, 1.5, 1.25, 1.25, 1.25, 1.5, 1, 1.5, 1.25, 0.25, 1, 1, 1, 1]
+    ),
 }
 
 function replaceLast<T>(list: T[], last: T) {
