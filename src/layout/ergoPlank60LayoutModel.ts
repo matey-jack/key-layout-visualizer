@@ -2,7 +2,7 @@ import {FlexMapping, KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutMo
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 import {MicroGapKeyWidths, mirrorOdd, SymmetricKeyWidth} from "./keyWidth.ts";
 
-const keyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0.25, 0.25]);
+const keyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0, 0.25]);
 
 const ansi30FrameMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
@@ -58,7 +58,7 @@ export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
         keyWidths.row(0, 1.5),
         keyWidths.row(1, 1.25),
         keyWidths.row(2, 1),
-        keyWidths.row(3, 1.25),
+        keyWidths.row(3, 1.5),
         // With 0.25 indent and 0.5u from the central 1u key, both halves have exactly 7.5u
         mirrorOdd(1.5, 1.25, 1.25, 1.25, 1.5, 1),
     ],
