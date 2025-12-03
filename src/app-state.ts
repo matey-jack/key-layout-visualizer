@@ -15,17 +15,12 @@ import {allMappings, qwertyMapping} from "./mapping/mappings.ts";
 import {getBigramMovements} from "./bigrams.ts";
 
 function modifyWide(mapping: FlexMapping, opts: LayoutOptions): boolean {
-    // TODO: this would be much simpler if we restricted the "wide" checkbox to be only shown under the IBM option,
-    //       Or even simpler with a separate variant "IBM wide-hands".
     switch (opts.ansiVariant) {
         case AnsiVariant.AHKB:
+        case AnsiVariant.XHKB:
             // Flag is not used for AHKB, but we flip for transparency in the UI and also to stay on "wide" mode when
             // switching to another variant.
             return true;
-        case AnsiVariant.APPLE:
-        case AnsiVariant.HHKB:
-            // Long space bar on those keyboards doesn't work well with an extra thumb key.
-            return false;
     }
     // ANSI_IBM: force wide mode when there is no non-wide keymap, but there is a wide keymap available.
     if (mapping.mappings[KeymapTypeId.Ansi30] || mapping.mappings[KeymapTypeId.Ansi]) {
@@ -98,6 +93,11 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
         mappingState.value = newMapping;
         return;
     }
+    /*
+    Tweaking the layout option to find a layout model that can serve the selected mapping has two steps:
+     - if the new mapping needs a thumb key and we are on ANSI, then switch on the 'wide' flag. (And switch off HHKB.)
+     - in all other cases, we probably have a mapping that needs a specific layout and we do a general search.
+     */
     // For ANSI we can change the 'wide' flag or pick another variant to find a layout model for the selected mapping.
     if (layoutOptionsState.value.type === LayoutType.ANSI) {
         // TODO: can't test this, because no such FlexMappings exist yet.
@@ -109,7 +109,7 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
         }
         if ((newMapping.mappings[KeymapTypeId.AnsiWide] || newMapping.mappings[KeymapTypeId.Thumb30])) {
             if (layoutOptionsState.value.ansiVariant === AnsiVariant.HHKB) {
-                layoutOptionsState.value = {...layoutOptionsState.value, ansiVariant: AnsiVariant.APPLE};
+                layoutOptionsState.value = {...layoutOptionsState.value, ansiVariant: AnsiVariant.IBM};
             }
             layoutOptionsState.value = {...layoutOptionsState.value, ansiWide: true};
             mappingState.value = newMapping;

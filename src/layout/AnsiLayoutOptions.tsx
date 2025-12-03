@@ -12,9 +12,11 @@ export interface AnsiLayoutOptionsProps {
     mapping: Signal<FlexMapping>;
 }
 
+const naturallyWideVariants = [AnsiVariant.AHKB, AnsiVariant.XHKB];
+
 export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptionsProps) {
     const {ansiWide, ansiVariant, ansiSplit, angleMod} = options;
-    const wideDisabled = onlySupportsWide(mapping.value) || ansiVariant === AnsiVariant.AHKB;
+    const wideDisabled = onlySupportsWide(mapping.value) || naturallyWideVariants.includes(ansiVariant);
     const splitDisabled = ansiVariant === AnsiVariant.HHKB;
     const variantOptions = [
         {variant: AnsiVariant.IBM, label: "IBM"},

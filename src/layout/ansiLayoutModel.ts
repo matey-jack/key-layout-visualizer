@@ -262,6 +262,7 @@ export function createHHKB(lm: RowBasedLayoutModel): RowBasedLayoutModel {
         name: lm.name.replace("ANSI", "Happy Hacker Keyboard"),
         supportedKeymapTypes: [
             {
+                // we omit the Thumb30 frameMapping, because HHKB's bottom row is not a good place to map a letter!
                 typeId: KeymapTypeId.Ansi30,
                 frameMapping: copyAndModifyKeymap(getAnsi30mapping(lm)!, splitKeys)
             }
@@ -300,7 +301,8 @@ function splitKeys(matrix: LayoutMapping): LayoutMapping {
     matrix[KeyboardRows.Home][0] = "Ctrl";
     matrix[KeyboardRows.Upper].push("⌫");
     matrix[KeyboardRows.Lower].push("Fn");
-    // Explicit gaps instead of "rowStart", because both sides are different, which almost centers the spacebar between thumbs, btw.
+    // Explicit gaps instead of "rowStart", because both sides are different.
+    // (Which almost centers the spacebar between thumbs, btw.)
     matrix[KeyboardRows.Bottom] = [null, "Alt", "Cmd", "⍽", "Cmd", "Alt", null];
     return matrix
 }
