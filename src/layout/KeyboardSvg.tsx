@@ -1,6 +1,5 @@
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping/mapping-functions.ts";
 import {
-    createKeySizeGroups,
     defaultKeyColor, getKeySizeClass,
     isHomeKey,
     keyCapHeight,
@@ -136,13 +135,12 @@ function getFingeringClasses(layoutModel: RowBasedLayoutModel, row: number, col:
 }
 
 export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizType}: KeyboardProps) {
-    const keyCapSizes = createKeySizeGroups(layoutModel);
     return keyPositions.map(({label, row, col, colPos}) => {
         const keyColorFunction = (layoutModel.keyColorClass) || defaultKeyColor;
         const capWidth = keyCapWidth(layoutModel, row, col);
         const capHeight = keyCapHeight(layoutModel, row, col);
         const capSize = Math.max(capWidth, capHeight);
-        const bgClass = (vizType == VisualizationType.LayoutKeySize ? getKeySizeClass(capSize, keyCapSizes)
+        const bgClass = (vizType == VisualizationType.LayoutKeySize ? getKeySizeClass(capSize)
                 : vizType == VisualizationType.LayoutKeyEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
                     : vizType == VisualizationType.LayoutFingering // && (layoutModel.mainFingerAssignment[row][col] !== null)
                         ? getFingeringClasses(layoutModel, row, col, label)

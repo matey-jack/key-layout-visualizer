@@ -36,28 +36,18 @@ export const keyCapWidth = (lm: RowBasedLayoutModel, r: KeyboardRows, c: number)
 export const keyCapHeight = (lm: RowBasedLayoutModel, r: KeyboardRows, c: number) =>
     lm.keyCapHeight ? lm.keyCapHeight(r, c) : 1;
 
-// This is needed in this form somewhere and I don't want to refactor that 🤷‍♀️
+// This is needed in this form somewhere, and I don't want to refactor that 🤷‍♀️
 export const keyCapSize = (lm: RowBasedLayoutModel) =>
     ((r: KeyboardRows, c: number) => Math.max(keyCapHeight(lm, r, c), keyCapWidth(lm, r, c)));
 
-export function createKeySizeGroups(layoutM: RowBasedLayoutModel) {
-    const keySizes: number[] = [];
-    const frameMapping = layoutM.supportedKeymapTypes?.[0].frameMapping!;
-    frameMapping.forEach((row, r) => {
-        row.forEach((label, c) => {
-            const size = keyCapSize(layoutM)(r, c);
-            if (label !== null && size != 1 && !keySizes.includes(size)) {
-                keySizes.push(size);
-            }
-        })
-    });
-    keySizes.sort();
-    return keySizes;
-}
-
-export function getKeySizeClass(keyCapSize: number, sizeList: number[]) {
+export function getKeySizeClass(keyCapSize: number) {
     if (keyCapSize == 1) return "key-size-square";
-    return "key-size-" + sizeList.indexOf(keyCapSize);
+    const keySizeThresholds = [1.25, 1.5, 1.75, 2.0, 2.25, 2.75, 4, 6];
+    for (let i = 0; i < keySizeThresholds.length; i++) {
+        if (keyCapSize <= keySizeThresholds[i]) {
+            return "key-size-" + i;
+        }
+    }
 }
 
 export const keyColorHighlightsClass = (label: string, row: KeyboardRows, col: number) => {

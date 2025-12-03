@@ -1,7 +1,7 @@
 import {describe, expect, it} from 'vitest';
 
-import {ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
-import {createKeySizeGroups, fillMapping, getKeyPositions} from "./layout-functions.ts";
+import {ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
+import {fillMapping, getKeyPositions} from "./layout-functions.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
 
 describe('ergoPlank60LayoutModel', () => {
@@ -13,19 +13,4 @@ describe('ergoPlank60LayoutModel', () => {
         // the key after the gap
         expect(keyPositions[21].colPos).toEqual(8.75);
     });
-
-    it('key size for color purposes should be key cap size', () => {
-        const sizes = createKeySizeGroups(ep60WithArrowsLayoutModel);
-        expect(sizes.length).toBe(2);
-        expect(sizes).toContain(1.25);
-        expect(sizes).toContain(1.5);
-    });
 });
-
-//
-// describe('ergoPlankLayoutModel fullMapping row length', () => {
-//         expect(ergoPlankLayoutModel.fullMapping[0]).toBe(14)
-//         expect(ergoPlankLayoutModel.fullMapping[0]).toBe(14)
-//         expect(ergoPlankLayoutModel.fullMapping[0]).toBe(15)
-//         expect(ergoPlankLayoutModel.fullMapping[0]).toBe(13)
-// })

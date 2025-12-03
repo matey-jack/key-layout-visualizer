@@ -16,7 +16,6 @@ import {
 import {AppState} from "../app-model.ts";
 import {
     compatibilityScore,
-    createKeySizeGroups,
     diffSummary,
     diffToBase,
     fillMapping,
@@ -139,19 +138,34 @@ function countKeysBySize(layoutM: RowBasedLayoutModel) {
     return counts;
 }
 
+function getUsedKeysizes(layoutM: RowBasedLayoutModel) {
+    const keySizes: number[] = [];
+    const frameMapping = layoutM.supportedKeymapTypes?.[0].frameMapping!;
+    frameMapping.forEach((row, r) => {
+        row.forEach((label, c) => {
+            const size = keyCapSize(layoutM)(r, c);
+            if (label !== null && size != 1 && !keySizes.includes(size)) {
+                keySizes.push(size);
+            }
+        })
+    });
+    keySizes.sort();
+    return keySizes;
+}
+
 export function KeySizeDetails({layout}: { layout: RowBasedLayoutModel }) {
     const countsBySize = countKeysBySize(layout);
     const total = sum([...countsBySize.values()]);
-    const sizeList = createKeySizeGroups(layout);
+    const sizeList = getUsedKeysizes(layout);
     return <div><p>
         Colors on the keys show which keycaps have the same size.<br/>
         It's easier to swap around keycaps to different places on the keyboard if many of them share the same size.
         It also makes production and logistics easier.
     </p>
         <div>
-            <KeySizeDetailsLegendItem size={1} count={countsBySize.get(1)!} sizeList={sizeList}/>
+            <KeySizeDetailsLegendItem size={1} count={countsBySize.get(1)!}/>
             {sizeList.map((s) =>
-                <KeySizeDetailsLegendItem size={s} count={countsBySize.get(s)!} sizeList={sizeList}/>
+                <KeySizeDetailsLegendItem size={s} count={countsBySize.get(s)!}/>
             )}
             <div><div class="keysize-legend-item"><b>Total</b></div> – {total} keys.</div>
         </div>
@@ -160,14 +174,13 @@ export function KeySizeDetails({layout}: { layout: RowBasedLayoutModel }) {
 
 type KeySizeDetailsLegendItemProps = {
     size: number;
-    sizeList: number[];
     count: number;
     children?: ComponentChildren;
 }
 
-export function KeySizeDetailsLegendItem({size, count, sizeList}: KeySizeDetailsLegendItemProps) {
+export function KeySizeDetailsLegendItem({size, count}: KeySizeDetailsLegendItemProps) {
     return <div>
-        <div class={"keysize-legend-item " + getKeySizeClass(size, sizeList)}>
+        <div class={"keysize-legend-item " + getKeySizeClass(size)}>
             {size}
         </div>
         – {count} keys.

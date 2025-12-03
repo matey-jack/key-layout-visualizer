@@ -88,8 +88,9 @@ refactorings:
 missing core features:
 - Ergoplank and Katana logos to fill the gap, especially Ergoboard 65 Midshift with a nice connection between both gaps.
 - Rectangle around the keyboard to signify the 60% or 65% box.
-- AHKB should be minimal: just Apple layout with both Shift keys begetting a 1u external key. Or even a 1.25 to be used as Ctrl/Cmd?!
-- new name for current AHKB ==> AHKB-Wide?!
+- switch Typewrite variant selection to buttons, like on other layout types.
+  - add 1980s (new) and 1990s (current) variant to the IBM board.
+  - optionally add Apple compact (Macbook) bottom row with Fn key and three arrow keys on the right (simulate the half-arrows with a single up/down key) 
 
 - add some more explanations, especially for:
   + the "wide" mappings
