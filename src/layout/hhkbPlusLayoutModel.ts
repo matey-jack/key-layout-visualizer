@@ -2,14 +2,14 @@ import {FlexMapping, KEY_COLOR, KeyboardRows, KeymapTypeId, LayoutMapping, RowBa
 import {copyAndModifyKeymap, defaultKeyColor, keyColorHighlightsClass} from "./layout-functions.ts";
 import {mirror, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
 
-const ahkbKeyWidth = new MonotonicKeyWidth(15, [0, 0, 0, 0, 0.75], "AHKB");
+const ahkbKeyWidth = new MonotonicKeyWidth(15, zeroIndent, "AHKB");
 
 const thirtyKeyMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, "-", "=", "'", 5, 6, 7, 8, 9, "⇞"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "⏎"],
     ["⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "⇟"],
-    ["Ctrl", "Cmd", null, "Alt", "⍽", "⍽", "AltGr", null, "Fn", "Ctrl"],
+    ["Ctrl", "Cmd", "`~", "Alt", "⍽", "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
 ];
 
 const thumb30KeyMapping: LayoutMapping = [
@@ -17,7 +17,7 @@ const thumb30KeyMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, "=", "`~", "'", 5, 6, 7, 8, 9, "⇞"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "⏎"],
     ["⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "⇟"],
-    ["Ctrl", "Cmd", null, "Alt", 0, "⍽", "AltGr", null, "Fn", "Ctrl"],
+    ["Ctrl", "Cmd", "", "Alt", 0, "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
 ];
 
 export const hhkbPlusLayoutModel: RowBasedLayoutModel = {
@@ -31,7 +31,9 @@ export const hhkbPlusLayoutModel: RowBasedLayoutModel = {
         ahkbKeyWidth.row(1, 1),   // 15 keys
         ahkbKeyWidth.row(2, 1.25),// 14 keys
         [1.75, ...Array(11).fill(1), 1.25, 1], // 14 keys
-        mirror(1.5, 1.5, 0.5, 1.5, 1.75),
+        // Center of keyboard is at 7.25 / 7.75.
+        // Key sizes are 3 × 1.5u + 1.75u = 6.25u, which leaves an additional 1u key left and 1.5u key right.
+        [1.5, 1.5, 1, 1.5, 1.75, 1.75, 1.5, 1.5, 1.5, 1.5],
     ],
 
     mainFingerAssignment: [
@@ -39,7 +41,7 @@ export const hhkbPlusLayoutModel: RowBasedLayoutModel = {
         [1, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9, 8],
         [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9],
-        [0, 1, null, 4, 4, 5, 5, null, 8, 9],
+        [0, 1, 1, 4, 4, 5, 5, 7, 8, 9],
     ],
 
     singleKeyEffort: [
@@ -47,7 +49,7 @@ export const hhkbPlusLayoutModel: RowBasedLayoutModel = {
         [3.0, 2.0, 1.0, 1.0, 1.5, 1.5, 3.0, 3.0, 1.5, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0],
         [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
         [1.0, 2.0, 2.0, 1.5, 1.5, 3.0, 3.0, 3.0, 1.5, 1.0, 1.5, 1.5, 1.0, 3.0],
-        [2.0, 2.0, null, 1.0, 0.2, 0.2, 1.0, null, 2.0, 2.0],
+        [2.0, 2.0, 2.0, 1.0, 0.2, 0.2, 1.0, 2.0, 2.0, 2.0],
     ],
 
     hasAltFinger: (_r: number, _c: number) => false,
