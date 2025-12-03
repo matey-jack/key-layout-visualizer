@@ -78,7 +78,7 @@ export interface AppState {
     // Getter/Setter to do validations on the state.
     layout: ReadonlySignal<LayoutOptions>;
     layoutModel: ReadonlySignal<RowBasedLayoutModel>;
-    setLayout: (layoutOptions: LayoutOptions) => void;
+    setLayout: (layoutOptions: Partial<LayoutOptions>) => void;
 
     mapping: Signal<FlexMapping>;
     setMapping: (m: FlexMapping) => void;

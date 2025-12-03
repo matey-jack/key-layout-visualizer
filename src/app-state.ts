@@ -78,7 +78,6 @@ function setLayout(
             }
         }
     }
-    // end of code to be changed
     layoutOptionsState.value = newLayoutOptions;
 }
 
@@ -96,18 +95,10 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
     /*
     Tweaking the layout option to find a layout model that can serve the selected mapping has two steps:
      - if the new mapping needs a thumb key and we are on ANSI, then switch on the 'wide' flag. (And switch off HHKB.)
-     - in all other cases, we probably have a mapping that needs a specific layout and we do a general search.
+     - in all other cases, we probably have a mapping that needs a specific layout, thus we do a general search.
      */
-    // For ANSI we can change the 'wide' flag or pick another variant to find a layout model for the selected mapping.
     if (layoutOptionsState.value.type === LayoutType.ANSI) {
-        // TODO: can't test this, because no such FlexMappings exist yet.
-        if (newMapping.mappings[KeymapTypeId.Ansi] ) {
-            // ANSI keymap fits any
-            layoutOptionsState.value = {...layoutOptionsState.value, ansiWide: false};
-            mappingState.value = newMapping;
-            return;
-        }
-        if ((newMapping.mappings[KeymapTypeId.AnsiWide] || newMapping.mappings[KeymapTypeId.Thumb30])) {
+        if (newMapping.mappings[KeymapTypeId.Thumb30]) {
             if (layoutOptionsState.value.ansiVariant === AnsiVariant.HHKB) {
                 layoutOptionsState.value = {...layoutOptionsState.value, ansiVariant: AnsiVariant.IBM};
             }
@@ -116,10 +107,25 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
             return;
         }
     }
-    const fallbackLayouts = []
-    // Currently, Maltron is the only keyMap that doesn't have a generic 30-key map, thus we know that Ergosplit covers every keymap.
-    layoutOptionsState.value = {...layoutOptionsState.value, type: LayoutType.Ergosplit};
-    mappingState.value = newMapping;
+    // only need to include layouts which we know to have some mappings exclusive to them.
+    const fallbackLayouts: Partial<LayoutOptions>[] = [
+        {type: LayoutType.ANSI, ansiVariant: AnsiVariant.IBM},
+        {type: LayoutType.ANSI, ansiVariant: AnsiVariant.IBM, ansiWide: true},
+        {type: LayoutType.Ergosplit},
+        {type: LayoutType.Ergoplank, plankVariant: PlankVariant.EP60},
+        {type: LayoutType.Ergoplank, plankVariant: PlankVariant.EB65_MID_SHIFT, eb65MidshiftVariant: EB65_MidShift_Variant.NICELY_WIDE},
+        {type: LayoutType.Harmonic, harmonicVariant: HarmonicVariant.H13_Wide},
+        {type: LayoutType.Harmonic, harmonicVariant: HarmonicVariant.H14_Traditional},
+    ]
+    for (let opts of fallbackLayouts) {
+        const newOpts = {...(layoutOptionsState.value), ...opts};
+        const model = getLayoutModel(newOpts);
+        if (hasMatchingMapping(model, newMapping)) {
+            mappingState.value = newMapping;
+            layoutOptionsState.value = newOpts;
+            return;
+        }
+    }
 }
 
 // We need to do careful conversion to preserve the null value (and other invalid values),
@@ -209,7 +215,8 @@ export function createAppState(): AppState {
     effect(() => updateUrlParams(layoutOptionsState.value, mappingState, vizType));
     return {
         layout: computed(() => layoutOptionsState.value),
-        setLayout: (layoutOptions: LayoutOptions) => setLayout(layoutOptions, layoutOptionsState, mappingState),
+        setLayout: (layoutOptions: Partial<LayoutOptions>) =>
+            setLayout({...layoutOptionsState.value, ...layoutOptions}, layoutOptionsState, mappingState),
         layoutModel,
         mapping: computed(() => mappingState.value),
         setMapping: (m: FlexMapping) => setMapping(m, layoutOptionsState, layoutModel.value, mappingState),

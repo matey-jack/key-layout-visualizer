@@ -79,7 +79,7 @@ function flipRetRub(charMap: (string | null)[][]) {
 
 interface TopBarProps {
     layout: LayoutOptions;
-    setLayout: (layout: LayoutOptions) => void;
+    setLayout: (layout: Partial<LayoutOptions>) => void;
 }
 
 function TopBar({layout, setLayout}: TopBarProps) {
@@ -91,7 +91,7 @@ function TopBar({layout, setLayout}: TopBarProps) {
                 layoutType={layoutType}
                 layoutName={LayoutTypeNames[layoutType]}
                 currentLayout={layout.type}
-                setLayoutType={(type) => setLayout({...layout, type})}
+                setLayout={setLayout}
                 key={layoutType}
             />
         )}
@@ -106,12 +106,12 @@ interface TopBarKeyboardTabProps {
     layoutType: LayoutType;
     layoutName: string;
     currentLayout: LayoutType;
-    setLayoutType: (layout: LayoutType) => void;
+    setLayout: (layout: Partial<LayoutOptions>) => void;
 }
 
-function TopBarKeyboardTab({layoutType, layoutName, currentLayout, setLayoutType}: TopBarKeyboardTabProps) {
+function TopBarKeyboardTab({layoutType, layoutName, currentLayout, setLayout}: TopBarKeyboardTabProps) {
     const selected = layoutType === currentLayout;
-    return <div onClick={() => setLayoutType(layoutType)}>
+    return <div onClick={() => setLayout({type: layoutType})}>
         <button class={"top-bar-keyboard-tab-label" + (selected ? " selected" : "")}>
             {layoutName}
         </button>
@@ -132,29 +132,28 @@ function LayoutOptionsBar({state}: LayoutOptionsBarProps) {
 
 interface LayoutOptionsProps {
     layoutOptions: LayoutOptions;
-    setLayoutOptions: (layoutOptions: LayoutOptions) => void;
+    setLayoutOptions: (layoutOptions: Partial<LayoutOptions>) => void;
     mapping: Signal<FlexMapping>;
 }
 
 function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions, mapping}: LayoutOptionsProps) {
-    const setOption = (opts: Partial<LayoutOptions>) => setLayoutOptions({...layoutOptions, ...opts});
 
     switch (layoutOptions.type) {
         case LayoutType.ANSI:
             return <AnsiLayoutOptions
                 options={layoutOptions}
-                setOption={setOption}
+                setOption={setLayoutOptions}
                 mapping={mapping}
             />
         case LayoutType.Harmonic:
             return <HarmonicLayoutOptions
                 options={layoutOptions}
-                setOption={setOption}
+                setOption={setLayoutOptions}
             />
         case LayoutType.Ergoplank:
             return <ErgoplankLayoutOptions
                 options={layoutOptions}
-                setOption={setOption}
+                setOption={setLayoutOptions}
             />
     }
     return <></>;
