@@ -2,14 +2,14 @@ import {KEY_COLOR, KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutMode
 import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
 import {mirror, MonotonicKeyWidth} from "./keyWidth.ts";
 
-const ahkbKeyWidth = new MonotonicKeyWidth(14.5, [0, 0, 0.25, 0.25, 0.75], "AHKB Narrow");
+const ahkbKeyWidth = new MonotonicKeyWidth(14.5, [0, 0, 0.25, 0.25, 0.25], "AHKB Narrow");
 
 const thirtyKeyMapping: LayoutMapping = [
     ["⎋ Exit", "1", "2", "3", "4", "5", "`~", "6", "7", "8", "9", "0", "[", "]"],
     ["↹", 0, 1, 2, 3, 4, "-", "=", 5, 6, 7, 8, 9, "⌫"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", null, "Alt", "⏎ Enter", "⍽", "AltGr", null, "Fn", "Ctrl"],
+    ["Ctrl", "Cmd", "CAPS", "Alt", "⏎ Enter", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
 ];
 
 const thumb30KeyMapping: LayoutMapping = [
@@ -17,7 +17,7 @@ const thumb30KeyMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, "=", "`~", 5, 6, 7, 8, 9, "⌫"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Alt", null, 0, "⏎ Enter", "⍽", "AltGr", null, "Cmd", "Ctrl"],
+    ["Ctrl", "Cmd", "Alt", 0, "⏎ Enter", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
 ];
 
 export const ahkbLayoutModel: RowBasedLayoutModel = {
@@ -37,7 +37,7 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
         ahkbKeyWidth.row(3, 1.5),
         // 14.5 total with, 7.25 per side.
         // 4 × 1.5u = 6u per side in keys, 0.75 indent, leaves 0.5 gap.
-        mirror(1.5, 1.5, 0.5, 1.5, 1.5),
+        mirror(1.5, 1.5, 1.0, 1.5, 1.5),
     ],
 
     rowIndent: ahkbKeyWidth.rowIndent,
@@ -48,7 +48,7 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
         [1, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9],
-        [0, 1, null, 4, 4, 5, 5, null, 7, 9],
+        [0, 1, 2, 4, 4, 5, 5, 7, 7, 9],
     ],
 
     singleKeyEffort: [
@@ -56,7 +56,7 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
         [3.0, 2.0, 1.0, 1.0, 1.5, 1.5, 3.0, 3.0, 1.5, 1.5, 1.0, 1.0, 2.0, 2.0],
         [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
         [1.0, 2.0, 2.0, 1.5, 1.5, 3.0, 3.0, 3.0, 1.5, 1.0, 1.5, 1.5, 1.0],
-        [2.0, 2.0, null, 1.0, 0.2, 0.2, 1.0, null, 2.0, 2.0],
+        [null, null, null, 1.0, 0.2, 0.2, 1.0, null, null, null],
     ],
 
     keyColorClass(label: string, row: KeyboardRows, col: number) {
