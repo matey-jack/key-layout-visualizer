@@ -36,9 +36,22 @@ body {
 }
 
 .ansi-layout-options-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    justify-items: center;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.ansi-variant-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.ansi-variant-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 180px;
 }
 
 .harmonic-layout-options-container {

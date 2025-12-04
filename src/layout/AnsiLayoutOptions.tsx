@@ -3,7 +3,7 @@ import {Signal} from "@preact/signals";
 import {FlexMapping} from "../base-model.ts";
 import {onlySupportsWide} from "./layout-functions.ts";
 import {AnsiVariant, LayoutOptions} from "../app-model.ts";
-
+import {LayoutVariantButton} from "../components/LayoutVariantButton.tsx";
 import {FlipRetRubButton} from "./components/FlipRetRubButton.tsx";
 
 export interface AnsiLayoutOptionsProps {
@@ -18,6 +18,7 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
     const {ansiWide, ansiVariant, ansiSplit, angleMod} = options;
     const wideDisabled = onlySupportsWide(mapping.value) || naturallyWideVariants.includes(ansiVariant);
     const splitDisabled = ansiVariant === AnsiVariant.HHKB;
+    const setVariant = (variant: AnsiVariant) => setOption({ansiVariant: variant});
     const variantOptions = [
         {variant: AnsiVariant.IBM, label: "IBM"},
         {variant: AnsiVariant.APPLE, label: "Apple"},
@@ -27,39 +28,37 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
     ];
 
     return <div class="ansi-layout-options-container">
-        <CheckboxWithLabel label="split keyboard"
-                           checked={ansiSplit}
-                           onChange={(split) => setOption({ansiSplit: split})}
-                           disabled={splitDisabled}/>
-        <CheckboxWithLabel label="use wide key mapping"
-                           checked={ansiWide}
-                           onChange={(wide) => setOption({ansiWide: wide})}
-                           disabled={wideDisabled}/>
-        <div class="ansi-layout-variant-options">
-            {variantOptions.map((option) => {
-                const checked = ansiVariant === option.variant;
-                const isAhkb = option.variant === AnsiVariant.AHKB;
-                return <div class="ansi-variant-option" key={option.variant}>
-                    <CheckboxWithLabel
-                        type="radio"
-                        groupName="ansi-variant"
-                        label={option.label}
-                        checked={checked}
-                        onChange={(isChecked) => isChecked && setOption({ansiVariant: option.variant})}
-                        disabled={false}
-                    />
-                    {isAhkb && checked &&
-                        <div class="ansi-ahkb-options-container">
-                            <CheckboxWithLabel
-                                label="angle mod"
-                                checked={angleMod}
-                                onChange={(angleMod) => setOption({angleMod})}
-                            />
-                            <FlipRetRubButton setOption={setOption} options={options}/>
-                        </div>
-                    }
-                </div>
-            })}
-        </div>
+            <div class="ansi-variant-buttons">
+                {variantOptions.map((option) => (
+                    <LayoutVariantButton 
+                        key={option.variant}
+                        variant={option.variant}
+                        currentVariant={ansiVariant}
+                        setVariant={setVariant}
+                        name={option.label}
+                    >
+                        {option.variant === AnsiVariant.AHKB &&
+                            <div class="ansi-ahkb-options-container">
+                                <CheckboxWithLabel
+                                    label="angle mod"
+                                    checked={angleMod}
+                                    onChange={(angleMod) => setOption({angleMod})}
+                                />
+                                <FlipRetRubButton setOption={setOption} options={options}/>
+                            </div>
+                        }
+                    </LayoutVariantButton>
+                ))}
+            </div>
+            <div class="ansi-variant-checkboxes">
+                <CheckboxWithLabel label="split keyboard"
+                                   checked={ansiSplit}
+                                   onChange={(split) => setOption({ansiSplit: split})}
+                                   disabled={splitDisabled}/>
+                <CheckboxWithLabel label="use wide key mapping"
+                                   checked={ansiWide}
+                                   onChange={(wide) => setOption({ansiWide: wide})}
+                                   disabled={wideDisabled}/>
+            </div>
     </div>
 }
