@@ -1,5 +1,5 @@
 import {HarmonicVariant, LayoutOptions} from "../app-model.ts";
-import {getHarmonicVariant} from "../layout-selection.ts";
+import {LayoutVariantButton} from "../components/LayoutVariantButton.tsx";
 
 export interface HarmonicLayoutOptionsProps {
     options: LayoutOptions;
@@ -10,27 +10,11 @@ export function HarmonicLayoutOptions({options, setOption}: HarmonicLayoutOption
     const variant = options.harmonicVariant;
     const setVariant = (harmonicVariant: HarmonicVariant) => setOption({harmonicVariant});
 
-    return <div>
-        <HarmonicVariantButton variant={HarmonicVariant.H14_Wide} currentVariant={variant} setVariant={setVariant}/>
-        <HarmonicVariantButton variant={HarmonicVariant.H14_Traditional} currentVariant={variant} setVariant={setVariant}/>
-        <HarmonicVariantButton variant={HarmonicVariant.H13_Wide} currentVariant={variant} setVariant={setVariant}/>
-        <HarmonicVariantButton variant={HarmonicVariant.H13_MidShift} currentVariant={variant} setVariant={setVariant}/>
-        <HarmonicVariantButton variant={HarmonicVariant.H12} currentVariant={variant} setVariant={setVariant}/>
+    return <div class="harmonic-layout-options-container">
+        <LayoutVariantButton variant={HarmonicVariant.H14_Wide} currentVariant={variant} setVariant={setVariant} name="Harmonic 14 Macro"/>
+        <LayoutVariantButton variant={HarmonicVariant.H14_Traditional} currentVariant={variant} setVariant={setVariant} name="Harmonic 14 Traditional"/>
+        <LayoutVariantButton variant={HarmonicVariant.H13_Wide} currentVariant={variant} setVariant={setVariant} name="Harmonic 13 Balance"/>
+        <LayoutVariantButton variant={HarmonicVariant.H13_MidShift} currentVariant={variant} setVariant={setVariant} name="Harmonic 13 MidShift"/>
+        <LayoutVariantButton variant={HarmonicVariant.H12} currentVariant={variant} setVariant={setVariant} name="Harmonic 12 Mini"/>
     </div>
-}
-
-interface HarmonicVariantButtonProps {
-    variant: HarmonicVariant;
-    currentVariant: HarmonicVariant;
-    setVariant: (variant: HarmonicVariant) => void;
-}
-
-export function HarmonicVariantButton({variant, currentVariant, setVariant}: HarmonicVariantButtonProps) {
-    const selected = variant === currentVariant ? " selected" : "";
-    return <button
-        className={"layout-options-button" + selected}
-        onClick={() => setVariant(variant)}
-    >
-        {getHarmonicVariant(variant).name}
-    </button>
 }

@@ -41,6 +41,12 @@ body {
     justify-items: center;
 }
 
+.harmonic-layout-options-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    justify-items: center;
+}
+
 .plank-layout-options-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1.25fr 1.5fr;

@@ -23,6 +23,8 @@ The data model consists of:
 
 ## Testing
 
+The local app runs under http://localhost:3000 (or whichever port [vite.config.ts](vite.config.ts) says.)
+
 We are running on Windows and any Shell commands need to work on Windows.
 
 - `npm test` - Runs tests, can be called by AI agents, but don't redirect or pipe outputs.
