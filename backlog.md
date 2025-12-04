@@ -72,21 +72,22 @@ bugs fixed:
 - fullLayout on ANSI doesn't work with HHKB and AHKB – function setLayout needs to be adapted to switch to IBM or Apple in this case!
 - when switching mappings we correctly set options (which only affects ANSI), but we don't switch Layouts, because there are so many variants to iterate through. But needs to be done at some point.
 
+refactorings done (or decided against):
+ - instead of the current keyboard-specific keymaps, keep only thirty and thumbThirty, and put all the rest into a list of pairs [keyboardLayout, specificMapping]. 
+    This should make it much easier to select the next-best layout if the current one does not support the keymap: we can simply "walk up the variant tree". 
+    Similarly, when switching layout or layout options, we can do a similarity search (by the first word of the keymap name) for a matching keymap.
+
+ - "ANSI wide" is the only layout option which influences how keymap metrics are calculated and which keymaps apply.
+   But all the Harmonic and Ergo(Plank|Board) options are filtered through the setLayout mechanism. Is that what we want?
+   - yes, it will be important once we provide a new keymapType either for a specific variant or a group! 
 
 
 ======================== TODO ===============================
 
 refactorings:
- - instead of the current keyboard-specific keymaps, keep only thirty and thumbThirty, and put all the rest into a list of pairs [keyboardLayout, specificMapping]. 
-    This should make it much easier to select the next-best layout if the current one does not support the keymap: we can simply "walk up the variant tree". 
-    Similarly, when switching layout or layout options, we can do a similarity search (by the first word of the keymap name) for a matching keymap.
-
  - Turns out that the key/finger/effort matrix is easier to edit by hand than write in abstractions. Copy, paste, adapt, ... and win!
     Maybe for a good start: write a helper function to generate an initial finger and effort matrix given a layout (by key matrix, keyWidths, and index finger columns).
     That would be fun to write and be a neat documentation of my fingering and effort theory. But also useless at the moment, since I don't plan to add any new layouts besides HHKB, which will simply copy from ANSI.
-
- - "ANSI wide" is the only layout option which influences how keymap metrics are calculated and which keymaps apply.
-   But all the Harmonic and Ergo(Plank|Board) options are filtered through the setLayout mechanism. Is that what we want?
 
 missing core features:
 - Ergoplank and Katana logos to fill the gap, especially Ergoboard 65 Midshift with a nice connection between both gaps.
