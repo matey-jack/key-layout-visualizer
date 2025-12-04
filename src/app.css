@@ -37,6 +37,11 @@ body {
     visibility: hidden;
 }
 
+.layout-variant-options[hidden] {
+    display: block;
+    visibility: hidden;
+}
+
 .blank {
     /* Empty spaces, can be styled if needed */
 }
@@ -58,8 +63,10 @@ body {
 }
 
 .ansi-variant-buttons {
-    display: flex;
-    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    justify-items: center;
+    text-align: center;
 }
 
 .ansi-variant-checkboxes {
