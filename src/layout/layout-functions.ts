@@ -103,10 +103,17 @@ export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexM
         const fallbackMapping = layoutModel.supportedKeymapTypes
             ?.find(s => s.typeId === KeymapTypeId.Ansi30)
             ?.frameMapping;
-        const flexData = (KEYMAP_TYPES[match.supported.typeId].keysPerRow[0] == 0)
+        const keymapType = match.supported.typeId;
+        const flexData = (KEYMAP_TYPES[keymapType].keysPerRow[0] == 0)
             ? ["", ...match.flexData]
             : match.flexData;
-        return mergeMapping(match.supported.frameMapping, flexData, fallbackMapping);
+        try {
+            return mergeMapping(match.supported.frameMapping, flexData, fallbackMapping);
+        } catch (e) {
+            console.error(`Failed to fill ${flexMapping.name}/${keymapType} into ${layoutModel.name}.`)
+            console.error(e);
+            return undefined;
+        }
     }
     return undefined;
 }

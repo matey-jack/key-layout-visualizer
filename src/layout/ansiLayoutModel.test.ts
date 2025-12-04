@@ -1,9 +1,9 @@
-import {describe, it, expect} from 'vitest';
+import {describe, expect, it} from 'vitest';
 
-import {ansiIBMLayoutModel, ansiWideLayoutModel} from "./ansiLayoutModel.ts";
+import {ansiIBMLayoutModel, ansiWideLayoutModel, createApple} from "./ansiLayoutModel.ts";
 import {KeyboardRows, KeymapTypeId} from "../base-model.ts";
 import {sum} from "../library/math.ts";
-import {getAnsi30mapping} from "./layout-functions.ts";
+import {getAnsi30mapping, getFrameMapping} from "./layout-functions.ts";
 
 describe('ansiLayoutModel.keyWidths', () => {
     const lastCol = (row: KeyboardRows) =>
@@ -56,4 +56,14 @@ describe('ansiWideLayoutModel', () => {
                 .toStrictEqual(expectedLayoutMapping[row])
         });
     }
+})
+
+describe('Apple ANSI variant', () => {
+    const appleAnsi = createApple(ansiIBMLayoutModel);
+    it('ANSI and Ansi30 frame maps have no bottom row variables', () => {
+        const ansi30Vars = getAnsi30mapping(appleAnsi)![KeyboardRows.Bottom].filter((m) => typeof m === "number");
+        expect(ansi30Vars.length).toBe(0);
+        const ansiVars = getFrameMapping(appleAnsi, KeymapTypeId.Ansi)![KeyboardRows.Bottom].filter((m) => typeof m === "number");
+        expect(ansiVars.length).toBe(0);
+    })
 })

@@ -67,7 +67,7 @@ export const KEYMAP_TYPES: Record<KeymapTypeId, KeymapType> = {
     },
     [KeymapTypeId.Ansi]: {
         id: KeymapTypeId.Ansi,
-        keysPerRow: [2, 13, 11, 10],
+        keysPerRow: [2, 13, 11, 10, 0],
         description: "Full ANSI layout"
     },
     [KeymapTypeId.AnsiWide]: {

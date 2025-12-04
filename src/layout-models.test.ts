@@ -1,6 +1,6 @@
 import {describe, expect, it} from "vitest";
 import {KEYMAP_TYPES, KeyboardRows, KeymapTypeId, RowBasedLayoutModel} from "./base-model.ts";
-import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./layout/ansiLayoutModel.ts";
+import {ansiIBMLayoutModel, ansiWideLayoutModel, createApple, createHHKB} from "./layout/ansiLayoutModel.ts";
 import {eb65BigEnterLayoutModel, eb65LowshiftLayoutModel} from "./layout/eb65LowshiftLayoutModel.ts";
 import {
     eb65LowshiftWideAngleModLayoutModel,
@@ -31,8 +31,11 @@ const layoutModels: Array<RowBasedLayoutModel> = [
     ansiIBMLayoutModel,
     ansiWideLayoutModel,
     createHHKB(ansiIBMLayoutModel),
-    ahkbLayoutModel,
+    createApple(ansiIBMLayoutModel),
+    createHHKB(ansiWideLayoutModel),
+    createApple(ansiWideLayoutModel),
     xhkbLayoutModel,
+    ahkbLayoutModel,
     eb65LowshiftLayoutModel,
     eb65BigEnterLayoutModel,
     eb65LowshiftWideLayoutModel,
