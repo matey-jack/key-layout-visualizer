@@ -84,21 +84,27 @@ export const xhkbWithArrowsLayoutModel: RowBasedLayoutModel = {
     supportedKeymapTypes: [
         {
             typeId: KeymapTypeId.Ansi30,
-            frameMapping: replaceLast(thirtyKeyMapping, ["Ctrl", "Cmd", "`~", "Alt", "⍽", "⍽", "AltGr", "←", "↑", "↓", "→"])
+            frameMapping: replaceLast(
+                thirtyKeyMapping,
+                ["Ctrl", "Cmd", "`~", "Alt", "⍽", "⍽", "AltGr", "Ctrl", "←", "→", "↓"] //  "↑" to row above
+            )
         },
         {
             typeId: KeymapTypeId.Thumb30,
-            frameMapping: replaceLast(thumb30KeyMapping, ["Ctrl", "Cmd", "", "Alt", 0, "⍽", "AltGr", "←", "↑", "↓", "→"])
+            frameMapping: replaceLast(
+                thumb30KeyMapping,
+                ["Ctrl", "Cmd", "", "Alt", 0, "⍽", "AltGr", "Ctrl", "←", "→", "↓"] // "↑" to row above
+            )
         },
     ],
     singleKeyEffort: replaceLast(xhkbLayoutModel.singleKeyEffort,
-        [2.0, 2.0, 2.0, 1.0, 0.2, 0.2, 1.0, null, null, null, null]
+        [2.0, 2.0, 2.0, 1.0, 0.2, 0.2, 1.0, 2.0, null, null, null]
     ),
     mainFingerAssignment: replaceLast(xhkbLayoutModel.mainFingerAssignment,
-        [0, 1, 1, 4, 4, 5, 5, null, null, null, null]
+        [0, 1, 1, 4, 4, 5, 5, 7, null, null, null]
     ),
     keyWidths: replaceLast(
         xhkbLayoutModel.keyWidths,
-        [1.5, 1.5, 1, 1.5, 1.75, 1.75, 1.5, 1, 1, 1, 1.5]
+        [1.5, 1.5, 1, 1.5, 1.75, 1.75, 1.5, 1.5, 1, 1, 1]
     ),
 }
