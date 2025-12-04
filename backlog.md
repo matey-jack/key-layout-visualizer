@@ -59,6 +59,7 @@
 - Ergoplank / Katana layout options have sub-options for the variants below the variant. 
 - refactored to awesome keyWidth functions which automatically calculate the gaps for symmetrically staggered keyboards.
   Wasted a whole day without adding user-visible content. But was fun to do and I am proud of the new-found simplicity!
+- switch Typewrite variant selection to buttons, like on other layout types.
 
 
 bugs fixed:
@@ -92,9 +93,6 @@ refactorings:
 missing core features:
 - Ergoplank and Katana logos to fill the gap, especially Ergoboard 65 Midshift with a nice connection between both gaps.
 - Rectangle around the keyboard to signify the 60% or 65% box.
-- switch Typewrite variant selection to buttons, like on other layout types.
-  - add 1980s (new) and 1990s (current) variant to the IBM board.
-  - optionally add Apple compact (Macbook) bottom row with Fn key and three arrow keys on the right (simulate the half-arrows with a single up/down key) 
 
 - add some more explanations, especially for:
   + the "wide" mappings
