@@ -1,4 +1,4 @@
-import {FlexMapping, LayoutType, LayoutTypeNames, VisualizationType} from "../base-model.ts";
+import {FlexMapping, LayoutType, LayoutTypeNames, LayoutTypeNotes, VisualizationType} from "../base-model.ts";
 import {AnsiVariant, AppState, LayoutOptions, PlankVariant} from "../app-model.ts";
 import {BigramLines, KeyboardSvg, RowBasedKeyboard, StaggerLines} from "./KeyboardSvg.tsx";
 import {fillMapping, getKeyPositions} from "./layout-functions.ts";
@@ -90,6 +90,7 @@ function TopBar({layout, setLayout}: TopBarProps) {
             <TopBarKeyboardTab
                 layoutType={layoutType}
                 layoutName={LayoutTypeNames[layoutType]}
+                layoutNote={LayoutTypeNotes[layoutType]}
                 currentLayout={layout.type}
                 setLayout={setLayout}
                 key={layoutType}
@@ -105,16 +106,20 @@ const BlankGridElement = () =>
 interface TopBarKeyboardTabProps {
     layoutType: LayoutType;
     layoutName: string;
+    layoutNote: string;
     currentLayout: LayoutType;
     setLayout: (layout: Partial<LayoutOptions>) => void;
 }
 
-function TopBarKeyboardTab({layoutType, layoutName, currentLayout, setLayout}: TopBarKeyboardTabProps) {
+function TopBarKeyboardTab({layoutType, layoutName, layoutNote, currentLayout, setLayout}: TopBarKeyboardTabProps) {
     const selected = layoutType === currentLayout;
     return <div onClick={() => setLayout({type: layoutType})}>
         <button class={"top-bar-keyboard-tab-label" + (selected ? " selected" : "")}>
             {layoutName}
         </button>
+        <div hidden={!selected} class="top-bar-keyboard-tab-note">
+            {layoutNote}
+        </div>
     </div>
 }
 

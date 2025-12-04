@@ -22,6 +22,12 @@ body {
     border: 1px solid #003fae;
 }
 
+.top-bar-keyboard-tab-note {
+    padding: 0.5rem;
+    font-style: italic;
+    /*display: inline-block;*/
+}
+
 .blank {
     /* Empty spaces, can be styled if needed */
 }
