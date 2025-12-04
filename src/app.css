@@ -25,7 +25,12 @@ body {
 .top-bar-keyboard-tab-note {
     padding: 0.5rem;
     font-style: italic;
-    /*display: inline-block;*/
+    min-height: 1.5em;
+}
+
+.top-bar-keyboard-tab-note[hidden] {
+    display: block;
+    visibility: hidden;
 }
 
 .blank {
