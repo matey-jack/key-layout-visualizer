@@ -37,6 +37,15 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
                         setVariant={setVariant}
                         name={option.label}
                     >
+                        {option.variant === AnsiVariant.XHKB &&
+                            <div class="ansi-xhkb-options-container">
+                                <CheckboxWithLabel
+                                    label="Include arrow keys"
+                                    checked={options.bottomArrows}
+                                    onChange={(arrows) => setOption({bottomArrows: arrows})}
+                                />
+                            </div>
+                        }
                         {option.variant === AnsiVariant.AHKB &&
                             <div class="ansi-ahkb-options-container">
                                 <CheckboxWithLabel

@@ -73,3 +73,32 @@ export const xhkbLayoutModel: RowBasedLayoutModel = {
         {typeId: KeymapTypeId.Thumb30, frameMapping: thumb30KeyMapping},
     ],
 }
+
+function replaceLast<T>(list: T[], last: T) {
+    return [...list.slice(0, -1), last];
+}
+
+export const xhkbWithArrowsLayoutModel: RowBasedLayoutModel = {
+    ...xhkbLayoutModel,
+    name: "XHKB with cursor block",
+    supportedKeymapTypes: [
+        {
+            typeId: KeymapTypeId.Ansi30,
+            frameMapping: replaceLast(thirtyKeyMapping, ["Ctrl", "Cmd", "`~", "Alt", "⍽", "⍽", "AltGr", "←", "↑", "↓", "→"])
+        },
+        {
+            typeId: KeymapTypeId.Thumb30,
+            frameMapping: replaceLast(thumb30KeyMapping, ["Ctrl", "Cmd", "", "Alt", 0, "⍽", "AltGr", "←", "↑", "↓", "→"])
+        },
+    ],
+    singleKeyEffort: replaceLast(xhkbLayoutModel.singleKeyEffort,
+        [2.0, 2.0, 2.0, 1.0, 0.2, 0.2, 1.0, null, null, null, null]
+    ),
+    mainFingerAssignment: replaceLast(xhkbLayoutModel.mainFingerAssignment,
+        [0, 1, 1, 4, 4, 5, 5, null, null, null, null]
+    ),
+    keyWidths: replaceLast(
+        xhkbLayoutModel.keyWidths,
+        [1.5, 1.5, 1, 1.5, 1.75, 1.75, 1.5, 1, 1, 1, 1.5]
+    ),
+}

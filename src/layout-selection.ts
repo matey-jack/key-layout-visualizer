@@ -35,7 +35,7 @@ import {
     createHHKB,
     splitSpaceBar
 } from "./layout/ansiLayoutModel.ts";
-import {xhkbLayoutModel} from "./layout/xhkbLayoutModel.ts";
+import {xhkbLayoutModel, xhkbWithArrowsLayoutModel} from "./layout/xhkbLayoutModel.ts";
 
 export function getHarmonicVariant(variant: HarmonicVariant): RowBasedLayoutModel {
     switch (variant) {
@@ -54,13 +54,13 @@ export function getHarmonicVariant(variant: HarmonicVariant): RowBasedLayoutMode
 }
 
 export function getPlankVariant(opts: Partial<LayoutOptions>): RowBasedLayoutModel {
-    const {plankVariant, ep60Arrows, angleMod, eb65LowshiftVariant, eb65MidshiftVariant} = opts;
+    const {plankVariant, bottomArrows, angleMod, eb65LowshiftVariant, eb65MidshiftVariant} = opts;
     switch (plankVariant) {
         case PlankVariant.KATANA_60:
             return katanaLayoutModel;
         case PlankVariant.EP60:
         default:
-            let ep60LM = ep60Arrows ? ep60WithArrowsLayoutModel : ergoPlank60LayoutModel;
+            let ep60LM = bottomArrows ? ep60WithArrowsLayoutModel : ergoPlank60LayoutModel;
             return angleMod ? ep60addAngleMod(ep60LM) : ep60LM;
         case PlankVariant.EB65_LOW_SHIFT:
             // UI calls this method without variant parameters, so we need a default.
@@ -102,7 +102,7 @@ export function getAnsiVariant(layoutOptions: LayoutOptions) {
             break;
         // no need to split the space bar, because it's already split
         case AnsiVariant.XHKB:
-            return xhkbLayoutModel;
+            return layoutOptions.bottomArrows ? xhkbWithArrowsLayoutModel : xhkbLayoutModel;
         case AnsiVariant.AHKB:
             return layoutOptions.angleMod ? ahkbAddAngleMod(ahkbLayoutModel) : ahkbLayoutModel;
     }

@@ -34,8 +34,8 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
                                checked={options.angleMod}
                                onChange={(angle) => setOption({angleMod: angle})}/>
             <CheckboxWithLabel label="Include arrow keys"
-                               checked={options.ep60Arrows}
-                               onChange={(arrows: boolean) => setOption({ep60Arrows: arrows})}/>
+                               checked={options.bottomArrows}
+                               onChange={(arrows: boolean) => setOption({bottomArrows: arrows})}/>
             <FlipRetRubButton setOption={setOption} options={options}/>
         </LayoutVariantButton>
 
