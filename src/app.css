@@ -11,6 +11,10 @@ body {
     padding: 1rem;
 }
 
+.layout-top-bar-container > div {
+    text-align: center;
+}
+
 .top-bar-keyboard-tab-label {
     background-color: #f0f0f0;
     padding: 1rem;
