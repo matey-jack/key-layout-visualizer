@@ -1,6 +1,6 @@
-import {FlexMapping, KEY_COLOR, KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
-import {copyAndModifyKeymap, defaultKeyColor, keyColorHighlightsClass} from "./layout-functions.ts";
-import {mirror, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
+import {KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
+import {MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 const ahkbKeyWidth = new MonotonicKeyWidth(15, zeroIndent, "AHKB");
 
@@ -22,7 +22,7 @@ const thumb30KeyMapping: LayoutMapping = [
 
 export const xhkbLayoutModel: RowBasedLayoutModel = {
     name: "XHKB",
-    description: `The eXhilarted Hacking Keyboard continues HHKB's idea of splitting large keys to a point that
+    description: `The eXhilarated Hacking Keyboard continues HHKB's idea of splitting large keys to a point that
     delivers us a layout with ergonomically wider hand positions and some extra keys that can be used for navigation 
     or whatever you like. And to top it off, let's also split the space bar to create two great thumb keys per side.
     Using only four keycap sizes, the XHKB is the most versatile keyboard with traditional typewriter row staggering 
@@ -38,19 +38,20 @@ export const xhkbLayoutModel: RowBasedLayoutModel = {
         [1.5, 1.5, 1, 1.5, 1.75, 1.75, 1.5, 1.5, 1.5, 1.5],
     ],
 
+    // set extra keys to 'null' finger, so the same map is still consistent when we add arrow keys in the bottom-right.
     mainFingerAssignment: [
         [1, 1, 1, 2, 2, 3, 3, 6, 6, 7, 7, 8, 8, 8],
-        [1, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9, 8],
-        [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9],
-        [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9],
+        [1, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, 9, null],
+        [0, 0, 1, 2, 3, 3, null, null, 6, 6, 7, 8, 9, 9],
+        [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9, null],
         [0, 1, 1, 4, 4, 5, 5, 7, 8, 9],
     ],
 
     singleKeyEffort: [
         [3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0],
-        [3.0, 2.0, 1.0, 1.0, 1.5, 1.5, 3.0, 3.0, 1.5, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0],
-        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
-        [1.0, 2.0, 2.0, 1.5, 1.5, 3.0, 3.0, 3.0, 1.5, 1.0, 1.5, 1.5, 1.0, 3.0],
+        [3.0, 2.0, 1.0, 1.0, 1.5, 1.5, 3.0, 3.0, 1.5, 1.5, 1.0, 1.0, 2.0, 2.0, null],
+        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, null, null, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
+        [1.0, 2.0, 2.0, 1.5, 1.5, 3.0, 3.0, 3.0, 1.5, 1.0, 1.5, 1.5, 1.0, null],
         [2.0, 2.0, 2.0, 1.0, 0.2, 0.2, 1.0, 2.0, 2.0, 2.0],
     ],
 
@@ -78,23 +79,35 @@ function replaceLast<T>(list: T[], last: T) {
     return [...list.slice(0, -1), last];
 }
 
+function arrowBlockKeymap(thumby: boolean) {
+    return (keymap: LayoutMapping): LayoutMapping => {
+        keymap[KeyboardRows.Upper][14] = "Fn";  // Replacing ⇞
+        keymap[KeyboardRows.Lower][13] = "↑";   // Replacing ⇟
+        if (thumby) {
+            keymap[KeyboardRows.Bottom] = ["Ctrl", "Cmd", "", "Alt", 0, "⍽", "AltGr", "Ctrl", "←", "→", "↓"];
+        } else {
+            keymap[KeyboardRows.Bottom] = ["Ctrl", "Cmd", "`~", "Alt", "⍽", "⍽", "AltGr", "Ctrl", "←", "→", "↓"];
+        }
+        return keymap;
+    }
+}
+
 export const xhkbWithArrowsLayoutModel: RowBasedLayoutModel = {
     ...xhkbLayoutModel,
     name: "XHKB with cursor block",
+    // we replace two 1.5u keys with three 1u keys
+    keyWidths: replaceLast(
+        xhkbLayoutModel.keyWidths,
+        [1.5, 1.5, 1, 1.5, 1.75, 1.75, 1.5, 1.5, 1, 1, 1]
+    ),
     supportedKeymapTypes: [
         {
             typeId: KeymapTypeId.Ansi30,
-            frameMapping: replaceLast(
-                thirtyKeyMapping,
-                ["Ctrl", "Cmd", "`~", "Alt", "⍽", "⍽", "AltGr", "Ctrl", "←", "→", "↓"] //  "↑" to row above
-            )
+            frameMapping: copyAndModifyKeymap(thirtyKeyMapping, arrowBlockKeymap(false))
         },
         {
             typeId: KeymapTypeId.Thumb30,
-            frameMapping: replaceLast(
-                thumb30KeyMapping,
-                ["Ctrl", "Cmd", "", "Alt", 0, "⍽", "AltGr", "Ctrl", "←", "→", "↓"] // "↑" to row above
-            )
+            frameMapping: copyAndModifyKeymap(thirtyKeyMapping, arrowBlockKeymap(true))
         },
     ],
     singleKeyEffort: replaceLast(xhkbLayoutModel.singleKeyEffort,
@@ -102,9 +115,5 @@ export const xhkbWithArrowsLayoutModel: RowBasedLayoutModel = {
     ),
     mainFingerAssignment: replaceLast(xhkbLayoutModel.mainFingerAssignment,
         [0, 1, 1, 4, 4, 5, 5, 7, null, null, null]
-    ),
-    keyWidths: replaceLast(
-        xhkbLayoutModel.keyWidths,
-        [1.5, 1.5, 1, 1.5, 1.75, 1.75, 1.5, 1.5, 1, 1, 1]
     ),
 }
