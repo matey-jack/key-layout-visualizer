@@ -14,7 +14,7 @@ import {mirrorOdd, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
 const ibmKeyWidths = new MonotonicKeyWidth(15, zeroIndent, "ANSI/IBM");
 
 export const ansiIBMLayoutModel: RowBasedLayoutModel = {
-    name: "ANSI",
+    name: "ANSI/IBM",
     description: "The ANSI keyboard layout is based on a typewriter keyboard from the 19th century which gradually evolved " +
         "to add some computer-specific keys like Ctrl, Alt, and most importantly the @ sign. " +
         "This layout has keys of widely varying widths and an awkward stagger of 0.5, 0.25, and again 0.5 between the rows. " +
@@ -35,8 +35,8 @@ export const ansiIBMLayoutModel: RowBasedLayoutModel = {
         ibmKeyWidths.row(3, 2.25, 2.75),
         [1.5, 1.25, 1.25, 5.75, 1.25, 1.25, 1.25, 1.5],
         // In the 1980s it was mirrorOdd(1.5, 1.125, 1.5, 6.75), with the smallest being a gap.
+        // (Or maybe the gap was 1u and the space bar 7u?)
         // That actually makes more sense than the HHKB. But I think, Apple's bottom row is the nicest out of the most common ones.
-        // Or maybe the gap was 1u and the space bar 7u?
     ],
 
     mainFingerAssignment: [
@@ -114,7 +114,7 @@ export const ansiIBMLayoutModel: RowBasedLayoutModel = {
 
 export const ansiWideLayoutModel = {
         ...ansiIBMLayoutModel,
-        name: "ANSI with wide hand position",
+        name: ansiIBMLayoutModel.name + " with wide hand position",
         rightHomeIndex: 8,
 
         mainFingerAssignment: [
@@ -230,6 +230,7 @@ export function createApple(lm: RowBasedLayoutModel): RowBasedLayoutModel {
     };
     return {
         ...lm,
+        name: lm.name.replace(ansiIBMLayoutModel.name, "ANSI/Apple"),
         keyWidths: copyAndModifyKeymap(lm.keyWidths, (matrix) => {
             matrix.pop();
             matrix.forEach((row) => {
@@ -238,13 +239,15 @@ export function createApple(lm: RowBasedLayoutModel): RowBasedLayoutModel {
             matrix.push(mirrorOdd(1.5, 1.25, 1.5, 6));
             return matrix;
         }),
-        supportedKeymapTypes: lm.supportedKeymapTypes.map(supported => {
-            const modifier = supported.typeId === KeymapTypeId.Ansi30 ? addAppleBottom : addAppleThumbyBottom;
-            return {
-                ...supported,
-                frameMapping: copyAndModifyKeymap(supported.frameMapping, modifier),
-            };
-        }),
+        supportedKeymapTypes: lm.supportedKeymapTypes
+            .filter(keymap => keymap.typeId !== KeymapTypeId.AnsiWide)
+            .map(keymap => {
+                const modifier = keymap.typeId === KeymapTypeId.Thumb30 ? addAppleThumbyBottom : addAppleBottom;
+                return {
+                    ...keymap,
+                    frameMapping: copyAndModifyKeymap(keymap.frameMapping, modifier),
+                };
+            }),
         mainFingerAssignment: copyAndModifyKeymap(lm.mainFingerAssignment, (matrix) => {
             matrix[KeyboardRows.Bottom] = [0, 0, 1, 5, 7, 8, 9];
             return matrix;
@@ -259,7 +262,7 @@ export function createApple(lm: RowBasedLayoutModel): RowBasedLayoutModel {
 export function createHHKB(lm: RowBasedLayoutModel): RowBasedLayoutModel {
     return {
         ...lm,
-        name: lm.name.replace("ANSI", "Happy Hacker Keyboard"),
+        name: lm.name.replace(ansiIBMLayoutModel.name, "Happy Hacker Keyboard"),
         supportedKeymapTypes: [
             {
                 // we omit the Thumb30 frameMapping, because HHKB's bottom row is not a good place to map a letter!

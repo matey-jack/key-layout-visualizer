@@ -142,7 +142,7 @@ describe('supportedKeymapTypes frame mapping validation', () => {
              model.supportedKeymapTypes!.forEach(({ typeId, frameMapping }) => {
                  const keymapType = KEYMAP_TYPES[typeId as KeymapTypeId];
 
-                 it(`${typeId}/${typeId}: placeholder count matches KEYMAP_TYPES.keysPerRow`, () => {
+                 it(`${typeId}: placeholder count matches KEYMAP_TYPES.keysPerRow`, () => {
                      expect(keymapType, `Unknown keymap type: ${typeId}`).toBeDefined();
                      
                      const placeholdersByRow = collectPlaceholdersByFlexRow(frameMapping);
