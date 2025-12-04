@@ -24,7 +24,7 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
     }
 
     return <div class="plank-layout-options-container">
-        <PlankVariantButton variant={PlankVariant.KATANA_60} currentVariant={variant} setVariant={setVariant}/>
+        <PlankVariantButton variant={PlankVariant.KATANA_60} currentVariant={variant} setVariant={setVariant} name="Katana60"/>
 
         <PlankVariantButton variant={PlankVariant.EP60}
                             currentVariant={variant} setVariant={setVariant}
@@ -107,7 +107,7 @@ interface PlankVariantButtonProps {
     variant: PlankVariant;
     currentVariant: PlankVariant;
     setVariant: (variant: PlankVariant) => void;
-    name?: string;
+    name: string;
     children?: ComponentChildren;
 }
 
@@ -118,7 +118,7 @@ export function PlankVariantButton({variant, currentVariant, setVariant, name, c
             className={"layout-options-button" + selected}
             onClick={() => setVariant(variant)}
         >
-            {name || getPlankVariant({plankVariant: variant}).name}
+            {name}
         </button>
         {selected && children}
     </div>
