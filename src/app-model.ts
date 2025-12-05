@@ -74,6 +74,10 @@ export interface LayoutOptions {
     flipRetRub: boolean;
 }
 
+export function isSplit(opts: LayoutOptions) {
+    return opts.ansiSplit || opts.type === LayoutType.Ergosplit;
+}
+
 export interface AppState {
     // Getter/Setter to do validations on the state.
     layout: ReadonlySignal<LayoutOptions>;

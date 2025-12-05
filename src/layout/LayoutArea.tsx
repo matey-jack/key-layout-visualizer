@@ -1,5 +1,5 @@
 import type {Signal} from "@preact/signals";
-import {AnsiVariant, type AppState, type LayoutOptions, PlankVariant} from "../app-model.ts";
+import {AnsiVariant, type AppState, isSplit, type LayoutOptions, PlankVariant} from "../app-model.ts";
 import {type FlexMapping, LayoutType, LayoutTypeNames, LayoutTypeNotes, VisualizationType} from "../base-model.ts";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {ErgoplankLayoutOptions} from "./ErgoplankLayoutOptions.tsx";
@@ -27,9 +27,7 @@ export function LayoutArea({appState}: LayoutAreaProps) {
     if (layoutSupportsFlipRetRub(layout.value) && layout.value.flipRetRub) {
         flipRetRub(charMap!);
     }
-    const split = layout.value.type === LayoutType.Ergosplit
-        || layout.value.type === LayoutType.ANSI && layout.value.ansiSplit;
-    const keyPositions = getKeyPositions(layoutModel.value, split, charMap!);
+    const keyPositions = getKeyPositions(layoutModel.value, isSplit(layout.value), charMap!);
 
     return (
         <div>

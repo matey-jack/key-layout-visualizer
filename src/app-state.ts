@@ -5,7 +5,7 @@ import {
     AppState,
     EB65_LowShift_Variant,
     EB65_MidShift_Variant,
-    HarmonicVariant,
+    HarmonicVariant, isSplit,
     LayoutOptions,
     PlankVariant
 } from "./app-model.ts";
@@ -209,7 +209,7 @@ export function createAppState(): AppState {
     const bigramMovements = computed(() => {
         const charMap = fillMapping(layoutModel.value, mappingState.value);
         return getBigramMovements(
-            getKeyPositions(layoutModel.value, layoutOptionsState.value.ansiSplit, charMap!),
+            getKeyPositions(layoutModel.value, isSplit(layoutOptionsState.value), charMap!),
             `get bigrams for visualization of ${mappingState.value.name} on ${layoutModel.value.name}`);
     });
     effect(() => updateUrlParams(layoutOptionsState.value, mappingState, vizType));
