@@ -5,7 +5,7 @@ import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {ErgoplankLayoutOptions} from "./ErgoplankLayoutOptions.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
 import {BigramLines, KeyboardSvg, RowBasedKeyboard, StaggerLines} from "./KeyboardSvg.tsx";
-import {fillMapping, getKeyPositions} from "./layout-functions.ts";
+import {fillMapping, getKeyMovements, getKeyPositions} from "./layout-functions.ts";
 
 interface LayoutAreaProps {
     appState: AppState;
@@ -21,13 +21,24 @@ function layoutSupportsFlipRetRub(options: LayoutOptions) {
     return false;
 }
 
-export function LayoutArea({appState}: LayoutAreaProps) {
-    const {layout, layoutModel, mapping, setLayout, mappingDiff, bigramMovements, vizType} = appState;
-    const charMap = fillMapping(layoutModel.value, mapping.value);
-    if (layoutSupportsFlipRetRub(layout.value) && layout.value.flipRetRub) {
+function getKeyPositionsForModel(
+    layoutModel: RowBasedLayoutModel,
+    mapping: FlexMapping,
+    layout: LayoutOptions
+): KeyPosition[] {
+    const charMap = fillMapping(layoutModel, mapping);
+    if (layoutSupportsFlipRetRub(layout) && layout.flipRetRub) {
         flipRetRub(charMap!);
     }
-    const keyPositions = getKeyPositions(layoutModel.value, isSplit(layout.value), charMap!);
+    return getKeyPositions(layoutModel, isSplit(layout), charMap!);
+}
+
+export function LayoutArea({appState}: LayoutAreaProps) {
+    const {layout, layoutModel, previousLayoutModel, mapping, setLayout, mappingDiff, bigramMovements, vizType} = appState;
+
+    const currentPositions = getKeyPositionsForModel(layoutModel.value, mapping.value, layout.value);
+    const previousPositions = getKeyPositionsForModel(previousLayoutModel.value, mapping.value, layout.value);
+    const keyMovements = getKeyMovements(previousPositions, currentPositions);
 
     return (
         <div>
@@ -35,13 +46,13 @@ export function LayoutArea({appState}: LayoutAreaProps) {
             <KeyboardSvg>
                 <RowBasedKeyboard
                     layoutModel={layoutModel.value}
-                    keyPositions={keyPositions}
+                    keyMovements={keyMovements}
                     mappingDiff={mappingDiff.value}
                     vizType={vizType.value}
                 />
                 {vizType.value === VisualizationType.LayoutAngle &&
                     <StaggerLines layoutModel={layoutModel.value} layoutSplit={isSplit(layout.value)}
-                                  keyPositions={keyPositions}/>
+                                  keyMovements={keyMovements}/>
                 }
                 {vizType.value === VisualizationType.MappingBigrams &&
                     <BigramLines bigrams={bigramMovements.value}/>

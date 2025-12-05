@@ -11,7 +11,7 @@ import {
     BigramType,
     Finger,
     KeyboardRows,
-    type KeyPosition,
+    type KeyMovement,
     MappingChange,
     type RowBasedLayoutModel,
     VisualizationType
@@ -44,6 +44,8 @@ interface KeyProps {
     ribbonClass?: string,
     frequencyCircleRadius?: number,
     showHomeMarker: boolean,
+    prevRow?: KeyboardRows,
+    prevCol?: number,
 }
 
 const keyUnit = 100;
@@ -51,21 +53,67 @@ const keyPadding = 5;
 const keyRibbonPaddingH = 17;
 const keyRibbonPaddingV = 1;
 
-export function Key({label, row, col, width, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker}: KeyProps) {
+// SVG viewBox center for calculating radial entry/exit points
+const svgCenterX = 850;
+const svgCenterY = 250;
+
+/**
+ * Calculate a position outside the SVG boundary on a radial line from the center through the given point.
+ */
+function getRadialExitPoint(x: number, y: number): {x: number, y: number} {
+    const dx = x - svgCenterX;
+    const dy = y - svgCenterY;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    // Multiply by a factor to push the point well outside the visible area
+    const factor = distance > 0 ? 2000 / distance : 2000;
+    return {
+        x: svgCenterX + dx * factor,
+        y: svgCenterY + dy * factor
+    };
+}
+
+export function Key({label, row, col, width, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker, prevRow, prevCol}: KeyProps) {
     const x = col * keyUnit + keyPadding;
     const y = row * keyUnit + keyPadding;
+
+    // Calculate previous position if provided, or use radial exit point for appearing keys
+    let fromX = x;
+    let fromY = y;
+    if (prevRow !== undefined && prevCol !== undefined) {
+        fromX = prevCol * keyUnit + keyPadding;
+        fromY = prevRow * keyUnit + keyPadding;
+    } else {
+        // Key is appearing - start from outside
+        const exitPoint = getRadialExitPoint(x + keyUnit * width / 2, y + keyUnit * height / 2);
+        fromX = exitPoint.x;
+        fromY = exitPoint.y;
+    }
+
+    const animationDuration = "0.5s";
     const labelClass =
         isKeyboardSymbol(label) ? "keyboard-symbol"
             : isKeyName(label) ? "key-name"
                 : "";
+
+    // Determine if we need animation
+    const needsAnimation = (fromX !== x) || (fromY !== y);
+
     const text = (labelClass) ?
         // center all the non-character key labels
         <text x={x + keyUnit * width / 2} y={y + keyUnit * height / 2} className={"key-label " + labelClass}>
+            {needsAnimation && <>
+                <animate attributeName="x" from={fromX + keyUnit * width / 2} to={x + keyUnit * width / 2} dur={animationDuration} fill="freeze"/>
+                <animate attributeName="y" from={fromY + keyUnit * height / 2} to={y + keyUnit * height / 2} dur={animationDuration} fill="freeze"/>
+            </>}
             {label}
         </text>
         :
         // left align labels for character keys
         <text x={x + 20} y={y + 60} className="key-label">
+            {needsAnimation && <>
+                <animate attributeName="x" from={fromX + 20} to={x + 20} dur={animationDuration} fill="freeze"/>
+                <animate attributeName="y" from={fromY + 60} to={y + 60} dur={animationDuration} fill="freeze"/>
+            </>}
             {label}
         </text>
 
@@ -74,20 +122,38 @@ export function Key({label, row, col, width, height, backgroundClass, ribbonClas
               x={x + keyRibbonPaddingV}
               y={y + keyRibbonPaddingH}
               width={keyUnit * width - 2 * (keyPadding + keyRibbonPaddingV)}
-              height={keyUnit * height - 2 * (keyPadding + keyRibbonPaddingH)}
-        />
+              height={keyUnit * height - 2 * (keyPadding + keyRibbonPaddingH)}>
+            {needsAnimation && <>
+                <animate attributeName="x" from={fromX + keyRibbonPaddingV} to={x + keyRibbonPaddingV} dur={animationDuration} fill="freeze"/>
+                <animate attributeName="y" from={fromY + keyRibbonPaddingH} to={y + keyRibbonPaddingH} dur={animationDuration} fill="freeze"/>
+            </>}
+        </rect>
     const frequencyCircle = frequencyCircleRadius &&
-        <circle cx={x + 70} cy={y + 30} r={frequencyCircleRadius} className="frequency-circle"/>;
+        <circle cx={x + 70} cy={y + 30} r={frequencyCircleRadius} className="frequency-circle">
+            {needsAnimation && <>
+                <animate attributeName="cx" from={fromX + 70} to={x + 70} dur={animationDuration} fill="freeze"/>
+                <animate attributeName="cy" from={fromY + 30} to={y + 30} dur={animationDuration} fill="freeze"/>
+            </>}
+        </circle>;
     const homeMarker = showHomeMarker &&
-        <circle cx={x + keyUnit / 2} cy={y + keyUnit / 2} r={12} className="home-marker-circle"/>;
+        <circle cx={x + keyUnit / 2} cy={y + keyUnit / 2} r={12} className="home-marker-circle">
+            {needsAnimation && <>
+                <animate attributeName="cx" from={fromX + keyUnit / 2} to={x + keyUnit / 2} dur={animationDuration} fill="freeze"/>
+                <animate attributeName="cy" from={fromY + keyUnit / 2} to={y + keyUnit / 2} dur={animationDuration} fill="freeze"/>
+            </>}
+        </circle>;
     return <g>
         <rect
             className={"key-outline " + backgroundClass}
             x={x}
             y={y}
             width={keyUnit * width - 2 * keyPadding}
-            height={keyUnit * height - 2 * keyPadding}
-        />
+            height={keyUnit * height - 2 * keyPadding}>
+            {needsAnimation && <>
+                <animate attributeName="x" from={fromX} to={x} dur={animationDuration} fill="freeze"/>
+                <animate attributeName="y" from={fromY} to={y} dur={animationDuration} fill="freeze"/>
+            </>}
+        </rect>
         {keyRibbon || frequencyCircle || homeMarker}
         {text}
     </g>
@@ -96,7 +162,7 @@ export function Key({label, row, col, width, height, backgroundClass, ribbonClas
 export interface KeyboardProps {
     layoutModel: RowBasedLayoutModel;
     mappingDiff: Record<string, MappingChange>;
-    keyPositions: KeyPosition[];
+    keyMovements: KeyMovement[];
     vizType: VisualizationType;
 }
 
@@ -135,8 +201,12 @@ function getFingeringClasses(layoutModel: RowBasedLayoutModel, row: number, col:
     return bgClass + " " + borderClass;
 }
 
-export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizType}: KeyboardProps) {
-    return keyPositions.map(({label, row, col, colPos}) => {
+export function RowBasedKeyboard({layoutModel, keyMovements, mappingDiff, vizType}: KeyboardProps) {
+    return keyMovements.map((movement, index) => {
+        // Use current position if available, otherwise use previous position
+        const keyPos = movement.cur ?? movement.prev!;
+        const {label, row, col, colPos} = keyPos;
+
         const keyColorFunction = (layoutModel.keyColorClass) || defaultKeyColor;
         const capWidth = keyCapWidth(layoutModel, row, col);
         const capHeight = keyCapHeight(layoutModel, row, col);
@@ -160,11 +230,13 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
         // but for the Escape key on Ergoplank, left-align is actually better.
         // const capColPos = colPos + (slotWidth - capWidth)/2;
 
+        let displayLabel = label;
         if (vizType === VisualizationType.LayoutKeySize) {
-            label = capSize > 1 ? capSize + "" : "";
+            displayLabel = capSize > 1 ? capSize + "" : "";
         }
+
         return <Key
-            label={label}
+            label={displayLabel}
             backgroundClass={bgClass}
             ribbonClass={ribbonClass}
             row={row}
@@ -173,7 +245,9 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
             height={capHeight}
             frequencyCircleRadius={frequencyCircleRadius}
             showHomeMarker={vizType === VisualizationType.LayoutKeySize && isHomeKey(layoutModel, row, col)}
-            key={row + ',' + col}
+            prevRow={movement.prev?.row}
+            prevCol={movement.prev?.colPos}
+            key={label + '-' + index}
         />
     })
 }
@@ -206,10 +280,13 @@ export function BigramLines({bigrams}: BigramLinesProps) {
 export interface StaggerLinesProps {
     layoutModel: RowBasedLayoutModel;
     layoutSplit: boolean;
-    keyPositions: KeyPosition[];
+    keyMovements: KeyMovement[];
 }
 
-export function StaggerLines({layoutModel, layoutSplit, keyPositions}: StaggerLinesProps) {
+export function StaggerLines({layoutModel, layoutSplit, keyMovements}: StaggerLinesProps) {
+    // Extract current positions from key movements
+    const keyPositions = keyMovements.map(m => m.cur ?? m.prev!);
+
     const leftHomePositions = keyPositions.filter((kp) =>
         kp.row === KeyboardRows.Home && kp.col <= layoutModel.leftHomeIndex && kp.col > layoutModel.leftHomeIndex - 4
     ).map((kp) => kp.colPos);
