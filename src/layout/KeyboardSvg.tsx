@@ -167,7 +167,7 @@ export interface KeyboardProps {
 }
 
 export function getEffortClass(effort: number | null) {
-    if (effort === null || isNaN(effort)) return "";
+    if (effort === null || Number.isNaN(effort)) return "";
     if (effort < 1) return "home-key";
     return "effort-" + (effort * 10);
 }
@@ -221,7 +221,7 @@ export function RowBasedKeyboard({layoutModel, keyMovements, mappingDiff, vizTyp
         const ribbonClass = vizType === VisualizationType.MappingDiff && lettersAndVIP.test(label)
             ? ribbonClassByDiff[mappingDiff[label]]
             : undefined;
-        let frequencyCircleRadius = undefined;
+        let frequencyCircleRadius: number | undefined;
         if (vizType === VisualizationType.MappingFrequeny) {
             const freq = Math.sqrt(singleCharacterFrequencies[label.toUpperCase()] / singleCharacterFrequencies['E']);
             frequencyCircleRadius = freq * keyUnit / 2;
