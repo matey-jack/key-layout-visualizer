@@ -4,7 +4,7 @@ import {MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 const ahkbKeyWidth = new MonotonicKeyWidth(15, zeroIndent, "AHKB");
 
-const thirtyKeyMapping: LayoutMapping = [
+const ansi30KeyMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, "-", "=", 5, 6, 7, 8, 9, "'", "⇞"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "⏎"],
@@ -70,7 +70,7 @@ export const xhkbLayoutModel: RowBasedLayoutModel = {
     symmetricStagger: false,
 
     supportedKeymapTypes: [
-        {typeId: KeymapTypeId.Ansi30, frameMapping: thirtyKeyMapping},
+        {typeId: KeymapTypeId.Ansi30, frameMapping: ansi30KeyMapping},
         {typeId: KeymapTypeId.Thumb30, frameMapping: thumb30KeyMapping},
     ],
 }
@@ -103,11 +103,11 @@ export const xhkbWithArrowsLayoutModel: RowBasedLayoutModel = {
     supportedKeymapTypes: [
         {
             typeId: KeymapTypeId.Ansi30,
-            frameMapping: copyAndModifyKeymap(thirtyKeyMapping, arrowBlockKeymap(false))
+            frameMapping: copyAndModifyKeymap(ansi30KeyMapping, arrowBlockKeymap(false))
         },
         {
             typeId: KeymapTypeId.Thumb30,
-            frameMapping: copyAndModifyKeymap(thirtyKeyMapping, arrowBlockKeymap(true))
+            frameMapping: copyAndModifyKeymap(thumb30KeyMapping, arrowBlockKeymap(true))
         },
     ],
     singleKeyEffort: replaceLast(xhkbLayoutModel.singleKeyEffort,
