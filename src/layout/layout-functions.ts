@@ -18,7 +18,7 @@ import {sum} from "../library/math.ts";
 import {isCommandKey} from "../mapping/mapping-functions.ts";
 
 export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
-    if (row != KeyboardRows.Home) return false;
+    if (row !== KeyboardRows.Home) return false;
     if (col <= layoutModel.leftHomeIndex && col > layoutModel.leftHomeIndex - 4) return true;
     if (col >= layoutModel.rightHomeIndex && col < layoutModel.rightHomeIndex + 4) return true;
     return false;
@@ -30,7 +30,7 @@ export function defaultKeyColor(label: string, _row: number, _col: number): KeyC
 }
 
 export const keyCapWidth = (lm: RowBasedLayoutModel, r: KeyboardRows, c: number) =>
-    lm.keyCapWidth && lm.keyCapWidth(r, c) ? lm.keyCapWidth(r, c)! : lm.keyWidths[r][c];
+    lm.keyCapWidth?.(r, c) ? lm.keyCapWidth(r, c)! : lm.keyWidths[r][c];
 
 export const keyCapHeight = (lm: RowBasedLayoutModel, r: KeyboardRows, c: number) =>
     lm.keyCapHeight ? lm.keyCapHeight(r, c) : 1;

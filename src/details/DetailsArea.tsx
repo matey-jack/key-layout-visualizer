@@ -140,11 +140,11 @@ function countKeysBySize(layoutM: RowBasedLayoutModel) {
 
 function getUsedKeysizes(layoutM: RowBasedLayoutModel) {
     const keySizes: number[] = [];
-    const frameMapping = layoutM.supportedKeymapTypes?.[0].frameMapping!;
+    const frameMapping = layoutM.supportedKeymapTypes[0].frameMapping;
     frameMapping.forEach((row, r) => {
         row.forEach((label, c) => {
             const size = keyCapSize(layoutM)(r, c);
-            if (label !== null && size != 1 && !keySizes.includes(size)) {
+            if (label != null && size !== 1 && !keySizes.includes(size)) {
                 keySizes.push(size);
             }
         })

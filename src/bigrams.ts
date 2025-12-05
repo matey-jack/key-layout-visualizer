@@ -17,11 +17,11 @@ import {fillMapping, getKeyPositions, getKeyPositionsByLabel} from "./layout/lay
 export function getBigramType(a: KeyPosition, b: KeyPosition): BigramType {
     try {
         if (isThumb(a.finger) || isThumb(b.finger)) return BigramType.InvolvesThumb;
-        if (hand(a.finger) != hand(b.finger)) return BigramType.OtherHand;
+        if (hand(a.finger) !== hand(b.finger)) return BigramType.OtherHand;
         if (a.finger === b.finger) {
             if (a.hasAltFinger || b.hasAltFinger) return BigramType.AltFinger
             // When the center column is involved, the other index finger column can be typed with the middle finger.
-            if ((a.finger === Finger.LIndex || a.finger === Finger.RIndex) && a.col != b.col) return BigramType.AltFinger
+            if ((a.finger === Finger.LIndex || a.finger === Finger.RIndex) && a.col !== b.col) return BigramType.AltFinger
             return BigramType.SameFinger;
         }
         // TODO: our current definition column-difference between keys > 4 does not apply to any bigram,
@@ -60,7 +60,7 @@ export function getBigramMovements(positionsList: KeyPosition[], logContext: str
             // maybe we should even set the stroke-width directly according to a formula, not a mapping.
             rank: 1 + Math.floor(rank / bigramRankSize),
             type,
-            draw: type != BigramType.OtherHand && type != BigramType.InvolvesThumb,
+            draw: type !== BigramType.OtherHand && type !== BigramType.InvolvesThumb,
         }
     }).filter((m) => !!m);
 }

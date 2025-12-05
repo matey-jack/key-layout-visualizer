@@ -34,7 +34,7 @@ export class MonotonicKeyWidth {
         const totalKeyWidth = this.kbWidth - 2 * this.rowIndent[row];
         rightEdge = rightEdge || 1 + frac(totalKeyWidth - leftEdge);
         const remainingWidth = totalKeyWidth - leftEdge - rightEdge;
-        if (remainingWidth != Math.floor(remainingWidth)) {
+        if (remainingWidth !== Math.floor(remainingWidth)) {
             console.log(`ERROR: ${this.kbName} row ${row}: remaining width ${remainingWidth} is not integer!`);
         }
         return [leftEdge, ...Array(remainingWidth).fill(1), rightEdge];
