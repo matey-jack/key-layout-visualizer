@@ -17,8 +17,9 @@ Implementation:
 
 TODO list:
  - [x] Define interface KeyMovement and adapt KeyPosition
- - [ ] Add previousLayoutModel to appState (initialize it to be the same as current to avoid having to handle null in a lot of code)
+ - [x] Add previousLayoutModel to appState (initialize it to be the same as current to avoid having to handle null in a lot of code)
         Update it whenever the layoutModel is updated.
- - [ ] create a function getKeyMovements which calls getKeyPositions for previous and current appState and merges the results.
+ - [x] create a function getKeyMovements which calls getKeyPositions for previous and current appState and merges the results.
  - [ ] adapt the RowBasedKeyboard component to accept a list of key movements and forward each element to the Key component.
-      Key() should add an <animate> or <animateTransform> tag into all the elements generated
+      * Key() should add an <animate> or <animateTransform> tag into all the elements generated
+      * change call sites of RowBasedKeyboard to pass the result of getKeyMovements instead of getKeyPositions.

@@ -1,17 +1,18 @@
 import {
-    Finger,
-    FlexMapping,
+    type Finger,
+    type FlexMapping,
     hand,
     KEY_COLOR,
     KeyboardRows,
-    KeyColor,
+    type KeyColor,
     KEYMAP_TYPES,
     KeymapTypeId,
-    KeyPosition,
-    LayoutMapping,
+    type KeyMovement,
+    type KeyPosition,
+    type LayoutMapping,
     MappingChange,
-    RowBasedLayoutModel,
-    SupportedKeymapType
+    type RowBasedLayoutModel,
+    type SupportedKeymapType
 } from "../base-model.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
 import {sum} from "../library/math.ts";
@@ -186,7 +187,7 @@ export function diffMappings(model: RowBasedLayoutModel, a: string[][], b: strin
             if (!aKey || aKey === b[r][c]) {
                 result[aKey] = MappingChange.SamePosition;
             } else {
-                let f = model.mainFingerAssignment[r][c] as Finger;
+                const f = model.mainFingerAssignment[r][c] as Finger;
                 // console.log(`[${r},${c}] '${aKey}' on finger ${f}, in base mapping finger ${bFingers[aKey]}.'`)
                 result[aKey] = diffFinger(f, bFingers[aKey])
             }
@@ -286,6 +287,29 @@ export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean
 
 export const getKeyPositionsByLabel = (positions: KeyPosition[]): Record<string, KeyPosition> =>
     Object.fromEntries(positions.map(p => [p.label, p]));
+
+/**
+ * Merges key positions from previous and current states to create key movements for animation.
+ * Keys are matched by their label. Keys that appear in only one state will have only prev or cur set.
+ */
+export function getKeyMovements(prevPositions: KeyPosition[], curPositions: KeyPosition[]): KeyMovement[] {
+    const prevByLabel = getKeyPositionsByLabel(prevPositions);
+    const curByLabel = getKeyPositionsByLabel(curPositions);
+
+    // Get all unique labels from both previous and current
+    const allLabels = new Set([...Object.keys(prevByLabel), ...Object.keys(curByLabel)]);
+
+    const movements: KeyMovement[] = [];
+    for (const label of allLabels) {
+        const prev = prevByLabel[label];
+        const cur = curByLabel[label];
+
+        // At least one must be defined (enforced by the Set union)
+        movements.push({ prev, cur });
+    }
+
+    return movements;
+}
 
 export function copyAndModifyKeymap<T>(mapping: T[][], f: (m: T[][]) => T[][]): T[][] {
     const newMapping = mapping.map((row) => [...row]);
