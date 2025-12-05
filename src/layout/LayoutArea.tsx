@@ -1,11 +1,11 @@
-import {FlexMapping, LayoutType, LayoutTypeNames, LayoutTypeNotes, VisualizationType} from "../base-model.ts";
-import {AnsiVariant, AppState, LayoutOptions, PlankVariant} from "../app-model.ts";
+import type {Signal} from "@preact/signals";
+import {AnsiVariant, type AppState, type LayoutOptions, PlankVariant} from "../app-model.ts";
+import {type FlexMapping, LayoutType, LayoutTypeNames, LayoutTypeNotes, VisualizationType} from "../base-model.ts";
+import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
+import {ErgoplankLayoutOptions} from "./ErgoplankLayoutOptions.tsx";
+import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
 import {BigramLines, KeyboardSvg, RowBasedKeyboard, StaggerLines} from "./KeyboardSvg.tsx";
 import {fillMapping, getKeyPositions} from "./layout-functions.ts";
-import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
-import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
-import {Signal} from "@preact/signals";
-import {ErgoplankLayoutOptions} from "./ErgoplankLayoutOptions.tsx";
 
 interface LayoutAreaProps {
     appState: AppState;
@@ -27,8 +27,8 @@ export function LayoutArea({appState}: LayoutAreaProps) {
     if (layoutSupportsFlipRetRub(layout.value) && layout.value.flipRetRub) {
         flipRetRub(charMap!);
     }
-    let split = layout.value.type == LayoutType.Ergosplit
-        || layout.value.type == LayoutType.ANSI && layout.value.ansiSplit;
+    const split = layout.value.type === LayoutType.Ergosplit
+        || layout.value.type === LayoutType.ANSI && layout.value.ansiSplit;
     const keyPositions = getKeyPositions(layoutModel.value, split, charMap!);
 
     return (
@@ -60,17 +60,17 @@ function flipRetRub(charMap: (string | null)[][]) {
     // Just because we use a different label for Enter on one keyboard, we have to find that to preserve it.
     charMap.forEach((charRow) => {
         charRow.forEach((char) => {
-            if (char && char.includes("⏎")) {
+            if (char?.includes("⏎")) {
                 enterLabel = char;
             }
         })
     })
     charMap.forEach((charRow) => {
         charRow.forEach((char, col) => {
-            if (char && char.includes("⏎")) {
+            if (char?.includes("⏎")) {
                 charRow[col] = "⌫";
             }
-            if (char == "⌫") {
+            if (char === "⌫") {
                 charRow[col] = enterLabel;
             }
         })
