@@ -7,27 +7,28 @@ import {
     lettersAndVIP
 } from "./layout-functions.ts";
 import {
-    BigramMovement,
+    type BigramMovement,
     BigramType,
     Finger,
     KeyboardRows,
-    KeyPosition,
+    type KeyPosition,
     MappingChange,
-    RowBasedLayoutModel,
+    type RowBasedLayoutModel,
     VisualizationType
 } from "../base-model.ts";
-import {ComponentChildren, JSX} from "preact";
+import type {ComponentChildren, JSX} from "preact";
 import {singleCharacterFrequencies} from "../frequencies/english-single-character-frequencies.ts";
 
 interface KeyboardSvgProps {
     children?: ComponentChildren;
 }
 
-// Our largest keyboards are 15u wide (split Iris CE), while all keyboards are 5u high.
+// Our largest keyboards are 16u wide (Ergoboard), while all keyboards are 5u high.
 // Adding 1u of wiggle room all around suggests a ratio of 7:17 for the SVG grid.
 export const KeyboardSvg = (props: KeyboardSvgProps) =>
     <div>
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1700 500" class="keyboard-svg">
+            <title>Keyboard Layout Diagram</title>
             {props.children}
         </svg>
     </div>
