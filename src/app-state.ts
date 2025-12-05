@@ -1,12 +1,12 @@
-import {FlexMapping, KeymapTypeId, LayoutType, RowBasedLayoutModel, VisualizationType} from "./base-model.ts";
-import {computed, effect, signal, Signal} from "@preact/signals";
+import {type FlexMapping, KeymapTypeId, LayoutType, type RowBasedLayoutModel, VisualizationType} from "./base-model.ts";
+import {computed, effect, signal, type Signal} from "@preact/signals";
 import {
     AnsiVariant,
-    AppState,
+    type AppState,
     EB65_LowShift_Variant,
     EB65_MidShift_Variant,
     HarmonicVariant, isSplit,
-    LayoutOptions,
+    type LayoutOptions,
     PlankVariant
 } from "./app-model.ts";
 import {diffToBase, fillMapping, getKeyPositions, hasMatchingMapping} from "./layout/layout-functions.ts";
