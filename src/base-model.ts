@@ -187,6 +187,13 @@ export const hand = (finger: Finger) => Math.floor(finger / 5)
 export const isThumb = (finger: Finger) =>
     finger === Finger.RThumb || finger === Finger.LThumb;
 
+export interface KeyMovement {
+    prev?: KeyPosition;
+    cur?: KeyPosition;
+    // Invariant: at least one of prev or cur most be defined. If both are defined, their .label must be the same or equivalent.
+    // (We'll add an equivalency function later. Until then, they must be the same.)
+}
+
 export interface KeyPosition {
     label: string;
 
