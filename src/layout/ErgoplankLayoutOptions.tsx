@@ -18,7 +18,7 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
             <CheckboxWithLabel label={label}
                                type="radio"
                                groupName="lowshift_variant"
-                               checked={options.eb65LowshiftVariant == v}
+                               checked={options.eb65LowshiftVariant === v}
                                onChange={(checked) => checked && setOption({eb65LowshiftVariant: v})}/>
         </div>
     }
@@ -75,7 +75,7 @@ export function EbMidshiftLayoutOptions({msVariant, setMsVariant}: EbMidshiftLay
         return <CheckboxWithLabel label={label}
                                   type="radio"
                                   groupName={sub ? "midshift_subvariant" : "midshift_variant"}
-                                  checked={msVariant == msVar}
+                                  checked={msVariant === msVar}
                                   onChange={(checked) => checked && setMsVariant(msVar)}/>
     }
 
@@ -83,7 +83,7 @@ export function EbMidshiftLayoutOptions({msVariant, setMsVariant}: EbMidshiftLay
     return <>
         {midshiftVariant(EB65_MidShift_Variant.EXTRA_WIDE, "Extra Wide Hands")}
         {midshiftVariant(EB65_MidShift_Variant.NICELY_WIDE, "❤️ Wide Hands")}
-        {msVariant == EB65_MidShift_Variant.NICELY_WIDE && false &&
+        {msVariant === EB65_MidShift_Variant.NICELY_WIDE && false &&
             <div className="ergoplank-midshift-xl-bars-checkbox">
                 <CheckboxWithLabel label="XL bottom bars" checked={false}/>
             </div>

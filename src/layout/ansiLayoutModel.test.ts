@@ -48,7 +48,7 @@ describe('ansiWideLayoutModel', () => {
     ];
 
     const thirtyKeyMapping = ansiWideLayoutModel.supportedKeymapTypes.filter(
-        (m) => m.typeId == KeymapTypeId.Ansi30
+        (m) => m.typeId === KeymapTypeId.Ansi30
     ).map((m) => m.frameMapping).pop()!;
     for (let row = 0; row < 5; row++) {
         it(`correct ${KeyboardRows[row]} row`, () => {

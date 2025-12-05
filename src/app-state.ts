@@ -50,7 +50,7 @@ function setLayout(
     mapping: Signal<FlexMapping>,
 ) {
     // Wide and split are not available for all ANSI variants, so adapt them to the current variant.
-    const newLayoutOptions = (opts.type == LayoutType.ANSI)
+    const newLayoutOptions = (opts.type === LayoutType.ANSI)
         ? {
             ...opts,
             ansiWide: modifyWide(mapping.value, opts),
@@ -146,7 +146,7 @@ function s2i(value: string | null): number | null {
 function getMappingByName(name: string | null): FlexMapping {
     if (name) {
         const found = allMappings.find(
-            (m) => m.name == name || m.techName == name
+            (m) => m.name === name || m.techName === name
         );
         if (found) return found;
     }

@@ -41,11 +41,11 @@ export function LayoutArea({appState}: LayoutAreaProps) {
                     mappingDiff={mappingDiff.value}
                     vizType={vizType.value}
                 />
-                {vizType.value == VisualizationType.LayoutAngle &&
+                {vizType.value === VisualizationType.LayoutAngle &&
                     <StaggerLines layoutModel={layoutModel.value} layoutSplit={split}
                                   keyPositions={keyPositions}/>
                 }
-                {vizType.value == VisualizationType.MappingBigrams &&
+                {vizType.value === VisualizationType.MappingBigrams &&
                     <BigramLines bigrams={bigramMovements.value}/>
                 }
             </KeyboardSvg>

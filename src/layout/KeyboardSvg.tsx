@@ -140,18 +140,18 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
         const capWidth = keyCapWidth(layoutModel, row, col);
         const capHeight = keyCapHeight(layoutModel, row, col);
         const capSize = Math.max(capWidth, capHeight);
-        const bgClass = (vizType == VisualizationType.LayoutKeySize ? getKeySizeClass(capSize)
-                : vizType == VisualizationType.LayoutKeyEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
-                    : vizType == VisualizationType.LayoutFingering // && (layoutModel.mainFingerAssignment[row][col] !== null)
+        const bgClass = (vizType === VisualizationType.LayoutKeySize ? getKeySizeClass(capSize)
+                : vizType === VisualizationType.LayoutKeyEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
+                    : vizType === VisualizationType.LayoutFingering // && (layoutModel.mainFingerAssignment[row][col] !== null)
                         ? getFingeringClasses(layoutModel, row, col, label)
                         : isHomeKey(layoutModel, row, col) ? "home-key"
                             : keyColorFunction(label, row, col))
             || (!label ? "unlabeled" : "");
-        const ribbonClass = vizType == VisualizationType.MappingDiff && lettersAndVIP.test(label)
+        const ribbonClass = vizType === VisualizationType.MappingDiff && lettersAndVIP.test(label)
             ? ribbonClassByDiff[mappingDiff[label]]
             : undefined;
         let frequencyCircleRadius = undefined;
-        if (vizType == VisualizationType.MappingFrequeny) {
+        if (vizType === VisualizationType.MappingFrequeny) {
             const freq = Math.sqrt(singleCharacterFrequencies[label.toUpperCase()] / singleCharacterFrequencies['E']);
             frequencyCircleRadius = freq * keyUnit / 2;
         }
@@ -159,7 +159,7 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
         // but for the Escape key on Ergoplank, left-align is actually better.
         // const capColPos = colPos + (slotWidth - capWidth)/2;
 
-        if (vizType == VisualizationType.LayoutKeySize) {
+        if (vizType === VisualizationType.LayoutKeySize) {
             label = capSize > 1 ? capSize + "" : "";
         }
         return <Key
@@ -171,7 +171,7 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
             width={capWidth}
             height={capHeight}
             frequencyCircleRadius={frequencyCircleRadius}
-            showHomeMarker={vizType == VisualizationType.LayoutKeySize && isHomeKey(layoutModel, row, col)}
+            showHomeMarker={vizType === VisualizationType.LayoutKeySize && isHomeKey(layoutModel, row, col)}
             key={row + ',' + col}
         />
     })
@@ -210,10 +210,10 @@ export interface StaggerLinesProps {
 
 export function StaggerLines({layoutModel, layoutSplit, keyPositions}: StaggerLinesProps) {
     const leftHomePositions = keyPositions.filter((kp) =>
-        kp.row == KeyboardRows.Home && kp.col <= layoutModel.leftHomeIndex && kp.col > layoutModel.leftHomeIndex - 4
+        kp.row === KeyboardRows.Home && kp.col <= layoutModel.leftHomeIndex && kp.col > layoutModel.leftHomeIndex - 4
     ).map((kp) => kp.colPos);
     const rightHomePositions = keyPositions.filter((kp) =>
-        kp.row == KeyboardRows.Home && kp.col >= layoutModel.rightHomeIndex && kp.col < layoutModel.rightHomeIndex + 4
+        kp.row === KeyboardRows.Home && kp.col >= layoutModel.rightHomeIndex && kp.col < layoutModel.rightHomeIndex + 4
     ).map((kp) => kp.colPos);
     const leftHandOffsets = layoutSplit ? [0, 0, 0, 0] : [0.5, 0.25, 0, -0.25];
     const rightHandOffsets = leftHandOffsets.map((x) => -x);

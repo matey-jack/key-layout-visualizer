@@ -40,7 +40,7 @@ export const keyCapSize = (lm: RowBasedLayoutModel) =>
     ((r: KeyboardRows, c: number) => Math.max(keyCapHeight(lm, r, c), keyCapWidth(lm, r, c)));
 
 export function getKeySizeClass(keyCapSize: number) {
-    if (keyCapSize == 1) return "key-size-square";
+    if (keyCapSize === 1) return "key-size-square";
     const keySizeThresholds = [1.25, 1.5, 1.75, 2.0, 2.25, 2.75, 4, 6];
     for (let i = 0; i < keySizeThresholds.length; i++) {
         if (keyCapSize <= keySizeThresholds[i]) {
@@ -50,7 +50,7 @@ export function getKeySizeClass(keyCapSize: number) {
 }
 
 export const keyColorHighlightsClass = (label: string, row: KeyboardRows, col: number) => {
-    if (label && "⏎↑↓←→".includes(label) || label == "Esc") return KEY_COLOR.HIGHLIGHT;
+    if (label && "⏎↑↓←→".includes(label) || label === "Esc") return KEY_COLOR.HIGHLIGHT;
     return defaultKeyColor(label, row, col);
 };
 
@@ -60,7 +60,7 @@ export function onlySupportsWide(mapping: FlexMapping) {
 
 export function getFrameMapping(model: RowBasedLayoutModel, type: KeymapTypeId): (LayoutMapping | undefined) {
     return model.supportedKeymapTypes.filter(
-        (t) => t.typeId == type
+        (t) => t.typeId === type
     )[0]?.frameMapping;
 }
 
@@ -104,7 +104,7 @@ export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexM
             ?.find(s => s.typeId === KeymapTypeId.Ansi30)
             ?.frameMapping;
         const keymapType = match.supported.typeId;
-        const flexData = (KEYMAP_TYPES[keymapType].keysPerRow[0] == 0)
+        const flexData = (KEYMAP_TYPES[keymapType].keysPerRow[0] === 0)
             ? ["", ...match.flexData]
             : match.flexData;
         try {
@@ -161,8 +161,8 @@ export const mergeMapping = (
                     const v = Array.isArray(layoutValue) ? flexMapping[r + layoutValue[0]][layoutValue[1]]
                         : (typeof layoutValue === 'number') ? flexMapping[r][layoutValue]
                             : layoutValue as string;
-                    if (v == leaveEmpty) return "";
-                    if (v == useFallback) return (fallbackMapping ? fallbackMapping[r][c] as string : "");
+                    if (v === leaveEmpty) return "";
+                    if (v === useFallback) return (fallbackMapping ? fallbackMapping[r][c] as string : "");
                     return keyLabelShortcuts[v] ?? v;
                 } catch (e) {
                     console.error(`Row ${r}, Col ${c}, Frame value: ${layoutValue}`, e);
@@ -173,8 +173,8 @@ export const mergeMapping = (
     )
 
 const diffFinger = (a: Finger, b: Finger) =>
-    (a == b) ? MappingChange.SameFinger
-        : (hand(a) == hand(b)) ? MappingChange.SameHand
+    (a === b) ? MappingChange.SameFinger
+        : (hand(a) === hand(b)) ? MappingChange.SameHand
             : MappingChange.SwapHands;
 
 // We report the result by assigned (logical) key. Maybe that makes it easier to compute stats later.
@@ -183,7 +183,7 @@ export function diffMappings(model: RowBasedLayoutModel, a: string[][], b: strin
     const result: Record<string, MappingChange> = {};
     a.forEach((aRow, r) => {
         aRow.forEach((aKey, c) => {
-            if (!aKey || aKey == b[r][c]) {
+            if (!aKey || aKey === b[r][c]) {
                 result[aKey] = MappingChange.SamePosition;
             } else {
                 let f = model.mainFingerAssignment[r][c] as Finger;

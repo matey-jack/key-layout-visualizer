@@ -63,7 +63,7 @@ export class SymmetricKeyWidth {
         /*
             Where the gap will be placed. If undefined, use the center of the keyboard.
             This will also determine the size of gap, 0.5 or 1.5, because the gap will always be centered on this line.
-            (That is, rowIndent + sum(keyWiths to the left) + gapWidth/2 == axis.)
+            (That is, rowIndent + sum(keyWiths to the left) + gapWidth/2 === axis.)
         */
         axis?: number,
     ) {
@@ -81,7 +81,7 @@ export class SymmetricKeyWidth {
         let uniKeys = Math.floor(remainingWidth);
         let gapWidth = remainingWidth - uniKeys;
         const result = [leftEdge, ...Array(uniKeys).fill(1), rightEdge];
-        if (gapWidth == 0) {
+        if (gapWidth === 0) {
             return result;
         }
         const leftFloat = axis - this.rowIndent[row] - leftEdge;
@@ -146,7 +146,7 @@ export class MicroGapKeyWidths {
 
     keyCapWidthsFn(next?: KeyCapWidthsFn) {
         return (r: KeyboardRows, col: number) => {
-            if (r == this.row) {
+            if (r === this.row) {
                 return this.keyCapWidths[col];
             }
             if (next) {

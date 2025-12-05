@@ -19,7 +19,7 @@ export const eb65MidshiftExtraWideLayoutModel: RowBasedLayoutModel = {
     ],
 
     hasAltFinger: (row: number, col: number) =>
-        (row == KeyboardRows.Lower) && ([1, 2, 3, 7, 8, 9].includes(col)),
+        (row === KeyboardRows.Lower) && ([1, 2, 3, 7, 8, 9].includes(col)),
 
     // Only fixed values can be used. See base-model.ts SKE_*
     // 'null' means the hand has to taken off the home-row. Those keys can't be used with letter or prose punctuation.
@@ -43,7 +43,7 @@ export const eb65MidshiftExtraWideLayoutModel: RowBasedLayoutModel = {
         [0.5, 1.25, 1.25, 1.25, 1.25, 1.75, 1, 1.75, 1.25, 0.25, 1.25, 0.25, 1, 1, 1],
     ],
     keyCapWidth(row: KeyboardRows, col: number) {
-        if (row == KeyboardRows.Bottom && col > 0 && col < 4) return 1.25;
+        if (row === KeyboardRows.Bottom && col > 0 && col < 4) return 1.25;
         return this.keyWidths![row][col];
     },
     leftHomeIndex: 4,

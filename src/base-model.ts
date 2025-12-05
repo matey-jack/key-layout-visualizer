@@ -185,7 +185,7 @@ export enum Hand {
 export const hand = (finger: Finger) => Math.floor(finger / 5)
 
 export const isThumb = (finger: Finger) =>
-    finger == Finger.RThumb || finger == Finger.LThumb;
+    finger === Finger.RThumb || finger === Finger.LThumb;
 
 export interface KeyPosition {
     label: string;

@@ -85,7 +85,7 @@ export const harmonic13MidshiftLayoutModel: RowBasedLayoutModel = {
 
     // TODO: fix for the layout and also add central column keys (they are all letters in this layout!)
     hasAltFinger: (row: number, col: number) =>
-        (row == KeyboardRows.Upper || row == KeyboardRows.Lower) &&
+        (row === KeyboardRows.Upper || row === KeyboardRows.Lower) &&
         ([1, 2, 3, 8, 9, 10].includes(col)),
 
     singleKeyEffort: [

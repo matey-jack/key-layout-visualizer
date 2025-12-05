@@ -14,7 +14,7 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
     ],
 
     hasAltFinger: (row: number, col: number) =>
-        (row == KeyboardRows.Lower) && ([1, 2, 3, 7, 8, 9].includes(col)),
+        (row === KeyboardRows.Lower) && ([1, 2, 3, 7, 8, 9].includes(col)),
 
     singleKeyEffort: [
         [null, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, null, null],
@@ -110,7 +110,7 @@ export const eb65VerticalEnterLayoutModel: RowBasedLayoutModel = {
         return matrix;
     }),
     keyCapHeight: (row: KeyboardRows, col: number) => {
-        if (row == KeyboardRows.Upper && col == 14) return 2;
+        if (row === KeyboardRows.Upper && col === 14) return 2;
         return 1;
     },
     supportedKeymapTypes: eb65MidshiftRightRetLayoutModel.supportedKeymapTypes?.map(supported => ({

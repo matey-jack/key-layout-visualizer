@@ -41,7 +41,7 @@ export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
     ],
 
     hasAltFinger: (row: number, col: number) =>
-        (row == KeyboardRows.Lower) && ([1, 2, 3, 7, 8, 9].includes(col)),
+        (row === KeyboardRows.Lower) && ([1, 2, 3, 7, 8, 9].includes(col)),
 
     // Only fixed values can be used. see base-model.ts SKE_*
     singleKeyEffort: [

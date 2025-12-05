@@ -18,18 +18,18 @@ export function getBigramType(a: KeyPosition, b: KeyPosition): BigramType {
     try {
         if (isThumb(a.finger) || isThumb(b.finger)) return BigramType.InvolvesThumb;
         if (hand(a.finger) != hand(b.finger)) return BigramType.OtherHand;
-        if (a.finger == b.finger) {
+        if (a.finger === b.finger) {
             if (a.hasAltFinger || b.hasAltFinger) return BigramType.AltFinger
             // When the center column is involved, the other index finger column can be typed with the middle finger.
-            if ((a.finger == Finger.LIndex || a.finger == Finger.RIndex) && a.col != b.col) return BigramType.AltFinger
+            if ((a.finger === Finger.LIndex || a.finger === Finger.RIndex) && a.col != b.col) return BigramType.AltFinger
             return BigramType.SameFinger;
         }
         // TODO: our current definition column-difference between keys > 4 does not apply to any bigram,
         //  because pinkies have no lateral movement to letters and even on wide layouts, there are no letters in the central column.
         if (Math.abs(a.col - b.col) > 4) return BigramType.OppositeLateral;
 
-        if (a.row == b.row) return BigramType.SameRow;
-        if (Math.abs(a.row - b.row) == 1) return BigramType.NeighboringRow;
+        if (a.row === b.row) return BigramType.SameRow;
+        if (Math.abs(a.row - b.row) === 1) return BigramType.NeighboringRow;
         return BigramType.OppositeRow;
     } catch (e) {
         console.log(`Error in getBigramType: ${e}. a: ${a}, b: ${b}`);

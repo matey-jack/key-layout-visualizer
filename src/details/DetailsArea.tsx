@@ -97,8 +97,8 @@ interface MappingSummaryProps {
 export function MappingSummary({mapping, layout}: MappingSummaryProps) {
     const keymapType = findMatchingKeymapType(layout, mapping)!.supported.typeId;
     const mappingType: string =
-        keymapType == KeymapTypeId.Ansi30 ? "derived from the generic 30-key without thumb mapping"
-        : keymapType == KeymapTypeId.Thumb30 ? "derived from the generic 30-key with thumb mapping"
+        keymapType === KeymapTypeId.Ansi30 ? "derived from the generic 30-key without thumb mapping"
+        : keymapType === KeymapTypeId.Thumb30 ? "derived from the generic 30-key with thumb mapping"
             : "specifically customized";
     const src = mapping.sourceUrl;
     const srcTitle = mapping.sourceLinkTitle ?? src;

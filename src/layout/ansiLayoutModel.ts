@@ -69,10 +69,10 @@ export const ansiIBMLayoutModel: RowBasedLayoutModel = {
     ],
 
     hasAltFinger: (row: number, col: number) =>
-        (row == KeyboardRows.Lower) && ([1, 2, 3, 7, 8, 9].includes(col)),
+        (row === KeyboardRows.Lower) && ([1, 2, 3, 7, 8, 9].includes(col)),
 
     keyColorClass: (label, row, col) => {
-        if (label == "⏎") return KEY_COLOR.EDGE;
+        if (label === "⏎") return KEY_COLOR.EDGE;
         return defaultKeyColor(label, row, col);
     },
 
@@ -127,7 +127,7 @@ export const ansiWideLayoutModel = {
 
         hasAltFinger:
             (row: number, col: number) =>
-                (row == KeyboardRows.Lower) && ([1, 2, 3, 8, 9, 10].includes(col)),
+                (row === KeyboardRows.Lower) && ([1, 2, 3, 8, 9, 10].includes(col)),
 
         singleKeyEffort:
             [
