@@ -247,12 +247,6 @@ const totalWidth = 17;
 const horizontalPadding = 0.5;
 
 export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean, fullMapping: string[][]): KeyPosition[] {
-    const getLabel = (row: number, col: number) => {
-        const mappingRow = fullMapping[row];
-        const label = mappingRow ? mappingRow[col] : undefined;
-        return label === undefined ? "??" : label;
-    };
-
     const rowWidth = layoutModel.keyWidths.map((widthRow, r) =>
         2 * (horizontalPadding + layoutModel.rowIndent[r]) + sum(widthRow.map((w) => w ?? 1))
     );
@@ -267,9 +261,11 @@ export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean
                 colPos += totalWidth - rowWidth[row];
             }
 
-            const label = getLabel(row, col);
-            const finger = layoutModel.mainFingerAssignment[row][col] as Finger;
+            // 'null' is a legit value, signifying a gap, not a key, while undefined is a bug.
+            //  We put ?? to alert developers to fix the keymap (instead of crashing here).
+            const label = fullMapping[row]?.[col] !== undefined ? fullMapping[row][col] : "??";
             if (label != null) {
+                const finger = layoutModel.mainFingerAssignment[row][col] as Finger;
                 result.push({
                     label,
                     row,

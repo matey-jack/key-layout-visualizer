@@ -1,6 +1,6 @@
 import type {Signal} from "@preact/signals";
 import {AnsiVariant, type AppState, isSplit, type LayoutOptions, PlankVariant} from "../app-model.ts";
-import {type FlexMapping, LayoutType, LayoutTypeNames, LayoutTypeNotes, VisualizationType} from "../base-model.ts";
+import {type FlexMapping, type KeyPosition, LayoutType, LayoutTypeNames, LayoutTypeNotes, type RowBasedLayoutModel, VisualizationType} from "../base-model.ts";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {ErgoplankLayoutOptions} from "./ErgoplankLayoutOptions.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
@@ -111,8 +111,9 @@ interface TopBarKeyboardTabProps {
 
 function TopBarKeyboardTab({layoutType, layoutName, layoutNote, currentLayout, setLayout}: TopBarKeyboardTabProps) {
     const selected = layoutType === currentLayout;
+    //TODO: move the event handler to the button
     return <div onClick={() => setLayout({type: layoutType})}>
-        <button class={"top-bar-keyboard-tab-label" + (selected ? " selected" : "")}>
+        <button type="button" class={"top-bar-keyboard-tab-label" + (selected ? " selected" : "")}>
             {layoutName}
         </button>
         <div hidden={!selected} class="top-bar-keyboard-tab-note">
@@ -159,5 +160,5 @@ function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions, mapping}: La
                 setOption={setLayoutOptions}
             />
     }
-    return <></>;
+    return null;
 }
