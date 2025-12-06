@@ -17,7 +17,7 @@ import {getBigramMovements} from "./bigrams.ts";
 function modifyWide(mapping: FlexMapping, opts: LayoutOptions): boolean {
     switch (opts.ansiVariant) {
         case AnsiVariant.AHKB:
-        case AnsiVariant.XHKB:
+        case AnsiVariant.ERGO_KB:
             // Flag is not used for AHKB, but we flip for transparency in the UI and also to stay on "wide" mode when
             // switching to another variant.
             return true;
