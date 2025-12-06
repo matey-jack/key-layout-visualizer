@@ -284,57 +284,65 @@ export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean
 export const getKeyPositionsByLabel = (positions: KeyPosition[]): Record<string, KeyPosition> =>
     Object.fromEntries(positions.map(p => [p.label, p]));
 
+function groupPositionsByLabel(positions: KeyPosition[]): Map<string, KeyPosition[]> {
+    const grouped = new Map<string, KeyPosition[]>();
+    positions.forEach((pos) => {
+        const list = grouped.get(pos.label) ?? [];
+        list.push(pos);
+        grouped.set(pos.label, list);
+    });
+    return grouped;
+}
+
 /**
  * Merges key positions from previous and current states to create key movements for animation.
+ * Groups keys by label, then pairs them according to these rules:
+ * - For empty string labels (""), add as entering/exiting without pairing.
+ * - For other labels with one key in each prev and next, pair them up.
+ * - When one side is empty, create enter/exit movements.
+ * - When there are multiple keys on either side, sort by colPos and pair in order.
  */
 export function getKeyMovements(prevPositions: KeyPosition[], nextPositions: KeyPosition[]): KeyMovement[] {
-    const movements: KeyMovement[] = [];
-    const matchedCur = new Set<number>(); // Track which current positions have been matched
+    const prevByLabel = groupPositionsByLabel(prevPositions);
+    const nextByLabel = groupPositionsByLabel(nextPositions);
 
-    // First pass: match keys by label (for non-empty labels)
-    for (const prev of prevPositions) {
-        if (prev.label && prev.label !== "") {
-            // Try to find a matching current position by label
-            const curIndex = nextPositions.findIndex(
-                (cur, idx) => cur.label === prev.label && !matchedCur.has(idx)
-            );
-            if (curIndex !== -1) {
-                matchedCur.add(curIndex);
-                movements.push({ prev, next: nextPositions[curIndex] });
-            } else {
-                // Key disappeared
-                movements.push({ prev, next: undefined });
+    const movements: KeyMovement[] = [];
+    const allLabels = new Set([...prevByLabel.keys(), ...nextByLabel.keys()]);
+    for (const label of allLabels) {
+        const prevKeys = prevByLabel.get(label) || [];
+        const nextKeys = nextByLabel.get(label) || [];
+
+        if (label === "") {
+            // For empty labels, add as entering/exiting without pairing
+            prevKeys.forEach(prev => {
+                movements.push({prev, next: undefined})
+            });
+            nextKeys.forEach(next => {
+                movements.push({prev: undefined, next})
+            });
+        } else {
+            // Both sides have keys: sort by colPos and pair in order
+            const sortedPrev = [...prevKeys].sort((a, b) => a.colPos - b.colPos);
+            const sortedNext = [...nextKeys].sort((a, b) => a.colPos - b.colPos);
+
+            const minLength = Math.min(sortedPrev.length, sortedNext.length);
+
+            // Pair the first minLength keys from each side
+            for (let i = 0; i < minLength; i++) {
+                movements.push({ prev: sortedPrev[i], next: sortedNext[i] });
+            }
+
+            // Add any remaining prev keys as exiting
+            for (let i = minLength; i < sortedPrev.length; i++) {
+                movements.push({ prev: sortedPrev[i], next: undefined });
+            }
+
+            // Add any remaining next keys as entering
+            for (let i = minLength; i < sortedNext.length; i++) {
+                movements.push({ prev: undefined, next: sortedNext[i] });
             }
         }
     }
-
-    // Second pass: match remaining keys by position (row, col) - for unlabeled keys
-    const matchedPrev = new Set(movements.filter(m => m.prev).map(m => prevPositions.indexOf(m.prev!)));
-
-    for (let i = 0; i < prevPositions.length; i++) {
-        if (matchedPrev.has(i)) continue;
-        const prev = prevPositions[i];
-
-        // Try to find a matching current position by row and col
-        const curIndex = nextPositions.findIndex(
-            (cur, idx) => cur.row === prev.row && cur.col === prev.col && !matchedCur.has(idx)
-        );
-        if (curIndex !== -1) {
-            matchedCur.add(curIndex);
-            movements.push({ prev, next: nextPositions[curIndex] });
-        } else {
-            // Key disappeared
-            movements.push({ prev, next: undefined });
-        }
-    }
-
-    // Third pass: add any unmatched current keys (new keys appearing)
-    for (let i = 0; i < nextPositions.length; i++) {
-        if (!matchedCur.has(i)) {
-            movements.push({ prev: undefined, next: nextPositions[i] });
-        }
-    }
-
     return movements;
 }
 
