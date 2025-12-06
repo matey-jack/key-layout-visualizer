@@ -2,12 +2,12 @@
 import './app.css'
 import './app-model.ts'
 import {VisualizationType} from "./base-model.ts";
-import {AppState} from "./app-model.ts";
+import type {AppState} from "./app-model.ts";
 import {LayoutArea} from "./layout/LayoutArea.tsx";
 import {MappingList} from "./mapping/MappingArea.tsx";
 import {DetailsArea} from "./details/DetailsArea.tsx";
-import {Signal} from "@preact/signals";
-import {ComponentChildren} from "preact";
+import type {Signal} from "@preact/signals";
+import type {ComponentChildren} from "preact";
 import {createAppState} from "./app-state.ts";
 
 const appState = createAppState();

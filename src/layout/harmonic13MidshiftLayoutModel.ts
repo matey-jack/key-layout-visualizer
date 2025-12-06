@@ -3,8 +3,8 @@ import {
     harmonicStaggerOffsets,
     KeyboardRows,
     KeymapTypeId,
-    LayoutMapping,
-    RowBasedLayoutModel
+    type LayoutMapping,
+    type RowBasedLayoutModel
 } from "../base-model.ts";
 import {mirror, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
 

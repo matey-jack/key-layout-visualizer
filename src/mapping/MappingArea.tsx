@@ -1,6 +1,6 @@
-import {AppState} from "../app-model.ts";
-import {BigramType, FlexMapping, KeymapTypeId, MappingChange, RowBasedLayoutModel, SKE_HOME} from "../base-model.ts";
-import {Signal, useSignal} from "@preact/signals";
+import type {AppState} from "../app-model.ts";
+import {BigramType, type FlexMapping, KeymapTypeId, type MappingChange, type RowBasedLayoutModel, SKE_HOME} from "../base-model.ts";
+import {type Signal, useSignal} from "@preact/signals";
 import {allMappings, qwertyMapping} from "./mappings.ts";
 import {
     compatibilityScore,

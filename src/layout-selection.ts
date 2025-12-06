@@ -1,10 +1,10 @@
-import {LayoutType, RowBasedLayoutModel} from "./base-model.ts";
+import {LayoutType, type RowBasedLayoutModel} from "./base-model.ts";
 import {
     AnsiVariant,
     EB65_LowShift_Variant,
     EB65_MidShift_Variant,
     HarmonicVariant,
-    LayoutOptions,
+    type LayoutOptions,
     PlankVariant
 } from "./app-model.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";

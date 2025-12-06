@@ -33,7 +33,7 @@
 
  */
 
-import {FlexMapping, KeymapTypeId} from "../base-model.ts";
+import {type FlexMapping, KeymapTypeId} from "../base-model.ts";
 
 export const qwertyMapping: FlexMapping = {
     name: "Qwerty – US and world-wide standard",

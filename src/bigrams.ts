@@ -1,15 +1,15 @@
 import * as bigrams from "./frequencies/english-character-pairs.json";
 import {
     bigramEffort,
-    BigramList,
-    BigramMovement,
+    type BigramList,
+    type BigramMovement,
     BigramType,
     Finger,
-    FlexMapping,
+    type FlexMapping,
     hand,
     isThumb,
-    KeyPosition,
-    RowBasedLayoutModel
+    type KeyPosition,
+    type RowBasedLayoutModel
 } from "./base-model.ts";
 import {sum} from "./library/math.ts";
 import {fillMapping, getKeyPositions, getKeyPositionsByLabel} from "./layout/layout-functions.ts";

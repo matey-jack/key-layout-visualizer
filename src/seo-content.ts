@@ -1,4 +1,4 @@
-import {RowBasedLayoutModel} from "./base-model.ts";
+import type {RowBasedLayoutModel} from "./base-model.ts";
 import {allMappings} from "./mapping/mappings.ts";
 import {ansiIBMLayoutModel} from "./layout/ansiLayoutModel.ts";
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";

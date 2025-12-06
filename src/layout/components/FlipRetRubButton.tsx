@@ -1,4 +1,4 @@
-import {LayoutOptions} from "../../app-model.ts";
+import type {LayoutOptions} from "../../app-model.ts";
 
 type FlipRetRubButtonProps = {
     options: LayoutOptions;

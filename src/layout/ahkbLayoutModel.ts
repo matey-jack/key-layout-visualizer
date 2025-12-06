@@ -1,4 +1,4 @@
-import {KEY_COLOR, KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutModel} from "../base-model.ts";
+import {KEY_COLOR, KeyboardRows, KeymapTypeId, type LayoutMapping, type RowBasedLayoutModel} from "../base-model.ts";
 import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
 import {mirror, MonotonicKeyWidth} from "./keyWidth.ts";
 

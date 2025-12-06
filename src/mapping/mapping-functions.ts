@@ -1,4 +1,4 @@
-import {RowBasedLayoutModel} from "../base-model.ts";
+import type {RowBasedLayoutModel} from "../base-model.ts";
 
 // We don't use Unicode ranges, because we might later map some other Unicode symbols, that are actually characters to insert.
 // Examples: × or ¢ or the "per mille" sign
