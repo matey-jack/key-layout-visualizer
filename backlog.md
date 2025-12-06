@@ -85,12 +85,11 @@ refactorings done (or decided against):
 
 ======================== TODO ===============================
 
-refactorings:
- - Turns out that the key/finger/effort matrix is easier to edit by hand than write in abstractions. Copy, paste, adapt, ... and win!
-    Maybe for a good start: write a helper function to generate an initial finger and effort matrix given a layout (by key matrix, keyWidths, and index finger columns).
-    That would be fun to write and be a neat documentation of my fingering and effort theory. But also useless at the moment, since I don't plan to add any new layouts besides HHKB, which will simply copy from ANSI.
-
 missing core features:
+- slow down the animation when the user holds the mouse or finger on the layout type/variant buttons (or other controls).
+- make labels not selectable (which looks weird on misclicks)
+- animate the stagger lines
+- animate the key size! (maybe not the height?)
 - place the "wide-mod" checkbox under the IBM, Apple, and HHKB buttons. Find a good place to show total board width and hand distance stats for each board.
 - Ergoplank and Katana logos to fill the gap, especially Ergoboard 65 Midshift with a nice connection between both gaps.
 - Rectangle around the keyboard to signify the 60% or 65% box.
@@ -118,6 +117,10 @@ bugs:
 
 refactoring:
 - remove home finger properties; use keyEffort==Home instead.
+
+- I find that the key/finger/effort matrix is easier to edit by hand than write in abstractions. Copy, paste, adapt, ... and win!
+   But we could still add a helper function to generate an initial finger and effort matrix given a layout (by key matrix, keyWidths, and index finger columns).
+   That would be fun to write and serve as documentation of my fingering and effort theory. But also useless at the moment, since I don't plan to add any new layouts besides HHKB, which will simply copy from ANSI.
 
 better visual design:
    - scoring and description of learning/single key/bigram classes

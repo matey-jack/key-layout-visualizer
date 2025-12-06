@@ -1,6 +1,7 @@
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping/mapping-functions.ts";
 import {
-    defaultKeyColor, getKeySizeClass,
+    defaultKeyColor,
+    getKeySizeClass,
     isHomeKey,
     keyCapHeight,
     keyCapWidth,
@@ -36,7 +37,7 @@ export const KeyboardSvg = (props: KeyboardSvgProps) =>
 interface KeyProps {
     label: string,
     row: KeyboardRows,
-    col: number, // Measured in key units from the left hand side starting with 0. Can be fractional!
+    col: number, // Measured in key units from the left-hand side starting with 0. Can be fractional!
     width: number,
     height: number,
     backgroundClass: string,
@@ -44,8 +45,8 @@ interface KeyProps {
     ribbonClass?: string,
     frequencyCircleRadius?: number,
     showHomeMarker: boolean,
-    prevRow?: KeyboardRows,
-    prevCol?: number,
+    prevRow: KeyboardRows,
+    prevCol: number,
 }
 
 const keyUnit = 100;
@@ -53,49 +54,12 @@ const keyPadding = 5;
 const keyRibbonPaddingH = 17;
 const keyRibbonPaddingV = 1;
 
-// SVG viewBox center for calculating radial entry/exit points
-const svgCenterX = 850;
-const svgCenterY = 250;
-
-/**
- * Calculate a position outside the SVG boundary on a radial line from the center through the given point.
- */
-function getRadialExitPoint(x: number, y: number): {x: number, y: number} {
-    const dx = x - svgCenterX;
-    const dy = y - svgCenterY;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    // Multiply by a factor to push the point well outside the visible area
-    const factor = distance > 0 ? 2000 / distance : 2000;
-    return {
-        x: svgCenterX + dx * factor,
-        y: svgCenterY + dy * factor
-    };
-}
-
-export function Key({label, row, col, width, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker, prevRow, prevCol}: KeyProps) {
+export function Key(props: KeyProps) {
+    const {row, col, prevRow, prevCol} = props;
     const x = col * keyUnit + keyPadding;
     const y = row * keyUnit + keyPadding;
-
-    // Calculate previous position if provided, or use radial exit point for appearing keys
-    let fromX = x;
-    let fromY = y;
-    if (prevRow !== undefined && prevCol !== undefined) {
-        fromX = prevCol * keyUnit + keyPadding;
-        fromY = prevRow * keyUnit + keyPadding;
-    } else {
-        // Key is appearing - start from outside
-        const exitPoint = getRadialExitPoint(x + keyUnit * width / 2, y + keyUnit * height / 2);
-        fromX = exitPoint.x;
-        fromY = exitPoint.y;
-    }
-
-    const labelClass =
-        isKeyboardSymbol(label) ? "keyboard-symbol"
-            : isKeyName(label) ? "key-name"
-                : "";
-
-    // Determine if we need animation
-    const needsAnimation = (fromX !== x) || (fromY !== y);
+    const fromX = prevCol * keyUnit + keyPadding;
+    const fromY = prevRow * keyUnit + keyPadding;
 
     // Use CSS custom properties to set initial and final positions
     const groupStyle = {
@@ -103,9 +67,15 @@ export function Key({label, row, col, width, height, backgroundClass, ribbonClas
         '--from-y': `${fromY}px`,
         '--to-x': `${x}px`,
         '--to-y': `${y}px`,
-        transform: needsAnimation ? `translate(var(--from-x), var(--from-y))` : `translate(var(--to-x), var(--to-y))`,
+        transform: `translate(var(--from-x), var(--from-y))`,
         transformOrigin: "0 0"
-    } as any;
+    };
+
+    const {label,width, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker} = props;
+    const labelClass =
+        isKeyboardSymbol(label) ? "keyboard-symbol"
+            : isKeyName(label) ? "key-name"
+                : "";
 
     const text = (labelClass) ?
         // center all the non-character key labels
@@ -124,16 +94,16 @@ export function Key({label, row, col, width, height, backgroundClass, ribbonClas
               y={keyRibbonPaddingH}
               width={keyUnit * width - 2 * (keyPadding + keyRibbonPaddingV)}
               height={keyUnit * height - 2 * (keyPadding + keyRibbonPaddingH)}/>
-              
+
     const frequencyCircle = frequencyCircleRadius &&
         <circle cx={70} cy={30} r={frequencyCircleRadius} className="frequency-circle"/>;
-        
+
     const homeMarker = showHomeMarker &&
         <circle cx={keyUnit / 2} cy={keyUnit / 2} r={12} className="home-marker-circle"/>;
-        
-    return <g 
+
+    return <g
         style={groupStyle}
-        className={needsAnimation ? "key-group animating" : "key-group"}>
+        className={"key-group animating"}>
         <rect
             className={"key-outline " + backgroundClass}
             x={0}
@@ -187,11 +157,14 @@ function getFingeringClasses(layoutModel: RowBasedLayoutModel, row: number, col:
     return bgClass + " " + borderClass;
 }
 
+function getEntryOrExitRow(row: number): number {
+    return row < 2 ? row - 3 : row + 4;
+}
+
 export function RowBasedKeyboard({layoutModel, keyMovements, mappingDiff, vizType}: KeyboardProps) {
     return keyMovements.map((movement, index) => {
-        // Use current position if available, otherwise use previous position
-        const keyPos = movement.next ?? movement.prev!;
-        const {label, row, col, colPos} = keyPos;
+        // Use .next data for the key decorations, falling back to the .prev data for exiting keys.
+        const {label, row, col} = movement.next ?? movement.prev!;
 
         const keyColorFunction = (layoutModel.keyColorClass) || defaultKeyColor;
         const capWidth = keyCapWidth(layoutModel, row, col);
@@ -225,14 +198,14 @@ export function RowBasedKeyboard({layoutModel, keyMovements, mappingDiff, vizTyp
             label={displayLabel}
             backgroundClass={bgClass}
             ribbonClass={ribbonClass}
-            row={row}
-            col={colPos}
+            row={movement.next?.row ?? getEntryOrExitRow(movement.prev!.row)}
+            col={movement.next?.colPos ?? movement.prev!.colPos}
             width={capWidth}
             height={capHeight}
             frequencyCircleRadius={frequencyCircleRadius}
             showHomeMarker={vizType === VisualizationType.LayoutKeySize && isHomeKey(layoutModel, row, col)}
-            prevRow={movement.prev?.row}
-            prevCol={movement.prev?.colPos}
+            prevRow={movement.prev?.row ?? getEntryOrExitRow(movement.next!.row)}
+            prevCol={movement.prev?.colPos ?? movement.next!.colPos}
             key={label + '-' + index}
         />
     })
