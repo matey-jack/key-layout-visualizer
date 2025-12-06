@@ -140,6 +140,23 @@ label.disabled {
 .keyboard-svg {
 }
 
+.key-group {
+    transition: transform 0.5s ease-in-out;
+}
+
+.key-group.animating {
+    animation: keyMove 0.5s ease-in-out forwards;
+}
+
+@keyframes keyMove {
+    from {
+        transform: translate(var(--from-x), var(--from-y));
+    }
+    to {
+        transform: translate(var(--to-x), var(--to-y));
+    }
+}
+
 .key-outline {
     stroke: black;
     fill: none;

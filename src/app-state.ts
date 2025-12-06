@@ -199,6 +199,8 @@ export function createAppState(): AppState {
         flipRetRub: false,
     });
     const layoutModel = computed(() => getLayoutModel(layoutOptionsState.value))
+    // Initialize previousLayoutModel with the current layoutModel to avoid null handling
+    const previousLayoutModelState = signal(layoutModel.value);
 
     const mappingState = signal(getMappingByName(params.get("mapping")));
     const vizType = signal(s2i(params.get("viz")) ?? VisualizationType.LayoutFingering)
@@ -215,11 +217,17 @@ export function createAppState(): AppState {
     effect(() => updateUrlParams(layoutOptionsState.value, mappingState, vizType));
     return {
         layout: computed(() => layoutOptionsState.value),
-        setLayout: (layoutOptions: Partial<LayoutOptions>) =>
-            setLayout({...layoutOptionsState.value, ...layoutOptions}, layoutOptionsState, mappingState),
+        setLayout: (layoutOptions: Partial<LayoutOptions>) => {
+            previousLayoutModelState.value = layoutModel.value;
+            setLayout({...layoutOptionsState.value, ...layoutOptions}, layoutOptionsState, mappingState);
+        },
         layoutModel,
+        previousLayoutModel: computed(() => previousLayoutModelState.value),
         mapping: computed(() => mappingState.value),
-        setMapping: (m: FlexMapping) => setMapping(m, layoutOptionsState, layoutModel.value, mappingState),
+        setMapping: (m: FlexMapping) => {
+            previousLayoutModelState.value = layoutModel.value;
+            setMapping(m, layoutOptionsState, layoutModel.value, mappingState);
+        },
         vizType,
         mappingDiff,
         bigramMovements

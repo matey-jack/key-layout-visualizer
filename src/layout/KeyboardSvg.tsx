@@ -1,6 +1,7 @@
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping/mapping-functions.ts";
 import {
-    defaultKeyColor, getKeySizeClass,
+    defaultKeyColor,
+    getKeySizeClass,
     isHomeKey,
     keyCapHeight,
     keyCapWidth,
@@ -11,7 +12,7 @@ import {
     BigramType,
     Finger,
     KeyboardRows,
-    type KeyPosition,
+    type KeyMovement,
     MappingChange,
     type RowBasedLayoutModel,
     VisualizationType
@@ -36,7 +37,7 @@ export const KeyboardSvg = (props: KeyboardSvgProps) =>
 interface KeyProps {
     label: string,
     row: KeyboardRows,
-    col: number, // Measured in key units from the left hand side starting with 0. Can be fractional!
+    col: number, // Measured in key units from the left-hand side starting with 0. Can be fractional!
     width: number,
     height: number,
     backgroundClass: string,
@@ -44,6 +45,8 @@ interface KeyProps {
     ribbonClass?: string,
     frequencyCircleRadius?: number,
     showHomeMarker: boolean,
+    prevRow: KeyboardRows,
+    prevCol: number,
 }
 
 const keyUnit = 100;
@@ -51,43 +54,62 @@ const keyPadding = 5;
 const keyRibbonPaddingH = 17;
 const keyRibbonPaddingV = 1;
 
-export function Key({label, row, col, width, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker}: KeyProps) {
+export function Key(props: KeyProps) {
+    const {row, col, prevRow, prevCol} = props;
     const x = col * keyUnit + keyPadding;
     const y = row * keyUnit + keyPadding;
+    const fromX = prevCol * keyUnit + keyPadding;
+    const fromY = prevRow * keyUnit + keyPadding;
+
+    // Use CSS custom properties to set initial and final positions
+    const groupStyle = {
+        '--from-x': `${fromX}px`,
+        '--from-y': `${fromY}px`,
+        '--to-x': `${x}px`,
+        '--to-y': `${y}px`,
+        transform: `translate(var(--from-x), var(--from-y))`,
+        transformOrigin: "0 0"
+    };
+
+    const {label,width, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker} = props;
     const labelClass =
         isKeyboardSymbol(label) ? "keyboard-symbol"
             : isKeyName(label) ? "key-name"
                 : "";
+
     const text = (labelClass) ?
         // center all the non-character key labels
-        <text x={x + keyUnit * width / 2} y={y + keyUnit * height / 2} className={"key-label " + labelClass}>
+        <text x={keyUnit * width / 2} y={keyUnit * height / 2} className={"key-label " + labelClass}>
             {label}
         </text>
         :
         // left align labels for character keys
-        <text x={x + 20} y={y + 60} className="key-label">
+        <text x={20} y={60} className="key-label">
             {label}
         </text>
 
     const keyRibbon = ribbonClass &&
         <rect class={"key-ribbon " + ribbonClass}
-              x={x + keyRibbonPaddingV}
-              y={y + keyRibbonPaddingH}
+              x={keyRibbonPaddingV}
+              y={keyRibbonPaddingH}
               width={keyUnit * width - 2 * (keyPadding + keyRibbonPaddingV)}
-              height={keyUnit * height - 2 * (keyPadding + keyRibbonPaddingH)}
-        />
+              height={keyUnit * height - 2 * (keyPadding + keyRibbonPaddingH)}/>
+
     const frequencyCircle = frequencyCircleRadius &&
-        <circle cx={x + 70} cy={y + 30} r={frequencyCircleRadius} className="frequency-circle"/>;
+        <circle cx={70} cy={30} r={frequencyCircleRadius} className="frequency-circle"/>;
+
     const homeMarker = showHomeMarker &&
-        <circle cx={x + keyUnit / 2} cy={y + keyUnit / 2} r={12} className="home-marker-circle"/>;
-    return <g>
+        <circle cx={keyUnit / 2} cy={keyUnit / 2} r={12} className="home-marker-circle"/>;
+
+    return <g
+        style={groupStyle}
+        className={"key-group animating"}>
         <rect
             className={"key-outline " + backgroundClass}
-            x={x}
-            y={y}
+            x={0}
+            y={0}
             width={keyUnit * width - 2 * keyPadding}
-            height={keyUnit * height - 2 * keyPadding}
-        />
+            height={keyUnit * height - 2 * keyPadding}/>
         {keyRibbon || frequencyCircle || homeMarker}
         {text}
     </g>
@@ -96,12 +118,12 @@ export function Key({label, row, col, width, height, backgroundClass, ribbonClas
 export interface KeyboardProps {
     layoutModel: RowBasedLayoutModel;
     mappingDiff: Record<string, MappingChange>;
-    keyPositions: KeyPosition[];
+    keyMovements: KeyMovement[];
     vizType: VisualizationType;
 }
 
 export function getEffortClass(effort: number | null) {
-    if (effort === null || isNaN(effort)) return "";
+    if (effort === null || Number.isNaN(effort)) return "";
     if (effort < 1) return "home-key";
     return "effort-" + (effort * 10);
 }
@@ -135,8 +157,15 @@ function getFingeringClasses(layoutModel: RowBasedLayoutModel, row: number, col:
     return bgClass + " " + borderClass;
 }
 
-export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizType}: KeyboardProps) {
-    return keyPositions.map(({label, row, col, colPos}) => {
+function getEntryOrExitRow(row: number): number {
+    return row < 2 ? row - 3 : row + 4;
+}
+
+export function RowBasedKeyboard({layoutModel, keyMovements, mappingDiff, vizType}: KeyboardProps) {
+    return keyMovements.map((movement, index) => {
+        // Use .next data for the key decorations, falling back to the .prev data for exiting keys.
+        const {label, row, col} = movement.next ?? movement.prev!;
+
         const keyColorFunction = (layoutModel.keyColorClass) || defaultKeyColor;
         const capWidth = keyCapWidth(layoutModel, row, col);
         const capHeight = keyCapHeight(layoutModel, row, col);
@@ -151,7 +180,7 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
         const ribbonClass = vizType === VisualizationType.MappingDiff && lettersAndVIP.test(label)
             ? ribbonClassByDiff[mappingDiff[label]]
             : undefined;
-        let frequencyCircleRadius = undefined;
+        let frequencyCircleRadius: number | undefined;
         if (vizType === VisualizationType.MappingFrequeny) {
             const freq = Math.sqrt(singleCharacterFrequencies[label.toUpperCase()] / singleCharacterFrequencies['E']);
             frequencyCircleRadius = freq * keyUnit / 2;
@@ -160,20 +189,24 @@ export function RowBasedKeyboard({layoutModel, keyPositions, mappingDiff, vizTyp
         // but for the Escape key on Ergoplank, left-align is actually better.
         // const capColPos = colPos + (slotWidth - capWidth)/2;
 
+        let displayLabel = label;
         if (vizType === VisualizationType.LayoutKeySize) {
-            label = capSize > 1 ? capSize + "" : "";
+            displayLabel = capSize > 1 ? capSize + "" : "";
         }
+
         return <Key
-            label={label}
+            label={displayLabel}
             backgroundClass={bgClass}
             ribbonClass={ribbonClass}
-            row={row}
-            col={colPos}
+            row={movement.next?.row ?? getEntryOrExitRow(movement.prev!.row)}
+            col={movement.next?.colPos ?? movement.prev!.colPos}
             width={capWidth}
             height={capHeight}
             frequencyCircleRadius={frequencyCircleRadius}
             showHomeMarker={vizType === VisualizationType.LayoutKeySize && isHomeKey(layoutModel, row, col)}
-            key={row + ',' + col}
+            prevRow={movement.prev?.row ?? getEntryOrExitRow(movement.next!.row)}
+            prevCol={movement.prev?.colPos ?? movement.next!.colPos}
+            key={label + '-' + index}
         />
     })
 }
@@ -206,10 +239,13 @@ export function BigramLines({bigrams}: BigramLinesProps) {
 export interface StaggerLinesProps {
     layoutModel: RowBasedLayoutModel;
     layoutSplit: boolean;
-    keyPositions: KeyPosition[];
+    keyMovements: KeyMovement[];
 }
 
-export function StaggerLines({layoutModel, layoutSplit, keyPositions}: StaggerLinesProps) {
+export function StaggerLines({layoutModel, layoutSplit, keyMovements}: StaggerLinesProps) {
+    // Extract current positions from key movements
+    const keyPositions = keyMovements.map(m => m.next ?? m.prev!);
+
     const leftHomePositions = keyPositions.filter((kp) =>
         kp.row === KeyboardRows.Home && kp.col <= layoutModel.leftHomeIndex && kp.col > layoutModel.leftHomeIndex - 4
     ).map((kp) => kp.colPos);

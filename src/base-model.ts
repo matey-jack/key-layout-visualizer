@@ -187,6 +187,19 @@ export const hand = (finger: Finger) => Math.floor(finger / 5)
 export const isThumb = (finger: Finger) =>
     finger === Finger.RThumb || finger === Finger.LThumb;
 
+/*
+    Key Movements are of three kinds:
+        - entering, when prev===undefined;
+        - exiting, when next===undefined;
+        - moving, when both are defined.
+ */
+export interface KeyMovement {
+    prev?: KeyPosition;
+    next?: KeyPosition;
+    // Invariant: at least one of prev or cur most be defined. If both are defined, their .label must be the same or equivalent.
+    // (We'll add an equivalency function later. Until then, they must be the same.)
+}
+
 export interface KeyPosition {
     label: string;
 

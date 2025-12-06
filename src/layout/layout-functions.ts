@@ -1,17 +1,18 @@
 import {
-    Finger,
-    FlexMapping,
+    type Finger,
+    type FlexMapping,
     hand,
     KEY_COLOR,
     KeyboardRows,
-    KeyColor,
+    type KeyColor,
     KEYMAP_TYPES,
     KeymapTypeId,
-    KeyPosition,
-    LayoutMapping,
+    type KeyMovement,
+    type KeyPosition,
+    type LayoutMapping,
     MappingChange,
-    RowBasedLayoutModel,
-    SupportedKeymapType
+    type RowBasedLayoutModel,
+    type SupportedKeymapType
 } from "../base-model.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
 import {sum} from "../library/math.ts";
@@ -186,7 +187,7 @@ export function diffMappings(model: RowBasedLayoutModel, a: string[][], b: strin
             if (!aKey || aKey === b[r][c]) {
                 result[aKey] = MappingChange.SamePosition;
             } else {
-                let f = model.mainFingerAssignment[r][c] as Finger;
+                const f = model.mainFingerAssignment[r][c] as Finger;
                 // console.log(`[${r},${c}] '${aKey}' on finger ${f}, in base mapping finger ${bFingers[aKey]}.'`)
                 result[aKey] = diffFinger(f, bFingers[aKey])
             }
@@ -246,12 +247,6 @@ const totalWidth = 17;
 const horizontalPadding = 0.5;
 
 export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean, fullMapping: string[][]): KeyPosition[] {
-    const getLabel = (row: number, col: number) => {
-        const mappingRow = fullMapping[row];
-        const label = mappingRow ? mappingRow[col] : undefined;
-        return label === undefined ? "??" : label;
-    };
-
     const rowWidth = layoutModel.keyWidths.map((widthRow, r) =>
         2 * (horizontalPadding + layoutModel.rowIndent[r]) + sum(widthRow.map((w) => w ?? 1))
     );
@@ -266,9 +261,11 @@ export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean
                 colPos += totalWidth - rowWidth[row];
             }
 
-            const label = getLabel(row, col);
-            const finger = layoutModel.mainFingerAssignment[row][col] as Finger;
+            // 'null' is a legit value, signifying a gap, not a key, while undefined is a bug.
+            //  We put ?? to alert developers to fix the keymap (instead of crashing here).
+            const label = fullMapping[row]?.[col] !== undefined ? fullMapping[row][col] : "??";
             if (label != null) {
+                const finger = layoutModel.mainFingerAssignment[row][col] as Finger;
                 result.push({
                     label,
                     row,
@@ -286,6 +283,68 @@ export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean
 
 export const getKeyPositionsByLabel = (positions: KeyPosition[]): Record<string, KeyPosition> =>
     Object.fromEntries(positions.map(p => [p.label, p]));
+
+function groupPositionsByLabel(positions: KeyPosition[]): Map<string, KeyPosition[]> {
+    const grouped = new Map<string, KeyPosition[]>();
+    positions.forEach((pos) => {
+        const list = grouped.get(pos.label) ?? [];
+        list.push(pos);
+        grouped.set(pos.label, list);
+    });
+    return grouped;
+}
+
+/**
+ * Merges key positions from previous and current states to create key movements for animation.
+ * Groups keys by label, then pairs them according to these rules:
+ * - For empty string labels (""), add as entering/exiting without pairing.
+ * - For other labels with one key in each prev and next, pair them up.
+ * - When one side is empty, create enter/exit movements.
+ * - When there are multiple keys on either side, sort by colPos and pair in order.
+ */
+export function getKeyMovements(prevPositions: KeyPosition[], nextPositions: KeyPosition[]): KeyMovement[] {
+    const prevByLabel = groupPositionsByLabel(prevPositions);
+    const nextByLabel = groupPositionsByLabel(nextPositions);
+
+    const movements: KeyMovement[] = [];
+    const allLabels = new Set([...prevByLabel.keys(), ...nextByLabel.keys()]);
+    for (const label of allLabels) {
+        const prevKeys = prevByLabel.get(label) || [];
+        const nextKeys = nextByLabel.get(label) || [];
+
+        if (label === "") {
+            // For empty labels, add as entering/exiting without pairing
+            prevKeys.forEach(prev => {
+                movements.push({prev, next: undefined})
+            });
+            nextKeys.forEach(next => {
+                movements.push({prev: undefined, next})
+            });
+        } else {
+            // Both sides have keys: sort by colPos and pair in order
+            const sortedPrev = [...prevKeys].sort((a, b) => a.colPos - b.colPos);
+            const sortedNext = [...nextKeys].sort((a, b) => a.colPos - b.colPos);
+
+            const minLength = Math.min(sortedPrev.length, sortedNext.length);
+
+            // Pair the first minLength keys from each side
+            for (let i = 0; i < minLength; i++) {
+                movements.push({ prev: sortedPrev[i], next: sortedNext[i] });
+            }
+
+            // Add any remaining prev keys as exiting
+            for (let i = minLength; i < sortedPrev.length; i++) {
+                movements.push({ prev: sortedPrev[i], next: undefined });
+            }
+
+            // Add any remaining next keys as entering
+            for (let i = minLength; i < sortedNext.length; i++) {
+                movements.push({ prev: undefined, next: sortedNext[i] });
+            }
+        }
+    }
+    return movements;
+}
 
 export function copyAndModifyKeymap<T>(mapping: T[][], f: (m: T[][]) => T[][]): T[][] {
     const newMapping = mapping.map((row) => [...row]);
