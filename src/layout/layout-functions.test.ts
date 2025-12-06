@@ -6,6 +6,7 @@ import {
     hand,
     KeyboardRows,
     KeymapTypeId,
+    type KeyMovement,
     MappingChange,
     type RowBasedLayoutModel
 } from "../base-model.ts";
@@ -17,6 +18,7 @@ import {
     fillMapping,
     findMatchingKeymapType,
     getAnsi30mapping,
+    getKeyMovements,
     getKeyPositions,
     getLayoutKeymapTypes,
     getMappingKeymapTypes,
@@ -420,5 +422,58 @@ describe('characterToFinger for ANSI Qwerty', () => {
         expect(actual[',']).toBe(Finger.RMiddle);
         expect(actual['.']).toBe(Finger.RRing);
         expect(actual['/']).toBe(Finger.RPinky);
+    });
+});
+
+describe('getKeyMovements', () => {
+    function getMovementsByLabel(movements: KeyMovement[], label: string): KeyMovement[] {
+        return movements.filter(m => (m.prev?.label === label) || (m.next?.label === label));
+    }
+
+    it('should match keys by label and handle all movement types correctly', () => {
+        // GIVEN: Use ANSI IBM (prev) vs Harmonic 13 wide (next) to get meaningful differences
+        const prevMapping = fillMapping(ansiIBMLayoutModel, qwertyMapping)!;
+        const prevPositions = getKeyPositions(ansiIBMLayoutModel, false, prevMapping);
+
+        const nextMapping = fillMapping(harmonic13WideLayoutModel, qwertyMapping)!;
+        const nextPositions = getKeyPositions(harmonic13WideLayoutModel, false, nextMapping);
+
+        // WHEN
+        const movements = getKeyMovements(prevPositions, nextPositions);
+
+        // THEN: Check Ctrl and Shift keys form proper pairs
+        const ctrlMovements = getMovementsByLabel(movements, 'Ctrl');
+        expect(ctrlMovements.length).toBe(2);
+        ctrlMovements.forEach(m => {
+            expect(m.prev?.label).toBe('Ctrl');
+            expect(m.next?.label).toBe('Ctrl');
+        });
+
+        const shiftMovements = getMovementsByLabel(movements, '⇧');
+        expect(shiftMovements.length).toBe(2);
+        shiftMovements.forEach(m => {
+            expect(m.prev?.label).toBe('⇧');
+            expect(m.next?.label).toBe('⇧');
+        });
+
+        // AND: Check that "1", "a", and "z" form proper pairs
+        const keyLabels = ['1', 'a', 'z'];
+        keyLabels.forEach(label => {
+            const keyMovements = getMovementsByLabel(movements, label);
+            expect(keyMovements.length, `Expected exactly one movement for key "${label}"`).toBe(1);
+            const movement = keyMovements[0];
+            expect(movement.prev?.label).toBe(label);
+            expect(movement.next?.label).toBe(label);
+        });
+
+        // AND: CAPS exists
+        const capsMv = getMovementsByLabel(movements, 'CAPS')[0];
+        expect(capsMv.prev?.label).toBe('CAPS');
+        expect(capsMv.next).toBeUndefined();
+
+        // AND: Escape enters
+        const escapeMv = getMovementsByLabel(movements, 'Esc')[0];
+        expect(escapeMv.prev).toBeUndefined();
+        expect(escapeMv.next?.label).toBe('Esc');
     });
 });
