@@ -20,12 +20,12 @@ const thumb30KeyMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "", "Alt", 0, "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
 ];
 
-export const xhkbLayoutModel: RowBasedLayoutModel = {
-    name: "XHKB",
-    description: `The eXhilarated Hacking Keyboard continues HHKB's idea of splitting large keys to a point that
-    delivers us a layout with ergonomically wider hand positions and some extra keys that can be used for navigation 
-    or whatever you like. And to top it off, let's also split the space bar to create two great thumb keys per side.
-    Using only four keycap sizes, the XHKB is the most versatile keyboard with traditional typewriter row staggering 
+export const ergoKbLayoutModel: RowBasedLayoutModel = {
+    name: "ErgoKb",
+    description: `The ErgoKb continues HHKB's idea of splitting large keys to a point that
+    delivers a layout with ergonomically wider hand positions and some extra central keys that can be used for navigation 
+    or any other purpose. And to top it off, let's also split the space bar to create two great thumb keys per side.
+    Using only four keycap sizes, the ErgoKb is the most versatile keyboard with traditional typewriter row staggering 
     and the classic 60% box shape.`,
 
     keyWidths: [
@@ -92,12 +92,12 @@ function arrowBlockKeymap(thumby: boolean) {
     }
 }
 
-export const xhkbWithArrowsLayoutModel: RowBasedLayoutModel = {
-    ...xhkbLayoutModel,
-    name: "XHKB with cursor block",
+export const ergoKbWithArrowsLayoutModel: RowBasedLayoutModel = {
+    ...ergoKbLayoutModel,
+    name: "ErgoKb with cursor block",
     // we replace two 1.5u keys with three 1u keys
     keyWidths: replaceLast(
-        xhkbLayoutModel.keyWidths,
+        ergoKbLayoutModel.keyWidths,
         [1.5, 1.5, 1, 1.5, 1.75, 1.75, 1.5, 1.5, 1, 1, 1]
     ),
     supportedKeymapTypes: [
@@ -110,10 +110,10 @@ export const xhkbWithArrowsLayoutModel: RowBasedLayoutModel = {
             frameMapping: copyAndModifyKeymap(thumb30KeyMapping, arrowBlockKeymap(true))
         },
     ],
-    singleKeyEffort: replaceLast(xhkbLayoutModel.singleKeyEffort,
+    singleKeyEffort: replaceLast(ergoKbLayoutModel.singleKeyEffort,
         [2.0, 2.0, 2.0, 1.0, 0.2, 0.2, 1.0, 2.0, null, null, null]
     ),
-    mainFingerAssignment: replaceLast(xhkbLayoutModel.mainFingerAssignment,
+    mainFingerAssignment: replaceLast(ergoKbLayoutModel.mainFingerAssignment,
         [0, 1, 1, 4, 4, 5, 5, 7, null, null, null]
     ),
 }

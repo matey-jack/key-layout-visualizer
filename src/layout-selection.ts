@@ -35,7 +35,7 @@ import {
     createHHKB,
     splitSpaceBar
 } from "./layout/ansiLayoutModel.ts";
-import {xhkbLayoutModel, xhkbWithArrowsLayoutModel} from "./layout/xhkbLayoutModel.ts";
+import {ergoKbLayoutModel, ergoKbWithArrowsLayoutModel} from "./layout/ergoKbLayoutModel.ts";
 
 export function getHarmonicVariant(variant: HarmonicVariant): RowBasedLayoutModel {
     switch (variant) {
@@ -101,8 +101,8 @@ export function getAnsiVariant(layoutOptions: LayoutOptions) {
             base = createHHKB(base);
             break;
         // no need to split the space bar, because it's already split
-        case AnsiVariant.XHKB:
-            return layoutOptions.bottomArrows ? xhkbWithArrowsLayoutModel : xhkbLayoutModel;
+        case AnsiVariant.ERGO_KB:
+            return layoutOptions.bottomArrows ? ergoKbWithArrowsLayoutModel : ergoKbLayoutModel;
         case AnsiVariant.AHKB:
             return layoutOptions.angleMod ? ahkbAddAngleMod(ahkbLayoutModel) : ahkbLayoutModel;
     }

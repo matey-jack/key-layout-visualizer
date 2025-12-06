@@ -12,7 +12,7 @@ export interface AnsiLayoutOptionsProps {
     mapping: Signal<FlexMapping>;
 }
 
-const naturallyWideVariants = [AnsiVariant.AHKB, AnsiVariant.XHKB];
+const naturallyWideVariants = [AnsiVariant.AHKB, AnsiVariant.ERGO_KB];
 
 export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptionsProps) {
     const {ansiWide, ansiVariant, ansiSplit, angleMod} = options;
@@ -23,7 +23,7 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
         {variant: AnsiVariant.IBM, label: "IBM"},
         {variant: AnsiVariant.APPLE, label: "Apple"},
         {variant: AnsiVariant.HHKB, label: "HHKB"},
-        {variant: AnsiVariant.XHKB, label: "XHKB"},
+        {variant: AnsiVariant.ERGO_KB, label: "❤️ ErgoKb"},
         {variant: AnsiVariant.AHKB, label: "AHKB"},
     ];
 
@@ -37,8 +37,8 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
                         setVariant={setVariant}
                         name={option.label}
                     >
-                        {option.variant === AnsiVariant.XHKB &&
-                            <div class="ansi-xhkb-options-container">
+                        {option.variant === AnsiVariant.ERGO_KB &&
+                            <div class="ansi-ahkb-options-container">
                                 <CheckboxWithLabel
                                     label="Include arrow keys"
                                     checked={options.bottomArrows}

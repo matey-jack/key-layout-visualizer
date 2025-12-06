@@ -6,7 +6,7 @@ export enum AnsiVariant {
     IBM,
     APPLE,
     HHKB,
-    XHKB,
+    ERGO_KB,
     AHKB,
 }
 

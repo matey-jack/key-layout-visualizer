@@ -47,13 +47,13 @@ import {katanaLayoutModel} from "./katanaLayoutModel.ts";
 import {ahkbLayoutModel} from "./ahkbLayoutModel.ts";
 import {ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
 import {eb65MidshiftNiceLayoutModel} from "./eb65MidshiftNiceLayoutModel.ts";
-import {xhkbLayoutModel} from "./xhkbLayoutModel.ts";
+import {ergoKbLayoutModel} from "./ergoKbLayoutModel.ts";
 
 const allLayoutModels = [
     ansiIBMLayoutModel,
     createHHKB(ansiIBMLayoutModel),
     ahkbLayoutModel,
-    xhkbLayoutModel,
+    ergoKbLayoutModel,
     harmonic14WideLayoutModel,
     harmonic14TraditionalLayoutModel,
     harmonic13WideLayoutModel,
