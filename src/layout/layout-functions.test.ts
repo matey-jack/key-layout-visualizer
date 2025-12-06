@@ -1,6 +1,14 @@
 import {describe, expect, it} from 'vitest';
 
-import {Finger, Hand, hand, KeyboardRows, KeymapTypeId, MappingChange, RowBasedLayoutModel} from "../base-model.ts";
+import {
+    Finger,
+    Hand,
+    hand,
+    KeyboardRows,
+    KeymapTypeId,
+    MappingChange,
+    type RowBasedLayoutModel
+} from "../base-model.ts";
 import {
     characterToFinger,
     copyAndModifyKeymap,
@@ -21,7 +29,8 @@ import {
     colemakThumbyDMapping,
     cozyEnglish,
     normanMapping,
-    qwertyMapping, qwertzMapping,
+    qwertyMapping,
+    qwertzMapping,
     thumbyZero,
     topNine
 } from "../mapping/mappings.ts"
@@ -38,7 +47,7 @@ import {ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
 import {eb65MidshiftNiceLayoutModel} from "./eb65MidshiftNiceLayoutModel.ts";
 import {xhkbLayoutModel} from "./xhkbLayoutModel.ts";
 
-export const allLayoutModels = [
+const allLayoutModels = [
     ansiIBMLayoutModel,
     createHHKB(ansiIBMLayoutModel),
     ahkbLayoutModel,
@@ -64,7 +73,7 @@ function hasLettersNumbersAndProsePunctuation(filledMapping: string[][]) {
     // \[]` are not mapped on all layouts
 }
 
-describe.only('fillMapping', () => {
+describe('fillMapping', () => {
     it('Harmonic 13 wide layout 30-key qwerty exact test', () => {
         const actual = fillMapping(harmonic13WideLayoutModel, qwertyMapping)!;
         expect(actual[0]).toStrictEqual(["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="]);
