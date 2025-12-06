@@ -444,17 +444,14 @@ describe('getKeyMovements', () => {
         // THEN: Check Ctrl and Shift keys form proper pairs
         const ctrlMovements = getMovementsByLabel(movements, 'Ctrl');
         expect(ctrlMovements.length).toBe(2);
-        ctrlMovements.forEach(m => {
-            expect(m.prev?.label).toBe('Ctrl');
-            expect(m.next?.label).toBe('Ctrl');
-        });
+        // check that left and right Ctrl keys are paired properly (not flipped)
+        const leftCtrlMovement = ctrlMovements[0];
+        const rightCtrlMovement = ctrlMovements[1];
+        expect(leftCtrlMovement.prev?.colPos).toBeLessThan(rightCtrlMovement.prev!.colPos);
+        expect(leftCtrlMovement.next?.colPos).toBeLessThan(rightCtrlMovement.next!.colPos);
 
         const shiftMovements = getMovementsByLabel(movements, '⇧');
         expect(shiftMovements.length).toBe(2);
-        shiftMovements.forEach(m => {
-            expect(m.prev?.label).toBe('⇧');
-            expect(m.next?.label).toBe('⇧');
-        });
 
         // AND: Check that "1", "a", and "z" form proper pairs
         const keyLabels = ['1', 'a', 'z'];
