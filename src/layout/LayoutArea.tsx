@@ -1,6 +1,14 @@
 import type {Signal} from "@preact/signals";
 import {AnsiVariant, type AppState, isSplit, type LayoutOptions, PlankVariant} from "../app-model.ts";
-import {type FlexMapping, type KeyPosition, LayoutType, LayoutTypeNames, LayoutTypeNotes, type RowBasedLayoutModel, VisualizationType} from "../base-model.ts";
+import {
+    type FlexMapping,
+    type KeyPosition,
+    LayoutType,
+    LayoutTypeNames,
+    LayoutTypeNotes,
+    type RowBasedLayoutModel,
+    VisualizationType
+} from "../base-model.ts";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {ErgoplankLayoutOptions} from "./ErgoplankLayoutOptions.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
@@ -21,11 +29,7 @@ function layoutSupportsFlipRetRub(options: LayoutOptions) {
     return false;
 }
 
-function getKeyPositionsForModel(
-    layoutModel: RowBasedLayoutModel,
-    mapping: FlexMapping,
-    layout: LayoutOptions
-): KeyPosition[] {
+function getKeyPositionsForModel(layoutModel: RowBasedLayoutModel, mapping: FlexMapping, layout: LayoutOptions): KeyPosition[] {
     const charMap = fillMapping(layoutModel, mapping);
     if (layoutSupportsFlipRetRub(layout) && layout.flipRetRub) {
         flipRetRub(charMap!);
@@ -34,12 +38,13 @@ function getKeyPositionsForModel(
 }
 
 export function LayoutArea({appState}: LayoutAreaProps) {
-    const {layout, layoutModel, previousLayoutModel, mapping, setLayout, mappingDiff, bigramMovements, vizType} = appState;
+    const {layout, layoutModel, previousLayoutModel, mapping} = appState;
 
     const currentPositions = getKeyPositionsForModel(layoutModel.value, mapping.value, layout.value);
     const previousPositions = getKeyPositionsForModel(previousLayoutModel.value, mapping.value, layout.value);
     const keyMovements = getKeyMovements(previousPositions, currentPositions);
 
+    const {setLayout, mappingDiff, bigramMovements, vizType} = appState;
     return (
         <div>
             <TopBar layout={layout.value} setLayout={setLayout}/>
@@ -122,9 +127,11 @@ interface TopBarKeyboardTabProps {
 
 function TopBarKeyboardTab({layoutType, layoutName, layoutNote, currentLayout, setLayout}: TopBarKeyboardTabProps) {
     const selected = layoutType === currentLayout;
-    //TODO: move the event handler to the button
-    return <div onClick={() => setLayout({type: layoutType})}>
-        <button type="button" class={"top-bar-keyboard-tab-label" + (selected ? " selected" : "")}>
+    return <div>
+        <button type="button"
+                onClick={() => setLayout({type: layoutType})}
+                class={"top-bar-keyboard-tab-label" + (selected ? " selected" : "")}
+        >
             {layoutName}
         </button>
         <div hidden={!selected} class="top-bar-keyboard-tab-note">
