@@ -4,7 +4,7 @@ import {
     KeyboardRows,
     KeymapTypeId,
     LayoutMapping,
-    RowBasedLayoutModel
+    type RowBasedLayoutModel
 } from "../base-model.ts";
 import {mirror, MonotonicKeyWidth} from "./keyWidth.ts";
 

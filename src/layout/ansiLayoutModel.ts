@@ -3,8 +3,8 @@ import {
     KEY_COLOR,
     KeyboardRows,
     KeymapTypeId,
-    LayoutMapping,
-    RowBasedLayoutModel,
+    type LayoutMapping,
+    type RowBasedLayoutModel,
     SKE_AWAY,
     SKE_HOME
 } from "../base-model.ts";

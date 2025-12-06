@@ -1,4 +1,4 @@
-import {EB65_LowShift_Variant, EB65_MidShift_Variant, LayoutOptions, PlankVariant} from "../app-model.ts";
+import {EB65_LowShift_Variant, EB65_MidShift_Variant, type LayoutOptions, PlankVariant} from "../app-model.ts";
 import {getPlankVariant} from "../layout-selection.ts";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {LayoutVariantButton} from "../components/LayoutVariantButton.tsx";

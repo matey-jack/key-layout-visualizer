@@ -1,6 +1,6 @@
-import {ReadonlySignal, Signal} from "@preact/signals";
-import {MappingChange, RowBasedLayoutModel, FlexMapping, BigramMovement} from "./base-model.ts";
-import {LayoutType, VisualizationType} from "./base-model.ts";
+import type {ReadonlySignal, Signal} from "@preact/signals";
+import type {MappingChange, RowBasedLayoutModel, FlexMapping, BigramMovement} from "./base-model.ts";
+import {LayoutType, type VisualizationType} from "./base-model.ts";
 
 export enum AnsiVariant {
     IBM,

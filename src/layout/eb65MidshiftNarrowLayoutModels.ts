@@ -1,4 +1,4 @@
-import {Finger, FlexMapping, KeyboardRows, KeymapTypeId, LayoutMapping, RowBasedLayoutModel, SKE_AWAY, SupportedKeymapType} from "../base-model.ts";
+import {Finger, FlexMapping, KeyboardRows, KeymapTypeId, type LayoutMapping, type RowBasedLayoutModel, SKE_AWAY, SupportedKeymapType} from "../base-model.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 
 export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {

@@ -1,4 +1,4 @@
-import {HarmonicVariant, LayoutOptions} from "../app-model.ts";
+import {HarmonicVariant, type LayoutOptions} from "../app-model.ts";
 import {LayoutVariantButton} from "../components/LayoutVariantButton.tsx";
 
 export interface HarmonicLayoutOptionsProps {

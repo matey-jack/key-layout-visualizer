@@ -1,11 +1,11 @@
 import {
     bigramEffort,
     BigramType,
-    FlexMapping,
+    type FlexMapping,
     isLayoutViz,
     KeymapTypeId,
     MappingChange,
-    RowBasedLayoutModel,
+    type RowBasedLayoutModel,
     SKE_AWAY,
     SKE_HOME,
     SKE_INCONV_NEIGHBOR,
@@ -13,7 +13,7 @@ import {
     SKE_NEIGHBOR,
     VisualizationType
 } from "../base-model.ts";
-import {AppState} from "../app-model.ts";
+import type {AppState} from "../app-model.ts";
 import {
     compatibilityScore,
     diffSummary,
@@ -25,7 +25,7 @@ import {
 } from "../layout/layout-functions.ts";
 import {TruncatedText} from "../components/TruncatedText.tsx";
 import {bigramClassByType, getEffortClass} from "../layout/KeyboardSvg.tsx";
-import {ComponentChildren} from "preact";
+import type {ComponentChildren} from "preact";
 import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
 import {sum} from "../library/math.ts";
 import {bigramFrequencyByType, bigramRankSize} from "../bigrams.ts";

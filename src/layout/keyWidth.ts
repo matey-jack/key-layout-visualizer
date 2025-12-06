@@ -1,4 +1,4 @@
-import {KeyboardRows} from "../base-model.ts";
+import type {KeyboardRows} from "../base-model.ts";
 import {frac, sum} from "../library/math.ts";
 
 

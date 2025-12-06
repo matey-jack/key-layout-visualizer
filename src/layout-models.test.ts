@@ -1,5 +1,5 @@
 import {describe, expect, it} from "vitest";
-import {KEYMAP_TYPES, KeyboardRows, KeymapTypeId, RowBasedLayoutModel} from "./base-model.ts";
+import {KEYMAP_TYPES, KeyboardRows, type KeymapTypeId, type RowBasedLayoutModel} from "./base-model.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createApple, createHHKB} from "./layout/ansiLayoutModel.ts";
 import {eb65BigEnterLayoutModel, eb65LowshiftLayoutModel} from "./layout/eb65LowshiftLayoutModel.ts";
 import {

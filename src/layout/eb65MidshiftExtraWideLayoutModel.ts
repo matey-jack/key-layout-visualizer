@@ -1,4 +1,4 @@
-import {FlexMapping, KeyboardRows, KeymapTypeId, RowBasedLayoutModel, SupportedKeymapType} from "../base-model.ts";
+import {FlexMapping, KeyboardRows, KeymapTypeId, type RowBasedLayoutModel, SupportedKeymapType} from "../base-model.ts";
 
 import {keyColorHighlightsClass} from "./layout-functions.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
