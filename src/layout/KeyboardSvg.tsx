@@ -204,7 +204,7 @@ function getFingeringClasses(layoutModel: RowBasedLayoutModel, row: number, col:
 export function RowBasedKeyboard({layoutModel, keyMovements, mappingDiff, vizType}: KeyboardProps) {
     return keyMovements.map((movement, index) => {
         // Use current position if available, otherwise use previous position
-        const keyPos = movement.cur ?? movement.prev!;
+        const keyPos = movement.next ?? movement.prev!;
         const {label, row, col, colPos} = keyPos;
 
         const keyColorFunction = (layoutModel.keyColorClass) || defaultKeyColor;
@@ -285,7 +285,7 @@ export interface StaggerLinesProps {
 
 export function StaggerLines({layoutModel, layoutSplit, keyMovements}: StaggerLinesProps) {
     // Extract current positions from key movements
-    const keyPositions = keyMovements.map(m => m.cur ?? m.prev!);
+    const keyPositions = keyMovements.map(m => m.next ?? m.prev!);
 
     const leftHomePositions = keyPositions.filter((kp) =>
         kp.row === KeyboardRows.Home && kp.col <= layoutModel.leftHomeIndex && kp.col > layoutModel.leftHomeIndex - 4

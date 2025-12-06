@@ -286,10 +286,8 @@ export const getKeyPositionsByLabel = (positions: KeyPosition[]): Record<string,
 
 /**
  * Merges key positions from previous and current states to create key movements for animation.
- * Keys are matched by their label when possible, or by position (row, col) for unlabeled keys.
- * Keys that appear in only one state will have only prev or cur set.
  */
-export function getKeyMovements(prevPositions: KeyPosition[], curPositions: KeyPosition[]): KeyMovement[] {
+export function getKeyMovements(prevPositions: KeyPosition[], nextPositions: KeyPosition[]): KeyMovement[] {
     const movements: KeyMovement[] = [];
     const matchedCur = new Set<number>(); // Track which current positions have been matched
 
@@ -297,15 +295,15 @@ export function getKeyMovements(prevPositions: KeyPosition[], curPositions: KeyP
     for (const prev of prevPositions) {
         if (prev.label && prev.label !== "") {
             // Try to find a matching current position by label
-            const curIndex = curPositions.findIndex(
+            const curIndex = nextPositions.findIndex(
                 (cur, idx) => cur.label === prev.label && !matchedCur.has(idx)
             );
             if (curIndex !== -1) {
                 matchedCur.add(curIndex);
-                movements.push({ prev, cur: curPositions[curIndex] });
+                movements.push({ prev, next: nextPositions[curIndex] });
             } else {
                 // Key disappeared
-                movements.push({ prev, cur: undefined });
+                movements.push({ prev, next: undefined });
             }
         }
     }
@@ -318,22 +316,22 @@ export function getKeyMovements(prevPositions: KeyPosition[], curPositions: KeyP
         const prev = prevPositions[i];
 
         // Try to find a matching current position by row and col
-        const curIndex = curPositions.findIndex(
+        const curIndex = nextPositions.findIndex(
             (cur, idx) => cur.row === prev.row && cur.col === prev.col && !matchedCur.has(idx)
         );
         if (curIndex !== -1) {
             matchedCur.add(curIndex);
-            movements.push({ prev, cur: curPositions[curIndex] });
+            movements.push({ prev, next: nextPositions[curIndex] });
         } else {
             // Key disappeared
-            movements.push({ prev, cur: undefined });
+            movements.push({ prev, next: undefined });
         }
     }
 
     // Third pass: add any unmatched current keys (new keys appearing)
-    for (let i = 0; i < curPositions.length; i++) {
+    for (let i = 0; i < nextPositions.length; i++) {
         if (!matchedCur.has(i)) {
-            movements.push({ prev: undefined, cur: curPositions[i] });
+            movements.push({ prev: undefined, next: nextPositions[i] });
         }
     }
 
