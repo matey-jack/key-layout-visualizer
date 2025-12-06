@@ -89,7 +89,6 @@ export function Key({label, row, col, width, height, backgroundClass, ribbonClas
         fromY = exitPoint.y;
     }
 
-    const animationDuration = "0.5s";
     const labelClass =
         isKeyboardSymbol(label) ? "keyboard-symbol"
             : isKeyName(label) ? "key-name"
@@ -98,62 +97,49 @@ export function Key({label, row, col, width, height, backgroundClass, ribbonClas
     // Determine if we need animation
     const needsAnimation = (fromX !== x) || (fromY !== y);
 
+    // Use CSS custom properties to set initial and final positions
+    const groupStyle = {
+        '--from-x': `${fromX}px`,
+        '--from-y': `${fromY}px`,
+        '--to-x': `${x}px`,
+        '--to-y': `${y}px`,
+        transform: needsAnimation ? `translate(var(--from-x), var(--from-y))` : `translate(var(--to-x), var(--to-y))`,
+        transformOrigin: "0 0"
+    } as any;
+
     const text = (labelClass) ?
         // center all the non-character key labels
-        <text x={x + keyUnit * width / 2} y={y + keyUnit * height / 2} className={"key-label " + labelClass}>
-            {needsAnimation && <>
-                <animate attributeName="x" from={fromX + keyUnit * width / 2} to={x + keyUnit * width / 2} dur={animationDuration} fill="freeze"/>
-                <animate attributeName="y" from={fromY + keyUnit * height / 2} to={y + keyUnit * height / 2} dur={animationDuration} fill="freeze"/>
-            </>}
+        <text x={keyUnit * width / 2} y={keyUnit * height / 2} className={"key-label " + labelClass}>
             {label}
         </text>
         :
         // left align labels for character keys
-        <text x={x + 20} y={y + 60} className="key-label">
-            {needsAnimation && <>
-                <animate attributeName="x" from={fromX + 20} to={x + 20} dur={animationDuration} fill="freeze"/>
-                <animate attributeName="y" from={fromY + 60} to={y + 60} dur={animationDuration} fill="freeze"/>
-            </>}
+        <text x={20} y={60} className="key-label">
             {label}
         </text>
 
     const keyRibbon = ribbonClass &&
         <rect class={"key-ribbon " + ribbonClass}
-              x={x + keyRibbonPaddingV}
-              y={y + keyRibbonPaddingH}
+              x={keyRibbonPaddingV}
+              y={keyRibbonPaddingH}
               width={keyUnit * width - 2 * (keyPadding + keyRibbonPaddingV)}
-              height={keyUnit * height - 2 * (keyPadding + keyRibbonPaddingH)}>
-            {needsAnimation && <>
-                <animate attributeName="x" from={fromX + keyRibbonPaddingV} to={x + keyRibbonPaddingV} dur={animationDuration} fill="freeze"/>
-                <animate attributeName="y" from={fromY + keyRibbonPaddingH} to={y + keyRibbonPaddingH} dur={animationDuration} fill="freeze"/>
-            </>}
-        </rect>
+              height={keyUnit * height - 2 * (keyPadding + keyRibbonPaddingH)}/>
+              
     const frequencyCircle = frequencyCircleRadius &&
-        <circle cx={x + 70} cy={y + 30} r={frequencyCircleRadius} className="frequency-circle">
-            {needsAnimation && <>
-                <animate attributeName="cx" from={fromX + 70} to={x + 70} dur={animationDuration} fill="freeze"/>
-                <animate attributeName="cy" from={fromY + 30} to={y + 30} dur={animationDuration} fill="freeze"/>
-            </>}
-        </circle>;
+        <circle cx={70} cy={30} r={frequencyCircleRadius} className="frequency-circle"/>;
+        
     const homeMarker = showHomeMarker &&
-        <circle cx={x + keyUnit / 2} cy={y + keyUnit / 2} r={12} className="home-marker-circle">
-            {needsAnimation && <>
-                <animate attributeName="cx" from={fromX + keyUnit / 2} to={x + keyUnit / 2} dur={animationDuration} fill="freeze"/>
-                <animate attributeName="cy" from={fromY + keyUnit / 2} to={y + keyUnit / 2} dur={animationDuration} fill="freeze"/>
-            </>}
-        </circle>;
-    return <g>
+        <circle cx={keyUnit / 2} cy={keyUnit / 2} r={12} className="home-marker-circle"/>;
+        
+    return <g 
+        style={groupStyle}
+        className={needsAnimation ? "key-group animating" : "key-group"}>
         <rect
             className={"key-outline " + backgroundClass}
-            x={x}
-            y={y}
+            x={0}
+            y={0}
             width={keyUnit * width - 2 * keyPadding}
-            height={keyUnit * height - 2 * keyPadding}>
-            {needsAnimation && <>
-                <animate attributeName="x" from={fromX} to={x} dur={animationDuration} fill="freeze"/>
-                <animate attributeName="y" from={fromY} to={y} dur={animationDuration} fill="freeze"/>
-            </>}
-        </rect>
+            height={keyUnit * height - 2 * keyPadding}/>
         {keyRibbon || frequencyCircle || homeMarker}
         {text}
     </g>
