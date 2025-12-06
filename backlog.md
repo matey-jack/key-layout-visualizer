@@ -91,8 +91,11 @@ refactorings:
     That would be fun to write and be a neat documentation of my fingering and effort theory. But also useless at the moment, since I don't plan to add any new layouts besides HHKB, which will simply copy from ANSI.
 
 missing core features:
+- place the "wide-mod" checkbox under the IBM, Apple, and HHKB buttons. Find a good place to show total board width and hand distance stats for each board.
 - Ergoplank and Katana logos to fill the gap, especially Ergoboard 65 Midshift with a nice connection between both gaps.
 - Rectangle around the keyboard to signify the 60% or 65% box.
+- compress some of the UI when scrolling, so that the Keyboard SVG always stays up top and buttons (both type and variant) maybe on the side of the SVG?
+    Show only the selected buttons and a "Change..." link which scrolls back up, so that all buttons are visible again.
 
 - add some more explanations, especially for:
   + the "wide" mappings
