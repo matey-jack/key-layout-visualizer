@@ -40,7 +40,7 @@ export function LayoutArea({appState}: LayoutAreaProps) {
                     vizType={vizType.value}
                 />
                 {vizType.value === VisualizationType.LayoutAngle &&
-                    <StaggerLines layoutModel={layoutModel.value} layoutSplit={split}
+                    <StaggerLines layoutModel={layoutModel.value} layoutSplit={isSplit(layout.value)}
                                   keyPositions={keyPositions}/>
                 }
                 {vizType.value === VisualizationType.MappingBigrams &&
