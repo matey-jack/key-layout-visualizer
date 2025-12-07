@@ -211,6 +211,9 @@ export interface KeyPosition {
     // Measured in fractional units of one square key.
     colPos: number;
 
+    // Key cap width in fractional units.
+    keyCapWidth: number;
+
     // Needed for a different purpose, but convenient to have in the same structure.
     finger: Finger;
     hasAltFinger: boolean;
