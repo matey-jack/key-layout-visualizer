@@ -164,6 +164,9 @@ function getEntryOrExitRow(row: number): number {
 export function RowBasedKeyboard({layoutModel, keyMovements, mappingDiff, vizType}: KeyboardProps) {
     return keyMovements.map((movement, index) => {
         // Use .next data for the key decorations, falling back to the .prev data for exiting keys.
+        // TODO: BUG! the fallback row/col belongs to the prev layout model; we'll get the wrong data or UNDEF when looking in the current one!
+        //      we should use fallback values for all the attributes like keyHeight, finger, effort, home-key.
+        //      but keyWidth needs to be stored in the key position class!
         const {label, row, col} = movement.next ?? movement.prev!;
 
         const keyColorFunction = (layoutModel.keyColorClass) || defaultKeyColor;
