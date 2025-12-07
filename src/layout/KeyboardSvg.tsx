@@ -11,14 +11,7 @@ import {
 } from "../base-model.ts";
 import {singleCharacterFrequencies} from "../frequencies/english-single-character-frequencies.ts";
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping/mapping-functions.ts";
-import {
-    defaultKeyColor,
-    getKeySizeClass,
-    isHomeKey,
-    keyCapHeight,
-    keyCapWidth,
-    lettersAndVIP,
-} from "./layout-functions.ts";
+import {defaultKeyColor, getKeySizeClass, isHomeKey, keyCapHeight, lettersAndVIP} from "./layout-functions.ts";
 
 interface KeyboardSvgProps {
     children?: ComponentChildren;
@@ -163,16 +156,15 @@ function getEntryOrExitRow(row: number): number {
 
 export function RowBasedKeyboard({layoutModel, keyMovements, mappingDiff, vizType}: KeyboardProps) {
     return keyMovements.map((movement, index) => {
-        // Use .next data for the key decorations, falling back to the .prev data for exiting keys.
-        // TODO: BUG! the fallback row/col belongs to the prev layout model; we'll get the wrong data or UNDEF when looking in the current one!
-        //      we should use fallback values for all the attributes like keyHeight, finger, effort, home-key.
-        //      but keyWidth needs to be stored in the key position class!
-        const {label, row, col} = movement.next ?? movement.prev!;
+        // We use .next data for the key decorations, because we only have the layoutModel for the next keyboard.
+        // For exiting keys, we have the correct .label and .keyWidth, but all the data fetched from the layoutModel
+        // using row and col is wrong or undefined, because the positions are from the previous keyboard.
+        // Since this is only for the short duration of the animation, I can live with that bug.
+        const {label, row, col, keyCapWidth} = movement.next ?? movement.prev!;
 
         const keyColorFunction = (layoutModel.keyColorClass) || defaultKeyColor;
-        const capWidth = keyCapWidth(layoutModel, row, col);
         const capHeight = keyCapHeight(layoutModel, row, col);
-        const capSize = Math.max(capWidth, capHeight);
+        const capSize = Math.max(keyCapWidth, capHeight);
         const bgClass = (vizType === VisualizationType.LayoutKeySize ? getKeySizeClass(capSize)
                 : vizType === VisualizationType.LayoutKeyEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
                     : vizType === VisualizationType.LayoutFingering // && (layoutModel.mainFingerAssignment[row][col] !== null)
@@ -203,7 +195,7 @@ export function RowBasedKeyboard({layoutModel, keyMovements, mappingDiff, vizTyp
             ribbonClass={ribbonClass}
             row={movement.next?.row ?? getEntryOrExitRow(movement.prev!.row)}
             col={movement.next?.colPos ?? movement.prev!.colPos}
-            width={capWidth}
+            width={keyCapWidth}
             height={capHeight}
             frequencyCircleRadius={frequencyCircleRadius}
             showHomeMarker={vizType === VisualizationType.LayoutKeySize && isHomeKey(layoutModel, row, col)}

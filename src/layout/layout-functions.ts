@@ -271,6 +271,7 @@ export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean
                     row,
                     col,
                     colPos,
+                    keyCapWidth: keyCapWidth(layoutModel, row as KeyboardRows, col),
                     finger,
                     hasAltFinger: layoutModel.hasAltFinger(row, col),
                 });
