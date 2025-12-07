@@ -40,6 +40,7 @@ interface KeyProps {
     showHomeMarker: boolean,
     prevRow: KeyboardRows,
     prevCol: number,
+    prevWidth: number,
 }
 
 const keyUnit = 100;
@@ -48,23 +49,27 @@ const keyRibbonPaddingH = 17;
 const keyRibbonPaddingV = 1;
 
 export function Key(props: KeyProps) {
-    const {row, col, prevRow, prevCol} = props;
+    const {row, col, prevRow, prevCol, width, prevWidth} = props;
     const x = col * keyUnit + keyPadding;
     const y = row * keyUnit + keyPadding;
     const fromX = prevCol * keyUnit + keyPadding;
     const fromY = prevRow * keyUnit + keyPadding;
+    const rectWidth = keyUnit * width - 2 * keyPadding;
+    const fromRectWidth = keyUnit * prevWidth - 2 * keyPadding;
 
-    // Use CSS custom properties to set initial and final positions
+    // Use CSS custom properties to set initial and final positions and widths
     const groupStyle = {
         '--from-x': `${fromX}px`,
         '--from-y': `${fromY}px`,
         '--to-x': `${x}px`,
         '--to-y': `${y}px`,
+        '--from-width': `${fromRectWidth}px`,
+        '--to-width': `${rectWidth}px`,
         transform: `translate(var(--from-x), var(--from-y))`,
         transformOrigin: "0 0"
     };
 
-    const {label,width, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker} = props;
+    const {label, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker} = props;
     const labelClass =
         isKeyboardSymbol(label) ? "keyboard-symbol"
             : isKeyName(label) ? "key-name"
@@ -98,10 +103,10 @@ export function Key(props: KeyProps) {
         style={groupStyle}
         className={"key-group animating"}>
         <rect
-            className={"key-outline " + backgroundClass}
+            className={"key-outline animating " + backgroundClass}
             x={0}
             y={0}
-            width={keyUnit * width - 2 * keyPadding}
+            width={rectWidth}
             height={keyUnit * height - 2 * keyPadding}/>
         {keyRibbon || frequencyCircle || homeMarker}
         {text}
@@ -201,6 +206,7 @@ export function RowBasedKeyboard({layoutModel, keyMovements, mappingDiff, vizTyp
             showHomeMarker={vizType === VisualizationType.LayoutKeySize && isHomeKey(layoutModel, row, col)}
             prevRow={movement.prev?.row ?? getEntryOrExitRow(movement.next!.row)}
             prevCol={movement.prev?.colPos ?? movement.next!.colPos}
+            prevWidth={movement.prev?.keyCapWidth ?? keyCapWidth}
             key={`${label}-${index}`}
         />
     })
