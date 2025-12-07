@@ -1,11 +1,4 @@
-import {
-    FlexMapping,
-    harmonicStaggerOffsets,
-    KeyboardRows,
-    KeymapTypeId,
-    LayoutMapping,
-    type RowBasedLayoutModel
-} from "../base-model.ts";
+import {harmonicStaggerOffsets, KeyboardRows, KeymapTypeId, type RowBasedLayoutModel} from "../base-model.ts";
 import {mirror, MonotonicKeyWidth} from "./keyWidth.ts";
 
 const keyWidths = new MonotonicKeyWidth(14, [0, 0, 0, 0, 0.5], "H14W");

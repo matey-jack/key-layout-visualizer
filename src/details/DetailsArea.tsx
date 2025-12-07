@@ -1,3 +1,5 @@
+import type {ComponentChildren} from "preact";
+import type {AppState} from "../app-model.ts";
 import {
     bigramEffort,
     BigramType,
@@ -11,9 +13,12 @@ import {
     SKE_INCONV_NEIGHBOR,
     SKE_LF_UP,
     SKE_NEIGHBOR,
-    VisualizationType
+    VisualizationType,
 } from "../base-model.ts";
-import type {AppState} from "../app-model.ts";
+import {bigramFrequencyByType, bigramRankSize} from "../bigrams.ts";
+import {TruncatedText} from "../components/TruncatedText.tsx";
+import {singleCharacterFrequencies as englishFreqs} from "../frequencies/english-single-character-frequencies.ts";
+import {bigramClassByType, getEffortClass} from "../layout/KeyboardSvg.tsx";
 import {
     compatibilityScore,
     diffSummary,
@@ -21,16 +26,11 @@ import {
     fillMapping,
     findMatchingKeymapType,
     getKeySizeClass,
-    keyCapSize
+    keyCapSize,
 } from "../layout/layout-functions.ts";
-import {TruncatedText} from "../components/TruncatedText.tsx";
-import {bigramClassByType, getEffortClass} from "../layout/KeyboardSvg.tsx";
-import type {ComponentChildren} from "preact";
-import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
 import {sum} from "../library/math.ts";
-import {bigramFrequencyByType, bigramRankSize} from "../bigrams.ts";
+import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
 import {qwertyMapping} from "../mapping/mappings.ts";
-import {singleCharacterFrequencies as englishFreqs} from "../frequencies/english-single-character-frequencies.ts";
 
 interface DetailsAreaProps {
     appState: AppState;
@@ -382,10 +382,7 @@ export function BigramDetailsLegendItem({bigramType, frequency, children}: Bigra
 
 }
 
-interface AltGrLayerDetailsProps {
-}
-
-export function AltGrLayerDetails({}: AltGrLayerDetailsProps) {
+export function AltGrLayerDetails() {
     return <>
         <p>
             The US American keyboard mapping might be the only one that doesn't come with an AltGr layer.

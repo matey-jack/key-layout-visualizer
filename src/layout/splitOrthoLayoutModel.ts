@@ -1,4 +1,4 @@
-import {FlexMapping, KeymapTypeId, type RowBasedLayoutModel} from "../base-model.ts";
+import {KeymapTypeId, type RowBasedLayoutModel} from "../base-model.ts";
 
 // I arbitrarily decide that the top (number) row shall not be changed by the flex mapping.
 // But there has to be an empty list in the mapping to keep the format consistent with the algorithms.

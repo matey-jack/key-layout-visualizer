@@ -1,7 +1,6 @@
 import type {KeyboardRows} from "../base-model.ts";
 import {frac, sum} from "../library/math.ts";
 
-
 export const zeroIndent: [number, number, number, number, number] = [0, 0, 0, 0, 0]; // Array(5).fill(0); is a type error.
 
 /**

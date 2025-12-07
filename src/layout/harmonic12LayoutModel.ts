@@ -1,10 +1,9 @@
 import {
-    FlexMapping,
     harmonicStaggerOffsets,
     KeyboardRows,
     KeymapTypeId,
     type LayoutMapping,
-    type RowBasedLayoutModel
+    type RowBasedLayoutModel,
 } from "../base-model.ts";
 import {mirror, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
 
