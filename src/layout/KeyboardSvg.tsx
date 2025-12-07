@@ -241,20 +241,32 @@ export function BigramLines({bigrams}: BigramLinesProps) {
 
 export interface StaggerLinesProps {
     layoutModel: RowBasedLayoutModel;
+    previousLayoutModel: RowBasedLayoutModel;
     layoutSplit: boolean;
     keyMovements: KeyMovement[];
 }
 
-export function StaggerLines({layoutModel, layoutSplit, keyMovements}: StaggerLinesProps) {
-    // Extract current positions from key movements
-    const keyPositions = keyMovements.map(m => m.next ?? m.prev!);
+export function StaggerLines({layoutModel, previousLayoutModel, layoutSplit, keyMovements}: StaggerLinesProps) {
+    // Extract current and previous positions from key movements
+    const currentKeyPositions = keyMovements.map(m => m.next ?? m.prev!);
+    const previousKeyPositions = keyMovements.map(m => m.prev ?? m.next!);
 
-    const leftHomePositions = keyPositions.filter((kp) =>
+    // we get the actual colPos instead of adding 1, 2, 3 to the index finger column,
+    // because keys might not have width 1.
+    const leftHomePositions = currentKeyPositions.filter((kp) =>
         kp.row === KeyboardRows.Home && kp.col <= layoutModel.leftHomeIndex && kp.col > layoutModel.leftHomeIndex - 4
     ).map((kp) => kp.colPos);
-    const rightHomePositions = keyPositions.filter((kp) =>
+    const rightHomePositions = currentKeyPositions.filter((kp) =>
         kp.row === KeyboardRows.Home && kp.col >= layoutModel.rightHomeIndex && kp.col < layoutModel.rightHomeIndex + 4
     ).map((kp) => kp.colPos);
+    
+    const prevLeftHomePositions = previousKeyPositions.filter((kp) =>
+        kp.row === KeyboardRows.Home && kp.col <= previousLayoutModel.leftHomeIndex && kp.col > previousLayoutModel.leftHomeIndex - 4
+    ).map((kp) => kp.colPos);
+    const prevRightHomePositions = previousKeyPositions.filter((kp) =>
+        kp.row === KeyboardRows.Home && kp.col >= previousLayoutModel.rightHomeIndex && kp.col < previousLayoutModel.rightHomeIndex + 4
+    ).map((kp) => kp.colPos);
+
     const leftHandOffsets = layoutSplit ? [0, 0, 0, 0] : [0.5, 0.25, 0, -0.25];
     const rightHandOffsets = leftHandOffsets.map((x) => -x);
     // This uses object identity comparison and only works, because the models actually reference the same array.
@@ -264,23 +276,27 @@ export function StaggerLines({layoutModel, layoutSplit, keyMovements}: StaggerLi
     return <>
         <OneHandStaggerLines
             homePositions={leftHomePositions}
+            prevHomePositions={prevLeftHomePositions}
             staggerOffsets={leftHandOffsets}
-            className="hand-stagger-line"
+            className="hand-stagger-line hand-stagger-line-left"
         />
         <OneHandStaggerLines
             homePositions={rightHomePositions}
+            prevHomePositions={prevRightHomePositions}
             staggerOffsets={rightHandOffsets}
-            className="hand-stagger-line"
+            className="hand-stagger-line hand-stagger-line-right"
         />
         <OneHandStaggerLines
             homePositions={leftHomePositions}
+            prevHomePositions={prevLeftHomePositions}
             staggerOffsets={layoutModel.staggerOffsets}
-            className="stagger-line"
+            className="stagger-line stagger-line-left"
         />
         <OneHandStaggerLines
             homePositions={rightHomePositions}
+            prevHomePositions={prevRightHomePositions}
             staggerOffsets={rightKeyboardOffsets}
-            className="stagger-line"
+            className="stagger-line stagger-line-right"
         />
     </>
 }
@@ -288,6 +304,7 @@ export function StaggerLines({layoutModel, layoutSplit, keyMovements}: StaggerLi
 export interface OneHandStaggerLinesProps {
     // Same unit as colPos. The row is always the home row.
     homePositions: number[];
+    prevHomePositions: number[];
     // Three numbers, measure in units of key width (thus 0, 0.25, or 0.5) for the number, upper, and lower row,
     // all in relation to the homeRow. (Either above or below home row numbers should be negative to keep the direction.
     // And for the home row it should be 0.)
@@ -295,17 +312,39 @@ export interface OneHandStaggerLinesProps {
     className: string;
 }
 
-export function OneHandStaggerLines({homePositions, staggerOffsets, className}: OneHandStaggerLinesProps) {
+export function OneHandStaggerLines({homePositions, prevHomePositions, staggerOffsets, className}: OneHandStaggerLinesProps) {
     // it's simpler to draw this with separate lines instead of a nice continuous SVG path...
+    // Set coordinates as if homePositions were [0, 1, 2, 3], then use CSS to offset to actual positions
     const results = [] as JSX.Element[];
-    homePositions.forEach((homePos) => {
+    homePositions.forEach((homePos, index) => {
+        const prevHomePos = prevHomePositions[index];
+        // Calculate offset from normalized position 0, 1, 2, 3
+        const currentOffset = homePos - index;
+        const previousOffset = prevHomePos - index;
+        
         for (let row = 0; row < staggerOffsets.length - 1; row++) {
-            results.push(<line
-                key={`${row},${homePos}`}
-                x1={keyUnit * (homePos + 0.5 + staggerOffsets[row])} y1={keyUnit * (row + 0.5)}
-                x2={keyUnit * (homePos + 0.5 + staggerOffsets[row + 1])} y2={keyUnit * (row + 1.5)}
-                class={className}
-            />)
+            // Coordinates relative to normalized position (as if home keys were at 0, 1, 2, 3)
+            const x1Normalized = keyUnit * (index + 0.5 + staggerOffsets[row]);
+            const y1 = keyUnit * (row + 0.5);
+            const x2Normalized = keyUnit * (index + 0.5 + staggerOffsets[row + 1]);
+            const y2 = keyUnit * (row + 1.5);
+            
+            // CSS custom properties for animation: translate from previous offset to current offset
+            const style = {
+                '--from-offset': `${keyUnit * previousOffset}px`,
+                '--to-offset': `${keyUnit * currentOffset}px`,
+            };
+            
+            results.push(<g
+                key={`${row},${homePos},${index}`}
+                style={style}
+                className={`${className} stagger-line-animating`}
+            >
+                <line
+                    x1={x1Normalized} y1={y1}
+                    x2={x2Normalized} y2={y2}
+                />
+            </g>)
         }
     })
     return results;

@@ -550,3 +550,16 @@ label.disabled {
     stroke-width: 10px;
     background-color: #a9daa9;
 }
+
+.stagger-line-animating {
+    animation: staggerLineMove 0.5s ease-in-out forwards;
+}
+
+@keyframes staggerLineMove {
+    from {
+        transform: translateX(var(--from-offset));
+    }
+    to {
+        transform: translateX(var(--to-offset));
+    }
+}
