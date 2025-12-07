@@ -21,7 +21,7 @@ body {
     border-radius: 4px;
 }
 
-.top-bar-keyboard-tab-label.selected {
+.top-bar-keyboard-tab-label-and-note.selected .top-bar-keyboard-tab-label {
     background-color: #5cdbef;
     border: 1px solid #003fae;
 }
@@ -30,11 +30,11 @@ body {
     padding: 0.5rem;
     font-style: italic;
     min-height: 1.5em;
+    display: none;
 }
 
-.top-bar-keyboard-tab-note[hidden] {
+.top-bar-keyboard-tab-label-and-note.selected .top-bar-keyboard-tab-note {
     display: block;
-    visibility: hidden;
 }
 
 .layout-variant-options[hidden] {
