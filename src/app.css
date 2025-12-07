@@ -39,11 +39,6 @@ body {
     visibility: visible;
 }
 
-.layout-variant-options[hidden] {
-    display: block;
-    visibility: hidden;
-}
-
 .layout-options-bar-container {
     margin-left: 10%;
     margin-right: 10%;
@@ -100,10 +95,24 @@ body {
     margin-top: 0.15rem;
 }
 
-.layout-options-button {
+.layout-variant-button {
     margin: 0.5rem;
     padding: 0.5rem;
     border-radius: 4px;
+}
+
+.layout-variant-button-and-children.selected .layout-variant-button {
+    background-color: #5cdbef;
+    border: 1px solid #003fae;
+}
+
+.layout-variant-options {
+    display: block;
+    visibility: hidden;
+}
+
+.layout-variant-button-and-children.selected .layout-variant-options {
+    visibility: visible;
 }
 
 .flip-ret-rub-button {
@@ -112,11 +121,6 @@ body {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     border-radius: 4px;
-}
-
-.layout-options-button.selected {
-    background-color: #5cdbef;
-    border: 1px solid #003fae;
 }
 
 .layout-options-bar-container label {
