@@ -51,6 +51,7 @@ export function LayoutArea({appState}: LayoutAreaProps) {
             <KeyboardSvg>
                 <RowBasedKeyboard
                     layoutModel={layoutModel.value}
+                    prevLayoutModel={prevLayoutModel.value}
                     keyMovements={keyMovements}
                     mappingDiff={mappingDiff.value}
                     vizType={vizType.value}

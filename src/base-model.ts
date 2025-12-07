@@ -282,6 +282,7 @@ export interface LayoutModel {
     symmetricStagger: boolean;
 
     // More specific keymap types should be first in the list, so they will be preferred over the generic ones.
+    // TODO: replace by frameMappings: Partial<Record<KeymapTypeId, string[]>>; // similar to FlexMapping
     supportedKeymapTypes: SupportedKeymapType[];
 
     // Finger assignment and key effort arrays have the same shape (number of entries in each row) as the LayoutMappings.

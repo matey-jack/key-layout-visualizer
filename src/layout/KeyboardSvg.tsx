@@ -115,6 +115,7 @@ export function Key(props: KeyProps) {
 
 export interface KeyboardProps {
     layoutModel: LayoutModel;
+    prevLayoutModel: LayoutModel;
     mappingDiff: Record<string, MappingChange>;
     keyMovements: KeyMovement[];
     vizType: VisualizationType;
@@ -159,22 +160,20 @@ function getEntryOrExitRow(row: number): number {
     return row < 2 ? row - 3 : row + 4;
 }
 
-export function RowBasedKeyboard({layoutModel, keyMovements, mappingDiff, vizType}: KeyboardProps) {
+export function RowBasedKeyboard({layoutModel, prevLayoutModel, keyMovements, mappingDiff, vizType}: KeyboardProps) {
     return keyMovements.map((movement, index) => {
-        // We use .next data for the key decorations, because we only have the layoutModel for the next keyboard.
-        // For exiting keys, we have the correct .label and .keyWidth, but all the data fetched from the layoutModel
-        // using row and col is wrong or undefined, because the positions are from the previous keyboard.
-        // Since this is only for the short duration of the animation, I can live with that bug.
+        // key decorations always come from the next layout model, unless a key is exiting.
         const {label, row, col, keyCapWidth} = movement.next ?? movement.prev!;
+        const model = movement.next ? layoutModel : prevLayoutModel;
 
-        const keyColorFunction = (layoutModel.keyColorClass) || defaultKeyColor;
-        const capHeight = keyCapHeight(layoutModel, row, col);
+        const keyColorFunction = (model.keyColorClass) || defaultKeyColor;
+        const capHeight = keyCapHeight(model, row, col);
         const capSize = Math.max(keyCapWidth, capHeight);
         const bgClass = (vizType === VisualizationType.LayoutKeySize ? getKeySizeClass(capSize)
-                : vizType === VisualizationType.LayoutKeyEffort ? getEffortClass(layoutModel.singleKeyEffort[row][col])
-                    : vizType === VisualizationType.LayoutFingering // && (layoutModel.mainFingerAssignment[row][col] !== null)
-                        ? getFingeringClasses(layoutModel, row, col, label)
-                        : isHomeKey(layoutModel, row, col) ? "home-key"
+                : vizType === VisualizationType.LayoutKeyEffort ? getEffortClass(model.singleKeyEffort[row][col])
+                    : vizType === VisualizationType.LayoutFingering // && (model.mainFingerAssignment[row][col] !== null)
+                        ? getFingeringClasses(model, row, col, label)
+                        : isHomeKey(model, row, col) ? "home-key"
                             : keyColorFunction(label, row, col))
             || (!label ? "unlabeled" : "");
         const ribbonClass = vizType === VisualizationType.MappingDiff && lettersAndVIP.test(label)
@@ -203,7 +202,7 @@ export function RowBasedKeyboard({layoutModel, keyMovements, mappingDiff, vizTyp
             width={keyCapWidth}
             height={capHeight}
             frequencyCircleRadius={frequencyCircleRadius}
-            showHomeMarker={vizType === VisualizationType.LayoutKeySize && isHomeKey(layoutModel, row, col)}
+            showHomeMarker={vizType === VisualizationType.LayoutKeySize && isHomeKey(model, row, col)}
             prevRow={movement.prev?.row ?? getEntryOrExitRow(movement.next!.row)}
             prevCol={movement.prev?.colPos ?? movement.next!.colPos}
             prevWidth={movement.prev?.keyCapWidth ?? keyCapWidth}
