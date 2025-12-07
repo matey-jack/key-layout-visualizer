@@ -7,7 +7,7 @@ import {
     LayoutTypeNames,
     LayoutTypeNotes,
     type RowBasedLayoutModel,
-    VisualizationType
+    VisualizationType,
 } from "../base-model.ts";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {ErgoplankLayoutOptions} from "./ErgoplankLayoutOptions.tsx";
@@ -128,14 +128,14 @@ interface TopBarKeyboardTabProps {
 
 function TopBarKeyboardTab({layoutType, layoutName, layoutNote, currentLayout, setLayout}: TopBarKeyboardTabProps) {
     const selected = layoutType === currentLayout;
-    return <div>
+    return <div class={"top-bar-keyboard-tab-label-and-note" + (selected ? " selected" : "")}>
         <button type="button"
                 onClick={() => setLayout({type: layoutType})}
-                class={"top-bar-keyboard-tab-label" + (selected ? " selected" : "")}
+                class="top-bar-keyboard-tab-label"
         >
             {layoutName}
         </button>
-        <div hidden={!selected} class="top-bar-keyboard-tab-note">
+        <div class="top-bar-keyboard-tab-note">
             {layoutNote}
         </div>
     </div>
