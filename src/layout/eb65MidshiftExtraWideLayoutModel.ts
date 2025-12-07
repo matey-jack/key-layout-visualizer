@@ -1,11 +1,11 @@
-import {KeyboardRows, KeymapTypeId, type RowBasedLayoutModel} from "../base-model.ts";
+import {KeyboardRows, KeymapTypeId, type LayoutModel} from "../base-model.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 import {keyColorHighlightsClass} from "./layout-functions.ts";
 
 // zeroIndent works, because the actually indented columns aren't symmetric and indented manually with gaps.
 const keyWidths = new SymmetricKeyWidth(16, zeroIndent, 7.75);
 
-export const eb65MidshiftExtraWideLayoutModel: RowBasedLayoutModel = {
+export const eb65MidshiftExtraWideLayoutModel: LayoutModel = {
     name: "Ergoboard 65 MidShift Max Wide",
     description: ``,
 

@@ -3,10 +3,10 @@ import {AnsiVariant, type AppState, isSplit, type LayoutOptions, PlankVariant} f
 import {
     type FlexMapping,
     type KeyPosition,
+    type LayoutModel,
     LayoutType,
     LayoutTypeNames,
     LayoutTypeNotes,
-    type RowBasedLayoutModel,
     VisualizationType,
 } from "../base-model.ts";
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
@@ -29,7 +29,7 @@ function layoutSupportsFlipRetRub(options: LayoutOptions) {
     return false;
 }
 
-function getKeyPositionsForModel(layoutModel: RowBasedLayoutModel, mapping: FlexMapping, layout: LayoutOptions): KeyPosition[] {
+function getKeyPositionsForModel(layoutModel: LayoutModel, mapping: FlexMapping, layout: LayoutOptions): KeyPosition[] {
     const charMap = fillMapping(layoutModel, mapping);
     if (layoutSupportsFlipRetRub(layout) && layout.flipRetRub) {
         flipRetRub(charMap!);

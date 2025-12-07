@@ -251,7 +251,7 @@ export interface SupportedKeymapType {
     frameMapping: LayoutMapping;
 }
 
-export interface RowBasedLayoutModel {
+export interface LayoutModel {
     name: string;
     description: string;
 

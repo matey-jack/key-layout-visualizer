@@ -3,9 +3,9 @@ import {
     KeyboardRows,
     KeymapTypeId,
     type LayoutMapping,
-    type RowBasedLayoutModel,
+    type LayoutModel,
 } from "../base-model.ts";
-import {mirror, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
+import {MonotonicKeyWidth, mirror, zeroIndent} from "./keyWidth.ts";
 
 const fullMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0], // 12 keys
@@ -17,7 +17,7 @@ const fullMapping: LayoutMapping = [
 
 const h12KeyWidth = new MonotonicKeyWidth(12, zeroIndent, "H12");
 
-export const harmonic12LayoutModel: RowBasedLayoutModel = {
+export const harmonic12LayoutModel: LayoutModel = {
     name: "Harmonic 12 Mini",
     description: "The smallest variant of the Harmonic keyboard family is especially useful for use with tablets, mobile phones, " +
         "or for people who mainly write plain English. But all ANSI punctuation is available on the AltGr layer. " +

@@ -1,5 +1,5 @@
-import {KEY_COLOR, KeyboardRows, KeymapTypeId, type LayoutMapping, type RowBasedLayoutModel} from "../base-model.ts";
-import {mirror, MonotonicKeyWidth} from "./keyWidth.ts";
+import {KEY_COLOR, KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
+import {MonotonicKeyWidth, mirror } from "./keyWidth.ts";
 import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
 
 const ahkbKeyWidth = new MonotonicKeyWidth(14.5, [0, 0, 0.25, 0.25, 0.25], "AHKB Narrow");
@@ -20,7 +20,7 @@ const thumb30KeyMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Alt", 0, "⏎ Enter", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
 ];
 
-export const ahkbLayoutModel: RowBasedLayoutModel = {
+export const ahkbLayoutModel: LayoutModel = {
     name: "AHKB",
     description: `Less different key sizes make a board more customizable by allowing keycaps to be swapped to different places.
     Using just two keycap sizes, the AHKB get as close as one can to the famous OLKB keyboards with all square keys.
@@ -88,7 +88,7 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
     ],
 };
 
-export function ahkbAddAngleMod(lm: RowBasedLayoutModel = ahkbLayoutModel): RowBasedLayoutModel {
+export function ahkbAddAngleMod(lm: LayoutModel = ahkbLayoutModel): LayoutModel {
     return {
         ...lm,
         name: `${lm.name} angle mod`,

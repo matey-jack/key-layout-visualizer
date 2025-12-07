@@ -1,5 +1,5 @@
 import type {ReadonlySignal, Signal} from "@preact/signals";
-import type {BigramMovement, FlexMapping, MappingChange, RowBasedLayoutModel} from "./base-model.ts";
+import type {BigramMovement, FlexMapping, LayoutModel, MappingChange } from "./base-model.ts";
 import {LayoutType, type VisualizationType} from "./base-model.ts";
 
 export enum AnsiVariant {
@@ -82,8 +82,8 @@ export interface AppState {
     // Getter/Setter to do validations on the state.
     layout: ReadonlySignal<LayoutOptions>;
     setLayout: (layoutOptions: Partial<LayoutOptions>) => void;
-    layoutModel: ReadonlySignal<RowBasedLayoutModel>;
-    prevLayoutModel: ReadonlySignal<RowBasedLayoutModel>;
+    layoutModel: ReadonlySignal<LayoutModel>;
+    prevLayoutModel: ReadonlySignal<LayoutModel>;
 
     mapping: Signal<FlexMapping>;
     setMapping: (m: FlexMapping) => void;

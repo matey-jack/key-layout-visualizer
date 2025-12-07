@@ -1,13 +1,13 @@
 import type {ComponentChildren} from "preact";
 import type {AppState} from "../app-model.ts";
 import {
-    bigramEffort,
     BigramType,
+    bigramEffort,
     type FlexMapping,
     isLayoutViz,
     KeymapTypeId,
+    type LayoutModel,
     MappingChange,
-    type RowBasedLayoutModel,
     SKE_AWAY,
     SKE_HOME,
     SKE_INCONV_NEIGHBOR,
@@ -54,7 +54,7 @@ export function DetailsArea({appState}: DetailsAreaProps) {
     </div>;
 }
 
-export function getVizDetails(vizType: VisualizationType, layout: RowBasedLayoutModel, mapping: FlexMapping) {
+export function getVizDetails(vizType: VisualizationType, layout: LayoutModel, mapping: FlexMapping) {
     switch (vizType) {
         case VisualizationType.LayoutKeySize:
             return <KeySizeDetails layout={layout}/>;
@@ -91,7 +91,7 @@ export function getVizDetails(vizType: VisualizationType, layout: RowBasedLayout
 
 interface MappingSummaryProps {
     mapping: FlexMapping;
-    layout: RowBasedLayoutModel;
+    layout: LayoutModel;
 }
 
 export function MappingSummary({mapping, layout}: MappingSummaryProps) {
@@ -111,7 +111,7 @@ export function MappingSummary({mapping, layout}: MappingSummaryProps) {
     </div>
 }
 
-export function FingeringDetails({layout: _}: { layout: RowBasedLayoutModel }) {
+export function FingeringDetails({layout: _}: { layout: LayoutModel }) {
     return <p>
         Colors on the keys denote which keys will be pressed by the same finger according to the touch-typing method.
         This allows us to see, how much work each finger has, how far it has to move, and what keys can cause bigram
@@ -125,7 +125,7 @@ export function FingeringDetails({layout: _}: { layout: RowBasedLayoutModel }) {
     </p>
 }
 
-function countKeysBySize(layoutM: RowBasedLayoutModel) {
+function countKeysBySize(layoutM: LayoutModel) {
     const counts = new Map<number, number>();
     (layoutM.supportedKeymapTypes[0].frameMapping)!.forEach((row, r) => {
         row.forEach((label, c) => {
@@ -138,7 +138,7 @@ function countKeysBySize(layoutM: RowBasedLayoutModel) {
     return counts;
 }
 
-function getUsedKeysizes(layoutM: RowBasedLayoutModel) {
+function getUsedKeysizes(layoutM: LayoutModel) {
     const keySizes: number[] = [];
     const frameMapping = layoutM.supportedKeymapTypes[0].frameMapping;
     frameMapping.forEach((row, r) => {
@@ -153,7 +153,7 @@ function getUsedKeysizes(layoutM: RowBasedLayoutModel) {
     return keySizes;
 }
 
-export function KeySizeDetails({layout}: { layout: RowBasedLayoutModel }) {
+export function KeySizeDetails({layout}: { layout: LayoutModel }) {
     const countsBySize = countKeysBySize(layout);
     const total = sum([...countsBySize.values()]);
     const sizeList = getUsedKeysizes(layout);
@@ -188,7 +188,7 @@ export function KeySizeDetailsLegendItem({size, count}: KeySizeDetailsLegendItem
 }
 
 interface KeyEffortDetailsProps {
-    layout: RowBasedLayoutModel;
+    layout: LayoutModel;
     mapping: FlexMapping;
 }
 
@@ -309,7 +309,7 @@ export function DiffEntry({count, description, counterClass}: DiffEntryProps) {
 }
 
 interface BigramEffortDetailsProps {
-    layout: RowBasedLayoutModel;
+    layout: LayoutModel;
     mapping: FlexMapping;
 }
 

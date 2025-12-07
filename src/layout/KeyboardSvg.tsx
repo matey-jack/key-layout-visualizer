@@ -5,8 +5,8 @@ import {
     Finger,
     KeyboardRows,
     type KeyMovement,
+    type LayoutModel,
     MappingChange,
-    type RowBasedLayoutModel,
     VisualizationType,
 } from "../base-model.ts";
 import {singleCharacterFrequencies} from "../frequencies/english-single-character-frequencies.ts";
@@ -114,7 +114,7 @@ export function Key(props: KeyProps) {
 }
 
 export interface KeyboardProps {
-    layoutModel: RowBasedLayoutModel;
+    layoutModel: LayoutModel;
     mappingDiff: Record<string, MappingChange>;
     keyMovements: KeyMovement[];
     vizType: VisualizationType;
@@ -146,7 +146,7 @@ const bgClassByFinger: Record<Finger, string> = {
     [Finger.RPinky]: "pinky",
 };
 
-function getFingeringClasses(layoutModel: RowBasedLayoutModel, row: number, col: number, label: string) {
+function getFingeringClasses(layoutModel: LayoutModel, row: number, col: number, label: string) {
     const fingerOrNull = layoutModel.mainFingerAssignment[row][col];
     const bgClass = fingerOrNull === null ? "" : bgClassByFinger[fingerOrNull];
     const borderClass = isHomeKey(layoutModel, row, col) ? "home-key-border"
@@ -238,8 +238,8 @@ export function BigramLines({bigrams}: BigramLinesProps) {
 }
 
 export interface StaggerLinesProps {
-    layoutModel: RowBasedLayoutModel;
-    previousLayoutModel: RowBasedLayoutModel;
+    layoutModel: LayoutModel;
+    previousLayoutModel: LayoutModel;
     layoutSplit: boolean;
     keyMovements: KeyMovement[];
 }

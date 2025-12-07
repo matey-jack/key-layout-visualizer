@@ -1,4 +1,4 @@
-import type {RowBasedLayoutModel} from "../base-model.ts";
+import type {LayoutModel} from "../base-model.ts";
 
 // We don't use Unicode ranges, because we might later map some other Unicode symbols, that are actually characters to insert.
 // Examples: × or ¢ or the "per mille" sign
@@ -16,7 +16,7 @@ export const isKeyName = (label: string) => keyboardNames.includes(label);
 export const isCommandKey = (label: string) =>
     (isKeyboardSymbol(label) || isKeyName(label)) && label !== "⍽" && label !== "⏎" && label !== "";
 
-export function weighSingleKeyEffort(layoutModel: RowBasedLayoutModel, charMap: string[][], freqs: Record<string, number>): number {
+export function weighSingleKeyEffort(layoutModel: LayoutModel, charMap: string[][], freqs: Record<string, number>): number {
     const efforts = getSingleKeyEffort(layoutModel, charMap, freqs);
     let totalEffort = 0;
     Object.entries(efforts).forEach(([char, effort]) => {
@@ -25,7 +25,7 @@ export function weighSingleKeyEffort(layoutModel: RowBasedLayoutModel, charMap: 
     return Math.round(totalEffort);
 }
 
-export function sumKeyFrequenciesByEffort(layoutModel: RowBasedLayoutModel, charMap: string[][], freqs: Record<string, number>): Record<number, number> {
+export function sumKeyFrequenciesByEffort(layoutModel: LayoutModel, charMap: string[][], freqs: Record<string, number>): Record<number, number> {
     const efforts = getSingleKeyEffort(layoutModel, charMap, freqs);
     const result: Record<number, number> = {};
     Object.entries(efforts).forEach(([char, effort]) => {
@@ -37,7 +37,7 @@ export function sumKeyFrequenciesByEffort(layoutModel: RowBasedLayoutModel, char
     return result;
 }
 
-export function getSingleKeyEffort(layoutModel: RowBasedLayoutModel, charMap: string[][], freqs: Record<string, number>): Record<string, number> {
+export function getSingleKeyEffort(layoutModel: LayoutModel, charMap: string[][], freqs: Record<string, number>): Record<string, number> {
     const result: Record<string, number> = {};
     charMap.forEach((charMapRow, row) => {
         charMapRow.forEach((char, col) => {

@@ -1,6 +1,6 @@
-import {KeyboardRows, KeymapTypeId, type LayoutMapping, type RowBasedLayoutModel} from "../base-model.ts";
-import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
+import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
 import {MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
+import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 
 const ahkbKeyWidth = new MonotonicKeyWidth(15, zeroIndent, "AHKB");
 
@@ -20,7 +20,7 @@ const thumb30KeyMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "", "Alt", 0, "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
 ];
 
-export const ergoKbLayoutModel: RowBasedLayoutModel = {
+export const ergoKbLayoutModel: LayoutModel = {
     name: "ErgoKb",
     description: `The ErgoKb continues HHKB's idea of splitting large keys to a point that
     delivers a layout with ergonomically wider hand positions and some extra central keys that can be used for navigation 
@@ -92,7 +92,7 @@ function arrowBlockKeymap(thumby: boolean) {
     }
 }
 
-export const ergoKbWithArrowsLayoutModel: RowBasedLayoutModel = {
+export const ergoKbWithArrowsLayoutModel: LayoutModel = {
     ...ergoKbLayoutModel,
     name: "ErgoKb with cursor block",
     // we replace two 1.5u keys with three 1u keys

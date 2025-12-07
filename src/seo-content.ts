@@ -1,17 +1,17 @@
-import type {RowBasedLayoutModel} from "./base-model.ts";
-import {allMappings} from "./mapping/mappings.ts";
+import type {LayoutModel} from "./base-model.ts";
 import {ansiIBMLayoutModel} from "./layout/ansiLayoutModel.ts";
-import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
-import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLayoutModel.ts";
-import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
-import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
-import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
-import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
-import {ergoPlank60LayoutModel} from "./layout/ergoPlank60LayoutModel.ts";
 import {eb65MidshiftNiceLayoutModel} from "./layout/eb65MidshiftNiceLayoutModel.ts";
+import {ergoPlank60LayoutModel} from "./layout/ergoPlank60LayoutModel.ts";
+import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
+import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
+import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
+import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLayoutModel.ts";
+import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
+import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
+import {allMappings} from "./mapping/mappings.ts";
 
-export const allLayoutModels: RowBasedLayoutModel[] = [
+export const allLayoutModels: LayoutModel[] = [
     ansiIBMLayoutModel,
     harmonic14WideLayoutModel,
     harmonic14TraditionalLayoutModel,

@@ -1,5 +1,5 @@
-import {harmonicStaggerOffsets, KeyboardRows, KeymapTypeId, type LayoutMapping, type RowBasedLayoutModel} from "../base-model.ts";
-import {mirrorOdd, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
+import {harmonicStaggerOffsets, KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
+import {MonotonicKeyWidth, mirrorOdd, zeroIndent} from "./keyWidth.ts";
 
 const fullMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, "⌫"], // 13 keys
@@ -12,7 +12,7 @@ const fullMapping: LayoutMapping = [
 
 const h14tKeyWidth = new MonotonicKeyWidth(14, zeroIndent, "H14T");
 
-export const harmonic14TraditionalLayoutModel: RowBasedLayoutModel = {
+export const harmonic14TraditionalLayoutModel: LayoutModel = {
     name: "Harmonic 14 Traditional",
     description: "With its large shift keys and Enter/Backspace/Caps in the same position as the ANSI keyboard, " +
         "this Harmonic variant might be the easiest to get used to. We even put a central space bar for that special retro feeling. " +

@@ -3,9 +3,9 @@ import {
     KeyboardRows,
     KeymapTypeId,
     type LayoutMapping,
-    type RowBasedLayoutModel,
+    type LayoutModel,
 } from "../base-model.ts";
-import {mirror, MonotonicKeyWidth} from "./keyWidth.ts";
+import {MonotonicKeyWidth, mirror } from "./keyWidth.ts";
 
 const fullMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, 1], // 13 keys
@@ -17,7 +17,7 @@ const fullMapping: LayoutMapping = [
 
 const h13wKeyWidth = new MonotonicKeyWidth(13, [0, 0, 0, 0, 0.5], "H13T");
 
-export const harmonic13WideLayoutModel: RowBasedLayoutModel = {
+export const harmonic13WideLayoutModel: LayoutModel = {
     name: "Harmonic 13 Balance",
     description: "The Harmonic keyboard layout has a fully symmetric keyboard with only two key sizes to allow for flexible changes to the key mapping. " +
         "Its regular row stagger allows for many keys to be comfortably typed by two fingers, " +

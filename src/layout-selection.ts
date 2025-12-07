@@ -6,7 +6,7 @@ import {
     type LayoutOptions,
     PlankVariant,
 } from "./app-model.ts";
-import {LayoutType, type RowBasedLayoutModel} from "./base-model.ts";
+import {type LayoutModel, LayoutType } from "./base-model.ts";
 import {ahkbAddAngleMod, ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
 import {
     ansiIBMLayoutModel,
@@ -37,7 +37,7 @@ import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 
-export function getHarmonicVariant(variant: HarmonicVariant): RowBasedLayoutModel {
+export function getHarmonicVariant(variant: HarmonicVariant): LayoutModel {
     switch (variant) {
         case HarmonicVariant.H14_Wide:
             return harmonic14WideLayoutModel;
@@ -52,7 +52,7 @@ export function getHarmonicVariant(variant: HarmonicVariant): RowBasedLayoutMode
     }
 }
 
-export function getPlankVariant(opts: Partial<LayoutOptions>): RowBasedLayoutModel {
+export function getPlankVariant(opts: Partial<LayoutOptions>): LayoutModel {
     const {plankVariant, bottomArrows, angleMod, eb65LowshiftVariant, eb65MidshiftVariant} = opts;
     switch (plankVariant) {
         case PlankVariant.KATANA_60:
@@ -89,7 +89,7 @@ export function getPlankVariant(opts: Partial<LayoutOptions>): RowBasedLayoutMod
 }
 
 export function getAnsiVariant(layoutOptions: LayoutOptions) {
-    let base: RowBasedLayoutModel = layoutOptions.ansiWide ? ansiWideLayoutModel : ansiIBMLayoutModel;
+    let base: LayoutModel = layoutOptions.ansiWide ? ansiWideLayoutModel : ansiIBMLayoutModel;
     switch (layoutOptions.ansiVariant) {
         case AnsiVariant.IBM:
             break;
@@ -108,7 +108,7 @@ export function getAnsiVariant(layoutOptions: LayoutOptions) {
     return layoutOptions.ansiSplit ? splitSpaceBar(base) : base;
 }
 
-export function getLayoutModel(layoutOptions: LayoutOptions): RowBasedLayoutModel {
+export function getLayoutModel(layoutOptions: LayoutOptions): LayoutModel {
     switch (layoutOptions.type) {
         case LayoutType.ANSI:
             return getAnsiVariant(layoutOptions);

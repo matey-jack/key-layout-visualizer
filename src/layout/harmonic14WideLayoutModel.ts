@@ -1,9 +1,9 @@
-import {harmonicStaggerOffsets, KeyboardRows, KeymapTypeId, type RowBasedLayoutModel} from "../base-model.ts";
-import {mirror, MonotonicKeyWidth} from "./keyWidth.ts";
+import {harmonicStaggerOffsets, KeyboardRows, KeymapTypeId, type LayoutModel} from "../base-model.ts";
+import {MonotonicKeyWidth, mirror } from "./keyWidth.ts";
 
 const keyWidths = new MonotonicKeyWidth(14, [0, 0, 0, 0, 0.5], "H14W");
 
-export const harmonic14WideLayoutModel: RowBasedLayoutModel = {
+export const harmonic14WideLayoutModel: LayoutModel = {
     name: "Harmonic 14 Macro",
     description: "Our biggest Harmonic variant, which has a lot of extra keys to use for navigation and other things. " +
         "The Harmonic keyboard layout has a fully symmetric keyboard with only two key sizes to allow for flexible changes to the key mapping. " +

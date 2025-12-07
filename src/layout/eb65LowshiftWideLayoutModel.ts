@@ -1,4 +1,4 @@
-import {KeyboardRows, KeymapTypeId, type LayoutMapping, type RowBasedLayoutModel} from "../base-model.ts";
+import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 
@@ -20,7 +20,7 @@ const thumb30KeyMapping: LayoutMapping = [
     [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
 ];
 
-export const eb65LowshiftWideLayoutModel: RowBasedLayoutModel = {
+export const eb65LowshiftWideLayoutModel: LayoutModel = {
     name: "Ergoboard 65 LowShift Wide",
     description: `Widest possible hand position with the arrow cluster and lower row Shift keys.`,
 
@@ -77,7 +77,7 @@ function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
     return keymap;
 }
 
-export const eb65LowshiftWideAngleModLayoutModel: RowBasedLayoutModel = {
+export const eb65LowshiftWideAngleModLayoutModel: LayoutModel = {
     ...eb65LowshiftWideLayoutModel,
     name: `${eb65LowshiftWideLayoutModel.name} angle mod`,
     supportedKeymapTypes: eb65LowshiftWideLayoutModel.supportedKeymapTypes?.map(supported => ({
