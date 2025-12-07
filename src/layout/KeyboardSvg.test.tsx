@@ -14,6 +14,7 @@ describe('Key rendering', () => {
         const keyMovements = getKeyMovements(keyPositions, keyPositions);
         const {container} = render(<RowBasedKeyboard
             layoutModel={ansiIBMLayoutModel}
+            prevLayoutModel={ansiIBMLayoutModel}
             keyMovements={keyMovements}
             vizType={VisualizationType.LayoutKeyEffort}
             mappingDiff={{}}
