@@ -38,10 +38,10 @@ function getKeyPositionsForModel(layoutModel: RowBasedLayoutModel, mapping: Flex
 }
 
 export function LayoutArea({appState}: LayoutAreaProps) {
-    const {layout, layoutModel, previousLayoutModel, mapping} = appState;
+    const {layout, layoutModel, prevLayoutModel, mapping} = appState;
 
     const currentPositions = getKeyPositionsForModel(layoutModel.value, mapping.value, layout.value);
-    const previousPositions = getKeyPositionsForModel(previousLayoutModel.value, mapping.value, layout.value);
+    const previousPositions = getKeyPositionsForModel(prevLayoutModel.value, mapping.value, layout.value);
     const keyMovements = getKeyMovements(previousPositions, currentPositions);
 
     const {setLayout, mappingDiff, bigramMovements, vizType} = appState;
@@ -56,7 +56,7 @@ export function LayoutArea({appState}: LayoutAreaProps) {
                     vizType={vizType.value}
                 />
                 {vizType.value === VisualizationType.LayoutAngle &&
-                    <StaggerLines layoutModel={layoutModel.value} previousLayoutModel={previousLayoutModel.value}
+                    <StaggerLines layoutModel={layoutModel.value} previousLayoutModel={prevLayoutModel.value}
                                   layoutSplit={isSplit(layout.value)}
                                   keyMovements={keyMovements}/>
                 }
