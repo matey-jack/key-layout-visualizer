@@ -6,8 +6,10 @@ type FlipRetRubButtonProps = {
 }
 
 export function FlipRetRubButton({setOption, options}: FlipRetRubButtonProps) {
-    return <button class="flip-ret-rub-button"
-                   onClick={() => setOption({flipRetRub: !options.flipRetRub})}>
+    return <button type="button"
+                   class="flip-ret-rub-button"
+                   onClick={() => setOption({flipRetRub: !options.flipRetRub})}
+    >
         ⏎ flip ⌫
     </button>
 }

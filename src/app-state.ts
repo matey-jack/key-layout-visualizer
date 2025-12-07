@@ -1,18 +1,19 @@
-import {type FlexMapping, KeymapTypeId, LayoutType, type RowBasedLayoutModel, VisualizationType} from "./base-model.ts";
-import {computed, effect, signal, type Signal} from "@preact/signals";
+import {computed, effect, type Signal, signal} from "@preact/signals";
 import {
     AnsiVariant,
     type AppState,
     EB65_LowShift_Variant,
     EB65_MidShift_Variant,
-    HarmonicVariant, isSplit,
+    HarmonicVariant,
+    isSplit,
     type LayoutOptions,
-    PlankVariant
+    PlankVariant,
 } from "./app-model.ts";
+import {type FlexMapping, KeymapTypeId, LayoutType, type RowBasedLayoutModel, VisualizationType} from "./base-model.ts";
+import {getBigramMovements} from "./bigrams.ts";
 import {diffToBase, fillMapping, getKeyPositions, hasMatchingMapping} from "./layout/layout-functions.ts";
 import {getLayoutModel} from "./layout-selection.ts";
 import {allMappings, qwertyMapping} from "./mapping/mappings.ts";
-import {getBigramMovements} from "./bigrams.ts";
 
 function modifyWide(mapping: FlexMapping, opts: LayoutOptions): boolean {
     switch (opts.ansiVariant) {
@@ -117,7 +118,7 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
         {type: LayoutType.Harmonic, harmonicVariant: HarmonicVariant.H13_Wide},
         {type: LayoutType.Harmonic, harmonicVariant: HarmonicVariant.H14_Traditional},
     ]
-    for (let opts of fallbackLayouts) {
+    for (const opts of fallbackLayouts) {
         const newOpts = {...(layoutOptionsState.value), ...opts};
         const model = getLayoutModel(newOpts);
         if (hasMatchingMapping(model, newMapping)) {

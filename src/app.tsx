@@ -1,14 +1,14 @@
-// @ts-ignore
-import './app.css'
-import './app-model.ts'
-import {VisualizationType} from "./base-model.ts";
-import type {AppState} from "./app-model.ts";
-import {LayoutArea} from "./layout/LayoutArea.tsx";
-import {MappingList} from "./mapping/MappingArea.tsx";
-import {DetailsArea} from "./details/DetailsArea.tsx";
+// @ts-expect-error
+import './app.css';
+import './app-model.ts';
 import type {Signal} from "@preact/signals";
 import type {ComponentChildren} from "preact";
+import type {AppState} from "./app-model.ts";
 import {createAppState} from "./app-state.ts";
+import {VisualizationType} from "./base-model.ts";
+import {DetailsArea} from "./details/DetailsArea.tsx";
+import {LayoutArea} from "./layout/LayoutArea.tsx";
+import {MappingList} from "./mapping/MappingArea.tsx";
 
 const appState = createAppState();
 
@@ -53,9 +53,9 @@ interface VizTypeButtonProps {
 }
 
 function VizTypeButton({vizType, signal, children}: VizTypeButtonProps) {
-    return <button
+    return <button type="button"
         class={"viz-type-button" + (vizType === signal.value ? " selected" : "")}
-        onClick={() => signal.value = vizType}
+        onClick={() => {signal.value = vizType;}}
     >
         {children}
     </button>

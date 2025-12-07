@@ -1,4 +1,3 @@
-import * as bigrams from "./frequencies/english-character-pairs.json";
 import {
     bigramEffort,
     type BigramList,
@@ -9,10 +8,11 @@ import {
     hand,
     isThumb,
     type KeyPosition,
-    type RowBasedLayoutModel
+    type RowBasedLayoutModel,
 } from "./base-model.ts";
-import {sum} from "./library/math.ts";
+import * as bigrams from "./frequencies/english-character-pairs.json";
 import {fillMapping, getKeyPositions, getKeyPositionsByLabel} from "./layout/layout-functions.ts";
+import {sum} from "./library/math.ts";
 
 export function getBigramType(a: KeyPosition, b: KeyPosition): BigramType {
     try {
