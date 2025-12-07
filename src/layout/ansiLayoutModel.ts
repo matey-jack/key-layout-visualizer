@@ -4,16 +4,16 @@ import {
     KeyboardRows,
     KeymapTypeId,
     type LayoutMapping,
-    type RowBasedLayoutModel,
+    type LayoutModel,
     SKE_AWAY,
     SKE_HOME
 } from "../base-model.ts";
+import {MonotonicKeyWidth, mirrorOdd, zeroIndent} from "./keyWidth.ts";
 import {copyAndModifyKeymap, defaultKeyColor, getAnsi30mapping} from "./layout-functions.ts";
-import {mirrorOdd, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 const ibmKeyWidths = new MonotonicKeyWidth(15, zeroIndent, "ANSI/IBM");
 
-export const ansiIBMLayoutModel: RowBasedLayoutModel = {
+export const ansiIBMLayoutModel: LayoutModel = {
     name: "ANSI/IBM",
     description: "The ANSI keyboard layout is based on a typewriter keyboard from the 19th century which gradually evolved " +
         "to add some computer-specific keys like Ctrl, Alt, and most importantly the @ sign. " +
@@ -182,7 +182,7 @@ export const ansiWideLayoutModel = {
      - half the original size
      - two different thumbs
 */
-export const splitSpaceBar = (baseModel: RowBasedLayoutModel): RowBasedLayoutModel => {
+export const splitSpaceBar = (baseModel: LayoutModel): LayoutModel => {
     // If we ever introduce variants with different number of modifier keys, we can calculate the middle key
     // by cumulatively adding up all the keyWidths and finding the last key that starts before half of the total width.
     const middleIdx = 3;
@@ -219,7 +219,7 @@ function duplicateBottomMiddle<T>(mapping: T[][], bottomIdx: number, middleIdx: 
     ];
 }
 
-export function createApple(lm: RowBasedLayoutModel): RowBasedLayoutModel {
+export function createApple(lm: LayoutModel): LayoutModel {
     const addAppleBottom = (matrix: LayoutMapping) => {
         matrix[KeyboardRows.Bottom] = mirrorOdd("Ctrl", "Opt", "Cmd", "⍽");
         return matrix;
@@ -259,7 +259,7 @@ export function createApple(lm: RowBasedLayoutModel): RowBasedLayoutModel {
     };
 }
 
-export function createHHKB(lm: RowBasedLayoutModel): RowBasedLayoutModel {
+export function createHHKB(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
         name: lm.name.replace(ansiIBMLayoutModel.name, "Happy Hacker Keyboard"),

@@ -1,11 +1,11 @@
-import {KeymapTypeId, type RowBasedLayoutModel} from "../base-model.ts";
+import {KeymapTypeId, type LayoutModel} from "../base-model.ts";
 import {eb65LowshiftLayoutModel} from "./eb65LowshiftLayoutModel.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 // the indent on the bottom is not symmetric, thus managed manually via gaps.
 const eb65NiceKeyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
-export const eb65MidshiftNiceLayoutModel: RowBasedLayoutModel = {
+export const eb65MidshiftNiceLayoutModel: LayoutModel = {
     ...eb65LowshiftLayoutModel,
     name: "Ergoboard 65 MidShift Nicely Wide",
 

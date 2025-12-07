@@ -5,10 +5,10 @@ import {
     Hand,
     hand,
     KeyboardRows,
-    KeymapTypeId,
     type KeyMovement,
+    KeymapTypeId,
+    type LayoutModel,
     MappingChange,
-    type RowBasedLayoutModel,
 } from "../base-model.ts";
 import {
     colemakMapping,
@@ -277,7 +277,7 @@ describe('key effort consistency', () => {
 });
 
 describe('getKeyPositions', () => {
-    const inconsistentLayout: RowBasedLayoutModel = {
+    const inconsistentLayout: LayoutModel = {
         name: "Inconsistent layout",
         description: "Test layout with mapping gaps",
         rowIndent: [0, 0, 0, 0, 0] as [number, number, number, number, number],
@@ -426,7 +426,7 @@ describe('characterToFinger for ANSI Qwerty', () => {
 });
 
 describe('getKeyMovements', () => {
-    function calculateMovements(prevLM: RowBasedLayoutModel, nextLM: RowBasedLayoutModel) {
+    function calculateMovements(prevLM: LayoutModel, nextLM: LayoutModel) {
         const prevMapping = fillMapping(prevLM, qwertyMapping)!;
         const prevPositions = getKeyPositions(prevLM, false, prevMapping);
 

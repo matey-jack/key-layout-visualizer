@@ -1,9 +1,9 @@
-import {KeyboardRows, KeymapTypeId, type RowBasedLayoutModel} from "../base-model.ts";
+import {KeyboardRows, KeymapTypeId, type LayoutModel} from "../base-model.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 const katanaKeyWidths = new SymmetricKeyWidth(15, zeroIndent);
 
-export const katanaLayoutModel: RowBasedLayoutModel = {
+export const katanaLayoutModel: LayoutModel = {
     name: "Katana 60",
     description: `The original "Katana" design by RominRonin. 
     An ergonomic keyboard layout that fits into a standard ANSI 60% case.

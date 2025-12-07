@@ -1,6 +1,6 @@
-import {KeyboardRows, KeymapTypeId, type LayoutMapping, type RowBasedLayoutModel} from "../base-model.ts";
-import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
+import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
 import {mirrorOdd, SymmetricKeyWidth} from "./keyWidth.ts";
+import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 
 const keyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0, 0.25]);
 
@@ -20,7 +20,7 @@ const thumb30FrameMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Fn", "Alt", 0, "", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
 ];
 
-export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
+export const ergoPlank60LayoutModel: LayoutModel = {
     name: "Ergoplank 60 ANSI angle",
     description: `"The most ergonomic key layout that fits into a standard "60%" keyboard case."
     Hand distance is maximized. Row stagger is equal to a "cleave-style ergonomic" keyboard.
@@ -77,7 +77,7 @@ export const ergoPlank60LayoutModel: RowBasedLayoutModel = {
     keyColorClass: keyColorHighlightsClass,
 }
 
-export function ep60addAngleMod(lm: RowBasedLayoutModel): RowBasedLayoutModel {
+export function ep60addAngleMod(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
         name: "Ergoplank 60",
@@ -99,7 +99,7 @@ function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
     return keymap;
 }
 
-export const ep60WithArrowsLayoutModel: RowBasedLayoutModel = {
+export const ep60WithArrowsLayoutModel: LayoutModel = {
     ...ergoPlank60LayoutModel,
     name: "Ergoplank 60 with cursor block",
     supportedKeymapTypes: [

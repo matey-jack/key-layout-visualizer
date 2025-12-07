@@ -3,12 +3,12 @@ import {
     KeyboardRows,
     KeymapTypeId,
     type LayoutMapping,
-    type RowBasedLayoutModel,
+    type LayoutModel,
     SKE_AWAY,
 } from "../base-model.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 
-export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
+export const eb65MidshiftRightRetLayoutModel: LayoutModel = {
     name: "Ergoboard 65 MidShift Narrow, Right Return",
     description: ``,
 
@@ -71,7 +71,7 @@ export const eb65MidshiftRightRetLayoutModel: RowBasedLayoutModel = {
 
     keyColorClass: keyColorHighlightsClass,
 }
-export const eb65CentralEnterLayoutModel: RowBasedLayoutModel = {
+export const eb65CentralEnterLayoutModel: LayoutModel = {
     ...eb65MidshiftRightRetLayoutModel,
     name: "Ergoboard 65 MidShift Narrow, Central Return",
     keyWidths: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.keyWidths!, (matrix) => {
@@ -106,7 +106,7 @@ function moveEnterToCenter(mapping: LayoutMapping): LayoutMapping {
     return mapping;
 }
 
-export const eb65VerticalEnterLayoutModel: RowBasedLayoutModel = {
+export const eb65VerticalEnterLayoutModel: LayoutModel = {
     ...eb65MidshiftRightRetLayoutModel,
     name: "Ergoboard 65 MidShift Narrow, Vertical Return",
     keyWidths: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.keyWidths!, (matrix) => {

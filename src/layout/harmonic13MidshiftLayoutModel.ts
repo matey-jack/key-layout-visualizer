@@ -3,9 +3,9 @@ import {
     KeyboardRows,
     KeymapTypeId,
     type LayoutMapping,
-    type RowBasedLayoutModel,
+    type LayoutModel,
 } from "../base-model.ts";
-import {mirror, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
+import {MonotonicKeyWidth, mirror, zeroIndent} from "./keyWidth.ts";
 
 const fullMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"], // 12 keys
@@ -20,7 +20,7 @@ const fullMapping: LayoutMapping = [
 
 const h13msKeyWidth = new MonotonicKeyWidth(13, zeroIndent, "H13MS");
 
-export const harmonic13MidshiftLayoutModel: RowBasedLayoutModel = {
+export const harmonic13MidshiftLayoutModel: LayoutModel = {
     name: "Harmonic 13 MidShift",
     description: "The Harmonic MidShift variant will be interesting for all fans of the \"angle mod\" – " +
         "moving the left-bottom row one step to the left to type it with the same staggering angle as the right bottom. " +

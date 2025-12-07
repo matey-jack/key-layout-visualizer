@@ -1,15 +1,22 @@
 import {describe, expect, it} from "vitest";
-import {KEYMAP_TYPES, KeyboardRows, type KeymapTypeId, type RowBasedLayoutModel} from "./base-model.ts";
+import {KEYMAP_TYPES, KeyboardRows, type KeymapTypeId, type LayoutModel} from "./base-model.ts";
+import {ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createApple, createHHKB} from "./layout/ansiLayoutModel.ts";
 import {eb65BigEnterLayoutModel, eb65LowshiftLayoutModel} from "./layout/eb65LowshiftLayoutModel.ts";
 import {
     eb65LowshiftWideAngleModLayoutModel,
     eb65LowshiftWideLayoutModel
 } from "./layout/eb65LowshiftWideLayoutModel.ts";
+import {eb65MidshiftExtraWideLayoutModel} from "./layout/eb65MidshiftExtraWideLayoutModel.ts";
+import {
+    eb65CentralEnterLayoutModel,
+    eb65MidshiftRightRetLayoutModel,
+    eb65VerticalEnterLayoutModel
+} from "./layout/eb65MidshiftNarrowLayoutModels.ts";
 import {
     eb65MidshiftNiceLayoutModel
 } from "./layout/eb65MidshiftNiceLayoutModel.ts";
-import {eb65MidshiftExtraWideLayoutModel} from "./layout/eb65MidshiftExtraWideLayoutModel.ts";
+import {ergoKbLayoutModel, ergoKbWithArrowsLayoutModel} from "./layout/ergoKbLayoutModel.ts";
 import {ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./layout/ergoPlank60LayoutModel.ts";
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
@@ -19,15 +26,8 @@ import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 import {sum} from "./library/math.ts";
-import {ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
-import {
-    eb65CentralEnterLayoutModel,
-    eb65MidshiftRightRetLayoutModel,
-    eb65VerticalEnterLayoutModel
-} from "./layout/eb65MidshiftNarrowLayoutModels.ts";
-import {ergoKbLayoutModel, ergoKbWithArrowsLayoutModel} from "./layout/ergoKbLayoutModel.ts";
 
-const layoutModels: Array<RowBasedLayoutModel> = [
+const layoutModels: Array<LayoutModel> = [
     ansiIBMLayoutModel,
     ansiWideLayoutModel,
     createHHKB(ansiIBMLayoutModel),
@@ -57,7 +57,7 @@ const layoutModels: Array<RowBasedLayoutModel> = [
     splitOrthoLayoutModel,
 ];
 
-function getExpectedRowLengths(model: RowBasedLayoutModel): number[] {
+function getExpectedRowLengths(model: LayoutModel): number[] {
     if (!model.keyWidths?.length) {
         throw new Error(`Layout ${model.name} does not define keyWidths for shape validation.`);
     }
@@ -71,7 +71,7 @@ function expectMatrixShape(matrix: unknown[][], lengths: number[], label: string
     });
 }
 
-function rowWidth(model: RowBasedLayoutModel, row: KeyboardRows) {
+function rowWidth(model: LayoutModel, row: KeyboardRows) {
     return 2 * model.rowIndent[row]
         + sum(model.keyWidths[row].map((width) => width ?? 1))
 }

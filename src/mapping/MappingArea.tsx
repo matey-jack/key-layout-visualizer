@@ -4,8 +4,8 @@ import {
     BigramType,
     type FlexMapping,
     KeymapTypeId,
+    type LayoutModel,
     type MappingChange,
-    type RowBasedLayoutModel,
     SKE_HOME,
 } from "../base-model.ts";
 import {getBigramMovements, weighBigramTypes} from "../bigrams.ts";
@@ -62,7 +62,7 @@ export function MappingList({appState}: MappingListProps) {
 }
 
 interface MappingListItemProps {
-    layout: RowBasedLayoutModel;
+    layout: LayoutModel;
     mapping: FlexMapping;
     selectedMapping: Signal<FlexMapping>;
     appState: AppState;

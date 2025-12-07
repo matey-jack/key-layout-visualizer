@@ -1,4 +1,4 @@
-import {KeymapTypeId, type RowBasedLayoutModel} from "../base-model.ts";
+import {KeymapTypeId, type LayoutModel} from "../base-model.ts";
 
 // I arbitrarily decide that the top (number) row shall not be changed by the flex mapping.
 // But there has to be an empty list in the mapping to keep the format consistent with the algorithms.
@@ -10,7 +10,7 @@ const fullMapping = [
     ["Ctrl", "Cmd", 0, "Alt", 1, "⍽", "⏎", 2, "AltGr", 3, "Fn", "Ctrl"],
 ];
 
-export const splitOrthoLayoutModel: RowBasedLayoutModel = {
+export const splitOrthoLayoutModel: LayoutModel = {
     name: "Split Ergonomic",
     description: "The Ortholinear key layout is especially popular with two-piece keyboards. " +
         "This allows to position and rotate the two keyboard halves to make columns line up exactly with your finger's natural extension movement. " +

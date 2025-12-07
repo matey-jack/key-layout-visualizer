@@ -9,7 +9,7 @@ import {
     type LayoutOptions,
     PlankVariant,
 } from "./app-model.ts";
-import {type FlexMapping, KeymapTypeId, LayoutType, type RowBasedLayoutModel, VisualizationType} from "./base-model.ts";
+import {type FlexMapping, KeymapTypeId, type LayoutModel, LayoutType, VisualizationType} from "./base-model.ts";
 import {getBigramMovements} from "./bigrams.ts";
 import {diffToBase, fillMapping, getKeyPositions, hasMatchingMapping} from "./layout/layout-functions.ts";
 import {getLayoutModel} from "./layout-selection.ts";
@@ -88,7 +88,7 @@ function setLayout(
  * then try another layout variant, only as fallback use an entirely different layout type.
  * (This is why we need a setter function and don't expose the raw signal in the app state!)
  */
-export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<LayoutOptions>, layoutModel: RowBasedLayoutModel, mappingState: Signal<FlexMapping>) {
+export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<LayoutOptions>, layoutModel: LayoutModel, mappingState: Signal<FlexMapping>) {
     if (hasMatchingMapping(layoutModel, newMapping)) {
         mappingState.value = newMapping;
         return;

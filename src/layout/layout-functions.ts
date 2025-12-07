@@ -3,22 +3,22 @@ import {
     type FlexMapping,
     hand,
     KEY_COLOR,
+    KEYMAP_TYPES,
     KeyboardRows,
     type KeyColor,
-    KEYMAP_TYPES,
-    KeymapTypeId,
     type KeyMovement,
+    KeymapTypeId,
     type KeyPosition,
     type LayoutMapping,
+    type LayoutModel,
     MappingChange,
-    type RowBasedLayoutModel,
     type SupportedKeymapType
 } from "../base-model.ts";
-import {qwertyMapping} from "../mapping/mappings.ts";
 import {sum} from "../library/math.ts";
 import {isCommandKey} from "../mapping/mapping-functions.ts";
+import {qwertyMapping} from "../mapping/mappings.ts";
 
-export function isHomeKey(layoutModel: RowBasedLayoutModel, row: number, col: number): boolean {
+export function isHomeKey(layoutModel: LayoutModel, row: number, col: number): boolean {
     if (row !== KeyboardRows.Home) return false;
     if (col <= layoutModel.leftHomeIndex && col > layoutModel.leftHomeIndex - 4) return true;
     if (col >= layoutModel.rightHomeIndex && col < layoutModel.rightHomeIndex + 4) return true;
@@ -30,14 +30,14 @@ export function defaultKeyColor(label: string, _row: number, _col: number): KeyC
     return "";
 }
 
-export const keyCapWidth = (lm: RowBasedLayoutModel, r: KeyboardRows, c: number) =>
+export const keyCapWidth = (lm: LayoutModel, r: KeyboardRows, c: number) =>
     lm.keyCapWidth?.(r, c) ? lm.keyCapWidth(r, c)! : lm.keyWidths[r][c];
 
-export const keyCapHeight = (lm: RowBasedLayoutModel, r: KeyboardRows, c: number) =>
+export const keyCapHeight = (lm: LayoutModel, r: KeyboardRows, c: number) =>
     lm.keyCapHeight ? lm.keyCapHeight(r, c) : 1;
 
 // This is needed in this form somewhere, and I don't want to refactor that 🤷‍♀️
-export const keyCapSize = (lm: RowBasedLayoutModel) =>
+export const keyCapSize = (lm: LayoutModel) =>
     ((r: KeyboardRows, c: number) => Math.max(keyCapHeight(lm, r, c), keyCapWidth(lm, r, c)));
 
 export function getKeySizeClass(keyCapSize: number) {
@@ -59,17 +59,17 @@ export function onlySupportsWide(mapping: FlexMapping) {
     return !mapping.mappings[KeymapTypeId.Ansi30] && !mapping.mappings[KeymapTypeId.Ansi30];
 }
 
-export function getFrameMapping(model: RowBasedLayoutModel, type: KeymapTypeId): (LayoutMapping | undefined) {
+export function getFrameMapping(model: LayoutModel, type: KeymapTypeId): (LayoutMapping | undefined) {
     return model.supportedKeymapTypes.filter(
         (t) => t.typeId === type
     )[0]?.frameMapping;
 }
 
-export function getAnsi30mapping(model: RowBasedLayoutModel): (LayoutMapping | undefined) {
+export function getAnsi30mapping(model: LayoutModel): (LayoutMapping | undefined) {
     return getFrameMapping(model, KeymapTypeId.Ansi30);
 }
 
-export function getThumb30mapping(model: RowBasedLayoutModel): (LayoutMapping | undefined) {
+export function getThumb30mapping(model: LayoutModel): (LayoutMapping | undefined) {
     return getFrameMapping(model, KeymapTypeId.Thumb30);
 }
 
@@ -80,7 +80,7 @@ export function getThumb30mapping(model: RowBasedLayoutModel): (LayoutMapping | 
  * Returns the matched SupportedKeymapType entry and the flex mapping data, or undefined if no match.
  */
 export function findMatchingKeymapType(
-    layout: RowBasedLayoutModel,
+    layout: LayoutModel,
     flexMapping: FlexMapping
 ): { supported: SupportedKeymapType; flexData: string[] } | undefined {
     if (!layout.supportedKeymapTypes || !flexMapping.mappings) {
@@ -98,7 +98,7 @@ export function findMatchingKeymapType(
 /**
  * Fill mapping using the new keymap type system.
  */
-export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): string[][] | undefined {
+export function fillMapping(layoutModel: LayoutModel, flexMapping: FlexMapping): string[][] | undefined {
     const match = findMatchingKeymapType(layoutModel, flexMapping);
     if (match) {
         const fallbackMapping = layoutModel.supportedKeymapTypes
@@ -122,14 +122,14 @@ export function fillMapping(layoutModel: RowBasedLayoutModel, flexMapping: FlexM
 /**
  * Check if layout and mapping have a match using the new keymap type system.
  */
-export function hasMatchingMapping(layout: RowBasedLayoutModel, flexMapping: FlexMapping): boolean {
+export function hasMatchingMapping(layout: LayoutModel, flexMapping: FlexMapping): boolean {
     return !!findMatchingKeymapType(layout, flexMapping);
 }
 
 /**
  * Get all keymap type IDs supported by a layout (new system only).
  */
-export function getLayoutKeymapTypes(layout: RowBasedLayoutModel): KeymapTypeId[] {
+export function getLayoutKeymapTypes(layout: LayoutModel): KeymapTypeId[] {
     return layout.supportedKeymapTypes?.map(s => s.typeId) ?? [];
 }
 
@@ -179,7 +179,7 @@ const diffFinger = (a: Finger, b: Finger) =>
             : MappingChange.SwapHands;
 
 // We report the result by assigned (logical) key. Maybe that makes it easier to compute stats later.
-export function diffMappings(model: RowBasedLayoutModel, a: string[][], b: string[][]): Record<string, MappingChange> {
+export function diffMappings(model: LayoutModel, a: string[][], b: string[][]): Record<string, MappingChange> {
     const bFingers = characterToFinger(model.mainFingerAssignment, b);
     const result: Record<string, MappingChange> = {};
     a.forEach((aRow, r) => {
@@ -229,7 +229,7 @@ export function diffSummary(diff: Record<string, MappingChange>): Record<Mapping
     return result;
 }
 
-export function diffToBase(layoutModel: RowBasedLayoutModel, flexMapping: FlexMapping): Record<string, MappingChange> {
+export function diffToBase(layoutModel: LayoutModel, flexMapping: FlexMapping): Record<string, MappingChange> {
     const a = fillMapping(layoutModel, flexMapping);
     const b = fillMapping(layoutModel, flexMapping.comparisonBase ?? qwertyMapping);
     return diffMappings(layoutModel, a!, b!);
@@ -246,7 +246,7 @@ const totalWidth = 17;
 // in key units
 const horizontalPadding = 0.5;
 
-export function getKeyPositions(layoutModel: RowBasedLayoutModel, split: boolean, fullMapping: string[][]): KeyPosition[] {
+export function getKeyPositions(layoutModel: LayoutModel, split: boolean, fullMapping: string[][]): KeyPosition[] {
     const rowWidth = layoutModel.keyWidths.map((widthRow, r) =>
         2 * (horizontalPadding + layoutModel.rowIndent[r]) + sum(widthRow.map((w) => w ?? 1))
     );

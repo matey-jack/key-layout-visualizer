@@ -1,4 +1,4 @@
-import {KeyboardRows, KeymapTypeId, type LayoutMapping, type RowBasedLayoutModel} from "../base-model.ts";
+import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 
@@ -19,7 +19,7 @@ const thumb30FrameMapping: LayoutMapping = [
     [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
 ];
 
-export const eb65LowshiftLayoutModel: RowBasedLayoutModel = {
+export const eb65LowshiftLayoutModel: LayoutModel = {
     name: "Ergoboard 65 LowShift Narrow",
     description: `"The most ergonomic key layout that fits into a standard "65%" keyboard case 
     and has a traditional inverted-T arrow key cluster."
@@ -77,7 +77,7 @@ export const eb65LowshiftLayoutModel: RowBasedLayoutModel = {
     keyColorClass: keyColorHighlightsClass,
 }
 
-export const eb65BigEnterLayoutModel: RowBasedLayoutModel = {
+export const eb65BigEnterLayoutModel: LayoutModel = {
     ...eb65LowshiftLayoutModel,
     name: "Ergoboard 65 LowShift Big Enter",
     keyWidths: copyAndModifyKeymap(eb65LowshiftLayoutModel.keyWidths, (matrix) => {

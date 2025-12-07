@@ -1,14 +1,14 @@
 import {
-    bigramEffort,
     type BigramList,
     type BigramMovement,
     BigramType,
+    bigramEffort,
     Finger,
     type FlexMapping,
     hand,
     isThumb,
     type KeyPosition,
-    type RowBasedLayoutModel,
+    type LayoutModel,
 } from "./base-model.ts";
 import * as bigrams from "./frequencies/english-character-pairs.json";
 import {fillMapping, getKeyPositions, getKeyPositionsByLabel} from "./layout/layout-functions.ts";
@@ -65,7 +65,7 @@ export function getBigramMovements(positionsList: KeyPosition[], logContext: str
     }).filter((m) => !!m);
 }
 
-export function bigramFrequencyByType(layout: RowBasedLayoutModel, mapping: FlexMapping): Record<BigramType, number> {
+export function bigramFrequencyByType(layout: LayoutModel, mapping: FlexMapping): Record<BigramType, number> {
     const charMap = fillMapping(layout, mapping);
     const movements = getBigramMovements(
         getKeyPositions(layout, false, charMap!),
@@ -85,7 +85,7 @@ export function weighBigramTypes(movements: BigramMovement[], types: BigramType[
     return Math.round(sum(sfbs.map((m) => m.frequency)) * 1000  / frequencyTotal);
 }
 
-export function sumBigramScores(layout: RowBasedLayoutModel, fullMapping: string[][], mappingName: string): number | undefined {
+export function sumBigramScores(layout: LayoutModel, fullMapping: string[][], mappingName: string): number | undefined {
     try {
         // We don't need to pass a "split" value, because we don't use the colPos values in the result.
         // And the very important difference between split/bar ortho layout is already included in the model.
