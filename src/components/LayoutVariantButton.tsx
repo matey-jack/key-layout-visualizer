@@ -10,14 +10,14 @@ interface LayoutVariantButtonProps<T> {
 
 export function LayoutVariantButton<T>({variant, currentVariant, setVariant, name, children}: LayoutVariantButtonProps<T>) {
     const selected = variant === currentVariant;
-    return <div>
+    return <div class={"layout-variant-button-and-children" + (selected ? " selected" : "")}>
         <button type="button"
-            className={"layout-options-button" + (selected ? " selected" : "")}
+            className="layout-variant-button"
             onClick={() => setVariant(variant)}
         >
             {name}
         </button>
-        <div hidden={!selected} class="layout-variant-options">
+        <div class="layout-variant-options">
             {children}
         </div>
     </div>
