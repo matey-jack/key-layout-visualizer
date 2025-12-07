@@ -1,12 +1,4 @@
-import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping/mapping-functions.ts";
-import {
-    defaultKeyColor,
-    getKeySizeClass,
-    isHomeKey,
-    keyCapHeight,
-    keyCapWidth,
-    lettersAndVIP
-} from "./layout-functions.ts";
+import type {ComponentChildren, JSX} from "preact";
 import {
     type BigramMovement,
     BigramType,
@@ -15,10 +7,18 @@ import {
     type KeyMovement,
     MappingChange,
     type RowBasedLayoutModel,
-    VisualizationType
+    VisualizationType,
 } from "../base-model.ts";
-import type {ComponentChildren, JSX} from "preact";
 import {singleCharacterFrequencies} from "../frequencies/english-single-character-frequencies.ts";
+import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping/mapping-functions.ts";
+import {
+    defaultKeyColor,
+    getKeySizeClass,
+    isHomeKey,
+    keyCapHeight,
+    keyCapWidth,
+    lettersAndVIP,
+} from "./layout-functions.ts";
 
 interface KeyboardSvgProps {
     children?: ComponentChildren;
@@ -154,7 +154,7 @@ function getFingeringClasses(layoutModel: RowBasedLayoutModel, row: number, col:
     const borderClass = isHomeKey(layoutModel, row, col) ? "home-key-border"
         : isCommandKey(label) ? "command-key-border"
             : "";
-    return bgClass + " " + borderClass;
+    return `${bgClass} ${borderClass}`;
 }
 
 function getEntryOrExitRow(row: number): number {
@@ -191,7 +191,7 @@ export function RowBasedKeyboard({layoutModel, keyMovements, mappingDiff, vizTyp
 
         let displayLabel = label;
         if (vizType === VisualizationType.LayoutKeySize) {
-            displayLabel = capSize > 1 ? capSize + "" : "";
+            displayLabel = capSize > 1 ? `${capSize}` : "";
         }
 
         return <Key
@@ -206,7 +206,7 @@ export function RowBasedKeyboard({layoutModel, keyMovements, mappingDiff, vizTyp
             showHomeMarker={vizType === VisualizationType.LayoutKeySize && isHomeKey(layoutModel, row, col)}
             prevRow={movement.prev?.row ?? getEntryOrExitRow(movement.next!.row)}
             prevCol={movement.prev?.colPos ?? movement.next!.colPos}
-            key={label + '-' + index}
+            key={`${label}-${index}`}
         />
     })
 }
@@ -232,7 +232,7 @@ export function BigramLines({bigrams}: BigramLinesProps) {
         return pair.draw && <line
             x1={keyUnit * (pair.a.colPos + 0.5)} y1={keyUnit * (pair.a.row + 0.5 - offset / 10)}
             x2={keyUnit * (pair.b.colPos + 0.5)} y2={keyUnit * (pair.b.row + 0.5)}
-            className={`bigram-line bigram-rank-${pair.rank} ` + bigramClassByType[pair.type]}/>
+            className={`bigram-line bigram-rank-${pair.rank} ${bigramClassByType[pair.type]}`}/>
     });
 }
 

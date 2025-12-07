@@ -78,8 +78,8 @@ export class SymmetricKeyWidth {
         rightEdge = rightEdge || leftEdge;
         // the width of all non-edge keys plus the gap, if any.
         const remainingWidth = this.kbWidth - leftEdge - rightEdge - 2 * this.rowIndent[row];
-        let uniKeys = Math.floor(remainingWidth);
-        let gapWidth = remainingWidth - uniKeys;
+        const uniKeys = Math.floor(remainingWidth);
+        const gapWidth = remainingWidth - uniKeys;
         const result = [leftEdge, ...Array(uniKeys).fill(1), rightEdge];
         if (gapWidth === 0) {
             return result;

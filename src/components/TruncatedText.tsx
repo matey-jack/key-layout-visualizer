@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 interface TruncatedTextProps {
   text: string;
@@ -77,7 +77,7 @@ export const TruncatedText = ({
         <>
           <span>{text}</span>
           {needsTruncation && (
-            <button 
+            <button type="button"
               className="toggle-text-button" 
               onClick={toggleExpanded}
             >
@@ -88,7 +88,7 @@ export const TruncatedText = ({
       ) : (
         <>
           <span>{truncatedText}...</span>
-          <button 
+          <button type="button"
             className="toggle-text-button" 
             onClick={toggleExpanded}
           >

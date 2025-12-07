@@ -1,6 +1,6 @@
 import {KEY_COLOR, KeyboardRows, KeymapTypeId, type LayoutMapping, type RowBasedLayoutModel} from "../base-model.ts";
-import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
 import {mirror, MonotonicKeyWidth} from "./keyWidth.ts";
+import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
 
 const ahkbKeyWidth = new MonotonicKeyWidth(14.5, [0, 0, 0.25, 0.25, 0.25], "AHKB Narrow");
 
@@ -86,7 +86,7 @@ export const ahkbLayoutModel: RowBasedLayoutModel = {
         {typeId: KeymapTypeId.Ansi30, frameMapping: thirtyKeyMapping},
         {typeId: KeymapTypeId.Thumb30, frameMapping: thumb30KeyMapping},
     ],
-}
+};
 
 export function ahkbAddAngleMod(lm: RowBasedLayoutModel = ahkbLayoutModel): RowBasedLayoutModel {
     return {

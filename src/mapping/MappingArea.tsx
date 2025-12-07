@@ -1,7 +1,18 @@
-import type {AppState} from "../app-model.ts";
-import {BigramType, type FlexMapping, KeymapTypeId, type MappingChange, type RowBasedLayoutModel, SKE_HOME} from "../base-model.ts";
 import {type Signal, useSignal} from "@preact/signals";
-import {allMappings, qwertyMapping} from "./mappings.ts";
+import type {AppState} from "../app-model.ts";
+import {
+    BigramType,
+    type FlexMapping,
+    KeymapTypeId,
+    type MappingChange,
+    type RowBasedLayoutModel,
+    SKE_HOME,
+} from "../base-model.ts";
+import {getBigramMovements, weighBigramTypes} from "../bigrams.ts";
+import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
+import {singleCharacterFrequencies as englishFreqs} from "../frequencies/english-single-character-frequencies.ts";
+import {singleCharacterFrequencies as germanFreqs} from "../frequencies/german-single-character-frequencies.ts";
+import {singleCharacterFrequencies as spanishFreqs} from "../frequencies/spanish-single-character-frequencies.ts";
 import {
     compatibilityScore,
     diffSummary,
@@ -9,12 +20,8 @@ import {
     fillMapping,
     getKeyPositions,
 } from "../layout/layout-functions.ts";
-import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "./mapping-functions.ts";
-import {getBigramMovements, weighBigramTypes} from "../bigrams.ts";
-import {singleCharacterFrequencies as englishFreqs} from "../frequencies/english-single-character-frequencies.ts";
-import {singleCharacterFrequencies as spanishFreqs} from "../frequencies/spanish-single-character-frequencies.ts";
-import {singleCharacterFrequencies as germanFreqs} from "../frequencies/german-single-character-frequencies.ts";
-import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
+import {sumKeyFrequenciesByEffort} from "./mapping-functions.ts";
+import {allMappings, qwertyMapping} from "./mappings.ts";
 
 export interface MappingListProps {
     appState: AppState;
@@ -25,13 +32,12 @@ export function MappingList({appState}: MappingListProps) {
     const filteredMappings = showAllMappings.value
         ? allMappings
         : allMappings.filter((mapping) => mapping.localMaximum || mapping.techName === qwertyMapping.techName);
-    return <>
-        <div class="mapping-list-controls">
-            <CheckboxWithLabel
-                label="show all mappings"
-                checked={showAllMappings.value}
-                onChange={(checked) => showAllMappings.value = checked}
-            />
+    return <div class="mapping-list-controls">
+        <CheckboxWithLabel
+            label="show all mappings"
+            checked={showAllMappings.value}
+            onChange={(checked) => {showAllMappings.value = checked;}}
+        />
         <table class="mapping-list">
             <thead>
             <tr class="mapping-list-header">
@@ -48,12 +54,11 @@ export function MappingList({appState}: MappingListProps) {
                                  selectedMapping={appState.mapping}
                                  showAllMappings={showAllMappings.value}
                                  key={mapping.techName}
-                                 appState={appState}/>
+                                 appState={appState}/>,
             )}
             </tbody>
         </table>
-    </div>
-    </>
+    </div>;
 }
 
 interface MappingListItemProps {
@@ -65,16 +70,16 @@ interface MappingListItemProps {
 }
 
 export function MappingListItem({layout, mapping, selectedMapping, appState, showAllMappings}: MappingListItemProps) {
-    const selectedClass = selectedMapping.value.name === mapping.name ? " selected" : "";
-    const recommendedClass = mapping.localMaximum && showAllMappings ? " recommended" : "";
-    const thumbLetterClass = !!mapping.mappings[KeymapTypeId.Ansi30] ? " thumb-letter" : "";
+    const selectedClass = selectedMapping.value.name === mapping.name ? "selected" : "";
+    const recommendedClass = mapping.localMaximum && showAllMappings ? "recommended" : "";
+    const thumbLetterClass = mapping.mappings[KeymapTypeId.Ansi30] ? "thumb-letter" : "";
     const charMap = fillMapping(layout, mapping);
     const movements = charMap && getBigramMovements(
         getKeyPositions(layout, false, charMap),
         `MappingListItem for ${mapping.name} on ${layout.name}`,
     );
     return <tr
-        class={"mapping-list-item" + selectedClass + recommendedClass + thumbLetterClass}
+        class={`mapping-list-item ${selectedClass} ${recommendedClass} ${thumbLetterClass}`}
         onClick={() => appState.setMapping(mapping)}
     >
         <td>{mapping.name}</td>
@@ -86,9 +91,9 @@ export function MappingListItem({layout, mapping, selectedMapping, appState, sho
         <td>{movements && weighBigramTypes(movements, [BigramType.AltFinger, BigramType.SameFinger])
         } / {movements && weighBigramTypes(movements, [BigramType.OppositeRow])}
         </td>
-    </tr>
+    </tr>;
 }
 
 function formatDiff(diff: Record<MappingChange, number>) {
-    return `${compatibilityScore(diff)} (${diff[1]}/${diff[2]}/${diff[3]})`
+    return `${compatibilityScore(diff)} (${diff[1]}/${diff[2]}/${diff[3]})`;
 }

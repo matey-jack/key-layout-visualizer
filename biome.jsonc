@@ -20,7 +20,13 @@
     "enabled": true,
     "rules": {
       "style": {
-        "noNonNullAssertion": "off"
+        "noNonNullAssertion": "off",
+        "useTemplate": "off"
+      },
+      "complexity": {
+        // we have records indexed by keyboard letters and symbols.
+        // to treat them both equally, this is off for now.
+        "useLiteralKeys": "off"
       }
     }
   },
