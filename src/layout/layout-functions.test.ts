@@ -8,8 +8,29 @@ import {
     KeymapTypeId,
     type KeyMovement,
     MappingChange,
-    type RowBasedLayoutModel
+    type RowBasedLayoutModel,
 } from "../base-model.ts";
+import {
+    colemakMapping,
+    colemakThumbyDMapping,
+    cozyEnglish,
+    normanMapping,
+    qwertyMapping,
+    qwertzMapping,
+    thumbyZero,
+    topNine,
+} from "../mapping/mappings.ts";
+import {ahkbLayoutModel} from "./ahkbLayoutModel.ts";
+import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
+import {eb65MidshiftNiceLayoutModel} from "./eb65MidshiftNiceLayoutModel.ts";
+import {ergoKbLayoutModel, ergoKbWithArrowsLayoutModel} from "./ergoKbLayoutModel.ts";
+import {ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
+import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
+import {harmonic13MidshiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
+import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
+import {harmonic14TraditionalLayoutModel} from "./harmonic14TraditionalLayoutModel.ts";
+import {harmonic14WideLayoutModel} from "./harmonic14WideLayoutModel.ts";
+import {katanaLayoutModel} from "./katanaLayoutModel.ts";
 import {
     characterToFinger,
     copyAndModifyKeymap,
@@ -26,28 +47,7 @@ import {
     hasMatchingMapping,
     mergeMapping,
 } from "./layout-functions.ts";
-import {
-    colemakMapping,
-    colemakThumbyDMapping,
-    cozyEnglish,
-    normanMapping,
-    qwertyMapping,
-    qwertzMapping,
-    thumbyZero,
-    topNine
-} from "../mapping/mappings.ts"
-import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
-import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./splitOrthoLayoutModel.ts";
-import {harmonic13MidshiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
-import {harmonic14TraditionalLayoutModel} from "./harmonic14TraditionalLayoutModel.ts";
-import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
-import {harmonic14WideLayoutModel} from "./harmonic14WideLayoutModel.ts";
-import {katanaLayoutModel} from "./katanaLayoutModel.ts";
-import {ahkbLayoutModel} from "./ahkbLayoutModel.ts";
-import {ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
-import {eb65MidshiftNiceLayoutModel} from "./eb65MidshiftNiceLayoutModel.ts";
-import {ergoKbLayoutModel} from "./ergoKbLayoutModel.ts";
 
 const allLayoutModels = [
     ansiIBMLayoutModel,
@@ -426,20 +426,23 @@ describe('characterToFinger for ANSI Qwerty', () => {
 });
 
 describe('getKeyMovements', () => {
+    function calculateMovements(prevLM: RowBasedLayoutModel, nextLM: RowBasedLayoutModel) {
+        const prevMapping = fillMapping(prevLM, qwertyMapping)!;
+        const prevPositions = getKeyPositions(prevLM, false, prevMapping);
+
+        const nextMapping = fillMapping(nextLM, qwertyMapping)!;
+        const nextPositions = getKeyPositions(nextLM, false, nextMapping);
+
+        return getKeyMovements(prevPositions, nextPositions);
+    }
+
     function getMovementsByLabel(movements: KeyMovement[], label: string): KeyMovement[] {
         return movements.filter(m => (m.prev?.label === label) || (m.next?.label === label));
     }
 
     it('should match keys by label and handle all movement types correctly', () => {
-        // GIVEN: Use ANSI IBM (prev) vs Harmonic 13 wide (next) to get meaningful differences
-        const prevMapping = fillMapping(ansiIBMLayoutModel, qwertyMapping)!;
-        const prevPositions = getKeyPositions(ansiIBMLayoutModel, false, prevMapping);
-
-        const nextMapping = fillMapping(harmonic13WideLayoutModel, qwertyMapping)!;
-        const nextPositions = getKeyPositions(harmonic13WideLayoutModel, false, nextMapping);
-
-        // WHEN
-        const movements = getKeyMovements(prevPositions, nextPositions);
+        // GIVEN/WHEN
+        const movements = calculateMovements(ansiIBMLayoutModel, harmonic13WideLayoutModel);
 
         // THEN: Check Ctrl and Shift keys form proper pairs
         const ctrlMovements = getMovementsByLabel(movements, 'Ctrl');
@@ -473,4 +476,24 @@ describe('getKeyMovements', () => {
         expect(escapeMv.prev).toBeUndefined();
         expect(escapeMv.next?.label).toBe('Esc');
     });
+
+    it('correctly pairs right Ctrl in ErgoKb vs ErgoKb with cursor arrows', () => {
+        // GIVEN/WHEN
+        const movements = calculateMovements(ergoKbLayoutModel, ergoKbWithArrowsLayoutModel);
+
+        // THEN: Check Ctrl and Shift keys form proper pairs
+        const ctrlMovements = getMovementsByLabel(movements, 'Ctrl');
+        expect(ctrlMovements.length).toBe(2);
+
+        const leftCtrlMovement = ctrlMovements[0];
+        expect(leftCtrlMovement.prev).toBeDefined();
+        expect(leftCtrlMovement.next).toBeDefined();
+        expect(leftCtrlMovement.prev!.colPos).toBe(leftCtrlMovement.next!.colPos)
+
+        const rightCtrlMovement = ctrlMovements[1];
+        expect(rightCtrlMovement.prev).toBeDefined();
+        expect(rightCtrlMovement.next).toBeDefined();
+        expect(rightCtrlMovement.prev!.colPos).toBe(14.5)
+        expect(rightCtrlMovement.next!.colPos).toBe(11.5)
+    })
 });
