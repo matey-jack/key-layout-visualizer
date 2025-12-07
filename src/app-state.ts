@@ -223,7 +223,7 @@ export function createAppState(): AppState {
             setLayout({...layoutOptionsState.value, ...layoutOptions}, layoutOptionsState, mappingState);
         },
         layoutModel,
-        previousLayoutModel: computed(() => previousLayoutModelState.value),
+        prevLayoutModel: computed(() => previousLayoutModelState.value),
         mapping: computed(() => mappingState.value),
         setMapping: (m: FlexMapping) => {
             previousLayoutModelState.value = layoutModel.value;

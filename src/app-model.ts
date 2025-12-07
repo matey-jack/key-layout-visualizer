@@ -1,5 +1,5 @@
 import type {ReadonlySignal, Signal} from "@preact/signals";
-import type {MappingChange, RowBasedLayoutModel, FlexMapping, BigramMovement} from "./base-model.ts";
+import type {BigramMovement, FlexMapping, MappingChange, RowBasedLayoutModel} from "./base-model.ts";
 import {LayoutType, type VisualizationType} from "./base-model.ts";
 
 export enum AnsiVariant {
@@ -81,9 +81,9 @@ export function isSplit(opts: LayoutOptions) {
 export interface AppState {
     // Getter/Setter to do validations on the state.
     layout: ReadonlySignal<LayoutOptions>;
-    layoutModel: ReadonlySignal<RowBasedLayoutModel>;
-    previousLayoutModel: ReadonlySignal<RowBasedLayoutModel>;
     setLayout: (layoutOptions: Partial<LayoutOptions>) => void;
+    layoutModel: ReadonlySignal<RowBasedLayoutModel>;
+    prevLayoutModel: ReadonlySignal<RowBasedLayoutModel>;
 
     mapping: Signal<FlexMapping>;
     setMapping: (m: FlexMapping) => void;
