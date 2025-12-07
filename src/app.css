@@ -30,11 +30,13 @@ body {
     padding: 0.5rem;
     font-style: italic;
     min-height: 1.5em;
-    display: none;
+    display: block;
+    visibility: hidden;
 }
 
-.top-bar-keyboard-tab-label-and-note.selected .top-bar-keyboard-tab-note {
-    display: block;
+.top-bar-keyboard-tab-label-and-note.selected .top-bar-keyboard-tab-note,
+.top-bar-keyboard-tab-label-and-note:hover .top-bar-keyboard-tab-note {
+    visibility: visible;
 }
 
 .layout-variant-options[hidden] {
