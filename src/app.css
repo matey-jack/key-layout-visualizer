@@ -569,3 +569,16 @@ label.disabled {
         transform: translateX(var(--to-offset));
     }
 }
+
+.key-outline.animating {
+    animation: keyResize 0.5s ease-in-out forwards;
+}
+
+@keyframes keyResize {
+    from {
+        width: var(--from-width);
+    }
+    to {
+        width: var(--to-width);
+    }
+}
