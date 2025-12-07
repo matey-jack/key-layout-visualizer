@@ -42,13 +42,6 @@ body {
     visibility: hidden;
 }
 
-.blank {
-    /* Empty spaces, can be styled if needed */
-}
-
-.layout-description {
-}
-
 .layout-options-bar-container {
     margin-left: 10%;
     margin-right: 10%;
@@ -117,7 +110,6 @@ body {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     border-radius: 4px;
-    horiz-align: center;
 }
 
 .layout-options-button.selected {
@@ -135,9 +127,6 @@ body {
 
 label.disabled {
     color: gray;
-}
-
-.keyboard-svg {
 }
 
 .key-group {

@@ -26,7 +26,9 @@
       "complexity": {
         // we have records indexed by keyboard letters and symbols.
         // to treat them both equally, this is off for now.
-        "useLiteralKeys": "off"
+        "useLiteralKeys": "off",
+        // this is not more complex, but rather syntactically safer. '/' is for division and comments!
+        "useRegexLiterals": "off"
       }
     }
   },

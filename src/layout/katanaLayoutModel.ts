@@ -1,4 +1,4 @@
-import {FlexMapping, KeyboardRows, KeymapTypeId, type RowBasedLayoutModel, SupportedKeymapType} from "../base-model.ts";
+import {KeyboardRows, KeymapTypeId, type RowBasedLayoutModel} from "../base-model.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 const katanaKeyWidths = new SymmetricKeyWidth(15, zeroIndent);

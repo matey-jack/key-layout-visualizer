@@ -1,7 +1,6 @@
-import {FlexMapping, KeyboardRows, KeymapTypeId, type RowBasedLayoutModel, SupportedKeymapType} from "../base-model.ts";
-
-import {keyColorHighlightsClass} from "./layout-functions.ts";
+import {KeyboardRows, KeymapTypeId, type RowBasedLayoutModel} from "../base-model.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
+import {keyColorHighlightsClass} from "./layout-functions.ts";
 
 // zeroIndent works, because the actually indented columns aren't symmetric and indented manually with gaps.
 const keyWidths = new SymmetricKeyWidth(16, zeroIndent, 7.75);

@@ -1,4 +1,4 @@
-import {KeymapTypeId, type RowBasedLayoutModel, SupportedKeymapType} from "../base-model.ts";
+import {KeymapTypeId, type RowBasedLayoutModel} from "../base-model.ts";
 import {eb65LowshiftLayoutModel} from "./eb65LowshiftLayoutModel.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 
