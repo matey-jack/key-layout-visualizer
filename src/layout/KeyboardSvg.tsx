@@ -161,7 +161,7 @@ function getEntryOrExitRow(row: number): number {
 }
 
 export function RowBasedKeyboard({layoutModel, prevLayoutModel, keyMovements, mappingDiff, vizType}: KeyboardProps) {
-    return keyMovements.map((movement, index) => {
+    return keyMovements.map((movement) => {
         // key decorations always come from the next layout model, unless a key is exiting.
         const {label, row, col, keyCapWidth} = movement.next ?? movement.prev!;
         const model = movement.next ? layoutModel : prevLayoutModel;
@@ -193,12 +193,14 @@ export function RowBasedKeyboard({layoutModel, prevLayoutModel, keyMovements, ma
             displayLabel = capSize > 1 ? `${capSize}` : "";
         }
 
+        const newRow = movement.next?.row ?? getEntryOrExitRow(movement.prev!.row);
+        const newCol = movement.next?.colPos ?? movement.prev!.colPos;
         return <Key
             label={displayLabel}
             backgroundClass={bgClass}
             ribbonClass={ribbonClass}
-            row={movement.next?.row ?? getEntryOrExitRow(movement.prev!.row)}
-            col={movement.next?.colPos ?? movement.prev!.colPos}
+            row={newRow}
+            col={newCol}
             width={keyCapWidth}
             height={capHeight}
             frequencyCircleRadius={frequencyCircleRadius}
@@ -206,7 +208,7 @@ export function RowBasedKeyboard({layoutModel, prevLayoutModel, keyMovements, ma
             prevRow={movement.prev?.row ?? getEntryOrExitRow(movement.next!.row)}
             prevCol={movement.prev?.colPos ?? movement.next!.colPos}
             prevWidth={movement.prev?.keyCapWidth ?? keyCapWidth}
-            key={`${label}-${index}`}
+            key={`${label}-${newRow}-${newCol}-${keyCapWidth}`}
         />
     })
 }
