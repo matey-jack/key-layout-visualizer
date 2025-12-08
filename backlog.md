@@ -60,6 +60,8 @@
 - refactored to awesome keyWidth functions which automatically calculate the gaps for symmetrically staggered keyboards.
   Wasted a whole day without adding user-visible content. But was fun to do and I am proud of the new-found simplicity!
 - switch Typewrite variant selection to buttons, like on other layout types.
+- animate the stagger lines
+- animate the key size! (but not the height)
 
 
 bugs fixed:
@@ -87,12 +89,7 @@ refactorings done (or decided against):
 
 missing core features:
 - slow down the animation when the user holds the mouse or finger on the layout type/variant buttons (or other controls).
-- make labels not selectable (which looks weird on misclicks)
-- animate the stagger lines
-- animate the key size! (maybe not the height?)
-- place the "wide-mod" checkbox under the IBM, Apple, and HHKB buttons. Find a good place to show total board width and hand distance stats for each board.
 - Ergoplank and Katana logos to fill the gap, especially Ergoboard 65 Midshift with a nice connection between both gaps.
-- Rectangle around the keyboard to signify the 60% or 65% box.
 - compress some of the UI when scrolling, so that the Keyboard SVG always stays up top and buttons (both type and variant) maybe on the side of the SVG?
     Show only the selected buttons and a "Change..." link which scrolls back up, so that all buttons are visible again.
 
@@ -100,11 +97,14 @@ missing core features:
   + the "wide" mappings
   + Harmonic and Ortho general texts (maybe (i) icon in layout bar). But still repeat that text under the H and O variants.
 
-- check consistency of all mappings:
+- check the consistency of all mappings:
    + variants for different layouts should be consistent (only have differences clearly attributed to the layout)
    + maybe check if some full-mappings can be omitted, because thumb30 and 3×10 do the job well enough?
    + related thumby variants should be consistent (only have the intended differences)
      * especially Thumby-KU
+
+optional:
+- Rectangle around the keyboard to signify the 60% or 65% box.
 
 bugs:
 - bigram lines are misplaced on Ergosplit
