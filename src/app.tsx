@@ -1,4 +1,3 @@
-// @ts-expect-error
 import './app.css';
 import './app-model.ts';
 import type {Signal} from "@preact/signals";
