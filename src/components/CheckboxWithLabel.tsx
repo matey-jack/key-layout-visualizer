@@ -1,3 +1,6 @@
+// @ts-expect-error
+import './CheckboxWithLabel.css';
+
 type CheckboxWithLabelProps = {
     type?: "checkbox" | "radio";
     label: string;
@@ -15,8 +18,7 @@ export function CheckboxWithLabel({type = "checkbox", groupName, checked, disabl
     };
 
     return (
-        <label style={{display: 'flex', alignItems: 'center', gap: '0.5rem', userSelect: 'none'}}
-               class={disabled ? "disabled" : ""}
+        <label class={`checkboxWithLabel ${disabled ? "disabled" : ""}`}
         >
             <input
                 type={type}

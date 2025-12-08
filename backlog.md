@@ -116,6 +116,7 @@ bugs:
 - fix altFinger configuration for Harmonic variants AND show it in finger viz ==> or remove Alt-finger stuff from app
 
 refactoring:
+- modularize the CSS
 - remove home finger properties; use keyEffort==Home instead.
 
 - I find that the key/finger/effort matrix is easier to edit by hand than write in abstractions. Copy, paste, adapt, ... and win!
