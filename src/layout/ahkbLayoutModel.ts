@@ -82,20 +82,22 @@ export const ahkbLayoutModel: LayoutModel = {
     staggerOffsets: [-0.75, -0.25, 0, 0.5],
     symmetricStagger: false,
 
-    supportedKeymapTypes: [
-        {typeId: KeymapTypeId.Ansi30, frameMapping: thirtyKeyMapping},
-        {typeId: KeymapTypeId.Thumb30, frameMapping: thumb30KeyMapping},
-    ],
+    frameMappings: {
+        [KeymapTypeId.Ansi30]: thirtyKeyMapping,
+        [KeymapTypeId.Thumb30]: thumb30KeyMapping,
+    },
 };
 
 export function ahkbAddAngleMod(lm: LayoutModel = ahkbLayoutModel): LayoutModel {
     return {
         ...lm,
         name: `${lm.name} angle mod`,
-        supportedKeymapTypes: lm.supportedKeymapTypes?.map(supported => ({
-            ...supported,
-            frameMapping: copyAndModifyKeymap(supported.frameMapping, angleModKeymap),
-        })),
+        frameMappings: Object.fromEntries(
+            Object.entries(lm.frameMappings).map(([typeId, mapping]) => [
+                typeId,
+                copyAndModifyKeymap(mapping, angleModKeymap),
+            ])
+        ) as typeof lm.frameMappings,
         keyColorClass(label: string, row: KeyboardRows, col: number) {
             if (label.includes("⌦")) {
                 return KEY_COLOR.EDGE;

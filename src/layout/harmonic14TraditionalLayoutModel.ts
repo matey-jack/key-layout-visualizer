@@ -42,29 +42,23 @@ export const harmonic14TraditionalLayoutModel: LayoutModel = {
     staggerOffsets: harmonicStaggerOffsets,
     symmetricStagger: true,
 
-    supportedKeymapTypes: [
-        {typeId: KeymapTypeId.Harmonic14T, frameMapping: fullMapping},
-        {
-            typeId: KeymapTypeId.Ansi30,
-            frameMapping: [
-                ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "=", "⌫"], // 13 keys
-                ["↹", 0, 1, 2, 3, 4, "`", 5, 6, 7, 8, 9, "'", "\\"], // 14 keys
-                ["¤", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "⏎"], // 13 keys
-                ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"], // 12 keys
-                ["Ctrl", "Cmd", "Alt", "[", "⌦", "⍽", "AltGr", "]", "Menu", "Fn", "Ctrl"], // 11 keys
-            ]
-        },
-        {
-            typeId: KeymapTypeId.Thumb30,
-            frameMapping: [
-                ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "`", "⌫"], // 13 keys
-                ["↹", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "'", "\\"], // 14 keys
-                ["¤", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "⏎"], // 13 keys
-                ["⇧", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, "⇧"], // 12 keys
-                ["Ctrl", "Cmd", "Alt", "/", "⌦", "⍽", 0, "AltGr", "Menu", "Fn", "Ctrl"], // 11 keys
-            ]
-        },
-    ],
+    frameMappings: {
+        [KeymapTypeId.Harmonic14T]: fullMapping,
+        [KeymapTypeId.Ansi30]: [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "=", "⌫"], // 13 keys
+            ["↹", 0, 1, 2, 3, 4, "`", 5, 6, 7, 8, 9, "'", "\\"], // 14 keys
+            ["¤", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "⏎"], // 13 keys
+            ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"], // 12 keys
+            ["Ctrl", "Cmd", "Alt", "[", "⌦", "⍽", "AltGr", "]", "Menu", "Fn", "Ctrl"], // 11 keys
+        ],
+        [KeymapTypeId.Thumb30]: [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "`", "⌫"], // 13 keys
+            ["↹", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "'", "\\"], // 14 keys
+            ["¤", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "⏎"], // 13 keys
+            ["⇧", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, "⇧"], // 12 keys
+            ["Ctrl", "Cmd", "Alt", "/", "⌦", "⍽", 0, "AltGr", "Menu", "Fn", "Ctrl"], // 11 keys
+        ],
+    },
 
     mainFingerAssignment: [
         [1, 1, 2, 2, 3, 3, 3, 6, 6, 7, 7, 8, 8],

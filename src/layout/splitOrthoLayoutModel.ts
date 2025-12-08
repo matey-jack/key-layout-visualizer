@@ -47,28 +47,24 @@ export const splitOrthoLayoutModel: LayoutModel = {
         [NaN, 2.0, 2.0, 1.5, 0.2, 0.2, 0.2, 0.2, 1.5, 2.0, 2.0, NaN],
     ],
 
-    supportedKeymapTypes: [
-        {typeId: KeymapTypeId.SplitOrtho, frameMapping: fullMapping},
-        {
-            typeId: KeymapTypeId.Ansi30, frameMapping: [
-                // Mapping Enter as a thumb key allows `'` to stay in its Qwerty position.
-                // We use the freed space to improve `-` position, since this is the third most frequently used punctuation character.
-                ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-                ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "-"],
-                ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
-                ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-                ["Ctrl", "Cmd", "=", "\\", "Alt", "⍽", "⏎", "AltGr", "Menu", "`", "Fn", "Ctrl"],
-            ]
-        },
-        {
-            typeId: KeymapTypeId.Thumb30, frameMapping: [
-                // Shift in Home Row is the more ergonomic choice... just haven't done it in the other mapping to showcase more options.
-                ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-                ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
-                ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-                ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "Ctrl"],
-                ["Cmd", "", "`", "=", "Alt", "⍽", "⏎", 0, "AltGr", "Menu", "\\", "Fn"],
-            ]
-        },
-    ],
+    frameMappings: {
+        [KeymapTypeId.SplitOrtho]: fullMapping,
+        [KeymapTypeId.Ansi30]: [
+            // Mapping Enter as a thumb key allows `'` to stay in its Qwerty position.
+            // We use the freed space to improve `-` position, since this is the third most frequently used punctuation character.
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "-"],
+            ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+            ["Ctrl", "Cmd", "=", "\\", "Alt", "⍽", "⏎", "AltGr", "Menu", "`", "Fn", "Ctrl"],
+        ],
+        [KeymapTypeId.Thumb30]: [
+            // Shift in Home Row is the more ergonomic choice... just haven't done it in the other mapping to showcase more options.
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+            ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "Ctrl"],
+            ["Cmd", "", "`", "=", "Alt", "⍽", "⏎", 0, "AltGr", "Menu", "\\", "Fn"],
+        ],
+    },
 }

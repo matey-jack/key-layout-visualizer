@@ -49,25 +49,25 @@ export const eb65MidshiftRightRetLayoutModel: LayoutModel = {
     staggerOffsets: [0.5, 0.25, 0, -0.25],
     symmetricStagger: true,
 
-    supportedKeymapTypes: [
-        { typeId: KeymapTypeId.Ansi30, frameMapping: [
+    frameMappings: {
+        [KeymapTypeId.Ansi30]: [
             ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
             ["↹", 0, 1, 2, 3, 4, "\\", null, 5, 6, 7, 8, 9, "'", "⌫"],
             ["⇧", 0, 1, 2, 3, 4, "=", "-", 5, 6, 7, 8, 9, "⇧", "⏎"],
             ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, null, "↑", null],
             [null, "Cmd", "Fn", "⌦", "Alt", "⍽", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
-        ]},
+        ],
         // note: thanks to the thumb-letter, we have one less letter above the bottom row and could use a "big" key in the top center.
         // but layouts can't transform themselves when the keymap changes.
         // Anyway, my favorite layouts don't have this problem, so I won't solve it.
-        { typeId: KeymapTypeId.Thumb30, frameMapping: [
+        [KeymapTypeId.Thumb30]: [
             ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
             ["↹", 0, 1, 2, 3, 4, null, null, 5, 6, 7, 8, 9, "'", "⌫"],
             ["⇧", 0, 1, 2, 3, 4, "=", "\\", 5, 6, 7, 8, 9, "⇧", "⏎"],
             ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, "/", null, "↑", null],
             [null, "Cmd", "Fn", "⌦", "Alt", 0, "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"],
-        ]},
-    ],
+        ],
+    },
 
     keyColorClass: keyColorHighlightsClass,
 }
@@ -80,10 +80,12 @@ export const eb65CentralEnterLayoutModel: LayoutModel = {
         matrix[KeyboardRows.Home][14] = 1;
         return matrix;
     }),
-    supportedKeymapTypes: eb65MidshiftRightRetLayoutModel.supportedKeymapTypes?.map(supported => ({
-        ...supported,
-        frameMapping: copyAndModifyKeymap(supported.frameMapping, moveEnterToCenter),
-    })),
+    frameMappings: Object.fromEntries(
+        Object.entries(eb65MidshiftRightRetLayoutModel.frameMappings).map(([typeId, frameMapping]) => [
+            typeId,
+            copyAndModifyKeymap(frameMapping, moveEnterToCenter),
+        ])
+    ),
     mainFingerAssignment: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.mainFingerAssignment, (matrix) => {
         matrix[KeyboardRows.Number][14] = Finger.RPinky;
         matrix[KeyboardRows.Upper].splice(6, 1);
@@ -120,10 +122,12 @@ export const eb65VerticalEnterLayoutModel: LayoutModel = {
         if (row === KeyboardRows.Upper && col === 14) return 2;
         return 1;
     },
-    supportedKeymapTypes: eb65MidshiftRightRetLayoutModel.supportedKeymapTypes?.map(supported => ({
-        ...supported,
-        frameMapping: copyAndModifyKeymap(supported.frameMapping, moveEnterToVertical),
-    })),
+    frameMappings: Object.fromEntries(
+        Object.entries(eb65MidshiftRightRetLayoutModel.frameMappings).map(([typeId, frameMapping]) => [
+            typeId,
+            copyAndModifyKeymap(frameMapping, moveEnterToVertical),
+        ])
+    ),
 }
 
 function moveEnterToVertical(mapping: LayoutMapping): LayoutMapping {

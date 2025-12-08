@@ -95,7 +95,7 @@ interface MappingSummaryProps {
 }
 
 export function MappingSummary({mapping, layout}: MappingSummaryProps) {
-    const keymapType = findMatchingKeymapType(layout, mapping)!.supported.typeId;
+    const keymapType = findMatchingKeymapType(layout, mapping)!.typeId;
     const mappingType: string =
         keymapType === KeymapTypeId.Ansi30 ? "derived from the generic 30-key without thumb mapping"
         : keymapType === KeymapTypeId.Thumb30 ? "derived from the generic 30-key with thumb mapping"
@@ -127,8 +127,9 @@ export function FingeringDetails({layout: _}: { layout: LayoutModel }) {
 
 function countKeysBySize(layoutM: LayoutModel) {
     const counts = new Map<number, number>();
-    (layoutM.supportedKeymapTypes[0].frameMapping)!.forEach((row, r) => {
-        row.forEach((label, c) => {
+    const firstFrameMapping = Object.values(layoutM.frameMappings)[0];
+    firstFrameMapping!.forEach((row: unknown[], r: number) => {
+        row.forEach((label: unknown, c: number) => {
             if (label !== null) {
                 const size = keyCapSize(layoutM)(r, c);
                 counts.set(size, (counts.get(size) ?? 0) + 1);
@@ -140,9 +141,9 @@ function countKeysBySize(layoutM: LayoutModel) {
 
 function getUsedKeysizes(layoutM: LayoutModel) {
     const keySizes: number[] = [];
-    const frameMapping = layoutM.supportedKeymapTypes[0].frameMapping;
-    frameMapping.forEach((row, r) => {
-        row.forEach((label, c) => {
+    const frameMapping = Object.values(layoutM.frameMappings)[0];
+    frameMapping!.forEach((row: unknown[], r: number) => {
+        row.forEach((label: unknown, c: number) => {
             const size = keyCapSize(layoutM)(r, c);
             if (label != null && size !== 1 && !keySizes.includes(size)) {
                 keySizes.push(size);

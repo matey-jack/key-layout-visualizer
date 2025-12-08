@@ -131,26 +131,26 @@ describe('findMatchingKeymapType', () => {
     it('finds Ansi30 match between qwertyMapping and ansiIBMLayoutModel', () => {
         const match = findMatchingKeymapType(ansiIBMLayoutModel, qwertyMapping);
         expect(match).toBeDefined();
-        expect(match!.supported.typeId).toBe(KeymapTypeId.Ansi30);
+        expect(match!.typeId).toBe(KeymapTypeId.Ansi30);
         expect(match!.flexData).toEqual(qwertyMapping.mappings![KeymapTypeId.Ansi30]);
     });
 
     it('QWERTZ has a specific mapping for the ANSI keyboard', () => {
         const match = findMatchingKeymapType(ansiIBMLayoutModel, qwertzMapping);
         expect(match).toBeDefined();
-        expect(match!.supported.typeId).toBe(KeymapTypeId.Ansi);
+        expect(match!.typeId).toBe(KeymapTypeId.Ansi);
     });
 
     it('finds AnsiWide match for colemakMapping on ansiWideLayoutModel', () => {
         const match = findMatchingKeymapType(ansiWideLayoutModel, colemakMapping);
         expect(match).toBeDefined();
-        expect(match!.supported.typeId).toBe(KeymapTypeId.AnsiWide);
+        expect(match!.typeId).toBe(KeymapTypeId.AnsiWide);
     });
 
     it('finds Ansi30 match for qwertyMapping on splitOrthoLayoutModel', () => {
         const match = findMatchingKeymapType(splitOrthoLayoutModel, qwertyMapping);
         expect(match).toBeDefined();
-        expect(match!.supported.typeId).toBe(KeymapTypeId.Ansi30);
+        expect(match!.typeId).toBe(KeymapTypeId.Ansi30);
     });
 
     it('returns undefined when no mappings property exists', () => {
@@ -296,7 +296,7 @@ describe('getKeyPositions', () => {
         rightHomeIndex: 0,
         staggerOffsets: [0, 0, 0, 0, 0],
         symmetricStagger: true,
-        supportedKeymapTypes: [],
+        frameMappings: {},
         mainFingerAssignment: [
             [Finger.LPinky, Finger.LRing],
             [Finger.LMiddle],

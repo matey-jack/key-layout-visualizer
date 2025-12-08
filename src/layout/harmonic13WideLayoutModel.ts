@@ -44,29 +44,26 @@ export const harmonic13WideLayoutModel: LayoutModel = {
     staggerOffsets: harmonicStaggerOffsets,
     symmetricStagger: true,
 
-    supportedKeymapTypes: [
-        { typeId: KeymapTypeId.Harmonic13Wide, frameMapping: fullMapping },
-        {
-            typeId: KeymapTypeId.Ansi30,
-            frameMapping: [
-                ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="],
-                // By moving the left-most letter from the upper row to the left-most key of the center row,
-                // we keep the relative-to-home position of the other keys as on ANSI.
-                // (And the moved letter has a very similar movement (left instead of up-left) on the same finger.)
-                ["↹", 1, 2, 3, 4, "`", 5, 6, 7, 8, 9, "⌫"],
-                [[-1, 0], 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, 9, "'"],
-                ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-                ["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl"],
-            ]
-        },
-        { typeId: KeymapTypeId.Thumb30, frameMapping: [
+    frameMappings: {
+        [KeymapTypeId.Harmonic13Wide]: fullMapping,
+        [KeymapTypeId.Ansi30]: [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="],
+            // By moving the left-most letter from the upper row to the left-most key of the center row,
+            // we keep the relative-to-home position of the other keys as on ANSI.
+            // (And the moved letter has a very similar movement (left instead of up-left) on the same finger.)
+            ["↹", 1, 2, 3, 4, "`", 5, 6, 7, 8, 9, "⌫"],
+            [[-1, 0], 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, 9, "'"],
+            ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
+            ["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl"],
+        ],
+        [KeymapTypeId.Thumb30]: [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "[", "]"],
             ["↹", 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "⌫"],
             [[-1, 0], 0, 1, 2, 3, 4, "`", 5, 6, 7, 8, 9, "'"],
             ["⇧", 0, 1, 2, 3, 4, "/", 5, 6, 7, 8, "⇧"],
             ["Ctrl", "Cmd", "Alt", "\\", "⍽", "⏎", 0, "AltGr", "Fn", "Ctrl"],
-        ]},
-    ],
+        ],
+    },
 
     mainFingerAssignment: [
         [1, 1, 2, 2, 3, 3, 3, 6, 6, 7, 7, 8, 8],

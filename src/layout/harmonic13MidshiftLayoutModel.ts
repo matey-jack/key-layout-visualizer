@@ -50,29 +50,23 @@ export const harmonic13MidshiftLayoutModel: LayoutModel = {
     staggerOffsets: harmonicStaggerOffsets,
     symmetricStagger: true,
 
-    supportedKeymapTypes: [
-        {typeId: KeymapTypeId.Harmonic13MS, frameMapping: fullMapping},
-        {
-            typeId: KeymapTypeId.Ansi30,
-            frameMapping: [
-                ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-                ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "="],
-                ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-                ["⇤", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "⇥"],
-                ["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl"],
-            ]
-        },
-        {
-            typeId: KeymapTypeId.Thumb30,
-            frameMapping: [
-                ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-                ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "="],
-                ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-                ["⇤", 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, "/", "⇥"],
-                ["Ctrl", "Cmd", "Alt", "`", "⍽", "⏎", 0, "AltGr", "Fn", "Ctrl"],
-            ]
-        },
-    ],
+    frameMappings: {
+        [KeymapTypeId.Harmonic13MS]: fullMapping,
+        [KeymapTypeId.Ansi30]: [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "="],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+            ["⇤", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "⇥"],
+            ["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl"],
+        ],
+        [KeymapTypeId.Thumb30]: [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "="],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+            ["⇤", 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, "/", "⇥"],
+            ["Ctrl", "Cmd", "Alt", "`", "⍽", "⏎", 0, "AltGr", "Fn", "Ctrl"],
+        ],
+    },
 
     mainFingerAssignment: [
         [1, 1, 2, 2, 3, 3, 6, 6, 7, 7, 8, 8],

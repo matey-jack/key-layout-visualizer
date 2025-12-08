@@ -45,15 +45,15 @@ export const katanaLayoutModel: LayoutModel = {
     staggerOffsets: [0.75, 0.25, 0, -0.25],
     symmetricStagger: true,
 
-    supportedKeymapTypes: [
+    frameMappings: {
         // I'd swap ";" and "'" in the keymap, but that transcends the box of the data model.
         // It's the bane of Qwerty that ";" is considered part of the core layout, but "'" and "-" are not.
-        { typeId: KeymapTypeId.Ansi30, frameMapping: [
+        [KeymapTypeId.Ansi30]: [
             ["Esc", "`~", "1", "2", "3", "4", "5", "lock", "6", "7", "8", "9", "0", "-", "="],
             ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "⌫"],
             ["'", 0, 1, 2, 3, 4, "⇤", null, "⇞", 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, "⇥", "ins", "⇟", 5, 6, 7, 8, 9, "⇧"],
             ["Fn", "Ctrl", "Cmd", "Alt", "⍽", "⌦", "⍽", "AltGr", "←", "↑", "↓", "→"],
-        ]},
-    ],
+        ],
+    },
 }

@@ -69,10 +69,10 @@ export const eb65LowshiftLayoutModel: LayoutModel = {
     staggerOffsets: [0.5, 0.25, 0, -0.5],
     symmetricStagger: true,
 
-    supportedKeymapTypes: [
-        {typeId: KeymapTypeId.Ansi30, frameMapping: ansi30FrameMapping},
-        {typeId: KeymapTypeId.Thumb30, frameMapping: thumb30FrameMapping},
-    ],
+    frameMappings: {
+        [KeymapTypeId.Ansi30]: ansi30FrameMapping,
+        [KeymapTypeId.Thumb30]: thumb30FrameMapping,
+    },
 
     keyColorClass: keyColorHighlightsClass,
 }
@@ -87,16 +87,10 @@ export const eb65BigEnterLayoutModel: LayoutModel = {
         matrix[KeyboardRows.Bottom] = [0.25, 1.25, 1.25, 1, 1.25, 2.5, 2.5, 1.25, 0.25, 1.25, 0.25, 1, 1, 1];
         return matrix;
     }),
-    supportedKeymapTypes: [
-        {
-            typeId: KeymapTypeId.Ansi30,
-            frameMapping: copyAndModifyKeymap(ansi30FrameMapping, (m) => moveKeys(m, false))
-        },
-        {
-            typeId: KeymapTypeId.Thumb30,
-            frameMapping: copyAndModifyKeymap(thumb30FrameMapping, (m) => moveKeys(m, true))
-        },
-    ],
+    frameMappings: {
+        [KeymapTypeId.Ansi30]: copyAndModifyKeymap(ansi30FrameMapping, (m) => moveKeys(m, false)),
+        [KeymapTypeId.Thumb30]: copyAndModifyKeymap(thumb30FrameMapping, (m) => moveKeys(m, true)),
+    },
 
     mainFingerAssignment: copyAndModifyKeymap(eb65LowshiftLayoutModel.mainFingerAssignment!, (m) => removeKey(m)),
     singleKeyEffort: copyAndModifyKeymap(eb65LowshiftLayoutModel.singleKeyEffort!, (m) => removeKey(m)),
