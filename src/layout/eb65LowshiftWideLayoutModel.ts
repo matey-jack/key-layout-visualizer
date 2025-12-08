@@ -61,10 +61,10 @@ export const eb65LowshiftWideLayoutModel: LayoutModel = {
     staggerOffsets: [0.5, 0.25, 0, -0.5],
     symmetricStagger: true,
 
-    supportedKeymapTypes: [
-        {typeId: KeymapTypeId.Ansi30, frameMapping: thirtyKeyMapping},
-        {typeId: KeymapTypeId.Thumb30, frameMapping: thumb30KeyMapping},
-    ],
+    frameMappings: {
+        [KeymapTypeId.Ansi30]: thirtyKeyMapping,
+        [KeymapTypeId.Thumb30]: thumb30KeyMapping,
+    },
 
     keyColorClass: keyColorHighlightsClass,
 }
@@ -80,8 +80,10 @@ function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
 export const eb65LowshiftWideAngleModLayoutModel: LayoutModel = {
     ...eb65LowshiftWideLayoutModel,
     name: `${eb65LowshiftWideLayoutModel.name} angle mod`,
-    supportedKeymapTypes: eb65LowshiftWideLayoutModel.supportedKeymapTypes?.map(supported => ({
-        ...supported,
-        frameMapping: copyAndModifyKeymap(supported.frameMapping, angleModKeymap),
-    })),
+    frameMappings: Object.fromEntries(
+        Object.entries(eb65LowshiftWideLayoutModel.frameMappings).map(([typeId, mapping]) => [
+            typeId,
+            copyAndModifyKeymap(mapping, angleModKeymap),
+        ])
+    ) as typeof eb65LowshiftWideLayoutModel.frameMappings,
 };

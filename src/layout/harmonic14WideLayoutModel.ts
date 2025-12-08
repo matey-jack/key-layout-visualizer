@@ -31,30 +31,24 @@ export const harmonic14WideLayoutModel: LayoutModel = {
     staggerOffsets: harmonicStaggerOffsets,
     symmetricStagger: true,
 
-    supportedKeymapTypes: [
-        {
-            typeId: KeymapTypeId.Ansi30,
-            frameMapping: [
-                ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "`"], // 14 keys
-                ["↹", 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "⌫"], // 13 keys
-                [[-1, 0], 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'"], // 14 keys
-                // The move of key 9 to the middle is a change required to keep the key-to-finger assignments
-                // the same as on the ANSI layout. This is caused by moving the right home row to the right.
-                ["⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧"], // 13 keys
-                ["Ctrl", "Cmd", "Alt", "⌦", "⍽", "⏎", "AltGr", "Menu", "Fn", "Ctrl"], // 10 keys
-            ]
-        },
-        {
-            typeId: KeymapTypeId.Thumb30,
-            frameMapping: [
-                ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "=", "`", ""], // 14 keys
-                ["↹", 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "⌫"], // 13 keys
-                [[-1, 0], 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'"], // 14 keys
-                ["⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧"], // 13 keys
-                ["Ctrl", "Cmd", "Alt", "⌦", "⍽", "⏎", 0, "AltGr", "Fn", "Ctrl"], // 10 keys
-            ]
-        },
-    ],
+    frameMappings: {
+        [KeymapTypeId.Ansi30]: [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "`"], // 14 keys
+            ["↹", 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "⌫"], // 13 keys
+            [[-1, 0], 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'"], // 14 keys
+            // The move of key 9 to the middle is a change required to keep the key-to-finger assignments
+            // the same as on the ANSI layout. This is caused by moving the right home row to the right.
+            ["⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧"], // 13 keys
+            ["Ctrl", "Cmd", "Alt", "⌦", "⍽", "⏎", "AltGr", "Menu", "Fn", "Ctrl"], // 10 keys
+        ],
+        [KeymapTypeId.Thumb30]: [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "=", "`", ""], // 14 keys
+            ["↹", 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "⌫"], // 13 keys
+            [[-1, 0], 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'"], // 14 keys
+            ["⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧"], // 13 keys
+            ["Ctrl", "Cmd", "Alt", "⌦", "⍽", "⏎", 0, "AltGr", "Fn", "Ctrl"], // 10 keys
+        ],
+    },
 
     mainFingerAssignment: [
         [1, 1, 1, 2, 2, 3, 3, 6, 6, 7, 7, 8, 8, 8],

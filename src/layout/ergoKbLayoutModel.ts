@@ -69,10 +69,10 @@ export const ergoKbLayoutModel: LayoutModel = {
     staggerOffsets: [-0.75, -0.25, 0, 0.5],
     symmetricStagger: false,
 
-    supportedKeymapTypes: [
-        {typeId: KeymapTypeId.Ansi30, frameMapping: ansi30KeyMapping},
-        {typeId: KeymapTypeId.Thumb30, frameMapping: thumb30KeyMapping},
-    ],
+    frameMappings: {
+        [KeymapTypeId.Ansi30]: ansi30KeyMapping,
+        [KeymapTypeId.Thumb30]: thumb30KeyMapping,
+    },
 }
 
 function replaceLast<T>(list: T[], last: T) {
@@ -100,16 +100,10 @@ export const ergoKbWithArrowsLayoutModel: LayoutModel = {
         ergoKbLayoutModel.keyWidths,
         [1.5, 1.5, 1, 1.5, 1.75, 1.75, 1.5, 1.5, 1, 1, 1]
     ),
-    supportedKeymapTypes: [
-        {
-            typeId: KeymapTypeId.Ansi30,
-            frameMapping: copyAndModifyKeymap(ansi30KeyMapping, arrowBlockKeymap(false))
-        },
-        {
-            typeId: KeymapTypeId.Thumb30,
-            frameMapping: copyAndModifyKeymap(thumb30KeyMapping, arrowBlockKeymap(true))
-        },
-    ],
+    frameMappings: {
+        [KeymapTypeId.Ansi30]: copyAndModifyKeymap(ansi30KeyMapping, arrowBlockKeymap(false)),
+        [KeymapTypeId.Thumb30]: copyAndModifyKeymap(thumb30KeyMapping, arrowBlockKeymap(true)),
+    },
     singleKeyEffort: replaceLast(ergoKbLayoutModel.singleKeyEffort,
         [2.0, 2.0, 2.0, 1.0, 0.2, 0.2, 1.0, 2.0, null, null, null]
     ),

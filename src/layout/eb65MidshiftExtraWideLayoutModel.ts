@@ -51,22 +51,22 @@ export const eb65MidshiftExtraWideLayoutModel: LayoutModel = {
     staggerOffsets: [0.5, 0.25, 0, -0.25],
     symmetricStagger: true,
 
-    supportedKeymapTypes: [
-        { typeId: KeymapTypeId.Ansi30, frameMapping: [
+    frameMappings: {
+        [KeymapTypeId.Ansi30]: [
             ["Esc", "1", "2", "3", "4", "5", "[", null, "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
             ["↹", 0, 1, 2, 3, 4, "`~", "", "\\", 5, 6, 7, 8, 9, "⌫"],
             ["⇧", 0, 1, 2, 3, 4, "-", "⌦", "'", 5, 6, 7, 8, 9, "⇧"],
             [null, 0, 1, 2, 3, 4, "=", "⇤", "⇥", 9, 5, 6, 7, 8, null, "↑", null],
             [null, "Ctrl", "Cmd", "Fn", "Alt", "⏎", "", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
-        ]},
-        { typeId: KeymapTypeId.Thumb30, frameMapping: [
+        ],
+        [KeymapTypeId.Thumb30]: [
             ["Esc", "1", "2", "3", "4", "5", "[", null, "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
             ["↹", 0, 1, 2, 3, 4, "`~", "Fn", "", 5, 6, 7, 8, 9, "⌫"],
             ["⇧", 0, 1, 2, 3, 4, "=", "⌦", "'", 5, 6, 7, 8, 9, "⇧"],
             [null, 0, 1, 2, 3, 4, "\\", "⇤", "⇥", "/", 5, 6, 7, 8, null, "↑", null],
             [null, "Ctrl", "Cmd", "Alt", 0, "⏎", "", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
-        ]},
-    ],
+        ],
+    },
 
     keyColorClass: keyColorHighlightsClass,
 }

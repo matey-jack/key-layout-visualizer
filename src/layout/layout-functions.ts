@@ -12,7 +12,6 @@ import {
     type LayoutMapping,
     type LayoutModel,
     MappingChange,
-    type SupportedKeymapType
 } from "../base-model.ts";
 import {sum} from "../library/math.ts";
 import {isCommandKey} from "../mapping/mapping-functions.ts";
@@ -60,9 +59,7 @@ export function onlySupportsWide(mapping: FlexMapping) {
 }
 
 export function getFrameMapping(model: LayoutModel, type: KeymapTypeId): (LayoutMapping | undefined) {
-    return model.supportedKeymapTypes.filter(
-        (t) => t.typeId === type
-    )[0]?.frameMapping;
+    return model.frameMappings[type];
 }
 
 export function getAnsi30mapping(model: LayoutModel): (LayoutMapping | undefined) {
@@ -77,19 +74,22 @@ export function getThumb30mapping(model: LayoutModel): (LayoutMapping | undefine
 
 /**
  * Find the first matching keymap type between a layout and a flex mapping.
- * Returns the matched SupportedKeymapType entry and the flex mapping data, or undefined if no match.
+ * Returns the matched keymap type ID and the flex mapping data, or undefined if no match.
  */
 export function findMatchingKeymapType(
     layout: LayoutModel,
     flexMapping: FlexMapping
-): { supported: SupportedKeymapType; flexData: string[] } | undefined {
-    if (!layout.supportedKeymapTypes || !flexMapping.mappings) {
+): { typeId: KeymapTypeId; frameMapping: LayoutMapping; flexData: string[] } | undefined {
+    if (!layout.frameMappings || !flexMapping.mappings) {
         return undefined;
     }
-    for (const supported of layout.supportedKeymapTypes) {
-        const flexData = flexMapping.mappings[supported.typeId];
+    for (const typeId of Object.keys(layout.frameMappings) as KeymapTypeId[]) {
+        const flexData = flexMapping.mappings[typeId];
         if (flexData) {
-            return {supported, flexData};
+            const frameMapping = layout.frameMappings[typeId];
+            if (frameMapping) {
+                return { typeId, frameMapping, flexData };
+            }
         }
     }
     return undefined;
@@ -101,15 +101,13 @@ export function findMatchingKeymapType(
 export function fillMapping(layoutModel: LayoutModel, flexMapping: FlexMapping): string[][] | undefined {
     const match = findMatchingKeymapType(layoutModel, flexMapping);
     if (match) {
-        const fallbackMapping = layoutModel.supportedKeymapTypes
-            ?.find(s => s.typeId === KeymapTypeId.Ansi30)
-            ?.frameMapping;
-        const keymapType = match.supported.typeId;
+        const fallbackMapping = layoutModel.frameMappings[KeymapTypeId.Ansi30];
+        const keymapType = match.typeId;
         const flexData = (KEYMAP_TYPES[keymapType].keysPerRow[0] === 0)
             ? ["", ...match.flexData]
             : match.flexData;
         try {
-            return mergeMapping(match.supported.frameMapping, flexData, fallbackMapping);
+            return mergeMapping(match.frameMapping, flexData, fallbackMapping);
         } catch (e) {
             console.error(`Failed to fill ${flexMapping.name}/${keymapType} into ${layoutModel.name}.`)
             console.error(e);
@@ -130,7 +128,7 @@ export function hasMatchingMapping(layout: LayoutModel, flexMapping: FlexMapping
  * Get all keymap type IDs supported by a layout (new system only).
  */
 export function getLayoutKeymapTypes(layout: LayoutModel): KeymapTypeId[] {
-    return layout.supportedKeymapTypes?.map(s => s.typeId) ?? [];
+    return Object.keys(layout.frameMappings) as KeymapTypeId[];
 }
 
 /**

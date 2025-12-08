@@ -246,11 +246,6 @@ export const KEY_COLOR = {
 
 export type KeyColor = (typeof KEY_COLOR)[keyof typeof KEY_COLOR];
 
-export interface SupportedKeymapType {
-    typeId: KeymapTypeId;
-    frameMapping: LayoutMapping;
-}
-
 export interface LayoutModel {
     name: string;
     description: string;
@@ -281,9 +276,8 @@ export interface LayoutModel {
     staggerOffsets: number[];
     symmetricStagger: boolean;
 
-    // More specific keymap types should be first in the list, so they will be preferred over the generic ones.
-    // TODO: replace by frameMappings: Partial<Record<KeymapTypeId, string[]>>; // similar to FlexMapping
-    supportedKeymapTypes: SupportedKeymapType[];
+    // Frame mappings for each supported keymap type, similar to FlexMapping structure.
+    frameMappings: Partial<Record<KeymapTypeId, LayoutMapping>>;
 
     // Finger assignment and key effort arrays have the same shape (number of entries in each row) as the LayoutMappings.
     // 'null' value used for gaps between keys and keys which require the hand off home position (such as the arrow cluster).

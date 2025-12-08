@@ -81,7 +81,7 @@ describe('RowBasedLayoutModel matrix shapes', () => {
         describe(model.name, () => {
             const rowLengths = getExpectedRowLengths(model);
 
-            model.supportedKeymapTypes.forEach(({typeId, frameMapping}) => {
+            Object.entries(model.frameMappings).forEach(([typeId, frameMapping]) => {
                 it(`${typeId} matches expected shape`, () => {
                     expectMatrixShape(frameMapping, rowLengths, "thirtyKeyMapping");
                 });
@@ -137,10 +137,10 @@ function collectPlaceholdersByFlexRow(frameMapping: unknown[][]): Map<number, nu
     return result;
 }
 
-describe('supportedKeymapTypes frame mapping validation', () => {
+describe('frameMappings frame mapping validation', () => {
      layoutModels.forEach((model) => {
          describe(model.name, () => {
-             model.supportedKeymapTypes!.forEach(({ typeId, frameMapping }) => {
+             Object.entries(model.frameMappings).forEach(([typeId, frameMapping]) => {
                  const keymapType = KEYMAP_TYPES[typeId as KeymapTypeId];
 
                  it(`${typeId}: placeholder count matches KEYMAP_TYPES.keysPerRow`, () => {

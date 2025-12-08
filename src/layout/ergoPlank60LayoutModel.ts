@@ -69,10 +69,10 @@ export const ergoPlank60LayoutModel: LayoutModel = {
     staggerOffsets: [0.5, 0.25, 0, -0.5],
     symmetricStagger: true,
 
-    supportedKeymapTypes: [
-        {typeId: KeymapTypeId.Ansi30, frameMapping: ansi30FrameMapping},
-        {typeId: KeymapTypeId.Thumb30, frameMapping: thumb30FrameMapping},
-    ],
+    frameMappings: {
+        [KeymapTypeId.Ansi30]: ansi30FrameMapping,
+        [KeymapTypeId.Thumb30]: thumb30FrameMapping,
+    },
 
     keyColorClass: keyColorHighlightsClass,
 }
@@ -81,10 +81,12 @@ export function ep60addAngleMod(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
         name: "Ergoplank 60",
-        supportedKeymapTypes: lm.supportedKeymapTypes?.map(supported => ({
-            ...supported,
-            frameMapping: copyAndModifyKeymap(supported.frameMapping, angleModKeymap),
-        })),
+        frameMappings: Object.fromEntries(
+            Object.entries(lm.frameMappings).map(([typeId, mapping]) => [
+                typeId,
+                copyAndModifyKeymap(mapping, angleModKeymap),
+            ])
+        ) as typeof lm.frameMappings,
         // Now we could go to 0.25 stagger without making Z awkward to type and put ⌦ on the newly fusioned 1.5u central key...
         // but this key fusion removes one key from the board which makes it hard to place Home/End without moving a lot of stuff around.
     }
@@ -102,16 +104,10 @@ function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
 export const ep60WithArrowsLayoutModel: LayoutModel = {
     ...ergoPlank60LayoutModel,
     name: "Ergoplank 60 with cursor block",
-    supportedKeymapTypes: [
-        {
-            typeId: KeymapTypeId.Ansi30,
-            frameMapping: replaceLast(ansi30FrameMapping, [null, "Ctrl", "Cmd", "AltGr", "Alt", "⏎", "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"])
-        },
-        {
-            typeId: KeymapTypeId.Thumb30,
-            frameMapping: replaceLast(thumb30FrameMapping, [null, "Ctrl", "Cmd", "AltGr", "Alt", 0, "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"])
-        },
-    ],
+    frameMappings: {
+        [KeymapTypeId.Ansi30]: replaceLast(ansi30FrameMapping, [null, "Ctrl", "Cmd", "AltGr", "Alt", "⏎", "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]),
+        [KeymapTypeId.Thumb30]: replaceLast(thumb30FrameMapping, [null, "Ctrl", "Cmd", "AltGr", "Alt", 0, "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]),
+    },
 
     singleKeyEffort: replaceLast(ergoPlank60LayoutModel.singleKeyEffort,
         [null, 3.0, 3.0, 2.0, 1.5, 0.2, 1.5, 0.2, 1.5, null, null, null, null, null]

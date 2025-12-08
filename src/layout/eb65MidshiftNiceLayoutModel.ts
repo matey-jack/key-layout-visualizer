@@ -28,24 +28,24 @@ export const eb65MidshiftNiceLayoutModel: LayoutModel = {
         [null, 2.0, 1.5, 1.5, 1.0, 0.2, 0.2, 1.0, null, 1.5, null, null, null, null],
     ],
 
-    supportedKeymapTypes: [
+    frameMappings: {
         // The keymap has a bunch of small differences to the low-shift; enough to make copy-paste-adapt easier than anything more clever.
         // left-side numbers move to center to make their relative position (from hand home) symmetric to the right side.
-        { typeId: KeymapTypeId.Ansi30, frameMapping: [
+        [KeymapTypeId.Ansi30]: [
             ["Esc", "`~", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
             ["↹", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "⌫"],
             ["⇧", 0, 1, 2, 3, 4, "-", "\\", "'", 5, 6, 7, 8, 9, "⇧"],
             ["Ctrl", 0, 1, 2, 3, 4, "=", "€ ¢ £ ¥", 9, 5, 6, 7, 8, null, "↑", null],
             [null, "Cmd", "Fn", "⌦", "Alt", "⏎", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
-        ]},
-        { typeId: KeymapTypeId.Thumb30, frameMapping: [
+        ],
+        [KeymapTypeId.Thumb30]: [
             ["Esc", "`~", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
             ["↹", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "⌫"],
             ["⇧", 0, 1, 2, 3, 4, "\\", "€ £ ¥", "'", 5, 6, 7, 8, 9, "⇧"],
             ["Ctrl", 0, 1, 2, 3, 4, "=", "⌦", "/", 5, 6, 7, 8, null, "↑", null],
             [null, "Cmd", "Fn", "Alt", 0, "⏎", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"],
-        ]},
-    ],
+        ],
+    },
 
     keyWidths:
         [

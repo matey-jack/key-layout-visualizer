@@ -47,9 +47,7 @@ describe('ansiWideLayoutModel', () => {
         ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
     ];
 
-    const thirtyKeyMapping = ansiWideLayoutModel.supportedKeymapTypes.filter(
-        (m) => m.typeId === KeymapTypeId.Ansi30
-    ).map((m) => m.frameMapping).pop()!;
+    const thirtyKeyMapping = ansiWideLayoutModel.frameMappings[KeymapTypeId.Ansi30]!;
     for (let row = 0; row < 5; row++) {
         it(`correct ${KeyboardRows[row]} row`, () => {
             expect(thirtyKeyMapping[row])

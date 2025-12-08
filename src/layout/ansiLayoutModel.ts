@@ -86,30 +86,26 @@ export const ansiIBMLayoutModel: LayoutModel = {
     staggerOffsets: [-0.75, -0.25, 0, 0.5],
     symmetricStagger: false,
 
-    supportedKeymapTypes: [
+    frameMappings: {
         // arbitrary decision to include two thumb keys in the mapping.
         // (One for a letter and one more to move AltGr to, if desired.)
         // Exclude CapsLock from the flex mapping, because it distracts from the lettering changes,
         // especially when showing the diff with Qwerty.
-        {
-            typeId: KeymapTypeId.Ansi, frameMapping: [
-                ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, 1, "⌫"],
-                ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-                ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"],
-                ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-                ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
-            ]
-        },
-        {
-            typeId: KeymapTypeId.Ansi30, frameMapping: [
-                ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "⌫"],
-                ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "[", "]", "\\"],
-                ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⏎"],
-                ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-                ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
-            ]
-        },
-    ],
+        [KeymapTypeId.Ansi]: [
+            ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, 1, "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+            ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
+        ],
+        [KeymapTypeId.Ansi30]: [
+            ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "[", "]", "\\"],
+            ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+            ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
+        ],
+    },
 }
 
 export const ansiWideLayoutModel = {
@@ -138,41 +134,31 @@ export const ansiWideLayoutModel = {
                 [2, 2, null, 0.2, 1.5, null, 2, 2]
             ],
 
-        supportedKeymapTypes:
-            [
-                {
-                    typeId: KeymapTypeId.AnsiWide,
-                    frameMapping: [
-                        ["`~", "1", "2", "3", "4", "5", "6", 0, "7", "8", "9", "0", 1, "⌫"],
-                        ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-                        ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"],
-                        ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-                        ["Ctrl", "Cmd", "Alt", "⍽", 0, 1, "Fn", "Ctrl"],
-                    ]
-                },
-                {
-                    typeId: KeymapTypeId.Ansi30,
-                    frameMapping: [
-                        // https://colemakmods.github.io/ergonomic-mods/wide.html
-                        ["`~", "1", "2", "3", "4", "5", "6", "=", "7", "8", "9", "0", "-", "⌫"],
-                        ["↹", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "'", "\\"],
-                        ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
-                        // note how 9 is flipped here, as well.
-                        ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-                        ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
-                    ]
-                },
-                {
-                    typeId: KeymapTypeId.Thumb30,
-                    frameMapping: [
-                        ["Esc", "1", "2", "3", "4", "5", "6", "`~", "7", "8", "9", "0", "=", "⌫"],
-                        ["↹", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "'", "\\"],
-                        ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
-                        ["⇧", 0, 1, 2, 3, 4, '/', 5, 6, 7, 8, "⇧"],
-                        ["Ctrl", "Cmd", "Alt", "⍽", 0, "AltGr", "Fn", "Ctrl"],
-                    ]
-                },
+        frameMappings: {
+            [KeymapTypeId.AnsiWide]: [
+                ["`~", "1", "2", "3", "4", "5", "6", 0, "7", "8", "9", "0", 1, "⌫"],
+                ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"],
+                ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+                ["Ctrl", "Cmd", "Alt", "⍽", 0, 1, "Fn", "Ctrl"],
             ],
+            [KeymapTypeId.Ansi30]: [
+                // https://colemakmods.github.io/ergonomic-mods/wide.html
+                ["`~", "1", "2", "3", "4", "5", "6", "=", "7", "8", "9", "0", "-", "⌫"],
+                ["↹", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "'", "\\"],
+                ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
+                // note how 9 is flipped here, as well.
+                ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
+                ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
+            ],
+            [KeymapTypeId.Thumb30]: [
+                ["Esc", "1", "2", "3", "4", "5", "6", "`~", "7", "8", "9", "0", "=", "⌫"],
+                ["↹", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "'", "\\"],
+                ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
+                ["⇧", 0, 1, 2, 3, 4, '/', 5, 6, 7, 8, "⇧"],
+                ["Ctrl", "Cmd", "Alt", "⍽", 0, "AltGr", "Fn", "Ctrl"],
+            ],
+        },
     }
 ;
 
@@ -200,10 +186,12 @@ export const splitSpaceBar = (baseModel: LayoutModel): LayoutModel => {
     keyWidths[KeyboardRows.Bottom][middleIdx + 1] = splitWidth;
     return {
         ...baseModel,
-        supportedKeymapTypes: baseModel.supportedKeymapTypes?.map(supported => ({
-            ...supported,
-            frameMapping: duplicateBottomMiddle(supported.frameMapping, KeyboardRows.Bottom, middleIdx),
-        })),
+        frameMappings: Object.fromEntries(
+            Object.entries(baseModel.frameMappings).map(([typeId, mapping]) => [
+                typeId,
+                duplicateBottomMiddle(mapping, KeyboardRows.Bottom, middleIdx),
+            ])
+        ) as typeof baseModel.frameMappings,
         singleKeyEffort: duplicateBottomMiddle(baseModel.singleKeyEffort, KeyboardRows.Bottom, middleIdx),
         keyWidths,
         mainFingerAssignment,
@@ -239,15 +227,17 @@ export function createApple(lm: LayoutModel): LayoutModel {
             matrix.push(mirrorOdd(1.5, 1.25, 1.5, 6));
             return matrix;
         }),
-        supportedKeymapTypes: lm.supportedKeymapTypes
-            .filter(keymap => keymap.typeId !== KeymapTypeId.AnsiWide)
-            .map(keymap => {
-                const modifier = keymap.typeId === KeymapTypeId.Thumb30 ? addAppleThumbyBottom : addAppleBottom;
-                return {
-                    ...keymap,
-                    frameMapping: copyAndModifyKeymap(keymap.frameMapping, modifier),
-                };
-            }),
+        frameMappings: Object.fromEntries(
+            Object.entries(lm.frameMappings)
+                .filter(([typeId]) => typeId !== KeymapTypeId.AnsiWide)
+                .map(([typeId, mapping]) => {
+                    const modifier = typeId === KeymapTypeId.Thumb30 ? addAppleThumbyBottom : addAppleBottom;
+                    return [
+                        typeId,
+                        copyAndModifyKeymap(mapping, modifier),
+                    ];
+                })
+        ) as typeof lm.frameMappings,
         mainFingerAssignment: copyAndModifyKeymap(lm.mainFingerAssignment, (matrix) => {
             matrix[KeyboardRows.Bottom] = [0, 0, 1, 5, 7, 8, 9];
             return matrix;
@@ -263,13 +253,10 @@ export function createHHKB(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
         name: lm.name.replace(ansiIBMLayoutModel.name, "Happy Hacker Keyboard"),
-        supportedKeymapTypes: [
-            {
-                // we omit the Thumb30 frameMapping, because HHKB's bottom row is not a good place to map a letter!
-                typeId: KeymapTypeId.Ansi30,
-                frameMapping: copyAndModifyKeymap(getAnsi30mapping(lm)!, splitKeys)
-            }
-        ],
+        frameMappings: {
+            // we omit the Thumb30 frameMapping, because HHKB's bottom row is not a good place to map a letter!
+            [KeymapTypeId.Ansi30]: copyAndModifyKeymap(getAnsi30mapping(lm)!, splitKeys)
+        },
 
         mainFingerAssignment: copyAndModifyKeymap(lm.mainFingerAssignment, (m) => {
             m[KeyboardRows.Number].push(Finger.RRing);
