@@ -1,8 +1,8 @@
 import type {ComponentChildren} from "preact";
 import type {AppState} from "../app-model.ts";
 import {
-    BigramType,
     bigramEffort,
+    BigramType,
     type FlexMapping,
     isLayoutViz,
     KeymapTypeId,
@@ -127,6 +127,7 @@ export function FingeringDetails({layout: _}: { layout: LayoutModel }) {
 
 function countKeysBySize(layoutM: LayoutModel) {
     const counts = new Map<number, number>();
+    // we need to pick a mapping so that we can ignore `null` positions which are gaps, not keys.
     const firstFrameMapping = Object.values(layoutM.frameMappings)[0];
     firstFrameMapping!.forEach((row: unknown[], r: number) => {
         row.forEach((label: unknown, c: number) => {
@@ -139,39 +140,23 @@ function countKeysBySize(layoutM: LayoutModel) {
     return counts;
 }
 
-function getUsedKeysizes(layoutM: LayoutModel) {
-    const keySizes: number[] = [];
-    const frameMapping = Object.values(layoutM.frameMappings)[0];
-    frameMapping!.forEach((row: unknown[], r: number) => {
-        row.forEach((label: unknown, c: number) => {
-            const size = keyCapSize(layoutM)(r, c);
-            if (label != null && size !== 1 && !keySizes.includes(size)) {
-                keySizes.push(size);
-            }
-        })
-    });
-    keySizes.sort();
-    return keySizes;
-}
-
 export function KeySizeDetails({layout}: { layout: LayoutModel }) {
-    const countsBySize = countKeysBySize(layout);
-    const total = sum([...countsBySize.values()]);
-    const sizeList = getUsedKeysizes(layout);
-    return <div><p>
-        Colors on the keys show which keycaps have the same size.<br/>
-        It's easier to swap around keycaps to different places on the keyboard if many of them share the same size.
-        It also makes production and logistics easier.
-    </p>
-        <div>
-            <KeySizeDetailsLegendItem size={1} count={countsBySize.get(1)!}/>
-            {sizeList.map((s) =>
-                <KeySizeDetailsLegendItem size={s} count={countsBySize.get(s)!}/>
-            )}
-            <div><div class="keysize-legend-item"><b>Total</b></div> – {total} keys.</div>
-        </div>
-    </div>
-}
+     const countsBySize = countKeysBySize(layout);
+     const total = sum([...countsBySize.values()]);
+     const sortedSizes = Array.from(countsBySize.keys()).sort((a, b) => a - b);
+     return <div><p>
+         Colors on the keys show which keycaps have the same size.<br/>
+         It's easier to swap around keycaps to different places on the keyboard if many of them share the same size.
+         It also makes production and logistics easier.
+     </p>
+         <div>
+             {sortedSizes.map((s) =>
+                 <KeySizeDetailsLegendItem size={s} count={countsBySize.get(s)!}/>
+             )}
+             <div><div class="keysize-legend-item"><b>Total</b></div> – {total} keys.</div>
+         </div>
+     </div>
+ }
 
 type KeySizeDetailsLegendItemProps = {
     size: number;
