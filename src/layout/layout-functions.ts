@@ -3,11 +3,11 @@ import {
     type FlexMapping,
     hand,
     KEY_COLOR,
-    KEYMAP_TYPES,
     KeyboardRows,
     type KeyColor,
-    type KeyMovement,
+    KEYMAP_TYPES,
     KeymapTypeId,
+    type KeyMovement,
     type KeyPosition,
     type LayoutMapping,
     type LayoutModel,
@@ -122,20 +122,6 @@ export function fillMapping(layoutModel: LayoutModel, flexMapping: FlexMapping):
  */
 export function hasMatchingMapping(layout: LayoutModel, flexMapping: FlexMapping): boolean {
     return !!findMatchingKeymapType(layout, flexMapping);
-}
-
-/**
- * Get all keymap type IDs supported by a layout (new system only).
- */
-export function getLayoutKeymapTypes(layout: LayoutModel): KeymapTypeId[] {
-    return Object.keys(layout.frameMappings) as KeymapTypeId[];
-}
-
-/**
- * Get all keymap type IDs defined by a flex mapping (new system only).
- */
-export function getMappingKeymapTypes(flexMapping: FlexMapping): KeymapTypeId[] {
-    return flexMapping.mappings ? Object.keys(flexMapping.mappings) as KeymapTypeId[] : [];
 }
 
 // Thanks to those, we can keep the flex mappings as simple strings. (Which I think is more readable.)

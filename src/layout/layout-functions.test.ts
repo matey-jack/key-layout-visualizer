@@ -5,8 +5,8 @@ import {
     Hand,
     hand,
     KeyboardRows,
-    type KeyMovement,
     KeymapTypeId,
+    type KeyMovement,
     type LayoutModel,
     MappingChange,
 } from "../base-model.ts";
@@ -41,8 +41,6 @@ import {
     getAnsi30mapping,
     getKeyMovements,
     getKeyPositions,
-    getLayoutKeymapTypes,
-    getMappingKeymapTypes,
     getThumb30mapping,
     hasMatchingMapping,
     mergeMapping,
@@ -190,32 +188,6 @@ describe('new keymap type system - hasMatchingMappingNew', () => {
 
     it('falls back to old system for mappings without new property', () => {
         expect(hasMatchingMapping(ansiIBMLayoutModel, normanMapping)).toBe(true);
-    });
-});
-
-describe('new keymap type system - helper functions', () => {
-    it('getLayoutKeymapTypes returns correct types for ansiIBMLayoutModel', () => {
-        const types = getLayoutKeymapTypes(ansiIBMLayoutModel);
-        expect(types).toContain(KeymapTypeId.Ansi);
-        expect(types).toContain(KeymapTypeId.Ansi30);
-    });
-
-    it('getLayoutKeymapTypes returns correct types for splitOrthoLayoutModel', () => {
-        const types = getLayoutKeymapTypes(splitOrthoLayoutModel);
-        expect(types).toContain(KeymapTypeId.SplitOrtho);
-        expect(types).toContain(KeymapTypeId.Thumb30);
-        expect(types).toContain(KeymapTypeId.Ansi30);
-    });
-
-    it('getMappingKeymapTypes returns correct types for qwertyMapping', () => {
-        const types = getMappingKeymapTypes(qwertyMapping);
-        expect(types).toContain(KeymapTypeId.Ansi30);
-    });
-
-    it('getMappingKeymapTypes returns correct types for colemakMapping', () => {
-        const types = getMappingKeymapTypes(colemakMapping);
-        expect(types).toContain(KeymapTypeId.Ansi30);
-        expect(types).toContain(KeymapTypeId.AnsiWide);
     });
 });
 
