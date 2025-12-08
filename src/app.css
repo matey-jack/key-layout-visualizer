@@ -135,12 +135,8 @@ label.disabled {
     color: gray;
 }
 
-.key-group {
-    transition: transform 0.5s ease-in-out;
-}
-
 .key-group.animating {
-    animation: keyMove 0.5s ease-in-out forwards;
+    animation: keyMove 1s ease-in-out forwards;
 }
 
 @keyframes keyMove {
@@ -384,16 +380,17 @@ label.disabled {
 .viz-type-button {
     margin: 0.3rem;
     border-radius: 4px;
-}
 
-.viz-type-button.selected {
-    background-color: #5cdbef;
-    border: 1px solid #003fae;
+    &.selected {
+        background-color: #5cdbef;
+        border: 1px solid #003fae;
+    }
 }
 
 .mapping-and-details-container {
     display: grid;
-    align-items: start;    /* Left colum mapping list, right colum details.
+    align-items: start;
+    /* Left colum mapping list, right colum details.
     Grid is overkill here, because each column has just one <div>, but it should be easy to refactor that. */
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
@@ -406,29 +403,22 @@ label.disabled {
     font-style: italic;
 }
 
-.mapping-list-item.recommended {
-    background-color: #b8ebf8;
-}
+.mapping-list-item {
+    &.recommended {
+        background-color: #b8ebf8;
+    }
 
-.mapping-list-item.recommended.thumb-letter {
-    background-color: #a1c67e;
-}
+    &.recommended.thumb-letter {
+        background-color: #a1c67e;
+    }
 
-.mapping-list-item.selected:not(.recommended) {
-    background-color: #f3eaac;
-}
+    &.selected {
+        font-weight: bold;
+    }
 
-.mapping-list-item.selected.recommended {
-    font-weight: bold;
-}
-
-.mapping-list-item button {
-    background: transparent;
-    border: none;
-}
-
-.mapping-list-item.selected button {
-    font-weight: bold;
+    &.selected:not(.recommended) {
+        background-color: #f3eaac;
+    }
 }
 
 .footnote {
@@ -558,7 +548,7 @@ label.disabled {
 }
 
 .stagger-line-animating {
-    animation: staggerLineMove 0.5s ease-in-out forwards;
+    animation: staggerLineMove 1s ease-in-out forwards;
 }
 
 @keyframes staggerLineMove {
@@ -571,7 +561,7 @@ label.disabled {
 }
 
 .key-outline.animating {
-    animation: keyResize 0.5s ease-in-out forwards;
+    animation: keyResize 1s ease-in-out forwards;
 }
 
 @keyframes keyResize {
