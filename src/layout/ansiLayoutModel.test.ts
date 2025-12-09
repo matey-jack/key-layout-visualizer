@@ -1,13 +1,11 @@
 import {describe, expect, it} from 'vitest';
-
-import {ansiIBMLayoutModel, ansiWideLayoutModel, createApple} from "./ansiLayoutModel.ts";
 import {KeyboardRows, KeymapTypeId} from "../base-model.ts";
 import {sum} from "../library/math.ts";
-import {getAnsi30mapping, getFrameMapping} from "./layout-functions.ts";
+import {ansiIBMLayoutModel, ansiWideLayoutModel, createApple} from "./ansiLayoutModel.ts";
 
 describe('ansiLayoutModel.keyWidths', () => {
     const lastCol = (row: KeyboardRows) =>
-        getAnsi30mapping(ansiIBMLayoutModel)![row].length - 1;
+        (ansiIBMLayoutModel.frameMappings[KeymapTypeId.Ansi30])![row].length - 1;
 
     it("correct with of Backspace", () => {
         const row = KeyboardRows.Number;
@@ -31,7 +29,7 @@ describe('ansiLayoutModel.keyWidths', () => {
 
     it("correct total with of bottom row", () => {
         const row = KeyboardRows.Bottom;
-        const widths = getAnsi30mapping(ansiIBMLayoutModel)![row]
+        const widths = (ansiIBMLayoutModel.frameMappings[KeymapTypeId.Ansi30])![row]
             .map((_, col) => ansiIBMLayoutModel.keyWidths[row][col]);
         expect(sum(widths)).toBeCloseTo(15, 8)
     });
@@ -59,9 +57,9 @@ describe('ansiWideLayoutModel', () => {
 describe('Apple ANSI variant', () => {
     const appleAnsi = createApple(ansiIBMLayoutModel);
     it('ANSI and Ansi30 frame maps have no bottom row variables', () => {
-        const ansi30Vars = getAnsi30mapping(appleAnsi)![KeyboardRows.Bottom].filter((m) => typeof m === "number");
+        const ansi30Vars = (appleAnsi.frameMappings[KeymapTypeId.Ansi30])![KeyboardRows.Bottom].filter((m) => typeof m === "number");
         expect(ansi30Vars.length).toBe(0);
-        const ansiVars = getFrameMapping(appleAnsi, KeymapTypeId.Ansi)![KeyboardRows.Bottom].filter((m) => typeof m === "number");
+        const ansiVars = (appleAnsi.frameMappings[KeymapTypeId.Ansi])![KeyboardRows.Bottom].filter((m) => typeof m === "number");
         expect(ansiVars.length).toBe(0);
     })
 })

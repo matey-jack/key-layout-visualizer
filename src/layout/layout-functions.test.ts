@@ -38,10 +38,8 @@ import {
     diffToBase,
     fillMapping,
     findMatchingKeymapType,
-    getAnsi30mapping,
     getKeyMovements,
     getKeyPositions,
-    getThumb30mapping,
     hasMatchingMapping,
     mergeMapping,
 } from "./layout-functions.ts";
@@ -84,14 +82,14 @@ describe('fillMapping', () => {
     });
 
     allLayoutModels.forEach((model) => {
-        if (getAnsi30mapping(model)) {
+        if (model.frameMappings[KeymapTypeId.Ansi30]) {
             it(`${model.name} 30-key frame maps all important characters`, () => {
-                hasLettersNumbersAndProsePunctuation(mergeMapping(getAnsi30mapping(model)!, ["", ...qwertyMapping.mappings[KeymapTypeId.Ansi30]!]));
+                hasLettersNumbersAndProsePunctuation(mergeMapping((model.frameMappings[KeymapTypeId.Ansi30])!, ["", ...qwertyMapping.mappings[KeymapTypeId.Ansi30]!]));
             });
         }
-        if (getThumb30mapping(model)) {
+        if (model.frameMappings[KeymapTypeId.Thumb30]) {
             it(`${model.name} Thumb30 frame maps all important characters`, () => {
-                hasLettersNumbersAndProsePunctuation(mergeMapping(getThumb30mapping(model)!, ["", ...cozyEnglish.mappings[KeymapTypeId.Thumb30]!]));
+                hasLettersNumbersAndProsePunctuation(mergeMapping((model.frameMappings[KeymapTypeId.Thumb30])!, ["", ...cozyEnglish.mappings[KeymapTypeId.Thumb30]!]));
             });
         }
     });

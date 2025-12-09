@@ -6,10 +6,10 @@ import {
     type LayoutMapping,
     type LayoutModel,
     SKE_AWAY,
-    SKE_HOME
+    SKE_HOME,
 } from "../base-model.ts";
-import {MonotonicKeyWidth, mirrorOdd, zeroIndent} from "./keyWidth.ts";
-import {copyAndModifyKeymap, defaultKeyColor, getAnsi30mapping} from "./layout-functions.ts";
+import {mirrorOdd, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
+import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
 
 const ibmKeyWidths = new MonotonicKeyWidth(15, zeroIndent, "ANSI/IBM");
 
@@ -255,7 +255,7 @@ export function createHHKB(lm: LayoutModel): LayoutModel {
         name: lm.name.replace(ansiIBMLayoutModel.name, "Happy Hacker Keyboard"),
         frameMappings: {
             // we omit the Thumb30 frameMapping, because HHKB's bottom row is not a good place to map a letter!
-            [KeymapTypeId.Ansi30]: copyAndModifyKeymap(getAnsi30mapping(lm)!, splitKeys)
+            [KeymapTypeId.Ansi30]: copyAndModifyKeymap((lm.frameMappings[KeymapTypeId.Ansi30])!, splitKeys)
         },
 
         mainFingerAssignment: copyAndModifyKeymap(lm.mainFingerAssignment, (m) => {

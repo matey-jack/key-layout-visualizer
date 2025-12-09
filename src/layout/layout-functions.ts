@@ -55,19 +55,7 @@ export const keyColorHighlightsClass = (label: string, row: KeyboardRows, col: n
 };
 
 export function onlySupportsWide(mapping: FlexMapping) {
-    return !mapping.mappings[KeymapTypeId.Ansi30] && !mapping.mappings[KeymapTypeId.Ansi30];
-}
-
-export function getFrameMapping(model: LayoutModel, type: KeymapTypeId): (LayoutMapping | undefined) {
-    return model.frameMappings[type];
-}
-
-export function getAnsi30mapping(model: LayoutModel): (LayoutMapping | undefined) {
-    return getFrameMapping(model, KeymapTypeId.Ansi30);
-}
-
-export function getThumb30mapping(model: LayoutModel): (LayoutMapping | undefined) {
-    return getFrameMapping(model, KeymapTypeId.Thumb30);
+    return !mapping.mappings[KeymapTypeId.Ansi30] && !mapping.mappings[KeymapTypeId.Ansi];
 }
 
 // --- NEW: Functions using the new keymap type system ---
