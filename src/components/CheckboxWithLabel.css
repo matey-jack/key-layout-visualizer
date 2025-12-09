@@ -1,6 +1,16 @@
 .checkboxWithLabel {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.5rem;
     user-select: none;
+}
+
+.checkboxWithLabel input {
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+}
+
+.checkboxLabel {
+    flex: 1;
+    word-break: break-word;
 }

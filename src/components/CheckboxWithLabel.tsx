@@ -26,7 +26,7 @@ export function CheckboxWithLabel({type = "checkbox", groupName, checked, disabl
                 onChange={handleChange}
                 disabled={disabled ?? false}
             />
-            {label}
+            <span class="checkboxLabel">{label}</span>
         </label>
     );
 }
