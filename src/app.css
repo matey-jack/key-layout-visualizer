@@ -123,12 +123,9 @@ body {
     border-radius: 4px;
 }
 
-/*.layout-options-bar-container label {*/
-/*    display: block;*/
-/*}*/
-
 .ansi-ahkb-options-container {
     margin: 0.5rem;
+    text-align: left;
 }
 
 label.disabled {
