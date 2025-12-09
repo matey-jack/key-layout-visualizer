@@ -1,6 +1,7 @@
 import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
 import {mirrorOdd, SymmetricKeyWidth} from "./keyWidth.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
+import {mapValues} from "../library/records.ts";
 
 const keyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0, 0.25]);
 
@@ -81,11 +82,8 @@ export function ep60addAngleMod(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
         name: "Ergoplank 60",
-        frameMappings: Object.fromEntries(
-            Object.entries(lm.frameMappings).map(([typeId, mapping]) => [
-                typeId,
-                copyAndModifyKeymap(mapping, angleModKeymap),
-            ])
+        frameMappings: mapValues(lm.frameMappings, (_, mapping) =>
+            copyAndModifyKeymap(mapping, angleModKeymap)
         ) as typeof lm.frameMappings,
         // Now we could go to 0.25 stagger without making Z awkward to type and put ⌦ on the newly fusioned 1.5u central key...
         // but this key fusion removes one key from the board which makes it hard to place Home/End without moving a lot of stuff around.

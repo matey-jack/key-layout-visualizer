@@ -10,6 +10,7 @@ import {
 } from "../base-model.ts";
 import {mirrorOdd, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
 import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
+import {mapValues} from "../library/records.ts";
 
 const ibmKeyWidths = new MonotonicKeyWidth(15, zeroIndent, "ANSI/IBM");
 
@@ -186,11 +187,8 @@ export const splitSpaceBar = (baseModel: LayoutModel): LayoutModel => {
     keyWidths[KeyboardRows.Bottom][middleIdx + 1] = splitWidth;
     return {
         ...baseModel,
-        frameMappings: Object.fromEntries(
-            Object.entries(baseModel.frameMappings).map(([typeId, mapping]) => [
-                typeId,
-                duplicateBottomMiddle(mapping, KeyboardRows.Bottom, middleIdx),
-            ])
+        frameMappings: mapValues(baseModel.frameMappings, (_, mapping) =>
+            duplicateBottomMiddle(mapping, KeyboardRows.Bottom, middleIdx)
         ) as typeof baseModel.frameMappings,
         singleKeyEffort: duplicateBottomMiddle(baseModel.singleKeyEffort, KeyboardRows.Bottom, middleIdx),
         keyWidths,
@@ -227,17 +225,13 @@ export function createApple(lm: LayoutModel): LayoutModel {
             matrix.push(mirrorOdd(1.5, 1.25, 1.5, 6));
             return matrix;
         }),
-        frameMappings: Object.fromEntries(
+        frameMappings: mapValues(Object.fromEntries(
             Object.entries(lm.frameMappings)
                 .filter(([typeId]) => typeId !== KeymapTypeId.AnsiWide)
-                .map(([typeId, mapping]) => {
-                    const modifier = typeId === KeymapTypeId.Thumb30 ? addAppleThumbyBottom : addAppleBottom;
-                    return [
-                        typeId,
-                        copyAndModifyKeymap(mapping, modifier),
-                    ];
-                })
-        ) as typeof lm.frameMappings,
+        ), (typeId, mapping) => {
+            const modifier = typeId === KeymapTypeId.Thumb30 ? addAppleThumbyBottom : addAppleBottom;
+            return copyAndModifyKeymap(mapping, modifier);
+        }) as typeof lm.frameMappings,
         mainFingerAssignment: copyAndModifyKeymap(lm.mainFingerAssignment, (matrix) => {
             matrix[KeyboardRows.Bottom] = [0, 0, 1, 5, 7, 8, 9];
             return matrix;

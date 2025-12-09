@@ -1,6 +1,7 @@
 import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
+import {mapValues} from "../library/records.ts";
 
 const keyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
@@ -80,10 +81,7 @@ function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
 export const eb65LowshiftWideAngleModLayoutModel: LayoutModel = {
     ...eb65LowshiftWideLayoutModel,
     name: `${eb65LowshiftWideLayoutModel.name} angle mod`,
-    frameMappings: Object.fromEntries(
-        Object.entries(eb65LowshiftWideLayoutModel.frameMappings).map(([typeId, mapping]) => [
-            typeId,
-            copyAndModifyKeymap(mapping, angleModKeymap),
-        ])
+    frameMappings: mapValues(eb65LowshiftWideLayoutModel.frameMappings, (_, mapping) =>
+        copyAndModifyKeymap(mapping, angleModKeymap)
     ) as typeof eb65LowshiftWideLayoutModel.frameMappings,
 };

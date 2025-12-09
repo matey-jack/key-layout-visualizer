@@ -7,6 +7,7 @@ import {
     SKE_AWAY,
 } from "../base-model.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
+import {mapValues} from "../library/records.ts";
 
 export const eb65MidshiftRightRetLayoutModel: LayoutModel = {
     name: "Ergoboard 65 MidShift Narrow, Right Return",
@@ -80,11 +81,8 @@ export const eb65CentralEnterLayoutModel: LayoutModel = {
         matrix[KeyboardRows.Home][14] = 1;
         return matrix;
     }),
-    frameMappings: Object.fromEntries(
-        Object.entries(eb65MidshiftRightRetLayoutModel.frameMappings).map(([typeId, frameMapping]) => [
-            typeId,
-            copyAndModifyKeymap(frameMapping, moveEnterToCenter),
-        ])
+    frameMappings: mapValues(eb65MidshiftRightRetLayoutModel.frameMappings, (_, frameMapping) =>
+        copyAndModifyKeymap(frameMapping, moveEnterToCenter)
     ),
     mainFingerAssignment: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.mainFingerAssignment, (matrix) => {
         matrix[KeyboardRows.Number][14] = Finger.RPinky;
@@ -122,11 +120,8 @@ export const eb65VerticalEnterLayoutModel: LayoutModel = {
         if (row === KeyboardRows.Upper && col === 14) return 2;
         return 1;
     },
-    frameMappings: Object.fromEntries(
-        Object.entries(eb65MidshiftRightRetLayoutModel.frameMappings).map(([typeId, frameMapping]) => [
-            typeId,
-            copyAndModifyKeymap(frameMapping, moveEnterToVertical),
-        ])
+    frameMappings: mapValues(eb65MidshiftRightRetLayoutModel.frameMappings, (_, frameMapping) =>
+        copyAndModifyKeymap(frameMapping, moveEnterToVertical)
     ),
 }
 

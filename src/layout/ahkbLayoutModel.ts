@@ -1,6 +1,7 @@
 import {KEY_COLOR, KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
 import {MonotonicKeyWidth, mirror } from "./keyWidth.ts";
 import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
+import {mapValues} from "../library/records.ts";
 
 const ahkbKeyWidth = new MonotonicKeyWidth(14.5, [0, 0, 0.25, 0.25, 0.25], "AHKB Narrow");
 
@@ -92,11 +93,8 @@ export function ahkbAddAngleMod(lm: LayoutModel = ahkbLayoutModel): LayoutModel 
     return {
         ...lm,
         name: `${lm.name} angle mod`,
-        frameMappings: Object.fromEntries(
-            Object.entries(lm.frameMappings).map(([typeId, mapping]) => [
-                typeId,
-                copyAndModifyKeymap(mapping, angleModKeymap),
-            ])
+        frameMappings: mapValues(lm.frameMappings, (_, mapping) =>
+            copyAndModifyKeymap(mapping, angleModKeymap)
         ) as typeof lm.frameMappings,
         keyColorClass(label: string, row: KeyboardRows, col: number) {
             if (label.includes("⌦")) {
