@@ -88,6 +88,9 @@ refactorings done (or decided against):
 ======================== TODO ===============================
 
 missing core features:
+- SVG export (with a title stating name of layout and keymap)
+  - add metadata for to-scale printing (might need PDF?)
+  - add a ruler to the SVG so people can zoom to scale on their laptop or tablet
 - slow down the animation when the user holds the mouse or finger on the layout type/variant buttons (or other controls).
 - Ergoplank and Katana logos to fill the gap, especially Ergoboard 65 Midshift with a nice connection between both gaps.
 - compress some of the UI when scrolling, so that the Keyboard SVG always stays up top and buttons (both type and variant) maybe on the side of the SVG?

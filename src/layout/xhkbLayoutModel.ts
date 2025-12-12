@@ -2,7 +2,7 @@ import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "
 import {MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 
-const ahkbKeyWidth = new MonotonicKeyWidth(15, zeroIndent, "AHKB");
+const keyWidth = new MonotonicKeyWidth(15, zeroIndent, "AHKB");
 
 const ansi30KeyMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
@@ -20,18 +20,18 @@ const thumb30KeyMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "", "Alt", 0, "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
 ];
 
-export const ergoKbLayoutModel: LayoutModel = {
-    name: "ErgoKb",
-    description: `The ErgoKb continues HHKB's idea of splitting large keys to a point that
+export const xhkbLayoutModel: LayoutModel = {
+    name: "Thumby Flex",
+    description: `The Thumby Flex layout continues HHKB's idea of splitting large keys to a point that
     delivers a layout with ergonomically wider hand positions and some extra central keys that can be used for navigation 
     or any other purpose. And to top it off, let's also split the space bar to create two great thumb keys per side.
-    Using only four keycap sizes, the ErgoKb is the most versatile keyboard with traditional typewriter row staggering 
+    Using only four keycap sizes, the Thumby Flex is the most versatile keyboard with traditional typewriter row staggering 
     and the classic 60% box shape.`,
 
     keyWidths: [
-        ahkbKeyWidth.row(0, 1.5), // 14 keys
-        ahkbKeyWidth.row(1, 1),   // 15 keys
-        ahkbKeyWidth.row(2, 1.25),// 14 keys
+        keyWidth.row(0, 1.5), // 14 keys
+        keyWidth.row(1, 1),   // 15 keys
+        keyWidth.row(2, 1.25),// 14 keys
         [1.75, ...Array(11).fill(1), 1.25, 1], // 14 keys
         // Center of keyboard is at 7.25 / 7.75.
         // Key sizes are 3 × 1.5u + 1.75u = 6.25u, which leaves an additional 1u key left and 1.5u key right.
@@ -57,7 +57,7 @@ export const ergoKbLayoutModel: LayoutModel = {
 
     hasAltFinger: (_r: number, _c: number) => false,
 
-    rowIndent: ahkbKeyWidth.rowIndent,
+    rowIndent: keyWidth.rowIndent,
 
     keyColorClass: keyColorHighlightsClass,
 
@@ -92,22 +92,22 @@ function arrowBlockKeymap(thumby: boolean) {
     }
 }
 
-export const ergoKbWithArrowsLayoutModel: LayoutModel = {
-    ...ergoKbLayoutModel,
-    name: "ErgoKb with cursor block",
+export const xhkbWithArrowsLayoutModel: LayoutModel = {
+    ...xhkbLayoutModel,
+    name: "Thumby Flex with cursor block",
     // we replace two 1.5u keys with three 1u keys
     keyWidths: replaceLast(
-        ergoKbLayoutModel.keyWidths,
+        xhkbLayoutModel.keyWidths,
         [1.5, 1.5, 1, 1.5, 1.75, 1.75, 1.5, 1.5, 1, 1, 1]
     ),
     frameMappings: {
         [KeymapTypeId.Ansi30]: copyAndModifyKeymap(ansi30KeyMapping, arrowBlockKeymap(false)),
         [KeymapTypeId.Thumb30]: copyAndModifyKeymap(thumb30KeyMapping, arrowBlockKeymap(true)),
     },
-    singleKeyEffort: replaceLast(ergoKbLayoutModel.singleKeyEffort,
+    singleKeyEffort: replaceLast(xhkbLayoutModel.singleKeyEffort,
         [2.0, 2.0, 2.0, 1.0, 0.2, 0.2, 1.0, 2.0, null, null, null]
     ),
-    mainFingerAssignment: replaceLast(ergoKbLayoutModel.mainFingerAssignment,
+    mainFingerAssignment: replaceLast(xhkbLayoutModel.mainFingerAssignment,
         [0, 1, 1, 4, 4, 5, 5, 7, null, null, null]
     ),
 }

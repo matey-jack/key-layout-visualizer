@@ -27,7 +27,7 @@ import {
     eb65VerticalEnterLayoutModel,
 } from "./layout/eb65MidshiftNarrowLayoutModels.ts";
 import {eb65MidshiftNiceLayoutModel} from "./layout/eb65MidshiftNiceLayoutModel.ts";
-import {ergoKbLayoutModel, ergoKbWithArrowsLayoutModel} from "./layout/ergoKbLayoutModel.ts";
+import {xhkbLayoutModel, xhkbWithArrowsLayoutModel} from "./layout/xhkbLayoutModel.ts";
 import {ep60addAngleMod, ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./layout/ergoPlank60LayoutModel.ts";
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
@@ -101,7 +101,7 @@ export function getAnsiVariant(layoutOptions: LayoutOptions) {
             break;
         // no need to split the space bar, because it's already split
         case AnsiVariant.ERGO_KB:
-            return layoutOptions.bottomArrows ? ergoKbWithArrowsLayoutModel : ergoKbLayoutModel;
+            return layoutOptions.bottomArrows ? xhkbWithArrowsLayoutModel : xhkbLayoutModel;
         case AnsiVariant.AHKB:
             return layoutOptions.angleMod ? ahkbAddAngleMod(ahkbLayoutModel) : ahkbLayoutModel;
     }

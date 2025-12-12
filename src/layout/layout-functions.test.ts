@@ -23,7 +23,7 @@ import {
 import {ahkbLayoutModel} from "./ahkbLayoutModel.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
 import {eb65MidshiftNiceLayoutModel} from "./eb65MidshiftNiceLayoutModel.ts";
-import {ergoKbLayoutModel, ergoKbWithArrowsLayoutModel} from "./ergoKbLayoutModel.ts";
+import {xhkbLayoutModel, xhkbWithArrowsLayoutModel} from "./xhkbLayoutModel.ts";
 import {ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
 import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
@@ -49,7 +49,7 @@ const allLayoutModels = [
     ansiIBMLayoutModel,
     createHHKB(ansiIBMLayoutModel),
     ahkbLayoutModel,
-    ergoKbLayoutModel,
+    xhkbLayoutModel,
     harmonic14WideLayoutModel,
     harmonic14TraditionalLayoutModel,
     harmonic13WideLayoutModel,
@@ -447,9 +447,9 @@ describe('getKeyMovements', () => {
         expect(escapeMv.next?.label).toBe('Esc');
     });
 
-    it('correctly pairs right Ctrl in ErgoKb vs ErgoKb with cursor arrows', () => {
+    it('correctly pairs right Ctrl in XHKB vs XHKB with cursor arrows', () => {
         // GIVEN/WHEN
-        const movements = calculateMovements(ergoKbLayoutModel, ergoKbWithArrowsLayoutModel);
+        const movements = calculateMovements(xhkbLayoutModel, xhkbWithArrowsLayoutModel);
 
         // THEN: Check Ctrl and Shift keys form proper pairs
         const ctrlMovements = getMovementsByLabel(movements, 'Ctrl');
