@@ -2,11 +2,17 @@
 
 This visualizes and compares several "casual" (that is easy-to-learn instead of fully optimized) keyboard mappings on different layouts of keyboards.
 
-Key mappings are shown for three different layout types:
+Key mappings are shown for four different layout types:
  1. the ancient typewriter-based keyboard layout (used in virtually every laptop that was ever made) with its irregular row-staggering, 
  2. an orthogonal layout (which for key mapping purposes also stands in for most column-staggered layouts), and 
- 3. (as a novelty) the Harmonic Keyboard layout which features a regular row-stagger, uniform key sizes, 
-    and some other modern details like a split space bar, wide home position, and more options for tying with one's thumbs. 
+ 3. two symmetrically row-staggered layouts:
+    * the Harmonic Keyboard: has a regular 0.5u stagger
+    * the Ergoplank/Katana: has a mixed 0.25 and 0.5u stagger 
+
+All new keyboard layouts are further improved by:
+ * wide hand position for better ergonomics (relaxed and open shoulders)
+ * split space bar (with two easy to press thumb keys per side)
+ * fewer different key sizes to minimize waste of space and facilitate keycap swapping to create custom keymaps.
 
 While only "60% keyboards" are shown, all the letter mappings and many other concepts here also apply to bigger keyboards, with or without numpad or F-keys or nav keys.
 
