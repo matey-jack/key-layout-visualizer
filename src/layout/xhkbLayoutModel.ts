@@ -21,11 +21,11 @@ const thumb30KeyMapping: LayoutMapping = [
 ];
 
 export const xhkbLayoutModel: LayoutModel = {
-    name: "Thumby Flex",
-    description: `The Thumby Flex layout continues HHKB's idea of splitting large keys to a point that
+    name: "Thumbs Up",
+    description: `The Thumbs Up layout continues HHKB's idea of splitting large keys to a point that
     delivers a layout with ergonomically wider hand positions and some extra central keys that can be used for navigation 
     or any other purpose. And to top it off, let's also split the space bar to create two great thumb keys per side.
-    Using only four keycap sizes, the Thumby Flex is the most versatile keyboard with traditional typewriter row staggering 
+    Using only four keycap sizes, Thumbs Up is the most versatile keyboard with traditional typewriter row staggering 
     and the classic 60% box shape.`,
 
     keyWidths: [
@@ -94,7 +94,7 @@ function arrowBlockKeymap(thumby: boolean) {
 
 export const xhkbWithArrowsLayoutModel: LayoutModel = {
     ...xhkbLayoutModel,
-    name: "Thumby Flex with cursor block",
+    name: "Thumbs Up with cursor block",
     // we replace two 1.5u keys with three 1u keys
     keyWidths: replaceLast(
         xhkbLayoutModel.keyWidths,
