@@ -29,19 +29,25 @@ export enum PlankVariant {
     /*
        60% layout means 15 key units wide
     */
-    KATANA_60, // the original as published by RominRonin.
+    // the original as published by RominRonin.
+    KATANA_60,
 
-    // vv the "include arrows" flag only applies to this one.
-    EP60, // 15 keys in home row for widest possible hand distance
+    // ErgoMob(ile) 13/3
+    EM13,
+
+    // 15 keys in home row for widest possible hand distance.
+    // The "include arrows" flag only applies to this one.
+    EP60,
 
     /*
-       65% means 16 key units wide and Nav keys in right-most column
-       Main reason for this is to arrange the arrow keys in inverted T shape!
+       65% means 16 key units wide so that arrow keys can fit in the classic inverted-T shape!
     */
-    // vv the "big Enter" variant only applies to this one.
-    EB65_LOW_SHIFT, // 16 columns (65%) to make arrow cluster fit in bottom right
 
-    EB65_MID_SHIFT, // placing Shift in the home row allows for an "angle-mod" and a little gap towards the arrow keys.
+    // The "big Enter" variant only applies to this one.
+    EB65_LOW_SHIFT,
+
+    // Placing Shift in the home row allows for an "angle-mod" and a little gap towards the arrow keys.
+    EB65_MID_SHIFT,
 }
 
 export enum EB65_LowShift_Variant {

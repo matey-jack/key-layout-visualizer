@@ -26,6 +26,7 @@ import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 import {sum} from "./library/math.ts";
+import {ergoMobLayoutModel} from './layout/ergoMobLayoutModel.ts';
 
 const layoutModels: Array<LayoutModel> = [
     ansiIBMLayoutModel,
@@ -37,6 +38,7 @@ const layoutModels: Array<LayoutModel> = [
     xhkbLayoutModel,
     xhkbWithArrowsLayoutModel,
     ahkbLayoutModel,
+    ergoMobLayoutModel,
     eb65LowshiftLayoutModel,
     eb65BigEnterLayoutModel,
     eb65LowshiftWideLayoutModel,

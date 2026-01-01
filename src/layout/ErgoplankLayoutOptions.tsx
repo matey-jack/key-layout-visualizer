@@ -25,9 +25,11 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
     return <div class="plank-layout-options-container">
         <LayoutVariantButton variant={PlankVariant.KATANA_60} currentVariant={variant} setVariant={setVariant} name="Katana60"/>
 
+        <LayoutVariantButton variant={PlankVariant.EM13} currentVariant={variant} setVariant={setVariant} name="Ergomob 13/3"/>
+
         <LayoutVariantButton variant={PlankVariant.EP60}
                             currentVariant={variant} setVariant={setVariant}
-                            name="❤️ Ergoplank 60"
+                            name="❤️ Ergoplank 15/5"
         >
             <CheckboxWithLabel label="angle mod"
                                checked={options.angleMod}
@@ -40,7 +42,7 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
 
         <LayoutVariantButton variant={PlankVariant.EB65_LOW_SHIFT}
                             currentVariant={variant} setVariant={setVariant}
-                            name="Ergoboard 65 Lowshift">
+                            name="Ergoboard 16/4 (Lowshift)">
             {lowshiftVariant(EB65_LowShift_Variant.WIDE_HANDS, "Wide Hands")}
             {options.eb65LowshiftVariant === EB65_LowShift_Variant.WIDE_HANDS &&
                 <div class="ergoplank-angle-mod-checkbox">
@@ -56,7 +58,7 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
 
         <LayoutVariantButton variant={PlankVariant.EB65_MID_SHIFT}
                             currentVariant={variant} setVariant={setVariant}
-                            name="❤️Ergoboard 65 Midshift">
+                            name="❤️Ergoboard 16/5 (Midshift)">
             <EbMidshiftLayoutOptions msVariant={options.eb65MidshiftVariant}
                                      setMsVariant={(v) => setOption({eb65MidshiftVariant: v})}/>
             <FlipRetRubButton setOption={setOption} options={options}/>

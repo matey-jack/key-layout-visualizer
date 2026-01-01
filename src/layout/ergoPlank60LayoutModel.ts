@@ -22,7 +22,7 @@ const thumb30FrameMapping: LayoutMapping = [
 ];
 
 export const ergoPlank60LayoutModel: LayoutModel = {
-    name: "Ergoplank 60 ANSI angle",
+    name: "Ergoplank / ANSI angle",
     description: `"The most ergonomic key layout that fits into a standard "60%" keyboard case."
     Hand distance is maximized. Row stagger is equal to a "cleave-style ergonomic" keyboard.
     Thumb keys are added. 

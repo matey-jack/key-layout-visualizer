@@ -74,7 +74,7 @@ body {
 
 .plank-layout-options-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1.25fr 1.5fr;
+    grid-template-columns: 1fr 1fr 1fr 1.25fr 1.5fr;
     justify-items: center;
 }
 
