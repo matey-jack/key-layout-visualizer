@@ -24,7 +24,7 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
         {variant: AnsiVariant.APPLE, label: "Apple"},
         {variant: AnsiVariant.HHKB, label: "HHKB"},
         {variant: AnsiVariant.ERGO_KB, label: "❤️ Thumbs Up"},
-        {variant: AnsiVariant.AHKB, label: "AHKB"},
+        // {variant: AnsiVariant.AHKB, label: "AHKB"},
     ];
 
     return <div class="ansi-layout-options-container">
