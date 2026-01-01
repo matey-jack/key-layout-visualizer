@@ -74,6 +74,7 @@ bugs fixed:
 - select AHKB, then select qwerty wide. crash!
 - fullLayout on ANSI doesn't work with HHKB and AHKB – function setLayout needs to be adapted to switch to IBM or Apple in this case!
 - when switching mappings we correctly set options (which only affects ANSI), but we don't switch Layouts, because there are so many variants to iterate through. But needs to be done at some point.
+- bigram lines were misplaced on Ergosplit
 
 refactorings done (or decided against):
  - instead of the current keyboard-specific keymaps, keep only thirty and thumbThirty, and put all the rest into a list of pairs [keyboardLayout, specificMapping]. 
@@ -108,9 +109,9 @@ missing core features:
 
 optional:
 - Rectangle around the keyboard to signify the 60% or 65% box.
+- HHKB classic vs Tsangan layout variants (well, the bottom row is almost like Apple's – is this worth it?)
 
 bugs:
-- bigram lines are misplaced on Ergosplit
 - the comparisonBase mapping needs to have definitions on all layouts, thus at least a mapping30 (which is supported everywhere).
    Add that for qwertz and maybe add a full mapping for the ortho board to make the comparison more meaningful.
 - on Thumby / Cozy Keyboard English variant, the apostrophe is counted as "changed on same finger" on the ortho layout, 
