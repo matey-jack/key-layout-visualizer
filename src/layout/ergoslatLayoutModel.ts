@@ -1,5 +1,5 @@
 import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
-import {mirror, SymmetricKeyWidth} from "./keyWidth.ts";
+import {mirror, SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 import {mapValues} from "../library/records.ts";
 
@@ -22,7 +22,7 @@ const thumb30FrameMapping: LayoutMapping = [
 ];
 
 export const ergoslatLayoutModel: LayoutModel = {
-    name: "Ergoslat 13/3 (ANSI angle)",
+    name: "Ergoslat 13/3",
     description: `A smaller ErgoPlank which still has enough keys to write messages, notes, and other texts 
     without excessively using higher layers. It omits only keys used for programming and more involved desktop work.
     While all keyboard layouts can be used with Android devices like smartphones and tablets, this one is specialized for that use case.
@@ -107,5 +107,43 @@ function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
     const lower = keymap[KeyboardRows.Lower];
     const lMiddle = 6;
     keymap[KeyboardRows.Lower] = ['⇧', ...lower.slice(2, lMiddle), '`~', ...lower.slice(lMiddle)];
+    return keymap;
+}
+
+const numberlessKeyWidths = new SymmetricKeyWidth(13, [0, 0, 0, 0, 0.25]);
+
+export function ergoslatAddNumberless(lm: LayoutModel): LayoutModel {
+    return {
+        ...lm,
+        name: "Ergoslat 13/3 (numberless)",
+        rowIndent: numberlessKeyWidths.rowIndent,
+        keyWidths: [
+            [13], // just put a full-width gap here, so the test passes
+            numberlessKeyWidths.row(0, 1.25),     // Upper row: escape and backspace take full 1.25u
+            numberlessKeyWidths.row(2, 1),        // Home row unchanged
+            numberlessKeyWidths.row(3, 1.5),      // Lower row unchanged
+            // With 0.25 indent and 0.5u from the central 1u key, both halves have exactly 7.5u
+            mirror(1.25, 1.25, 1, 1.25, 1.5),
+        ],
+        
+        mainFingerAssignment: [[null], ...lm.mainFingerAssignment.slice(1,5)],
+        singleKeyEffort: [[null], ...lm.singleKeyEffort.slice(1, 5)],
+        frameMappings: {
+            [KeymapTypeId.Ansi30]: copyAndModifyKeymap(ansi30FrameMapping, numberlessKeymap),
+            [KeymapTypeId.Thumb30]: moveReturn(copyAndModifyKeymap(thumb30FrameMapping, numberlessKeymap)),
+        },
+    };
+}
+
+function numberlessKeymap(keymap: LayoutMapping): LayoutMapping {
+    keymap[KeyboardRows.Number] = [null];
+    keymap[KeyboardRows.Upper][0] = "Esc";
+    keymap[KeyboardRows.Upper][12] = "⌫";  // because of the gap, there's actual 13 entries here and 12 is the last.
+    return keymap;
+}
+
+function moveReturn(keymap: LayoutMapping): LayoutMapping {
+    keymap[KeyboardRows.Home][6] = "'";
+    keymap[KeyboardRows.Home][12] = "⏎";
     return keymap;
 }

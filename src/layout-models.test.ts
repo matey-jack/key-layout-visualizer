@@ -26,7 +26,7 @@ import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 import {sum} from "./library/math.ts";
-import {ergoslatLayoutModel} from './layout/ergoslatLayoutModel.ts';
+import {ergoslatAddNumberless, ergoslatLayoutModel} from './layout/ergoslatLayoutModel.ts';
 
 const layoutModels: Array<LayoutModel> = [
     ansiIBMLayoutModel,
@@ -39,6 +39,7 @@ const layoutModels: Array<LayoutModel> = [
     xhkbWithArrowsLayoutModel,
     ahkbLayoutModel,
     ergoslatLayoutModel,
+    ergoslatAddNumberless(ergoslatLayoutModel),
     eb65LowshiftLayoutModel,
     eb65BigEnterLayoutModel,
     eb65LowshiftWideLayoutModel,

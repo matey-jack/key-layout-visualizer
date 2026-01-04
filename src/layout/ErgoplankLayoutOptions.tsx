@@ -25,7 +25,11 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
     return <div class="plank-layout-options-container">
         <LayoutVariantButton variant={PlankVariant.KATANA_60} currentVariant={variant} setVariant={setVariant} name="Katana60"/>
 
-        <LayoutVariantButton variant={PlankVariant.EM13} currentVariant={variant} setVariant={setVariant} name="Ergoslat 13/3"/>
+        <LayoutVariantButton variant={PlankVariant.EM13} currentVariant={variant} setVariant={setVariant} name="Ergoslat 13/3">
+            <CheckboxWithLabel label="numberless"
+                               checked={options.esNumberless}
+                               onChange={(numberless) => setOption({esNumberless: numberless})}/>
+        </LayoutVariantButton>
 
         <LayoutVariantButton variant={PlankVariant.EP60}
                             currentVariant={variant} setVariant={setVariant}
