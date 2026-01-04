@@ -36,7 +36,7 @@ import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLa
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
-import {ergoMobLayoutModel} from './layout/ergoMobLayoutModel.ts';
+import {ergoslatLayoutModel} from './layout/ergoslatLayoutModel.ts';
 
 export function getHarmonicVariant(variant: HarmonicVariant): LayoutModel {
     switch (variant) {
@@ -59,7 +59,7 @@ export function getPlankVariant(opts: Partial<LayoutOptions>): LayoutModel {
         case PlankVariant.KATANA_60:
             return katanaLayoutModel;
         case PlankVariant.EM13:
-            return ergoMobLayoutModel;
+            return ergoslatLayoutModel;
         case PlankVariant.EB65_LOW_SHIFT:
             // UI calls this method without variant parameters, so we need a default.
             switch (eb65LowshiftVariant) {

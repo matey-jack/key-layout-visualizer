@@ -88,6 +88,10 @@ refactorings done (or decided against):
 
 ======================== TODO ===============================
 
+small tasks:
+ - enable ergoMobAddAngleMod
+ - option for ergoMob without number row
+
 missing core features:
 - SVG export (with a title stating name of layout and keymap)
   - add metadata for to-scale printing (might need PDF?)
