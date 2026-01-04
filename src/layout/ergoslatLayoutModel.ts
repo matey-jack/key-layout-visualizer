@@ -1,5 +1,5 @@
 import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
-import {mirror, SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
+import {mirror, SymmetricKeyWidth} from "./keyWidth.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 import {mapValues} from "../library/records.ts";
 
@@ -125,8 +125,8 @@ export function ergoslatAddNumberless(lm: LayoutModel): LayoutModel {
             // With 0.25 indent and 0.5u from the central 1u key, both halves have exactly 7.5u
             mirror(1.25, 1.25, 1, 1.25, 1.5),
         ],
-        
-        mainFingerAssignment: [[null], ...lm.mainFingerAssignment.slice(1,5)],
+
+        mainFingerAssignment: [[null], ...lm.mainFingerAssignment.slice(1, 5)],
         singleKeyEffort: [[null], ...lm.singleKeyEffort.slice(1, 5)],
         frameMappings: {
             [KeymapTypeId.Ansi30]: copyAndModifyKeymap(ansi30FrameMapping, numberlessKeymap),

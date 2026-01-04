@@ -14,6 +14,19 @@ import {mapValues} from "../library/records.ts";
 
 const ibmKeyWidths = new MonotonicKeyWidth(15, zeroIndent, "ANSI/IBM");
 
+/*
+    This is here, since MS KLC export uses the Ansi layout model as the technical translation vehicle.
+    The idea is to reuse the flex/frame merging and directly export the resulting mapping that's also used for
+    the KeyboardSvg.
+    String values here are only for documentation purposes; those keys are not mapped.
+ */
+export const msKlcScancodes = [
+    [0x29, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, "⌫"],
+    ["↹", 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x2b],
+    ["CAPS", 0x1e, 0x1f, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, "⏎"],
+    ["⇧", 0x2c, 0x2d, 0x2e, 0x2f, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, "⇧"],
+];
+
 export const ansiIBMLayoutModel: LayoutModel = {
     name: "ANSI/IBM",
     description: "The ANSI keyboard layout is based on a typewriter keyboard from the 19th century which gradually evolved " +

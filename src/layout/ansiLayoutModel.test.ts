@@ -1,7 +1,7 @@
 import {describe, expect, it} from 'vitest';
 import {KeyboardRows, KeymapTypeId} from "../base-model.ts";
 import {sum} from "../library/math.ts";
-import {ansiIBMLayoutModel, ansiWideLayoutModel, createApple} from "./ansiLayoutModel.ts";
+import {ansiIBMLayoutModel, ansiWideLayoutModel, createApple, msKlcScancodes} from "./ansiLayoutModel.ts";
 
 describe('ansiLayoutModel.keyWidths', () => {
     const lastCol = (row: KeyboardRows) =>
@@ -61,5 +61,15 @@ describe('Apple ANSI variant', () => {
         expect(ansi30Vars.length).toBe(0);
         const ansiVars = (appleAnsi.frameMappings[KeymapTypeId.Ansi])![KeyboardRows.Bottom].filter((m) => typeof m === "number");
         expect(ansiVars.length).toBe(0);
+    })
+})
+
+describe('msKlcScancodes', () => {
+    const ansi30FrameMapping = (ansiIBMLayoutModel.frameMappings[KeymapTypeId.Ansi30])!;
+    
+    it('each row has the same length as the corresponding Ansi frame mapping row', () => {
+        for (let row = 0; row < 4; row++) {
+            expect(msKlcScancodes[row].length, `row ${row}`).toBe(ansi30FrameMapping[row].length);
+        }
     })
 })
