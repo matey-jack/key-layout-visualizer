@@ -9,4 +9,8 @@ Constraints and Rough Plan:
  - Our first task is to map the "scan codes" used by KLC to the matrix positions in our app. 
    We can do that by pre-calculating a matrix, which contains the scancodes in the position where the key actually is...
    And for good readability leave the key name for the positions that can't be remapped using KLC.
- - 
+
+Export algorithm:
+ - for each position in msKlcScancodes that is a scancode (a number) `sc`, get the character from the merged mapping.
+ - then find the line for that character in the base .klc file and generate an output line with the scancode `sc` and the found line (except its scancode)
+ - write the output file using the header and footer from base, only replacing all the scancode lines found and created above.
