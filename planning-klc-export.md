@@ -14,3 +14,5 @@ Export algorithm:
  - for each position in msKlcScancodes that is a scancode (a number) `sc`, get the character from the merged mapping.
  - then find the line for that character in the base .klc file and generate an output line with the scancode `sc` and the found line (except its scancode)
  - write the output file using the header and footer from base, only replacing all the scancode lines found and created above.
+
+TODO: define id for the KLC file

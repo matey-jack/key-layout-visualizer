@@ -1,9 +1,20 @@
+import { msKlcScancodes } from "../layout/ansiLayoutModel.ts";
+
 export function getKlc(mergedMapping: string[][]): string {
-    const middlePart = [];
-    // TODO: iterate over msKlcScancodes:
-    //          when the element is a scancode `sc`, get the element `e` from the same position in `mergedMapping`
-    //          middlePart.push(/* `sc` in hex, but without 0x, then a tab, then all of `e`*/);
-    return klcHeader + middlePart /* joined with \n */ + klcFooter;
+    const middlePart: string[] = [];
+    msKlcScancodes.forEach((row, rowIdx) => {
+        row.forEach((sc, colIdx) => {
+            if (typeof sc === "number") {
+                const character = mergedMapping[rowIdx]?.[colIdx];
+                const klcLine = character ? klcKeys[character as keyof typeof klcKeys] : undefined;
+                if (klcLine) {
+                    const scHex = sc.toString(16).toUpperCase().padStart(2, "0");
+                    middlePart.push(scHex + "\t" + klcLine);
+                }
+            }
+        });
+    });
+    return klcHeader + "\n" + middlePart.join("\n") + "\n" + klcFooter;
 }
 
 export const klcHeader = `
@@ -43,7 +54,7 @@ export const klcKeys = {
     "9": "9\t\t0\t9\t0028\t-1\t\t// DIGIT NINE, LEFT PARENTHESIS, <none>",
     "0": "0\t\t0\t0\t0029\t-1\t\t// DIGIT ZERO, RIGHT PARENTHESIS, <none>",
     "-": "OEM_MINUS\t0\t002d\t005f\t-1\t\t// HYPHEN-MINUS, LOW LINE, <none>",
-    "+": "OEM_PLUS\t0\t003d\t002b\t-1\t\t// EQUALS SIGN, PLUS SIGN, <none>",
+    "=": "OEM_PLUS\t0\t003d\t002b\t-1\t\t// EQUALS SIGN, PLUS SIGN, <none>",
     "q": "Q\t\t1\tq\tQ\t-1\t\t// LATIN SMALL LETTER Q, LATIN CAPITAL LETTER Q, <none>",
     "w": "W\t\t1\tw\tW\t-1\t\t// LATIN SMALL LETTER W, LATIN CAPITAL LETTER W, <none>",
     "e": "E\t\t1\te\tE\t-1\t\t// LATIN SMALL LETTER E, LATIN CAPITAL LETTER E, <none>",
@@ -67,7 +78,7 @@ export const klcKeys = {
     "l": "L\t\t1\tl\tL\t-1\t\t// LATIN SMALL LETTER L, LATIN CAPITAL LETTER L, <none>",
     ";": "OEM_1\t\t0\t003b\t003a\t-1\t\t// SEMICOLON, COLON, <none>",
     "'": "OEM_7\t\t0\t0027\t0022\t-1\t\t// APOSTROPHE, QUOTATION MARK, <none>",
-    "`": "OEM_3\t\t0\t0060\t007e\t-1\t\t// GRAVE ACCENT, TILDE, <none>",
+    "`~": "OEM_3\t\t0\t0060\t007e\t-1\t\t// GRAVE ACCENT, TILDE, <none>",
     "\\": "OEM_5\t\t0\t005c\t007c\t001c\t\t// REVERSE SOLIDUS, VERTICAL LINE, INFORMATION SEPARATOR FOUR",
     "z": "Z\t\t1\tz\tZ\t-1\t\t// LATIN SMALL LETTER Z, LATIN CAPITAL LETTER Z, <none>",
     "x": "X\t\t1\tx\tX\t-1\t\t// LATIN SMALL LETTER X, LATIN CAPITAL LETTER X, <none>",
