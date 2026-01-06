@@ -15,9 +15,9 @@ describe("getKlc", () => {
         const result = getKlc(mergedMapping);
 
         // Save result to file for manual inspection
-        const outputPath = resolve("test-results", "generated-qwerty.klc");
-        writeFileSync(outputPath, result);
-        console.log(`Generated KLC file saved to: ${outputPath}`);
+        // const outputPath = resolve("test-results", "generated-qwerty.klc");
+        // writeFileSync(outputPath, result);
+        // console.log(`Generated KLC file saved to: ${outputPath}`);
 
         // Verify header is present
         expect(result).toContain("KBD\tUSANSI");
