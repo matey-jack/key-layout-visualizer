@@ -158,6 +158,8 @@ export interface FlexMapping {
     fallback?: FlexMapping,
     description?: string;
     sourceUrl?: string;
+    // this can only be 6 characters, because we add '-w' for the wide-mod and KLC allows 8 max.
+    klcId?: string;
     sourceLinkTitle?: string;
     // used for showing the learning diff
     comparisonBase?: FlexMapping;

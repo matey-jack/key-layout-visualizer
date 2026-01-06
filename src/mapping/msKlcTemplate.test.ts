@@ -12,7 +12,7 @@ describe("getKlc", () => {
         const ansiFrameMapping = (ansiIBMLayoutModel.frameMappings[KeymapTypeId.Ansi30])!;
         const qwertyKeymap = ["", ...qwertyMapping.mappings[KeymapTypeId.Ansi30]!];
         const mergedMapping = mergeMapping(ansiFrameMapping, qwertyKeymap);
-        const result = getKlc(mergedMapping);
+        const result = getKlc(mergedMapping, qwertyMapping);
 
         // Save result to file for manual inspection
         // const outputPath = resolve("test-results", "generated-qwerty.klc");
@@ -20,11 +20,11 @@ describe("getKlc", () => {
         // console.log(`Generated KLC file saved to: ${outputPath}`);
 
         // Verify header is present
-        expect(result).toContain("KBD\tUSANSI");
+        expect(result).toContain("KBD\tqwerty\t\"US-ANSI - Qwerty – ");
         
         // Verify footer is present
-        expect(result).toContain("KEYNAME\n");
-        expect(result).toContain("DESCRIPTIONS\n");
+        expect(result).toContain("KEYNAME\r\n");
+        expect(result).toContain("DESCRIPTIONS\r\n");
         
         // Verify some scancode lines are present (format: HEX\tKLC_LINE)
         expect(result).toMatch(/29\tOEM_3\t\t0\t0060\t007e\t-1/); // scancode 0x29 for "`"
@@ -32,6 +32,6 @@ describe("getKlc", () => {
         expect(result).toMatch(/10\tQ\t\t1\tq\tQ\t-1/); // scancode 0x10 for "q"
         expect(result).toMatch(/24\tJ\t\t1\tj\tJ\t-1/); // scancode 0x24 for "j"
         expect(result).toMatch(/34\tOEM_PERIOD\t0\t002e\t003e\t-1/); // scancode 0x34 for "."
-        expect(result).toMatch(/2B\tOEM_5\t\t0\t005c\t007c\t001c/); // scancode 0x2B for "\"
+        expect(result).toMatch(/2b\tOEM_5\t\t0\t005c\t007c\t001c/); // scancode 0x2B for "\"
     });
 });

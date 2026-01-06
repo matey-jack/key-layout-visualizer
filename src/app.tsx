@@ -70,7 +70,7 @@ function isKlcCompatible(appState: AppState): boolean {
      if (layoutOptions.type !== LayoutType.ANSI) {
          return false;
      }
-     if (appState.mapping.value.mappings.thumb30) {
+     if (!appState.mapping.value.klcId) {
          return false;
      }
      return layoutOptions.ansiVariant === AnsiVariant.IBM || layoutOptions.ansiVariant === AnsiVariant.APPLE;
@@ -83,17 +83,17 @@ function isKlcCompatible(appState: AppState): boolean {
   function DownloadKlcLink({appState}: DownloadKlcLinkProps) {
        const handleDownload = () => {
           const layout = appState.layoutModel.value;
-          const mapping = appState.mapping.value;
+          const keyMap = appState.mapping.value;
           const layoutOptions = appState.layout.value;
-          const mergedMapping = fillMapping(layout, mapping);
+          const mergedMapping = fillMapping(layout, keyMap);
 
           if (!mergedMapping) {
               alert("Unable to generate KLC file for this mapping");
               return;
           }
 
-          const klcContent = getKlc(mergedMapping);
-          const baseName = mapping.techName || mapping.name;
+          const klcContent = getKlc(mergedMapping, keyMap);
+          const baseName = keyMap.techName || keyMap.name;
           const fileName = layoutOptions.ansiWide ? `${baseName}-wide` : baseName;
           const blob = new Blob([klcContent], { type: "text/plain" });
           const url = URL.createObjectURL(blob);

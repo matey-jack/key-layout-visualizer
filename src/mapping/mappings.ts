@@ -38,6 +38,7 @@ import {type FlexMapping, KeymapTypeId} from "../base-model.ts";
 export const qwertyMapping: FlexMapping = {
     name: "Qwerty – US and world-wide standard",
     techName: "QWERTY",
+    klcId: "qwerty",
     description: `This ancient typewriter-born key mapping is so ubiquitous today that many people might never have seen 
     a different mapping in their whole life. At the same time it is also extra-ordinary bad for touch-typing, 
     because frequently used letters are not in the center. `,
@@ -240,11 +241,12 @@ export const minimakFullMapping: FlexMapping = {
 // (Most typing is on home and upper row, often even both ahead and after the N, for example, double upper-row neigbors
 // mINUte, commUNIty, UNIversal, contINUe, ecONOmic, traINIng. The lateral movement to Qwerty N even moves the hand away from 
 // home row letters, see ONLy, thINK, KNOw, ONLine, ...)
-// Nobody should waste time with a UN swap! (Especially, since U's position on the upper row is quite befitting for its frequency!)
+// Nobody should waste time with a UJ swap! (Especially since U's position on the upper row is quite befitting for its frequency!)
 export const qwertyFlipTwistMapping: FlexMapping = {
     name: "Qwerty Flip/Twist",
     techName: "Qwerty-FlipTwist",
     localMaximum: true,
+    klcId: "flip",
     sourceUrl: "https://nick-gravgaard.com/qwerty-flip/",
     description: "The genius mapping that anyone can remember after seeing it only one time. " +
         "Absolutely minimal learning; much better typing than Qwerty; and anyone can still use your relabled keyboard, " +
@@ -409,6 +411,7 @@ export const quipperMapping: FlexMapping = {
     name: "Quipper aka Qwpr",
     techName: "Qwpr",
     localMaximum: true,
+    klcId: "qwpr",
     sourceUrl: "https://sourceforge.net/p/qwpr/wiki/Home/",
     description: "By placing 'e' on the right pinky, this mapping avoids a lot of bigram conflicts, " +
         "since no other letter is on that finger. ",
@@ -873,6 +876,7 @@ export const gemuetlichesMapping: FlexMapping = {
 export const colemakMapping: FlexMapping = {
     name: "Colemak",
     localMaximum: true,
+    klcId: "colmak",
     description: "Released in the year 2006, the Colemak letter map started a new world-wide interest in better keyboard mappings. " +
         "It also pioneered the idea of leaving some crucial-for-shortcuts keys in their place. " +
         "Colemak places a strong emphasis on avoiding single-finger bigram conflicts at the cost of many letters changing fingers. ",

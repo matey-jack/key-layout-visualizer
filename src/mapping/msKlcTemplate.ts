@@ -1,6 +1,7 @@
 import { msKlcScancodes } from "../layout/ansiLayoutModel.ts";
+import type {FlexMapping} from '../base-model.ts';
 
-export function getKlc(mergedMapping: string[][]): string {
+export function getKlc(mergedMapping: string[][], keyMap: FlexMapping): string {
     const middlePart: string[] = [];
     msKlcScancodes.forEach((row, rowIdx) => {
         row.forEach((sc, colIdx) => {
@@ -8,19 +9,20 @@ export function getKlc(mergedMapping: string[][]): string {
                 const character = mergedMapping[rowIdx]?.[colIdx];
                 const klcLine = character ? klcKeys[character as keyof typeof klcKeys] : undefined;
                 if (klcLine) {
-                    const scHex = sc.toString(16).toUpperCase().padStart(2, "0");
+                    const scHex = sc.toString(16).padStart(2, "0");
                     middlePart.push(scHex + "\t" + klcLine);
                 }
             }
         });
     });
-    return klcHeader + "\n" + middlePart.join("\n") + "\n" + klcFooter;
+    let klcFull = klcHeader(keyMap.klcId!, keyMap.name) + "\n" + middlePart.join("\n") + klcFooter;
+    return klcFull.replace(/\n/g, "\r\n");
 }
 
-export const klcHeader = `
-KBD\tUSANSI\t"US - ANSI - no AltGr"
+export const klcHeader = (id: string, description: string) =>
+`KBD\t${id}\t"US-ANSI - ${description}"
 
-COPYRIGHT\t"(c) 2026 Robert 'Jack' Will"
+COPYRIGHT\t"(c) 2026 Robert Jack Will"
 
 COMPANY\t"RJW"
 
@@ -40,7 +42,7 @@ LAYOUT\t\t;an extra '@' at the end is a dead key
 
 //SC\tVK_\t\tCap\t0\t1\t2
 //--\t----\t\t----\t----\t----\t----
-`
+`;
 
 export const klcKeys = {
     "1": "1\t\t0\t1\t0021\t-1\t\t// DIGIT ONE, EXCLAMATION MARK, <none>",
@@ -185,4 +187,4 @@ LANGUAGENAMES
 
 0409\tEnglish (United States)
 ENDKBD
-`
+`;
