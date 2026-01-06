@@ -384,6 +384,18 @@ label.disabled {
     }
 }
 
+.download-klc-link {
+    margin-left: 1rem;
+    color: #003fae;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.download-klc-link:hover {
+    text-decoration: underline;
+    color: #5cdbef;
+}
+
 .mapping-and-details-container {
     display: grid;
     align-items: start;
