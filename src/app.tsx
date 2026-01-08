@@ -92,7 +92,7 @@ function isKlcCompatible(appState: AppState): boolean {
               return;
           }
 
-          const klcContent = getKlc(mergedMapping, keyMap);
+          const klcContent = getKlc(mergedMapping, keyMap, layoutOptions.ansiWide);
           const baseName = keyMap.techName || keyMap.name;
           const fileName = layoutOptions.ansiWide ? `${baseName}-wide` : baseName;
           const blob = new Blob([klcContent], { type: "text/plain" });

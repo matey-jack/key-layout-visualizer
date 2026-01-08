@@ -1,7 +1,7 @@
 import { msKlcScancodes } from "../layout/ansiLayoutModel.ts";
 import type {FlexMapping} from '../base-model.ts';
 
-export function getKlc(mergedMapping: string[][], keyMap: FlexMapping): string {
+export function getKlc(mergedMapping: string[][], keyMap: FlexMapping, isWide: boolean = false): string {
     const middlePart: string[] = [];
     msKlcScancodes.forEach((row, rowIdx) => {
         row.forEach((sc, colIdx) => {
@@ -15,16 +15,18 @@ export function getKlc(mergedMapping: string[][], keyMap: FlexMapping): string {
             }
         });
     });
-    let klcFull = klcHeader(keyMap.klcId!, keyMap.name) + "\n" + middlePart.join("\n") + klcFooter;
+    const description = isWide ? `wide ${keyMap.name}` : keyMap.name;
+    let id = isWide ? keyMap.klcId! + "-w" : keyMap.klcId!;
+    let klcFull = klcHeader(id, description) + "\n" + middlePart.join("\n") + klcFooter;
     return klcFull.replace(/\n/g, "\r\n");
 }
 
 export const klcHeader = (id: string, description: string) =>
 `KBD\t${id}\t"US-ANSI - ${description}"
 
-COPYRIGHT\t"(c) 2026 Robert Jack Will"
+COPYRIGHT\t""
 
-COMPANY\t"RJW"
+COMPANY\t"matey-jack/key-layout-visualizer"
 
 LOCALENAME\t"en-US"
 
