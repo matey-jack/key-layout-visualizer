@@ -1,7 +1,7 @@
-import { test, expect } from '@playwright/test';
+import {expect, test} from '@playwright/test';
 
 test.describe('Keyboard Layout Visualizer', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page }, testInfo) => {
     // Set up global error collection for all tests
     (page as any).consoleErrors = [];
     
@@ -20,12 +20,13 @@ test.describe('Keyboard Layout Visualizer', () => {
 
     page.on('pageerror', (error) => {
       const errorEntry = {
+        test: testInfo.title,
         text: error.message,
         stack: error.stack,
         type: 'pageerror',
       };
       (page as any).consoleErrors.push(errorEntry);
-      console.error(`[Page Error]: ${error.message}\n${error.stack}`);
+      console.error(`[${testInfo.title}]Page Error: ${error.message}\n${error.stack}`);
     });
 
     await page.goto('/key-layout-visualizer/');
@@ -41,14 +42,11 @@ test.describe('Keyboard Layout Visualizer', () => {
       console.error('='.repeat(60));
       
       errors.forEach((error, index) => {
-        console.error(`\nError ${index + 1}:`);
+        console.error(`\nError ${index + 1}, Test '${error.test}':`);
         console.error(`Type: ${error.type}`);
         console.error(`Message: ${error.text}`);
         if (error.stack) {
           console.error(`Stack: ${error.stack}`);
-        }
-        if (error.location) {
-          console.error(`Location: ${error.location.url}:${error.location.lineNumber}:${error.location.columnNumber}`);
         }
       });
       console.error(`${'='.repeat(60)}\n`);
@@ -200,16 +198,16 @@ test.describe('Keyboard Layout Visualizer', () => {
 
     // Switch to a different visualization
     const vizButtons = page.locator('button.viz-type-button');
-    const secondButton = vizButtons.nth(1);
+    const secondButton = vizButtons.nth(0);
     await secondButton.click();
     await page.waitForLoadState('networkidle');
 
-    // Get new visualization detail content
-    const newText = await detailsArea.textContent();
-
-    // They should be different (unless we happened to click the same category)
     // This is a weak assertion but shows the UI is responding
     await expect(detailsArea).toBeVisible();
+    // Get new visualization detail content
+    const newText = await detailsArea.textContent();
+    // They should be different (unless we happened to click the same category)
+    expect(newText).not.toEqual(initialText);
   });
 
   test('should render keyboard visualization for each layout type', async ({ page }) => {
