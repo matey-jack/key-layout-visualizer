@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "biome-fix": "biome check --write src",
     "build": "tsc -b && vite build && npx tsx scripts/generate-seo-content.ts",
     "preview": "vite preview",
     "test": "node ./node_modules/vitest/vitest.mjs run",

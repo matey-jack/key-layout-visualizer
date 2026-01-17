@@ -1,6 +1,6 @@
 import {describe, expect, it} from "vitest";
-import {allMappings, colemakMapping, qwertyMapping} from "./mappings.ts";
 import {KEYMAP_TYPES, KeymapTypeId} from "../base-model.ts";
+import {allMappings, colemakMapping, qwertyMapping} from "./mappings.ts";
 
 describe('new mappings property structure', () => {
     it('qwertyMapping has mappings property with Ansi30', () => {

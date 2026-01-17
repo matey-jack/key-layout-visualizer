@@ -1,11 +1,9 @@
-import { describe, it, expect } from "vitest";
-import { getKlc } from "./msKlcTemplate.ts";
-import {mergeMapping} from '../layout/layout-functions.ts';
+import {describe, expect, it} from "vitest";
 import {KeymapTypeId} from '../base-model.ts';
-import {qwertyMapping} from './mappings.ts';
 import {ansiIBMLayoutModel} from '../layout/ansiLayoutModel.ts';
-import { writeFileSync } from "fs";
-import { resolve } from "path";
+import {mergeMapping} from '../layout/layout-functions.ts';
+import {qwertyMapping} from './mappings.ts';
+import {getKlc} from "./msKlcTemplate.ts";
 
 describe("getKlc", () => {
     it("should generate KLC format output from merged mapping", () => {

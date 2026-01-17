@@ -8,9 +8,9 @@ import {
     SKE_AWAY,
     SKE_HOME,
 } from "../base-model.ts";
-import {mirrorOdd, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
-import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
 import {mapValues} from "../library/records.ts";
+import {MonotonicKeyWidth, mirrorOdd, zeroIndent} from "./keyWidth.ts";
+import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
 
 const ibmKeyWidths = new MonotonicKeyWidth(15, zeroIndent, "ANSI/IBM");
 

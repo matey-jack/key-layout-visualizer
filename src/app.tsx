@@ -5,12 +5,12 @@ import type {ComponentChildren} from "preact";
 import type {AppState} from "./app-model.ts";
 import {AnsiVariant} from "./app-model.ts";
 import {createAppState} from "./app-state.ts";
-import {VisualizationType, LayoutType} from "./base-model.ts";
+import {LayoutType, VisualizationType } from "./base-model.ts";
 import {DetailsArea} from "./details/DetailsArea.tsx";
 import {LayoutArea} from "./layout/LayoutArea.tsx";
+import {fillMapping} from "./layout/layout-functions.ts";
 import {MappingList} from "./mapping/MappingArea.tsx";
 import {getKlc} from "./mapping/msKlcTemplate.ts";
-import {fillMapping} from "./layout/layout-functions.ts";
 
 const appState = createAppState();
 

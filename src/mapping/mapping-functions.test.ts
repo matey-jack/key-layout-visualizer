@@ -1,9 +1,9 @@
-import {describe, it, expect} from "vitest";
-import {ansiIBMLayoutModel} from "../layout/ansiLayoutModel.ts";
-import {qwertyMapping} from "./mappings.ts";
-import {sumKeyFrequenciesByEffort} from "./mapping-functions.ts";
-import {fillMapping} from "../layout/layout-functions.ts";
+import {describe, expect, it } from "vitest";
 import {singleCharacterFrequencies as englishFreqs} from "../frequencies/english-single-character-frequencies.ts";
+import {ansiIBMLayoutModel} from "../layout/ansiLayoutModel.ts";
+import {fillMapping} from "../layout/layout-functions.ts";
+import {sumKeyFrequenciesByEffort} from "./mapping-functions.ts";
+import {qwertyMapping} from "./mappings.ts";
 
 describe("sumKeyFrequenciesByEffort", () => {
     it("works", () => {

@@ -1,7 +1,7 @@
 import {KEY_COLOR, KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
+import {mapValues} from "../library/records.ts";
 import {MonotonicKeyWidth, mirror } from "./keyWidth.ts";
 import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
-import {mapValues} from "../library/records.ts";
 
 const ahkbKeyWidth = new MonotonicKeyWidth(14.5, [0, 0, 0.25, 0.25, 0.25], "AHKB Narrow");
 

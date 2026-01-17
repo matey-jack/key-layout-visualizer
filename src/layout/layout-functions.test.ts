@@ -5,8 +5,8 @@ import {
     Hand,
     hand,
     KeyboardRows,
-    KeymapTypeId,
     type KeyMovement,
+    KeymapTypeId,
     type LayoutModel,
     MappingChange,
 } from "../base-model.ts";
@@ -23,7 +23,6 @@ import {
 import {ahkbLayoutModel} from "./ahkbLayoutModel.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
 import {eb65MidshiftNiceLayoutModel} from "./eb65MidshiftNiceLayoutModel.ts";
-import {xhkbLayoutModel, xhkbWithArrowsLayoutModel} from "./xhkbLayoutModel.ts";
 import {ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
 import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
@@ -44,6 +43,7 @@ import {
     mergeMapping,
 } from "./layout-functions.ts";
 import {splitOrthoLayoutModel} from "./splitOrthoLayoutModel.ts";
+import {xhkbLayoutModel, xhkbWithArrowsLayoutModel} from "./xhkbLayoutModel.ts";
 
 const allLayoutModels = [
     ansiIBMLayoutModel,

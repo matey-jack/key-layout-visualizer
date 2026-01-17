@@ -1,6 +1,6 @@
-import {describe, it, expect, vi} from "vitest";
-import {SymmetricKeyWidth, zeroIndent, MicroGapKeyWidths, MonotonicKeyWidth} from "./keyWidth.ts";
+import {describe, expect, it, vi} from "vitest";
 import {KeyboardRows} from "../base-model.ts";
+import {MicroGapKeyWidths, MonotonicKeyWidth, SymmetricKeyWidth, zeroIndent } from "./keyWidth.ts";
 
 describe('symmetric keyWidth gap position', () => {
    it('works with no gaps', () => {

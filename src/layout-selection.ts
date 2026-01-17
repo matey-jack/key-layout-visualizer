@@ -27,8 +27,8 @@ import {
     eb65VerticalEnterLayoutModel,
 } from "./layout/eb65MidshiftNarrowLayoutModels.ts";
 import {eb65MidshiftNiceLayoutModel} from "./layout/eb65MidshiftNiceLayoutModel.ts";
-import {xhkbLayoutModel, xhkbWithArrowsLayoutModel} from "./layout/xhkbLayoutModel.ts";
 import {ep60addAngleMod, ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./layout/ergoPlank60LayoutModel.ts";
+import {ergoslatAddNumberless, ergoslatLayoutModel} from './layout/ergoslatLayoutModel.ts';
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
@@ -36,7 +36,7 @@ import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLa
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
-import {ergoslatAddNumberless, ergoslatLayoutModel} from './layout/ergoslatLayoutModel.ts';
+import {xhkbLayoutModel, xhkbWithArrowsLayoutModel} from "./layout/xhkbLayoutModel.ts";
 
 export function getHarmonicVariant(variant: HarmonicVariant): LayoutModel {
     switch (variant) {

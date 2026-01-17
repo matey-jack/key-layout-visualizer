@@ -1,8 +1,8 @@
 import type {ComponentChildren} from "preact";
 import type {AppState} from "../app-model.ts";
 import {
-    bigramEffort,
     BigramType,
+    bigramEffort,
     type FlexMapping,
     isLayoutViz,
     KeymapTypeId,

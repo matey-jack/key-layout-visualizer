@@ -1,10 +1,10 @@
-import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import type {Signal} from "@preact/signals";
-import type {FlexMapping} from "../base-model.ts";
-import {onlySupportsWide} from "./layout-functions.ts";
 import {AnsiVariant, type LayoutOptions} from "../app-model.ts";
+import type {FlexMapping} from "../base-model.ts";
+import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {LayoutVariantButton} from "../components/LayoutVariantButton.tsx";
 import {FlipRetRubButton} from "./components/FlipRetRubButton.tsx";
+import {onlySupportsWide} from "./layout-functions.ts";
 
 export interface AnsiLayoutOptionsProps {
     options: LayoutOptions;

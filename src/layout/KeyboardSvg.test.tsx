@@ -1,9 +1,9 @@
-import {describe, expect, it} from 'vitest';
 import {render} from '@testing-library/preact';
-import {RowBasedKeyboard} from './KeyboardSvg.tsx';
-import {qwertyMapping} from "../mapping/mappings.ts";
+import {describe, expect, it} from 'vitest';
 import {VisualizationType} from "../base-model.ts";
+import {qwertyMapping} from "../mapping/mappings.ts";
 import {ansiIBMLayoutModel} from "./ansiLayoutModel.ts";
+import {RowBasedKeyboard} from './KeyboardSvg.tsx';
 import {fillMapping, getKeyMovements, getKeyPositions} from "./layout-functions.ts";
 
 // Test key rendering

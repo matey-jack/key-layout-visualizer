@@ -1,7 +1,7 @@
 import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
+import {mapValues} from "../library/records.ts";
 import {mirror, SymmetricKeyWidth} from "./keyWidth.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
-import {mapValues} from "../library/records.ts";
 
 const keyWidths = new SymmetricKeyWidth(13, [0, 0.25, 0, 0, 0.25]);
 

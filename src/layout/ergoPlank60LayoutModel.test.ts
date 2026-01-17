@@ -1,8 +1,7 @@
 import {describe, expect, it} from 'vitest';
-
+import {qwertyMapping} from "../mapping/mappings.ts";
 import {ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
 import {fillMapping, getKeyPositions} from "./layout-functions.ts";
-import {qwertyMapping} from "../mapping/mappings.ts";
 
 describe('ergoPlank60LayoutModel', () => {
     it('has a gap in the merged mapping', () => {

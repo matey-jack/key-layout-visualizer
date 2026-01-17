@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, act } from '@testing-library/preact';
+import { act, fireEvent, render, screen } from '@testing-library/preact';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { TruncatedText } from './TruncatedText.tsx';
 
 describe('TruncatedText', () => {

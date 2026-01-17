@@ -6,8 +6,8 @@ import {
     type LayoutModel,
     SKE_AWAY,
 } from "../base-model.ts";
-import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 import {mapValues} from "../library/records.ts";
+import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 
 export const eb65MidshiftRightRetLayoutModel: LayoutModel = {
     name: "Ergoboard 65 MidShift Narrow, Right Return",

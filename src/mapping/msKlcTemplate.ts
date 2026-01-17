@@ -1,5 +1,5 @@
-import { msKlcScancodes } from "../layout/ansiLayoutModel.ts";
 import type {FlexMapping} from '../base-model.ts';
+import { msKlcScancodes } from "../layout/ansiLayoutModel.ts";
 
 export function getKlc(mergedMapping: string[][], keyMap: FlexMapping, isWide: boolean = false): string {
     const middlePart: string[] = [];
@@ -16,8 +16,8 @@ export function getKlc(mergedMapping: string[][], keyMap: FlexMapping, isWide: b
         });
     });
     const description = isWide ? `wide ${keyMap.name}` : keyMap.name;
-    let id = isWide ? keyMap.klcId! + "-w" : keyMap.klcId!;
-    let klcFull = klcHeader(id, description) + "\n" + middlePart.join("\n") + klcFooter;
+    const id = isWide ? keyMap.klcId! + "-w" : keyMap.klcId!;
+    const klcFull = klcHeader(id, description) + "\n" + middlePart.join("\n") + klcFooter;
     return klcFull.replace(/\n/g, "\r\n");
 }
 

@@ -1,7 +1,7 @@
 import {describe, expect, it} from "vitest";
+import {AnsiVariant,} from "./app-model";
 import {createAppState} from "./app-state";
 import {LayoutType} from "./base-model";
-import {AnsiVariant,} from "./app-model";
 import {
     colemakMapping,
     colemakThumbyDMapping,
