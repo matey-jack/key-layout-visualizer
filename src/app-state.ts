@@ -206,6 +206,8 @@ export function createAppState(): AppState {
     const previousLayoutModelState = signal(layoutModel.value);
 
     const mappingState = signal(getMappingByName(params.get("mapping")));
+    // Initialize previousMappingState with the current mapping to avoid null handling
+    const previousMappingState = signal(mappingState.value);
     const vizType = signal(s2i(params.get("viz")) ?? VisualizationType.LayoutFingering)
 
     const mappingDiff = computed(() =>
@@ -222,6 +224,7 @@ export function createAppState(): AppState {
         layout: computed(() => layoutOptionsState.value),
         setLayout: (layoutOptions: Partial<LayoutOptions>) => {
             previousLayoutModelState.value = layoutModel.value;
+            previousMappingState.value = mappingState.value;
             setLayout({...layoutOptionsState.value, ...layoutOptions}, layoutOptionsState, mappingState);
         },
         layoutModel,
@@ -229,10 +232,12 @@ export function createAppState(): AppState {
         mapping: computed(() => mappingState.value),
         setMapping: (m: FlexMapping) => {
             previousLayoutModelState.value = layoutModel.value;
+            previousMappingState.value = mappingState.value;
             setMapping(m, layoutOptionsState, layoutModel.value, mappingState);
         },
+        prevMapping: computed(() => previousMappingState.value),
         vizType,
         mappingDiff,
         bigramMovements
     };
-}
+    }

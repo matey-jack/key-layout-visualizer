@@ -94,6 +94,7 @@ export interface AppState {
 
     mapping: Signal<FlexMapping>;
     setMapping: (m: FlexMapping) => void;
+    prevMapping: ReadonlySignal<FlexMapping>;
     mappingDiff: ReadonlySignal<Record<string, MappingChange>>;
     bigramMovements: ReadonlySignal<BigramMovement[]>;
 

@@ -38,10 +38,10 @@ function getKeyPositionsForModel(layoutModel: LayoutModel, mapping: FlexMapping,
 }
 
 export function LayoutArea({appState}: LayoutAreaProps) {
-    const {layout, layoutModel, prevLayoutModel, mapping} = appState;
+     const {layout, layoutModel, prevLayoutModel, mapping, prevMapping} = appState;
 
-    const currentPositions = getKeyPositionsForModel(layoutModel.value, mapping.value, layout.value);
-    const previousPositions = getKeyPositionsForModel(prevLayoutModel.value, mapping.value, layout.value);
+     const currentPositions = getKeyPositionsForModel(layoutModel.value, mapping.value, layout.value);
+     const previousPositions = getKeyPositionsForModel(prevLayoutModel.value, prevMapping.value, layout.value);
     const keyMovements = getKeyMovements(previousPositions, currentPositions);
 
     const {setLayout, mappingDiff, bigramMovements, vizType} = appState;
