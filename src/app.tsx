@@ -5,7 +5,7 @@ import type {ComponentChildren} from "preact";
 import type {AppState} from "./app-model.ts";
 import {AnsiVariant} from "./app-model.ts";
 import {createAppState} from "./app-state.ts";
-import {LayoutType, VisualizationType } from "./base-model.ts";
+import {LayoutType, VisualizationType} from "./base-model.ts";
 import {DetailsArea} from "./details/DetailsArea.tsx";
 import {LayoutArea} from "./layout/LayoutArea.tsx";
 import {fillMapping} from "./layout/layout-functions.ts";
@@ -74,48 +74,54 @@ function isKlcCompatible(appState: AppState): boolean {
          return false;
      }
      return layoutOptions.ansiVariant === AnsiVariant.IBM || layoutOptions.ansiVariant === AnsiVariant.APPLE;
- }
+}
 
- interface DownloadKlcLinkProps {
-      appState: AppState;
-  }
+interface DownloadKlcLinkProps {
+    appState: AppState;
+}
 
-  function DownloadKlcLink({appState}: DownloadKlcLinkProps) {
-       const handleDownload = () => {
-          const layout = appState.layoutModel.value;
-          const keyMap = appState.mapping.value;
-          const layoutOptions = appState.layout.value;
-          const mergedMapping = fillMapping(layout, keyMap);
+function DownloadKlcLink({appState}: DownloadKlcLinkProps) {
+    const handleDownload = () => {
+        const layout = appState.layoutModel.value;
+        const keyMap = appState.mapping.value;
+        const layoutOptions = appState.layout.value;
+        const mergedMapping = fillMapping(layout, keyMap);
 
-          if (!mergedMapping) {
-              alert("Unable to generate KLC file for this mapping");
-              return;
-          }
+        if (!mergedMapping) {
+            alert("Unable to generate KLC file for this mapping");
+            return;
+        }
 
-          const klcContent = getKlc(mergedMapping, keyMap, layoutOptions.ansiWide);
-          const baseName = keyMap.techName || keyMap.name;
-          const fileName = layoutOptions.ansiWide ? `${baseName}-wide` : baseName;
-          const blob = new Blob([klcContent], { type: "text/plain" });
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement("a");
-          link.href = url;
-          link.download = `${fileName}.klc`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          URL.revokeObjectURL(url);
-      };
+        const klcContent = getKlc(mergedMapping, keyMap, layoutOptions.ansiWide);
+        const baseName = keyMap.techName || keyMap.name;
+        const fileName = layoutOptions.ansiWide ? `${baseName}-wide` : baseName;
+        const blob = new Blob([klcContent], {type: "text/plain"});
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${fileName}.klc`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
 
-      return <a href="#" onClick={(e) => {e.preventDefault(); handleDownload();}} class="download-klc-link">Download as .klc</a>;
-  }
+    return <a href="#" class="download-klc-link"
+              onClick={(e) => {
+                  e.preventDefault();
+                  handleDownload();
+              }}>
+        Download as .klc
+    </a>;
+}
 
- export interface MappingAreaProps {
-     appState: AppState;
- }
+export interface MappingAreaProps {
+    appState: AppState;
+}
 
- export function MappingAndDetailsArea({appState}: MappingAreaProps) {
-     return <div class="mapping-and-details-container">
-         <MappingList appState={appState}/>
-         <DetailsArea appState={appState}/>
-     </div>
- }
+export function MappingAndDetailsArea({appState}: MappingAreaProps) {
+    return <div class="mapping-and-details-container">
+        <MappingList appState={appState}/>
+        <DetailsArea appState={appState}/>
+    </div>;
+}
