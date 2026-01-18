@@ -101,35 +101,10 @@ All SVG elements use these classes (see KeyboardSvg.tsx):
 1. `src/layout/KeyboardSvg.css` - Main SVG styling
 2. `src/layout/LayoutArea.css` - May contain utility classes
 
-### Important: Animation CSS Properties
-The SVG uses CSS custom properties (CSS variables) for animations:
-
-```css
-.key-group {
-    --from-x, --from-y, --to-x, --to-y
-    --from-width, --to-width
-}
-
-.stagger-line-animating {
-    --from-offset, --to-offset
-}
-```
-
-These are set inline on elements via JavaScript/JSX but the animation rules need to be in the stylesheet.
-
-**Must preserve animations like:**
-```css
-@keyframes slideToPosition {
-    from {
-        transform: translate(var(--from-x), var(--from-y));
-        width: var(--from-width);
-    }
-    to {
-        transform: translate(var(--to-x), var(--to-y));
-        width: var(--to-width);
-    }
-}
-```
+### Animation CSS Properties (Not Required)
+The SVG elements have CSS custom properties (--from-x, --to-x, etc.) set inline for animations.
+Since the exported SVG is a static snapshot, these properties and animation keyframes are NOT needed.
+The exported SVG will show the current state without transitions.
 
 ### Filename Sanitization
 The layout name contains a slash: "ANSI / TypeWriter"
@@ -247,12 +222,13 @@ function DownloadSvgLink({appState}: {appState: AppState}) {
 - [ ] All CSS classes are preserved in SVG
 - [ ] Styles are embedded in `<style>` tag
 - [ ] Colors are correct (verify against live version)
-- [ ] Animations work when SVG is opened in browser
+- [ ] Static snapshot shows correct visualization (no animations needed)
 - [ ] Works with different layout types (ANSI, Harmonic, etc.)
 - [ ] Works with different keymap visualizations (Size, Fingering, etc.)
 - [ ] Works with different visualization types (Layout vs Mapping)
 - [ ] No console errors
 - [ ] No memory leaks (URL.revokeObjectURL is called)
+- [ ] Unit tests pass (extractSvgWithStyles function)
 
 ## Browser DevTools Tips
 
@@ -269,10 +245,9 @@ new XMLSerializer().serializeToString(clone);
 ## Possible Complications
 
 1. **CORS restrictions** - Stylesheets loaded from CDN might have CORS issues when reading cssRules
-2. **Dynamic styles** - Animations defined in .css files might not be captured if only extracting computed styles
+2. **Inline styles with CSS variables** - SVG elements have inline styles with --from-x, --to-x properties that won't render without the animations, but this is acceptable for a static snapshot
 3. **Complex selectors** - Vendor prefixes, media queries, pseudo-elements might not serialize correctly
 4. **Inline styles vs classes** - SVG elements use both inline styles (via JSX) and CSS classes
-5. **CSS variables** - Custom properties won't be resolved if style tag references them
 
 ## Recommended Approach
 

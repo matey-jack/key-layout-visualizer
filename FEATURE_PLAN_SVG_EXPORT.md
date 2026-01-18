@@ -8,6 +8,7 @@ Add functionality to export the keyboard visualization as an SVG file, similar t
 2. Name exported file using format: `{layoutName}-{keymapName}.svg`
 3. Preserve all CSS classes in the SVG elements
 4. Embed CSS style definitions in a `<style>` tag within the SVG
+5. SVG does NOT need to include animation functionality - static snapshot is acceptable
 
 ## Implementation Details
 
@@ -41,8 +42,8 @@ export function extractSvgWithStyles(): string | null
 - Frequency classes: `.frequency-circle`
 - Ribbon classes: `.key-ribbon`, `.same-finger`, `.same-hand`, `.swap-hands`
 - Bigram classes: `.bigram-line`, `.bigram-rank-*`, `.same-row`, `.neighboring-row`, `.opposite-row`, `.opposite-lateral`, `.alt-finger`, `.same-finger-bigram`
-- Stagger line classes: `.hand-stagger-line`, `.stagger-line`, `.stagger-line-animating`
-- Animation class: `.animating`
+- Stagger line classes: `.hand-stagger-line`, `.stagger-line`
+- Note: Animation classes (`.animating`, animation keyframes) are NOT required since this is a static snapshot
 
 ### 2. Naming Strategy
 File naming logic (similar to KLC export):
@@ -147,15 +148,12 @@ Add to `src/layout/LayoutArea.css`:
 - `appState.mapping.value.name` - Current keymap name
 - `appState.vizType.value` - Current visualization type (determines which styles are applied)
 
-## CSS Variables to Preserve
-The SVG uses CSS custom properties for animations:
-```css
---from-x, --from-y, --to-x, --to-y  /* Key positioning */
---from-width, --to-width            /* Key width animation */
---from-offset, --to-offset          /* Stagger line animation */
-```
-
-These should be preserved in the exported SVG and the style tag should include the animation definitions.
+## CSS Requirements Simplified
+Since the exported SVG is a static snapshot:
+- No need to preserve CSS animations or keyframes
+- No need to preserve CSS custom properties (--from-x, --to-x, etc.)
+- Can extract a minimal set of CSS rules focused on colors, sizing, and visual styling
+- SVG will show the current state without transitions
 
 ## Browser Compatibility
 - SVG with embedded styles: Widely supported
