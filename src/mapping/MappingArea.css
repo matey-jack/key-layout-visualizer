@@ -1,0 +1,31 @@
+.mapping-list-controls {
+    margin-bottom: 1rem;
+}
+
+.mapping-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.mapping-list-header {
+    background-color: #f0f0f0;
+    font-style: italic;
+}
+
+.mapping-list-item {
+    &.recommended {
+        background-color: #b8ebf8;
+    }
+
+    &.recommended.thumb-letter {
+        background-color: #a1c67e;
+    }
+
+    &.selected {
+        font-weight: bold;
+    }
+
+    &.selected:not(.recommended) {
+        background-color: #f3eaac;
+    }
+}

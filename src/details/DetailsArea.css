@@ -1,0 +1,48 @@
+.layout-description {
+    margin-bottom: 1rem;
+}
+
+.visualization-details {
+    padding: 1rem 0;
+}
+
+.mapping-summary {
+    margin-bottom: 1rem;
+}
+
+.footnote {
+    font-size: 0.8rem;
+}
+
+.toggle-text-button {
+    background: none;
+    border: none;
+    color: #003fae;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0 0.5rem;
+    margin-left: 0.5rem;
+    text-decoration: underline;
+}
+
+.toggle-text-button:hover {
+    color: #5cdbef;
+}
+
+.truncated-text {
+    display: inline;
+}
+
+.diff-legend-item {
+    display: inline-block;
+    text-align: center;
+    width: 3rem;
+    padding: 0.3rem;
+    margin: 0.2rem;
+    margin-right: 0.5rem;
+    border: 1px solid black;
+}
+
+.diff-legend-item.unchanged {
+    background-color: white;
+}

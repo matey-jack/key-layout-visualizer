@@ -1,0 +1,356 @@
+.key-group.animating {
+    animation: keyMove 1s ease-in-out forwards;
+}
+
+@keyframes keyMove {
+    from {
+        transform: translate(var(--from-x), var(--from-y));
+    }
+    to {
+        transform: translate(var(--to-x), var(--to-y));
+    }
+}
+
+.key-outline {
+    stroke: black;
+    fill: none;
+}
+
+.key-outline.unlabeled {
+    fill: #e7e7e7;
+}
+
+.key-outline.edge-key {
+    fill: #729bac;
+}
+
+.key-outline.highlighted-key {
+    fill: #c6b07c;
+}
+
+.key-outline.home-key {
+    fill: #c3f3ac;
+}
+
+.key-outline.command-key-border {
+    filter: brightness(80%);
+    stroke: #b5b5b5;
+    /*stroke-width: 7px;*/
+}
+
+.key-outline.home-key-border {
+    filter: brightness(130%);
+    /*stroke: #298800;*/
+    stroke-width: 3px;
+}
+
+.key-outline.effort-10 {
+    fill: #f3eaac;
+}
+
+.key-outline.effort-15 {
+    fill: #f1bd7d;
+}
+
+.key-outline.effort-20 {
+    fill: #dd8e6d;
+}
+
+.key-outline.effort-30 {
+    fill: #c35221;
+}
+
+.key-ribbon {
+    border-color: transparent;
+}
+
+.same-finger{
+    fill: #f3eaac;
+    background-color: #f3eaac;
+}
+
+.same-hand {
+    fill: #f6d187;
+    background-color: #f6d187;
+}
+
+.swap-hands {
+    fill: #f3bfac;
+    background-color: #f3bfac;
+}
+
+.key-size-0 {
+    fill: #fb7b77;
+}
+
+.key-size-1 {
+    fill: #fdc170;
+}
+
+.key-size-2 {
+    fill: #f3f87f;
+}
+
+.key-size-3 {
+    fill: #98f786;
+}
+
+.key-size-4 {
+    fill: #69ebfc;
+}
+
+.key-size-5 {
+    fill: #6d9efc;
+}
+
+.key-size-6 {
+    fill: #937df8;
+}
+
+.key-size-7 {
+    fill: #f78ef0;
+}
+
+.key-label {
+    font-size: 24px;
+    font-family: Verdana, sans-serif;
+    /*font-weight: bold;*/
+}
+
+.key-label.keyboard-symbol {
+    text-anchor: middle;
+    dominant-baseline: central;
+    font-size: 28px;
+}
+
+.key-label.key-name {
+    text-anchor: middle;
+    dominant-baseline: central;
+    font-size: 21px;
+}
+
+.frequency-circle {
+    fill: #f3eaac;
+}
+
+.home-marker-circle {
+    fill: #9c9c9c;
+}
+
+.stagger-line {
+    stroke: #e33c3c;
+    stroke-width: 2px;
+    background-color: #ef7272;
+}
+
+.hand-stagger-line {
+    stroke: #a9daa9;
+    stroke-width: 10px;
+    background-color: #a9daa9;
+}
+
+.bigram-line {
+    /* Make all ranks not mentioned below be invisible. */
+    stroke-width: 0;
+}
+
+.bigram-line.same-row {
+    stroke: green;
+}
+
+.bigram-line.neighboring-row {
+    stroke: yellow;
+}
+
+.bigram-line.opposite-row {
+    stroke: orange;
+}
+
+.bigram-line.opposite-lateral {
+    stroke: orange;
+}
+
+.bigram-line.alt-finger {
+    stroke: blue;
+}
+
+.bigram-line.same-finger-bigram {
+    stroke: red;
+}
+
+.bigram-line.bigram-rank-1 {
+    stroke-width: 6px;
+}
+
+.bigram-line.bigram-rank-2 {
+    stroke-width: 4px;
+}
+
+.bigram-line.bigram-rank-3 {
+    stroke-width: 3px;
+}
+
+.bigram-line.bigram-rank-4 {
+    stroke-width: 2px;
+}
+
+.stagger-line-animating {
+    animation: staggerLineMove 1s ease-in-out forwards;
+}
+
+@keyframes staggerLineMove {
+    from {
+        transform: translateX(var(--from-offset));
+    }
+    to {
+        transform: translateX(var(--to-offset));
+    }
+}
+
+.key-outline.animating {
+    animation: keyResize 1s ease-in-out forwards;
+}
+
+@keyframes keyResize {
+    from {
+        width: var(--from-width);
+    }
+    to {
+        width: var(--to-width);
+    }
+}
+
+.pinky {
+    fill: #BCA7D4;
+}
+
+.ringy {
+    fill: #A3BFD9;
+}
+
+.middy {
+    fill: #a1c67e;
+}
+
+.lindex {
+    fill: #DDD88C;
+}
+
+.rindex {
+    fill: #C6B4A5;
+}
+
+.lthumb {
+    fill: #D7A86E;
+}
+
+.rthumb {
+    fill: #D8A39D;
+}
+
+.key-effort-legend-item {
+    display: inline-block;
+    text-align: center;
+    width: 3rem;
+    padding: 0.3rem;
+    margin: 0.2rem;
+    margin-right: 0.5rem;
+    border: 1px solid black;
+}
+
+.key-effort-legend-item.home-key {
+    background-color: #c3f3ac;
+}
+
+.key-effort-legend-item.effort-10 {
+    background-color: #f3eaac;
+}
+
+.key-effort-legend-item.effort-15 {
+    background-color: #f1bd7d;
+}
+
+.key-effort-legend-item.effort-20 {
+    background-color: #dd8e6d;
+}
+
+.key-effort-legend-item.effort-30 {
+    background-color: #c35221;
+}
+
+.keysize-legend-item {
+    display: inline-block;
+    text-align: center;
+    width: 3rem;
+    padding: 0.3rem;
+    margin: 0.2rem;
+    margin-right: 0.5rem;
+    border: 1px solid black;
+}
+
+.keysize-legend-item.key-size-0 {
+    background: #fb7b77;
+}
+
+.keysize-legend-item.key-size-1 {
+    background: #fdc170;
+}
+
+.keysize-legend-item.key-size-2 {
+    background: #f3f87f;
+}
+
+.keysize-legend-item.key-size-3 {
+    background: #98f786;
+}
+
+.keysize-legend-item.key-size-4 {
+    background: #69ebfc;
+}
+
+.keysize-legend-item.key-size-5 {
+    background: #6d9efc;
+}
+
+.keysize-legend-item.key-size-6 {
+    background: #937df8;
+}
+
+.keysize-legend-item.key-size-7 {
+    background: #f78ef0;
+}
+
+.bigram-effort-legend-item {
+    display: inline-block;
+    text-align: center;
+    width: 3rem;
+    padding: 0.3rem;
+    margin: 0.2rem;
+    margin-right: 0.5rem;
+    border: 1px solid black;
+}
+
+.bigram-effort-legend-item.same-row {
+    background-color: yellow;
+}
+
+.bigram-effort-legend-item.neighboring-row {
+    background-color: lightgreen;
+}
+
+.bigram-effort-legend-item.opposite-row {
+    background-color: orange;
+}
+
+.bigram-effort-legend-item.opposite-lateral {
+    background-color: orange;
+}
+
+.bigram-effort-legend-item.alt-finger {
+    background-color: blue;
+    color: white;
+}
+
+.bigram-effort-legend-item.same-finger-bigram {
+    background-color: red;
+}

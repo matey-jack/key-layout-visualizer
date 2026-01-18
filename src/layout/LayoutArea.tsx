@@ -1,3 +1,4 @@
+import './LayoutArea.css';
 import type {Signal} from "@preact/signals";
 import {AnsiVariant, type AppState, isSplit, type LayoutOptions, PlankVariant} from "../app-model.ts";
 import {

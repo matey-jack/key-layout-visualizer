@@ -1,3 +1,5 @@
+import './DetailsArea.css';
+import '../layout/KeyboardSvg.css';
 import type {ComponentChildren} from "preact";
 import type {AppState} from "../app-model.ts";
 import {

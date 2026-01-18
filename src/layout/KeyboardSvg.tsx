@@ -1,3 +1,4 @@
+import './KeyboardSvg.css';
 import type {ComponentChildren, JSX} from "preact";
 import {
     type BigramMovement,

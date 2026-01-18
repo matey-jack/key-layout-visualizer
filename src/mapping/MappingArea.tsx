@@ -1,3 +1,4 @@
+import './MappingArea.css';
 import {type Signal, useSignal} from "@preact/signals";
 import type {AppState} from "../app-model.ts";
 import {
