@@ -63,7 +63,7 @@ export function extractSvgWithStyles(container: Element): string | null {
 function removeAnimationStyles(svgString: string): string {
     const animationStylePattern = /style="([^"]*)"/g;
     
-    return svgString.replace(animationStylePattern, (match: string, styleContent: string) => {
+    return svgString.replace(animationStylePattern, (_: string, styleContent: string) => {
         // Extract custom property values
         const toXMatch = styleContent.match(/--to-x:\s*([^;]+)/);
         const toYMatch = styleContent.match(/--to-y:\s*([^;]+)/);
@@ -159,9 +159,9 @@ function getMinimalFallbackStyles(): string {
 .keyboard-svg { }
 .key-group { }
 .key-outline { fill: #f0f0f0; stroke: #333; stroke-width: 2; }
-.key-label { font-family: monospace; font-size: 14px; }
-.keyboard-symbol { font-size: 10px; }
-.key-name { font-size: 10px; }
+.key-label { font-family: monospace; font-size: 24px; }
+.keyboard-symbol { font-size: 24px;  text-anchor: middle;}
+.key-name { font-size: 16; text-anchor: middle;}
 .home-key { fill: #c0d0ff; }
 .effort-1 { fill: #ffff99; }
 .effort-2 { fill: #ffdd66; }
