@@ -74,7 +74,7 @@ describe('SVG Export', () => {
 
         // Verify SVG structure
         expect(svgContent).toContain('xmlns="http://www.w3.org/2000/svg"');
-        expect(svgContent).toContain('viewBox="0 0 1700 500"');
+        expect(svgContent).toContain('viewBox="0 0 1800 500"');
         // make sure that there is only one 'xmlns' in the <svg> opening tag
         const svgTagMatch = svgContent.match(/<svg[^>]*>/);
         expect(svgTagMatch).toBeTruthy();

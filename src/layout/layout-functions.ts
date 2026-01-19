@@ -3,11 +3,11 @@ import {
     type FlexMapping,
     hand,
     KEY_COLOR,
-    KEYMAP_TYPES,
     KeyboardRows,
     type KeyColor,
-    type KeyMovement,
+    KEYMAP_TYPES,
     KeymapTypeId,
+    type KeyMovement,
     type KeyPosition,
     type LayoutMapping,
     type LayoutModel,
@@ -214,7 +214,7 @@ export function compatibilityScore(diffSummy: Record<MappingChange, number>): nu
 }
 
 // keep in sync with KeyboardSvg.viewBox
-const totalWidth = 17;
+export const totalWidth = 18;
 // in key units
 const horizontalPadding = 0.5;
 

@@ -12,7 +12,14 @@ import {
 } from "../base-model.ts";
 import {singleCharacterFrequencies} from "../frequencies/english-single-character-frequencies.ts";
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping/mapping-functions.ts";
-import {defaultKeyColor, getKeySizeClass, isHomeKey, keyCapHeight, lettersAndVIP} from "./layout-functions.ts";
+import {
+    defaultKeyColor,
+    getKeySizeClass,
+    isHomeKey,
+    keyCapHeight,
+    lettersAndVIP,
+    totalWidth,
+} from "./layout-functions.ts";
 
 interface KeyboardSvgProps {
     children?: ComponentChildren;
@@ -22,7 +29,7 @@ interface KeyboardSvgProps {
 // Adding 1u of wiggle room all around suggests a ratio of 7:17 for the SVG grid.
 export const KeyboardSvg = (props: KeyboardSvgProps) =>
     <div>
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1700 500" class="keyboard-svg">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox={`0 0 ${totalWidth*keyUnit} 500`} class="keyboard-svg">
             <title>Keyboard Layout Diagram</title>
             {props.children}
         </svg>

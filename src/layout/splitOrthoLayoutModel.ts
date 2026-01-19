@@ -21,7 +21,7 @@ export const splitOrthoLayoutModel: LayoutModel = {
 
     hasAltFinger: (_r, _c) => false,
 
-    rowIndent: [0, 0, 0, 0, 1],
+    rowIndent: [0, 0, 0, 0, 2],
     keyWidths: fullMapping!.map((row) => row.map((_) => 1)),
     splitColumns: [6, 6, 6, 6, 6],
 

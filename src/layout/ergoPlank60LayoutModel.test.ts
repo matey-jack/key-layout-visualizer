@@ -10,6 +10,6 @@ describe('ergoPlank60LayoutModel', () => {
         const keyPositions = getKeyPositions(ergoPlank60LayoutModel, false, charMap);
         // console.log(keyPositions.slice(14 + 5, 14 + 8));
         // the key after the gap
-        expect(keyPositions[21].colPos).toEqual(8.75);
+        expect(keyPositions[21].colPos).toEqual(9.25);
     });
 });

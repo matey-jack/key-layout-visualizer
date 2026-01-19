@@ -5,12 +5,12 @@ import {
     Hand,
     hand,
     KeyboardRows,
-    type KeyMovement,
     KeymapTypeId,
+    type KeyMovement,
     type LayoutModel,
     MappingChange,
 } from "../base-model.ts";
-import {qwertyMapping, qwertzMapping,} from "../mapping/baseMappings.ts";
+import {qwertyMapping, qwertzMapping} from "../mapping/baseMappings.ts";
 import {ahkbLayoutModel} from "./ahkbLayoutModel.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
 import {eb65MidshiftNiceLayoutModel} from "./eb65MidshiftNiceLayoutModel.ts";
@@ -458,7 +458,7 @@ describe('getKeyMovements', () => {
         const rightCtrlMovement = ctrlMovements[1];
         expect(rightCtrlMovement.prev).toBeDefined();
         expect(rightCtrlMovement.next).toBeDefined();
-        expect(rightCtrlMovement.prev!.colPos).toBe(14.5)
-        expect(rightCtrlMovement.next!.colPos).toBe(11.5)
+        expect(rightCtrlMovement.prev!.colPos).toBe(15)
+        expect(rightCtrlMovement.next!.colPos).toBe(12)
     })
 });
