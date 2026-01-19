@@ -44,7 +44,55 @@ export function extractSvgWithStyles(container: Element): string | null {
     // Clean up duplicate xmlns attributes that may occur during serialization
     serialized = serialized.replace(/xmlns="http:\/\/www\.w3\.org\/2000\/svg"\s+xmlns="http:\/\/www\.w3\.org\/2000\/svg"/g, 'xmlns="http://www.w3.org/2000/svg"');
     
-    return serialized;
+    serialized = removeAnimationStyles(serialized);
+    
+    // Add newlines after each tag
+    serialized = serialized.replace(/>/g, '>\n');
+    
+    return serialized.trim();
+}
+
+/**
+ * Removes animation-related inline styles from SVG elements.
+ * Extracts the final transform position (--to-x, --to-y) and replaces the entire style
+ * with a static transform to that position, removing all animation properties.
+ * 
+ * @param svgString - Serialized SVG string
+ * @returns SVG string with animation styles replaced by static transforms
+ */
+function removeAnimationStyles(svgString: string): string {
+    const animationStylePattern = /style="([^"]*)"/g;
+    
+    return svgString.replace(animationStylePattern, (match: string, styleContent: string) => {
+        // Extract custom property values
+        const toXMatch = styleContent.match(/--to-x:\s*([^;]+)/);
+        const toYMatch = styleContent.match(/--to-y:\s*([^;]+)/);
+        
+        // If this style has animation properties with to-x and to-y, create a static transform
+        if (toXMatch && toYMatch) {
+            const toX = toXMatch[1].trim();
+            const toY = toYMatch[1].trim();
+            return `style="transform: translate(${toX}, ${toY})"`;
+        }
+        
+        // For styles without animation properties, keep them as-is but remove custom properties and animation
+        const properties = styleContent.split(';').map(prop => prop.trim());
+        const filteredProperties = properties.filter(prop => {
+            if (!prop) return false;
+            const propName = prop.split(':')[0].trim().toLowerCase();
+            // Remove animation-related properties
+            return !['animation', 'transform-origin', 'animation-name', 'animation-duration', 
+                     'animation-timing-function', 'animation-fill-mode', 'animation-delay']
+                .includes(propName) && !propName.startsWith('--');
+        });
+        
+        // Only return the style attribute if there are remaining properties
+        if (filteredProperties.length === 0) {
+            return '';
+        }
+        
+        return `style="${filteredProperties.join(';')}"`;
+    });
 }
 
 /**
