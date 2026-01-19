@@ -153,3 +153,15 @@ label.disabled {
     text-decoration: underline;
     color: #5cdbef;
 }
+
+.download-svg-link {
+    margin-left: 1rem;
+    color: #003fae;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.download-svg-link:hover {
+    text-decoration: underline;
+    color: #5cdbef;
+}

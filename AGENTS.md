@@ -23,7 +23,7 @@ The data model consists of:
 
 ## Testing
 
-The local app runs under http://localhost:3000 (or whichever port [vite.config.ts](vite.config.ts) says.)
+The local app runs under http://localhost:3000 (or whichever port [vite.config.ts](vite.config.ts) says.) The app auto-updates after code changes, so you can test features there by making code changes and refreshing the browser.
 
 - `npm test` - Runs tests, can be called by AI agents.
 - `npm run e2e` - Run all Playwright tests. This currently only works on Windows. Don't run when you are in WSL!

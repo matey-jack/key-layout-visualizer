@@ -1,0 +1,356 @@
+<svg version="1.1" viewBox="0 0 1800 500" class="keyboard-svg" xmlns="http://www.w3.org/2000/svg">
+<style>
+
+.keyboard-svg { }
+.key-group { }
+.key-outline { fill: #f0f0f0; stroke: #333; stroke-width: 2; }
+.key-label { font-family: monospace; font-size: 24px; }
+.keyboard-symbol { font-size: 24px;  text-anchor: middle;}
+.key-name { font-size: 16; text-anchor: middle;}
+.home-key { fill: #c0d0ff; }
+.effort-1 { fill: #ffff99; }
+.effort-2 { fill: #ffdd66; }
+.effort-3 { fill: #ffbb33; }
+.effort-4 { fill: #ff9900; }
+.effort-5 { fill: #ff6600; }
+.effort-6 { fill: #ff3333; }
+.effort-7 { fill: #cc0000; }
+.effort-8 { fill: #990000; }
+.effort-9 { fill: #660000; }
+.lthumb { fill: #e0c0ff; }
+.rthumb { fill: #e0c0ff; }
+.lindex { fill: #c0e0ff; }
+.rindex { fill: #c0e0ff; }
+.middy { fill: #c0ffc0; }
+.ringy { fill: #ffffc0; }
+.pinky { fill: #ffc0c0; }
+.home-key-border { stroke: #0066cc; stroke-width: 3; }
+.command-key-border { stroke: #999; stroke-width: 2; }
+.unlabeled { fill: #e0e0e0; }
+.key-ribbon { fill: none; stroke: #333; stroke-width: 1; }
+.same-finger { stroke: #ff6600; stroke-width: 2; }
+.same-hand { stroke: #ffaa00; stroke-width: 2; }
+.swap-hands { stroke: #ff0000; stroke-width: 2; }
+.frequency-circle { fill: none; stroke: #666; stroke-width: 1; }
+.bigram-line { stroke-width: 2; }
+.bigram-rank-1 { stroke: #ffff00; }
+.bigram-rank-2 { stroke: #ffdd00; }
+.bigram-rank-3 { stroke: #ffaa00; }
+.bigram-rank-4 { stroke: #ff8800; }
+.bigram-rank-5 { stroke: #ff6600; }
+.bigram-rank-6 { stroke: #ff4400; }
+.bigram-rank-7 { stroke: #ff2200; }
+.bigram-rank-8 { stroke: #dd0000; }
+.bigram-rank-9 { stroke: #bb0000; }
+.same-row { stroke-dasharray: 5,5; }
+.neighboring-row { stroke-dasharray: 3,3; }
+.opposite-row { stroke-dasharray: 1,1; }
+.opposite-lateral { stroke-dasharray: none; }
+.alt-finger { opacity: 0.6; }
+.same-finger-bigram { stroke-width: 3; }
+.hand-stagger-line { stroke: #999; stroke-width: 1; stroke-dasharray: 2,2; }
+.stagger-line { stroke: #ccc; stroke-width: 1; }
+</style>
+<title>
+Keyboard Layout Diagram</title>
+<g class="key-group animating" style="transform: translate(180px, 5px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-30"/>
+<text x="20" y="60" class="key-label">
+`~</text>
+</g>
+<g class="key-group animating" style="transform: translate(280px, 5px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-30"/>
+<text x="20" y="60" class="key-label">
+1</text>
+</g>
+<g class="key-group animating" style="transform: translate(380px, 5px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-20"/>
+<text x="20" y="60" class="key-label">
+2</text>
+</g>
+<g class="key-group animating" style="transform: translate(480px, 5px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-20"/>
+<text x="20" y="60" class="key-label">
+3</text>
+</g>
+<g class="key-group animating" style="transform: translate(580px, 5px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-30"/>
+<text x="20" y="60" class="key-label">
+4</text>
+</g>
+<g class="key-group animating" style="transform: translate(680px, 5px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-30"/>
+<text x="20" y="60" class="key-label">
+5</text>
+</g>
+<g class="key-group animating" style="transform: translate(780px, 5px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-30"/>
+<text x="20" y="60" class="key-label">
+6</text>
+</g>
+<g class="key-group animating" style="transform: translate(880px, 5px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-30"/>
+<text x="20" y="60" class="key-label">
+7</text>
+</g>
+<g class="key-group animating" style="transform: translate(980px, 5px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-20"/>
+<text x="20" y="60" class="key-label">
+8</text>
+</g>
+<g class="key-group animating" style="transform: translate(1080px, 5px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-20"/>
+<text x="20" y="60" class="key-label">
+9</text>
+</g>
+<g class="key-group animating" style="transform: translate(1180px, 5px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-30"/>
+<text x="20" y="60" class="key-label">
+0</text>
+</g>
+<g class="key-group animating" style="transform: translate(1280px, 5px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-30"/>
+<text x="20" y="60" class="key-label">
+-</text>
+</g>
+<g class="key-group animating" style="transform: translate(1380px, 5px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-30"/>
+<text x="20" y="60" class="key-label">
+=</text>
+</g>
+<g class="key-group animating" style="transform: translate(1480px, 5px)">
+<rect x="0" y="0" width="140" height="90" class="key-outline animating effort-30"/>
+<text x="75" y="50" class="key-label keyboard-symbol">
+⌫</text>
+</g>
+<g class="key-group animating" style="transform: translate(180px, 105px)">
+<rect x="0" y="0" width="140" height="90" class="key-outline animating effort-30"/>
+<text x="75" y="50" class="key-label keyboard-symbol">
+↹</text>
+</g>
+<g class="key-group animating" style="transform: translate(330px, 105px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-20"/>
+<text x="20" y="60" class="key-label">
+q</text>
+</g>
+<g class="key-group animating" style="transform: translate(430px, 105px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-10"/>
+<text x="20" y="60" class="key-label">
+w</text>
+</g>
+<g class="key-group animating" style="transform: translate(530px, 105px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-10"/>
+<text x="20" y="60" class="key-label">
+e</text>
+</g>
+<g class="key-group animating" style="transform: translate(630px, 105px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-15"/>
+<text x="20" y="60" class="key-label">
+r</text>
+</g>
+<g class="key-group animating" style="transform: translate(730px, 105px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-15"/>
+<text x="20" y="60" class="key-label">
+t</text>
+</g>
+<g class="key-group animating" style="transform: translate(830px, 105px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-15"/>
+<text x="20" y="60" class="key-label">
+y</text>
+</g>
+<g class="key-group animating" style="transform: translate(930px, 105px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-15"/>
+<text x="20" y="60" class="key-label">
+u</text>
+</g>
+<g class="key-group animating" style="transform: translate(1030px, 105px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-10"/>
+<text x="20" y="60" class="key-label">
+i</text>
+</g>
+<g class="key-group animating" style="transform: translate(1130px, 105px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-10"/>
+<text x="20" y="60" class="key-label">
+o</text>
+</g>
+<g class="key-group animating" style="transform: translate(1230px, 105px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-20"/>
+<text x="20" y="60" class="key-label">
+p</text>
+</g>
+<g class="key-group animating" style="transform: translate(1330px, 105px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-20"/>
+<text x="20" y="60" class="key-label">
+[</text>
+</g>
+<g class="key-group animating" style="transform: translate(1430px, 105px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-30"/>
+<text x="20" y="60" class="key-label">
+]</text>
+</g>
+<g class="key-group animating" style="transform: translate(1530px, 105px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-30"/>
+<text x="20" y="60" class="key-label">
+\</text>
+</g>
+<g class="key-group animating" style="transform: translate(180px, 205px)">
+<rect x="0" y="0" width="165" height="90" class="key-outline animating effort-15"/>
+<text x="87.5" y="50" class="key-label key-name">
+CAPS</text>
+</g>
+<g class="key-group animating" style="transform: translate(355px, 205px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating home-key"/>
+<text x="20" y="60" class="key-label">
+a</text>
+</g>
+<g class="key-group animating" style="transform: translate(455px, 205px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating home-key"/>
+<text x="20" y="60" class="key-label">
+s</text>
+</g>
+<g class="key-group animating" style="transform: translate(555px, 205px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating home-key"/>
+<text x="20" y="60" class="key-label">
+d</text>
+</g>
+<g class="key-group animating" style="transform: translate(655px, 205px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating home-key"/>
+<text x="20" y="60" class="key-label">
+f</text>
+</g>
+<g class="key-group animating" style="transform: translate(755px, 205px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-20"/>
+<text x="20" y="60" class="key-label">
+g</text>
+</g>
+<g class="key-group animating" style="transform: translate(855px, 205px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-20"/>
+<text x="20" y="60" class="key-label">
+h</text>
+</g>
+<g class="key-group animating" style="transform: translate(955px, 205px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating home-key"/>
+<text x="20" y="60" class="key-label">
+j</text>
+</g>
+<g class="key-group animating" style="transform: translate(1055px, 205px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating home-key"/>
+<text x="20" y="60" class="key-label">
+k</text>
+</g>
+<g class="key-group animating" style="transform: translate(1155px, 205px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating home-key"/>
+<text x="20" y="60" class="key-label">
+l</text>
+</g>
+<g class="key-group animating" style="transform: translate(1255px, 205px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating home-key"/>
+<text x="20" y="60" class="key-label">
+;</text>
+</g>
+<g class="key-group animating" style="transform: translate(1355px, 205px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-15"/>
+<text x="20" y="60" class="key-label">
+'</text>
+</g>
+<g class="key-group animating" style="transform: translate(1455px, 205px)">
+<rect x="0" y="0" width="165" height="90" class="key-outline animating effort-20"/>
+<text x="87.5" y="50" class="key-label keyboard-symbol">
+⏎</text>
+</g>
+<g class="key-group animating" style="transform: translate(180px, 305px)">
+<rect x="0" y="0" width="215" height="90" class="key-outline animating effort-15"/>
+<text x="112.5" y="50" class="key-label keyboard-symbol">
+⇧</text>
+</g>
+<g class="key-group animating" style="transform: translate(1405px, 305px)">
+<rect x="0" y="0" width="215" height="90" class="key-outline animating effort-20"/>
+<text x="112.5" y="50" class="key-label keyboard-symbol">
+⇧</text>
+</g>
+<g class="key-group animating" style="transform: translate(405px, 305px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-20"/>
+<text x="20" y="60" class="key-label">
+z</text>
+</g>
+<g class="key-group animating" style="transform: translate(505px, 305px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-20"/>
+<text x="20" y="60" class="key-label">
+x</text>
+</g>
+<g class="key-group animating" style="transform: translate(605px, 305px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-15"/>
+<text x="20" y="60" class="key-label">
+c</text>
+</g>
+<g class="key-group animating" style="transform: translate(705px, 305px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-15"/>
+<text x="20" y="60" class="key-label">
+v</text>
+</g>
+<g class="key-group animating" style="transform: translate(805px, 305px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-30"/>
+<text x="20" y="60" class="key-label">
+b</text>
+</g>
+<g class="key-group animating" style="transform: translate(905px, 305px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-15"/>
+<text x="20" y="60" class="key-label">
+n</text>
+</g>
+<g class="key-group animating" style="transform: translate(1005px, 305px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-10"/>
+<text x="20" y="60" class="key-label">
+m</text>
+</g>
+<g class="key-group animating" style="transform: translate(1105px, 305px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-15"/>
+<text x="20" y="60" class="key-label">
+,</text>
+</g>
+<g class="key-group animating" style="transform: translate(1205px, 305px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-15"/>
+<text x="20" y="60" class="key-label">
+.</text>
+</g>
+<g class="key-group animating" style="transform: translate(1305px, 305px)">
+<rect x="0" y="0" width="90" height="90" class="key-outline animating effort-10"/>
+<text x="20" y="60" class="key-label">
+/</text>
+</g>
+<g class="key-group animating" style="transform: translate(180px, 405px)">
+<rect x="0" y="0" width="140" height="90" class="key-outline animating effort-20"/>
+<text x="75" y="50" class="key-label key-name">
+Ctrl</text>
+</g>
+<g class="key-group animating" style="transform: translate(1480px, 405px)">
+<rect x="0" y="0" width="140" height="90" class="key-outline animating effort-20"/>
+<text x="75" y="50" class="key-label key-name">
+Ctrl</text>
+</g>
+<g class="key-group animating" style="transform: translate(330px, 405px)">
+<rect x="0" y="0" width="115" height="90" class="key-outline animating "/>
+<text x="62.5" y="50" class="key-label key-name">
+Opt</text>
+</g>
+<g class="key-group animating" style="transform: translate(1355px, 405px)">
+<rect x="0" y="0" width="115" height="90" class="key-outline animating "/>
+<text x="62.5" y="50" class="key-label key-name">
+Opt</text>
+</g>
+<g class="key-group animating" style="transform: translate(455px, 405px)">
+<rect x="0" y="0" width="140" height="90" class="key-outline animating "/>
+<text x="75" y="50" class="key-label key-name">
+Cmd</text>
+</g>
+<g class="key-group animating" style="transform: translate(1205px, 405px)">
+<rect x="0" y="0" width="140" height="90" class="key-outline animating "/>
+<text x="75" y="50" class="key-label key-name">
+Cmd</text>
+</g>
+<g class="key-group animating" style="transform: translate(605px, 405px)">
+<rect x="0" y="0" width="590" height="90" class="key-outline animating home-key"/>
+<text x="300" y="50" class="key-label keyboard-symbol">
+⍽</text>
+</g>
+</svg>

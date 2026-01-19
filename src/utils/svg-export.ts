@@ -97,17 +97,19 @@ function removeAnimationStyles(svgString: string): string {
 
 /**
  * Extracts CSS rules relevant to keyboard visualization.
- * Prioritizes stylesheets from KeyboardSvg.css and LayoutArea.css.
+ * Extracts from KeyboardSvg.css specifically, which contains all SVG styling rules.
  * 
  * @returns CSS text content with rules for keyboard visualization
  */
 function extractCriticalStyles(): string {
     const cssRules: string[] = [];
 
-    // Extract from all stylesheets
+    // Extract from KeyboardSvg.css stylesheet only
+    // This file contains all the SVG styling and nothing else
     try {
         for (const sheet of document.styleSheets) {
-            if (isRelevantStylesheet(sheet)) {
+            // Only include KeyboardSvg.css (and app.css for animations, but filter carefully)
+            if (isKeyboardSvgStylesheet(sheet)) {
                 try {
                     const rules = sheet.cssRules || sheet.rules || [];
                     for (const rule of rules) {
@@ -135,16 +137,14 @@ function extractCriticalStyles(): string {
 }
 
 /**
- * Determines if a stylesheet is relevant to keyboard visualization.
+ * Determines if a stylesheet is the KeyboardSvg stylesheet.
+ * We only want CSS from KeyboardSvg.css, which contains all SVG-specific styling
+ * and doesn't have page layout rules.
  */
-function isRelevantStylesheet(sheet: CSSStyleSheet): boolean {
+function isKeyboardSvgStylesheet(sheet: CSSStyleSheet): boolean {
     const href = sheet.href || '';
-    // Include stylesheets from KeyboardSvg and LayoutArea
-    if (href.includes('KeyboardSvg') || href.includes('LayoutArea') || href.includes('app.css')) {
-        return true;
-    }
-    // Also include stylesheets without href (inline styles)
-    if (!href) {
+    // Only include KeyboardSvg.css - this has all the SVG styling we need
+    if (href.includes('KeyboardSvg')) {
         return true;
     }
     return false;

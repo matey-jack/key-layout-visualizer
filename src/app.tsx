@@ -5,12 +5,13 @@ import type {ComponentChildren} from "preact";
 import type {AppState} from "./app-model.ts";
 import {AnsiVariant} from "./app-model.ts";
 import {createAppState} from "./app-state.ts";
-import {LayoutType, VisualizationType} from "./base-model.ts";
+import {LayoutType, LayoutTypeNames, VisualizationType} from "./base-model.ts";
 import {DetailsArea} from "./details/DetailsArea.tsx";
 import {LayoutArea} from "./layout/LayoutArea.tsx";
 import {fillMapping} from "./layout/layout-functions.ts";
 import {MappingList} from "./mapping/MappingArea.tsx";
 import {getKlc} from "./mapping/msKlcTemplate.ts";
+import {extractSvgWithStyles} from "./utils/svg-export.ts";
 
 const appState = createAppState();
 
@@ -38,6 +39,7 @@ interface VisualizationSwitchesProps {
              <VizTypeButton vizType={VisualizationType.LayoutAngle} signal={vizType}>Angle</VizTypeButton>
              <VizTypeButton vizType={VisualizationType.LayoutKeyEffort} signal={vizType}>Single-Key
                  Effort</VizTypeButton>
+             {appState && <DownloadSvgLink appState={appState}/>}
          </div>
          <div>
              Mapping Visualizations:
@@ -113,6 +115,59 @@ function DownloadKlcLink({appState}: DownloadKlcLinkProps) {
               }}>
         Download as .klc
     </a>;
+}
+
+interface DownloadSvgLinkProps {
+    appState: AppState;
+}
+
+function DownloadSvgLink({appState}: DownloadSvgLinkProps) {
+    const handleDownload = () => {
+        // Find the keyboard SVG container - look for the parent div or the svg itself
+        const svgContainer = document.querySelector('.keyboard-svg') || document.querySelector('svg.keyboard-svg');
+        
+        if (!svgContainer) {
+            alert("Keyboard visualization not found");
+            return;
+        }
+
+        const svgString = extractSvgWithStyles(svgContainer as Element);
+        
+        if (!svgString) {
+            alert("Unable to extract SVG from visualization");
+            return;
+        }
+
+        // Generate filename
+        const layoutName = LayoutTypeNames[appState.layout.value.type];
+        const keymapName = appState.mapping.value.name;
+        const fileName = sanitizeFileName(`${keymapName}-${layoutName}.svg`);
+
+        const blob = new Blob([svgString], {type: "image/svg+xml"});
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
+    return <a href="#" class="download-svg-link"
+              onClick={(e) => {
+                  e.preventDefault();
+                  handleDownload();
+              }}>
+        Download SVG
+    </a>;
+}
+
+function sanitizeFileName(fileName: string): string {
+    // Remove/replace characters that are invalid in filenames on most filesystems
+    return fileName
+        .replace(/[/\\:*?"<>|]/g, '_')
+        .replace(/\s+/g, '_');
 }
 
 export interface MappingAreaProps {
