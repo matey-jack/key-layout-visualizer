@@ -40,7 +40,7 @@ describe('SVG Export', () => {
         );
 
         // Extract SVG content
-        const svgContent = extractSvgWithStyles(container);
+        const svgContent = extractSvgWithStyles(container)!;
 
         // Assertions
         expect(svgContent).toBeTruthy();
@@ -49,7 +49,7 @@ describe('SVG Export', () => {
         expect(svgContent).toContain('<style>');
         expect(svgContent).toContain('</style>');
 
-        // Save to temp file for inspection
+        // Save to a temp file for inspection
         writeFileSync(tempFilePath, svgContent, 'utf-8');
     });
 
@@ -70,7 +70,7 @@ describe('SVG Export', () => {
             </KeyboardSvg>
         );
 
-        const svgContent = extractSvgWithStyles(container);
+        const svgContent = extractSvgWithStyles(container)!;
 
         // Verify SVG structure
         expect(svgContent).toContain('xmlns="http://www.w3.org/2000/svg"');
@@ -125,7 +125,7 @@ describe('SVG Export', () => {
             </KeyboardSvg>
         );
 
-        const svgContent = extractSvgWithStyles(container);
+        const svgContent = extractSvgWithStyles(container)!;
         const styleMatch = svgContent.match(/<style>([\s\S]*?)<\/style>/);
 
         expect(styleMatch).toBeTruthy();
@@ -154,7 +154,7 @@ describe('SVG Export', () => {
             </KeyboardSvg>
         );
 
-        const svgContent = extractSvgWithStyles(container);
+        const svgContent = extractSvgWithStyles(container)!;
 
         // Verify it's a reasonable size (not empty, not gigantic)
         expect(svgContent.length).toBeGreaterThan(1000);
