@@ -5,6 +5,7 @@ import {VisualizationType} from '../base-model.ts';
 import {ansiIBMLayoutModel} from '../layout/ansiLayoutModel.ts';
 import {KeyboardSvg, RowBasedKeyboard} from '../layout/KeyboardSvg.tsx';
 import {fillMapping, getKeyMovements, getKeyPositions} from '../layout/layout-functions.ts';
+import {splitOrthoLayoutModel} from '../layout/splitOrthoLayoutModel.ts';
 import {qwertyMapping} from '../mapping/baseMappings.ts';
 import {extractSvgWithStyles} from './svg-export.ts';
 
@@ -23,14 +24,15 @@ describe('SVG Export', () => {
 
     it('extracts SVG with embedded styles', () => {
         // Setup: Create keyboard SVG component with test data
-        const charMap = fillMapping(ansiIBMLayoutModel, qwertyMapping);
-        const keyPositions = getKeyPositions(ansiIBMLayoutModel, true, charMap!);
+        const layoutModel = splitOrthoLayoutModel;
+        const charMap = fillMapping(layoutModel, qwertyMapping);
+        const keyPositions = getKeyPositions(layoutModel, true, charMap!);
         const keyMovements = getKeyMovements(keyPositions, keyPositions);
 
         const { container } = render(
             <KeyboardSvg>
                 <RowBasedKeyboard
-                    layoutModel={ansiIBMLayoutModel}
+                    layoutModel={layoutModel}
                     prevLayoutModel={ansiIBMLayoutModel}
                     keyMovements={keyMovements}
                     vizType={VisualizationType.LayoutKeyEffort}
