@@ -10,16 +10,7 @@ import {
     type LayoutModel,
     MappingChange,
 } from "../base-model.ts";
-import {
-    colemakMapping,
-    colemakThumbyDMapping,
-    cozyEnglish,
-    normanMapping,
-    qwertyMapping,
-    qwertzMapping,
-    thumbyZero,
-    topNine,
-} from "../mapping/mappings.ts";
+import {qwertyMapping, qwertzMapping,} from "../mapping/mappings.ts";
 import {ahkbLayoutModel} from "./ahkbLayoutModel.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
 import {eb65MidshiftNiceLayoutModel} from "./eb65MidshiftNiceLayoutModel.ts";
@@ -43,6 +34,10 @@ import {
     mergeMapping,
 } from "./layout-functions.ts";
 import {splitOrthoLayoutModel} from "./splitOrthoLayoutModel.ts";
+import {thumbyZero} from '../mapping/flipMappings.ts';
+import {cozyEnglish} from '../mapping/cozyMappings.ts';
+import {topNine} from '../mapping/top9mappings.ts';
+import {colemakMapping, colemakThumbyDMapping, normanMapping} from '../mapping/colemakMappings.ts';
 import {xhkbLayoutModel, xhkbWithArrowsLayoutModel} from "./xhkbLayoutModel.ts";
 
 const allLayoutModels = [
