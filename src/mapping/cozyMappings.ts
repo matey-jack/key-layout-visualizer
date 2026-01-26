@@ -1,5 +1,5 @@
 import {type FlexMapping, KeymapTypeId} from '../base-model.ts';
-import {qwertzMapping} from './mappings.ts';
+import {qwertzMapping} from './baseMappings.ts';
 import {qwertyFlipTwistMapping} from './flipMappings.ts';
 
 export const cozyEnglish: FlexMapping = {

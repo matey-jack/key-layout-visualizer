@@ -2,9 +2,10 @@ import {describe, expect, it} from "vitest";
 import {AnsiVariant,} from "./app-model";
 import {createAppState} from "./app-state";
 import {LayoutType} from "./base-model";
-import {maltronMapping, qwertyWideMapping,} from "./mapping/mappings";
+import {maltronMapping} from "./mapping/mappings";
 import {cozyEnglish} from './mapping/cozyMappings.ts';
 import {colemakMapping, colemakThumbyDMapping} from './mapping/colemakMappings.ts';
+import {qwertyWideMapping} from './mapping/baseMappings.ts';
 
 describe("setMapping", () => {
     it("switches to ANSI wide for thumb-using keymap", () => {

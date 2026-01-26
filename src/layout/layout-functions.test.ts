@@ -10,7 +10,7 @@ import {
     type LayoutModel,
     MappingChange,
 } from "../base-model.ts";
-import {qwertyMapping, qwertzMapping,} from "../mapping/mappings.ts";
+import {qwertyMapping, qwertzMapping,} from "../mapping/baseMappings.ts";
 import {ahkbLayoutModel} from "./ahkbLayoutModel.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
 import {eb65MidshiftNiceLayoutModel} from "./eb65MidshiftNiceLayoutModel.ts";

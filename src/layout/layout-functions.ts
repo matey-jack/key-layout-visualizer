@@ -15,7 +15,7 @@ import {
 } from "../base-model.ts";
 import {sum} from "../library/math.ts";
 import {isCommandKey} from "../mapping/mapping-functions.ts";
-import {qwertyMapping} from "../mapping/mappings.ts";
+import {qwertyMapping} from "../mapping/baseMappings.ts";
 
 export function isHomeKey(layoutModel: LayoutModel, row: number, col: number): boolean {
     if (row !== KeyboardRows.Home) return false;

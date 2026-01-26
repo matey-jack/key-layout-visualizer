@@ -13,7 +13,8 @@ import {type FlexMapping, KeymapTypeId, type LayoutModel, LayoutType, Visualizat
 import {getBigramMovements} from "./bigrams.ts";
 import {diffToBase, fillMapping, getKeyPositions, hasMatchingMapping} from "./layout/layout-functions.ts";
 import {getLayoutModel} from "./layout-selection.ts";
-import {allMappings, qwertyMapping} from "./mapping/mappings.ts";
+import {allMappings} from "./mapping/mappings.ts";
+import {qwertyMapping} from "./mapping/baseMappings.ts";
 
 function modifyWide(mapping: FlexMapping, opts: LayoutOptions): boolean {
     switch (opts.ansiVariant) {

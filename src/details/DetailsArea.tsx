@@ -30,7 +30,7 @@ import {
 } from "../layout/layout-functions.ts";
 import {sum} from "../library/math.ts";
 import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
-import {qwertyMapping} from "../mapping/mappings.ts";
+import {qwertyMapping} from "../mapping/baseMappings.ts";
 
 interface DetailsAreaProps {
     appState: AppState;

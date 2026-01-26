@@ -21,7 +21,8 @@ import {
     getKeyPositions,
 } from "../layout/layout-functions.ts";
 import {sumKeyFrequenciesByEffort} from "./mapping-functions.ts";
-import {allMappings, qwertyMapping} from "./mappings.ts";
+import {allMappings} from "./mappings.ts";
+import {qwertyMapping} from "./baseMappings.ts";
 
 export interface MappingListProps {
     appState: AppState;
