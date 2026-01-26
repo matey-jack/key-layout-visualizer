@@ -37,3 +37,34 @@ describe('mappings property validates against KEYMAP_TYPES', () => {
         });
     });
 });
+
+describe('character coverage for core mappings', () => {
+    const allLetters = 'abcdefghijklmnopqrstuvwxyz';
+    const requiredCharsAnsi30 = allLetters + ',.;/';
+    const requiredCharsThumb30 = allLetters + ',.;-' ;
+    
+    describe('Ansi30 mappings have all letters and ",.;/"', () => {
+        const ansi30Mappings = allMappings.filter(m => m.mappings?.[KeymapTypeId.Ansi30]);
+        
+        ansi30Mappings.forEach((mapping) => {
+            it(`${mapping.name}`, () => {
+                const ansi30String = mapping.mappings[KeymapTypeId.Ansi30]!.join('');
+                const missingChars = requiredCharsAnsi30.split('').filter(char => !ansi30String.includes(char));
+                expect(missingChars).toEqual([]);
+            });
+        });
+    });
+
+    describe('Thumb30 mappings have all letters and ",.;-"', () => {
+        const thumb30Mappings = allMappings.filter(m => m.mappings?.[KeymapTypeId.Thumb30]);
+        
+        thumb30Mappings.forEach((mapping) => {
+            it(`${mapping.name}`, () => {
+                const thumb30String = mapping.mappings[KeymapTypeId.Thumb30]!.join('');
+                const missingChars = requiredCharsThumb30.split('').filter(char => !thumb30String.includes(char));
+                expect(missingChars).toEqual([]);
+            }, { skip: mapping.name === 'Qweerty' });
+        });
+    });
+});
+

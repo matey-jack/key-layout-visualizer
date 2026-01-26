@@ -1,6 +1,5 @@
 import {type FlexMapping, KeymapTypeId} from '../base-model.ts';
-import {qwertyMapping} from './mappings.ts';
-
+import {qwertyMapping} from './baseMappings.ts';
 
 export const qweertyMapping: FlexMapping = {
     name: "Qweerty",
@@ -13,6 +12,23 @@ export const qweertyMapping: FlexMapping = {
             "asdfg" + "hjkl;",
             "zxcvb" + "nm,.",
             "e"
+        ],
+    },
+    fallback: qwertyMapping,
+}
+
+export const enTryMapping: FlexMapping = {
+    name: "Thumby Entry (or EN-try!)",
+    description: "Thumb-E plus a home-row N as low-key way to feel into optimized letter mappings. " +
+        "Additionally provides synergy, because the common EN/NE bigrams don't require you to pinch your hand. ",
+    // Writing upper and lower row as three strings emphasizes the center columns of the Harmonic and ANSI keyboards.
+    // On Ortho and Harmonic Narrow, it will just be 5 + 5 on each side.
+    mappings: {
+        [KeymapTypeId.Thumb30]: [
+            "qwbrt" + "y" + "uiop",
+            "asdfg" + "hnkl;",
+            "zxcv" + "-" + "jm,.",
+            "e",
         ],
     },
     fallback: qwertyMapping,
@@ -241,6 +257,21 @@ export const thumbyNero: FlexMapping = {
         [KeymapTypeId.Ansi30]: [
             "qwert" + "yuiop",
             "asdfg" + "hnkl;",
+            "zxcvb" + "jm,./",
+        ]
+    }
+}
+
+export const carpalxQMapping: FlexMapping = {
+    name: "CarpalxQ",
+    description: `This letter map minimizes the number of changed keys from Qwerty
+    with less emphasis on keeping letters on the same finger.`,
+    sourceUrl: "https://jumpedthesynapse.blogspot.com/2007/07/carpalxq.html",
+    sourceLinkTitle: "Blog post",
+    mappings: {
+        [KeymapTypeId.Ansi30]: [
+            "qwkrf" + "yulp;",
+            "asdtg" + "hneio",
             "zxcvb" + "jm,./",
         ]
     }

@@ -35,6 +35,7 @@
 
 import {type FlexMapping, KeymapTypeId} from "../base-model.ts";
 import {
+    assetMapping,
     colemakDhMapping,
     colemakMapping,
     colemakThumbyDMapping,
@@ -42,6 +43,7 @@ import {
     colemakThumbyLMapping, colemakThumbyNMapping, minimakFullMapping, normanMapping,
 } from './colemakMappings.ts';
 import {
+    carpalxQMapping,
     enTryMapping,
     ergoFix,
     qweertyMapping,
@@ -264,6 +266,8 @@ export const allMappings: FlexMapping[] = [
     colemakThumbyLMapping,
     colemakThumbyNMapping,
     normanMapping,
+    assetMapping,
+    carpalxQMapping,
     // full 31 key rearrangements
     maltronMapping,
     rsthdMapping,

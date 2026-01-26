@@ -204,3 +204,20 @@ export const minimakFullMapping: FlexMapping = {
         ]
     }
 }
+
+export const assetMapping: FlexMapping = {
+    name: "Asset",
+    sourceUrl: "https://millikeys.sourceforge.net/asset/",
+    description: `Asset uses the same design principles as Colemak, 
+    but tries to keep more letters on the same fingers as Qwerty.
+    As in Qwpr and Cozy, only two letters swap hands. 
+    Changing more letters than Qwpr, but less than Colemak, it's a sensible compromise, 
+    since the bigram conflicts are improved compared to Qwpr.`,
+    mappings: {
+        [KeymapTypeId.Ansi30]: [
+            "qwjfg" + "ypul;",
+            "asetd" + "hnior",
+            "zxcvb" + "km,./",
+        ]
+    }
+}
