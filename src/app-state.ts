@@ -186,7 +186,7 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
 // let's just have one.
 export function createAppState(): AppState {
     const params = new URLSearchParams(window.location.hash.slice(1));
-    const ansiVariant = s2i(params.get("ansi")) ?? AnsiVariant.APPLE;
+    const ansiVariant = s2i(params.get("ansi")) ?? AnsiVariant.IBM;
     // important to use ?? because (the falsy) 0 is a proper value that should not trigger the default.
     const layoutOptionsState: Signal<LayoutOptions> = signal<LayoutOptions>({
         type: s2i(params.get("layout")) ?? LayoutType.ANSI,
