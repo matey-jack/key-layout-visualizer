@@ -39,17 +39,17 @@ function getKeyPositionsForModel(layoutModel: LayoutModel, mapping: FlexMapping,
 }
 
 export function LayoutArea({appState}: LayoutAreaProps) {
-     const {layout, layoutModel, prevLayoutModel, mapping, prevMapping} = appState;
+    const {layout, layoutModel, prevLayoutModel, mapping, prevMapping} = appState;
 
-     const currentPositions = getKeyPositionsForModel(layoutModel.value, mapping.value, layout.value);
-     const previousPositions = getKeyPositionsForModel(prevLayoutModel.value, prevMapping.value, layout.value);
+    const currentPositions = getKeyPositionsForModel(layoutModel.value, mapping.value, layout.value);
+    const previousPositions = getKeyPositionsForModel(prevLayoutModel.value, prevMapping.value, layout.value);
     const keyMovements = getKeyMovements(previousPositions, currentPositions);
 
     const {setLayout, mappingDiff, bigramMovements, vizType} = appState;
     return (
         <div>
             <TopBar layout={layout.value} setLayout={setLayout}/>
-            <KeyboardSvg>
+            <KeyboardSvg vizType={vizType.value}>
                 <RowBasedKeyboard
                     layoutModel={layoutModel.value}
                     prevLayoutModel={prevLayoutModel.value}

@@ -45,7 +45,7 @@ export const eb65LowshiftLayoutModel: LayoutModel = {
         (row === KeyboardRows.Lower) && ([1, 2, 3, 7, 8, 9].includes(col)),
 
     // Only fixed values can be used. See base-model.ts SKE_*
-    // 'null' means the hand has to taken off the home-row. Those keys can't be used with letter or prose punctuation.
+    // 'null' means the hand has to be taken off the home-row. Those keys can't be used with letter or prose punctuation.
     singleKeyEffort: [
         [null, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, null, null],
         [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0],

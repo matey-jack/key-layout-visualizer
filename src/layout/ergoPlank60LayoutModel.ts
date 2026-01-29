@@ -1,7 +1,7 @@
 import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
 import {mapValues} from "../library/records.ts";
 import {mirrorOdd, SymmetricKeyWidth} from "./keyWidth.ts";
-import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
+import {copyAndModifyKeymap, ergoFamilyKeyColorClass} from "./layout-functions.ts";
 
 const keyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0, 0.25]);
 
@@ -75,7 +75,7 @@ export const ergoPlank60LayoutModel: LayoutModel = {
         [KeymapTypeId.Thumb30]: thumb30FrameMapping,
     },
 
-    keyColorClass: keyColorHighlightsClass,
+    keyColorClass: ergoFamilyKeyColorClass(ansi30FrameMapping),
 }
 
 export function ep60addAngleMod(lm: LayoutModel): LayoutModel {

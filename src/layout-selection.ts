@@ -6,7 +6,7 @@ import {
     type LayoutOptions,
     PlankVariant,
 } from "./app-model.ts";
-import {type LayoutModel, LayoutType } from "./base-model.ts";
+import {type LayoutModel, LayoutType} from "./base-model.ts";
 import {ahkbAddAngleMod, ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
 import {
     ansiIBMLayoutModel,
@@ -28,7 +28,7 @@ import {
 } from "./layout/eb65MidshiftNarrowLayoutModels.ts";
 import {eb65MidshiftNiceLayoutModel} from "./layout/eb65MidshiftNiceLayoutModel.ts";
 import {ep60addAngleMod, ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./layout/ergoPlank60LayoutModel.ts";
-import {ergoslatAddNumberless, ergoslatLayoutModel} from './layout/ergoslatLayoutModel.ts';
+import {ergoslatLayoutModel, makeErgoslatNumberless} from './layout/ergoslatLayoutModel.ts';
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
@@ -59,7 +59,7 @@ export function getPlankVariant(opts: Partial<LayoutOptions>): LayoutModel {
         case PlankVariant.KATANA_60:
             return katanaLayoutModel;
         case PlankVariant.EM13:
-            return esNumberless ? ergoslatAddNumberless(ergoslatLayoutModel) : ergoslatLayoutModel;
+            return esNumberless ? makeErgoslatNumberless(ergoslatLayoutModel) : ergoslatLayoutModel;
         case PlankVariant.EB65_LOW_SHIFT:
             // UI calls this method without variant parameters, so we need a default.
             switch (eb65LowshiftVariant) {

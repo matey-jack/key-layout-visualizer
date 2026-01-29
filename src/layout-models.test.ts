@@ -1,23 +1,21 @@
 import {describe, expect, it} from "vitest";
-import {KEYMAP_TYPES, KeyboardRows, type KeymapTypeId, type LayoutModel} from "./base-model.ts";
+import {KeyboardRows, KEYMAP_TYPES, type KeymapTypeId, type LayoutModel} from "./base-model.ts";
 import {ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createApple, createHHKB} from "./layout/ansiLayoutModel.ts";
 import {eb65BigEnterLayoutModel, eb65LowshiftLayoutModel} from "./layout/eb65LowshiftLayoutModel.ts";
 import {
     eb65LowshiftWideAngleModLayoutModel,
-    eb65LowshiftWideLayoutModel
+    eb65LowshiftWideLayoutModel,
 } from "./layout/eb65LowshiftWideLayoutModel.ts";
 import {eb65MidshiftExtraWideLayoutModel} from "./layout/eb65MidshiftExtraWideLayoutModel.ts";
 import {
     eb65CentralEnterLayoutModel,
     eb65MidshiftRightRetLayoutModel,
-    eb65VerticalEnterLayoutModel
+    eb65VerticalEnterLayoutModel,
 } from "./layout/eb65MidshiftNarrowLayoutModels.ts";
-import {
-    eb65MidshiftNiceLayoutModel
-} from "./layout/eb65MidshiftNiceLayoutModel.ts";
+import {eb65MidshiftNiceLayoutModel} from "./layout/eb65MidshiftNiceLayoutModel.ts";
 import {ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./layout/ergoPlank60LayoutModel.ts";
-import {ergoslatAddNumberless, ergoslatLayoutModel} from './layout/ergoslatLayoutModel.ts';
+import {ergoslatLayoutModel, makeErgoslatNumberless} from './layout/ergoslatLayoutModel.ts';
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
@@ -39,7 +37,7 @@ const layoutModels: Array<LayoutModel> = [
     xhkbWithArrowsLayoutModel,
     ahkbLayoutModel,
     ergoslatLayoutModel,
-    ergoslatAddNumberless(ergoslatLayoutModel),
+    makeErgoslatNumberless(ergoslatLayoutModel),
     eb65LowshiftLayoutModel,
     eb65BigEnterLayoutModel,
     eb65LowshiftWideLayoutModel,

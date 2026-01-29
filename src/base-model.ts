@@ -136,6 +136,7 @@ export enum KeyboardRows {
 }
 
 export enum VisualizationType {
+    LayoutPlain,
     LayoutKeySize,
     LayoutKeyEffort,
     LayoutFingering,
@@ -242,6 +243,7 @@ export type LayoutMapping = (string | number | null | [number, number])[][];
 export const harmonicStaggerOffsets = [1, 0.5, 0, -0.5];
 
 export const KEY_COLOR = {
+    BORING: "",
     EDGE: "edge-key",
     HIGHLIGHT: "highlighted-key",
 }

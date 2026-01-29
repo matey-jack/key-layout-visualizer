@@ -22,18 +22,22 @@ import {
 } from "./layout-functions.ts";
 
 interface KeyboardSvgProps {
+    vizType: VisualizationType;
     children?: ComponentChildren;
 }
 
 // Our largest keyboards are 16u wide (Ergoboard), while all keyboards are 5u high.
 // Adding 1u of wiggle room all around suggests a ratio of 7:17 for the SVG grid.
-export const KeyboardSvg = (props: KeyboardSvgProps) =>
-    <div>
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox={`0 0 ${totalWidth*keyUnit} 500`} class="keyboard-svg">
+export const KeyboardSvg = ({vizType, children}: KeyboardSvgProps) => {
+    const clazz = vizType === VisualizationType.LayoutPlain ? "viz-plain" : "";
+    return <div>
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox={`0 0 ${totalWidth * keyUnit} 500`}
+             class={`keyboard-svg ${clazz}`}>
             <title>Keyboard Layout Diagram</title>
-            {props.children}
+            {children}
         </svg>
-    </div>
+    </div>;
+}
 
 interface KeyProps {
     label: string,

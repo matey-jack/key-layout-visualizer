@@ -1,7 +1,7 @@
 import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
 import {mapValues} from "../library/records.ts";
 import {mirror, SymmetricKeyWidth} from "./keyWidth.ts";
-import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
+import {copyAndModifyKeymap, ergoFamilyKeyColorClass} from "./layout-functions.ts";
 
 const keyWidths = new SymmetricKeyWidth(13, [0, 0.25, 0, 0, 0.25]);
 
@@ -86,10 +86,10 @@ export const ergoslatLayoutModel: LayoutModel = {
         [KeymapTypeId.Thumb30]: thumb30FrameMapping,
     },
 
-    keyColorClass: keyColorHighlightsClass,
+    keyColorClass: ergoFamilyKeyColorClass(ansi30FrameMapping),
 };
 
-export function ergoMobAddAngleMod(lm: LayoutModel): LayoutModel {
+export function ergoSlatAddAngleMod(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
         name: "ErGO 13/3 (angle-mod)",
@@ -112,7 +112,7 @@ function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
 
 const numberlessKeyWidths = new SymmetricKeyWidth(13, [0, 0, 0, 0, 0.25]);
 
-export function ergoslatAddNumberless(lm: LayoutModel): LayoutModel {
+export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
         name: "Ergoslat 13/3 (numberless)",

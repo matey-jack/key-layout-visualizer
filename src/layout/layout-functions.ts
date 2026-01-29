@@ -14,8 +14,8 @@ import {
     MappingChange,
 } from "../base-model.ts";
 import {sum} from "../library/math.ts";
-import {isCommandKey} from "../mapping/mapping-functions.ts";
 import {qwertyMapping} from "../mapping/baseMappings.ts";
+import {isCommandKey} from "../mapping/mapping-functions.ts";
 
 export function isHomeKey(layoutModel: LayoutModel, row: number, col: number): boolean {
     if (row !== KeyboardRows.Home) return false;
@@ -28,6 +28,26 @@ export function defaultKeyColor(label: string, _row: number, _col: number): KeyC
     if (isCommandKey(label)) return KEY_COLOR.EDGE;
     return "";
 }
+
+export const keyColorHighlightsClass = (label: string, row: KeyboardRows, col: number) => {
+    if (label && "⏎↑↓←→".includes(label) || label === "Esc") return KEY_COLOR.HIGHLIGHT;
+    return defaultKeyColor(label, row, col);
+};
+
+export const ergoFamilyKeyColorClass = <T>(shape: T[][]) =>
+    (label: string, row: KeyboardRows, col: number)=> {
+    if (label && "⏎↑↓←→".includes(label) || label === "Esc") return KEY_COLOR.HIGHLIGHT;
+    if (row === KeyboardRows.Bottom) return KEY_COLOR.EDGE;
+    const len = shape[row].length - 1;
+    const c = col > len / 2 ? len - col : col;
+    if (row === KeyboardRows.Lower) {
+        if (c < 5) return KEY_COLOR.BORING;
+    } else {
+        if (c === 0) return KEY_COLOR.EDGE;
+        if (c < 6) return KEY_COLOR.BORING;
+    }
+    return KEY_COLOR.EDGE;
+};
 
 export const keyCapWidth = (lm: LayoutModel, r: KeyboardRows, c: number) =>
     lm.keyCapWidth?.(r, c) ? lm.keyCapWidth(r, c)! : lm.keyWidths[r][c];
@@ -48,11 +68,6 @@ export function getKeySizeClass(keyCapSize: number) {
         }
     }
 }
-
-export const keyColorHighlightsClass = (label: string, row: KeyboardRows, col: number) => {
-    if (label && "⏎↑↓←→".includes(label) || label === "Esc") return KEY_COLOR.HIGHLIGHT;
-    return defaultKeyColor(label, row, col);
-};
 
 export function onlySupportsWide(mapping: FlexMapping) {
     return !mapping.mappings[KeymapTypeId.Ansi30] && !mapping.mappings[KeymapTypeId.Ansi];

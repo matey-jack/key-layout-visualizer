@@ -32,6 +32,24 @@
     fill: #c3f3ac;
 }
 
+.viz-plain {
+    .key-outline {
+        fill: lightgrey;
+    }
+
+    .key-outline.home-key {
+        fill: #d6ceb6;
+    }
+
+    .key-outline.edge-key {
+        fill: darkgrey;
+    }
+
+    .key-outline.highlighted-key {
+        fill: #a68a85;
+    }
+}
+
 .key-outline.command-key-border {
     filter: brightness(80%);
     stroke: #b5b5b5;

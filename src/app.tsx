@@ -34,6 +34,7 @@ interface VisualizationSwitchesProps {
      return <div class="visualization-switches">
          <div>
              Layout Visualizations:
+             <VizTypeButton vizType={VisualizationType.LayoutPlain} signal={vizType}>Plain</VizTypeButton>
              <VizTypeButton vizType={VisualizationType.LayoutKeySize} signal={vizType}>Key Sizes</VizTypeButton>
              <VizTypeButton vizType={VisualizationType.LayoutFingering} signal={vizType}>Fingering</VizTypeButton>
              <VizTypeButton vizType={VisualizationType.LayoutAngle} signal={vizType}>Angle</VizTypeButton>
