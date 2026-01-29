@@ -93,11 +93,14 @@ small tasks:
  - option for ergoMob without number row
 
 missing core features:
-- SVG export (with a title stating name of layout and keymap)
+- "design view" as a layout visualization that approximates a physical keyboard. Especially for the Ergoplank family: 
+  Keys in different colors to highlight the "splitness" of the keyboard. (One color for all the 1FH keys.)
+- SVG export (with a title stating name of layout and keymap) ✅ except:
   - add metadata for to-scale printing (might need PDF?)
   - add a ruler to the SVG so people can zoom to scale on their laptop or tablet
 - slow down the animation when the user holds the mouse or finger on the layout type/variant buttons (or other controls).
 - Ergoplank and Katana logos to fill the gap, especially Ergoboard 65 Midshift with a nice connection between both gaps.
+  (Alternatively, show a Thinkpad-style pointing nipple in that gap.)
 - compress some of the UI when scrolling, so that the Keyboard SVG always stays up top and buttons (both type and variant) maybe on the side of the SVG?
     Show only the selected buttons and a "Change..." link which scrolls back up, so that all buttons are visible again.
 
