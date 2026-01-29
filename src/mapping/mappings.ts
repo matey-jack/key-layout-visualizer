@@ -34,26 +34,31 @@
  */
 
 import {type FlexMapping, KeymapTypeId} from "../base-model.ts";
+import {qwertyMapping, qwertyWideMapping, qwertzMapping} from './baseMappings.ts';
 import {
     assetMapping,
     colemakDhMapping,
     colemakMapping,
     colemakThumbyDMapping,
     colemakThumbyHMapping,
-    colemakThumbyLMapping, colemakThumbyNMapping, minimakFullMapping, normanMapping,
+    colemakThumbyLMapping,
+    colemakThumbyNMapping,
+    minimakFullMapping,
+    normanMapping,
 } from './colemakMappings.ts';
+import {cozyEnglish, cozyFlingH, cozyGerman, cozyPlusC, cozyPlusCH} from './cozyMappings.ts';
 import {
     carpalxQMapping,
     enTryMapping,
     ergoFix,
     qweertyMapping,
     qwertyFlipTwistMapping,
-    qwertyFlipTwistSpinMapping, qwertyFlipTwistThumbFlingR, qwertyFlipTwistThumbFlingT,
+    qwertyFlipTwistSpinMapping,
+    qwertyFlipTwistThumbFlingR,
+    qwertyFlipTwistThumbFlingT,
     qwertyFlipTwistThumbMapping,
 } from './flipMappings.ts';
-import {cozyEnglish, cozyFlingH, cozyGerman, cozyPlusC, cozyPlusCH} from './cozyMappings.ts';
 import {top9kul, top9rst, top9t, top9u, topNine, topNineLeftThumb} from './top9mappings.ts';
-import {qwertyMapping, qwertyWideMapping, qwertzMapping} from './baseMappings.ts';
 
 export const quipperMapping: FlexMapping = {
     name: "Quipper aka Qwpr",
@@ -259,6 +264,7 @@ export const allMappings: FlexMapping[] = [
     // minimak4Mapping,
     // minimak8Mapping,
     minimakFullMapping,
+    assetMapping,
     colemakMapping,
     colemakDhMapping,
     colemakThumbyDMapping,
@@ -266,7 +272,6 @@ export const allMappings: FlexMapping[] = [
     colemakThumbyLMapping,
     colemakThumbyNMapping,
     normanMapping,
-    assetMapping,
     carpalxQMapping,
     // full 31 key rearrangements
     maltronMapping,

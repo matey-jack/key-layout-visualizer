@@ -3,7 +3,7 @@ import {qwertzMapping} from './baseMappings.ts';
 import {qwertyFlipTwistMapping} from './flipMappings.ts';
 
 export const cozyEnglish: FlexMapping = {
-    name: "The Cozy Keyboard, English variant",
+    name: "The Cozy Keyboard for English",
     techName: "cozy-english",
     localMaximum: true,
     description: `A simple continuation of Qwerty Flip/Twist/Thumb (with a Fling instead of the Spin 😅), 

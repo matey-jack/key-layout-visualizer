@@ -1,7 +1,7 @@
 import {type FlexMapping, KeymapTypeId} from '../base-model.ts';
 
 export const qwertyMapping: FlexMapping = {
-    name: "Qwerty – US and world-wide standard",
+    name: "Qwerty",
     techName: "QWERTY",
     klcId: "qwerty",
     description: `This ancient typewriter-born key mapping is so ubiquitous today that many people might never have seen 

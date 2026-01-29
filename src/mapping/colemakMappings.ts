@@ -213,6 +213,7 @@ export const assetMapping: FlexMapping = {
     As in Qwpr and Cozy, only two letters swap hands. 
     Changing more letters than Qwpr, but less than Colemak, it's a sensible compromise, 
     since the bigram conflicts are improved compared to Qwpr.`,
+    localMaximum: true,
     mappings: {
         [KeymapTypeId.Ansi30]: [
             "qwjfg" + "ypul;",

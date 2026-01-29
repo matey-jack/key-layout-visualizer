@@ -1,11 +1,9 @@
-import { describe, it, expect } from "vitest";
-import { getKlc } from "./msKlcTemplate.ts";
-import {mergeMapping} from '../layout/layout-functions.ts';
+import {describe, expect, it} from "vitest";
 import {KeymapTypeId} from '../base-model.ts';
-import {qwertyMapping} from './baseMappings.ts';
 import {ansiIBMLayoutModel} from '../layout/ansiLayoutModel.ts';
-import { writeFileSync } from "fs";
-import { resolve } from "path";
+import {mergeMapping} from '../layout/layout-functions.ts';
+import {qwertyMapping} from './baseMappings.ts';
+import {getKlc} from "./msKlcTemplate.ts";
 
 describe("getKlc", () => {
     it("should generate KLC format output from merged mapping", () => {
@@ -20,7 +18,7 @@ describe("getKlc", () => {
         // console.log(`Generated KLC file saved to: ${outputPath}`);
 
         // Verify header is present
-        expect(result).toContain("KBD\tqwerty\t\"US-ANSI - Qwerty – ");
+        expect(result).toContain("KBD\tqwerty\t\"US-ANSI - Qwerty");
         
         // Verify footer is present
         expect(result).toContain("KEYNAME\r\n");
