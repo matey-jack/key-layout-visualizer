@@ -46,10 +46,12 @@ export function LayoutArea({appState}: LayoutAreaProps) {
     const keyMovements = getKeyMovements(previousPositions, currentPositions);
 
     const {setLayout, mappingDiff, bigramMovements, vizType} = appState;
+    const showFrame = layout.value.type !== LayoutType.Ergosplit &&
+        !(layout.value.type !== LayoutType.ANSI && layout.value.ansiSplit);
     return (
         <div>
             <TopBar layout={layout.value} setLayout={setLayout}/>
-            <KeyboardSvg vizType={vizType.value}>
+            <KeyboardSvg vizType={vizType.value} keyMovements={keyMovements} showFrame={showFrame}>
                 <RowBasedKeyboard
                     layoutModel={layoutModel.value}
                     prevLayoutModel={prevLayoutModel.value}

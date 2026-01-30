@@ -23,17 +23,31 @@ import {
 
 interface KeyboardSvgProps {
     vizType: VisualizationType;
+    keyMovements: KeyMovement[];
+    showFrame: boolean;
     children?: ComponentChildren;
 }
 
+function filterNumbers<T>(list: T[]): number[] {
+    return list.filter((x) => typeof x === "number") as number[]
+}
 // Our largest keyboards are 16u wide (Ergoboard), while all keyboards are 5u high.
 // Adding 1u of wiggle room all around suggests a ratio of 7:17 for the SVG grid.
-export const KeyboardSvg = ({vizType, children}: KeyboardSvgProps) => {
+export const KeyboardSvg = ({vizType, keyMovements, showFrame, children}: KeyboardSvgProps) => {
     const clazz = vizType === VisualizationType.LayoutPlain ? "viz-plain" : "";
+    const keyboardPadding = 20;
+    const left = filterNumbers(keyMovements.map((m) => m.next?.colPos));
+    const right = filterNumbers(keyMovements.map((m) => m.next && (m.next.colPos + m.next.keyCapWidth)));
     return <div>
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox={`0 0 ${totalWidth * keyUnit} 500`}
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox={`0 -50 ${totalWidth * keyUnit} 600`}
              class={`keyboard-svg ${clazz}`}>
             <title>Keyboard Layout Diagram</title>
+            {showFrame && <rect class={"keyboard-frame"}
+                x={Math.min(...left) * keyUnit - keyboardPadding}
+                y={-keyboardPadding}
+                width={(Math.max(...right) - Math.min(...left)) * keyUnit + 2*keyboardPadding}
+                height={5 * keyUnit + 2*keyboardPadding}
+            />}
             {children}
         </svg>
     </div>;

@@ -1,3 +1,8 @@
+.keyboard-frame {
+    fill: #ecfafa;
+    stroke: black;
+}
+
 .key-group.animating {
     animation: keyMove 1s ease-in-out forwards;
 }
@@ -82,7 +87,7 @@
     border-color: transparent;
 }
 
-.same-finger{
+.same-finger {
     fill: #f3eaac;
     background-color: #f3eaac;
 }

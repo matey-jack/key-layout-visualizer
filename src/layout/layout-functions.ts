@@ -228,7 +228,6 @@ export function compatibilityScore(diffSummy: Record<MappingChange, number>): nu
         diffSummy[MappingChange.SwapHands] * 2.0;
 }
 
-// keep in sync with KeyboardSvg.viewBox
 export const totalWidth = 18;
 // in key units
 const horizontalPadding = 0.5;

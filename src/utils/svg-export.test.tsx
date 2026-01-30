@@ -29,13 +29,14 @@ describe('SVG Export', () => {
         const keyPositions = getKeyPositions(layoutModel, true, charMap!);
         const keyMovements = getKeyMovements(keyPositions, keyPositions);
 
+        const vizType = VisualizationType.LayoutKeyEffort;
         const { container } = render(
-            <KeyboardSvg>
+            <KeyboardSvg vizType={vizType} showFrame={true} keyMovements={keyMovements}>
                 <RowBasedKeyboard
                     layoutModel={layoutModel}
                     prevLayoutModel={ansiIBMLayoutModel}
                     keyMovements={keyMovements}
-                    vizType={VisualizationType.LayoutKeyEffort}
+                    vizType={vizType}
                     mappingDiff={{}}
                 />
             </KeyboardSvg>
@@ -59,14 +60,15 @@ describe('SVG Export', () => {
         const charMap = fillMapping(ansiIBMLayoutModel, qwertyMapping);
         const keyPositions = getKeyPositions(ansiIBMLayoutModel, true, charMap!);
         const keyMovements = getKeyMovements(keyPositions, keyPositions);
+        const vizType = VisualizationType.LayoutKeyEffort;
 
         const { container } = render(
-            <KeyboardSvg>
+            <KeyboardSvg vizType={vizType} showFrame={true} keyMovements={keyMovements}>
                 <RowBasedKeyboard
                     layoutModel={ansiIBMLayoutModel}
                     prevLayoutModel={ansiIBMLayoutModel}
                     keyMovements={keyMovements}
-                    vizType={VisualizationType.LayoutKeyEffort}
+                    vizType={vizType}
                     mappingDiff={{}}
                 />
             </KeyboardSvg>
@@ -76,7 +78,7 @@ describe('SVG Export', () => {
 
         // Verify SVG structure
         expect(svgContent).toContain('xmlns="http://www.w3.org/2000/svg"');
-        expect(svgContent).toContain('viewBox="0 0 1800 500"');
+        expect(svgContent).toContain('viewBox="0 -50 1800 600"');
         // make sure that there is only one 'xmlns' in the <svg> opening tag
         const svgTagMatch = svgContent.match(/<svg[^>]*>/);
         expect(svgTagMatch).toBeTruthy();
@@ -88,14 +90,15 @@ describe('SVG Export', () => {
         const charMap = fillMapping(ansiIBMLayoutModel, qwertyMapping);
         const keyPositions = getKeyPositions(ansiIBMLayoutModel, true, charMap!);
         const keyMovements = getKeyMovements(keyPositions, keyPositions);
+        const vizType = VisualizationType.LayoutKeyEffort;
 
         const { container } = render(
-            <KeyboardSvg>
+            <KeyboardSvg vizType={vizType} showFrame={true} keyMovements={keyMovements}>
                 <RowBasedKeyboard
                     layoutModel={ansiIBMLayoutModel}
                     prevLayoutModel={ansiIBMLayoutModel}
                     keyMovements={keyMovements}
-                    vizType={VisualizationType.LayoutKeyEffort}
+                    vizType={vizType}
                     mappingDiff={{}}
                 />
             </KeyboardSvg>
@@ -114,14 +117,15 @@ describe('SVG Export', () => {
         const charMap = fillMapping(ansiIBMLayoutModel, qwertyMapping);
         const keyPositions = getKeyPositions(ansiIBMLayoutModel, true, charMap!);
         const keyMovements = getKeyMovements(keyPositions, keyPositions);
+        const vizType = VisualizationType.LayoutKeyEffort;
 
         const { container } = render(
-            <KeyboardSvg>
+            <KeyboardSvg vizType={vizType} showFrame={true} keyMovements={keyMovements}>
                 <RowBasedKeyboard
                     layoutModel={ansiIBMLayoutModel}
                     prevLayoutModel={ansiIBMLayoutModel}
                     keyMovements={keyMovements}
-                    vizType={VisualizationType.LayoutKeyEffort}
+                    vizType={vizType}
                     mappingDiff={{}}
                 />
             </KeyboardSvg>
@@ -143,14 +147,15 @@ describe('SVG Export', () => {
         const charMap = fillMapping(ansiIBMLayoutModel, qwertyMapping);
         const keyPositions = getKeyPositions(ansiIBMLayoutModel, true, charMap!);
         const keyMovements = getKeyMovements(keyPositions, keyPositions);
+        const vizType = VisualizationType.LayoutKeyEffort;
 
         const { container } = render(
-            <KeyboardSvg>
+            <KeyboardSvg vizType={vizType} showFrame={true} keyMovements={keyMovements}>
                 <RowBasedKeyboard
                     layoutModel={ansiIBMLayoutModel}
                     prevLayoutModel={ansiIBMLayoutModel}
                     keyMovements={keyMovements}
-                    vizType={VisualizationType.LayoutKeyEffort}
+                    vizType={vizType}
                     mappingDiff={{}}
                 />
             </KeyboardSvg>
@@ -177,7 +182,7 @@ describe('SVG Export', () => {
 
         vizTypes.forEach((vizType) => {
             const { container } = render(
-                <KeyboardSvg>
+                <KeyboardSvg vizType={vizType} showFrame={true} keyMovements={keyMovements}>
                     <RowBasedKeyboard
                         layoutModel={ansiIBMLayoutModel}
                         prevLayoutModel={ansiIBMLayoutModel}
