@@ -84,7 +84,7 @@ interface KeyProps {
 }
 
 const keyUnit = 100;
-const keyPadding = 5;
+const keyPadding = 8;
 const keyRibbonPaddingH = 17;
 const keyRibbonPaddingV = 1;
 
@@ -139,15 +139,30 @@ export function Key(props: KeyProps) {
     const homeMarker = showHomeMarker &&
         <circle cx={keyUnit / 2} cy={keyUnit / 2} r={12} className="home-marker-circle"/>;
 
+    const keyHeight = keyUnit * height - 2 * keyPadding;
+    const isometric3dOffset = 8; // pixels for the 3D depth
+
+    const keycapCornerRadius = 6;
     return <g
         style={groupStyle}
         className={"key-group animating"}>
+        {/* Left side of keycap (isometric) */}
+        <polygon
+            className={"key-outline key-side-left " + backgroundClass}
+            points={`${0},${keycapCornerRadius/2} ${-isometric3dOffset},${isometric3dOffset+keycapCornerRadius/2} ${-isometric3dOffset},${keyHeight + isometric3dOffset} ${0},${keyHeight}`}/>
+        {/* Bottom side of keycap (isometric) */}
+        <polygon
+            className={"key-outline key-side-bottom " + backgroundClass}
+            points={`${0},${keyHeight} ${rectWidth-keycapCornerRadius/2},${keyHeight} ${rectWidth - isometric3dOffset-keycapCornerRadius/2},${keyHeight + isometric3dOffset} ${-isometric3dOffset},${keyHeight + isometric3dOffset}`}/>
+        {/* Top face of keycap (main) */}
         <rect
             className={"key-outline animating " + backgroundClass}
             x={0}
             y={0}
             width={rectWidth}
-            height={keyUnit * height - 2 * keyPadding}/>
+            height={keyHeight}
+            rx={keycapCornerRadius}
+            ry={keycapCornerRadius}/>
         {keyRibbon || frequencyCircle || homeMarker}
         {text}
     </g>

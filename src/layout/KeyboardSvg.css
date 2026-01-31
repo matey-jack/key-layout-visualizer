@@ -36,6 +36,14 @@
     fill: none;
 }
 
+.key-side-left {
+    filter: brightness(75%);
+}
+
+.key-side-bottom {
+    filter: brightness(50%);
+}
+
 .key-outline.unlabeled {
     fill: #e7e7e7;
 }
