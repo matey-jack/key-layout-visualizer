@@ -10,6 +10,7 @@ import {
     type LayoutModel,
     MappingChange,
     VisualizationType,
+    isLayoutViz,
 } from "../base-model.ts";
 import {singleCharacterFrequencies} from "../frequencies/english-single-character-frequencies.ts";
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping/mapping-functions.ts";
@@ -58,14 +59,16 @@ export const KeyboardSvg = ({vizType, keyMovements, showFrame, children}: Keyboa
              class={`keyboard-svg ${clazz}`}>
             <title>Keyboard Layout Diagram</title>
             {showFrame && <g className="keyboard-frame-group animating" key={`${nextDims.x}-${nextDims.width}`} style={frameGroupStyle}>
-                {/* Left side of frame (isometric) */}
-                <polygon
-                    className="keyboard-frame keyboard-frame-side-left"
-                    points={nextLeftSidePoints}/>
-                {/* Bottom side of frame (isometric) */}
-                <polygon
-                    className="keyboard-frame keyboard-frame-side-bottom"
-                    points={nextBottomSidePoints}/>
+                {isLayoutViz(vizType) && <>
+                    {/* Left side of frame (isometric) */}
+                    <polygon
+                        className="keyboard-frame keyboard-frame-side-left"
+                        points={nextLeftSidePoints}/>
+                    {/* Bottom side of frame (isometric) */}
+                    <polygon
+                        className="keyboard-frame keyboard-frame-side-bottom"
+                        points={nextBottomSidePoints}/>
+                </>}
                 {/* Top face of frame (main) */}
                 <rect class="keyboard-frame animating"
                     x={0}
@@ -103,6 +106,7 @@ interface KeyProps {
     prevRow: KeyboardRows,
     prevCol: number,
     prevWidth: number,
+    vizType: VisualizationType,
 }
 
 const keyUnit = 100;
@@ -167,14 +171,16 @@ export function Key(props: KeyProps) {
     return <g
         style={groupStyle}
         className={"key-group animating"}>
-        {/* Left side of keycap (isometric) */}
-        <polygon
-            className={"key-outline key-side-left " + backgroundClass}
-            points={`${0},${keycapCornerRadius/2} ${-isometric3dOffset},${isometric3dOffset+keycapCornerRadius/2} ${-isometric3dOffset},${keyHeight + isometric3dOffset} ${0},${keyHeight}`}/>
-        {/* Bottom side of keycap (isometric) */}
-        <polygon
-            className={"key-outline key-side-bottom " + backgroundClass}
-            points={`${0},${keyHeight} ${rectWidth-keycapCornerRadius/2},${keyHeight} ${rectWidth - isometric3dOffset-keycapCornerRadius/2},${keyHeight + isometric3dOffset} ${-isometric3dOffset},${keyHeight + isometric3dOffset}`}/>
+        {isLayoutViz(props.vizType) && <>
+            {/* Left side of keycap (isometric) */}
+            <polygon
+                className={"key-outline key-side-left " + backgroundClass}
+                points={`${0},${keycapCornerRadius/2} ${-isometric3dOffset},${isometric3dOffset+keycapCornerRadius/2} ${-isometric3dOffset},${keyHeight + isometric3dOffset} ${0},${keyHeight}`}/>
+            {/* Bottom side of keycap (isometric) */}
+            <polygon
+                className={"key-outline key-side-bottom " + backgroundClass}
+                points={`${0},${keyHeight} ${rectWidth-keycapCornerRadius/2},${keyHeight} ${rectWidth - isometric3dOffset-keycapCornerRadius/2},${keyHeight + isometric3dOffset} ${-isometric3dOffset},${keyHeight + isometric3dOffset}`}/>
+        </>}
         {/* Top face of keycap (main) */}
         <rect
             className={"key-outline animating " + backgroundClass}
@@ -284,6 +290,7 @@ export function RowBasedKeyboard({layoutModel, prevLayoutModel, keyMovements, ma
             prevRow={movement.prev?.row ?? getEntryOrExitRow(movement.next!.row)}
             prevCol={movement.prev?.colPos ?? movement.next!.colPos}
             prevWidth={movement.prev?.keyCapWidth ?? keyCapWidth}
+            vizType={vizType}
             key={`${label}-${newRow}-${newCol}-${keyCapWidth}`}
         />
     })
