@@ -36,36 +36,42 @@ export const KeyboardSvg = ({vizType, keyMovements, showFrame, children}: Keyboa
     const keyboardPadding = 20;
     const nextDims = getRectDimensions(keyMovements.map((m) => m.next));
     const prevDims = getRectDimensions(keyMovements.map((m) => m.prev));
-    const frameStyle = {
-        '--from-x': `${prevDims.x - keyboardPadding}px`,
-        '--to-x': `${nextDims.x - keyboardPadding}px`,
-        '--from-width': `${prevDims.width + 2 * keyboardPadding}px`,
-        '--to-width': `${nextDims.width + 2 * keyboardPadding}px`,
-    };
-    const frameX = prevDims.x - keyboardPadding;
-    const frameWidth = prevDims.width + 2 * keyboardPadding;
     const frameHeight = 5 * keyUnit + 2 * keyboardPadding;
-    const leftSidePoints = `${frameX},${keycapCornerRadius/2} ${frameX - isometric3dOffset},${isometric3dOffset+keycapCornerRadius/2} ${frameX - isometric3dOffset},${frameHeight + isometric3dOffset} ${frameX},${frameHeight}`;
-    const bottomSidePoints = `${frameX},${frameHeight} ${frameX + frameWidth - keycapCornerRadius/2},${frameHeight} ${frameX + frameWidth - keycapCornerRadius/2 - isometric3dOffset},${frameHeight + isometric3dOffset} ${frameX - isometric3dOffset},${frameHeight + isometric3dOffset}`;
+    const prevFrameX = prevDims.x - keyboardPadding;
+    const prevFrameWidth = prevDims.width + 2 * keyboardPadding;
+    const nextFrameX = nextDims.x - keyboardPadding;
+    const nextFrameWidth = nextDims.width + 2 * keyboardPadding;
+    const frameGroupStyle = {
+        '--from-x': `${prevFrameX}px`,
+        '--to-x': `${nextFrameX}px`,
+        '--from-y': `${-keyboardPadding}px`,
+        '--to-y': `${-keyboardPadding}px`,
+        '--from-width': `${prevFrameWidth}px`,
+        '--to-width': `${nextFrameWidth}px`,
+        transform: `translate(var(--from-x), var(--from-y))`,
+        transformOrigin: "0 0"
+    };
+    const nextLeftSidePoints = `${0},${keycapCornerRadius/2} ${-isometric3dOffset},${isometric3dOffset+keycapCornerRadius/2} ${-isometric3dOffset},${frameHeight + isometric3dOffset} ${0},${frameHeight}`;
+    const nextBottomSidePoints = `${0},${frameHeight} ${nextFrameWidth - keycapCornerRadius/2},${frameHeight} ${nextFrameWidth - keycapCornerRadius/2 - isometric3dOffset},${frameHeight + isometric3dOffset} ${-isometric3dOffset},${frameHeight + isometric3dOffset}`;
     return <div>
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox={`0 -50 ${totalWidth * keyUnit} 600`}
              class={`keyboard-svg ${clazz}`}>
             <title>Keyboard Layout Diagram</title>
-            {showFrame && <g key={`${nextDims.x}-${nextDims.width}`} style={frameStyle}>
+            {showFrame && <g className="keyboard-frame-group animating" key={`${nextDims.x}-${nextDims.width}`} style={frameGroupStyle}>
                 {/* Left side of frame (isometric) */}
                 <polygon
-                    className="keyboard-frame-outline keyboard-frame-side-left"
-                    points={leftSidePoints}/>
+                    className="keyboard-frame keyboard-frame-side-left"
+                    points={nextLeftSidePoints}/>
                 {/* Bottom side of frame (isometric) */}
                 <polygon
-                    className="keyboard-frame-outline keyboard-frame-side-bottom"
-                    points={bottomSidePoints}/>
+                    className="keyboard-frame keyboard-frame-side-bottom"
+                    points={nextBottomSidePoints}/>
                 {/* Top face of frame (main) */}
                 <rect class="keyboard-frame animating"
-                    x="var(--from-x)"
-                    y={-keyboardPadding}
+                    x={0}
+                    y={0}
                     width="var(--from-width)"
-                    height={5 * keyUnit + 2*keyboardPadding}
+                    height={frameHeight}
                     rx={keycapCornerRadius}
                     ry={keycapCornerRadius}
                 />

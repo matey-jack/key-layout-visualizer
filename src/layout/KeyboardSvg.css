@@ -11,17 +11,28 @@
     filter: brightness(50%);
 }
 
-.keyboard-frame.animating {
-    animation: frameResize 1s ease-in-out forwards;
+.keyboard-frame-group.animating {
+    animation: keyboardFrameMove 1s ease-in-out forwards;
 }
 
-@keyframes frameResize {
+@keyframes keyboardFrameMove {
     from {
-        x: var(--from-x);
+        transform: translate(var(--from-x), var(--from-y));
+    }
+    to {
+        transform: translate(var(--to-x), var(--to-y));
+    }
+}
+
+.keyboard-frame.animating {
+    animation: keyboardFrameResize 1s ease-in-out forwards;
+}
+
+@keyframes keyboardFrameResize {
+    from {
         width: var(--from-width);
     }
     to {
-        x: var(--to-x);
         width: var(--to-width);
     }
 }
