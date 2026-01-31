@@ -99,8 +99,8 @@
 
 .key-outline.command-key-border {
     filter: brightness(80%);
-    stroke: #b5b5b5;
-    /*stroke-width: 7px;*/
+    /*stroke: #b5b5b5;
+    stroke-width: 7px;*/
 }
 
 .key-outline.home-key-border {
