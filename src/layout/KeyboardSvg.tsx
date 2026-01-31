@@ -42,20 +42,34 @@ export const KeyboardSvg = ({vizType, keyMovements, showFrame, children}: Keyboa
         '--from-width': `${prevDims.width + 2 * keyboardPadding}px`,
         '--to-width': `${nextDims.width + 2 * keyboardPadding}px`,
     };
+    const frameX = prevDims.x - keyboardPadding;
+    const frameWidth = prevDims.width + 2 * keyboardPadding;
+    const frameHeight = 5 * keyUnit + 2 * keyboardPadding;
+    const leftSidePoints = `${frameX},${keycapCornerRadius/2} ${frameX - isometric3dOffset},${isometric3dOffset+keycapCornerRadius/2} ${frameX - isometric3dOffset},${frameHeight + isometric3dOffset} ${frameX},${frameHeight}`;
+    const bottomSidePoints = `${frameX},${frameHeight} ${frameX + frameWidth - keycapCornerRadius/2},${frameHeight} ${frameX + frameWidth - keycapCornerRadius/2 - isometric3dOffset},${frameHeight + isometric3dOffset} ${frameX - isometric3dOffset},${frameHeight + isometric3dOffset}`;
     return <div>
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox={`0 -50 ${totalWidth * keyUnit} 600`}
              class={`keyboard-svg ${clazz}`}>
             <title>Keyboard Layout Diagram</title>
-            {showFrame && <rect class={"keyboard-frame animating"}
-                                key={`${nextDims.x}-${nextDims.width}`}
-                style={frameStyle}
-                x="var(--from-x)"
-                y={-keyboardPadding}
-                width="var(--from-width)"
-                height={5 * keyUnit + 2*keyboardPadding}
-                rx={keycapCornerRadius}
-                ry={keycapCornerRadius}
-            />}
+            {showFrame && <g key={`${nextDims.x}-${nextDims.width}`} style={frameStyle}>
+                {/* Left side of frame (isometric) */}
+                <polygon
+                    className="keyboard-frame-outline keyboard-frame-side-left"
+                    points={leftSidePoints}/>
+                {/* Bottom side of frame (isometric) */}
+                <polygon
+                    className="keyboard-frame-outline keyboard-frame-side-bottom"
+                    points={bottomSidePoints}/>
+                {/* Top face of frame (main) */}
+                <rect class="keyboard-frame animating"
+                    x="var(--from-x)"
+                    y={-keyboardPadding}
+                    width="var(--from-width)"
+                    height={5 * keyUnit + 2*keyboardPadding}
+                    rx={keycapCornerRadius}
+                    ry={keycapCornerRadius}
+                />
+            </g>}
             {children}
         </svg>
     </div>;
