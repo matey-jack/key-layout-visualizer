@@ -53,6 +53,8 @@ export const KeyboardSvg = ({vizType, keyMovements, showFrame, children}: Keyboa
                 y={-keyboardPadding}
                 width="var(--from-width)"
                 height={5 * keyUnit + 2*keyboardPadding}
+                rx={keycapCornerRadius}
+                ry={keycapCornerRadius}
             />}
             {children}
         </svg>
@@ -87,6 +89,8 @@ const keyUnit = 100;
 const keyPadding = 8;
 const keyRibbonPaddingH = 17;
 const keyRibbonPaddingV = 1;
+const isometric3dOffset = 8;
+const keycapCornerRadius = 6;
 
 export function Key(props: KeyProps) {
     const {row, col, prevRow, prevCol, width, prevWidth} = props;
@@ -140,9 +144,6 @@ export function Key(props: KeyProps) {
         <circle cx={keyUnit / 2} cy={keyUnit / 2} r={12} className="home-marker-circle"/>;
 
     const keyHeight = keyUnit * height - 2 * keyPadding;
-    const isometric3dOffset = 8; // pixels for the 3D depth
-
-    const keycapCornerRadius = 6;
     return <g
         style={groupStyle}
         className={"key-group animating"}>

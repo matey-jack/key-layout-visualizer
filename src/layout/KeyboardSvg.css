@@ -3,6 +3,14 @@
     stroke: black;
 }
 
+.keyboard-frame-side-left {
+    filter: brightness(75%);
+}
+
+.keyboard-frame-side-bottom {
+    filter: brightness(50%);
+}
+
 .keyboard-frame.animating {
     animation: frameResize 1s ease-in-out forwards;
 }
