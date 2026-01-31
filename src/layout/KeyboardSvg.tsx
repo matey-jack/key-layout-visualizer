@@ -6,6 +6,7 @@ import {
     Finger,
     KeyboardRows,
     type KeyMovement,
+    type KeyPosition,
     type LayoutModel,
     MappingChange,
     VisualizationType,
@@ -28,29 +29,42 @@ interface KeyboardSvgProps {
     children?: ComponentChildren;
 }
 
-function filterNumbers<T>(list: T[]): number[] {
-    return list.filter((x) => typeof x === "number") as number[]
-}
 // Our largest keyboards are 16u wide (Ergoboard), while all keyboards are 5u high.
 // Adding 1u of wiggle room all around suggests a ratio of 7:17 for the SVG grid.
 export const KeyboardSvg = ({vizType, keyMovements, showFrame, children}: KeyboardSvgProps) => {
     const clazz = vizType === VisualizationType.LayoutPlain ? "viz-plain" : "";
     const keyboardPadding = 20;
-    const left = filterNumbers(keyMovements.map((m) => m.next?.colPos));
-    const right = filterNumbers(keyMovements.map((m) => m.next && (m.next.colPos + m.next.keyCapWidth)));
+    const nextDims = getRectDimensions(keyMovements.map((m) => m.next));
+    const prevDims = getRectDimensions(keyMovements.map((m) => m.prev));
+    const frameStyle = {
+        '--from-x': `${prevDims.x - keyboardPadding}px`,
+        '--to-x': `${nextDims.x - keyboardPadding}px`,
+        '--from-width': `${prevDims.width + 2 * keyboardPadding}px`,
+        '--to-width': `${nextDims.width + 2 * keyboardPadding}px`,
+    };
     return <div>
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox={`0 -50 ${totalWidth * keyUnit} 600`}
              class={`keyboard-svg ${clazz}`}>
             <title>Keyboard Layout Diagram</title>
-            {showFrame && <rect class={"keyboard-frame"}
-                x={Math.min(...left) * keyUnit - keyboardPadding}
+            {showFrame && <rect class={"keyboard-frame animating"}
+                                key={`${nextDims.x}-${nextDims.width}`}
+                style={frameStyle}
+                x="var(--from-x)"
                 y={-keyboardPadding}
-                width={(Math.max(...right) - Math.min(...left)) * keyUnit + 2*keyboardPadding}
+                width="var(--from-width)"
                 height={5 * keyUnit + 2*keyboardPadding}
             />}
             {children}
         </svg>
     </div>;
+}
+
+function getRectDimensions(positions: (KeyPosition | undefined)[]): {x: number, width: number} {
+    const colPositions = positions.map(p => p?.colPos).filter(x => typeof x === 'number') as number[];
+    const widths = positions.map(p => p?.keyCapWidth).filter(x => typeof x === 'number') as number[];
+    const minCol = Math.min(...colPositions);
+    const maxRight = Math.max(...widths.map((w, i) => colPositions[i] + w));
+    return {x: minCol * keyUnit, width: (maxRight - minCol) * keyUnit};
 }
 
 interface KeyProps {

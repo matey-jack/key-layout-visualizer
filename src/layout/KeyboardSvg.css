@@ -3,6 +3,21 @@
     stroke: black;
 }
 
+.keyboard-frame.animating {
+    animation: frameResize 1s ease-in-out forwards;
+}
+
+@keyframes frameResize {
+    from {
+        x: var(--from-x);
+        width: var(--from-width);
+    }
+    to {
+        x: var(--to-x);
+        width: var(--to-width);
+    }
+}
+
 .key-group.animating {
     animation: keyMove 1s ease-in-out forwards;
 }
