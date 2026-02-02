@@ -62,6 +62,8 @@
 - switch Typewrite variant selection to buttons, like on other layout types.
 - animate the stagger lines
 - animate the key size! (but not the height)
+- "design view" (now called "plain viz") as a layout visualization that approximates a physical keyboard. Especially for the Ergoplank family: 
+  Keys in different colors to highlight the "splitness" of the keyboard. (One color for all the 1FH keys.)
 
 
 bugs fixed:
@@ -85,6 +87,7 @@ refactorings done (or decided against):
    But all the Harmonic and Ergo(Plank|Board) options are filtered through the setLayout mechanism. Is that what we want?
    - yes, it will be important once we provide a new keymapType either for a specific variant or a group! 
 
+- modularized the CSS
 
 ======================== TODO ===============================
 
@@ -93,8 +96,6 @@ small tasks:
  - option for ergoMob without number row
 
 missing core features:
-- "design view" as a layout visualization that approximates a physical keyboard. Especially for the Ergoplank family: 
-  Keys in different colors to highlight the "splitness" of the keyboard. (One color for all the 1FH keys.)
 - SVG export (with a title stating name of layout and keymap) ✅ except:
   - add metadata for to-scale printing (might need PDF?)
   - add a ruler to the SVG so people can zoom to scale on their laptop or tablet
@@ -119,6 +120,8 @@ optional:
 - HHKB classic vs Tsangan layout variants (well, the bottom row is almost like Apple's – is this worth it?)
 
 bugs:
+- length of key and keyboard underside does not animate: not so trivial fix, since SVG polygon coordinates can't be transformed with CSS.
+  Maybe this means, replacing the polygon with a CSS skew of a rectangle! (I could ask various LLMs if they would find this solution. Just for fun!)
 - the comparisonBase mapping needs to have definitions on all layouts, thus at least a mapping30 (which is supported everywhere).
    Add that for qwertz and maybe add a full mapping for the ortho board to make the comparison more meaningful.
 - on Thumby / Cozy Keyboard English variant, the apostrophe is counted as "changed on same finger" on the ortho layout, 
@@ -127,7 +130,8 @@ bugs:
 - fix altFinger configuration for Harmonic variants AND show it in finger viz ==> or remove Alt-finger stuff from app
 
 refactoring:
-- modularize the CSS
+- add GHA pipeline for depedency updates
+- run e2e tests headless on GHA
 - remove home finger properties; use keyEffort==Home instead.
 
 - I find that the key/finger/effort matrix is easier to edit by hand than write in abstractions. Copy, paste, adapt, ... and win!
