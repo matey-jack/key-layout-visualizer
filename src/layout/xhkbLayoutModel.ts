@@ -1,6 +1,6 @@
-import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
+import {KEY_COLOR, KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
 import {MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
-import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
+import {copyAndModifyKeymap} from "./layout-functions.ts";
 
 const keyWidth = new MonotonicKeyWidth(15, zeroIndent, "AHKB");
 
@@ -59,7 +59,19 @@ export const xhkbLayoutModel: LayoutModel = {
 
     rowIndent: keyWidth.rowIndent,
 
-    keyColorClass: keyColorHighlightsClass,
+    // One might argue that B and ' and maybe also Y should also have dark color,
+    // because they are as far from the home position as some edge keys, but I made the aesthetic decision as it is.
+    // Left side has 5 'boring' keys per row; right side has 5, 6, 5, 4.
+    keyColorClass(label: string, row: KeyboardRows, col: number) {
+        if (label && "⏎↑↓←→".includes(label) || label === "Esc") return KEY_COLOR.HIGHLIGHT;
+        if (row === KeyboardRows.Bottom) return KEY_COLOR.EDGE;
+        if (col === 0) return KEY_COLOR.EDGE;
+        if (col <= 5) return KEY_COLOR.BORING;
+        if (col <= 7) return KEY_COLOR.EDGE;
+        const rightEdge = [12, 13, 12, 11]
+        if (col <= rightEdge[row]) return KEY_COLOR.BORING;
+        return KEY_COLOR.EDGE;
+    },
 
     splitColumns: [7, 7, 7, 7, 5],
 
