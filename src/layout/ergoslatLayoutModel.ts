@@ -119,7 +119,7 @@ function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
     return keymap;
 }
 
-const numberlessKeyWidths = new SymmetricKeyWidth(13, [0, 0, 0, 0, 0.25]);
+const numberlessKeyWidths = new SymmetricKeyWidth(13, [0, 0, 0, 0, 0.5]);
 
 export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
     return {
@@ -132,7 +132,7 @@ export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
             numberlessKeyWidths.row(2, 1),        // Home row unchanged
             numberlessKeyWidths.row(3, 1.5),      // Lower row unchanged
             // With 0.25 indent and 0.5u from the central 1u key, both halves have exactly 7.5u
-            mirror(1.25, 1.25, 1, 1.25, 1.5),
+            mirror(1.5, 1.5, 1.5, 1.5),
         ],
 
         mainFingerAssignment: [[null], ...lm.mainFingerAssignment.slice(1, 5)],
