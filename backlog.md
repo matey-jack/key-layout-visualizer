@@ -49,6 +49,7 @@
  - EB MidShift with horizontal and vertical Enter
  - Note the slightly confusing wording: "mid shift" refers to the middle row, whereas "mid enter" refers to a medium size and to a key position not at the edge. 
  - EB MidShift vertical Enter (and 1.75u backspace)
+- Ergoslat, with and without number row
 
 - Apple mode for the ANSI keyboard and a new Layout-Viz layer to count the different keycap sizes
 
@@ -58,8 +59,8 @@
 - refactor URL generation/parsing to be type-specific
 - Ergoplank / Katana layout options have sub-options for the variants below the variant. 
 - refactored to awesome keyWidth functions which automatically calculate the gaps for symmetrically staggered keyboards.
-  Wasted a whole day without adding user-visible content. But was fun to do and I am proud of the new-found simplicity!
-- switch Typewrite variant selection to buttons, like on other layout types.
+  Wasted a whole day without adding user-visible content. But was fun to do, and I am proud of the new-found simplicity!
+- switch Typewriter variant selection to buttons, like on other layout types.
 - animate the stagger lines
 - animate the key size! (but not the height)
 - "design view" (now called "plain viz") as a layout visualization that approximates a physical keyboard. Especially for the Ergoplank family: 
@@ -92,8 +93,8 @@ refactorings done (or decided against):
 ======================== TODO ===============================
 
 small tasks:
- - enable ergoMobAddAngleMod
- - option for ergoMob without number row
+ - enable ergoslatAddAngleMod
+ - add a color for 1u keys in the size viz, so it looks better in the 3D view
 
 missing core features:
 - SVG export (with a title stating name of layout and keymap) ✅ except:
@@ -104,7 +105,8 @@ missing core features:
   (Alternatively, show a Thinkpad-style pointing nipple in that gap.)
 - compress some of the UI when scrolling, so that the Keyboard SVG always stays up top and buttons (both type and variant) maybe on the side of the SVG?
     Show only the selected buttons and a "Change..." link which scrolls back up, so that all buttons are visible again.
-
+- German key layout for the Ergoboard and Ergoplank, because having proper Umlauts mapped is one of the reasons I like having so many keys.
+  (And also because placing extra letters follows a different logic than those low-rank punctuation characters there in the center...)
 - add some more explanations, especially for:
   + the "wide" mappings
   + Harmonic and Ortho general texts (maybe (i) icon in layout bar). But still repeat that text under the H and O variants.
