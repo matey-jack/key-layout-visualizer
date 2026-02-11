@@ -58,13 +58,16 @@ export const eb65MidshiftNiceLayoutModel: LayoutModel = {
                 .slice(0, -2)
                 .concat(0.25, 1, 1),
             /*
-                Center between hands is exactly the center of the keyboard, leaving 8u on each side,
-                of which 2.5u are between the inner edges of the index finger home keys.
-                Half of the outer space key (0.75u) should fall inside those 2.5u, leaving 1.75, which is exactly a space bar,
-                so we don't need any central key between space bars.
+            Since the largest key above the bottom is 1.75u, we also use this for the space bars.
+            Space bars are the 0.75u away from the inner edge of the index finger home key,
+            which is a bit more than the ideal 0.5u realized in the Ergoplank, but still acceptable.
              */
             [0.5, 1.5, 1.25, 1.5, 1.5, 1.75, 1.75, 1.5, 0, 1.5, 0.25, 1, 1, 1],
-            // alternative, if you like one more key:
+
+            // Alternatively, use an indent of only 0.25 and only 1.5u keys on both sides of the 1.75 space bars.
+            // But that raises the question of also replacing the only remaining 1.25u key to get a simpler keycap size set.
+
+            // Another alternative is using 1.25u universally, which produces one more key:
             // [0.5, 1.25, 1.25, 1, 1, 1.25, 1.75, 1.75, 1.25, 0.75/2, 1.25, 0.75/2, 1, 1, 1],
         ],
 

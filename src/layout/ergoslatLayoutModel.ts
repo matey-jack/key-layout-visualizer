@@ -3,14 +3,14 @@ import {mapValues} from "../library/records.ts";
 import {mirror, SymmetricKeyWidth} from "./keyWidth.ts";
 import {copyAndModifyKeymap, ergoFamilyKeyColorClass} from "./layout-functions.ts";
 
-const keyWidths = new SymmetricKeyWidth(13, [0, 0.25, 0, 0, 0.25]);
+const keyWidths = new SymmetricKeyWidth(13, [0, 0.25, 0, 0, 0.5]);
 
 const ansi30FrameMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "-"],
     ["⌦", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
+    ["Ctrl", "Cmd", "Alt", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
 const thumb30FrameMapping: LayoutMapping = [
@@ -18,7 +18,7 @@ const thumb30FrameMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
     ["⌦", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, "/", 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Fn", "Alt", 0, "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
+    ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
 export const ergoslatLayoutModel: LayoutModel = {
@@ -46,8 +46,17 @@ export const ergoslatLayoutModel: LayoutModel = {
         keyWidths.row(1, 1),
         keyWidths.row(2, 1),
         keyWidths.row(3, 1.5),
-        // With 0.25 indent and 0.5u from the central 1u key, both halves have exactly 7.5u
-        mirror(1.25, 1.25, 1, 1.25, 1.5),
+        // Simplest possible bottom row; entire keyboard has only sizes 1u and 1.5u.
+        mirror(1.5, 1.5, 1.5, 1.5),
+
+        // Alternative bottom row with an extra key (needs 0 indent, see line 6 above).
+        // Optionally one can also use two 1.25u keys for the upper row edges, although I wouldn't,
+        // because the right side is a character key.
+        // mirror(1.25, 1.25, 1.25, 1.25, 1.5),
+
+        // Alternative, diverse bottom row. Requires a 0.25 indent.
+        // I guess the main benefit of this purely aesthetic, for people who prefer some size diversity over uniformity.
+        // mirror(1.25, 1.25, 1, 1.25, 1.5),
     ],
 
     // row lengths: 12, 12 (and 1 gap!), 13, 12, 10
@@ -58,7 +67,7 @@ export const ergoslatLayoutModel: LayoutModel = {
         [1, 0, 1, 2, 3, 3, null, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
         [0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9],
-        [0, 1, 2, 4, 4, 5, 5, 7, 8, 9],
+        [0, 1, 4, 4, 5, 5, 8, 9],
     ],
 
     hasAltFinger: (row: number, col: number) =>
@@ -70,7 +79,7 @@ export const ergoslatLayoutModel: LayoutModel = {
         [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0],
         [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
         [1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0],
-        [3.0, 3.0, 2.0, 1.5, 0.2, 0.2, 1.5, 2.0, 3.0, 3.0],
+        [2.0, 2.0, 1.5, 0.2, 0.2, 1.5, 2.0, 2.0],
     ],
 
     rowIndent: keyWidths.rowIndent,
