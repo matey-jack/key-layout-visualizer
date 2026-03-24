@@ -55,6 +55,18 @@
     fill: none;
 }
 
+.left-skew {
+    transform-box: fill-box;
+    transform-origin: 100% 0;
+    transform: skewY(-45deg);
+}
+
+.bottom-skew {
+    transform-box: fill-box;
+    transform-origin: 0 0;
+    transform: skewX(-45deg);
+}
+
 .key-side-left {
     filter: brightness(75%);
 }
@@ -282,6 +294,19 @@
     }
     to {
         width: var(--to-width);
+    }
+}
+
+.bottom-skew.animating {
+    animation: isoBottomResize 1s ease-in-out forwards;
+}
+
+@keyframes isoBottomResize {
+    from {
+        width: var(--from-bottom-width);
+    }
+    to {
+        width: var(--to-bottom-width);
     }
 }
 

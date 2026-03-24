@@ -19,7 +19,7 @@ describe('Key rendering', () => {
             vizType={VisualizationType.LayoutKeyEffort}
             mappingDiff={{}}
         />);
-        const keys = container.querySelectorAll('rect.key-outline');
+        const keys = container.querySelectorAll('rect.key-outline:not(.key-side-left):not(.key-side-bottom)');
         expect(keys.length).toBe(14 + 14 + 13 + 12 + 8);
     });
 });

@@ -4,13 +4,13 @@ import {
     type BigramMovement,
     BigramType,
     Finger,
+    isLayoutViz,
     KeyboardRows,
     type KeyMovement,
     type KeyPosition,
     type LayoutModel,
     MappingChange,
     VisualizationType,
-    isLayoutViz,
 } from "../base-model.ts";
 import {singleCharacterFrequencies} from "../frequencies/english-single-character-frequencies.ts";
 import {isCommandKey, isKeyboardSymbol, isKeyName} from "../mapping/mapping-functions.ts";
@@ -49,11 +49,12 @@ export const KeyboardSvg = ({vizType, keyMovements, showFrame, children}: Keyboa
         '--to-y': `${-keyboardPadding}px`,
         '--from-width': `${prevFrameWidth}px`,
         '--to-width': `${nextFrameWidth}px`,
+        '--from-bottom-width': `${prevFrameWidth - keycapCornerRadius / 2}px`,
+        '--to-bottom-width': `${nextFrameWidth - keycapCornerRadius / 2}px`,
         transform: `translate(var(--from-x), var(--from-y))`,
         transformOrigin: "0 0"
     };
-    const nextLeftSidePoints = `${0},${keycapCornerRadius/2} ${-isometric3dOffset},${isometric3dOffset+keycapCornerRadius/2} ${-isometric3dOffset},${frameHeight + isometric3dOffset} ${0},${frameHeight}`;
-    const nextBottomSidePoints = `${0},${frameHeight} ${nextFrameWidth - keycapCornerRadius/2},${frameHeight} ${nextFrameWidth - keycapCornerRadius/2 - isometric3dOffset},${frameHeight + isometric3dOffset} ${-isometric3dOffset},${frameHeight + isometric3dOffset}`;
+
     return <div>
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox={`0 -50 ${totalWidth * keyUnit} 600`}
              class={`keyboard-svg ${clazz}`}>
@@ -61,13 +62,19 @@ export const KeyboardSvg = ({vizType, keyMovements, showFrame, children}: Keyboa
             {showFrame && <g className="keyboard-frame-group animating" key={`${nextDims.x}-${nextDims.width}`} style={frameGroupStyle}>
                 {isLayoutViz(vizType) && <>
                     {/* Left side of frame (isometric) */}
-                    <polygon
-                        className="keyboard-frame keyboard-frame-side-left"
-                        points={nextLeftSidePoints}/>
+                    <rect
+                        className="keyboard-frame keyboard-frame-side-left left-skew"
+                        x={-isometric3dOffset}
+                        y={keycapCornerRadius / 2}
+                        width={isometric3dOffset}
+                        height={frameHeight - keycapCornerRadius / 2}/>
                     {/* Bottom side of frame (isometric) */}
-                    <polygon
-                        className="keyboard-frame keyboard-frame-side-bottom"
-                        points={nextBottomSidePoints}/>
+                    <rect
+                        className="keyboard-frame keyboard-frame-side-bottom bottom-skew animating"
+                        x={0}
+                        y={frameHeight}
+                        width="var(--from-bottom-width)"
+                        height={isometric3dOffset}/>
                 </>}
                 {/* Top face of frame (main) */}
                 <rect class="keyboard-frame animating"
@@ -133,6 +140,8 @@ export function Key(props: KeyProps) {
         '--to-y': `${y}px`,
         '--from-width': `${fromRectWidth}px`,
         '--to-width': `${rectWidth}px`,
+        '--from-bottom-width': `${fromRectWidth - keycapCornerRadius / 2}px`,
+        '--to-bottom-width': `${rectWidth - keycapCornerRadius / 2}px`,
         transform: `translate(var(--from-x), var(--from-y))`,
         transformOrigin: "0 0"
     };
@@ -173,13 +182,19 @@ export function Key(props: KeyProps) {
         className={"key-group animating"}>
         {isLayoutViz(props.vizType) && <>
             {/* Left side of keycap (isometric) */}
-            <polygon
-                className={"key-outline key-side-left " + backgroundClass}
-                points={`${0},${keycapCornerRadius/2} ${-isometric3dOffset},${isometric3dOffset+keycapCornerRadius/2} ${-isometric3dOffset},${keyHeight + isometric3dOffset} ${0},${keyHeight}`}/>
+            <rect
+                className={"key-outline key-side-left left-skew " + backgroundClass}
+                x={-isometric3dOffset}
+                y={keycapCornerRadius / 2}
+                width={isometric3dOffset}
+                height={keyHeight - keycapCornerRadius / 2}/>
             {/* Bottom side of keycap (isometric) */}
-            <polygon
-                className={"key-outline key-side-bottom " + backgroundClass}
-                points={`${0},${keyHeight} ${rectWidth-keycapCornerRadius/2},${keyHeight} ${rectWidth - isometric3dOffset-keycapCornerRadius/2},${keyHeight + isometric3dOffset} ${-isometric3dOffset},${keyHeight + isometric3dOffset}`}/>
+            <rect
+                className={"key-outline key-side-bottom bottom-skew animating " + backgroundClass}
+                x={0}
+                y={keyHeight}
+                width="var(--from-bottom-width)"
+                height={isometric3dOffset}/>
         </>}
         {/* Top face of keycap (main) */}
         <rect
