@@ -100,6 +100,11 @@ missing core features:
 - SVG export (with a title stating name of layout and keymap) ✅ except:
   - add metadata for to-scale printing (might need PDF?)
   - add a ruler to the SVG so people can zoom to scale on their laptop or tablet
+- export to keyboard layout editor format, https://www.keyboard-layout-editor.com/, because that is used as a spec by hardward keyboard builders.
+  (Having the export will help us to remove remaining ambiguities of how the SVG pics translate to actual hardware!)
+
+nice to have features:
+- export of keymap metrics, so I can make a diagram of the diminishing returns and publish the long-planned post on "casual key maps".
 - slow down the animation when the user holds the mouse or finger on the layout type/variant buttons (or other controls).
 - Ergoplank and Katana logos to fill the gap, especially Ergoboard 65 Midshift with a nice connection between both gaps.
   (Alternatively, show a Thinkpad-style pointing nipple in that gap.)
