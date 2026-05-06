@@ -73,14 +73,12 @@ export const KeyboardSvg = ({vizType, keyMovements, showFrame, children}: Keyboa
                         className="keyboard-frame keyboard-frame-side-bottom bottom-skew animating"
                         x={0}
                         y={frameHeight}
-                        width="var(--from-bottom-width)"
                         height={isometric3dOffset}/>
                 </>}
                 {/* Top face of frame (main) */}
                 <rect class="keyboard-frame animating"
                     x={0}
                     y={0}
-                    width="var(--from-width)"
                     height={frameHeight}
                     rx={keycapCornerRadius}
                     ry={keycapCornerRadius}
@@ -193,7 +191,6 @@ export function Key(props: KeyProps) {
                 className={"key-outline key-side-bottom bottom-skew animating " + backgroundClass}
                 x={0}
                 y={keyHeight}
-                width="var(--from-bottom-width)"
                 height={isometric3dOffset}/>
         </>}
         {/* Top face of keycap (main) */}
