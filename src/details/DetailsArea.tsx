@@ -3,8 +3,8 @@ import '../layout/KeyboardSvg.css';
 import type {ComponentChildren} from "preact";
 import type {AppState} from "../app-model.ts";
 import {
-    bigramEffort,
     BigramType,
+    bigramEffort,
     type FlexMapping,
     isLayoutViz,
     KeymapTypeId,
@@ -31,8 +31,8 @@ import {
     keyCapSize,
 } from "../layout/layout-functions.ts";
 import {sum} from "../library/math.ts";
+import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
 import {qwertyMapping} from "../mapping/baseMappings.ts";
-import {offHomeRowFrequency, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
 
 interface DetailsAreaProps {
     appState: AppState;
@@ -183,7 +183,7 @@ interface KeyEffortDetailsProps {
 export function SingleKeyEffortDetails({layout, mapping}: KeyEffortDetailsProps) {
     // In the details screen, we know that layout options always match the mapping, because they are set for the mapping when that is selected.
     const charMap = fillMapping(layout, mapping)!;
-    const freqsByEffort = offHomeRowFrequency(layout, charMap, englishFreqs);
+    const freqsByEffort = sumKeyFrequenciesByEffort(layout, charMap, englishFreqs);
     const totalEffort = Math.round(sum(
         Object.entries(freqsByEffort)
             .map(([a, b]) => Number(a) * b)
