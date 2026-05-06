@@ -13,10 +13,10 @@ export const cozyEnglish: FlexMapping = {
     which could be alt-fingered in Qwerty, but become annoyingly noticeable once the N is so easy to type. `,
     mappings: {
         [KeymapTypeId.SplitOrtho]: [
-            "qwbf'" + "ykulp-",
-            "asdrg" + "hniot;",
+            "qwbf;" + "ykulp-",
+            "asdrg" + "hniot'",
             "zxcv=" + "jm,./",
-            "⇤\\e⇥",
+            "⇤e\\⇥",
         ],
         [KeymapTypeId.Thumb30]: [
             "qwbf;" + "y" + "kulp",

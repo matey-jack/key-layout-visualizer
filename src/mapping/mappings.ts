@@ -237,6 +237,15 @@ export const allMappings: FlexMapping[] = [
     qwertyFlipTwistThumbMapping,
     qwertyFlipTwistThumbFlingR,
     qwertyFlipTwistThumbFlingT,
+    // next two excluded, because Qwp-Thumb{RT} is the better version of the same idea.
+    // qwertyFlipTwistThumbR,
+    // qwertyFlipTwistThumbT,
+    // etniMapping, // excluded, because the weird home finger position isn't reflected in our metrics (and no useable to me in practice).
+    quipperMapping,
+    assetMapping,
+    quipperThumbRMapping,
+    quipperThumbTMapping,
+    quipperThumbyMapping,
     cozyEnglish,
     cozyGerman,
     // gemuetlichesMapping,
@@ -244,14 +253,6 @@ export const allMappings: FlexMapping[] = [
     // cozyPlusP,
     cozyPlusC,
     cozyPlusCH,
-    // next two excluded, because Qwp-Thumb{RT} is the better version of the same idea.
-    // qwertyFlipTwistThumbR,
-    // qwertyFlipTwistThumbT,
-    // etniMapping, // excluded, because the weird home finger position isn't reflected in our metrics (and no useable to me in practice).
-    quipperMapping,
-    quipperThumbRMapping,
-    quipperThumbTMapping,
-    quipperThumbyMapping,
     // thumbyZero, // aka Qwerty Thumb-E
     // thumbyNero,
     topNine,
@@ -264,7 +265,6 @@ export const allMappings: FlexMapping[] = [
     // minimak4Mapping,
     // minimak8Mapping,
     minimakFullMapping,
-    assetMapping,
     colemakMapping,
     colemakDhMapping,
     colemakThumbyDMapping,
