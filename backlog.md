@@ -95,6 +95,7 @@ refactorings done (or decided against):
 small tasks:
  - enable ergoslatAddAngleMod
  - add a color for 1u keys in the size viz, so it looks better in the 3D view
+ - reverse single-key-effort to be "lower is better" like the bigram effort: just count the usage of off-home keystrokes, instead of on-home.
 
 missing core features:
 - SVG export (with a title stating name of layout and keymap) ✅ except:
@@ -102,9 +103,10 @@ missing core features:
   - add a ruler to the SVG so people can zoom to scale on their laptop or tablet
 - export to keyboard layout editor format, https://www.keyboard-layout-editor.com/, because that is used as a spec by hardward keyboard builders.
   (Having the export will help us to remove remaining ambiguities of how the SVG pics translate to actual hardware!)
+- diagram export of keymap metrics, so I can make a diagram of the diminishing returns and publish the long-planned post on "casual key maps".
+- PostHog metrics
 
 nice to have features:
-- export of keymap metrics, so I can make a diagram of the diminishing returns and publish the long-planned post on "casual key maps".
 - slow down the animation when the user holds the mouse or finger on the layout type/variant buttons (or other controls).
 - Ergoplank and Katana logos to fill the gap, especially Ergoboard 65 Midshift with a nice connection between both gaps.
   (Alternatively, show a Thinkpad-style pointing nipple in that gap.)
@@ -127,8 +129,6 @@ optional:
 - HHKB classic vs Tsangan layout variants (well, the bottom row is almost like Apple's – is this worth it?)
 
 bugs:
-- length of key and keyboard underside does not animate: not so trivial fix, since SVG polygon coordinates can't be transformed with CSS.
-  Maybe this means, replacing the polygon with a CSS skew of a rectangle! (I could ask various LLMs if they would find this solution. Just for fun!)
 - the comparisonBase mapping needs to have definitions on all layouts, thus at least a mapping30 (which is supported everywhere).
    Add that for qwertz and maybe add a full mapping for the ortho board to make the comparison more meaningful.
 - on Thumby / Cozy Keyboard English variant, the apostrophe is counted as "changed on same finger" on the ortho layout, 
@@ -137,13 +137,15 @@ bugs:
 - fix altFinger configuration for Harmonic variants AND show it in finger viz ==> or remove Alt-finger stuff from app
 
 refactoring:
-- add GHA pipeline for depedency updates
+- add GHA pipeline for dependency updates
 - run e2e tests headless on GHA
 - remove home finger properties; use keyEffort==Home instead.
+- Straighten the naming convention for the Ergoplank family to go by with in columns (plus optionally, gap size in columns).
+  Classic 60% keyboard is 15 cols, 65% (as in laptops) has one more column for the nav keys, thus 16 cols. 
 
 - I find that the key/finger/effort matrix is easier to edit by hand than write in abstractions. Copy, paste, adapt, ... and win!
    But we could still add a helper function to generate an initial finger and effort matrix given a layout (by key matrix, keyWidths, and index finger columns).
-   That would be fun to write and serve as documentation of my fingering and effort theory. But also useless at the moment, since I don't plan to add any new layouts besides HHKB, which will simply copy from ANSI.
+   That would be fun to write and serve as documentation of my fingering and effort theory. But also useless at the moment, since I don't plan to add any new layouts.
 
 better visual design:
    - scoring and description of learning/single key/bigram classes
