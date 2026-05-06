@@ -145,6 +145,7 @@ export enum VisualizationType {
     MappingFrequeny,
     MappingBigrams,
     MappingAltGr,
+    MappingTradeoff,
 }
 
 export const isLayoutViz = (t: VisualizationType) =>

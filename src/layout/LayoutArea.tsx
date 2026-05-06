@@ -15,6 +15,7 @@ import {ErgoplankLayoutOptions} from "./ErgoplankLayoutOptions.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
 import {BigramLines, KeyboardSvg, RowBasedKeyboard, StaggerLines} from "./KeyboardSvg.tsx";
 import {fillMapping, getKeyMovements, getKeyPositions} from "./layout-functions.ts";
+import {TradeoffDiagram} from "./TradeoffDiagram.tsx";
 
 interface LayoutAreaProps {
     appState: AppState;
@@ -45,29 +46,41 @@ export function LayoutArea({appState}: LayoutAreaProps) {
     const previousPositions = getKeyPositionsForModel(prevLayoutModel.value, prevMapping.value, layout.value);
     const keyMovements = getKeyMovements(previousPositions, currentPositions);
 
-    const {setLayout, mappingDiff, bigramMovements, vizType} = appState;
+    const {setLayout, mappingDiff, bigramMovements, vizType, setMapping} = appState;
     const showFrame = layout.value.type !== LayoutType.Ergosplit &&
         !(layout.value.type !== LayoutType.ANSI && layout.value.ansiSplit);
+    const isTradeoff = vizType.value === VisualizationType.MappingTradeoff;
     return (
         <div>
             <TopBar layout={layout.value} setLayout={setLayout}/>
-            <KeyboardSvg vizType={vizType.value} keyMovements={keyMovements} showFrame={showFrame}>
-                <RowBasedKeyboard
-                    layoutModel={layoutModel.value}
-                    prevLayoutModel={prevLayoutModel.value}
-                    keyMovements={keyMovements}
-                    mappingDiff={mappingDiff.value}
-                    vizType={vizType.value}
-                />
-                {vizType.value === VisualizationType.LayoutAngle &&
-                    <StaggerLines layoutModel={layoutModel.value} previousLayoutModel={prevLayoutModel.value}
-                                  layoutSplit={isSplit(layout.value)}
-                                  keyMovements={keyMovements}/>
-                }
-                {vizType.value === VisualizationType.MappingBigrams &&
-                    <BigramLines bigrams={bigramMovements.value}/>
-                }
-            </KeyboardSvg>
+            <div class="layout-area-svg-container">
+                <div class={"layout-area-svg-fader " + (isTradeoff ? "hide" : "show")}>
+                    <KeyboardSvg vizType={vizType.value} keyMovements={keyMovements} showFrame={showFrame}>
+                        <RowBasedKeyboard
+                            layoutModel={layoutModel.value}
+                            prevLayoutModel={prevLayoutModel.value}
+                            keyMovements={keyMovements}
+                            mappingDiff={mappingDiff.value}
+                            vizType={vizType.value}
+                        />
+                        {vizType.value === VisualizationType.LayoutAngle &&
+                            <StaggerLines layoutModel={layoutModel.value} previousLayoutModel={prevLayoutModel.value}
+                                          layoutSplit={isSplit(layout.value)}
+                                          keyMovements={keyMovements}/>
+                        }
+                        {vizType.value === VisualizationType.MappingBigrams &&
+                            <BigramLines bigrams={bigramMovements.value}/>
+                        }
+                    </KeyboardSvg>
+                </div>
+                <div class={"layout-area-svg-fader " + (isTradeoff ? "show" : "hide")}>
+                    <TradeoffDiagram
+                        layout={layoutModel.value}
+                        selectedMapping={mapping.value}
+                        onSelectMapping={setMapping}
+                    />
+                </div>
+            </div>
             <LayoutOptionsBar state={appState}/>
         </div>
     )

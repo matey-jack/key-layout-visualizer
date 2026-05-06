@@ -14,7 +14,6 @@ import {
     fillMapping,
     getKeyPositions,
 } from "../layout/layout-functions.ts";
-import {qwertyMapping} from "./baseMappings.ts";
 import {offHomeRowFrequency} from "./mapping-functions.ts";
 import {allMappings} from "./mappings.ts";
 
@@ -26,7 +25,7 @@ export function MappingList({appState}: MappingListProps) {
     const showAllMappings = useSignal(false);
     const filteredMappings = showAllMappings.value
         ? allMappings
-        : allMappings.filter((mapping) => mapping.localMaximum || mapping.techName === qwertyMapping.techName);
+        : allMappings.filter((mapping) => mapping.localMaximum);
     return <div class="mapping-list-controls">
         <CheckboxWithLabel
             label="show all mappings"

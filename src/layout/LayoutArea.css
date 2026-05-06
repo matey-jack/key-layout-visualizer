@@ -165,3 +165,91 @@ label.disabled {
     text-decoration: underline;
     color: #5cdbef;
 }
+
+.layout-area-svg-container {
+    position: relative;
+}
+
+.layout-area-svg-fader {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.layout-area-svg-fader.show {
+    opacity: 1;
+    transition-delay: 0.25s;
+}
+
+.layout-area-svg-fader.hide {
+    opacity: 0;
+    transition-delay: 0s;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.tradeoff-svg {
+    width: 100%;
+    height: auto;
+    font-family: sans-serif;
+}
+
+.tradeoff-plot-bg {
+    fill: #fafafa;
+    stroke: none;
+}
+
+.tradeoff-axis {
+    stroke: #333;
+    stroke-width: 1.5;
+    fill: none;
+}
+
+.tradeoff-gridline {
+    stroke: #ddd;
+    stroke-width: 1;
+    fill: none;
+}
+
+.tradeoff-tick-label {
+    font-size: 16px;
+}
+
+.tradeoff-axis-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.tradeoff-x-label {
+    font-size: 16px;
+    fill: #222;
+    cursor: pointer;
+}
+
+.tradeoff-x-label.selected {
+    font-weight: bold;
+    fill: #003fae;
+}
+
+.tradeoff-connector {
+    stroke: #888;
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+}
+
+.tradeoff-point {
+    cursor: pointer;
+    stroke: #fff;
+    stroke-width: 1.5;
+}
+
+.tradeoff-point-group:hover .tradeoff-point {
+    stroke: #000;
+    stroke-width: 2;
+}
+
+.tradeoff-point-group.selected .tradeoff-point {
+    stroke: #003fae;
+    stroke-width: 2.5;
+}

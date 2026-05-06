@@ -46,3 +46,23 @@
 .diff-legend-item.unchanged {
     background-color: white;
 }
+
+.tradeoff-legend {
+    margin: 0.5rem 0 1rem 0;
+}
+
+.tradeoff-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0.4rem 0;
+}
+
+.tradeoff-legend-swatch {
+    display: inline-block;
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    border: 1px solid #333;
+    flex-shrink: 0;
+}

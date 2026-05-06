@@ -21,6 +21,7 @@ import {bigramFrequencyByType, bigramRankSize} from "../bigrams.ts";
 import {TruncatedText} from "../components/TruncatedText.tsx";
 import {singleCharacterFrequencies as englishFreqs} from "../frequencies/english-single-character-frequencies.ts";
 import {bigramClassByType, getEffortClass} from "../layout/KeyboardSvg.tsx";
+import {TRADEOFF_OFF_HOME_COLOR, TRADEOFF_SAME_FINGER_COLOR} from "../layout/TradeoffDiagram.tsx";
 import {
     compatibilityScore,
     diffSummary,
@@ -88,7 +89,36 @@ export function getVizDetails(vizType: VisualizationType, layout: LayoutModel, m
             return <BigramEffortDetails layout={layout} mapping={mapping}/>;
         case VisualizationType.MappingAltGr:
             return <AltGrLayerDetails></AltGrLayerDetails>
+        case VisualizationType.MappingTradeoff:
+            return <TradeoffDetails/>;
     }
+}
+
+export function TradeoffDetails() {
+    return <div>
+        <p>
+            This diagram shows the trade-off between how much you have to <i>learn</i> when switching to a key
+            mapping (x-axis) and the typing-effort improvement you get in return.
+            Each dot is one of the recommended (locally-maximum) mappings; the dashed line groups the two scores
+            for the same mapping. Click a label or dot to select that mapping.
+        </p>
+        <div class="tradeoff-legend">
+            <div class="tradeoff-legend-item">
+                <span class="tradeoff-legend-swatch"
+                      style={{backgroundColor: TRADEOFF_OFF_HOME_COLOR}}/>
+                <span>Off-home-row score (English) — left axis. Lower is better.</span>
+            </div>
+            <div class="tradeoff-legend-item">
+                <span class="tradeoff-legend-swatch"
+                      style={{backgroundColor: TRADEOFF_SAME_FINGER_COLOR}}/>
+                <span>Same-finger bigram score (English, includes alt-finger) — right axis. Lower is better.</span>
+            </div>
+        </div>
+        <p class="footnote">
+            The x-axis (Learning Score) is computed against Qwerty: lower means fewer keys move and the change is
+            easier to learn.
+        </p>
+    </div>;
 }
 
 interface MappingSummaryProps {

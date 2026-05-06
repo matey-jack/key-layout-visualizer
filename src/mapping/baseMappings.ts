@@ -4,6 +4,7 @@ export const qwertyMapping: FlexMapping = {
     name: "Qwerty",
     techName: "QWERTY",
     klcId: "qwerty",
+    localMaximum: true,
     description: `This ancient typewriter-born key mapping is so ubiquitous today that many people might never have seen 
     a different mapping in their whole life. At the same time it is also extra-ordinary bad for touch-typing, 
     because frequently used letters are not in the center. `,
