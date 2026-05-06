@@ -1,4 +1,5 @@
 import {computed, effect, type Signal, signal} from "@preact/signals";
+import posthog from 'posthog-js'
 import {
     AnsiVariant,
     type AppState,
@@ -13,8 +14,8 @@ import {type FlexMapping, KeymapTypeId, type LayoutModel, LayoutType, Visualizat
 import {getBigramMovements} from "./bigrams.ts";
 import {diffToBase, fillMapping, getKeyPositions, hasMatchingMapping} from "./layout/layout-functions.ts";
 import {getLayoutModel} from "./layout-selection.ts";
-import {allMappings} from "./mapping/mappings.ts";
 import {qwertyMapping} from "./mapping/baseMappings.ts";
+import {allMappings} from "./mapping/mappings.ts";
 
 function modifyWide(mapping: FlexMapping, opts: LayoutOptions): boolean {
     switch (opts.ansiVariant) {
@@ -156,29 +157,40 @@ function getMappingByName(name: string | null): FlexMapping {
 }
 
 // Some of the state could be local the Layout or Mapping areas, but unless this global thing gets too big,
-function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vizType: Signal<number>) {
+function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vizType: Signal<VisualizationType>) {
     const params = new URLSearchParams();
     params.set("layout", layout.type.toString());
     params.set("mapping", mapping.value.techName || mapping.value.name);
     params.set("viz", vizType.value.toString());
+    let subLayout = "";
 
     switch (layout.type) {
         case LayoutType.ANSI:
             params.set("split", layout.ansiSplit ? "1" : "0");
             params.set("wide", layout.ansiWide ? "1" : "0");
             params.set("ansi", layout.ansiVariant.toString());
+            subLayout = AnsiVariant[layout.ansiVariant] + layout.ansiWide ? "+wide" : "" + layout.ansiSplit ? "+split" : "";
             break;
         case LayoutType.Harmonic:
             params.set("harmonic", layout.harmonicVariant.toString());
+            subLayout = HarmonicVariant[layout.harmonicVariant];
             break;
         case LayoutType.Ergoplank:
             params.set("plank", layout.plankVariant.toString());
-            params.set("ep60arrows", layout.bottomArrows ? "1" : "0")
-            params.set("esNumberless", layout.esNumberless ? "1" : "0")
-            params.set("eb65ls", layout.eb65LowshiftVariant.toString())
-            params.set("eb65ms", layout.eb65MidshiftVariant.toString())
+            params.set("ep60arrows", layout.bottomArrows ? "1" : "0");
+            params.set("esNumberless", layout.esNumberless ? "1" : "0");
+            params.set("eb65ls", layout.eb65LowshiftVariant.toString());
+            params.set("eb65ms", layout.eb65MidshiftVariant.toString());
+            subLayout = PlankVariant[layout.plankVariant] + (layout.bottomArrows ? "+arrows" : "") + (layout.esNumberless ? "+esNumberless" : "");
             break;
     }
+    posthog.register({
+        viz: VisualizationType[vizType.value],
+        layout: LayoutType[layout.type],
+        subLayout,
+        mapping: mapping.value.name,
+    });
+
     params.set("angle", layout.angleMod ? "1" : "0");
     window.history.pushState(null, "", "#" + params.toString());
 }
