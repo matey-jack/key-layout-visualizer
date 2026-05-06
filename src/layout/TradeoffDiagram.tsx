@@ -75,6 +75,13 @@ function makeTicks(max: number, count: number): number[] {
     return ticks;
 }
 
+function isSameMapping(a: FlexMapping, b: FlexMapping): boolean {
+    if (a.techName != null && b.techName != null) {
+        return a.techName === b.techName;
+    }
+    return a.name === b.name;
+}
+
 export function TradeoffDiagram({layout, selectedMapping, onSelectMapping}: TradeoffDiagramProps) {
     const data = computeData(layout);
 
@@ -102,20 +109,16 @@ export function TradeoffDiagram({layout, selectedMapping, onSelectMapping}: Trad
              class="tradeoff-svg">
             <title>Learning effort trade-off</title>
 
+            {/* Background covering the whole SVG */}
+            <rect x={VIEW_X} y={VIEW_Y}
+                  width={VIEW_W} height={VIEW_H}
+                  class="tradeoff-svg-bg"/>
+
             {/* Plot area frame */}
             <rect x={PLOT_LEFT} y={PLOT_TOP}
                   width={PLOT_RIGHT - PLOT_LEFT}
                   height={PLOT_BOTTOM - PLOT_TOP}
                   class="tradeoff-plot-bg"/>
-
-            {/* Horizontal gridlines based on left axis ticks */}
-            {leftTicks.map((tick) => {
-                const y = yLeftScale(tick);
-                return (
-                    <line key={`gl-${tick}`} x1={PLOT_LEFT} x2={PLOT_RIGHT} y1={y} y2={y}
-                          class="tradeoff-gridline"/>
-                );
-            })}
 
             {/* Left Y axis */}
             <line x1={PLOT_LEFT} y1={PLOT_TOP} x2={PLOT_LEFT} y2={PLOT_BOTTOM} class="tradeoff-axis"/>
@@ -167,10 +170,6 @@ export function TradeoffDiagram({layout, selectedMapping, onSelectMapping}: Trad
 
             {/* X axis */}
             <line x1={PLOT_LEFT} y1={PLOT_BOTTOM} x2={PLOT_RIGHT} y2={PLOT_BOTTOM} class="tradeoff-axis"/>
-            <text x={(PLOT_LEFT + PLOT_RIGHT) / 2} y={VIEW_Y + VIEW_H - 10}
-                  text-anchor="middle" class="tradeoff-axis-title">
-                Learning Score (lower = easier to learn)
-            </text>
 
             {/* Data points and labels */}
             {data.map((d) => {
@@ -178,14 +177,15 @@ export function TradeoffDiagram({layout, selectedMapping, onSelectMapping}: Trad
                 const yLeft = yLeftScale(d.offHome);
                 const yRight = yRightScale(d.sameFinger);
                 const topY = Math.min(yLeft, yRight);
-                const isSelected = selectedMapping.techName === d.mapping.techName
-                    || selectedMapping.name === d.mapping.name;
+                const isSelected = isSameMapping(selectedMapping, d.mapping);
                 return (
                     <g key={d.mapping.techName ?? d.mapping.name}
                        class={"tradeoff-point-group" + (isSelected ? " selected" : "")}
                        onClick={() => onSelectMapping(d.mapping)}>
                         {/* connector line from x-axis to highest point */}
                         <line x1={x} x2={x} y1={PLOT_BOTTOM} y2={topY} class="tradeoff-connector"/>
+                        {/* x-axis tick mark */}
+                        <line x1={x} x2={x} y1={PLOT_BOTTOM} y2={PLOT_BOTTOM + 6} class="tradeoff-axis"/>
                         {/* off-home-row point (left axis) */}
                         <circle cx={x} cy={yLeft} r={isSelected ? 9 : 6}
                                 fill={TRADEOFF_OFF_HOME_COLOR}
@@ -194,16 +194,28 @@ export function TradeoffDiagram({layout, selectedMapping, onSelectMapping}: Trad
                         <circle cx={x} cy={yRight} r={isSelected ? 9 : 6}
                                 fill={TRADEOFF_SAME_FINGER_COLOR}
                                 class="tradeoff-point"/>
-                        {/* mapping name label rotated 30° below the x-axis */}
-                        <text x={x} y={PLOT_BOTTOM + 16}
+                        {/* numeric learning score directly under the axis */}
+                        <text x={x} y={PLOT_BOTTOM + 22}
+                              text-anchor="middle"
+                              class={"tradeoff-x-tick-label" + (isSelected ? " selected" : "")}>
+                            {d.learning}
+                        </text>
+                        {/* mapping name label rotated 30° below the number */}
+                        <text x={x} y={PLOT_BOTTOM + 40}
                               text-anchor="end"
-                              transform={`rotate(${LABEL_ROTATION_DEG} ${x} ${PLOT_BOTTOM + 16})`}
+                              transform={`rotate(${LABEL_ROTATION_DEG} ${x} ${PLOT_BOTTOM + 40})`}
                               class={"tradeoff-x-label" + (isSelected ? " selected" : "")}>
                             {d.mapping.name}
                         </text>
                     </g>
                 );
             })}
+
+            {/* X axis title — placed close to the x-axis below the labels */}
+            <text x={(PLOT_LEFT + PLOT_RIGHT) / 2} y={PLOT_BOTTOM + 145}
+                  text-anchor="middle" class="tradeoff-axis-title">
+                Learning Score (lower = easier to learn)
+            </text>
         </svg>
     );
 }

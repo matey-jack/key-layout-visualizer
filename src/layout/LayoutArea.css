@@ -195,8 +195,13 @@ label.disabled {
     font-family: sans-serif;
 }
 
+.tradeoff-svg-bg {
+    fill: #eef2f7;
+    stroke: none;
+}
+
 .tradeoff-plot-bg {
-    fill: #fafafa;
+    fill: #ffffff;
     stroke: none;
 }
 
@@ -206,14 +211,18 @@ label.disabled {
     fill: none;
 }
 
-.tradeoff-gridline {
-    stroke: #ddd;
-    stroke-width: 1;
-    fill: none;
-}
-
 .tradeoff-tick-label {
     font-size: 16px;
+}
+
+.tradeoff-x-tick-label {
+    font-size: 16px;
+    fill: #222;
+}
+
+.tradeoff-x-tick-label.selected {
+    font-weight: bold;
+    fill: #003fae;
 }
 
 .tradeoff-axis-title {
