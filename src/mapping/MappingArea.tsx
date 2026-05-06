@@ -1,14 +1,7 @@
 import './MappingArea.css';
 import {type Signal, useSignal} from "@preact/signals";
 import type {AppState} from "../app-model.ts";
-import {
-    BigramType,
-    type FlexMapping,
-    KeymapTypeId,
-    type LayoutModel,
-    type MappingChange,
-    SKE_HOME,
-} from "../base-model.ts";
+import {BigramType, type FlexMapping, KeymapTypeId, type LayoutModel, type MappingChange,} from "../base-model.ts";
 import {getBigramMovements, weighBigramTypes} from "../bigrams.ts";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {singleCharacterFrequencies as englishFreqs} from "../frequencies/english-single-character-frequencies.ts";
@@ -21,9 +14,9 @@ import {
     fillMapping,
     getKeyPositions,
 } from "../layout/layout-functions.ts";
-import {sumKeyFrequenciesByEffort} from "./mapping-functions.ts";
-import {allMappings} from "./mappings.ts";
 import {qwertyMapping} from "./baseMappings.ts";
+import {offHomeRowFrequency} from "./mapping-functions.ts";
+import {allMappings} from "./mappings.ts";
 
 export interface MappingListProps {
     appState: AppState;
@@ -45,7 +38,7 @@ export function MappingList({appState}: MappingListProps) {
             <tr class="mapping-list-header">
                 <td>Mapping Name</td>
                 <td>Learnability Score</td>
-                <td>Home Row Proportion<br/>English / Spanish / German</td>
+                <td>Key strokes off-home-row<br/>English / Spanish / German</td>
                 <td>English Bigrams<br/>Same-Finger / Scissors</td>
             </tr>
             </thead>
@@ -86,9 +79,9 @@ export function MappingListItem({layout, mapping, selectedMapping, appState, sho
     >
         <td>{mapping.name}</td>
         <td>{charMap && formatDiff(diffSummary(diffToBase(layout, mapping)))}</td>
-        <td>{charMap && sumKeyFrequenciesByEffort(layout, charMap, englishFreqs)[SKE_HOME]
-        } / {charMap && sumKeyFrequenciesByEffort(layout, charMap, spanishFreqs)[SKE_HOME]
-        } / {charMap && sumKeyFrequenciesByEffort(layout, charMap, germanFreqs)[SKE_HOME]}
+        <td>{charMap && offHomeRowFrequency(layout, charMap, englishFreqs)
+        } / {charMap && offHomeRowFrequency(layout, charMap, spanishFreqs)
+        } / {charMap && offHomeRowFrequency(layout, charMap, germanFreqs)}
         </td>
         <td>{movements && weighBigramTypes(movements, [BigramType.AltFinger, BigramType.SameFinger])
         } / {movements && weighBigramTypes(movements, [BigramType.OppositeRow])}

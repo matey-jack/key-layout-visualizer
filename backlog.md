@@ -89,13 +89,14 @@ refactorings done (or decided against):
    - yes, it will be important once we provide a new keymapType either for a specific variant or a group! 
 
 - modularized the CSS
+- reverse single-key-effort to be "lower is better" like the bigram effort: just count the usage of off-home keystrokes, instead of on-home.
+- PostHog metrics
 
 ======================== TODO ===============================
 
 small tasks:
  - enable ergoslatAddAngleMod
  - add a color for 1u keys in the size viz, so it looks better in the 3D view
- - reverse single-key-effort to be "lower is better" like the bigram effort: just count the usage of off-home keystrokes, instead of on-home.
 
 missing core features:
 - SVG export (with a title stating name of layout and keymap) ✅ except:
@@ -104,7 +105,6 @@ missing core features:
 - export to keyboard layout editor format, https://www.keyboard-layout-editor.com/, because that is used as a spec by hardward keyboard builders.
   (Having the export will help us to remove remaining ambiguities of how the SVG pics translate to actual hardware!)
 - diagram export of keymap metrics, so I can make a diagram of the diminishing returns and publish the long-planned post on "casual key maps".
-- PostHog metrics
 
 nice to have features:
 - slow down the animation when the user holds the mouse or finger on the layout type/variant buttons (or other controls).

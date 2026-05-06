@@ -1,4 +1,4 @@
-import type {LayoutModel} from "../base-model.ts";
+import {type LayoutModel, SKE_HOME} from "../base-model.ts";
 
 // We don't use Unicode ranges, because we might later map some other Unicode symbols, that are actually characters to insert.
 // Examples: × or ¢ or the "per mille" sign
@@ -35,6 +35,17 @@ export function sumKeyFrequenciesByEffort(layoutModel: LayoutModel, charMap: str
         result[effort as unknown as number] = Math.round(weight);
     });
     return result;
+}
+
+export function offHomeRowFrequency(layoutModel: LayoutModel, charMap: string[][], freqs: Record<string, number>): number {
+    const efforts = getSingleKeyEffort(layoutModel, charMap, freqs);
+    let result = 0;
+    for (const char in efforts) {
+        if (efforts[char] > SKE_HOME) {
+            result += freqs[char.toUpperCase()];
+        }
+    }
+    return Math.round(result);
 }
 
 export function getSingleKeyEffort(layoutModel: LayoutModel, charMap: string[][], freqs: Record<string, number>): Record<string, number> {
