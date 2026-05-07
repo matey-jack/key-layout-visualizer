@@ -25,15 +25,15 @@ export function weighSingleKeyEffort(layoutModel: LayoutModel, charMap: string[]
     return Math.round(totalEffort);
 }
 
-export function sumKeyFrequenciesByEffort(layoutModel: LayoutModel, charMap: string[][], freqs: Record<string, number>): Record<number, number> {
+export function sumKeyFrequenciesByEffort(layoutModel: LayoutModel, charMap: string[][], freqs: Record<string, number>): Record<string, number> {
     const efforts = getSingleKeyEffort(layoutModel, charMap, freqs);
-    const result: Record<number, number> = {};
+    const result: Record<string, number> = {};
     Object.entries(efforts).forEach(([char, effort]) => {
         result[effort] = (result[effort] || 0) + freqs[char.toUpperCase()];
     });
-    Object.entries(result).forEach(([effort, weight]) => {
-        result[effort as unknown as number] = Math.round(weight);
-    });
+    for (const effort in result) {
+        result[effort] = Math.round(result[effort]);
+    }
     return result;
 }
 
