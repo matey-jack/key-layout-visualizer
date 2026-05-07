@@ -5,9 +5,9 @@ import {KeymapTypeId, type LayoutModel} from "../base-model.ts";
 const fullMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-    ["Ctrl", "Cmd", 0, "Alt", 1, "⍽", "⏎", 2, "AltGr", 3, "Fn", "Ctrl"],
+    ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "Ctrl"],
+    ["Cmd", 0, 1, "Alt", 2, "⏎", "⍽", 3, "AltGr", 4, "Fn", "Cmd"],
 ];
 
 export const splitOrthoLayoutModel: LayoutModel = {
@@ -64,7 +64,7 @@ export const splitOrthoLayoutModel: LayoutModel = {
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
             ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "Ctrl"],
-            ["Cmd", "", "`", "=", "Alt", "⍽", "⏎", 0, "AltGr", "Menu", "\\", "Fn"],
+            ["Cmd", "", "`", 0, "Alt", "⏎", "⍽", "AltGr", "=", "\\", "Menu", "Fn"],
         ],
     },
 }

@@ -129,8 +129,8 @@ export const quipperThumbyMapping: FlexMapping = {
     fallback: quipperMapping,
 }
 
-// There are too many contemporary mappings and I have no good way to select representative ones,
-// but I do want to include two historically importatn ones that are actually using a letter on thumb key.
+// There are too many contemporary mappings, and I have no good way to select representative ones,
+// but I do want to include two historically important ones that are actually using a letter on thumb key.
 export const maltronMapping: FlexMapping = {
     name: "Maltron",
     sourceUrl: "https://www.maltron.com/the-maltron-letter-layout-advantage.html",
@@ -141,10 +141,10 @@ export const maltronMapping: FlexMapping = {
     This is designed exclusively for a split ortho board and I'll leave it at that.`,
     mappings: {
         [KeymapTypeId.SplitOrtho]: [
-            "qpycb" + "vmuzl=",
-            "anisf" + "dthor'",
+            "qpycb" + "vmuzl'",
+            "anisf" + "dthor",
             ".,jg;" + "/wk-x",
-            "⇤\\e⇥",
+            "⇤=e\\⇥",
         ]
     },
 }
@@ -181,9 +181,9 @@ export const rsthdMapping: FlexMapping = {
         ],
         [KeymapTypeId.SplitOrtho]: [
             "jcyfk" + "zl,uq-",
-            "rsthd" + "mnaio=",
+            "rsthd" + "mnaio",
             "/vgpb" + "xw.;'",
-            "⇤\\e⇥",
+            "⇤=e\\⇥",
         ]
     }
 }
@@ -242,10 +242,6 @@ export const allMappings: FlexMapping[] = [
     // qwertyFlipTwistThumbT,
     // etniMapping, // excluded, because the weird home finger position isn't reflected in our metrics (and no useable to me in practice).
     quipperMapping,
-    assetMapping,
-    quipperThumbRMapping,
-    quipperThumbTMapping,
-    quipperThumbyMapping,
     cozyEnglish,
     cozyGerman,
     // gemuetlichesMapping,
@@ -253,6 +249,10 @@ export const allMappings: FlexMapping[] = [
     // cozyPlusP,
     cozyPlusC,
     cozyPlusCH,
+    quipperThumbRMapping,
+    quipperThumbTMapping,
+    quipperThumbyMapping,
+    assetMapping,
     // thumbyZero, // aka Qwerty Thumb-E
     // thumbyNero,
     topNine,

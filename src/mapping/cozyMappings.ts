@@ -13,10 +13,10 @@ export const cozyEnglish: FlexMapping = {
     which could be alt-fingered in Qwerty, but become annoyingly noticeable once the N is so easy to type. `,
     mappings: {
         [KeymapTypeId.SplitOrtho]: [
-            "qwbf;" + "ykulp-",
-            "asdrg" + "hniot'",
-            "zxcv=" + "jm,./",
-            "⇤e\\⇥",
+            "qwbf;" + "ykulp'",
+            "asdrg" + "hniot",
+            "zxcv-" + "jm,./",
+            "⇤=e\\⇥",
         ],
         [KeymapTypeId.Thumb30]: [
             "qwbf;" + "y" + "kulp",
@@ -143,9 +143,9 @@ export const gemuetlichesMapping: FlexMapping = {
         ],
         [KeymapTypeId.SplitOrtho]: [
             "qwbf'" + "zkuopü",
-            "asdrg" + "hniltä",
+            "asdrg" + "hnilt",
             "yxcv/" + "jm,.-",
-            "ö⌦" + "e+"
+            "ö⌦e" + "ä+"
         ],
         /*
              The Harmonic port of this mapping changes less than Qwerty, because it is already made for a wide home position.

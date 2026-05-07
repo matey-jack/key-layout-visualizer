@@ -77,7 +77,7 @@ export const KEYMAP_TYPES: Record<KeymapTypeId, KeymapType> = {
     },
     [KeymapTypeId.SplitOrtho]: {
         id: KeymapTypeId.SplitOrtho,
-        keysPerRow: [0, 11, 11, 10, 4],
+        keysPerRow: [0, 11, 10, 10, 5],
         description: "Split ortholinear"
     },
     [KeymapTypeId.Harmonic12]: {

@@ -57,10 +57,10 @@ export const colemakDhMapping: FlexMapping = {
         ],
         // Due to Angle Mod, the Ortho version has a flip: https://colemakmods.github.io/mod-dh/keyboards.html
         [KeymapTypeId.SplitOrtho]: [
-            "qwfpb" + "jluy;-",
-            "arstg" + "mneio'",
+            "qwfpb" + "jluy;'",
+            "arstg" + "mneio",
             "zxcdv" + "kh,./",
-            "⇤\\=⇥",
+            "⇤-=\\⇥",
         ]
     }
 }
