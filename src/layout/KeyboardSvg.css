@@ -421,11 +421,11 @@
 }
 
 .bigram-effort-legend-item.same-row {
-    background-color: yellow;
+    background-color: lightgreen;
 }
 
 .bigram-effort-legend-item.neighboring-row {
-    background-color: lightgreen;
+    background-color: yellow;
 }
 
 .bigram-effort-legend-item.opposite-row {
