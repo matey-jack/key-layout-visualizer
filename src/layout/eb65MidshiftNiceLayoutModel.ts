@@ -23,9 +23,9 @@ export const eb65MidshiftNiceLayoutModel: LayoutModel = {
 
     mainFingerAssignment: [
         [null, 1, 1, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 8, null, null],
-        [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 7, 8, 9, 9, 9],
-        [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 7, 8, 9, 9, 9],
-        [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 7, 8, 9, null, null, null],
+        [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 6, 7, 8, 9, 9],
+        [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 6, 7, 8, 9, 9],
+        [0, 0, 1, 2, 3, 3, 3, null, 6, 6, 6, 7, 8, null, null, null],
         [null, 0, 1, 2, 4, 4, 5, 5, null, 8, null, null, null, null],
     ],
     singleKeyEffort,
