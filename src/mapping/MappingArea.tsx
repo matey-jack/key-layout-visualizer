@@ -66,7 +66,7 @@ interface MappingListItemProps {
 export function MappingListItem({layout, mapping, selectedMapping, appState, showAllMappings}: MappingListItemProps) {
     const selectedClass = selectedMapping.value.name === mapping.name ? "selected" : "";
     const recommendedClass = mapping.localMaximum && showAllMappings ? "recommended" : "";
-    const thumbLetterClass = mapping.mappings[KeymapTypeId.Ansi30] ? "thumb-letter" : "";
+    const thumbLetterClass = mapping.mappings[KeymapTypeId.Thumb30] ? "thumb-letter" : "";
     const charMap = fillMapping(layout, mapping);
     const movements = charMap && getBigramMovements(
         getKeyPositions(layout, false, charMap),
