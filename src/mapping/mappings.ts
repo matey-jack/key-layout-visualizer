@@ -57,6 +57,7 @@ import {
     qwertyFlipTwistThumbFlingR,
     qwertyFlipTwistThumbFlingT,
     qwertyFlipTwistThumbMapping,
+    rightyMapping,
 } from './flipMappings.ts';
 import {top9kul, top9rst, top9t, top9u, topNine, topNineLeftThumb} from './top9mappings.ts';
 
@@ -232,6 +233,7 @@ export const allMappings: FlexMapping[] = [
     qweertyMapping,
     enTryMapping,
     qwertzMapping,
+    rightyMapping,
     qwertyFlipTwistMapping,
     qwertyFlipTwistSpinMapping,
     qwertyFlipTwistThumbMapping,

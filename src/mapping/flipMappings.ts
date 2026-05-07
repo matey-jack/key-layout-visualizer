@@ -55,6 +55,20 @@ export const ergoFix: FlexMapping = {
     },
 }
 
+export const rightyMapping: FlexMapping = {
+    name: "Righty",
+    localMaximum: true,
+    klcId: "righty",
+    description: `Only do the most beneficial letter swaps on the right hand.`,
+    mappings: {
+        [KeymapTypeId.Ansi30]: [
+            "qwert" + "yukl;",
+            "asdfg" + "hniop",
+            "zxcvb" + "jm,./",
+        ]
+    }
+}
+
 // I omit the plain "flip" version, because I think that the JN swap is essential to avoid a lot of vertical
 // bigram conflicts.
 // (Most typing is on home and upper row, often even both ahead and after the N, for example, double upper-row neigbors
