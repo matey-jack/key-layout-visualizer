@@ -3,8 +3,8 @@ import '../layout/KeyboardSvg.css';
 import type {ComponentChildren} from "preact";
 import type {AppState} from "../app-model.ts";
 import {
-    BigramType,
     bigramEffort,
+    BigramType,
     type FlexMapping,
     isLayoutViz,
     KeymapTypeId,
@@ -21,7 +21,6 @@ import {bigramFrequencyByType, bigramRankSize} from "../bigrams.ts";
 import {TruncatedText} from "../components/TruncatedText.tsx";
 import {singleCharacterFrequencies as englishFreqs} from "../frequencies/english-single-character-frequencies.ts";
 import {bigramClassByType, getEffortClass} from "../layout/KeyboardSvg.tsx";
-import {TRADEOFF_OFF_HOME_COLOR, TRADEOFF_SAME_FINGER_COLOR} from "../layout/TradeoffDiagram.tsx";
 import {
     compatibilityScore,
     diffSummary,
@@ -31,9 +30,10 @@ import {
     getKeySizeClass,
     keyCapSize,
 } from "../layout/layout-functions.ts";
+import {TRADEOFF_OFF_HOME_COLOR, TRADEOFF_SAME_FINGER_COLOR} from "../layout/TradeoffDiagram.tsx";
 import {sum} from "../library/math.ts";
-import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
 import {qwertyMapping} from "../mapping/baseMappings.ts";
+import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
 
 interface DetailsAreaProps {
     appState: AppState;
@@ -258,7 +258,7 @@ export function SingleKeyEffortDetails({layout, mapping}: KeyEffortDetailsProps)
                 Keys that aren't neighbors of home position keys.
             </KeyEffortLegendItem>
         </tbody></table>
-        <p><b>Total: {totalEffort}</b> – Higher is better!</p>
+        <p><b>Total: {totalEffort}</b> – Lower is better!</p>
     </div>
 }
 
