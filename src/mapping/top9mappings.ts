@@ -37,10 +37,10 @@ export const topNine: FlexMapping = {
             "e⌥",
         ],
         [KeymapTypeId.SplitOrtho]: [
-            "qwdfb" + "ykulp=",
-            "asrtg" + "-nioh'",
+            "qwdfb" + "ykulp'",
+            "asrtg" + "-nioh",
             "zxcv;" + "jm,./",
-            "⇤\\e⇥",
+            "⇤e\\=⇥",
         ],
         [KeymapTypeId.Harmonic13Wide]: [
             "[]",
@@ -57,32 +57,6 @@ export const topNine: FlexMapping = {
             "/e⌥≡",
         ],
     }
-}
-
-export const topNineLeftThumb: FlexMapping = {
-    name: "Top Nine Left",
-    description: `This is Top Nine, but the left thumb types the letter E. 
-    On the ancient ANSI keyboard, it's weird to use the space bar for a letter, 
-    but on any modern Ortholinear or harmonically staggered keyboard, left and right are equally usable. 
-    And Top Nine Left uses this symmetry to provide a highly performant mapping where all the letters 
-    are on the same hand as in Qwerty. 
-    (Unlike shown on the keyboard above, the space bar should be on the other thumb.) `,
-    mappings: {
-        [KeymapTypeId.SplitOrtho]: [
-            "qwdfb" + "ykulp-",
-            "asrtg" + "=nioh'",
-            "zxcv;" + "jm,./",
-            "⇤e\\⇥",
-        ],
-        [KeymapTypeId.Harmonic13Wide]: [
-            "[]",
-            "wdfb" + "-=" + "kulp",
-            "qasrtg" + ";" + "jnioh'",
-            "zxcv" + "\\/" + "ym,.",
-            "e`",
-        ],
-    },
-    fallback: topNine,
 }
 
 export const top9t: FlexMapping = {
@@ -114,48 +88,6 @@ export const top9u: FlexMapping = {
     },
     fallback: topNine,
 };
-
-export const topNineDifferentSymbols: FlexMapping = {
-    name: "Top Nine variant",
-    description: `TODO: check what's actually different here.`,
-    mappings: {
-        [KeymapTypeId.Thumb30]: [
-            "qwdfb" + "ykulp",
-            "asrtg" + ";nioh",
-            "zxcv-" + "jm,.",
-            "e",
-        ],
-        [KeymapTypeId.AnsiWide]: [
-            "[`",
-            "qwdfb" + "]y" + "kulp'\\",
-            "asrtg" + "=" + ";nioh",
-            "zxcv" + "-/" + "jm,.",
-            "e⌥",
-        ],
-        // The following are unrelated to the Top Nine variant; just brainstorming some ideas about better use of keys for navigation instead of tech punctuation.
-        [KeymapTypeId.Harmonic13Wide]: [
-            "⇞⇟",
-            "wdfb" + "-=" + "kulp",
-            "qasrtg" + ";" + "ynioh'",
-            "zxcv" + "⇤⇥" + "jm,.",
-            "/e",
-        ],
-        [KeymapTypeId.Harmonic14T]: [
-            "=",
-            "qwdfb" + "-'" + "kulp⇞⇟",
-            "asrtg" + ";" + "jnioh",
-            "zxcv" + "⇤⇥" + "ym,.",
-            "/e⌥≡",
-        ],
-        [KeymapTypeId.SplitOrtho]: [
-            "qwdfb" + "ykulp-",
-            "asrtg" + ";nioh'",
-            "zxcv=" + "jm,./",
-            "⇤\\e⇥",
-        ],
-    },
-    fallback: topNine,
-}
 
 export const top9rst: FlexMapping = {
     name: "Top Nine RST",

@@ -31,4 +31,4 @@ Mid-Shift fix log:
  - Maltron and rstdh: also moved the thumb letter to the left hand. (Doesn't effect the metrics as much as it does for casual layouts, but leads to more alignment overall.)
  - Colemak DH (has a split-ortho version because of the angle-mod). Colemak Thumby doesn't need the split-ortho specific version!
  - two Cozy variants
- - TODO three top9 variants 
+ - top9 English (and two obsolete variants. notably the 'left thumb' is obsolete, because we make that the default on all keyboards except ANSI. This reflects that I don't consider ANSI-compatibility for thumb-letters important any more.) 

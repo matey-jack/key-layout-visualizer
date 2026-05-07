@@ -43,6 +43,8 @@ import {
     colemakThumbyHMapping,
     colemakThumbyLMapping,
     colemakThumbyNMapping,
+    minimak4Mapping,
+    minimak8Mapping,
     minimakFullMapping,
     normanMapping,
 } from './colemakMappings.ts';
@@ -59,7 +61,7 @@ import {
     qwertyFlipTwistThumbMapping,
     rightyMapping,
 } from './flipMappings.ts';
-import {top9kul, top9rst, top9t, top9u, topNine, topNineLeftThumb} from './top9mappings.ts';
+import {top9kul, top9rst, top9t, top9u, topNine} from './top9mappings.ts';
 
 export const quipperMapping: FlexMapping = {
     name: "Quipper aka Qwpr",
@@ -258,14 +260,12 @@ export const allMappings: FlexMapping[] = [
     // thumbyZero, // aka Qwerty Thumb-E
     // thumbyNero,
     topNine,
-    topNineLeftThumb,
-    // topNineDifferentSymbols,
     top9rst,
     top9u,
     top9kul,
     top9t,
-    // minimak4Mapping,
-    // minimak8Mapping,
+    minimak4Mapping,
+    minimak8Mapping,
     minimakFullMapping,
     colemakMapping,
     colemakDhMapping,
@@ -281,6 +281,6 @@ export const allMappings: FlexMapping[] = [
     // Those two actually don't have significantly better metrics than Colemak and Thumby Colemak.
     // Other than a bug in my code, the reason for the small difference could be the different weights that I use,
     // compared to whatever metrics and weights those mappings for optimized for.
-    // snthMapping,
-    // rtnaMapping,
+    snthMapping,
+    rtnaMapping,
 ]
