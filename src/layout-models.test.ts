@@ -14,7 +14,11 @@ import {
     eb65VerticalEnterLayoutModel,
 } from "./layout/eb65MidshiftNarrowLayoutModels.ts";
 import {eb65MidshiftNiceLayoutModel} from "./layout/eb65MidshiftNiceLayoutModel.ts";
-import {ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./layout/ergoPlank60LayoutModel.ts";
+import {
+    createErgoPlankMidShift,
+    createErgoPlankWithArrows,
+    ergoPlank60LayoutModel
+} from "./layout/ergoPlank60LayoutModel.ts";
 import {ergoslatLayoutModel, makeErgoslatNumberless} from './layout/ergoslatLayoutModel.ts';
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
@@ -48,7 +52,8 @@ const layoutModels: Array<LayoutModel> = [
     eb65VerticalEnterLayoutModel,
     eb65MidshiftExtraWideLayoutModel,
     ergoPlank60LayoutModel,
-    ep60WithArrowsLayoutModel,
+    createErgoPlankMidShift(ergoPlank60LayoutModel),
+    createErgoPlankWithArrows(ergoPlank60LayoutModel),
     harmonic12LayoutModel,
     harmonic13WideLayoutModel,
     harmonic13MidshiftLayoutModel,

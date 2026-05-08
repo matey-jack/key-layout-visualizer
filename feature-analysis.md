@@ -33,6 +33,12 @@ implementation:
  - and on the right, NM,. move, and we rotate Shift–>apostrophe->slash. All three keys are mapped the same in both ansi30 and thumb30 :grin!b
  - actually rotations on the left and right are exactly symmetrical!
 
+The arrows-variant only changes the bottom row, where MidShift only changes the indent; so the conflict between both is not big.
+Yet, we need to reconcile, which mod should be applied first?
+ - MidShift changes more key sizes and indents, so probably should go first, so it can override everything.
+ - Arrow-variant needs to keep the left-hand side of the key sizes (and can copy the existing indent-value to the gap size).
+ - Alright: we'll switch the order of applying them!
+
 ### Ergoboard: already has low-shift and mid-shift variants which have different key sizes.
 
 ### Split Ortho:
@@ -44,7 +50,7 @@ implementation:
  - split ortho DONE
  - ergoslat DONE
  - ANSI and Apple DONE
- - Ergoplank (only one that includes a small layout change, just two keys change size and indent appears).
+ - Ergoplank DONE, except for feature collision with the arrows-variant
 
 
 # Fixing learning and typing effort metric bugs discovered thanks to the learning-vs-effort diagram feature.

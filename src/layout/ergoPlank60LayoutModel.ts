@@ -4,7 +4,6 @@ import {mirrorOdd, SymmetricKeyWidth} from "./keyWidth.ts";
 import {copyKeymap, ergoFamilyKeyColorClass} from "./layout-functions.ts";
 
 const keyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0, 0.25]);
-const midShiftKeyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0.5, 0.5]);
 
 const ansi30FrameMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
@@ -79,6 +78,8 @@ export const ergoPlank60LayoutModel: LayoutModel = {
     keyColorClass: ergoFamilyKeyColorClass(ansi30FrameMapping),
 }
 
+const midShiftKeyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0.5, 0.5]);
+
 export function createErgoPlankMidShift(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
@@ -88,7 +89,8 @@ export function createErgoPlankMidShift(lm: LayoutModel): LayoutModel {
     Thumb keys are added. 
     Key cap sizes are harmonized to facilitate customizing the keymap. 
     This is based on the "Harmonic" layout as well as the "Katana" design by RominRonin. 
-    The MidShift variant takes even more inspiration from split-ortho layouts and leaves the entire lower row for character keys.`,
+    The MidShift variant takes even more inspiration from split-ortho layouts 
+    with the side-effect of keeping ANSI fingerings on the right lower row and the comfortable 'angle-mod' on its left.`,
         rowIndent: midShiftKeyWidths.rowIndent,
 
         keyWidths: [
@@ -111,8 +113,7 @@ export function createErgoPlankMidShift(lm: LayoutModel): LayoutModel {
 
 function rotateShiftKeys(mapping: LayoutMapping): LayoutMapping {
     // upper row
-    const upperLast = mapping[KeyboardRows.Home].length - 1;
-    mapping[KeyboardRows.Upper][upperLast] = "'";
+    mapping[KeyboardRows.Upper][8] = "'";
 
     // home row
     mapping[KeyboardRows.Home][0] = "⇧";
@@ -122,32 +123,36 @@ function rotateShiftKeys(mapping: LayoutMapping): LayoutMapping {
 
     // on the left side, we make a big rotation, on the right side, just a swap.
     const lower = mapping[KeyboardRows.Lower];
-    mapping[KeyboardRows.Lower] = [...lower.slice(1, 6), '`~', '⇞', '⇟', '\\', ...lower.slice(9, -1), '/'];
+    mapping[KeyboardRows.Lower] = [...lower.slice(1, 6), '`~', '⇞', '⇟', '\\', ...lower.slice(9, -1), lower[8]];
 
     // right side
     return mapping;
 }
 
-export const ep60WithArrowsLayoutModel: LayoutModel = {
-    ...ergoPlank60LayoutModel,
-    name: "Ergoplank 60 with cursor block",
-    frameMappings: {
-        [KeymapTypeId.Ansi30]: replaceLast(ansi30FrameMapping, [null, "Ctrl", "Cmd", "AltGr", "Alt", "⏎", "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]),
-        [KeymapTypeId.Thumb30]: replaceLast(thumb30FrameMapping, [null, "Ctrl", "Cmd", "AltGr", "Alt", 0, "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]),
-    },
+export function createErgoPlankWithArrows(lm: LayoutModel): LayoutModel {
+    return {
+        ...lm,
+        name: lm.name + " with cursor block",
+        frameMappings: {
+            [KeymapTypeId.Ansi30]: replaceLast(lm.frameMappings[KeymapTypeId.Ansi30]!,
+                [null, "Ctrl", "Cmd", "AltGr", "Alt", "⏎", "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]),
+            [KeymapTypeId.Thumb30]: replaceLast(lm.frameMappings[KeymapTypeId.Thumb30]!,
+                [null, "Ctrl", "Cmd", "AltGr", "Alt", 0, "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]),
+        },
 
-    singleKeyEffort: replaceLast(ergoPlank60LayoutModel.singleKeyEffort,
-        [null, 3.0, 3.0, 2.0, 1.5, 0.2, 1.5, 0.2, 1.5, null, null, null, null, null]
-    ),
-    mainFingerAssignment: replaceLast(ergoPlank60LayoutModel.mainFingerAssignment,
-        [null, 0, 1, 2, 4, 4, 5, 5, 5, null, null, null, null, null]
-    ),
-    // remove the bottom row indent
-    rowIndent: [0, 0, 0, 0, 0],
-    keyWidths: replaceLast(
-        ergoPlank60LayoutModel.keyWidths,
-        [0.25, 1.5, 1.25, 1.25, 1.25, 1.5, 1, 1.5, 1.25, 0.25, 1, 1, 1, 1]
-    ),
+        singleKeyEffort: replaceLast(lm.singleKeyEffort,
+            [null, 3.0, 3.0, 2.0, 1.5, 0.2, 1.5, 0.2, 1.5, null, null, null, null, null]
+        ),
+        mainFingerAssignment: replaceLast(lm.mainFingerAssignment,
+            [null, 0, 1, 2, 4, 4, 5, 5, 5, null, null, null, null, null]
+        ),
+        // remove the bottom row indent
+        rowIndent: [...lm.rowIndent.slice(0, 4), 0] as typeof lm.rowIndent,
+        keyWidths: replaceLast(
+            lm.keyWidths,
+            [lm.rowIndent[0], lm.keyWidths[KeyboardRows.Bottom][0], 1.25, 1.25, 1.25, 1.5, 1, 1.5, 1.25, 0.25, 1, 1, 1, 1]
+        ),
+    }
 }
 
 function replaceLast<T>(list: T[], last: T) {
