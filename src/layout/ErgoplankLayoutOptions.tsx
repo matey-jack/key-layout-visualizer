@@ -2,6 +2,7 @@ import {EB65_LowShift_Variant, EB65_MidShift_Variant, type LayoutOptions, PlankV
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {LayoutVariantButton} from "../components/LayoutVariantButton.tsx";
 import {FlipRetRubButton} from "./components/FlipRetRubButton.tsx";
+import {MidShiftCheckbox} from "./components/MidShiftCheckbox.tsx";
 
 export interface PlankLayoutOptionsProps {
     options: LayoutOptions;
@@ -26,9 +27,7 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
         <LayoutVariantButton variant={PlankVariant.KATANA_60} currentVariant={variant} setVariant={setVariant} name="Katana60"/>
 
         <LayoutVariantButton variant={PlankVariant.EM13} currentVariant={variant} setVariant={setVariant} name="Ergoslat 13/3">
-            <CheckboxWithLabel label="mid-Shift"
-                               checked={options.midShift}
-                               onChange={(midShift) => setOption({midShift})}/>
+            <MidShiftCheckbox options={options} setOption={setOption}/>
             <CheckboxWithLabel label="numberless"
                                checked={options.esNumberless}
                                onChange={(numberless) => setOption({esNumberless: numberless})}/>
