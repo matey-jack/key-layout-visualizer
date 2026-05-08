@@ -1,7 +1,7 @@
 import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
 import {mapValues} from "../library/records.ts";
 import {mirror, SymmetricKeyWidth} from "./keyWidth.ts";
-import {copyAndModifyKeymap, ergoFamilyKeyColorClass} from "./layout-functions.ts";
+import {copyAndModifyKeymap, copyKeymap, ergoFamilyKeyColorClass} from "./layout-functions.ts";
 
 const keyWidths = new SymmetricKeyWidth(13, [0, 0.25, 0, 0, 0.5]);
 
@@ -13,12 +13,28 @@ const ansi30FrameMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Alt", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
+const ansi30MidshiftFrame: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "'"],
+    ["⇧", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "⇧"],
+    ["Ctrl", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⏎"],
+    ["Cmd", "Alt", "=", "⌦", "⍽", "AltGr", "Fn", "Ctrl"],
+];
+
 const thumb30FrameMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
     ["⌦", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, "/", 5, 6, 7, 8, "⇧"],
     ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl"],
+];
+
+const thumb30MidshiftFrame: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "'"],
+    ["⇧", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "⇧"],
+    ["Ctrl", 0, 1, 2, 3, 4, "/", 5, 6, 7, 8, "⏎"],
+    ["Cmd", "Alt", "⌦", 0, "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
 export function ergoslatLayoutModel(midShift: boolean): LayoutModel {
@@ -79,8 +95,8 @@ export function ergoslatLayoutModel(midShift: boolean): LayoutModel {
     symmetricStagger: true,
 
     frameMappings: {
-        [KeymapTypeId.Ansi30]: ansi30FrameMapping,
-        [KeymapTypeId.Thumb30]: thumb30FrameMapping,
+        [KeymapTypeId.Ansi30]: midShift ? ansi30MidshiftFrame : ansi30FrameMapping,
+        [KeymapTypeId.Thumb30]: midShift ? thumb30MidshiftFrame : thumb30FrameMapping,
     },
 
     keyColorClass: ergoFamilyKeyColorClass(ansi30FrameMapping),
@@ -127,8 +143,9 @@ export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
         mainFingerAssignment: [[null], ...lm.mainFingerAssignment.slice(1, 5)],
         singleKeyEffort: [[null], ...lm.singleKeyEffort.slice(1, 5)],
         frameMappings: {
-            [KeymapTypeId.Ansi30]: copyAndModifyKeymap(ansi30FrameMapping, numberlessKeymap),
-            [KeymapTypeId.Thumb30]: moveReturn(copyAndModifyKeymap(thumb30FrameMapping, numberlessKeymap)),
+            // TODO: ansi30 numberless misses '-'
+            [KeymapTypeId.Ansi30]: numberlessKeymap(copyKeymap(lm.frameMappings[KeymapTypeId.Ansi30]!)),
+            [KeymapTypeId.Thumb30]: moveReturn(numberlessKeymap(copyKeymap(lm.frameMappings[KeymapTypeId.Thumb30]!))),
         },
     };
 }
@@ -136,12 +153,16 @@ export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
 function numberlessKeymap(keymap: LayoutMapping): LayoutMapping {
     keymap[KeyboardRows.Number] = [null];
     keymap[KeyboardRows.Upper][0] = "Esc";
-    keymap[KeyboardRows.Upper][12] = "⌫";  // because of the gap, there's actual 13 entries here and 12 is the last.
+    // because of the gap, there's actually 13 entries in the upper row and 12 is the last.
+    keymap[KeyboardRows.Home][6] = keymap[KeyboardRows.Upper][12];
+    keymap[KeyboardRows.Upper][12] = "⌫";
     return keymap;
 }
 
 function moveReturn(keymap: LayoutMapping): LayoutMapping {
     keymap[KeyboardRows.Home][6] = "'";
-    keymap[KeyboardRows.Home][12] = "⏎";
+    if (!keymap[KeyboardRows.Lower].includes("⏎")) {
+        keymap[KeyboardRows.Home][12] = "⏎";
+    }
     return keymap;
 }

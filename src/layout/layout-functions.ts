@@ -333,7 +333,11 @@ export function getKeyMovements(prevPositions: KeyPosition[], nextPositions: Key
     return movements;
 }
 
+export function copyKeymap<T>(mapping: T[][]): T[][] {
+    return mapping.map((row) => [...row]);
+}
+
+// DEPRECATED: better use copyKeymap directly; it allows you to apply several functions on the result in a simpler way.
 export function copyAndModifyKeymap<T>(mapping: T[][], f: (m: T[][]) => T[][]): T[][] {
-    const newMapping = mapping.map((row) => [...row]);
-    return f(newMapping);
+    return f(copyKeymap(mapping));
 }
