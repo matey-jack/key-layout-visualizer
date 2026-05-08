@@ -1,5 +1,5 @@
 import {render} from '@testing-library/preact';
-import {writeFileSync} from 'fs';
+import {rmSync, writeFileSync} from 'fs';
 import {afterAll, beforeAll, describe, expect, it} from 'vitest';
 import {VisualizationType} from '../base-model.ts';
 import {ansiIBMLayoutModel} from '../layout/ansiLayoutModel.ts';
@@ -18,8 +18,9 @@ describe('SVG Export', () => {
     });
 
     afterAll(() => {
-        // Temp file is left intentionally for manual inspection
-        console.log(`\n📄 SVG content written to: ${tempFilePath}`);
+        rmSync(tempFilePath, {force: true});
+        // uncomment the above, if you want to look at the resulting file after a test run.
+        // console.log(`\n📄 SVG content written to: ${tempFilePath}`);
     });
 
     it('extracts SVG with embedded styles', () => {
