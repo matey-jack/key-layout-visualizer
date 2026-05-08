@@ -288,7 +288,7 @@ export function createHHKB(lm: LayoutModel): LayoutModel {
     };
 }
 
-export function createMidShift(lm: LayoutModel): LayoutModel {
+export function createAnsiMidShift(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
         frameMappings: mapValues(lm.frameMappings, rotateShiftToHomeRow),

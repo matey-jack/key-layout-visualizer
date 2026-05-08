@@ -19,34 +19,31 @@ Ergoslat:
 
 ### Ergoplank 15/5
 
- - has a lot of potential for different mappings!
- - one would be to have only 1u keys in the lower row, so that / on the right need not flip and the left side could be used for a physical angle mod (like the extra-wide Ergoboard) => this should replace the current (mapping-only) angle-mod!
+ This has a lot of potential for different mappings! Let's skip the lower-row Return key variant on this one, since it only applies to thumb30 mappings anyway... and the ErgoSlat already serves as Demo for that!
+So we'll focus on a proper angle-mod for this keyboard layout, like the Mid-Shift Harmonic!
 
- - another would be lower-row Return and putting the delete key in the upper row, right under backdelete! (Left side would be like Ergoslat.) => this is purely a mapping change.
+Spec:
+ - The UI has the same "Mid-Shift" button as the other layouts and uses the same option state. 
+ - But unlike the others, it actually changes key sizes in the lower row to 1u! The left side then looks like the Ergoboard! And the right side is simply symmetric with the left!
+ - We remove the Angle Mod variant to keep stuff simple, since Mid-Shift will bring a much better angle mod with it!
 
- - This gives a total of three variants here. And since flipRetRub doesn't make sense with any of the three, let's just make an option-switch labeled "low-shift" and "mid-shift" and the latter having a sub-option "angle mod". It's slightly weird, that only the sub-option changes the actual key sizes, but still low-shift vs mid-shift is the bigger change that separates the options. 
-
-Problem alert: as on the ErgoSlat, thumby-keymaps have Return on the right. So to make an angle-mod for them, we'd have to keep Return up in the Backspace position. Oh, this means that our three variant frame maps actually mean six different frame mapping. 
-(Luckily we don't have model-specific keymap-types!) 
-
-Mid-Shift for Thumb30 frame mapping: left and right rotations just like on the Ergoslat. Nice big Return key!
-Mid-Shift for Ansi30 frame mapping: also same as Ergoslat with '/' ending up on the large key.
-
-"Angle-mod variants": on the left, Ctrl rotates back down and ⌦ rotates in the central gap. 
-On the right, Ansi30 already has it; and Thumb30 moves Return back up and rotates the apostrophe to the center.
-==> It's a lot of busy work, let's defer it a bit ;-)
+implementation: 
+ - make a modifier-function similar to the ANSI mid-shift, but also with the small change to the key size and indent in the lower row.
+ - key map change on the left: YXCV move and ⌦ rotates in the central gap. 
+ - and on the right, NM,. move, and we rotate Shift–>apostrophe->slash. All three keys are mapped the same in both ansi30 and thumb30 :grin!b
+ - actually rotations on the left and right are exactly symmetrical!
 
 ### Ergoboard: already has low-shift and mid-shift variants which have different key sizes.
 
 ### Split Ortho:
  - we currently have mix-shift here. Unlike the Ergoboard family, there are also layout-specific keymaps, which depend on where the Shift key is located. (After all, I just refactored this!)
- - therefore best to have a "mid-shift" checkbox which only works when an ansi30 or thumb30 mapping is active.
+ - therefore, best to have a "mid-shift" checkbox which only works when an ansi30 or thumb30 mapping is active.
  - on specific mappings, simply check and lock the box, just as is done with the "wide" box on ANSI.
 
 ### Implementation order (easiest to hardest):
  - split ortho DONE
  - ergoslat DONE
- - ANSI and Apple
+ - ANSI and Apple DONE
  - Ergoplank (only one that includes a small layout change, just two keys change size and indent appears).
 
 

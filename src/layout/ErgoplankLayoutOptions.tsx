@@ -37,13 +37,10 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
                             currentVariant={variant} setVariant={setVariant}
                             name="❤️ Ergoplank 15/5"
         >
-            <CheckboxWithLabel label="angle mod"
-                               checked={options.angleMod}
-                               onChange={(angle) => setOption({angleMod: angle})}/>
+            <MidShiftCheckbox options={options} setOption={setOption}/>
             <CheckboxWithLabel label="Include arrow keys"
                                checked={options.bottomArrows}
                                onChange={(arrows: boolean) => setOption({bottomArrows: arrows})}/>
-            <FlipRetRubButton setOption={setOption} options={options}/>
         </LayoutVariantButton>
 
         <LayoutVariantButton variant={PlankVariant.EB65_LOW_SHIFT}

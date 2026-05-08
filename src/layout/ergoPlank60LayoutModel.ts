@@ -78,10 +78,9 @@ export const ergoPlank60LayoutModel: LayoutModel = {
     keyColorClass: ergoFamilyKeyColorClass(ansi30FrameMapping),
 }
 
-export function ep60addAngleMod(lm: LayoutModel): LayoutModel {
+export function createErgoPlankMidShift(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
-        name: "Ergoplank 60",
         frameMappings: mapValues(lm.frameMappings, (_, mapping) =>
             copyAndModifyKeymap(mapping, angleModKeymap)
         ) as typeof lm.frameMappings,

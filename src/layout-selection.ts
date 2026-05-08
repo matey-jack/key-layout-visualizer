@@ -11,9 +11,9 @@ import {ahkbAddAngleMod, ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
 import {
     ansiIBMLayoutModel,
     ansiWideLayoutModel,
+    createAnsiMidShift,
     createApple,
     createHHKB,
-    createMidShift,
     splitSpaceBar,
 } from "./layout/ansiLayoutModel.ts";
 import {eb65BigEnterLayoutModel, eb65LowshiftLayoutModel} from "./layout/eb65LowshiftLayoutModel.ts";
@@ -28,7 +28,11 @@ import {
     eb65VerticalEnterLayoutModel,
 } from "./layout/eb65MidshiftNarrowLayoutModels.ts";
 import {eb65MidshiftNiceLayoutModel} from "./layout/eb65MidshiftNiceLayoutModel.ts";
-import {ep60addAngleMod, ep60WithArrowsLayoutModel, ergoPlank60LayoutModel} from "./layout/ergoPlank60LayoutModel.ts";
+import {
+    createErgoPlankMidShift,
+    ep60WithArrowsLayoutModel,
+    ergoPlank60LayoutModel
+} from "./layout/ergoPlank60LayoutModel.ts";
 import {ergoslatLayoutModel, makeErgoslatNumberless} from './layout/ergoslatLayoutModel.ts';
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
@@ -88,7 +92,7 @@ export function getPlankVariant(opts: LayoutOptions): LayoutModel {
             }
         default: {
             const ep60LM = opts.bottomArrows ? ep60WithArrowsLayoutModel : ergoPlank60LayoutModel;
-            return opts.angleMod ? ep60addAngleMod(ep60LM) : ep60LM;
+            return opts.midShift ? createErgoPlankMidShift(ep60LM) : ep60LM;
         }
     }
 }
@@ -98,13 +102,13 @@ export function getAnsiVariant(layoutOptions: LayoutOptions) {
     switch (layoutOptions.ansiVariant) {
         case AnsiVariant.IBM:
             if (layoutOptions.midShift) {
-                base = createMidShift(base);
+                base = createAnsiMidShift(base);
             }
             break;
         case AnsiVariant.APPLE:
             base = createApple(base);
             if (layoutOptions.midShift) {
-                base = createMidShift(base);
+                base = createAnsiMidShift(base);
             }
             break;
         case AnsiVariant.HHKB:
