@@ -7,7 +7,7 @@ const fullMapping = [
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
     ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "Ctrl"],
-    ["Cmd", 0, 1, "Alt", 2, "⏎", "⍽", 3, "AltGr", 4, "Fn", "Cmd"],
+    ["Alt", 0, 1, "Cmd", 2, "⏎", "⍽", 3, "AltGr", 4, "Fn", "Cmd"],
 ];
 
 export const splitOrthoLayoutModel = (midShift: boolean) : LayoutModel => ({
