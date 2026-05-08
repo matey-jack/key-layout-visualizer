@@ -31,7 +31,7 @@ Split Ortho:
  - on specific mappings, simply check and lock the box, just as is done with the "wide" box on ANSI.
 
 Implementation order (easiest to hardest):
- - split ortho
+ - split ortho DONE
  - ergoslat
  - ANSI and Apple
  - Ergoplank (only one that includes a small layout change, just two keys change size and indent appears).

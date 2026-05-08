@@ -103,7 +103,7 @@ export function getAnsiVariant(layoutOptions: LayoutOptions) {
             base = createHHKB(base);
             break;
         // no need to split the space bar, because it's already split
-        case AnsiVariant.ERGO_KB:
+        case AnsiVariant.XHKB:
             return layoutOptions.bottomArrows ? xhkbWithArrowsLayoutModel : xhkbLayoutModel;
         case AnsiVariant.AHKB:
             return layoutOptions.angleMod ? ahkbAddAngleMod(ahkbLayoutModel) : ahkbLayoutModel;
