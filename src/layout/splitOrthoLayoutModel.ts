@@ -49,22 +49,27 @@ export const splitOrthoLayoutModel = (midShift: boolean) : LayoutModel => ({
 
     frameMappings: {
         [KeymapTypeId.SplitOrtho]: fullMapping,
-        [KeymapTypeId.Ansi30]: [
+        [KeymapTypeId.Ansi30]: midShift ? [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+            ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "Ctrl"],
+            ["Alt", "\\", "`", "⌦", "Cmd", "⏎", "⍽", "Fn", "AltGr", "=", "-", "Menu"],
+        ] : [
             // Mapping Enter as a thumb key allows `'` to stay in its Qwerty position.
             // We use the freed space to improve `-` position, since this is the third most frequently used punctuation character.
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "-"],
             ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", "Cmd", "=", "\\", "Alt", "⍽", "⏎", "AltGr", "Menu", "`", "Fn", "Ctrl"],
+            ["Ctrl", "\\", "`", "Alt", "Cmd", "⏎", "⍽", "Ctrl", "AltGr", "Menu", "=", "Fn"],
         ],
         [KeymapTypeId.Thumb30]: [
-            // Shift in Home Row is the more ergonomic choice... just haven't done it in the other mapping to showcase more options.
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
             ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "Ctrl"],
-            ["Cmd", "", "`", "Alt", 0, "⏎", "⍽", "AltGr", "=", "\\", "Menu", "Fn"],
+            ["Cmd", "⌦", "`", "Alt", 0, "⏎", "⍽", "AltGr", "=", "\\", "Menu", "Fn"],
         ],
     },
 });
