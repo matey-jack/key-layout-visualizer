@@ -116,7 +116,7 @@ export function getLayoutModel(layoutOptions: LayoutOptions): LayoutModel {
         case LayoutType.ANSI:
             return getAnsiVariant(layoutOptions);
         case LayoutType.Ergosplit:
-            return splitOrthoLayoutModel;
+            return splitOrthoLayoutModel(layoutOptions.midShift);
         case LayoutType.Harmonic:
             return getHarmonicVariant(layoutOptions.harmonicVariant);
         default:

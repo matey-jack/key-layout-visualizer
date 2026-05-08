@@ -10,7 +10,7 @@ const fullMapping = [
     ["Cmd", 0, 1, "Alt", 2, "⏎", "⍽", 3, "AltGr", 4, "Fn", "Cmd"],
 ];
 
-export const splitOrthoLayoutModel: LayoutModel = {
+export const splitOrthoLayoutModel = (midShift: boolean) : LayoutModel => ({
     name: "Split Ergonomic",
     description: "The Ortholinear key layout is especially popular with two-piece keyboards. " +
         "This allows to position and rotate the two keyboard halves to make columns line up exactly with your finger's natural extension movement. " +
@@ -67,4 +67,4 @@ export const splitOrthoLayoutModel: LayoutModel = {
             ["Cmd", "", "`", "Alt", 0, "⏎", "⍽", "AltGr", "=", "\\", "Menu", "Fn"],
         ],
     },
-}
+});

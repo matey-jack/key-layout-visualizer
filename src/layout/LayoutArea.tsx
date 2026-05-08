@@ -13,6 +13,7 @@ import {
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {ErgoplankLayoutOptions} from "./ErgoplankLayoutOptions.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
+import {SplitOrthoLayoutOptions} from "./SplitOrthoLayoutOptions.tsx";
 import {BigramLines, KeyboardSvg, RowBasedKeyboard, StaggerLines} from "./KeyboardSvg.tsx";
 import {fillMapping, getKeyMovements, getKeyPositions} from "./layout-functions.ts";
 import {TradeoffDiagram} from "./TradeoffDiagram.tsx";
@@ -192,6 +193,11 @@ function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions, mapping}: La
             />
         case LayoutType.Ergoplank:
             return <ErgoplankLayoutOptions
+                options={layoutOptions}
+                setOption={setLayoutOptions}
+            />
+        case LayoutType.Ergosplit:
+            return <SplitOrthoLayoutOptions
                 options={layoutOptions}
                 setOption={setLayoutOptions}
             />

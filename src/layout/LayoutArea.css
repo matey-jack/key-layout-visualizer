@@ -62,6 +62,12 @@
     min-width: 180px;
 }
 
+.split-ortho-layout-options-container {
+    display: flex;
+    justify-content: flex-end;
+    min-width: 180px;
+}
+
 .harmonic-layout-options-container {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
