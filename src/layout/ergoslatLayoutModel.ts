@@ -13,12 +13,14 @@ const ansi30FrameMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Alt", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
+// This would be better with the right-most lower row key being a 1u.
+// But since keymaps with a thumb-letter have ⏎ in that position, it would be worse for them.
 const ansi30MidshiftFrame: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "⇧"],
-    ["Ctrl", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⏎"],
-    ["Cmd", "Alt", "=", "⌦", "⍽", "AltGr", "Fn", "Ctrl"],
+    ["Ctrl", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9],
+    ["Cmd", "Alt", "⌦", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
 const thumb30FrameMapping: LayoutMapping = [

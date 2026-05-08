@@ -1,6 +1,6 @@
 This is of historic value after features have been implemented.
 
-## Which keyboards should get a mid-shift option?
+# Which keyboards should get a mid-shift option?
 
 ANSI and Apple, because their large Shift key makes a nice Return key!
 Not HHKB or XHKB (Thumbs Up), because their split Shift key does not make a nice Return key.
@@ -10,12 +10,15 @@ This would be easy to implement if we didn't already have a lot other options fo
 Let's provide it only as a sub-option when "wide" is selected (since otherwise right shift is not a pinky-neighbor).
 Maybe this will also make the implementation simpler, since only the ANSI-Wide needs to change.
 
+## Ergoplank family
+
 Ergoslat:
  - great fit, since Enter can be on the longer lower row key and the 1u key freed for a character.
  - on the left side, Ctrl can be on the lower row, like on my split ortho keymaps
  ==> implement this first, via a simple checkbox option. Make a LayoutModel variant and then let Claude add the UI and switching logic.
 
-Ergoplank:
+### Ergoplank 15/5
+
  - has a lot of potential for different mappings!
  - one would be to have only 1u keys in the lower row, so that / on the right need not flip and the left side could be used for a physical angle mod (like the extra-wide Ergoboard) => this should replace the current (mapping-only) angle-mod!
 
@@ -23,21 +26,31 @@ Ergoplank:
 
  - This gives a total of three variants here. And since flipRetRub doesn't make sense with any of the three, let's just make an option-switch labeled "low-shift" and "mid-shift" and the latter having a sub-option "angle mod". It's slightly weird, that only the sub-option changes the actual key sizes, but still low-shift vs mid-shift is the bigger change that separates the options. 
 
-Ergoboard: already has low-shift and mid-shift variants which have different key sizes.
+Problem alert: as on the ErgoSlat, thumby-keymaps have Return on the right. So to make an angle-mod for them, we'd have to keep Return up in the Backspace position. Oh, this means that our three variant frame maps actually mean six different frame mapping. 
+(Luckily we don't have model-specific keymap-types!) 
 
-Split Ortho:
+Mid-Shift for Thumb30 frame mapping: left and right rotations just like on the Ergoslat. Nice big Return key!
+Mid-Shift for Ansi30 frame mapping: also same as Ergoslat with '/' ending up on the large key.
+
+"Angle-mod variants": on the left, Ctrl rotates back down and ⌦ rotates in the central gap. 
+On the right, Ansi30 already has it; and Thumb30 moves Return back up and rotates the apostrophe to the center.
+==> It's a lot of busy work, let's defer it a bit ;-)
+
+### Ergoboard: already has low-shift and mid-shift variants which have different key sizes.
+
+### Split Ortho:
  - we currently have mix-shift here. Unlike the Ergoboard family, there are also layout-specific keymaps, which depend on where the Shift key is located. (After all, I just refactored this!)
  - therefore best to have a "mid-shift" checkbox which only works when an ansi30 or thumb30 mapping is active.
  - on specific mappings, simply check and lock the box, just as is done with the "wide" box on ANSI.
 
-Implementation order (easiest to hardest):
+### Implementation order (easiest to hardest):
  - split ortho DONE
- - ergoslat
+ - ergoslat DONE
  - ANSI and Apple
  - Ergoplank (only one that includes a small layout change, just two keys change size and indent appears).
 
 
-## About fixing bugs discovered thanks to the learning-vs-effort diagram feature.
+# Fixing learning and typing effort metric bugs discovered thanks to the learning-vs-effort diagram feature.
 
 Problem: The learning score for localMaximum-mappings varies for incidental reasons. 
 A. using the left or right thumb for a letter, which makes a big difference. 
