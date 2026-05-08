@@ -1,3 +1,5 @@
+This is of historic value only. About fixing bugs discovered thanks to the learning-vs-effort diagram feature.
+
 Problem: The learning score for localMaximum-mappings varies for incidental reasons. 
 A. using the left or right thumb for a letter, which makes a big difference. 
 B. using mid-shift leaves one less character key for the fingers and creates a "same finger" learning score for the apostrophe.

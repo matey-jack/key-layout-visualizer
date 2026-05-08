@@ -11,10 +11,12 @@ Key mappings are shown for four different layout types:
 
 All new keyboard layouts are further improved by:
  * wide hand position for better ergonomics (relaxed and open shoulders)
- * split space bar (with two easy to press thumb keys per side)
+ * split space bar (with two easy-to-press thumb keys per side)
  * fewer different key sizes to minimize waste of space and facilitate keycap swapping to create custom keymaps.
 
-While only "60% keyboards" are shown, all the letter mappings and many other concepts here also apply to bigger keyboards, with or without numpad or F-keys or nav keys.
+While mostly "60% keyboards" are shown, all the letter mappings and many other concepts here also apply to bigger keyboards, with or without numpad or F-keys or nav keys.
+The Harmonic and Ergoplank family of keyboards manage to fit in some of the nav keys into the same space that an ANSI keyboard needs just for character keys and its oversized edge keys. 
+And my favorite of all boards is the Ergoboard 16/5 which is the same size as "65% keyboards" (one column of keys more than the 60%ers) and cleverly uses that width to improve hand distance by putting some of the nav keys in the center instead of the right edge.
 
 
 ## Terminology and Background 
@@ -36,6 +38,8 @@ This went on for many decades until more ergonomically shaped keyboards started 
 I say, "gain traction," because some ergonomic keyboards such as the Kinesis and Maltron are also ancient by modern standards.
 (My definition of "ancient" is "before most of us were born."))
 
+### "Casual" key maps: easy to learn and switch from and back to qwerty.
+
 Most keyboard mapping comparisons today focus on thoroughly optimized mappings of letters which have no resemblance to 
 the ancient qwerty mapping found on most commercial keyboards and known by most humans today.
 Despite existing for decades and providing many benefits in terms of typing speed and comfort, adaption of such layouts has been low.
@@ -47,6 +51,34 @@ Since typing comfort and ergonomics are prioritized over raw speed and anyone ca
 (and back, when faced with an ancient-type keyboard), we call them "casual" keyboard mappings.
 A casual typist is one who uses the keyboard regularly (and might want to relieve or prevent repetitive strain injury and other pains), 
 but who is not fanatic about optimizing their typing or training for speed "like a pro."
+
+### Shift key position strategies
+
+Typewriters needed a big shift key, because pressing that key would physically shift (lift) the entire top part of the typewriter so that the lower part of each type pattern would hit the paper.
+The ANSI/ISO keyboard layout kept this oversize and the position in the lower letter row. 
+Thanks to the row staggering, this position is easy enough to reach for the pinky finger: the left hand doesn't even need to move, because Shift directly neighbors the pinky's home key.
+(And on the right side, we can get as close by using a wide-mod keymap, but let's not digress...)
+
+On split ergo keyboards, which are usually ortholinear or column-staggered, this typewriter-like position of the Shift key becomes problematic:
+ - the Shift key in the lower row does not overlap with the pinky home key anymore. Instead, it's an awkward diagonal move.
+ - this matters even more, since split ergo keyboards have a key arrangement that encourages less hand movement.
+ - finally, since most split-ergo keyboards have uniform key sizes, there is no reason to keep Shift on its standard position. Many keyboards have it on a thumb key; others have it on the home row just next to the pinky's home position. That's what I call "mid-shift".
+
+Since the Shift key is used more often than some letters or other characters, it should definitely not get a harder-to-reach position than those letters and other characters. 
+This is why the "low-shift" (typewriter-like) position doesn't make any sense in an (ortho or col-stag) ergonomic keyboard.
+And this raises a question for the "intermediate ergonomic" keyboards, that are still row-staggered: 
+low-shift works on those, if there is enough overlap between the Shift and pinky-home keys. 
+But mid-shift actually always works on all kinds of keyboards.
+
+Terminology used in this app:
+ - mid-shift and low-shift as just explained: pinky-operated on the home row or below.
+ - mix-shift: when the keyboard layout has a different Shift-key position depending on the selected keymap for letters.
+ - switch-shift: when the app allows switching the Shift key position of a keyboard layout independently of the selected keymap. (This is not implemented as of this writing.)
+
+Observations and further work:
+ - on the left hand, the CAPS key can be easily repurposed as Shift (which I did on my Laptops and my family can still use the laptop without problems, because the old Shift key is also Shift).
+ - on the right hand, we can actually switch Shift and Return! On an ANSI keyboard with a wide-hand keymap, this is quite ergonomic and allows to transfer muscle-memory with a split ergo keyboard that has the same setup!
+ - The right side of an ISO keyboard is less straight-forward because of the vertical Enter key and an intermediate 1u key between the pinky home (even in wide-mod) and Enter. Probably that 1u key should serve as Shift while the original Shift can take the lower-row character key that would otherwise flip to the center. And Enter stays Enter. 
 
 ## Scope
 
