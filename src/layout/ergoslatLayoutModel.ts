@@ -46,7 +46,8 @@ export function ergoslatLayoutModel(midShift: boolean): LayoutModel {
     without excessively using higher layers. It omits only keys used for programming and more involved desktop work.
     While all keyboard layouts can be used with Android devices like smartphones and tablets, this one is specialized for that use case.
     What's also neat about it: the number of keys above the bottom row for each hand are 3 or 4 rows times 6 columns 
-    which is the same as the majority of fully split keyboards. This makes the ErGo `,
+    which is the same as a large class of fully split keyboards. 
+    Given two great thumb keys per hand, a lot of the split ergo keymaps and habits can be reused here.`,
     keyWidths: [
         keyWidths.row(0, 1.5),
         keyWidths.row(1, 1),
@@ -56,17 +57,17 @@ export function ergoslatLayoutModel(midShift: boolean): LayoutModel {
         mirror(1.5, 1.5, 1.5, 1.5),
 
         // Alternative bottom row with an extra key (needs 0 indent, see line 6 above).
-        // Optionally one can also use two 1.25u keys for the upper row edges, although I wouldn't,
+        // Optionally, one can also use two 1.25u keys for the upper row edges, although I wouldn't,
         // because the right side is a character key.
         // mirror(1.25, 1.25, 1.25, 1.25, 1.5),
 
         // Alternative, diverse bottom row. Requires a 0.25 indent.
-        // I guess the main benefit of this purely aesthetic, for people who prefer some size diversity over uniformity.
+        // I guess the main benefit of this is purely aesthetic, for people who prefer some size diversity over uniformity.
         // mirror(1.25, 1.25, 1, 1.25, 1.5),
     ],
 
     // row lengths: 12, 12 (and 1 gap!), 13, 12, 10
-    // note that for data model reason, we also have to assign a finger to gaps.
+    // note that for data model reasons, we also have to assign a finger to gaps.
     // but it will never be shown or used in any calulations.
     mainFingerAssignment: [
         [1, 1, 1, 2, 3, 3, 6, 6, 7, 8, 8, 8],

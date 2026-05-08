@@ -50,8 +50,12 @@ Yet, we need to reconcile, which mod should be applied first?
  - split ortho DONE
  - ergoslat DONE
  - ANSI and Apple DONE
- - Ergoplank DONE, except for feature collision with the arrows-variant
+ - Ergoplank DONE
 
+Conclusion / Postmortem:
+ - I now have the ErgoPlank as a MidShift example with a nice lower row full of character and the ErgoSlat as an example for Return in the bottom row. Both are nice, and I'd like to have UI switches to have both variants on both layouts. Maybe we can code this a little bit generically, since both layouts have the same row-indentation pattern? 
+
+---
 
 # Fixing learning and typing effort metric bugs discovered thanks to the learning-vs-effort diagram feature.
 
