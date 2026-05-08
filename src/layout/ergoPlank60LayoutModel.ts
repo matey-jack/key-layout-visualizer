@@ -1,7 +1,6 @@
 import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
-import {mapValues} from "../library/records.ts";
 import {mirrorOdd, SymmetricKeyWidth} from "./keyWidth.ts";
-import {copyKeymap, ergoFamilyKeyColorClass} from "./layout-functions.ts";
+import {ergoFamilyKeyColorClass} from "./layout-functions.ts";
 
 const keyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0, 0.25]);
 
@@ -103,30 +102,23 @@ export function createErgoPlankMidShift(lm: LayoutModel): LayoutModel {
             mirrorOdd(1.25, 1.25, 1.25, 1.25, 1.5, 1),
         ],
 
-        frameMappings: mapValues(lm.frameMappings, (_, mapping) =>
-            rotateShiftKeys(copyKeymap(mapping))
-        ) as typeof lm.frameMappings,
-        // Now we could go to 0.25 stagger without making Z awkward to type and put ⌦ on the newly fusioned 1.5u central key...
-        // but this key fusion removes one key from the board which makes it hard to place Home/End without moving a lot of stuff around.
+        frameMappings:  {
+            [KeymapTypeId.Ansi30]: [
+                ['Esc', '1', '2', '3', '4', '5', '[', ']', '6', '7', '8', '9', '0', '⌫'],
+                ['↹', 0, 1, 2, 3, 4, '-', null, "=", 5, 6, 7, 8, 9, "'"],
+                ['⇧', 0, 1, 2, 3, 4, '⇤', '⌦', '⇥', 5, 6, 7, 8, 9, '⇧'],
+                [0, 1, 2, 3, 4, '`~', '⇞', '⇟', '\\', 5, 6, 7, 8, 9],
+                ['Ctrl', 'Cmd', 'Fn', 'Alt', '⏎', '', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
+            ],
+            [KeymapTypeId.Thumb30]:  [
+                ['Esc', '1', '2', '3', '4', '5', '[', ']', '6', '7', '8', '9', '0', '⌫'],
+                ['↹', 0, 1, 2, 3, 4, '=', null, "'", 5, 6, 7, 8, 9, '⏎'],
+                ['⇧', 0, 1, 2, 3, 4, '⇤', '⌦', '⇥', 5, 6, 7, 8, 9, '⇧'],
+                [0, 1, 2, 3, 4, '`~', '⇞', '⇟', '\\', 5, 6, 7, 8, '/'],
+                ['Ctrl', 'Cmd', 'Fn', 'Alt', 0, '', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
+            ],
+        },
     }
-}
-
-function rotateShiftKeys(mapping: LayoutMapping): LayoutMapping {
-    // upper row
-    mapping[KeyboardRows.Upper][8] = "'";
-
-    // home row
-    mapping[KeyboardRows.Home][0] = "⇧";
-    mapping[KeyboardRows.Home][7] = "⌦";
-    const homeLast = mapping[KeyboardRows.Home].length - 1;
-    mapping[KeyboardRows.Home][homeLast] = "⇧";
-
-    // on the left side, we make a big rotation, on the right side, just a swap.
-    const lower = mapping[KeyboardRows.Lower];
-    mapping[KeyboardRows.Lower] = [...lower.slice(1, 6), '`~', '⇞', '⇟', '\\', ...lower.slice(9, -1), lower[8]];
-
-    // right side
-    return mapping;
 }
 
 export function createErgoPlankWithArrows(lm: LayoutModel): LayoutModel {
