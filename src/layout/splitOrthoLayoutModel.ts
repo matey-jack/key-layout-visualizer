@@ -64,12 +64,19 @@ export const splitOrthoLayoutModel = (midShift: boolean) : LayoutModel => ({
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
             ["Ctrl", "\\", "`", "Alt", "Cmd", "⏎", "⍽", "Ctrl", "AltGr", "Menu", "=", "Fn"],
         ],
-        [KeymapTypeId.Thumb30]: [
+        [KeymapTypeId.Thumb30]: midShift ? [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
             ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "Ctrl"],
-            ["Cmd", "⌦", "`", "Alt", 0, "⏎", "⍽", "AltGr", "=", "\\", "Menu", "Fn"],
-        ],
+            // left =+ key, because most thumb-letter layouts use B or nearby position for -_
+            ["Alt", "⌦", "=", "Cmd", 0, "⏎", "⍽", "Fn", "AltGr", "\\", "`", "Menu"],
+        ] : [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "\\"],
+            ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "⇧"],
+            ["Ctrl", "Alt", "=", "Cmd", 0, "⏎", "⍽", "Ctrl", "AltGr", "Menu", "`", "Fn"],
+        ] ,
     },
 });
