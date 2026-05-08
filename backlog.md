@@ -79,18 +79,19 @@ bugs fixed:
 - when switching mappings we correctly set options (which only affects ANSI), but we don't switch Layouts, because there are so many variants to iterate through. But needs to be done at some point.
 - bigram lines were misplaced on Ergosplit
 
+- reverse single-key-effort to be "lower is better" like the bigram effort: just count the usage of off-home keystrokes, instead of on-home.
+- diagram export of keymap metrics, so I can make a diagram of the diminishing returns and publish the long-planned post on "casual key maps".
+- PostHog metrics
+
 refactorings done (or decided against):
  - instead of the current keyboard-specific keymaps, keep only thirty and thumbThirty, and put all the rest into a list of pairs [keyboardLayout, specificMapping]. 
     This should make it much easier to select the next-best layout if the current one does not support the keymap: we can simply "walk up the variant tree". 
     Similarly, when switching layout or layout options, we can do a similarity search (by the first word of the keymap name) for a matching keymap.
+ - modularized the CSS
 
  - "ANSI wide" is the only layout option which influences how keymap metrics are calculated and which keymaps apply.
    But all the Harmonic and Ergo(Plank|Board) options are filtered through the setLayout mechanism. Is that what we want?
    - yes, it will be important once we provide a new keymapType either for a specific variant or a group! 
-
-- modularized the CSS
-- reverse single-key-effort to be "lower is better" like the bigram effort: just count the usage of off-home keystrokes, instead of on-home.
-- PostHog metrics
 
 ======================== TODO ===============================
 
@@ -104,7 +105,6 @@ missing core features:
   - add a ruler to the SVG so people can zoom to scale on their laptop or tablet
 - export to keyboard layout editor format, https://www.keyboard-layout-editor.com/, because that is used as a spec by hardward keyboard builders.
   (Having the export will help us to remove remaining ambiguities of how the SVG pics translate to actual hardware!)
-- diagram export of keymap metrics, so I can make a diagram of the diminishing returns and publish the long-planned post on "casual key maps".
 
 nice to have features:
 - slow down the animation when the user holds the mouse or finger on the layout type/variant buttons (or other controls).
@@ -170,7 +170,7 @@ optional features:
 
 
 research option:
-- can we redefine thumb30 in a way that omits ;- from its character set and let's the frame map all punctuation? (Except , and . which are constant in all our variants.)
+- can we redefine thumb30 in a way that omits ;- from its character set and lets the frame map all punctuation? (Except , and . which are constant in all our variants.)
 - can we make a data model for the Harmonic that allows us to simply scale the layout for a width of 14, 13, and 12 keys?
    * 12 only works as "balanced" (full-width home row, lower shift), 14 as "traditional" and "balanced", 13 as balanced and "mid-shift".
    * for the layout itself it should be easy, but defining really sensible punctuation depends on the exact number and position of keys available!
@@ -192,9 +192,10 @@ building usable things:
 
 possible additions:
 http://www.michaelcapewell.com/projects/keyboard/#The_QWERF_Layout
-strangely changes mostly the right hand.
+strangely changes mostly the right hand. => we have that covered with "Righty" now.
 
-https://mk.bcgsc.ca/carpalx/?partial_optimization – makes only 5 or 10 swaps, but doesn't respect hand or finger position. 10 swaps without those restrictions is already a completely unrecognizable new layout.
+https://mk.bcgsc.ca/carpalx/?partial_optimization – makes only 5 or 10 swaps, but doesn't respect hand or finger position. 
+10 swaps without those restrictions is already a completely unrecognizable new layout.
 
 https://mk.bcgsc.ca/carpalx/?keyboard_layouts this page shows c-qwerty and variants, that swap ED UJ IK OL and some other pairs. I might include one of them in my app.
 

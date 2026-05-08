@@ -1,4 +1,43 @@
-This is of historic value only. About fixing bugs discovered thanks to the learning-vs-effort diagram feature.
+This is of historic value after features have been implemented.
+
+## Which keyboards should get a mid-shift option?
+
+ANSI and Apple, because their large Shift key makes a nice Return key!
+Not HHKB or XHKB (Thumbs Up), because their split Shift key does not make a nice Return key.
+==> We are not trying to provide comprehensive coverage off all theoretical variants, but simply show off some attractive ones to get people thinking.
+
+This would be easy to implement if we didn't already have a lot other options for those layouts. 
+Let's provide it only as a sub-option when "wide" is selected (since otherwise right shift is not a pinky-neighbor).
+Maybe this will also make the implementation simpler, since only the ANSI-Wide needs to change.
+
+Ergoslat:
+ - great fit, since Enter can be on the longer lower row key and the 1u key freed for a character.
+ - on the left side, Ctrl can be on the lower row, like on my split ortho keymaps
+ ==> implement this first, via a simple checkbox option. Make a LayoutModel variant and then let Claude add the UI and switching logic.
+
+Ergoplank:
+ - has a lot of potential for different mappings!
+ - one would be to have only 1u keys in the lower row, so that / on the right need not flip and the left side could be used for a physical angle mod (like the extra-wide Ergoboard) => this should replace the current (mapping-only) angle-mod!
+
+ - another would be lower-row Return and putting the delete key in the upper row, right under backdelete! (Left side would be like Ergoslat.) => this is purely a mapping change.
+
+ - This gives a total of three variants here. And since flipRetRub doesn't make sense with any of the three, let's just make an option-switch labeled "low-shift" and "mid-shift" and the latter having a sub-option "angle mod". It's slightly weird, that only the sub-option changes the actual key sizes, but still low-shift vs mid-shift is the bigger change that separates the options. 
+
+Ergoboard: already has low-shift and mid-shift variants which have different key sizes.
+
+Split Ortho:
+ - we currently have mix-shift here. Unlike the Ergoboard family, there are also layout-specific keymaps, which depend on where the Shift key is located. (After all, I just refactored this!)
+ - therefore best to have a "mid-shift" checkbox which only works when an ansi30 or thumb30 mapping is active.
+ - on specific mappings, simply check and lock the box, just as is done with the "wide" box on ANSI.
+
+Implementation order (easiest to hardest):
+ - split ortho
+ - ergoslat
+ - ANSI and Apple
+ - Ergoplank (only one that includes a small layout change, just two keys change size and indent appears).
+
+
+## About fixing bugs discovered thanks to the learning-vs-effort diagram feature.
 
 Problem: The learning score for localMaximum-mappings varies for incidental reasons. 
 A. using the left or right thumb for a letter, which makes a big difference. 
