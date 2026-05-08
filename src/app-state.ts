@@ -1,5 +1,5 @@
 import {computed, effect, type Signal, signal} from "@preact/signals";
-import posthog from 'posthog-js'
+import posthog from 'posthog-js';
 import {
     AnsiVariant,
     type AppState,
@@ -160,6 +160,7 @@ function getMappingByName(name: string | null): FlexMapping {
 function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vizType: Signal<VisualizationType>) {
     const params = new URLSearchParams();
     params.set("layout", layout.type.toString());
+    params.set("midShift", layout.midShift ? "1" : "0");
     params.set("mapping", mapping.value.techName || mapping.value.name);
     params.set("viz", vizType.value.toString());
     let subLayout = "";
@@ -202,6 +203,7 @@ export function createAppState(): AppState {
     // important to use ?? because (the falsy) 0 is a proper value that should not trigger the default.
     const layoutOptionsState: Signal<LayoutOptions> = signal<LayoutOptions>({
         type: s2i(params.get("layout")) ?? LayoutType.ANSI,
+        midShift: s2b(params.get("midShift")) ?? false,
         ansiVariant,
         ansiSplit: s2b(params.get("split")) ?? false,
         ansiWide: ansiVariant === AnsiVariant.AHKB ? true : s2b(params.get("wide")) ?? false,

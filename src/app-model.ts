@@ -1,5 +1,5 @@
 import type {ReadonlySignal, Signal} from "@preact/signals";
-import type {BigramMovement, FlexMapping, LayoutModel, MappingChange } from "./base-model.ts";
+import type {BigramMovement, FlexMapping, LayoutModel, MappingChange} from "./base-model.ts";
 import {LayoutType, type VisualizationType} from "./base-model.ts";
 
 export enum AnsiVariant {
@@ -66,19 +66,33 @@ export enum EB65_MidShift_Variant {
 
 export interface LayoutOptions {
     type: LayoutType;
+    // The only option which applies to keyboards within all families (although not all keyboards).
+    midShift: boolean;
+
+    // options for the ANSI family.
+    ansiVariant: AnsiVariant;
     ansiSplit: boolean;
     // This is more of a mapping transformer than an actual layout,
     // but fits here, since the ansiWideLayout is an actual LayoutModel instance.
     ansiWide: boolean;
-    ansiVariant: AnsiVariant;
-    angleMod: boolean;
+
+    // only one for the Harmonic family
     harmonicVariant: HarmonicVariant;
+
+    // and a lot of options for the ErgoPlank family
     plankVariant: PlankVariant;
-    bottomArrows: boolean;
+    flipRetRub: boolean;
+
+    // ErgoSlat
     esNumberless: boolean;
+
+    // ErgoPlank
+    angleMod: boolean;
+    bottomArrows: boolean;
+
+    // Ergoboards
     eb65LowshiftVariant: EB65_LowShift_Variant;
     eb65MidshiftVariant: EB65_MidShift_Variant;
-    flipRetRub: boolean;
 }
 
 export function isSplit(opts: LayoutOptions) {
