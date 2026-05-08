@@ -32,8 +32,8 @@ export enum PlankVariant {
     // the original as published by RominRonin.
     KATANA_60,
 
-    // ErgoMob(ile) 13/3
-    EM13,
+    // Ergoslat 13/3
+    ES13,
 
     // 15 keys in home row for widest possible hand distance.
     // The "include arrows" flag only applies to this one.

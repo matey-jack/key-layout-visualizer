@@ -62,7 +62,7 @@ export function getPlankVariant(opts: LayoutOptions): LayoutModel {
     switch (opts.plankVariant) {
         case PlankVariant.KATANA_60:
             return katanaLayoutModel;
-        case PlankVariant.EM13: {
+        case PlankVariant.ES13: {
             const baseModel = ergoslatLayoutModel(opts.midShift);
             return opts.esNumberless ? makeErgoslatNumberless(baseModel) : baseModel;
         }
