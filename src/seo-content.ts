@@ -21,7 +21,7 @@ export const allLayoutModels: LayoutModel[] = [
     katanaLayoutModel,
     ergoPlank60LayoutModel,
     eb65MidshiftNiceLayoutModel,
-    splitOrthoLayoutModel,
+    splitOrthoLayoutModel(true),
 ];
 
 export function generateSeoContent(): string {

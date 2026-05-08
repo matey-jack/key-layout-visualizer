@@ -55,7 +55,7 @@ const layoutModels: Array<LayoutModel> = [
     harmonic14WideLayoutModel,
     harmonic14TraditionalLayoutModel,
     katanaLayoutModel,
-    splitOrthoLayoutModel,
+    splitOrthoLayoutModel(true),
 ];
 
 function getExpectedRowLengths(model: LayoutModel): number[] {

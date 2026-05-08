@@ -11,6 +11,10 @@ import {
     MappingChange,
 } from "../base-model.ts";
 import {qwertyMapping, qwertzMapping} from "../mapping/baseMappings.ts";
+import {colemakMapping, colemakThumbyDMapping, normanMapping} from '../mapping/colemakMappings.ts';
+import {cozyEnglish} from '../mapping/cozyMappings.ts';
+import {thumbyZero} from '../mapping/flipMappings.ts';
+import {topNine} from '../mapping/top9mappings.ts';
 import {ahkbLayoutModel} from "./ahkbLayoutModel.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
 import {eb65MidshiftNiceLayoutModel} from "./eb65MidshiftNiceLayoutModel.ts";
@@ -34,10 +38,6 @@ import {
     mergeMapping,
 } from "./layout-functions.ts";
 import {splitOrthoLayoutModel} from "./splitOrthoLayoutModel.ts";
-import {thumbyZero} from '../mapping/flipMappings.ts';
-import {cozyEnglish} from '../mapping/cozyMappings.ts';
-import {topNine} from '../mapping/top9mappings.ts';
-import {colemakMapping, colemakThumbyDMapping, normanMapping} from '../mapping/colemakMappings.ts';
 import {xhkbLayoutModel, xhkbWithArrowsLayoutModel} from "./xhkbLayoutModel.ts";
 
 const allLayoutModels = [
@@ -53,7 +53,7 @@ const allLayoutModels = [
     katanaLayoutModel,
     ergoPlank60LayoutModel,
     eb65MidshiftNiceLayoutModel,
-    splitOrthoLayoutModel,
+    splitOrthoLayoutModel(true),
 ];
 
 function hasLettersNumbersAndProsePunctuation(filledMapping: string[][]) {
@@ -99,7 +99,7 @@ describe('fillMapping', () => {
     })
 
     it(`Split Ortho full layout maps all important characters`, () => {
-        hasLettersNumbersAndProsePunctuation(fillMapping(splitOrthoLayoutModel, cozyEnglish)!);
+        hasLettersNumbersAndProsePunctuation(fillMapping(splitOrthoLayoutModel(true), cozyEnglish)!);
     });
 
     // this is currently not used in the app, but let's keep it working
@@ -139,7 +139,7 @@ describe('findMatchingKeymapType', () => {
     });
 
     it('finds Ansi30 match for qwertyMapping on splitOrthoLayoutModel', () => {
-        const match = findMatchingKeymapType(splitOrthoLayoutModel, qwertyMapping);
+        const match = findMatchingKeymapType(splitOrthoLayoutModel(true), qwertyMapping);
         expect(match).toBeDefined();
         expect(match!.typeId).toBe(KeymapTypeId.Ansi30);
     });
@@ -158,8 +158,8 @@ describe('new keymap type system - fillMappingNew', () => {
     });
 
     it('produces same result as fillMapping for qwerty on splitOrtho', () => {
-        const oldResult = fillMapping(splitOrthoLayoutModel, qwertyMapping);
-        const newResult = fillMapping(splitOrthoLayoutModel, qwertyMapping);
+        const oldResult = fillMapping(splitOrthoLayoutModel(true), qwertyMapping);
+        const newResult = fillMapping(splitOrthoLayoutModel(true), qwertyMapping);
         expect(newResult).toEqual(oldResult);
     });
 
@@ -176,7 +176,7 @@ describe('new keymap type system - hasMatchingMappingNew', () => {
     });
 
     it('returns true for qwertyMapping on splitOrthoLayoutModel', () => {
-        expect(hasMatchingMapping(splitOrthoLayoutModel, qwertyMapping)).toBe(true);
+        expect(hasMatchingMapping(splitOrthoLayoutModel(true), qwertyMapping)).toBe(true);
     });
 
     it('falls back to old system for mappings without new property', () => {

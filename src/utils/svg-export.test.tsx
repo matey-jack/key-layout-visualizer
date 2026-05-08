@@ -24,7 +24,7 @@ describe('SVG Export', () => {
 
     it('extracts SVG with embedded styles', () => {
         // Setup: Create keyboard SVG component with test data
-        const layoutModel = splitOrthoLayoutModel;
+        const layoutModel = splitOrthoLayoutModel(true);
         const charMap = fillMapping(layoutModel, qwertyMapping);
         const keyPositions = getKeyPositions(layoutModel, true, charMap!);
         const keyMovements = getKeyMovements(keyPositions, keyPositions);
