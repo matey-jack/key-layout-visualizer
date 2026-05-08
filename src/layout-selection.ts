@@ -53,25 +53,26 @@ export function getHarmonicVariant(variant: HarmonicVariant): LayoutModel {
     }
 }
 
-export function getPlankVariant(opts: Partial<LayoutOptions>): LayoutModel {
-    const {plankVariant, bottomArrows, angleMod, eb65LowshiftVariant, eb65MidshiftVariant, esNumberless} = opts;
-    switch (plankVariant) {
+export function getPlankVariant(opts: LayoutOptions): LayoutModel {
+    switch (opts.plankVariant) {
         case PlankVariant.KATANA_60:
             return katanaLayoutModel;
-        case PlankVariant.EM13:
-            return esNumberless ? makeErgoslatNumberless(ergoslatLayoutModel) : ergoslatLayoutModel;
+        case PlankVariant.EM13: {
+            const baseModel = ergoslatLayoutModel(opts.midShift);
+            return opts.esNumberless ? makeErgoslatNumberless(baseModel) : baseModel;
+        }
         case PlankVariant.EB65_LOW_SHIFT:
             // UI calls this method without variant parameters, so we need a default.
-            switch (eb65LowshiftVariant) {
+            switch (opts.eb65LowshiftVariant) {
                 case EB65_LowShift_Variant.LESS_GAPS:
                     return eb65LowshiftLayoutModel;
                 case EB65_LowShift_Variant.BIG_ENTER:
                     return eb65BigEnterLayoutModel;
                 default:
-                    return angleMod ? eb65LowshiftWideAngleModLayoutModel : eb65LowshiftWideLayoutModel;
+                    return opts.angleMod ? eb65LowshiftWideAngleModLayoutModel : eb65LowshiftWideLayoutModel;
             }
         case PlankVariant.EB65_MID_SHIFT:
-            switch (eb65MidshiftVariant) {
+            switch (opts.eb65MidshiftVariant) {
                 case EB65_MidShift_Variant.EXTRA_WIDE:
                     return eb65MidshiftExtraWideLayoutModel;
                 // next three are the "narrow hands" subvariants
@@ -85,8 +86,8 @@ export function getPlankVariant(opts: Partial<LayoutOptions>): LayoutModel {
                     return eb65MidshiftNiceLayoutModel; // "wide hands"
             }
         default: {
-            const ep60LM = bottomArrows ? ep60WithArrowsLayoutModel : ergoPlank60LayoutModel;
-            return angleMod ? ep60addAngleMod(ep60LM) : ep60LM;
+            const ep60LM = opts.bottomArrows ? ep60WithArrowsLayoutModel : ergoPlank60LayoutModel;
+            return opts.angleMod ? ep60addAngleMod(ep60LM) : ep60LM;
         }
     }
 }

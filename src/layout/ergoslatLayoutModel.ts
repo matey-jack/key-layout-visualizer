@@ -21,26 +21,14 @@ const thumb30FrameMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
-export const ergoslatLayoutModel: LayoutModel = {
+export function ergoslatLayoutModel(midShift: boolean): LayoutModel {
+    return {
     name: "Ergoslat 13/3",
     description: `A smaller ErgoPlank which still has enough keys to write messages, notes, and other texts 
     without excessively using higher layers. It omits only keys used for programming and more involved desktop work.
     While all keyboard layouts can be used with Android devices like smartphones and tablets, this one is specialized for that use case.
     What's also neat about it: the number of keys above the bottom row for each hand are 3 or 4 rows times 6 columns 
     which is the same as the majority of fully split keyboards. This makes the ErGo `,
-    /*
-    Naming ideas from Claude: ErgoGo (which sounds weird at first, but cute on the second impression *grin*.)
-    Ergopad, Ergolite, Ergonote, Ergoslate,
-    Claude Opus really has better ideas than Sonnet!
-    My own: EP Mobile, R-Go, Ergomobile.
-    https://claude.ai/share/256f86c4-2693-47d8-847e-a0c8f6301862
-    Wood based: Ergoslat, Ergotwig, Ergopeg, Ergochip ("wood chips" aren't what people think of first, though...)
-    Ergoteja (Spanish for 'roof tile' which used to wood, now is clay.)
-    Ergotile, Ergoseki (Go game piece), Ergocairn.
-
-    Slate refers to a fine-grained metamorphic rock used for roofing or writing, a bluish-gray color, or a list of political candidates,
-    while slat means a thin, narrow strip of wood or metal ==> since 'slate' is much more used, 'slat' has strong risk of being read as 'slate' anyway.
-     */
     keyWidths: [
         keyWidths.row(0, 1.5),
         keyWidths.row(1, 1),
@@ -96,7 +84,8 @@ export const ergoslatLayoutModel: LayoutModel = {
     },
 
     keyColorClass: ergoFamilyKeyColorClass(ansi30FrameMapping),
-};
+    };
+}
 
 export function ergoSlatAddAngleMod(lm: LayoutModel): LayoutModel {
     return {
