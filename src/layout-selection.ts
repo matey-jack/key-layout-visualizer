@@ -13,6 +13,7 @@ import {
     ansiWideLayoutModel,
     createApple,
     createHHKB,
+    createMidShift,
     splitSpaceBar,
 } from "./layout/ansiLayoutModel.ts";
 import {eb65BigEnterLayoutModel, eb65LowshiftLayoutModel} from "./layout/eb65LowshiftLayoutModel.ts";
@@ -96,9 +97,15 @@ export function getAnsiVariant(layoutOptions: LayoutOptions) {
     let base: LayoutModel = layoutOptions.ansiWide ? ansiWideLayoutModel : ansiIBMLayoutModel;
     switch (layoutOptions.ansiVariant) {
         case AnsiVariant.IBM:
+            if (layoutOptions.midShift) {
+                base = createMidShift(base);
+            }
             break;
         case AnsiVariant.APPLE:
             base = createApple(base);
+            if (layoutOptions.midShift) {
+                base = createMidShift(base);
+            }
             break;
         case AnsiVariant.HHKB:
             base = createHHKB(base);

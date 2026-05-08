@@ -4,6 +4,7 @@ import type {FlexMapping} from "../base-model.ts";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {LayoutVariantButton} from "../components/LayoutVariantButton.tsx";
 import {FlipRetRubButton} from "./components/FlipRetRubButton.tsx";
+import {MidShiftCheckbox} from "./components/MidShiftCheckbox.tsx";
 import {onlySupportsWide} from "./layout-functions.ts";
 
 export interface AnsiLayoutOptionsProps {
@@ -49,6 +50,9 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
                         name={option.label}
                         note={ansiVariantNote(option.variant, ansiWide)}
                     >
+                        {(option.variant === AnsiVariant.IBM || option.variant === AnsiVariant.APPLE) &&
+                            <MidShiftCheckbox options={options} setOption={setOption}/>
+                        }
                         {option.variant === AnsiVariant.XHKB &&
                             <div class="ansi-ahkb-options-container">
                                 <CheckboxWithLabel

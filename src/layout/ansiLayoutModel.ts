@@ -9,8 +9,8 @@ import {
     SKE_HOME,
 } from "../base-model.ts";
 import {mapValues} from "../library/records.ts";
-import {MonotonicKeyWidth, mirrorOdd, zeroIndent} from "./keyWidth.ts";
-import {copyAndModifyKeymap, defaultKeyColor} from "./layout-functions.ts";
+import {mirrorOdd, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
+import {copyAndModifyKeymap, copyKeymap, defaultKeyColor} from "./layout-functions.ts";
 
 const ibmKeyWidths = new MonotonicKeyWidth(15, zeroIndent, "ANSI/IBM");
 
@@ -286,6 +286,30 @@ export function createHHKB(lm: LayoutModel): LayoutModel {
             return matrix;
         }),
     };
+}
+
+export function createMidShift(lm: LayoutModel): LayoutModel {
+    return {
+        ...lm,
+        frameMappings: mapValues(lm.frameMappings, rotateShiftToHomeRow),
+    }
+}
+
+function rotateShiftToHomeRow(_key: string, mapping: LayoutMapping) {
+    const m = copyKeymap(mapping);
+    // on the left side, we make a big rotation, on the right side, just a swap.
+    m[KeyboardRows.Home][0] = "⇧";
+    m[KeyboardRows.Lower][0] = "Ctrl";
+    m[KeyboardRows.Bottom][0] = m[KeyboardRows.Bottom][1];
+    m[KeyboardRows.Bottom][1] = m[KeyboardRows.Bottom][2];
+    m[KeyboardRows.Bottom][2] = "⌦";
+
+    // right side
+    const homeLast = m[KeyboardRows.Home].length - 1;
+    m[KeyboardRows.Home][homeLast] = "⇧";
+    const lowerLast = m[KeyboardRows.Lower].length - 1;
+    m[KeyboardRows.Lower][lowerLast] = "⏎";
+    return m;
 }
 
 function splitKeys(matrix: LayoutMapping): LayoutMapping {
