@@ -54,6 +54,7 @@ const layoutModels: Array<LayoutModel> = [
     ergoPlank60LayoutModel,
     createErgoPlankMidShift(ergoPlank60LayoutModel),
     createErgoPlankWithArrows(ergoPlank60LayoutModel),
+    createErgoPlankWithArrows(createErgoPlankMidShift(ergoPlank60LayoutModel)),
     harmonic12LayoutModel,
     harmonic13WideLayoutModel,
     harmonic13MidshiftLayoutModel,

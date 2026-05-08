@@ -150,7 +150,7 @@ export function createErgoPlankWithArrows(lm: LayoutModel): LayoutModel {
         rowIndent: [...lm.rowIndent.slice(0, 4), 0] as typeof lm.rowIndent,
         keyWidths: replaceLast(
             lm.keyWidths,
-            [lm.rowIndent[0], lm.keyWidths[KeyboardRows.Bottom][0], 1.25, 1.25, 1.25, 1.5, 1, 1.5, 1.25, 0.25, 1, 1, 1, 1]
+            [lm.rowIndent[KeyboardRows.Bottom], lm.keyWidths[KeyboardRows.Bottom][0], 1.25, 1.25, 1.25, 1.5, 1, 1.5, 1.25, 0.25, 1, 1, 1, 1]
         ),
     }
 }
