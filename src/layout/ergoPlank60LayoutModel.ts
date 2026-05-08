@@ -1,9 +1,10 @@
 import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
 import {mapValues} from "../library/records.ts";
 import {mirrorOdd, SymmetricKeyWidth} from "./keyWidth.ts";
-import {copyAndModifyKeymap, ergoFamilyKeyColorClass} from "./layout-functions.ts";
+import {copyKeymap, ergoFamilyKeyColorClass} from "./layout-functions.ts";
 
 const keyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0, 0.25]);
+const midShiftKeyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0.5, 0.5]);
 
 const ansi30FrameMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
@@ -22,7 +23,7 @@ const thumb30FrameMapping: LayoutMapping = [
 ];
 
 export const ergoPlank60LayoutModel: LayoutModel = {
-    name: "Ergoplank / ANSI angle",
+    name: "Ergoplank",
     description: `"The most ergonomic key layout that fits into a standard "60%" keyboard case."
     Hand distance is maximized. Row stagger is equal to a "cleave-style ergonomic" keyboard.
     Thumb keys are added. 
@@ -81,21 +82,50 @@ export const ergoPlank60LayoutModel: LayoutModel = {
 export function createErgoPlankMidShift(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
+        name: "Ergoplank MidShift",
+        description: `"The most ergonomic key layout that fits into a standard "60%" keyboard case."
+    Hand distance is maximized. Row stagger is equal to a "cleave-style ergonomic" keyboard.
+    Thumb keys are added. 
+    Key cap sizes are harmonized to facilitate customizing the keymap. 
+    This is based on the "Harmonic" layout as well as the "Katana" design by RominRonin. 
+    The MidShift variant takes even more inspiration from split-ortho layouts and leaves the entire lower row for character keys.`,
+        rowIndent: midShiftKeyWidths.rowIndent,
+
+        keyWidths: [
+            midShiftKeyWidths.row(0, 1.5),
+            midShiftKeyWidths.row(1, 1.25),
+            midShiftKeyWidths.row(2, 1),
+            midShiftKeyWidths.row(3, 1),
+            // With 0.5 indent and 0.5u from the central 1u key, both halves have exactly 7.25u.
+            // To compensate for the larger indent compared to the base variant, we simply make the outer-most key smaller.
+            mirrorOdd(1.25, 1.25, 1.25, 1.25, 1.5, 1),
+        ],
+
         frameMappings: mapValues(lm.frameMappings, (_, mapping) =>
-            copyAndModifyKeymap(mapping, angleModKeymap)
+            rotateShiftKeys(copyKeymap(mapping))
         ) as typeof lm.frameMappings,
         // Now we could go to 0.25 stagger without making Z awkward to type and put ⌦ on the newly fusioned 1.5u central key...
         // but this key fusion removes one key from the board which makes it hard to place Home/End without moving a lot of stuff around.
     }
 }
 
-function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
-    keymap[KeyboardRows.Home][0] = [1, 0];
-    keymap[KeyboardRows.Home][7] = '⌦';
-    const lower = keymap[KeyboardRows.Lower];
-    const lMiddle = 6;
-    keymap[KeyboardRows.Lower] = ['⇧', ...lower.slice(2, lMiddle), '`~', ...lower.slice(lMiddle)];
-    return keymap;
+function rotateShiftKeys(mapping: LayoutMapping): LayoutMapping {
+    // upper row
+    const upperLast = mapping[KeyboardRows.Home].length - 1;
+    mapping[KeyboardRows.Upper][upperLast] = "'";
+
+    // home row
+    mapping[KeyboardRows.Home][0] = "⇧";
+    mapping[KeyboardRows.Home][7] = "⌦";
+    const homeLast = mapping[KeyboardRows.Home].length - 1;
+    mapping[KeyboardRows.Home][homeLast] = "⇧";
+
+    // on the left side, we make a big rotation, on the right side, just a swap.
+    const lower = mapping[KeyboardRows.Lower];
+    mapping[KeyboardRows.Lower] = [...lower.slice(1, 6), '`~', '⇞', '⇟', '\\', ...lower.slice(9, -1), '/'];
+
+    // right side
+    return mapping;
 }
 
 export const ep60WithArrowsLayoutModel: LayoutModel = {

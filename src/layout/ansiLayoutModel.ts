@@ -291,25 +291,26 @@ export function createHHKB(lm: LayoutModel): LayoutModel {
 export function createAnsiMidShift(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
-        frameMappings: mapValues(lm.frameMappings, rotateShiftToHomeRow),
+        frameMappings: mapValues(lm.frameMappings, (_, mapping) =>
+            rotateShiftKeys(copyKeymap(mapping))
+        ),
     }
 }
 
-function rotateShiftToHomeRow(_key: string, mapping: LayoutMapping) {
-    const m = copyKeymap(mapping);
+function rotateShiftKeys(mapping: LayoutMapping) {
     // on the left side, we make a big rotation, on the right side, just a swap.
-    m[KeyboardRows.Home][0] = "⇧";
-    m[KeyboardRows.Lower][0] = "Ctrl";
-    m[KeyboardRows.Bottom][0] = m[KeyboardRows.Bottom][1];
-    m[KeyboardRows.Bottom][1] = m[KeyboardRows.Bottom][2];
-    m[KeyboardRows.Bottom][2] = "⌦";
+    mapping[KeyboardRows.Home][0] = "⇧";
+    mapping[KeyboardRows.Lower][0] = "Ctrl";
+    mapping[KeyboardRows.Bottom][0] = mapping[KeyboardRows.Bottom][1];
+    mapping[KeyboardRows.Bottom][1] = mapping[KeyboardRows.Bottom][2];
+    mapping[KeyboardRows.Bottom][2] = "⌦";
 
     // right side
-    const homeLast = m[KeyboardRows.Home].length - 1;
-    m[KeyboardRows.Home][homeLast] = "⇧";
-    const lowerLast = m[KeyboardRows.Lower].length - 1;
-    m[KeyboardRows.Lower][lowerLast] = "⏎";
-    return m;
+    const homeLast = mapping[KeyboardRows.Home].length - 1;
+    mapping[KeyboardRows.Home][homeLast] = "⇧";
+    const lowerLast = mapping[KeyboardRows.Lower].length - 1;
+    mapping[KeyboardRows.Lower][lowerLast] = "⏎";
+    return mapping;
 }
 
 function splitKeys(matrix: LayoutMapping): LayoutMapping {
