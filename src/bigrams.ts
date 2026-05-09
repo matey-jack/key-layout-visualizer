@@ -19,11 +19,6 @@ export function getBigramType(a: KeyPosition, b: KeyPosition): BigramType {
         if (isThumb(a.finger) || isThumb(b.finger)) return BigramType.InvolvesThumb;
         if (hand(a.finger) !== hand(b.finger)) return BigramType.OtherHand;
 /*
-    TODO: new formal definitions:
-    a key is [[alt-fingerable]] if and only if it is on the lower or upper row and is situated at the same distance (that is 0.5u)
-    from two different finger home keys. This definition affects exactly 6 keys on qwerty (and most ErgoPlank family members,
-    with the notable exception of the EB16/5 MS) and it affects 12 keys on all the Harmonic keyboards.
-
     For [[piano-fingering]], it's more complicated, as my own typing experience shows: since the index-finger is shorter
     and the hand can more easily turn inwards, it's easier to type bigrams where the key further to the center is on a lower row
     then the opposite. Classical qwerty UN allows my to move the hand a bit so that both fingers are stretched and not bend much.
@@ -52,19 +47,31 @@ export function getBigramType(a: KeyPosition, b: KeyPosition): BigramType {
        There should actually be a specific category for those crazy undercutting scissor bigrams that occur only on the
        left hand of an ANSI keyboard with no angle mod!
 
-    Thus we see: the rules are actually the same for all rows: even with both keys on the same row, the normal condition
+    Thus, we see: the rules are actually the same for all rows: even with both keys on the same row, the normal condition
     for piano with distance of at least 0.5u is always fulfilled.
 
     We don't consider piano-fingering for other than the index finger. (People might do it for {} on qwerty, but not letters on the pinky.)
+
+    TODO: there should probably also be an CrossScissor entry in the bigram types, because pairs like qwerty EX
+      are especially hard to type. Typewriter staggering on the left is especially vicious!
+      On the right side, MI is a neighbour-scissor (delta colPos only 0.25), but with fingers moving nicely in parallel.
+      And the alt-fingered MU has a larger delta colPos of 0.75 which makes the crossing of fingers less awkward.
+      At least, the left side is similar with that, for example with EC.
 */
         if (a.finger === b.finger) {
             if (a.hasAltFinger || b.hasAltFinger) return BigramType.AltFinger
-            // When the center column is involved, the other index finger column can be typed with the middle finger.
-            // TODO: use colPos and also take row into account.
-            if ((a.finger === Finger.LIndex || a.finger === Finger.RIndex) && a.col !== b.col) return BigramType.PianoAltFinger
+            if (a.finger === Finger.LIndex || a.finger === Finger.RIndex) {
+                // piano cases, see above.
+                if (a.row === b.row) return BigramType.PianoAltFinger;
+                const [lower, upper] = a.row > b.row ? [a, b] : [b, a];
+                const centerDir = a.finger === Finger.LIndex ? 1 : -1;
+                const diff = (lower.colPos - upper.colPos) * centerDir;
+                if (diff >= 0) return BigramType.PianoAltFinger;
+                if (diff <= -0.5) return BigramType.PianoScissor;
+            }
             return BigramType.SameFinger;
         }
-        // TODO: our current definition column-difference between keys > 4 does not apply to any bigram,
+        // NOTE: our current definition column-difference between keys > 4 does not apply to any bigram,
         //  because pinkies have no lateral movement to letters and even on wide layouts, there are no letters in the central column.
         if (Math.abs(a.col - b.col) > 4) return BigramType.OppositeLateral;
 

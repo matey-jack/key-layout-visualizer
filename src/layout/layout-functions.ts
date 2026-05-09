@@ -265,6 +265,11 @@ export function getKeyPositions(layoutModel: LayoutModel, split: boolean, fullMa
             colPos += keyWidth ?? 1;
         });
     });
+/*
+  A key is [[alt-fingerable]] if and only if it is on the lower or upper row and is situated at the same distance (that is 0.5u)
+  from two different finger home keys. This definition affects exactly 6 keys on qwerty (and most ErgoPlank family members,
+  with the notable exception of the EB16/5 MS) and it affects 12 keys on all the Harmonic keyboards.
+ */
     const homeRowKeys = result.filter(k => k.row === KeyboardRows.Home);
     for (const k of result) {
         if (k.row !== KeyboardRows.Upper && k.row !== KeyboardRows.Lower) continue;

@@ -334,7 +334,7 @@ interface BigramEffortDetailsProps {
 export function BigramEffortDetails({layout, mapping}: BigramEffortDetailsProps) {
     const freqs = bigramFrequencyByType(layout, mapping);
     const total = sum(Object.entries(freqs).map(([type, freq]) =>
-        bigramEffort[Number(type)] * freq));
+        bigramEffort[Number(type) as BigramType] * freq));
     return <div>
         <p>
             Human hands on a keyboard can move fingers independently and usually will move the next finger to its key
