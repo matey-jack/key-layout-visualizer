@@ -40,7 +40,7 @@ export const topNine: FlexMapping = {
             "qwdfb" + "ykulp'",
             "asrtg" + "-nioh",
             "zxcv;" + "jm,./",
-            "⇤e\\=⇥",
+            "⇤\\e=⇥",
         ],
         [KeymapTypeId.Harmonic13Wide]: [
             "[]",
