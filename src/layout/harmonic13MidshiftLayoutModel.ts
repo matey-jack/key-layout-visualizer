@@ -5,7 +5,7 @@ import {
     type LayoutMapping,
     type LayoutModel,
 } from "../base-model.ts";
-import {MonotonicKeyWidth, mirror, zeroIndent} from "./keyWidth.ts";
+import {mirror, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 const fullMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"], // 12 keys
@@ -79,7 +79,7 @@ export const harmonic13MidshiftLayoutModel: LayoutModel = {
     // TODO: fix for the layout and also add central column keys (they are all letters in this layout!)
     hasAltFinger: (row: number, col: number) =>
         (row === KeyboardRows.Upper || row === KeyboardRows.Lower) &&
-        ([1, 2, 3, 8, 9, 10].includes(col)),
+        ([2, 3, 4, 8, 9, 10].includes(col)),
 
     singleKeyEffort: [
         [NaN, 3.0, 2.0, 2.0, 2.0, 3.0, 3.0, 2.0, 2.0, 2.0, 3.0, NaN],

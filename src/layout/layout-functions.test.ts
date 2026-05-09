@@ -463,8 +463,8 @@ describe('getKeyMovements', () => {
     })
 });
 
-function checkHasAltFinger(layoutModel: LayoutModel, mapping = qwertyMapping) {
-    const filledMapping = fillMapping(layoutModel, mapping)!;
+function checkHasAltFinger(layoutModel: LayoutModel, expectedAltFingerings: string) {
+    const filledMapping = fillMapping(layoutModel, qwertyMapping)!;
     const positions = getKeyPositions(layoutModel, false, filledMapping);
     const upperLowerKeys = positions.filter(
         k => k.row === KeyboardRows.Upper || k.row === KeyboardRows.Lower
@@ -480,18 +480,18 @@ function checkHasAltFinger(layoutModel: LayoutModel, mapping = qwertyMapping) {
 
 describe('getKeyPositions hasAltFinger - matches layoutModel.hasAltFinger', () => {
     it('ANSI', () => {
-        checkHasAltFinger(ansiIBMLayoutModel);
+        checkHasAltFinger(ansiIBMLayoutModel, "zxcm,.");
     });
 
     it('Harmonic 13 MidShift', () => {
-        checkHasAltFinger(harmonic13MidshiftLayoutModel);
+        checkHasAltFinger(harmonic13MidshiftLayoutModel, "weriop" + "xcvm,.");
     });
 
     it('ErgoPlank (low shift)', () => {
-        checkHasAltFinger(ergoPlank60LayoutModel);
+        checkHasAltFinger(ergoPlank60LayoutModel, "zxcm,.");
     });
 
     it('ErgoBoard MidShift Nice', () => {
-        checkHasAltFinger(eb65MidshiftNiceLayoutModel);
+        checkHasAltFinger(eb65MidshiftNiceLayoutModel, "");
     });
 });

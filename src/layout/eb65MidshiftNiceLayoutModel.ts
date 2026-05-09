@@ -20,6 +20,8 @@ export const eb65MidshiftNiceLayoutModel: LayoutModel = {
     leftHomeIndex: 4,
     rightHomeIndex: 10,
     staggerOffsets: [0.5, 0.25, 0, -0.25],
+    // consequence of 0.25 stagger everywhere
+    hasAltFinger: (_row: number, _col: number) => false,
 
     mainFingerAssignment: [
         [null, 1, 1, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 8, null, null],
