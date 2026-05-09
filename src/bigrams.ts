@@ -66,7 +66,7 @@ export function getBigramType(a: KeyPosition, b: KeyPosition): BigramType {
                 const [lower, upper] = a.row > b.row ? [a, b] : [b, a];
                 const centerDir = a.finger === Finger.LIndex ? 1 : -1;
                 const diff = (lower.colPos - upper.colPos) * centerDir;
-                if (diff >= 0) return BigramType.PianoAltFinger;
+                if (diff >= 0.25) return BigramType.PianoAltFinger;
                 if (diff <= -0.5) return BigramType.PianoScissor;
             }
             return BigramType.SameFinger;
