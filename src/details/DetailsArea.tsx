@@ -30,7 +30,7 @@ import {
     getKeySizeClass,
     keyCapSize,
 } from "../layout/layout-functions.ts";
-import {TRADEOFF_OFF_HOME_COLOR, TRADEOFF_SAME_FINGER_COLOR} from "../layout/TradeoffDiagram.tsx";
+import {TRADEOFF_INCONTROVERTIBLY_SAME_FINGER_COLOR, TRADEOFF_OFF_HOME_COLOR, TRADEOFF_SAME_FINGER_COLOR} from "../layout/TradeoffDiagram.tsx";
 import {sum} from "../library/math.ts";
 import {qwertyMapping} from "../mapping/baseMappings.ts";
 import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
@@ -112,6 +112,11 @@ export function TradeoffDetails() {
                 <span class="tradeoff-legend-swatch"
                       style={{backgroundColor: TRADEOFF_SAME_FINGER_COLOR}}/>
                 <span>Same-finger bigram score (English, includes alt-finger) — right axis. Lower is better.</span>
+            </div>
+            <div class="tradeoff-legend-item">
+                <span class="tradeoff-legend-swatch"
+                      style={{backgroundColor: TRADEOFF_INCONTROVERTIBLY_SAME_FINGER_COLOR}}/>
+                <span>Incontrovertible same-finger bigram score (English, excludes alt-finger) — right axis. Lower is better.</span>
             </div>
         </div>
         <p class="footnote">

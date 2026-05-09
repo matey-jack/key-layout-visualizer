@@ -23,7 +23,8 @@ interface DataPoint {
 
 // Color constants. Keep in sync with the legend in DetailsArea.
 export const TRADEOFF_OFF_HOME_COLOR = "#d62728"; // red
-export const TRADEOFF_SAME_FINGER_COLOR = "#1f77b4"; // blue
+export const TRADEOFF_SAME_FINGER_COLOR = "#0d3b8c"; // dark blue — inclusive same-finger (includes alt-finger cases)
+export const TRADEOFF_INCONTROVERTIBLY_SAME_FINGER_COLOR = "#82caf5"; // light blue — strict same-finger only
 
 // SVG geometry. The viewBox matches KeyboardSvg's height for visual consistency.
 const VIEW_X = 0;
@@ -226,7 +227,7 @@ export function TradeoffDiagram({layout, selectedMapping, onSelectMapping}: Trad
                                 class="tradeoff-point"/>
                         {/* lower same-finger bigram point (right axis) */}
                         <circle cx={x} cy={yRightLower} r={isSelected ? 9 : 6}
-                                fill={TRADEOFF_SAME_FINGER_COLOR}
+                                fill={TRADEOFF_INCONTROVERTIBLY_SAME_FINGER_COLOR}
                                 fill-opacity={0.6}
                                 class="tradeoff-point"/>
                         {/* numeric learning score directly under the axis (only shown for the first label at this x) */}
