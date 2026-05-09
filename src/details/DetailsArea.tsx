@@ -352,7 +352,7 @@ export function BigramEffortDetails({layout, mapping}: BigramEffortDetailsProps)
         <BigramDetailsLegendItem bigramType={BigramType.AltFinger} frequency={freqs[BigramType.AltFinger]}>
             "Alt-Fingering": When the keyboard layout makes it easy to type some keys with another finger, the single
             finger bottleneck
-            can be avoided. (Maybe you noticed yourself typing "er", "cd", or "un" with two different fingers, although
+            can be avoided. (Maybe you noticed yourself typing "rt", "cd", "ec", or "un" with two different fingers, although
             strict touch-typing rules assign the same finger to both keys.)
         </BigramDetailsLegendItem>
         <BigramDetailsLegendItem bigramType={BigramType.OppositeRow} frequency={freqs[BigramType.OppositeRow]}>
