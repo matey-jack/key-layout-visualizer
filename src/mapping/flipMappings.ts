@@ -59,10 +59,24 @@ export const rightyMapping: FlexMapping = {
     name: "Righty",
     localMaximum: true,
     klcId: "righty",
-    description: `Only do the most beneficial letter swaps on the right hand.`,
+    description: `Only do the most beneficial same-finger letter swaps on the right hand.`,
     mappings: {
         [KeymapTypeId.Ansi30]: [
             "qwert" + "yukl;",
+            "asdfg" + "hniop",
+            "zxcvb" + "jm,./",
+        ]
+    }
+}
+export const rightUMapping: FlexMapping = {
+    name: "Right-U",
+    localMaximum: true,
+    klcId: "righty",
+    description: `Only do the most beneficial letter swaps on the right hand. 
+    Including the KU swap which is the only no-brainer swap to significantly reduce same-finger bigram conflicts.`,
+    mappings: {
+        [KeymapTypeId.Ansi30]: [
+            "qwert" + "ykul;",
             "asdfg" + "hniop",
             "zxcvb" + "jm,./",
         ]
