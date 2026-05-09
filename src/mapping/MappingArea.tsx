@@ -88,7 +88,7 @@ export function MappingListItem({layout, mapping, selectedMapping, appState, sho
         </td>
         <td>{movements && weighBigramTypes(movements, [BigramType.SameFinger])
         } / {movements && weighBigramTypes(movements, [BigramType.AltFinger])
-        } / {movements && weighBigramTypes(movements, [BigramType.PianoAltFinger])}
+        } / {movements && weighBigramTypes(movements, [BigramType.PianoAltFinger, BigramType.PianoScissor])}
         </td>
     </tr>;
 }
