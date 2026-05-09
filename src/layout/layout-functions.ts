@@ -265,8 +265,18 @@ export function getKeyPositions(layoutModel: LayoutModel, split: boolean, fullMa
             colPos += keyWidth ?? 1;
         });
     });
-    // TODO: for each key k in result where row==Upper or Lower, find all keys in the HomeRow whose colPos differs by at most 0.5.
-    // if there are two such keys and they have different fingers, set k.hasAltFinger=true.
+    const homeRowKeys = result.filter(k => k.row === KeyboardRows.Home);
+    for (const k of result) {
+        if (k.row !== KeyboardRows.Upper && k.row !== KeyboardRows.Lower) continue;
+        const nearby = homeRowKeys.filter(h => Math.abs(h.colPos - k.colPos) <= 0.5);
+        if (nearby.length === 2) {
+            const f1 = nearby[0].finger;
+            const f2 = nearby[1].finger;
+            if (f1 !== f2 && hand(f1) === hand(f2)){
+                k.hasAltFinger = true;
+            }
+        }
+    }
     return result;
 }
 

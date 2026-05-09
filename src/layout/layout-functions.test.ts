@@ -462,3 +462,36 @@ describe('getKeyMovements', () => {
         expect(rightCtrlMovement.next!.colPos).toBe(12)
     })
 });
+
+function checkHasAltFinger(layoutModel: LayoutModel, mapping = qwertyMapping) {
+    const filledMapping = fillMapping(layoutModel, mapping)!;
+    const positions = getKeyPositions(layoutModel, false, filledMapping);
+    const upperLowerKeys = positions.filter(
+        k => k.row === KeyboardRows.Upper || k.row === KeyboardRows.Lower
+    );
+    const diffs = upperLowerKeys
+        .filter(k => k.hasAltFinger !== layoutModel.hasAltFinger(k.row, k.col))
+        .map(k => `row=${KeyboardRows[k.row]} col=${k.col} label=${k.label}: algorithm=${k.hasAltFinger} model=${layoutModel.hasAltFinger(k.row, k.col)}`);
+    if (diffs.length > 0) {
+        console.log('hasAltFinger mismatches:\n' + diffs.join('\n'));
+    }
+    expect(diffs).toEqual([]);
+}
+
+describe('getKeyPositions hasAltFinger - matches layoutModel.hasAltFinger', () => {
+    it('ANSI', () => {
+        checkHasAltFinger(ansiIBMLayoutModel);
+    });
+
+    it('Harmonic 13 MidShift', () => {
+        checkHasAltFinger(harmonic13MidshiftLayoutModel);
+    });
+
+    it('ErgoPlank (low shift)', () => {
+        checkHasAltFinger(ergoPlank60LayoutModel);
+    });
+
+    it('ErgoBoard MidShift Nice', () => {
+        checkHasAltFinger(eb65MidshiftNiceLayoutModel);
+    });
+});
