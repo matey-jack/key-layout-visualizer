@@ -1,9 +1,9 @@
 import {BigramType, type FlexMapping, type LayoutModel} from "../base-model.ts";
 import {getBigramMovements, weighBigramTypes} from "../bigrams.ts";
 import {singleCharacterFrequencies as englishFreqs} from "../frequencies/english-single-character-frequencies.ts";
-import {compatibilityScore, diffSummary, diffToBase, fillMapping, getKeyPositions} from "./layout-functions.ts";
 import {offHomeRowFrequency} from "../mapping/mapping-functions.ts";
 import {allMappings} from "../mapping/mappings.ts";
+import {compatibilityScore, diffSummary, diffToBase, fillMapping, getKeyPositions} from "./layout-functions.ts";
 
 interface TradeoffDiagramProps {
     layout: LayoutModel;
@@ -15,7 +15,10 @@ interface DataPoint {
     mapping: FlexMapping;
     learning: number;
     offHome: number;
+    // this includes bigrams that can be alt- or piano-fingered.
     sameFinger: number;
+    // this includes only the narrow cases; can't be higher than the above number.
+    incontrovertiblySameFinger: number;
 }
 
 // Color constants. Keep in sync with the legend in DetailsArea.
@@ -47,8 +50,10 @@ function computeData(layout: LayoutModel): DataPoint[] {
             getKeyPositions(layout, false, charMap),
             `TradeoffDiagram for ${mapping.name} on ${layout.name}`,
         );
-        const sameFinger = weighBigramTypes(movements, [BigramType.AltFinger, BigramType.SameFinger]);
-        points.push({mapping, learning, offHome, sameFinger});
+        const sameFinger = weighBigramTypes(movements,
+            [BigramType.SameFinger, BigramType.AltFinger, BigramType.PianoAltFinger, BigramType.PianoScissor]);
+        const incontrovertiblySameFinger = weighBigramTypes(movements, [BigramType.SameFinger]);
+        points.push({mapping, learning, offHome, sameFinger, incontrovertiblySameFinger});
     }
     return points;
 }
@@ -195,6 +200,7 @@ export function TradeoffDiagram({layout, selectedMapping, onSelectMapping}: Trad
                 const x = xScale(d.learning);
                 const yLeft = yLeftScale(d.offHome);
                 const yRight = yRightScale(d.sameFinger);
+                const yRightLower = yRightScale(d.incontrovertiblySameFinger);
                 const topY = Math.min(yLeft, yRight);
                 const isSelected = isSameMapping(selectedMapping, d.mapping);
                 const stackRow = labelRowByIndex[i];
@@ -215,6 +221,11 @@ export function TradeoffDiagram({layout, selectedMapping, onSelectMapping}: Trad
                                 class="tradeoff-point"/>
                         {/* same-finger bigram point (right axis) */}
                         <circle cx={x} cy={yRight} r={isSelected ? 9 : 6}
+                                fill={TRADEOFF_SAME_FINGER_COLOR}
+                                fill-opacity={0.6}
+                                class="tradeoff-point"/>
+                        {/* lower same-finger bigram point (right axis) */}
+                        <circle cx={x} cy={yRightLower} r={isSelected ? 9 : 6}
                                 fill={TRADEOFF_SAME_FINGER_COLOR}
                                 fill-opacity={0.6}
                                 class="tradeoff-point"/>
