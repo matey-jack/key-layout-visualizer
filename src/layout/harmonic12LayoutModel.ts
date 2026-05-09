@@ -71,11 +71,6 @@ export const harmonic12LayoutModel: LayoutModel = {
         [0, 1, 2, 4, 4, 5, 5, 7, 8, 9],
     ],
 
-    // TODO: fix for the layout and also add central column keys (they are all letters in this layout!)
-    hasAltFinger: (row: number, col: number) =>
-        (row === KeyboardRows.Upper || row === KeyboardRows.Lower) &&
-        ([1, 2, 3, 8, 9, 10].includes(col)),
-
     singleKeyEffort: [
         [NaN, 3, 2, 2, 2, 3, 3, 2, 2, 2, 3, 3],
         [NaN, 1.5, 1, 1, 1.5, 2, 1.5, 1, 1, 1.5, NaN],

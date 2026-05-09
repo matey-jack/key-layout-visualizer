@@ -289,8 +289,6 @@ export interface LayoutModel {
     // 'null' value used for gaps between keys and keys which require the hand off home position (such as the arrow cluster).
     mainFingerAssignment: (Finger | null)[][];
 
-    hasAltFinger: (row: number, col: number) => boolean;
-
     singleKeyEffort: (number | null)[][];
 }
 

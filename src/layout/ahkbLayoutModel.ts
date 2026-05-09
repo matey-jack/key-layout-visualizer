@@ -37,7 +37,6 @@ export const ahkbLayoutModel: LayoutModel = {
     ],
 
     rowIndent: ahkbKeyWidth.rowIndent,
-    hasAltFinger: (_r: number, _c: number) => false,
 
     mainFingerAssignment: [
         [1, 1, 1, 2, 2, 3, 3, 6, 6, 7, 8, 8, 8, 8],

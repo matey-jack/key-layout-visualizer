@@ -19,8 +19,6 @@ export const splitOrthoLayoutModel = (midShift: boolean) : LayoutModel => ({
     // more splitties here: https://jhelvy.shinyapps.io/splitkbcompare/
     // if it's down, you can run it locally: https://github.com/jhelvy/splitKbCompare
 
-    hasAltFinger: (_r, _c) => false,
-
     rowIndent: [0, 0, 0, 0, 2],
     keyWidths: fullMapping!.map((row) => row.map((_) => 1)),
     splitColumns: [6, 6, 6, 6, 6],

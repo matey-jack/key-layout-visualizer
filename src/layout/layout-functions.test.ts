@@ -269,7 +269,6 @@ describe('getKeyPositions', () => {
             [Finger.RIndex],
             [Finger.RMiddle],
         ],
-        hasAltFinger: () => false,
         singleKeyEffort: [
             [1, 1],
             [1],
@@ -470,8 +469,8 @@ function checkHasAltFinger(layoutModel: LayoutModel, expectedAltFingerings: stri
         k => k.row === KeyboardRows.Upper || k.row === KeyboardRows.Lower
     );
     const diffs = upperLowerKeys
-        .filter(k => k.hasAltFinger !== layoutModel.hasAltFinger(k.row, k.col))
-        .map(k => `row=${KeyboardRows[k.row]} col=${k.col} label=${k.label}: algorithm=${k.hasAltFinger} model=${layoutModel.hasAltFinger(k.row, k.col)}`);
+        .filter(k => k.hasAltFinger !== expectedAltFingerings.includes(k.label))
+        .map(k => `row=${KeyboardRows[k.row]} col=${k.col} label=${k.label}: computed=${k.hasAltFinger} expected=${expectedAltFingerings.includes(k.label)}`);
     if (diffs.length > 0) {
         console.log('hasAltFinger mismatches:\n' + diffs.join('\n'));
     }

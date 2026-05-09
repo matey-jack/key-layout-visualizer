@@ -55,8 +55,6 @@ export const xhkbLayoutModel: LayoutModel = {
         [2.0, 2.0, 2.0, 1.0, 0.2, 0.2, 1.0, 2.0, 2.0, 2.0],
     ],
 
-    hasAltFinger: (_r: number, _c: number) => false,
-
     rowIndent: keyWidth.rowIndent,
 
     // One might argue that B and ' and maybe also Y should also have dark color,

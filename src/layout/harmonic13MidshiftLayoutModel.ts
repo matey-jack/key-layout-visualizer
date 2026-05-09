@@ -76,11 +76,6 @@ export const harmonic13MidshiftLayoutModel: LayoutModel = {
         [0, 1, 2, 4, 4, 5, 5, 7, 8, 9],
     ],
 
-    // TODO: fix for the layout and also add central column keys (they are all letters in this layout!)
-    hasAltFinger: (row: number, col: number) =>
-        (row === KeyboardRows.Upper || row === KeyboardRows.Lower) &&
-        ([2, 3, 4, 8, 9, 10].includes(col)),
-
     singleKeyEffort: [
         [NaN, 3.0, 2.0, 2.0, 2.0, 3.0, 3.0, 2.0, 2.0, 2.0, 3.0, NaN],
         [NaN, 1.5, 1.5, 1.0, 1.0, 1.5, 2.0, 1.5, 1.0, 1.0, 1.5, 1.5, 3],

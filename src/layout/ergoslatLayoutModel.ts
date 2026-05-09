@@ -77,9 +77,6 @@ export function ergoslatLayoutModel(midShift: boolean): LayoutModel {
         [0, 1, 4, 4, 5, 5, 8, 9],
     ],
 
-    hasAltFinger: (row: number, col: number) =>
-        (row === KeyboardRows.Lower) && ([1, 2, 3, 7, 8, 9].includes(col)),
-
     // Only fixed values can be used. see base-model.ts SKE_*
     singleKeyEffort: [
         [3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0],

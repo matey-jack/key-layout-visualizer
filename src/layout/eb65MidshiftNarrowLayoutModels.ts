@@ -21,9 +21,6 @@ export const eb65MidshiftRightRetLayoutModel: LayoutModel = {
         [null, 0, null, null, 4, 4, 5, 5, null, 7, null, null, null, null],
     ],
 
-    hasAltFinger: (row: number, col: number) =>
-        (row === KeyboardRows.Lower) && ([1, 2, 3, 7, 8, 9].includes(col)),
-
     singleKeyEffort: [
         [null, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, null, null],
         [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0],

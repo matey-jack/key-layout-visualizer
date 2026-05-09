@@ -73,10 +73,6 @@ export const harmonic13WideLayoutModel: LayoutModel = {
         [0, 1, 2, 4, 4, 5, 5, 7, 8, 9],
     ],
 
-    hasAltFinger: (row: number, col: number) =>
-        (row === KeyboardRows.Upper || row === KeyboardRows.Lower) &&
-        ([1, 2, 3, 8, 9, 10].includes(col)),
-
     singleKeyEffort: [
         [3, 3, 2, 2, 2, 3, 3, 3, 2, 2, 2, 3, 3],
         [NaN, 1.5, 1, 1, 1.5, 2, 2, 1.5, 1, 1, 1.5, NaN],

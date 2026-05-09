@@ -17,9 +17,6 @@ export const eb65MidshiftExtraWideLayoutModel: LayoutModel = {
         [null, 0, 1, 2, 4, 4, null, 5, 5, null, 7, null, null, null, null],
     ],
 
-    hasAltFinger: (row: number, col: number) =>
-        (row === KeyboardRows.Lower) && ([1, 2, 3, 7, 8, 9].includes(col)),
-
     // Only fixed values can be used. See base-model.ts SKE_*
     // 'null' means the hand has to taken off the home-row. Those keys can't be used with letter or prose punctuation.
     singleKeyEffort: [
