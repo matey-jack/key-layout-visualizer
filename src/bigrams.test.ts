@@ -1,9 +1,9 @@
 import {describe, expect, it} from "vitest";
 import {BigramType, Finger} from "./base-model.ts";
-import {getBigramMovements, getBigramType, sumBigramScores} from "./bigrams.ts";
+import {differentFinger, getBigramMovements, getBigramType, sumBigramScores} from "./bigrams.ts";
 import {ansiIBMLayoutModel} from "./layout/ansiLayoutModel.ts";
-import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 import {fillMapping, getKeyPositions} from "./layout/layout-functions.ts";
+import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 import {qwertyMapping} from "./mapping/baseMappings.ts";
 import {colemakMapping} from "./mapping/colemakMappings.ts";
 
@@ -71,7 +71,7 @@ describe("getMovements", () => {
     it("works", () => {
         const charMap = fillMapping(ansiIBMLayoutModel, qwertyMapping);
         const actual = sumBigramScores(ansiIBMLayoutModel, charMap!, qwertyMapping.name);
-        expect(actual).toBe(451);
+        expect(actual).toBe(362);
     })
 })
 
@@ -79,7 +79,10 @@ describe("top 100 bigrams Colemak", () => {
     function printTop100(layout: typeof ansiIBMLayoutModel, layoutName: string) {
         const charMap = fillMapping(layout, colemakMapping)!;
         const movements = getBigramMovements(getKeyPositions(layout, false, charMap), `Colemak on ${layoutName}`);
-        movements.slice(0, 100).forEach((m) => {
+        movements
+            .filter((m) => m.a !== m.b && !differentFinger(m.a, m.b))
+            .slice(0, 100)
+            .forEach((m) => {
             console.log(`${m.a.label}${m.b.label}  freq=${m.frequency}  ${BigramType[m.type]}`);
         });
     }

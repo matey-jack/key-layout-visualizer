@@ -16,6 +16,8 @@ import {sum} from "./library/math.ts";
 
 export function getBigramType(a: KeyPosition, b: KeyPosition): BigramType {
     try {
+        // avoid having an Entry "same key" that we need to add everywhere.
+        if (a === b) return BigramType.SameRow;
         if (isThumb(a.finger) || isThumb(b.finger)) return BigramType.InvolvesThumb;
         if (hand(a.finger) !== hand(b.finger)) return BigramType.OtherHand;
 /*
