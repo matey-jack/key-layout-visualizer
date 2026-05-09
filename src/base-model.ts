@@ -317,6 +317,9 @@ export enum BigramType {
     SameFinger,
     // AltFinger applies when both keys have the same main assigned finger, but one of the keys has an alt-fingering available.
     AltFinger,
+    // Alternative fingering using middle and index finger (moving your hand like on a piano).
+    PianoAltFinger,
+    // Those aren't actually noticeable in my typing experience, maybe because in wide layouts, there is only one rare key on the off-pinky column?!
     OppositeLateral,
     SameRow,
     NeighboringRow,
@@ -324,17 +327,14 @@ export enum BigramType {
     OppositeRow,
 }
 
-// Indexed by BigramType!
-export const bigramEffort = [
-    0,
-    0,
-    4,
-    1,
-    2,
-    // This rebate gives an outsized advantage to placing frequent letters in the center of the home row,
-    // thus making the old Cozy Keyboard look better than any Thumby variant, which is not
-    // reflected in actual typing experience.
-    0, // -0.33,
-    0,
-    2,
-];
+export const bigramEffort: Record<BigramType, number> = {
+    [BigramType.OtherHand]: 0,
+    [BigramType.InvolvesThumb]: 0,
+    [BigramType.SameFinger]: 4,
+    [BigramType.AltFinger]: 1,
+    [BigramType.PianoAltFinger]: 1.5,
+    [BigramType.OppositeLateral]: 2,
+    [BigramType.SameRow]: 0,
+    [BigramType.NeighboringRow]: 0,
+    [BigramType.OppositeRow]: 2,
+}

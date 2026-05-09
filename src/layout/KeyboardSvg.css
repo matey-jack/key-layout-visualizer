@@ -251,6 +251,10 @@
     stroke: blue;
 }
 
+.bigram-line.piano-alt-finger {
+    stroke: purple;
+}
+
 .bigram-line.same-finger-bigram {
     stroke: red;
 }
@@ -438,6 +442,11 @@
 
 .bigram-effort-legend-item.alt-finger {
     background-color: blue;
+    color: white;
+}
+
+.bigram-effort-legend-item.piano-alt-finger {
+    background-color: purple;
     color: white;
 }
 

@@ -350,10 +350,17 @@ export function BigramEffortDetails({layout, mapping}: BigramEffortDetailsProps)
             We count this as highest effort.
         </BigramDetailsLegendItem>
         <BigramDetailsLegendItem bigramType={BigramType.AltFinger} frequency={freqs[BigramType.AltFinger]}>
-            "Alt-Fingering": When the keyboard layout makes it easy to type some keys with another finger, the single
-            finger bottleneck
-            can be avoided. (Maybe you noticed yourself typing "rt", "cd", "ec", or "un" with two different fingers, although
-            strict touch-typing rules assign the same finger to both keys.)
+            "Alt-Fingering": When the keyboard layout makes it easy to type some keys with another finger,
+            the single finger bottleneck can be avoided.
+            Maybe you noticed yourself typing (on the qwerty keymap) "cd" or "ec" with two different fingers,
+            although strict touch-typing rules assign the same finger to both keys.
+        </BigramDetailsLegendItem>
+        <BigramDetailsLegendItem bigramType={BigramType.PianoAltFinger} frequency={freqs[BigramType.PianoAltFinger]}>
+            "Piano-Alt-Fingering": The index finger in strict touch-typing should handle two columns,
+            but many people will type bigrams in these columns by moving their hand a bit inward and rolling middle and index fingers.
+            The classic qwerty examples for this are "rt" and "un".
+            Many people use this trick without even noticing,
+            and therefore the qwerty layout is actually less bad in practice than many keying metrics suggest.
         </BigramDetailsLegendItem>
         <BigramDetailsLegendItem bigramType={BigramType.OppositeRow} frequency={freqs[BigramType.OppositeRow]}>
             "Scissor movement": Two keys on opposite rows (upper and lower letter row) are awkward to type in sequence,

@@ -314,6 +314,7 @@ export const bigramClassByType: Record<BigramType, string> = {
     [BigramType.OppositeRow]: "opposite-row",
     [BigramType.OppositeLateral]: "opposite-lateral",
     [BigramType.AltFinger]: "alt-finger",
+    [BigramType.PianoAltFinger]: "piano-alt-finger",
     [BigramType.SameFinger]: "same-finger-bigram",
     [BigramType.OtherHand]: "",
     [BigramType.InvolvesThumb]: ""

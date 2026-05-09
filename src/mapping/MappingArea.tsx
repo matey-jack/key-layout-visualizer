@@ -35,10 +35,14 @@ export function MappingList({appState}: MappingListProps) {
         <table class="mapping-list">
             <thead>
             <tr class="mapping-list-header">
-                <td>Mapping Name</td>
-                <td>Learnability Score</td>
-                <td>Key strokes off-home-row<br/>English / Spanish / German</td>
-                <td>English Bigrams<br/>Same-Finger / Scissors</td>
+                <td rowspan={2}>Mapping Name</td>
+                <td rowspan={2}>Learnability Score</td>
+                <td>Key strokes off-home-row</td>
+                <td>English Bigrams</td>
+            </tr>
+            <tr class="mapping-list-header">
+                <td>English / Spanish / German</td>
+                <td>Same-Finger / Alt-Fingerable / Piano</td>
             </tr>
             </thead>
             <tbody>
@@ -82,8 +86,9 @@ export function MappingListItem({layout, mapping, selectedMapping, appState, sho
         } / {charMap && offHomeRowFrequency(layout, charMap, spanishFreqs)
         } / {charMap && offHomeRowFrequency(layout, charMap, germanFreqs)}
         </td>
-        <td>{movements && weighBigramTypes(movements, [BigramType.AltFinger, BigramType.SameFinger])
-        } / {movements && weighBigramTypes(movements, [BigramType.OppositeRow])}
+        <td>{movements && weighBigramTypes(movements, [BigramType.SameFinger])
+        } / {movements && weighBigramTypes(movements, [BigramType.AltFinger])
+        } / {movements && weighBigramTypes(movements, [BigramType.PianoAltFinger])}
         </td>
     </tr>;
 }
