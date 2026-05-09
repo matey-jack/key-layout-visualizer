@@ -1,9 +1,11 @@
 import {describe, expect, it} from "vitest";
 import {BigramType, Finger} from "./base-model.ts";
-import {getBigramType, sumBigramScores} from "./bigrams.ts";
+import {getBigramMovements, getBigramType, sumBigramScores} from "./bigrams.ts";
 import {ansiIBMLayoutModel} from "./layout/ansiLayoutModel.ts";
+import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 import {fillMapping, getKeyPositions} from "./layout/layout-functions.ts";
 import {qwertyMapping} from "./mapping/baseMappings.ts";
+import {colemakMapping} from "./mapping/colemakMappings.ts";
 
 describe("index finger keys qwerty/ANSI", () => {
     const charMap = fillMapping(ansiIBMLayoutModel, qwertyMapping)!;
@@ -71,4 +73,22 @@ describe("getMovements", () => {
         const actual = sumBigramScores(ansiIBMLayoutModel, charMap!, qwertyMapping.name);
         expect(actual).toBe(451);
     })
+})
+
+describe("top 100 bigrams Colemak", () => {
+    function printTop100(layout: typeof ansiIBMLayoutModel, layoutName: string) {
+        const charMap = fillMapping(layout, colemakMapping)!;
+        const movements = getBigramMovements(getKeyPositions(layout, false, charMap), `Colemak on ${layoutName}`);
+        movements.slice(0, 100).forEach((m) => {
+            console.log(`${m.a.label}${m.b.label}  freq=${m.frequency}  ${BigramType[m.type]}`);
+        });
+    }
+
+    it("on ANSI", () => {
+        printTop100(ansiIBMLayoutModel, "ANSI");
+    });
+
+    it("on SplitOrtho", () => {
+        printTop100(splitOrthoLayoutModel(false), "SplitOrtho");
+    });
 })

@@ -84,6 +84,17 @@ export function getBigramType(a: KeyPosition, b: KeyPosition): BigramType {
     }
 }
 
+/*
+    The roughest bigram classification:
+      true includes: other hand, thumb letters, same or different rows, and opposite laterals.
+      false includes: incontrovertibly same finger, alt-fingering, and piano fingering.
+
+      TODO: use this for additional validation in all of our tests.
+ */
+export function differentFinger(a: KeyPosition, b: KeyPosition): boolean {
+    return a.finger !== b.finger;
+}
+
 export const bigramRankSize = 40;
 
 export function getBigramMovements(positionsList: KeyPosition[], logContext: string): BigramMovement[] {
