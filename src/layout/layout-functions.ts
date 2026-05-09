@@ -259,12 +259,14 @@ export function getKeyPositions(layoutModel: LayoutModel, split: boolean, fullMa
                     colPos,
                     keyCapWidth: keyCapWidth(layoutModel, row as KeyboardRows, col),
                     finger,
-                    hasAltFinger: layoutModel.hasAltFinger(row, col),
+                    hasAltFinger: false,
                 });
             }
             colPos += keyWidth ?? 1;
         });
     });
+    // TODO: for each key k in result where row==Upper or Lower, find all keys in the HomeRow whose colPos differs by at most 0.5.
+    // if there are two such keys and they have different fingers, set k.hasAltFinger=true.
     return result;
 }
 

@@ -311,6 +311,15 @@ export interface BigramMovement {
 // Listed in order of priority.
 // This means that for SameFinger, AltFinger, or OppositeLateral we don't care about the row.
 // (All other cases are mutually exclusive anyway.)
+/*
+    Note that there are basically three groups of bigrams:
+    - completely independent characters: OtherHand & InvolvesThumb
+    - prevents fast typing: SameFinger, and following strict finger assignment also AltFinger and PianoAltFinger
+    - And all the remaining categories are mostly about typing comfort:
+      you can reach two far away letters with different fingers of the same hand relatively quickly,
+      but the movement is awkward.
+  We penalize the latter in the aggregate Bigram score, but for basic layout evaluation, only the hard SFBs count.
+ */
 export enum BigramType {
     OtherHand,
     InvolvesThumb,
@@ -319,7 +328,10 @@ export enum BigramType {
     AltFinger,
     // Alternative fingering using middle and index finger (moving your hand like on a piano).
     PianoAltFinger,
-    // Those aren't actually noticeable in my typing experience, maybe because in wide layouts, there is only one rare key on the off-pinky column?!
+    //
+    PianoScissor,
+    // Those aren't actually noticeable in my typing experience,
+    // maybe because in wide layouts, there is only one rare key on the off-pinky column?!
     OppositeLateral,
     SameRow,
     NeighboringRow,
@@ -333,6 +345,7 @@ export const bigramEffort: Record<BigramType, number> = {
     [BigramType.SameFinger]: 4,
     [BigramType.AltFinger]: 1,
     [BigramType.PianoAltFinger]: 1.5,
+    [BigramType.PianoScissor]: 2.5,
     [BigramType.OppositeLateral]: 2,
     [BigramType.SameRow]: 0,
     [BigramType.NeighboringRow]: 0,

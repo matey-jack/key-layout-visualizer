@@ -315,6 +315,8 @@ export const bigramClassByType: Record<BigramType, string> = {
     [BigramType.OppositeLateral]: "opposite-lateral",
     [BigramType.AltFinger]: "alt-finger",
     [BigramType.PianoAltFinger]: "piano-alt-finger",
+    // for now, use the same color to not overload the graphs
+    [BigramType.PianoScissor]: "piano-alt-finger",
     [BigramType.SameFinger]: "same-finger-bigram",
     [BigramType.OtherHand]: "",
     [BigramType.InvolvesThumb]: ""

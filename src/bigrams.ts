@@ -1,8 +1,8 @@
 import {
+    bigramEffort,
     type BigramList,
     type BigramMovement,
     BigramType,
-    bigramEffort,
     Finger,
     type FlexMapping,
     hand,
@@ -18,10 +18,50 @@ export function getBigramType(a: KeyPosition, b: KeyPosition): BigramType {
     try {
         if (isThumb(a.finger) || isThumb(b.finger)) return BigramType.InvolvesThumb;
         if (hand(a.finger) !== hand(b.finger)) return BigramType.OtherHand;
+/*
+    TODO: new formal definitions:
+    a key is [[alt-fingerable]] if and only if it is on the lower or upper row and is situated at the same distance (that is 0.5u)
+    from two different finger home keys. This definition affects exactly 6 keys on qwerty (and most ErgoPlank family members,
+    with the notable exception of the EB16/5 MS) and it affects 12 keys on all the Harmonic keyboards.
+
+    For [[piano-fingering]], it's more complicated, as my own typing experience shows: since the index-finger is shorter
+    and the hand can more easily turn inwards, it's easier to type bigrams where the key further to the center is on a lower row
+    then the opposite. Classical qwerty UN allows my to move the hand a bit so that both fingers are stretched and not bend much.
+    But UM stretches the index finger while curling the middle finger at the same time. So the first is a nice piano bigram,
+    the second is a pianoScissor, even though technically both a scissor moves.
+    And then there is something like YH which cannot be done nicely with two fingers, because one is too close under the other.
+    (Same reason why alt-fingering only works for a stagger of 0.5, not less.)
+    But YN is like UM: not comfy, but possible. It's just a question of how much a person tends to stick to the prescribed typing
+    style... and also how far they lift the hands over the keyboard: farther up means a lot more flexibility and piano-ing.
+
+    let's break it down:
+     - if the keys are placed on the same row (qwerty RT and UY) then it's always pianoAltFingerable.
+     - if the keys are placed on neighboring rows
+       * with the key on the lower row further to the center, then piano (qwerty RG and UH)
+       * with the key on the lower row at least 0.5 further from the center, then pianoScissor (FC, HN)
+       * Note that the 0.25 case in one direction is not possible (YH, UJ), while in the other direction it's even quite nice
+         (piano, no scissor, examples on qwerty exists only on the left hand: RF, TG). Those latter wouldn't even work
+         with normal alt-fingering rules, but the specific lengths of the middle and index finger, combined with stretching,
+         not curling the fingers, makes it possible.
+
+     - if the keys are placed on the upper and lower row
+       * with the key on the lower row further to the center, then piano (qwerty UN, even EC although that's just an ordinary
+         alt-fingering).
+       * with the key on the lower row at least 0.5 further from the center, pianoScissor: this is why YN and UM works,
+       but TV and RC don't. And this despite RC being considered an ordinary different-finger scissor bigram!
+       There should actually be a specific category for those crazy undercutting scissor bigrams that occur only on the
+       left hand of an ANSI keyboard with no angle mod!
+
+    Thus we see: the rules are actually the same for all rows: even with both keys on the same row, the normal condition
+    for piano with distance of at least 0.5u is always fulfilled.
+
+    We don't consider piano-fingering for other than the index finger. (People might do it for {} on qwerty, but not letters on the pinky.)
+*/
         if (a.finger === b.finger) {
             if (a.hasAltFinger || b.hasAltFinger) return BigramType.AltFinger
             // When the center column is involved, the other index finger column can be typed with the middle finger.
-            if ((a.finger === Finger.LIndex || a.finger === Finger.RIndex) && a.col !== b.col) return BigramType.AltFinger
+            // TODO: use colPos and also take row into account.
+            if ((a.finger === Finger.LIndex || a.finger === Finger.RIndex) && a.col !== b.col) return BigramType.PianoAltFinger
             return BigramType.SameFinger;
         }
         // TODO: our current definition column-difference between keys > 4 does not apply to any bigram,
