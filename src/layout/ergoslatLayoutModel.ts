@@ -23,6 +23,22 @@ const ansi30MidshiftFrame: LayoutMapping = [
     ["Cmd", "Alt", "⌦", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
+const ansi32FrameMapping: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, 10],
+    ["⌦", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, 10],
+    ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
+    ["Ctrl", "Cmd", "Alt", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
+];
+
+const ansi32MidshiftFrame: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, 10],
+    ["⇧", 0, 1, 2, 3, 4, 10, 5, 6, 7, 8, 9, "⇧"],
+    ["Ctrl", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9],
+    ["Cmd", "Alt", "⌦", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
+];
+
 const thumb30FrameMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
@@ -96,6 +112,7 @@ export function ergoslatLayoutModel(midShift: boolean): LayoutModel {
 
     frameMappings: {
         [KeymapTypeId.Ansi30]: midShift ? ansi30MidshiftFrame : ansi30FrameMapping,
+        [KeymapTypeId.Ansi32]: midShift ? ansi32MidshiftFrame : ansi32FrameMapping,
         [KeymapTypeId.Thumb30]: midShift ? thumb30MidshiftFrame : thumb30FrameMapping,
     },
 

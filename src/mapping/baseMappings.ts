@@ -58,6 +58,11 @@ export const qwertzMapping: FlexMapping = {
             "asdfg" + "jnkl;",
             "yxcvb" + "hm,./",
         ],
+        [KeymapTypeId.Ansi32]: [
+            "qwert" + "zuiopü",
+            "asdfg" + "hjklöä",
+            "yxcvb" + "nm,.-",
+        ],
         [KeymapTypeId.Ansi]: [
             "ß´",
             "qwert" + "zuiopü+#",

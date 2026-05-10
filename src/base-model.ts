@@ -25,6 +25,16 @@ export enum KeymapTypeId {
         style maybe). In any case, the hyphen has more reason to be part of the "core keys" than [] and \.
      */
 
+    /**
+     * Variant for (European and other) Latin-based alphabets:
+     * this has space for 26 neo-Latin letters
+     * plus 3 language-specific letters (äöü or àçé or æ œ ø)
+     * plus 3 punctuation characters (,.-).
+     * Note that the letters can vary by language, but the punctuation can't, since the remaining punctuation characters
+     * are in the frame layout.
+     * The number 32 fits our smallest keyboard layouts (Ergoslat and Split Ortho) which have no additional punctuation.
+     */
+    Ansi32 = "ansi32",
 
     /** Thumb30 keymap
      Keys per row: 10, 10, 9 plus one thumb key.
@@ -34,7 +44,9 @@ export enum KeymapTypeId {
      */
     Thumb30 = "thumb30",
 
-    // All the boring rest.
+    // Layout-specific keymaps.
+    // Only AnsiWide is special here, because it fills the same layout as ANSI, only that it's optimized for the wide
+    // hand position. If a FlexMapping defines both, the "use wide key mapping" checkbox decides which is shown.
     Ansi = "ansi",
     AnsiWide = "ansiWide",
     SplitOrtho = "splitOrtho",
@@ -59,6 +71,11 @@ export const KEYMAP_TYPES: Record<KeymapTypeId, KeymapType> = {
         id: KeymapTypeId.Ansi30,
         keysPerRow: [0, 10, 10, 10, 0],
         description: "3×10 core letter keys"
+    },
+    [KeymapTypeId.Ansi32]: {
+        id: KeymapTypeId.Ansi32,
+        keysPerRow: [0, 11, 11, 10, 0],
+        description: "Key arrangement like ANSI but without the two hard-to-reach keys above the Return key."
     },
     [KeymapTypeId.Thumb30]: {
         id: KeymapTypeId.Thumb30,

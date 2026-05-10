@@ -48,7 +48,7 @@ import {
     minimakFullMapping,
     normanMapping,
 } from './colemakMappings.ts';
-import {cozyEnglish, cozyFlingH, cozyGerman, cozyPlusC, cozyPlusCH} from './cozyMappings.ts';
+import {cozyEnglish, cozyFlingH, cozyGerman, cozyPlusC, cozyPlusCH, qwprGermanMapping} from './cozyMappings.ts';
 import {
     carpalxQMapping,
     enTryMapping,
@@ -250,6 +250,7 @@ export const allMappings: FlexMapping[] = [
     quipperMapping,
     cozyEnglish,
     cozyGerman,
+    qwprGermanMapping,
     // gemuetlichesMapping,
     cozyFlingH,
     // cozyPlusP,
