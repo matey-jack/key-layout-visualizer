@@ -34,7 +34,7 @@
  */
 
 import {type FlexMapping, KeymapTypeId} from "../base-model.ts";
-import {qwertyMapping, qwertyWideMapping, qwertzMapping} from './baseMappings.ts';
+import {qwertyMapping, qwertyWideMapping, qwertzMapping, qwprGermanMapping} from './baseMappings.ts';
 import {
     assetMapping,
     colemakDhMapping,
@@ -48,7 +48,7 @@ import {
     minimakFullMapping,
     normanMapping,
 } from './colemakMappings.ts';
-import {cozyEnglish, cozyFlingH, cozyGerman, cozyPlusC, cozyPlusCH, qwprGermanMapping} from './cozyMappings.ts';
+import {cozyEnglish, cozyFlingH, cozyGerman, cozyPlusC, cozyPlusCH} from './cozyMappings.ts';
 import {
     carpalxQMapping,
     enTryMapping,

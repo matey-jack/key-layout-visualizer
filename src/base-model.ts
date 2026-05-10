@@ -32,6 +32,11 @@ export enum KeymapTypeId {
      * plus 3 punctuation characters (,.-).
      * Note that the letters can vary by language, but the punctuation can't, since the remaining punctuation characters
      * are in the frame layout.
+     * There is no `;:` key in the FlexMapping or FrameMapping. Instead, we assume `,;` and `.:` Shift-pairings
+     * as on the German/Dutch/Danish/Swedish/Italian/Spanish (and more) keyboards.
+     * Note that unlike Ansi30 (and just like Thumb30), the frame mapping needs to include the `/` key.
+     * (But anyway, the Shift layer of those languages might be similar to German, but we don't show it, so nothing here
+     * is precisely thought through yet.)
      * The number 32 fits our smallest keyboard layouts (Ergoslat and Split Ortho) which have no additional punctuation.
      */
     Ansi32 = "ansi32",
