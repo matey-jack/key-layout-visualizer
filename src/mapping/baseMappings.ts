@@ -87,3 +87,19 @@ export const qwertzMapping: FlexMapping = {
         ]
     }
 }
+
+export const qwprGermanMapping: FlexMapping = {
+    name: "German Quipper",
+    description: `Qwpr for with German Umlauts. 
+    Note that it has less changes compared to qwertz than qwpr has to qwerty,
+    because the LO pair in qwerty actually fits German usage frequencies better.`,
+    comparisonBase: qwertzMapping,
+
+    mappings: {
+        [KeymapTypeId.Ansi32]: [
+            "qwprf" + "zukoöü",
+            "asdtg" + "hnileä",
+            "yxcvb" + "jm,.-",
+        ],
+    }
+}
