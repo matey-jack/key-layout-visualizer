@@ -112,6 +112,7 @@ interface KeyProps {
     prevCol: number,
     prevWidth: number,
     vizType: VisualizationType,
+    layer?: 'base' | 'label',
 }
 
 const keyUnit = 100;
@@ -144,7 +145,7 @@ export function Key(props: KeyProps) {
         transformOrigin: "0 0"
     };
 
-    const {label, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker} = props;
+    const {label, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker, layer = 'base'} = props;
     const labelClass =
         isKeyboardSymbol(label) ? "keyboard-symbol"
             : isKeyName(label) ? "key-name"
@@ -178,32 +179,34 @@ export function Key(props: KeyProps) {
     return <g
         style={groupStyle}
         className={"key-group animating"}>
-        {isLayoutViz(props.vizType) && <>
-            {/* Left side of keycap (isometric) */}
+        {layer === 'base' && <>
+            {isLayoutViz(props.vizType) && <>
+                {/* Left side of keycap (isometric) */}
+                <rect
+                    className={"key-outline key-side-left left-skew " + backgroundClass}
+                    x={-isometric3dOffset}
+                    y={keycapCornerRadius / 2}
+                    width={isometric3dOffset}
+                    height={keyHeight - keycapCornerRadius / 2}/>
+                {/* Bottom side of keycap (isometric) */}
+                <rect
+                    className={"key-outline key-side-bottom bottom-skew animating " + backgroundClass}
+                    x={0}
+                    y={keyHeight}
+                    height={isometric3dOffset}/>
+            </>}
+            {/* Top face of keycap (main) */}
             <rect
-                className={"key-outline key-side-left left-skew " + backgroundClass}
-                x={-isometric3dOffset}
-                y={keycapCornerRadius / 2}
-                width={isometric3dOffset}
-                height={keyHeight - keycapCornerRadius / 2}/>
-            {/* Bottom side of keycap (isometric) */}
-            <rect
-                className={"key-outline key-side-bottom bottom-skew animating " + backgroundClass}
+                className={"key-outline animating " + backgroundClass}
                 x={0}
-                y={keyHeight}
-                height={isometric3dOffset}/>
+                y={0}
+                width={rectWidth}
+                height={keyHeight}
+                rx={keycapCornerRadius}
+                ry={keycapCornerRadius}/>
+            {keyRibbon || frequencyCircle || homeMarker}
         </>}
-        {/* Top face of keycap (main) */}
-        <rect
-            className={"key-outline animating " + backgroundClass}
-            x={0}
-            y={0}
-            width={rectWidth}
-            height={keyHeight}
-            rx={keycapCornerRadius}
-            ry={keycapCornerRadius}/>
-        {keyRibbon || frequencyCircle || homeMarker}
-        {text}
+        {layer === 'label' && text}
     </g>
 }
 
@@ -213,6 +216,7 @@ export interface KeyboardProps {
     mappingDiff: Record<string, MappingChange>;
     keyMovements: KeyMovement[];
     vizType: VisualizationType;
+    layer?: 'base' | 'label';
 }
 
 export function getEffortClass(effort: number | null) {
@@ -254,7 +258,7 @@ function getEntryOrExitRow(row: number): number {
     return row < 2 ? row - 3 : row + 4;
 }
 
-export function RowBasedKeyboard({layoutModel, prevLayoutModel, keyMovements, mappingDiff, vizType}: KeyboardProps) {
+export function RowBasedKeyboard({layoutModel, prevLayoutModel, keyMovements, mappingDiff, vizType, layer = 'base'}: KeyboardProps) {
     return keyMovements.map((movement) => {
         // key decorations always come from the next layout model, unless a key is exiting.
         const {label, row, col, keyCapWidth} = movement.next ?? movement.prev!;
@@ -303,7 +307,8 @@ export function RowBasedKeyboard({layoutModel, prevLayoutModel, keyMovements, ma
             prevCol={movement.prev?.colPos ?? movement.next!.colPos}
             prevWidth={movement.prev?.keyCapWidth ?? keyCapWidth}
             vizType={vizType}
-            key={`${label}-${newRow}-${newCol}-${keyCapWidth}`}
+            layer={layer}
+            key={`${label}-${newRow}-${newCol}-${keyCapWidth}-${layer}`}
         />
     })
 }

@@ -63,6 +63,7 @@ export function LayoutArea({appState}: LayoutAreaProps) {
                             keyMovements={keyMovements}
                             mappingDiff={mappingDiff.value}
                             vizType={vizType.value}
+                            layer="base"
                         />
                         {vizType.value === VisualizationType.LayoutAngle &&
                             <StaggerLines layoutModel={layoutModel.value} previousLayoutModel={prevLayoutModel.value}
@@ -72,6 +73,14 @@ export function LayoutArea({appState}: LayoutAreaProps) {
                         {vizType.value === VisualizationType.MappingBigrams &&
                             <BigramLines bigrams={bigramMovements.value}/>
                         }
+                        <RowBasedKeyboard
+                            layoutModel={layoutModel.value}
+                            prevLayoutModel={prevLayoutModel.value}
+                            keyMovements={keyMovements}
+                            mappingDiff={mappingDiff.value}
+                            vizType={vizType.value}
+                            layer="label"
+                        />
                     </KeyboardSvg>
                 </div>
                 <div class={"layout-area-svg-fader " + (isTradeoff ? "show" : "hide")}>
