@@ -113,6 +113,21 @@ export const cozyFlingH: FlexMapping = {
     fallback: cozyEnglish,
 }
 
+export const qwprGermanMapping: FlexMapping = {
+    name: "German Quipper",
+    description: `Qwpr for with German Umlauts. 
+    Note that it has less changes compared to qwertz than qwpr has to qwerty,
+    because the LO pair in qwerty actually fits German usage frequencies better.`,
+    comparisonBase: qwertzMapping,
+
+    mappings: {
+        [KeymapTypeId.Ansi32]: [
+        "qwprf" + "zukoöü",
+        "asdtg" + "hnileä",
+        "yxcvb" + "jm,.-",
+        ],
+    }
+}
 
 /*  Port of my personal German letter map.
     Note that this supposes a mixed German/ANSI shift-pairing with notably `;:` mapped on `,.` and `=` on `0`.
@@ -125,9 +140,8 @@ export const cozyFlingH: FlexMapping = {
  */
 export const gemuetlichesMapping: FlexMapping = {
     name: "Die Gemütliche Tastatur",
-    description: "Full mapping of The Cozy Keyboard, German variant. " +
-        "Shows how I map Umlauts and punctuation on ANSI keyboards and the Ergodox. " +
-        "(On Iris I use combinding diaeresis key, because I could't fit all three Umlaut letters. ",
+    description: `Full mapping of The Cozy Keyboard, German variant. 
+        Shows how I map Umlauts and punctuation on ANSI keyboards and the Ergodox.`,
     sourceUrl: "https://github.com/matey-jack/gemuetliche-tastatur",
     sourceLinkTitle: "GitHub: matey-jack/gemuetliche-tastatur",
     comparisonBase: qwertzMapping,
