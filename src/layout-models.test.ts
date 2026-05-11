@@ -41,6 +41,7 @@ const layoutModels: Array<LayoutModel> = [
     xhkbWithArrowsLayoutModel,
     ahkbLayoutModel,
     ergoslatLayoutModel(false),
+    ergoslatLayoutModel(true),
     makeErgoslatNumberless(ergoslatLayoutModel(false)),
     eb65LowshiftLayoutModel,
     eb65BigEnterLayoutModel,
