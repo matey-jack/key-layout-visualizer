@@ -72,11 +72,11 @@ describe('character coverage for core mappings', () => {
         const thumb30Mappings = allMappings.filter(m => m.mappings?.[KeymapTypeId.Thumb30]);
         
         thumb30Mappings.forEach((mapping) => {
-            it(`${mapping.name}`, () => {
+            it.skipIf(mapping.name === 'Qweerty')(`${mapping.name}`, () => {
                 const thumb30String = mapping.mappings[KeymapTypeId.Thumb30]!.join('');
                 const missingChars = requiredCharsThumb30.split('').filter(char => !thumb30String.includes(char));
                 expect(missingChars).toEqual([]);
-            }, { skip: mapping.name === 'Qweerty' });
+            });
         });
     });
 });
