@@ -1,5 +1,5 @@
+import {rmSync, writeFileSync} from 'node:fs';
 import {render} from '@testing-library/preact';
-import {rmSync, writeFileSync} from 'fs';
 import {afterAll, beforeAll, describe, expect, it} from 'vitest';
 import {VisualizationType} from '../base-model.ts';
 import {ansiIBMLayoutModel} from '../layout/ansiLayoutModel.ts';
