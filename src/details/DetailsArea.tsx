@@ -261,7 +261,7 @@ export function SingleKeyEffortDetails({layout, mapping}: KeyEffortDetailsProps)
                         this also affects the left lower row where the finger assignment goes against the natural
                         direction of the hand/arm.
                         (You can train yourself to use the better-suited finger for hitting the key,
-                        but the you'll have to retrain again whenever you use an ortho board.)</p>}
+                        but then you'll have to retrain again whenever you use an ortho board.)</p>}
             </KeyEffortLegendItem>
             <KeyEffortLegendItem score={SKE_AWAY} frequency={freqsByEffort[SKE_AWAY]}>
                 Keys that aren't neighbors of home position keys.
