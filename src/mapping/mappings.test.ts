@@ -55,6 +55,19 @@ describe('character coverage for core mappings', () => {
         });
     });
 
+    describe('Ansi32 mappings have all letters and \',.-äöü\'', () => {
+        const requiredCharsAnsi32 = allLetters + ',.-äöü';
+        const ansi32Mappings = allMappings.filter(m => m.mappings?.[KeymapTypeId.Ansi32]);
+
+        ansi32Mappings.forEach((mapping) => {
+            it(`${mapping.name}`, () => {
+                const str = mapping.mappings[KeymapTypeId.Ansi32]!.join('');
+                const missing = requiredCharsAnsi32.split('').filter(c => !str.includes(c));
+                expect(missing).toEqual([]);
+            });
+        });
+    });
+
     describe('Thumb30 mappings have all letters and ",.;-"', () => {
         const thumb30Mappings = allMappings.filter(m => m.mappings?.[KeymapTypeId.Thumb30]);
         
