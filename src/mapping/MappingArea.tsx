@@ -22,7 +22,7 @@ export interface MappingListProps {
 }
 
 export function MappingList({appState}: MappingListProps) {
-    const showAllMappings = useSignal(false);
+    const showAllMappings = useSignal(!appState.mapping.value.localMaximum);
     const filteredMappings = showAllMappings.value
         ? allMappings
         : allMappings.filter((mapping) => mapping.localMaximum);
