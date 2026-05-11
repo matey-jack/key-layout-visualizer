@@ -7,8 +7,8 @@
  * - All visualization types can be exported
  */
 
+import * as fs from 'node:fs';
 import {expect, test} from '@playwright/test';
-import * as fs from 'fs';
 
 test.describe('SVG Download', () => {
   test.beforeEach(async ({ page }) => {
