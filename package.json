@@ -17,22 +17,22 @@
     "update-interactive": "npm-check-updates -i"
   },
   "dependencies": {
-    "@preact/signals": "^2.2.0",
-    "posthog-js": "^1.372.9",
-    "preact": "^10.28.2"
+    "@preact/signals": "^2.9.0",
+    "posthog-js": "^1.372.10",
+    "preact": "^10.29.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.8",
-    "@playwright/test": "^1.48.2",
-    "@preact/preset-vite": "^2.10.1",
-    "@testing-library/jest-dom": "^6.6.3",
+    "@biomejs/biome": "2.4.15",
+    "@playwright/test": "^1.59.1",
+    "@preact/preset-vite": "^2.10.5",
+    "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/preact": "^3.2.4",
     "@types/node": "^24.10.1",
-    "dpdm": "^3.14.0",
-    "jsdom": "^26.1.0",
-    "npm-check-updates": "^19.3.2",
-    "typescript": "~5.8.3",
-    "vite": "^6.3.5",
-    "vitest": "^3.2.4"
+    "dpdm": "^4.2.0",
+    "jsdom": "^29.1.1",
+    "npm-check-updates": "^22.1.1",
+    "typescript": "~6.0.3",
+    "vite": "^8.0.12",
+    "vitest": "^4.1.6"
   }
 }
