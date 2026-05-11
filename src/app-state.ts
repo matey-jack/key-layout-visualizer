@@ -21,14 +21,14 @@ function modifyWide(mapping: FlexMapping, opts: LayoutOptions): boolean {
     switch (opts.ansiVariant) {
         case AnsiVariant.XHKB:
         case AnsiVariant.AHKB:
-            // Flag is not used for AHKB, but we flip for transparency in the UI and also to stay on "wide" mode when
-            // switching to another variant.
+            // Those variants always use wide mode, because they were designed for it.
             return true;
     }
-    // ANSI_IBM: force wide mode when there is no non-wide keymap, but there is a wide keymap available.
-    if (mapping.mappings[KeymapTypeId.Ansi30] || mapping.mappings[KeymapTypeId.Ansi]) {
+    // No change to the flag when the FlexMapping has at least one keymap type that works both ways.
+    if (mapping.mappings[KeymapTypeId.Ansi32] || mapping.mappings[KeymapTypeId.Ansi30] || mapping.mappings[KeymapTypeId.Ansi]) {
         return opts.ansiWide;
     }
+    // In other cases, force wide mode when the keymap needs it.
     if (mapping.mappings[KeymapTypeId.AnsiWide] || mapping.mappings[KeymapTypeId.Thumb30]) {
         return true;
     }

@@ -30,7 +30,11 @@ import {
     getKeySizeClass,
     keyCapSize,
 } from "../layout/layout-functions.ts";
-import {TRADEOFF_INCONTROVERTIBLY_SAME_FINGER_COLOR, TRADEOFF_OFF_HOME_COLOR, TRADEOFF_SAME_FINGER_COLOR} from "../layout/TradeoffDiagram.tsx";
+import {
+    TRADEOFF_INCONTROVERTIBLY_SAME_FINGER_COLOR,
+    TRADEOFF_OFF_HOME_COLOR,
+    TRADEOFF_SAME_FINGER_COLOR
+} from "../layout/TradeoffDiagram.tsx";
 import {sum} from "../library/math.ts";
 import {qwertyMapping} from "../mapping/baseMappings.ts";
 import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
@@ -257,7 +261,7 @@ export function SingleKeyEffortDetails({layout, mapping}: KeyEffortDetailsProps)
                         this also affects the left lower row where the finger assignment goes against the natural
                         direction of the hand/arm.
                         (You can train yourself to use the better-suited finger for hitting the key,
-                        but the you'll have to retrain whenever you use an ortho board.)</p>}
+                        but the you'll have to retrain again whenever you use an ortho board.)</p>}
             </KeyEffortLegendItem>
             <KeyEffortLegendItem score={SKE_AWAY} frequency={freqsByEffort[SKE_AWAY]}>
                 Keys that aren't neighbors of home position keys.
