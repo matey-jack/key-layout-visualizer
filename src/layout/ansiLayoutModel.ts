@@ -126,7 +126,7 @@ export const ansiIBMLayoutModel: LayoutModel = {
     },
 }
 
-export const ansiWideLayoutModel = {
+export const ansiWideLayoutModel: LayoutModel = {
         ...ansiIBMLayoutModel,
         name: ansiIBMLayoutModel.name + " with wide hand position",
         rightHomeIndex: 8,
