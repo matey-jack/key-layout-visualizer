@@ -70,7 +70,7 @@ export function getKeySizeClass(keyCapSize: number) {
 }
 
 export function onlySupportsWide(mapping: FlexMapping) {
-    return !mapping.mappings[KeymapTypeId.Ansi30] && !mapping.mappings[KeymapTypeId.Ansi];
+    return !mapping.mappings[KeymapTypeId.Ansi32] && !mapping.mappings[KeymapTypeId.Ansi30] && !mapping.mappings[KeymapTypeId.Ansi];
 }
 
 // --- NEW: Functions using the new keymap type system ---
