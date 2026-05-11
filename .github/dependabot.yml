@@ -1,0 +1,31 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      dev-tooling:
+        patterns:
+          - "@biomejs/*"
+          - "@playwright/*"
+          - "@testing-library/*"
+          - "@types/*"
+          - "dpdm"
+          - "jsdom"
+          - "npm-check-updates"
+          - "typescript"
+          - "vite"
+          - "vitest"
+      preact:
+        patterns:
+          - "preact"
+          - "@preact/*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
