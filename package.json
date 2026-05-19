@@ -19,7 +19,7 @@
   "dependencies": {
     "@preact/signals": "^2.9.0",
     "posthog-js": "^1.372.10",
-    "preact": "^10.29.1"
+    "preact": "^10.29.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.15",
