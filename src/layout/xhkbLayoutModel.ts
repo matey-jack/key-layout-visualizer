@@ -12,6 +12,16 @@ const ansi30KeyMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "`~", "Alt", "⍽", "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
 ];
 
+// Note that / in the number row and - in the lower row is consistent with many European languages, such as German.
+// And that's what the 32 character set is about after all!
+const ansi32KeyMapping: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "\\", "/", "6", "7", "8", "9", "0", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, [1, 10], "'", 5, 6, 7, 8, 9, 10, "⇞"],
+    ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "⏎"],
+    ["⇧", 0, 1, 2, 3, 4, "=", 9, 5, 6, 7, 8, "⇧", "⇟"],
+    ["Ctrl", "Cmd", "`~", "Alt", "⍽", "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
+];
+
 const thumb30KeyMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, "=", "`~", 5, 6, 7, 8, 9, "'", "⇞"],
@@ -83,6 +93,7 @@ export const xhkbLayoutModel: LayoutModel = {
 
     frameMappings: {
         [KeymapTypeId.Ansi30]: ansi30KeyMapping,
+        [KeymapTypeId.Ansi32]: ansi32KeyMapping,
         [KeymapTypeId.Thumb30]: thumb30KeyMapping,
     },
 }
