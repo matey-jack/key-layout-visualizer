@@ -98,6 +98,9 @@ refactorings done (or decided against):
 small tasks:
  - enable ergoslatAddAngleMod
  - add a color for 1u keys in the size viz, so it looks better in the 3D view
+ - maybe a thumb23 KeyMapType so that my cozy key map can be represented including the German characters?
+ - maybe a filter for non-English keymaps in the mapping list – and at least one or two French mappings to show off
+   that the international support is generic.
 
 missing core features:
 - SVG export (with a title stating name of layout and keymap) ✅ except:
