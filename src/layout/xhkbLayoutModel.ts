@@ -26,7 +26,9 @@ export const xhkbLayoutModel: LayoutModel = {
     delivers a layout with ergonomically wider hand positions and some extra central keys that can be used for navigation 
     or any other purpose. And to top it off, let's also split the space bar to create two great thumb keys per side.
     Using only four keycap sizes, Thumbs Up is the most versatile keyboard with traditional typewriter row staggering 
-    and the classic 60% box shape.`,
+    and the classic 60% box shape.
+    It keeps the Typewriter tradition and visual aesthetic of Enter and Space being the largest keys, 
+    yet reduces the assymetry between the keyboard halves to just 0.5u for a much better hand position.`,
 
     keyWidths: [
         keyWidth.row(0, 1.5), // 14 keys
