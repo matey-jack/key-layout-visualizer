@@ -45,8 +45,8 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
 
         <LayoutVariantButton variant={PlankVariant.EB65_LOW_SHIFT}
                             currentVariant={variant} setVariant={setVariant}
-                            name="Ergoboard 16/4 (Lowshift)">
-            {lowshiftVariant(EB65_LowShift_Variant.WIDE_HANDS, "Wide Hands")}
+                            name="Ergoboard 16/x (Lowshift)">
+            {lowshiftVariant(EB65_LowShift_Variant.WIDE_HANDS, "Wide Hands 16/4.5")}
             {options.eb65LowshiftVariant === EB65_LowShift_Variant.WIDE_HANDS &&
                 <div class="ergoplank-angle-mod-checkbox">
                     <CheckboxWithLabel label="angle mod"
@@ -54,14 +54,14 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
                                        onChange={(angle) => setOption({angleMod: angle})}/>
                 </div>
             }
-            {lowshiftVariant(EB65_LowShift_Variant.LESS_GAPS, "Less Gaps")}
-            {lowshiftVariant(EB65_LowShift_Variant.BIG_ENTER, "Big Enter & Space")}
+            {lowshiftVariant(EB65_LowShift_Variant.LESS_GAPS, "Less Gaps 16/4")}
+            {lowshiftVariant(EB65_LowShift_Variant.BIG_ENTER, "Big Enter & Space 16/4")}
             <FlipRetRubButton setOption={setOption} options={options}/>
         </LayoutVariantButton>
 
         <LayoutVariantButton variant={PlankVariant.EB65_MID_SHIFT}
                             currentVariant={variant} setVariant={setVariant}
-                            name="❤️Ergoboard 16/5 (Midshift)">
+                            name="❤️Ergoboard 16/x (Midshift)">
             <EbMidshiftLayoutOptions msVariant={options.eb65MidshiftVariant}
                                      setMsVariant={(v) => setOption({eb65MidshiftVariant: v})}/>
             <FlipRetRubButton setOption={setOption} options={options}/>
@@ -85,19 +85,19 @@ export function EbMidshiftLayoutOptions({msVariant, setMsVariant}: EbMidshiftLay
 
     const narrowSubvariant = msVariant > EB65_MidShift_Variant.NICELY_WIDE;
     return <>
-        {midshiftVariant(EB65_MidShift_Variant.EXTRA_WIDE, "Extra Wide Hands")}
-        {midshiftVariant(EB65_MidShift_Variant.NICELY_WIDE, "❤️ Wide Hands")}
+        {midshiftVariant(EB65_MidShift_Variant.EXTRA_WIDE, "Extra Wide Hands 16/5.5")}
+        {midshiftVariant(EB65_MidShift_Variant.NICELY_WIDE, "❤️ Wide Hands 16/5")}
         {msVariant === EB65_MidShift_Variant.NICELY_WIDE && false &&
             <div className="ergoplank-midshift-xl-bars-checkbox">
                 <CheckboxWithLabel label="XL bottom bars" checked={false}/>
             </div>
         }
 
-        <CheckboxWithLabel label="Narrow Hands"
+        <CheckboxWithLabel label="Narrow Hands 16/4"
                            type="radio"
                            groupName={"midshift_variant"}
                            checked={narrowSubvariant}
-                           onChange={(checked) =>  checked && setMsVariant(EB65_MidShift_Variant.CENTRAL_ENTER)}/>
+                           onChange={(checked) =>  checked && setMsVariant(EB65_MidShift_Variant.RIGHT_ENTER)}/>
 
         {narrowSubvariant && <div class="ergoplank-midshift-sub-variants-container">
             {midshiftVariant(EB65_MidShift_Variant.CENTRAL_ENTER, "Central Enter key", true)}
