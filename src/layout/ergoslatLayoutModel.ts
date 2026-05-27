@@ -3,8 +3,6 @@ import {mapValues} from "../library/records.ts";
 import {mirror, SymmetricKeyWidth} from "./keyWidth.ts";
 import {copyAndModifyKeymap, copyKeymap, ergoFamilyKeyColorClass} from "./layout-functions.ts";
 
-const keyWidths = new SymmetricKeyWidth(13, [0, 0.25, 0, 0, 0.5]);
-
 const ansi30FrameMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "-"],
@@ -55,7 +53,9 @@ const thumb30MidshiftFrame: LayoutMapping = [
     ["Cmd", "Alt", "⌦", 0, "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
-export function ergoslatLayoutModel(midShift: boolean): LayoutModel {
+export function ergoslatLayoutModel(midShift: boolean, smallerThumbs: boolean = false): LayoutModel {
+    const keyWidths = new SymmetricKeyWidth(13, [0, 0.25, 0, 0, smallerThumbs ? 0.25 : 0.5]);
+
     return {
     name: "Ergoslat 13/3",
     description: `A smaller ErgoPlank which still has enough keys to write messages, notes, and other texts 
@@ -69,8 +69,9 @@ export function ergoslatLayoutModel(midShift: boolean): LayoutModel {
         keyWidths.row(1, 1),
         keyWidths.row(2, 1),
         keyWidths.row(3, 1.5),
-        // Simplest possible bottom row; entire keyboard has only sizes 1u and 1.5u.
-        mirror(1.5, 1.5, 1.5, 1.5),
+        smallerThumbs
+            ? mirror(1.25, 1.25, 1.25, 1.25, 1.25)
+            : mirror(1.5, 1.5, 1.5, 1.5),
 
         // Alternative bottom row with an extra key (needs 0 indent, see line 6 above).
         // Optionally, one can also use two 1.25u keys for the upper row edges, although I wouldn't,
@@ -90,7 +91,7 @@ export function ergoslatLayoutModel(midShift: boolean): LayoutModel {
         [1, 0, 1, 2, 3, 3, null, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
         [0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9],
-        [0, 1, 4, 4, 5, 5, 8, 9],
+        smallerThumbs ? [0, 1, 3, 4, 4, 5, 5, 7, 8, 9] : [0, 1, 4, 4, 5, 5, 8, 9],
     ],
 
     // Only fixed values can be used. see base-model.ts SKE_*
@@ -99,7 +100,7 @@ export function ergoslatLayoutModel(midShift: boolean): LayoutModel {
         [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0],
         [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
         [1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0],
-        [2.0, 2.0, 1.5, 0.2, 0.2, 1.5, 2.0, 2.0],
+        smallerThumbs ? [2.0, 2.0, 1.5, 1.0, 0.2, 0.2, 1.0, 1.5, 2.0, 2.0] : [2.0, 2.0, 1.5, 0.2, 0.2, 1.5, 2.0, 2.0],
     ],
 
     rowIndent: keyWidths.rowIndent,
@@ -153,8 +154,7 @@ export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
             numberlessKeyWidths.row(0, 1.25),     // Upper row: escape and backspace take full 1.25u
             numberlessKeyWidths.row(2, 1),        // Home row unchanged
             numberlessKeyWidths.row(3, 1.5),      // Lower row unchanged
-            // With 0.25 indent and 0.5u from the central 1u key, both halves have exactly 7.5u
-            mirror(1.5, 1.5, 1.5, 1.5),
+            lm.keyWidths[4],
         ],
 
         mainFingerAssignment: [[null], ...lm.mainFingerAssignment.slice(1, 5)],

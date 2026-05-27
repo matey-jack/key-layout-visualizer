@@ -86,6 +86,7 @@ export interface LayoutOptions {
 
     // ErgoSlat
     esNumberless: boolean;
+    esSmallerThumbs: boolean;
 
     // ErgoPlank
     angleMod: boolean;

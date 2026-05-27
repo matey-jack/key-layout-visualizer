@@ -31,6 +31,9 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
             <CheckboxWithLabel label="numberless"
                                checked={options.esNumberless}
                                onChange={(numberless) => setOption({esNumberless: numberless})}/>
+            <CheckboxWithLabel label="smaller thumb keys"
+                               checked={options.esSmallerThumbs}
+                               onChange={(smaller) => setOption({esSmallerThumbs: smaller})}/>
         </LayoutVariantButton>
 
         <LayoutVariantButton variant={PlankVariant.EP60}
