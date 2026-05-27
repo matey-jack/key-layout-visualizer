@@ -64,7 +64,13 @@ const thumb30MidshiftFrame: LayoutMapping = [
 ];
 
 export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
-    const keyWidths = new SymmetricKeyWidth(13, [0, 0.25, 0, midShift ? 0.5 : 0, 0.5]);
+    const keyWidths = new SymmetricKeyWidth(13, [0, 0.25, 0, midShift ? 0.5 : 0, 0.25]);
+
+    const baseMappings = {
+        [KeymapTypeId.Ansi30]: midShift ? ansi30MidshiftFrame : ansi30FrameMapping,
+        [KeymapTypeId.Ansi32]: midShift ? ansi32MidshiftFrame : ansi32FrameMapping,
+        [KeymapTypeId.Thumb30]: midShift ? thumb30MidshiftFrame : thumb30FrameMapping,
+    };
 
     return {
         name: "Major Ergoslat 13/3",
@@ -79,16 +85,16 @@ export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
             keyWidths.row(1, 1),
             keyWidths.row(2, 1),
             midShift ? keyWidths.row(3, 1) : keyWidths.row(3, 1.5),
-            mirror(1.5, 1.5, 1.5, 1.5),
+            mirror(1.5, 1.5, 0.25, 1.5, 1.5),
         ],
 
-        // Row lengths: 12, 12 (and 1 gap!), 13, 12, 8.
+        // Row lengths: 12, 12 (and 1 gap!), 13, 12, 10.
         mainFingerAssignment: [
             [1, 1, 1, 2, 3, 3, 6, 6, 7, 8, 8, 8],
             [1, 0, 1, 2, 3, 3, null, 6, 6, 7, 8, 9, 9],
             [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
             [0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9],
-            [0, 1, 4, 4, 5, 5, 8, 9],
+            [0, 1, null, 4, 4, 5, 5, null, 8, 9],
         ],
 
         // Only fixed values can be used. See base-model.ts SKE_*
@@ -97,7 +103,7 @@ export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
             [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0],
             [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
             [1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0],
-            [2.0, 2.0, 1.5, 0.2, 0.2, 1.5, 2.0, 2.0],
+            [2.0, 2.0, null, 1.5, 0.2, 0.2, 1.5, null, 2.0, 2.0],
         ],
 
         rowIndent: keyWidths.rowIndent,
@@ -108,11 +114,7 @@ export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
         staggerOffsets: [0.5, 0.25, 0, -0.5],
         symmetricStagger: true,
 
-        frameMappings: {
-            [KeymapTypeId.Ansi30]: midShift ? ansi30MidshiftFrame : ansi30FrameMapping,
-            [KeymapTypeId.Ansi32]: midShift ? ansi32MidshiftFrame : ansi32FrameMapping,
-            [KeymapTypeId.Thumb30]: midShift ? thumb30MidshiftFrame : thumb30FrameMapping,
-        },
+        frameMappings: mapValues(baseMappings, (_, mapping) => addBottomRowGaps(mapping)) as Partial<Record<KeymapTypeId, LayoutMapping>>,
 
         keyColorClass: ergoFamilyKeyColorClass(ansi30FrameMapping),
     };
@@ -147,7 +149,7 @@ export function minorErgoslatLayoutModel(midShift: boolean): LayoutModel {
             [2.0, 2.0, 1.5, 1.0, 0.2, 0.2, 1.0, 1.5, 2.0, 2.0],
         ],
         rowIndent: keyWidths.rowIndent,
-        frameMappings: mapValues(base.frameMappings, (_, mapping) => addBottomRowKeys(mapping)) as Partial<Record<KeymapTypeId, LayoutMapping>>,
+        frameMappings: mapValues(base.frameMappings, (_, mapping) => replaceBottomRowGaps(mapping)) as Partial<Record<KeymapTypeId, LayoutMapping>>,
     };
 }
 
@@ -155,6 +157,7 @@ export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
         name: lm.name + " (numberless)",
+        rowIndent: [0, ...lm.rowIndent.slice(1)] as [number, number, number, number, number],
         keyWidths: [
             [13], // just put a full-width gap here, so the test passes
             ...lm.keyWidths.slice(1),
@@ -187,10 +190,18 @@ function moveReturn(keymap: LayoutMapping): LayoutMapping {
     return keymap;
 }
 
-function addBottomRowKeys(mapping: LayoutMapping): LayoutMapping {
+function addBottomRowGaps(mapping: LayoutMapping): LayoutMapping {
     const newMapping = mapping.map((row) => [...row]);
     const bottomRow = newMapping[KeyboardRows.Bottom];
-    bottomRow.splice(2, 0, "⇤");
-    bottomRow.splice(bottomRow.length - 2, 0, "⇥");
+    bottomRow.splice(2, 0, null);
+    bottomRow.splice(bottomRow.length - 2, 0, null);
+    return newMapping;
+}
+
+function replaceBottomRowGaps(mapping: LayoutMapping): LayoutMapping {
+    const newMapping = mapping.map((row) => [...row]);
+    const bottomRow = newMapping[KeyboardRows.Bottom];
+    bottomRow[2] = "⇤";
+    bottomRow[7] = "⇥";
     return newMapping;
 }
