@@ -91,7 +91,6 @@ export const colemakThumbyHMapping: FlexMapping = {
     because Colemak already places a very rare letter there. 
     Note that this slightly beats Colemak Thumby D on staggered keyboards where the left-bottom conflicts can be alt-fingered,
     but it's noticeably worse on Ortho boards. And all that for having more changes to Qwerty.
-    TODO: make a custom version of this for the Harmonic 13 MidShift, because that's the only board to properly represent the angle mod. 
     And a custom version for ortho, same reason.`,
     // comparisonBase: colemakDhMapping,
     mappings: {
@@ -109,7 +108,6 @@ export const colemakThumbyNMapping: FlexMapping = {
     name: "Colemak Thumby N",
     description: `Slightly modified version of Colemak-DH that places E on the thumb key and H on an actual home key. 
     Since N is more frequent than H, we move N to the middle finger where it causes less bigram conflicts.  
-    TODO: make a custom version of this for the Harmonic 13 MidShift, because that's the only board to properly represent the angle mod. 
     And a custom version for ortho, same reason.`,
     // comparisonBase: colemakDhMapping,
     mappings: {
