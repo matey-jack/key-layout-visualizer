@@ -34,7 +34,7 @@ import {
     createErgoPlankWithArrows,
     ergoPlank60LayoutModel
 } from "./layout/ergoPlank60LayoutModel.ts";
-import {ergoslatLayoutModel, makeErgoslatNumberless} from './layout/ergoslatLayoutModel.ts';
+import {majorErgoslatLayoutModel, minorErgoslatLayoutModel, makeErgoslatNumberless} from './layout/ergoslatLayoutModel.ts';
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
@@ -54,12 +54,12 @@ const layoutModels: Array<LayoutModel> = [
     xhkbLayoutModel,
     xhkbWithArrowsLayoutModel,
     ahkbLayoutModel,
-    ergoslatLayoutModel(false, false),
-    ergoslatLayoutModel(true, false),
-    ergoslatLayoutModel(false, true),
-    ergoslatLayoutModel(true, true),
-    makeErgoslatNumberless(ergoslatLayoutModel(false, false)),
-    makeErgoslatNumberless(ergoslatLayoutModel(false, true)),
+    majorErgoslatLayoutModel(false),
+    majorErgoslatLayoutModel(true),
+    minorErgoslatLayoutModel(false),
+    minorErgoslatLayoutModel(true),
+    makeErgoslatNumberless(majorErgoslatLayoutModel(false)),
+    makeErgoslatNumberless(minorErgoslatLayoutModel(false)),
     eb65LowshiftLayoutModel,
     eb65BigEnterLayoutModel,
     eb65LowshiftWideLayoutModel,
@@ -86,7 +86,9 @@ export function getPlankVariant(opts: LayoutOptions): LayoutModel {
         case PlankVariant.KATANA_60:
             return katanaLayoutModel;
         case PlankVariant.ES13: {
-            const baseModel = ergoslatLayoutModel(opts.midShift, opts.esSmallerThumbs);
+            const baseModel = opts.esSmallerThumbs
+                ? minorErgoslatLayoutModel(opts.midShift)
+                : majorErgoslatLayoutModel(opts.midShift);
             return opts.esNumberless ? makeErgoslatNumberless(baseModel) : baseModel;
         }
         case PlankVariant.EB65_LOW_SHIFT:
