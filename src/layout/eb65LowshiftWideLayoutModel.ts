@@ -56,7 +56,7 @@ export const eb65LowshiftWideLayoutModel: LayoutModel = {
     leftHomeIndex: 4,
     rightHomeIndex: 10,
 
-    staggerOffsets: [0.5, 0.25, 0, -0.5],
+    staggerOffsets: [0.5, 0.25, 0, -0.25],
     symmetricStagger: true,
 
     frameMappings: {

@@ -29,6 +29,8 @@ export const eb65MidshiftRightRetLayoutModel: LayoutModel = {
     keyWidths: [
         Array(16).fill(1),
         [1.75, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 1, 1.75],
+        // Shift keys have assymmetric sizes (1.5 vs 1.0) and we could equalize them be moving all letters and the hands
+        // 0.25 to the left. But that would give us an 1.75 Escape key vs only an 1.25 backspace. 
         [1.5, ...Array(13).fill(1), 1.5],
         [1.25, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 1, 0.25, 1, 1],
         // keyboard center is at 7.5 | 8.5, all of which usable on the left, but only 5.5 usable on the right.
