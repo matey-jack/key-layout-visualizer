@@ -1,11 +1,25 @@
-# Two main keys per thumb. With unsplit spacebar, that's one less in for one hand!
+# Two main keys per thumb.
 
-When the space bar is split and the two keys are 2u or less, there will be one more key on each side that is very accessible to the thumb
-and can serve as a home key for a letter or anything else.
-Having two easy-to-reach thumb keys on each side is probably also the case for most split keyboards with thumb clusters.
-On larger thumb clusters, the third key is often already harder to reach and all others aren't in touch-typing position at all,
-requiring to lift the hand instead.
+I find that my thumb naturally rests 1u from the index finger home position and I think that this is the perfect boundary
+between the two main thumb keys!
 
-On my Iris CE, I have set them up as Delete and Space on the left hand; Enter and E on the right hand.
-I like the aesthetic idea of having slightly larger keys for Space and Enter, especially if they can be the same size as the "gap-filling" 1.5u keys in the shorter, staggered rows of the main keyboard.
-Therefore, I think that a single, central space bar would only make sense on the Harmonic 14 Traditional which has the Enter key in the traditional right pinky position.
+With 3u between the index home keys, which affects only the Ergoslat:
+ - the perfect alignment would require 1u keys; I have so far rejected it for aesthetic reasons.
+ - next best would be 1.25u ==> TODO let's add this as an option.
+ - 1.5u are not ergonomically optimal, but on the Ergoslat, they allow to use only two keycap sizes for everything,
+   which is what that's the current option.
+
+With 4u between the index home keys, this is naturally achieved by having 1.5u keys in the center,
+so I'll do that on all such boards.
+
+With 4.5u between the index home keys, it's done with 1.75u keys in the center.
+
+With 5u between the indexes, there are many options:
+ - 1.5u main thumb keys and a central (not super-easy to reach) 1u key to fill the gap. ==> done on Ergoplank 15/5
+ - 1.75u main thumb keys and leaving a 0.5u gap. ==> maybe offer as option somewhere
+ - big 2u thumb keys, which gives nice traditional vibes, but needs stabilizers and keycaps can't be exchanged with other places on the board, so that's a no.
+ - 1.75u main thumb keys and missing the perfect spot ==> done on Ergoboard 16/5
+
+With 5u between the indexes:
+ - 1.75u main thumb keys and a central (not super-easy to reach) 1u key to fill the gap.
+   ==> done on Ergoboard 16/5.5. Don't need more options here, since this is not my favorite board anyway.

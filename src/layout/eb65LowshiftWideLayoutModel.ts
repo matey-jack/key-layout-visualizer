@@ -51,7 +51,8 @@ export const eb65LowshiftWideLayoutModel: LayoutModel = {
         keyWidths.row(KeyboardRows.Upper, 1.25, 1.75),
         keyWidths.row(KeyboardRows.Home, 1, 1.5, 7.25),
         [0.5, 1.25, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.25, 1, 1],
-        [0.5, 1.25, 1.25, 1.25, 1.25, 1.75, 1.75, 1.25, 1, 1.25, 0.5, 1, 1, 1],
+        // Split 7.25 to 8.75
+        [0.5, 1.25, 1.25, 1.25, 1.25, 1.75, 1.75, 1.25, 1.25, 1.25, 0.25, 1, 1, 1],
     ],
     leftHomeIndex: 4,
     rightHomeIndex: 10,
