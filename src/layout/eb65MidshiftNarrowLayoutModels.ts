@@ -1,6 +1,9 @@
 import {Finger, KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel, SKE_AWAY,} from "../base-model.ts";
 import {mapValues} from "../library/records.ts";
+import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
+
+const keyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
 export const eb65MidshiftRightRetLayoutModel: LayoutModel = {
     name: "Ergoboard 65 MidShift Narrow, Right Return",
@@ -22,16 +25,14 @@ export const eb65MidshiftRightRetLayoutModel: LayoutModel = {
         [null, 2.0, 1.5, null, 1.0, 0.2, 0.2, 1.0, null, null, null, null, null],
     ],
 
-    rowIndent: [0, 0, 0, 0, 0],
+    rowIndent: zeroIndent,
 
-    // Turns out that my genius gap-creation logic doesn't apply here, because those three layouts explicitly prefer
-    // smaller gaps, to have more 1u keys for mapping characters onto them. So let's just brute it today.
     keyWidths: [
-        Array(16).fill(1),
-        [1.75, 1, 1, 1, 1, 1, 1.5, 1, 1, 1, 1, 1, 1, 1.75],
-        // Shift keys have assymmetric sizes (1.5 vs 1.0) and we could equalize them be moving all letters and the hands
+        keyWidths.row(KeyboardRows.Number, 1),
+        keyWidths.row(KeyboardRows.Upper, 1.75, 1.75, 7.5),
+        // Shift keys have asymmetric sizes (1.5 vs 1.0) and we could equalize them be moving all letters and the hands
         // 0.25 to the left. But that would give us an 1.75 Escape key vs only an 1.25 backspace. 
-        [1.5, ...Array(13).fill(1), 1.5],
+        keyWidths.row(KeyboardRows.Home, 1.5),
         [1.25, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 1, 0.25, 1, 1],
         // keyboard center is at 7.5 | 8.5, all of which usable on the left, but only 5.5 usable on the right.
         // using two 1.5u thumb keys on each side, leaves 4.5u left, 2.5u right.
