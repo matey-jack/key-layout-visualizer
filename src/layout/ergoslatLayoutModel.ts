@@ -54,7 +54,15 @@ const thumb30MidshiftFrame: LayoutMapping = [
 ];
 
 export function ergoslatLayoutModel(midShift: boolean, smallerThumbs: boolean = false): LayoutModel {
-    const keyWidths = new SymmetricKeyWidth(13, [0, 0.25, 0, 0, smallerThumbs ? 0.25 : 0.5]);
+    const keyWidths = smallerThumbs
+        ? new SymmetricKeyWidth(13, [0.25, 0, 0, 0.5, 0.25])
+        : new SymmetricKeyWidth(13, [0, 0.25, 0, 0, 0.5]);
+
+    const baseMappings = {
+        [KeymapTypeId.Ansi30]: midShift ? ansi30MidshiftFrame : ansi30FrameMapping,
+        [KeymapTypeId.Ansi32]: midShift ? ansi32MidshiftFrame : ansi32FrameMapping,
+        [KeymapTypeId.Thumb30]: midShift ? thumb30MidshiftFrame : thumb30FrameMapping,
+    };
 
     return {
     name: "Ergoslat 13/3",
@@ -64,37 +72,34 @@ export function ergoslatLayoutModel(midShift: boolean, smallerThumbs: boolean = 
     What's also neat about it: the number of keys above the bottom row for each hand are 3 or 4 rows times 6 columns 
     which is the same as a large class of fully split keyboards. 
     Given two great thumb keys per hand, a lot of the split ergo keymaps and habits can be reused here.`,
-    keyWidths: [
+    keyWidths: smallerThumbs
+        ? [
+        keyWidths.row(0, 1.25),
+        keyWidths.row(1, 1.25),
+        keyWidths.row(2, 1),
+        keyWidths.row(3, 1),
+        mirror(1.25, 1.25, 1.25, 1.25, 1.25),
+    ]
+    : [
         keyWidths.row(0, 1.5),
         keyWidths.row(1, 1),
         keyWidths.row(2, 1),
         keyWidths.row(3, 1.5),
-        smallerThumbs
-            ? mirror(1.25, 1.25, 1.25, 1.25, 1.25)
-            : mirror(1.5, 1.5, 1.5, 1.5),
-
-        // Alternative bottom row with an extra key (needs 0 indent, see line 6 above).
-        // Optionally, one can also use two 1.25u keys for the upper row edges, although I wouldn't,
-        // because the right side is a character key.
-        // mirror(1.25, 1.25, 1.25, 1.25, 1.5),
-
-        // Alternative, diverse bottom row. Requires a 0.25 indent.
-        // I guess the main benefit of this is purely aesthetic, for people who prefer some size diversity over uniformity.
-        // mirror(1.25, 1.25, 1, 1.25, 1.5),
+        mirror(1.5, 1.5, 1.5, 1.5),
     ],
 
-    // row lengths: 12, 12 (and 1 gap!), 13, 12, 10
-    // note that for data model reasons, we also have to assign a finger to gaps.
-    // but it will never be shown or used in any calulations.
+    // Row lengths: 12, 12 (and 1 gap!), 13, 12, 8 or 10.
+    // Note that for data model reasons, we also have to assign a finger to gaps.
+    // But it will never be shown or used in any calculations.
     mainFingerAssignment: [
         [1, 1, 1, 2, 3, 3, 6, 6, 7, 8, 8, 8],
         [1, 0, 1, 2, 3, 3, null, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9],
         [0, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 9],
-        smallerThumbs ? [0, 1, 3, 4, 4, 5, 5, 7, 8, 9] : [0, 1, 4, 4, 5, 5, 8, 9],
+        smallerThumbs ? [0, 1, 2, 4, 4, 5, 5, 7, 8, 9] : [0, 1, 4, 4, 5, 5, 8, 9],
     ],
 
-    // Only fixed values can be used. see base-model.ts SKE_*
+    // Only fixed values can be used. See base-model.ts SKE_*
     singleKeyEffort: [
         [3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0],
         [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0],
@@ -111,11 +116,9 @@ export function ergoslatLayoutModel(midShift: boolean, smallerThumbs: boolean = 
     staggerOffsets: [0.5, 0.25, 0, -0.5],
     symmetricStagger: true,
 
-    frameMappings: {
-        [KeymapTypeId.Ansi30]: midShift ? ansi30MidshiftFrame : ansi30FrameMapping,
-        [KeymapTypeId.Ansi32]: midShift ? ansi32MidshiftFrame : ansi32FrameMapping,
-        [KeymapTypeId.Thumb30]: midShift ? thumb30MidshiftFrame : thumb30FrameMapping,
-    },
+    frameMappings: smallerThumbs
+        ? mapValues(baseMappings, (_, mapping) => addBottomRowKeys(mapping)) as Partial<Record<KeymapTypeId, LayoutMapping>>
+        : baseMappings,
 
     keyColorClass: ergoFamilyKeyColorClass(ansi30FrameMapping),
     };
@@ -148,7 +151,13 @@ export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
         name: "Ergoslat 13/3 (numberless)",
-        rowIndent: numberlessKeyWidths.rowIndent,
+        rowIndent: [
+            numberlessKeyWidths.rowIndent[0],
+            numberlessKeyWidths.rowIndent[1],
+            numberlessKeyWidths.rowIndent[2],
+            numberlessKeyWidths.rowIndent[3],
+            lm.rowIndent[4],
+        ],
         keyWidths: [
             [13], // just put a full-width gap here, so the test passes
             numberlessKeyWidths.row(0, 1.25),     // Upper row: escape and backspace take full 1.25u
@@ -182,4 +191,12 @@ function moveReturn(keymap: LayoutMapping): LayoutMapping {
         keymap[KeyboardRows.Home][12] = "⏎";
     }
     return keymap;
+}
+
+function addBottomRowKeys(mapping: LayoutMapping): LayoutMapping {
+    const newMapping = mapping.map((row) => [...row]);
+    const bottomRow = newMapping[KeyboardRows.Bottom];
+    bottomRow.splice(2, 0, "");
+    bottomRow.splice(bottomRow.length - 2, 0, "");
+    return newMapping;
 }
