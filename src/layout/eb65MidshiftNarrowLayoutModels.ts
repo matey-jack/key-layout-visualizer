@@ -103,24 +103,12 @@ export const eb65VerticalEnterLayoutModel: LayoutModel = {
     ...eb65MidshiftRightRetLayoutModel,
     name: "Ergoboard 65 MidShift Narrow, Vertical Return",
     keyWidths: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.keyWidths!, (matrix) => {
-        matrix[KeyboardRows.Upper][12] = 1.75; // Backspace
-        matrix[KeyboardRows.Upper][13] = 1;    // Enter
         matrix[KeyboardRows.Home][13] = 1.5;   // Shift
-        matrix[KeyboardRows.Home][14] = 1;     // gap for Enter
+        matrix[KeyboardRows.Home][14] = 1;     // Enter
         return matrix;
     }),
     keyCapHeight: (row: KeyboardRows, col: number) => {
-        if (row === KeyboardRows.Upper && col === 13) return 2;
+        if (row === KeyboardRows.Home && col === 14) return 2;
         return 1;
     },
-    frameMappings: mapValues(eb65MidshiftRightRetLayoutModel.frameMappings, (_, frameMapping) =>
-        copyAndModifyKeymap(frameMapping, moveEnterToVertical)
-    ),
-}
-
-function moveEnterToVertical(mapping: LayoutMapping): LayoutMapping {
-    mapping[KeyboardRows.Upper][13] = "⏎";
-    mapping[KeyboardRows.Upper][12] = "⌫";
-    mapping[KeyboardRows.Home][14] = null;
-    return mapping;
 }
