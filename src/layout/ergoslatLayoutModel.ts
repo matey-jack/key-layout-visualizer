@@ -1,7 +1,7 @@
 import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
 import {mapValues} from "../library/records.ts";
 import {mirror, SymmetricKeyWidth} from "./keyWidth.ts";
-import {copyAndModifyKeymap, copyKeymap, ergoFamilyKeyColorClass} from "./layout-functions.ts";
+import {copyKeymap, ergoFamilyKeyColorClass} from "./layout-functions.ts";
 
 /*
     We need to account for three independent variables when placing the Shift and Enter keys,
@@ -24,8 +24,8 @@ const ansi30FrameMapping: LayoutMapping = [
 const ansi30MidshiftFrame: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "'"],
-    ["⇧", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "⇧"],
-    [0, 1, 2, 3, 4, "=", "⌦", 5, 6, 7, 8, 9],
+    ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
+    [0, 1, 2, 3, 4, "=", "-" ,5, 6, 7, 8, 9],
     ["Ctrl", "Cmd", "Alt", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
@@ -40,11 +40,13 @@ const ansi32FrameMapping: LayoutMapping = [
 const ansi32MidshiftFrame: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, 10],
-    ["⇧", 0, 1, 2, 3, 4, 10, 5, 6, 7, 8, 9, "⇧"],
-    [0, 1, 2, 3, 4, "=", "⌦", 5, 6, 7, 8, 9],
+    ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
+    [0, 1, 2, 3, 4, [-1, 10], "=", 5, 6, 7, 8, 9],
     ["Ctrl", "Cmd", "Alt", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
+// top-right Return mapping isn't great, because in the Major variant, this is a 1u key.
+// we can map Return in the bottom row, but then a modifier would have to go somewhere above the bottom.
 const thumb30FrameMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
@@ -56,8 +58,8 @@ const thumb30FrameMapping: LayoutMapping = [
 const thumb30MidshiftFrame: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
-    ["⇧", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "⇧"],
-    [0, 1, 2, 3, 4, "/", "⌦", 5, 6, 7, 8, "'"],
+    ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
+    [0, 1, 2, 3, 4, "=", "'", 5, 6, 7, 8, "/"],
     ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
@@ -65,7 +67,7 @@ export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
     const keyWidths = new SymmetricKeyWidth(13, [0, 0.25, 0, midShift ? 0.5 : 0, 0.5]);
 
     return {
-        name: "Ergoslat 13/3",
+        name: "Major Ergoslat 13/3",
         description: `A smaller ErgoPlank which still has enough keys to write messages, notes, and other texts 
         without excessively using higher layers. It omits only keys used for programming and more involved desktop work.
         While all keyboard layouts can be used with Android devices like smartphones and tablets, this one is specialized for that use case.
@@ -118,16 +120,16 @@ export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
 
 export function minorErgoslatLayoutModel(midShift: boolean): LayoutModel {
     const base = majorErgoslatLayoutModel(midShift);
-    const keyWidths = new SymmetricKeyWidth(13, [0.25, 0, 0, 0.5, 0.25]);
+    const keyWidths = new SymmetricKeyWidth(13, [0.25, 0, 0, midShift ? 0.5 : 0.25, 0.25]);
 
     return {
         ...base,
-        name: "Ergoslat 13/3 (Minor)",
+        name: "Minor Ergoslat 13/3",
         keyWidths: [
             keyWidths.row(0, 1.25),
             keyWidths.row(1, 1.25),
             keyWidths.row(2, 1),
-            keyWidths.row(3, 1),
+            keyWidths.row(3, midShift ? 1 : 1.25),
             mirror(1.25, 1.25, 1.25, 1.25, 1.25),
         ],
         mainFingerAssignment: [
@@ -149,27 +151,13 @@ export function minorErgoslatLayoutModel(midShift: boolean): LayoutModel {
     };
 }
 
-const numberlessKeyWidths = new SymmetricKeyWidth(13, [0, 0, 0, 0, 0.5]);
-
 export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
-        name: lm.name.includes("Minor")
-            ? "Ergoslat 13/3 (Minor, numberless)"
-            : "Ergoslat 13/3 (numberless)",
-        rowIndent: [
-            numberlessKeyWidths.rowIndent[0],
-            numberlessKeyWidths.rowIndent[1],
-            numberlessKeyWidths.rowIndent[2],
-            lm.rowIndent[3],
-            lm.rowIndent[4],
-        ],
+        name: lm.name + " (numberless)",
         keyWidths: [
             [13], // just put a full-width gap here, so the test passes
-            numberlessKeyWidths.row(0, 1.25),     // Upper row: escape and backspace take full 1.25u
-            numberlessKeyWidths.row(2, 1),        // Home row unchanged
-            lm.keyWidths[3],                      // Lower row matches base model
-            lm.keyWidths[4],                      // Bottom row matches base model
+            ...lm.keyWidths.slice(1),
         ],
 
         mainFingerAssignment: [[null], ...lm.mainFingerAssignment.slice(1, 5)],
@@ -181,6 +169,7 @@ export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
     };
 }
 
+// TODO: re-evaluate this for both variants of all three Keymap types!
 function numberlessKeymap(keymap: LayoutMapping): LayoutMapping {
     keymap[KeyboardRows.Number] = [null];
     keymap[KeyboardRows.Upper][0] = "Esc";
@@ -201,7 +190,7 @@ function moveReturn(keymap: LayoutMapping): LayoutMapping {
 function addBottomRowKeys(mapping: LayoutMapping): LayoutMapping {
     const newMapping = mapping.map((row) => [...row]);
     const bottomRow = newMapping[KeyboardRows.Bottom];
-    bottomRow.splice(2, 0, "");
-    bottomRow.splice(bottomRow.length - 2, 0, "");
+    bottomRow.splice(2, 0, "⇤");
+    bottomRow.splice(bottomRow.length - 2, 0, "⇥");
     return newMapping;
 }
