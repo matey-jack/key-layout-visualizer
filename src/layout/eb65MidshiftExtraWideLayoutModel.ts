@@ -29,8 +29,6 @@ export const eb65MidshiftExtraWideLayoutModel: LayoutModel = {
 
     rowIndent: keyWidths.rowIndent,
 
-    // Key sizes are mostly the same as EB65 Lowshift Midsize Enter, except for 2u Backspace up top.
-    // But the lower row has a regular 0.25 stagger.
     keyWidths: [
         keyWidths.row(KeyboardRows.Number, 1.5, 1),
         keyWidths.row(KeyboardRows.Upper, 1.25, 1.75),
@@ -38,10 +36,6 @@ export const eb65MidshiftExtraWideLayoutModel: LayoutModel = {
         [0.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.25, 1, 1],
         [0.5, 1.25, 1.25, 1.25, 1.25, 1.75, 1, 1.75, 1.25, 0.25, 1.25, 0.25, 1, 1, 1],
     ],
-    keyCapWidth(row: KeyboardRows, col: number) {
-        if (row === KeyboardRows.Bottom && col > 0 && col < 4) return 1.25;
-        return this.keyWidths![row][col];
-    },
     leftHomeIndex: 4,
     rightHomeIndex: 10,
 
