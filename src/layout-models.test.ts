@@ -20,7 +20,7 @@ import {
     createErgoPlankWithArrows,
     ergoPlank60LayoutModel
 } from "./layout/ergoPlank60LayoutModel.ts";
-import {ergoslatLayoutModel, makeErgoslatNumberless} from './layout/ergoslatLayoutModel.ts';
+import {majorErgoslatLayoutModel, minorErgoslatLayoutModel, makeErgoslatNumberless} from './layout/ergoslatLayoutModel.ts';
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
@@ -41,12 +41,12 @@ const layoutModels: Array<LayoutModel> = [
     xhkbLayoutModel,
     xhkbWithArrowsLayoutModel,
     ahkbLayoutModel,
-    ergoslatLayoutModel(false),
-    ergoslatLayoutModel(true),
-    ergoslatLayoutModel(false, true),
-    ergoslatLayoutModel(true, true),
-    makeErgoslatNumberless(ergoslatLayoutModel(false)),
-    makeErgoslatNumberless(ergoslatLayoutModel(false, true)),
+    majorErgoslatLayoutModel(false),
+    majorErgoslatLayoutModel(true),
+    minorErgoslatLayoutModel(false),
+    minorErgoslatLayoutModel(true),
+    makeErgoslatNumberless(majorErgoslatLayoutModel(false)),
+    makeErgoslatNumberless(minorErgoslatLayoutModel(false)),
     eb65LowshiftLayoutModel,
     eb65BigEnterLayoutModel,
     eb65LowshiftWideLayoutModel,
