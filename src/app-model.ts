@@ -59,7 +59,7 @@ export enum EB65_LowShift_Variant {
 export enum EB65_MidShift_Variant {
     EXTRA_WIDE, // Same key sizes as low shift "wide hands", but keymap changed for wider home position.
     NICELY_WIDE, // Same key sizes as low shift "less gaps", but keymap changed for wider home position.
-    RIGHT_ENTER, // Similar key sizes  as low shift "less gaps", same hand position, lower row 0.25 stagger.
+    RIGHT_ENTER, // Similar key sizes as low shift "less gaps", same hand position, lower row 0.25 stagger.
     CENTRAL_ENTER, // Same as RIGHT_ENTER, but 1.5u key in upper row gap.
     VERTICAL_ENTER, // Like "right enter", only Enter, Backspace, right Shift change.
 }
