@@ -1,5 +1,5 @@
 import {describe, expect, it} from "vitest";
-import {KeyboardRows, KEYMAP_TYPES, type KeymapTypeId, type LayoutModel} from "./base-model.ts";
+import {KEYMAP_TYPES, KeyboardRows, type KeymapTypeId, type LayoutModel} from "./base-model.ts";
 import {ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createApple, createHHKB} from "./layout/ansiLayoutModel.ts";
 import {eb65BigEnterLayoutModel, eb65LowshiftLayoutModel} from "./layout/eb65LowshiftLayoutModel.ts";
@@ -8,13 +8,13 @@ import {
     eb65LowshiftWideLayoutModel,
 } from "./layout/eb65LowshiftWideLayoutModel.ts";
 import {eb65MidshiftExtraWideLayoutModel} from "./layout/eb65MidshiftExtraWideLayoutModel.ts";
-import {eb65MidshiftMiddleWideLayoutModel} from "./layout/eb65MidshiftMiddleWideLayoutModel.ts";
 import {
     eb65CentralEnterLayoutModel,
     eb65MidshiftRightRetLayoutModel,
     eb65VerticalEnterLayoutModel,
 } from "./layout/eb65MidshiftNarrowLayoutModels.ts";
 import {eb65MidshiftNiceLayoutModel} from "./layout/eb65MidshiftNiceLayoutModel.ts";
+import {eb65MidshiftSemiWideLayoutModel} from "./layout/eb65MidshiftSemiWideLayoutModel.ts";
 import {
     createErgoPlankMidShift,
     createErgoPlankWithArrows,
@@ -53,7 +53,7 @@ const layoutModels: Array<LayoutModel> = [
     eb65CentralEnterLayoutModel,
     eb65VerticalEnterLayoutModel,
     eb65MidshiftExtraWideLayoutModel,
-    eb65MidshiftMiddleWideLayoutModel,
+    eb65MidshiftSemiWideLayoutModel,
     ergoPlank60LayoutModel,
     createErgoPlankMidShift(ergoPlank60LayoutModel),
     createErgoPlankWithArrows(ergoPlank60LayoutModel),

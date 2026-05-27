@@ -84,11 +84,11 @@ export function EbMidshiftLayoutOptions({msVariant, setMsVariant}: EbMidshiftLay
                                   onChange={(checked) => checked && setMsVariant(msVar)}/>
     }
 
-    const narrowSubvariant = msVariant > EB65_MidShift_Variant.MIDDLE_WIDE;
+    const narrowSubvariant = msVariant > EB65_MidShift_Variant.SEMI_WIDE;
     return <>
         {midshiftVariant(EB65_MidShift_Variant.EXTRA_WIDE, "Extra Wide Hands 16/5.5")}
         {midshiftVariant(EB65_MidShift_Variant.NICELY_WIDE, "❤️ Wide Hands 16/5")}
-        {midshiftVariant(EB65_MidShift_Variant.MIDDLE_WIDE, "Semi Wide 16/4.5")}
+        {midshiftVariant(EB65_MidShift_Variant.SEMI_WIDE, "Semi Wide 16/4.5")}
 
         <CheckboxWithLabel label="Narrow Hands 16/4"
                            type="radio"

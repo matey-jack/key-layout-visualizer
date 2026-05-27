@@ -4,7 +4,7 @@ import {SymmetricKeyWidth, zeroIndent} from './keyWidth.ts';
 
 const keyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
-export const eb65MidshiftMiddleWideLayoutModel: LayoutModel = {
+export const eb65MidshiftSemiWideLayoutModel: LayoutModel = {
     ...eb65LowshiftWideLayoutModel,
     name: "Ergoboard 65 MidShift Middle Wide",
     description: ``,

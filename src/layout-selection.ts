@@ -22,13 +22,13 @@ import {
     eb65LowshiftWideLayoutModel,
 } from "./layout/eb65LowshiftWideLayoutModel.ts";
 import {eb65MidshiftExtraWideLayoutModel} from "./layout/eb65MidshiftExtraWideLayoutModel.ts";
-import {eb65MidshiftMiddleWideLayoutModel} from './layout/eb65MidshiftMiddleWideLayoutModel.ts';
 import {
     eb65CentralEnterLayoutModel,
     eb65MidshiftRightRetLayoutModel,
     eb65VerticalEnterLayoutModel,
 } from "./layout/eb65MidshiftNarrowLayoutModels.ts";
 import {eb65MidshiftNiceLayoutModel} from "./layout/eb65MidshiftNiceLayoutModel.ts";
+import {eb65MidshiftSemiWideLayoutModel} from './layout/eb65MidshiftSemiWideLayoutModel.ts';
 import {
     createErgoPlankMidShift,
     createErgoPlankWithArrows,
@@ -81,8 +81,8 @@ export function getPlankVariant(opts: LayoutOptions): LayoutModel {
             switch (opts.eb65MidshiftVariant) {
                 case EB65_MidShift_Variant.EXTRA_WIDE:
                     return eb65MidshiftExtraWideLayoutModel;
-                case EB65_MidShift_Variant.MIDDLE_WIDE:
-                    return eb65MidshiftMiddleWideLayoutModel;
+                case EB65_MidShift_Variant.SEMI_WIDE:
+                    return eb65MidshiftSemiWideLayoutModel;
                 // next three are the "narrow hands" subvariants
                 case EB65_MidShift_Variant.CENTRAL_ENTER:
                     return eb65CentralEnterLayoutModel;
