@@ -22,6 +22,7 @@ import {
     eb65LowshiftWideLayoutModel,
 } from "./layout/eb65LowshiftWideLayoutModel.ts";
 import {eb65MidshiftExtraWideLayoutModel} from "./layout/eb65MidshiftExtraWideLayoutModel.ts";
+import {eb65MidshiftMiddleWideLayoutModel} from './layout/eb65MidshiftMiddleWideLayoutModel.ts';
 import {
     eb65CentralEnterLayoutModel,
     eb65MidshiftRightRetLayoutModel,
@@ -80,6 +81,8 @@ export function getPlankVariant(opts: LayoutOptions): LayoutModel {
             switch (opts.eb65MidshiftVariant) {
                 case EB65_MidShift_Variant.EXTRA_WIDE:
                     return eb65MidshiftExtraWideLayoutModel;
+                case EB65_MidShift_Variant.MIDDLE_WIDE:
+                    return eb65MidshiftMiddleWideLayoutModel;
                 // next three are the "narrow hands" subvariants
                 case EB65_MidShift_Variant.CENTRAL_ENTER:
                     return eb65CentralEnterLayoutModel;

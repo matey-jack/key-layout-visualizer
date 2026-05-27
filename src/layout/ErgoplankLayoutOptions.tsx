@@ -55,7 +55,8 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
                 </div>
             }
             {lowshiftVariant(EB65_LowShift_Variant.LESS_GAPS, "Less Gaps 16/4")}
-            {lowshiftVariant(EB65_LowShift_Variant.BIG_ENTER, "Big Enter & Space 16/4")}
+            {/* Disabled, because the second thumb keys are hard to reach with such big central thumb keys!
+            {lowshiftVariant(EB65_LowShift_Variant.BIG_ENTER, "Big Enter & Space 16/4")}*/}
             <FlipRetRubButton setOption={setOption} options={options}/>
         </LayoutVariantButton>
 
@@ -83,15 +84,11 @@ export function EbMidshiftLayoutOptions({msVariant, setMsVariant}: EbMidshiftLay
                                   onChange={(checked) => checked && setMsVariant(msVar)}/>
     }
 
-    const narrowSubvariant = msVariant > EB65_MidShift_Variant.NICELY_WIDE;
+    const narrowSubvariant = msVariant > EB65_MidShift_Variant.MIDDLE_WIDE;
     return <>
         {midshiftVariant(EB65_MidShift_Variant.EXTRA_WIDE, "Extra Wide Hands 16/5.5")}
         {midshiftVariant(EB65_MidShift_Variant.NICELY_WIDE, "❤️ Wide Hands 16/5")}
-        {msVariant === EB65_MidShift_Variant.NICELY_WIDE && false &&
-            <div className="ergoplank-midshift-xl-bars-checkbox">
-                <CheckboxWithLabel label="XL bottom bars" checked={false}/>
-            </div>
-        }
+        {midshiftVariant(EB65_MidShift_Variant.MIDDLE_WIDE, "Semi Wide 16/4.5")}
 
         <CheckboxWithLabel label="Narrow Hands 16/4"
                            type="radio"
@@ -100,9 +97,9 @@ export function EbMidshiftLayoutOptions({msVariant, setMsVariant}: EbMidshiftLay
                            onChange={(checked) =>  checked && setMsVariant(EB65_MidShift_Variant.RIGHT_ENTER)}/>
 
         {narrowSubvariant && <div class="ergoplank-midshift-sub-variants-container">
-            {midshiftVariant(EB65_MidShift_Variant.CENTRAL_ENTER, "Central Enter key", true)}
             {midshiftVariant(EB65_MidShift_Variant.RIGHT_ENTER, "Right-side Enter key", true)}
             {midshiftVariant(EB65_MidShift_Variant.VERTICAL_ENTER, "Vertical Enter key", true)}
+            {midshiftVariant(EB65_MidShift_Variant.CENTRAL_ENTER, "Central Enter key", true)}
         </div>}
     </>
 }
