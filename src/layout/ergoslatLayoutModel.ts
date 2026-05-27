@@ -53,7 +53,7 @@ const thumb30MidshiftFrame: LayoutMapping = [
     ["Cmd", "Alt", "⌦", 0, "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
-export function ergoslatLayoutModel(midShift: boolean, smallerThumbs: boolean = false): LayoutModel {
+export function ergoslatLayoutModel(midShift: boolean, smallerThumbs: boolean): LayoutModel {
     const keyWidths = smallerThumbs
         ? new SymmetricKeyWidth(13, [0.25, 0, 0, 0.5, 0.25])
         : new SymmetricKeyWidth(13, [0, 0.25, 0, 0, 0.5]);
