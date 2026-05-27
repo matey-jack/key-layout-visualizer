@@ -25,8 +25,8 @@ const ansi30MidshiftFrame: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "⇧"],
-    ["Ctrl", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9],
-    ["Cmd", "Alt", "⌦", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
+    [0, 1, 2, 3, 4, "=", "⌦", 5, 6, 7, 8, 9],
+    ["Ctrl", "Cmd", "Alt", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
 const ansi32FrameMapping: LayoutMapping = [
@@ -41,8 +41,8 @@ const ansi32MidshiftFrame: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, 10],
     ["⇧", 0, 1, 2, 3, 4, 10, 5, 6, 7, 8, 9, "⇧"],
-    ["Ctrl", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9],
-    ["Cmd", "Alt", "⌦", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
+    [0, 1, 2, 3, 4, "=", "⌦", 5, 6, 7, 8, 9],
+    ["Ctrl", "Cmd", "Alt", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
 const thumb30FrameMapping: LayoutMapping = [
@@ -55,14 +55,14 @@ const thumb30FrameMapping: LayoutMapping = [
 
 const thumb30MidshiftFrame: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-    ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "'"],
+    ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
     ["⇧", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "⇧"],
-    ["Ctrl", 0, 1, 2, 3, 4, "/", 5, 6, 7, 8, "⏎"],
-    ["Cmd", "Alt", "⌦", 0, "⍽", "AltGr", "Fn", "Ctrl"],
+    [0, 1, 2, 3, 4, "/", "⌦", 5, 6, 7, 8, "'"],
+    ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
 export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
-    const keyWidths = new SymmetricKeyWidth(13, [0, 0.25, 0, 0, 0.5]);
+    const keyWidths = new SymmetricKeyWidth(13, [0, 0.25, 0, midShift ? 0.5 : 0, 0.5]);
 
     return {
         name: "Ergoslat 13/3",
@@ -76,7 +76,7 @@ export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
             keyWidths.row(0, 1.5),
             keyWidths.row(1, 1),
             keyWidths.row(2, 1),
-            keyWidths.row(3, 1.5),
+            midShift ? keyWidths.row(3, 1) : keyWidths.row(3, 1.5),
             mirror(1.5, 1.5, 1.5, 1.5),
         ],
 
@@ -149,25 +149,6 @@ export function minorErgoslatLayoutModel(midShift: boolean): LayoutModel {
     };
 }
 
-export function ergoSlatAddAngleMod(lm: LayoutModel): LayoutModel {
-    return {
-        ...lm,
-        name: "ErGO 13/3 (angle-mod)",
-        frameMappings: mapValues(lm.frameMappings, (_, mapping) =>
-            copyAndModifyKeymap(mapping, angleModKeymap),
-        ) as typeof lm.frameMappings,
-    };
-}
-
-function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
-    keymap[KeyboardRows.Home][0] = [1, 0];
-    keymap[KeyboardRows.Home][7] = '⌦';
-    const lower = keymap[KeyboardRows.Lower];
-    const lMiddle = 6;
-    keymap[KeyboardRows.Lower] = ['⇧', ...lower.slice(2, lMiddle), '`~', ...lower.slice(lMiddle)];
-    return keymap;
-}
-
 const numberlessKeyWidths = new SymmetricKeyWidth(13, [0, 0, 0, 0, 0.5]);
 
 export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
@@ -194,7 +175,6 @@ export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
         mainFingerAssignment: [[null], ...lm.mainFingerAssignment.slice(1, 5)],
         singleKeyEffort: [[null], ...lm.singleKeyEffort.slice(1, 5)],
         frameMappings: {
-            // TODO: ansi30 numberless misses '-'
             [KeymapTypeId.Ansi30]: numberlessKeymap(copyKeymap(lm.frameMappings[KeymapTypeId.Ansi30]!)),
             [KeymapTypeId.Thumb30]: moveReturn(numberlessKeymap(copyKeymap(lm.frameMappings[KeymapTypeId.Thumb30]!))),
         },
