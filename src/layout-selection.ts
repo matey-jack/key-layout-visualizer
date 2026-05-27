@@ -64,7 +64,7 @@ export function getPlankVariant(opts: LayoutOptions): LayoutModel {
         case PlankVariant.KATANA_60:
             return katanaLayoutModel;
         case PlankVariant.ES13: {
-            const baseModel = ergoslatLayoutModel(opts.midShift);
+            const baseModel = ergoslatLayoutModel(opts.midShift, opts.esSmallerThumbs);
             return opts.esNumberless ? makeErgoslatNumberless(baseModel) : baseModel;
         }
         case PlankVariant.EB65_LOW_SHIFT:
