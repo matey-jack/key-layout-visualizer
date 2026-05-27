@@ -2,6 +2,13 @@
 
 I find that my thumb naturally rests 1u from the index finger home position and I think that this is the perfect boundary
 between the two main thumb keys!
+For aesthetic reasons and since the space in the center of the keyboard is hard to reach anyway, I want to thumb keys
+to be bigger than 1u. The size of the central keys needs to adapt, so that the boundary falls where I want it.
+But the other two thumb keys can be 1.25 or 1.5u depending on how much space is left for other keys in the bottom row.
+The idea is that key sizes there should be relatively uniform, 1.25u by default, possibly with the outermost one being
+1.5u on account of little pinky curling into a ball to hit it.
+
+## Key sizings depending on the gap size between hand positions.
 
 With 3u between the index home keys, which affects only the Ergoslat:
  - the perfect alignment would require 1u keys; I have so far rejected it for aesthetic reasons.

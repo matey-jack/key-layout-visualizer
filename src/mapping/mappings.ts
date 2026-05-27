@@ -24,7 +24,7 @@
         - Flip means a swap on the same finger.
         - Fling means a swap to the other hand. Many of the Qwerty-derived mappings have exactly one of that!
           E or R or T to the right pinky! (Or another finger in case of mappings like Colemak which have a lot of finger swaps.)
-        - No specific term for finger-swaps.
+        - And no specific term for same-finger-swaps.
 
     For some time, I used the name "Thumby" for the "English Top Nine" straw man mapping below.
     But later I separated both terms, using "Top Nine" for variants based on the ASRT NIOH home row,
