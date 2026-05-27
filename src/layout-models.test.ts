@@ -8,6 +8,7 @@ import {
     eb65LowshiftWideLayoutModel,
 } from "./layout/eb65LowshiftWideLayoutModel.ts";
 import {eb65MidshiftExtraWideLayoutModel} from "./layout/eb65MidshiftExtraWideLayoutModel.ts";
+import {eb65MidshiftMiddleWideLayoutModel} from "./layout/eb65MidshiftMiddleWideLayoutModel.ts";
 import {
     eb65CentralEnterLayoutModel,
     eb65MidshiftRightRetLayoutModel,
@@ -52,6 +53,7 @@ const layoutModels: Array<LayoutModel> = [
     eb65CentralEnterLayoutModel,
     eb65VerticalEnterLayoutModel,
     eb65MidshiftExtraWideLayoutModel,
+    eb65MidshiftMiddleWideLayoutModel,
     ergoPlank60LayoutModel,
     createErgoPlankMidShift(ergoPlank60LayoutModel),
     createErgoPlankWithArrows(ergoPlank60LayoutModel),

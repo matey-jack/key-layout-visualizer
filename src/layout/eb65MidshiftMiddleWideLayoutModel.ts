@@ -13,22 +13,37 @@ export const eb65MidshiftMiddleWideLayoutModel: LayoutModel = {
     symmetricStagger: true,
 
     keyWidths: [
-        // TODO: make the delete key in the center 1.5u wide.
-        keyWidths.row(0, 1.5, 1),
+        keyWidths.row(0, 1.5, 1, 7.25),
         ...eb65LowshiftWideLayoutModel.keyWidths.slice(1, 3),
         [0.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.25, 1, 1],
         eb65LowshiftWideLayoutModel.keyWidths[KeyboardRows.Bottom],
     ],
 
+    mainFingerAssignment: [
+        [1, 1, 1, 1, 2, 3, 3, 6, 6, 7, 8, 8, 8, null, null],
+        eb65LowshiftWideLayoutModel.mainFingerAssignment[KeyboardRows.Upper],
+        eb65LowshiftWideLayoutModel.mainFingerAssignment[KeyboardRows.Home],
+        [0, 0, 1, 2, 3, 3, 3, 3, 6, 6, 6, 7, 8, 9, null, null, null],
+        eb65LowshiftWideLayoutModel.mainFingerAssignment[KeyboardRows.Bottom],
+    ],
+
+    singleKeyEffort: [
+        [null, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, null, null],
+        eb65LowshiftWideLayoutModel.singleKeyEffort[KeyboardRows.Upper],
+        eb65LowshiftWideLayoutModel.singleKeyEffort[KeyboardRows.Home],
+        [3.0, 1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0, null, null, null],
+        eb65LowshiftWideLayoutModel.singleKeyEffort[KeyboardRows.Bottom],
+    ],
+
     frameMappings: {
         [KeymapTypeId.Ansi30]: [
-            ["Esc", "1", "2", "3", "4", "5", "⌦", null, "6", "7", "8", "9", "0", "\\", "⇞", "⇟"],
+            ["Esc", "1", "2", "3", "4", "5", "⌦", "6", "7", "8", "9", "0", "\\", "⇞", "⇟"],
             ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "'", "⌫"],
             ["⇧", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "⇧", "⏎"],
             [null, 0, 1, 2, 3, 4, "=", "`~", "-", 5, 6, 7, 8, 9, null, "↑", null],
             [null, "Ctrl", "Cmd", "CAPS", "Alt", "⍽", "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
         ], [KeymapTypeId.Thumb30]: [
-            ["Esc", "1", "2", "3", "4", "5", "⌦", null, "6", "7", "8", "9", "0", "\\", "⇞", "⇟"],
+            ["Esc", "1", "2", "3", "4", "5", "⌦", "6", "7", "8", "9", "0", "\\", "⇞", "⇟"],
             ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "'", "⌫"],
             ["⇧", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "⇧", "⏎"],
             [null, 0, 1, 2, 3, 4, "=", "`~", "Ins", 5, 6, 7, 8, "/", null, "↑", null],
