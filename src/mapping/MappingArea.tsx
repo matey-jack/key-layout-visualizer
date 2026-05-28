@@ -33,6 +33,22 @@ function getInitialFilterMode(mapping: FlexMapping): MappingFilter {
     return MappingFilter.All;
 }
 
+interface FilterTabButtonProps {
+    filter: MappingFilter;
+    filterSignal: Signal<MappingFilter>;
+    label: string;
+}
+
+function FilterTabButton({filter, filterSignal, label}: FilterTabButtonProps) {
+    return <button
+        type="button"
+        class={`mapping-filter-tab${filterSignal.value === filter ? " selected" : ""}`}
+        onClick={() => { filterSignal.value = filter; }}
+    >
+        {label}
+    </button>;
+}
+
 export interface MappingListProps {
     appState: AppState;
 }
@@ -45,34 +61,15 @@ export function MappingList({appState}: MappingListProps) {
                 return mapping.localMaximum;
             case MappingFilter.International:
                 return mapping.name === "Qwerty" || mapping.techName === "QWERTY" || !!mapping.mappings[KeymapTypeId.Ansi32];
-            case MappingFilter.All:
-                return true;
         }
+        return true;
     });
 
     return <div class="mapping-list-controls">
         <div class="mapping-filter-tabs">
-            <button
-                type="button"
-                class={`mapping-filter-tab${filterMode.value === MappingFilter.English ? " selected" : ""}`}
-                onClick={() => { filterMode.value = MappingFilter.English; }}
-            >
-                recommended for English
-            </button>
-            <button
-                type="button"
-                class={`mapping-filter-tab${filterMode.value === MappingFilter.International ? " selected" : ""}`}
-                onClick={() => { filterMode.value = MappingFilter.International; }}
-            >
-                international alphabets
-            </button>
-            <button
-                type="button"
-                class={`mapping-filter-tab${filterMode.value === MappingFilter.All ? " selected" : ""}`}
-                onClick={() => { filterMode.value = MappingFilter.All; }}
-            >
-                all mappings
-            </button>
+            <FilterTabButton label="recommended for English" filter={MappingFilter.English} filterSignal={filterMode}/>
+            <FilterTabButton label="international alphabets" filter={MappingFilter.International} filterSignal={filterMode}/>
+            <FilterTabButton label="show all mapping" filter={MappingFilter.All} filterSignal={filterMode}/>
         </div>
         <table class="mapping-list">
             <thead>
