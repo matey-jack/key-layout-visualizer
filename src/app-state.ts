@@ -178,11 +178,11 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
             break;
         case LayoutType.Ergoplank:
             params.set("plank", layout.plankVariant.toString());
-            params.set("ep60arrows", layout.bottomArrows ? "1" : "0");
+            params.set("bottomArrows", layout.bottomArrows ? "1" : "0");
             params.set("esNumberless", layout.esNumberless ? "1" : "0");
             params.set("esSmallerThumbs", layout.esSmallerThumbs ? "1" : "0");
-            params.set("ergoboardLS", layout.ergoboardLowshiftVariant.toString());
-            params.set("ergoboardMS", layout.ergoboardMidshiftVariant.toString());
+            params.set("ebLsVariant", layout.ergoboardLowshiftVariant.toString());
+            params.set("ebMsVariant", layout.ergoboardMidshiftVariant.toString());
             subLayout = PlankVariant[layout.plankVariant] + (layout.bottomArrows ? "+arrows" : "") + (layout.esNumberless ? "+esNumberless" : "") + (layout.esSmallerThumbs ? "+esSmallerThumbs" : "");
             break;
     }
@@ -211,11 +211,11 @@ export function createAppState(): AppState {
         angleMod: s2b(params.get("angle")) ?? false,
         harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
         plankVariant: s2i(params.get("plank")) ?? PlankVariant.ERGOPLANK,
-        bottomArrows: s2b(params.get("ep60arrows")) ?? false,
+        bottomArrows: s2b(params.get("bottomArrows") ?? params.get("ep60arrows")) ?? false,
         esNumberless: s2b(params.get("esNumberless")) ?? false,
         esSmallerThumbs: s2b(params.get("esSmallerThumbs")) ?? true,
-        ergoboardLowshiftVariant: s2i(params.get("ergoboardLS") ?? params.get("eb65ls")) ?? ErgoboardLowshiftVariant.LESS_GAPS,
-        ergoboardMidshiftVariant: s2i(params.get("ergoboardMS") ?? params.get("eb65ms")) ?? ErgoboardMidshiftVariant.NICELY_WIDE,
+        ergoboardLowshiftVariant: s2i(params.get("ebLsVariant") ?? params.get("eb65ls")) ?? ErgoboardLowshiftVariant.LESS_GAPS,
+        ergoboardMidshiftVariant: s2i(params.get("ebMsVariant") ?? params.get("eb65ms")) ?? ErgoboardMidshiftVariant.NICELY_WIDE,
         flipRetRub: false,
     });
     const layoutModel = computed(() => getLayoutModel(layoutOptionsState.value))
