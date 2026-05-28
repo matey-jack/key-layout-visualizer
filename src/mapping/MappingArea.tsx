@@ -73,7 +73,7 @@ export function MappingList({appState}: MappingListProps) {
         <div class="mapping-filter-tabs">
             <FilterTabButton label="recommended for English" filter={MappingFilter.English} filterSignal={filterMode}/>
             <FilterTabButton label="international alphabets" filter={MappingFilter.International} filterSignal={filterMode}/>
-            <FilterTabButton label="show all mapping" filter={MappingFilter.All} filterSignal={filterMode}/>
+            <FilterTabButton label="all mappings" filter={MappingFilter.All} filterSignal={filterMode}/>
         </div>
         <table class="mapping-list">
             <thead>
