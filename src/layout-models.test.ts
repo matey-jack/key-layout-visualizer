@@ -1,5 +1,5 @@
 import {describe, expect, it} from "vitest";
-import {KEYMAP_TYPES, KeyboardRows, type KeymapTypeId, type LayoutModel} from "./base-model.ts";
+import {KEYMAP_TYPES, KeyboardRows, KeymapTypeId, type LayoutModel} from "./base-model.ts";
 import {ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createApple, createHHKB} from "./layout/ansiLayoutModel.ts";
 import {eb65BigEnterLayoutModel, eb65LowshiftLayoutModel} from "./layout/eb65LowshiftLayoutModel.ts";
@@ -183,3 +183,34 @@ describe('frameMappings frame mapping validation', () => {
          });
      });
  });
+
+describe('Ergoslat numberless key placements', () => {
+    it('moves upper row overridden keys to the bottom row instead of Home and End', () => {
+        const baseMinor = minorErgoslatLayoutModel(false);
+        const numberlessMinor = makeErgoslatNumberless(baseMinor);
+
+        // Check Ansi30
+        const baseAnsi30 = baseMinor.frameMappings[KeymapTypeId.Ansi30]!;
+        const numAnsi30 = numberlessMinor.frameMappings[KeymapTypeId.Ansi30]!;
+
+        const expectedBottom2 = baseAnsi30[KeyboardRows.Upper][0]; // "↹"
+        const expectedBottom7 = baseAnsi30[KeyboardRows.Upper][12]; // "-"
+
+        expect(numAnsi30[KeyboardRows.Upper][0]).toBe("Esc");
+        expect(numAnsi30[KeyboardRows.Upper][12]).toBe("⌫");
+        expect(numAnsi30[KeyboardRows.Bottom][2]).toBe(expectedBottom2);
+        expect(numAnsi30[KeyboardRows.Bottom][7]).toBe(expectedBottom7);
+
+        // Check Thumb30
+        const baseThumb30 = baseMinor.frameMappings[KeymapTypeId.Thumb30]!;
+        const numThumb30 = numberlessMinor.frameMappings[KeymapTypeId.Thumb30]!;
+
+        const expectedThumbBottom2 = baseThumb30[KeyboardRows.Upper][0]; // "↹"
+        const expectedThumbBottom7 = baseThumb30[KeyboardRows.Upper][12]; // "⏎"
+
+        expect(numThumb30[KeyboardRows.Upper][0]).toBe("Esc");
+        expect(numThumb30[KeyboardRows.Upper][12]).toBe("⌫");
+        expect(numThumb30[KeyboardRows.Bottom][2]).toBe(expectedThumbBottom2);
+        expect(numThumb30[KeyboardRows.Bottom][7]).toBe(expectedThumbBottom7);
+    });
+});
