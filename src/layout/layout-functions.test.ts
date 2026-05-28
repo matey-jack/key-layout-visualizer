@@ -5,8 +5,8 @@ import {
     Hand,
     hand,
     KeyboardRows,
-    KeymapTypeId,
     type KeyMovement,
+    KeymapTypeId,
     type LayoutModel,
     MappingChange,
 } from "../base-model.ts";
@@ -18,7 +18,7 @@ import {topNine} from '../mapping/top9mappings.ts';
 import {ahkbLayoutModel} from "./ahkbLayoutModel.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
 import {eb65MidshiftNiceLayoutModel} from "./eb65MidshiftNiceLayoutModel.ts";
-import {ergoPlank60LayoutModel} from "./ergoPlank60LayoutModel.ts";
+import {ergoPlankLayoutModel} from "./ergoPlankLayoutModel.ts";
 import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
@@ -51,7 +51,7 @@ const allLayoutModels = [
     harmonic13MidshiftLayoutModel,
     harmonic12LayoutModel,
     katanaLayoutModel,
-    ergoPlank60LayoutModel,
+    ergoPlankLayoutModel,
     eb65MidshiftNiceLayoutModel,
     splitOrthoLayoutModel(true),
 ];
@@ -487,7 +487,7 @@ describe('getKeyPositions hasAltFinger - matches layoutModel.hasAltFinger', () =
     });
 
     it('ErgoPlank (low shift)', () => {
-        checkHasAltFinger(ergoPlank60LayoutModel, "zxcm,.");
+        checkHasAltFinger(ergoPlankLayoutModel, "zxcm,.");
     });
 
     it('ErgoBoard MidShift Nice', () => {

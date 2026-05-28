@@ -18,8 +18,8 @@ import {eb65MidshiftSemiWideLayoutModel} from "./layout/eb65MidshiftSemiWideLayo
 import {
     createErgoPlankMidShift,
     createErgoPlankWithArrows,
-    ergoPlank60LayoutModel
-} from "./layout/ergoPlank60LayoutModel.ts";
+    ergoPlankLayoutModel
+} from "./layout/ergoPlankLayoutModel.ts";
 import {majorErgoslatLayoutModel, makeErgoslatNumberless, minorErgoslatLayoutModel } from './layout/ergoslatLayoutModel.ts';
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
@@ -57,10 +57,10 @@ const layoutModels: Array<LayoutModel> = [
     eb65VerticalEnterLayoutModel,
     eb65MidshiftExtraWideLayoutModel,
     eb65MidshiftSemiWideLayoutModel,
-    ergoPlank60LayoutModel,
-    createErgoPlankMidShift(ergoPlank60LayoutModel),
-    createErgoPlankWithArrows(ergoPlank60LayoutModel),
-    createErgoPlankWithArrows(createErgoPlankMidShift(ergoPlank60LayoutModel)),
+    ergoPlankLayoutModel,
+    createErgoPlankMidShift(ergoPlankLayoutModel),
+    createErgoPlankWithArrows(ergoPlankLayoutModel),
+    createErgoPlankWithArrows(createErgoPlankMidShift(ergoPlankLayoutModel)),
     harmonic12LayoutModel,
     harmonic13WideLayoutModel,
     harmonic13MidshiftLayoutModel,
@@ -251,7 +251,7 @@ describe("midShift variants don't change the character set", () => {
         [ majorErgoslatLayoutModel(false), majorErgoslatLayoutModel(true) ],
         [ minorErgoslatLayoutModel(false), minorErgoslatLayoutModel(true) ],
         [ splitOrthoLayoutModel(false), splitOrthoLayoutModel(true) ],
-        [ ergoPlank60LayoutModel, createErgoPlankMidShift(ergoPlank60LayoutModel) ],
+        [ ergoPlankLayoutModel, createErgoPlankMidShift(ergoPlankLayoutModel) ],
     ]
      pairs.forEach(([lowShift, midShift]) => {
          (Object.keys(lowShift.frameMappings) as KeymapTypeId[]).forEach((keymapType) => {
