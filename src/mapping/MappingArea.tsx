@@ -17,21 +17,63 @@ import {
 import {offHomeRowFrequency} from "./mapping-functions.ts";
 import {allMappings} from "./mappings.ts";
 
+export enum MappingFilter {
+    English = "english",
+    International = "international",
+    All = "all",
+}
+
+function getInitialFilterMode(mapping: FlexMapping): MappingFilter {
+    if (mapping.mappings[KeymapTypeId.Ansi32]) {
+        return MappingFilter.International;
+    }
+    if (mapping.localMaximum) {
+        return MappingFilter.English;
+    }
+    return MappingFilter.All;
+}
+
 export interface MappingListProps {
     appState: AppState;
 }
 
 export function MappingList({appState}: MappingListProps) {
-    const showAllMappings = useSignal(!appState.mapping.value.localMaximum);
-    const filteredMappings = showAllMappings.value
-        ? allMappings
-        : allMappings.filter((mapping) => mapping.localMaximum);
+    const filterMode = useSignal<MappingFilter>(getInitialFilterMode(appState.mapping.value));
+    const filteredMappings = allMappings.filter((mapping) => {
+        switch (filterMode.value) {
+            case MappingFilter.English:
+                return mapping.localMaximum;
+            case MappingFilter.International:
+                return mapping.name === "Qwerty" || mapping.techName === "QWERTY" || !!mapping.mappings[KeymapTypeId.Ansi32];
+            case MappingFilter.All:
+                return true;
+        }
+    });
+
     return <div class="mapping-list-controls">
-        <CheckboxWithLabel
-            label="show all mappings"
-            checked={showAllMappings.value}
-            onChange={(checked) => {showAllMappings.value = checked;}}
-        />
+        <div class="mapping-filter-group">
+            <CheckboxWithLabel
+                label="recommended for English"
+                type="radio"
+                groupName="mapping_filter"
+                checked={filterMode.value === MappingFilter.English}
+                onChange={(checked) => { if (checked) filterMode.value = MappingFilter.English; }}
+            />
+            <CheckboxWithLabel
+                label="international alphabets"
+                type="radio"
+                groupName="mapping_filter"
+                checked={filterMode.value === MappingFilter.International}
+                onChange={(checked) => { if (checked) filterMode.value = MappingFilter.International; }}
+            />
+            <CheckboxWithLabel
+                label="show all mappings"
+                type="radio"
+                groupName="mapping_filter"
+                checked={filterMode.value === MappingFilter.All}
+                onChange={(checked) => { if (checked) filterMode.value = MappingFilter.All; }}
+            />
+        </div>
         <table class="mapping-list">
             <thead>
             <tr class="mapping-list-header">
@@ -50,7 +92,7 @@ export function MappingList({appState}: MappingListProps) {
                 <MappingListItem mapping={mapping}
                                  layout={appState.layoutModel.value}
                                  selectedMapping={appState.mapping}
-                                 showAllMappings={showAllMappings.value}
+                                 filterMode={filterMode.value}
                                  key={mapping.techName}
                                  appState={appState}/>,
             )}
@@ -64,12 +106,12 @@ interface MappingListItemProps {
     mapping: FlexMapping;
     selectedMapping: Signal<FlexMapping>;
     appState: AppState;
-    showAllMappings: boolean;
+    filterMode: MappingFilter;
 }
 
-export function MappingListItem({layout, mapping, selectedMapping, appState, showAllMappings}: MappingListItemProps) {
+export function MappingListItem({layout, mapping, selectedMapping, appState, filterMode}: MappingListItemProps) {
     const selectedClass = selectedMapping.value.name === mapping.name ? "selected" : "";
-    const recommendedClass = mapping.localMaximum && showAllMappings ? "recommended" : "";
+    const recommendedClass = mapping.localMaximum && filterMode !== MappingFilter.English ? "recommended" : "";
     const thumbLetterClass = mapping.mappings[KeymapTypeId.Thumb30] ? "thumb-letter" : "";
     const charMap = fillMapping(layout, mapping);
     const movements = charMap && getBigramMovements(
