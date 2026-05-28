@@ -17,7 +17,7 @@ import {thumbyZero} from '../mapping/flipMappings.ts';
 import {topNine} from '../mapping/top9mappings.ts';
 import {ahkbLayoutModel} from "./ahkbLayoutModel.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
-import {eb65MidshiftNiceLayoutModel} from "./eb65MidshiftNiceLayoutModel.ts";
+import {ergoboardMidshiftNiceLayoutModel} from "./ergoboardMidshiftNiceLayoutModel.ts";
 import {ergoPlankLayoutModel} from "./ergoPlankLayoutModel.ts";
 import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
@@ -52,7 +52,7 @@ const allLayoutModels = [
     harmonic12LayoutModel,
     katanaLayoutModel,
     ergoPlankLayoutModel,
-    eb65MidshiftNiceLayoutModel,
+    ergoboardMidshiftNiceLayoutModel,
     splitOrthoLayoutModel(true),
 ];
 
@@ -491,6 +491,6 @@ describe('getKeyPositions hasAltFinger - matches layoutModel.hasAltFinger', () =
     });
 
     it('ErgoBoard MidShift Nice', () => {
-        checkHasAltFinger(eb65MidshiftNiceLayoutModel, "");
+        checkHasAltFinger(ergoboardMidshiftNiceLayoutModel, "");
     });
 });

@@ -41,13 +41,13 @@ export enum PlankVariant {
     ERGOBOARD_MID_SHIFT,
 }
 
-export enum EB65_LowShift_Variant {
+export enum ErgoboardLowshiftVariant {
     WIDE_HANDS,
     LESS_GAPS,
     BIG_ENTER,
 }
 
-export enum EB65_MidShift_Variant {
+export enum ErgoboardMidshiftVariant {
     EXTRA_WIDE, // Same key sizes as low shift "wide hands", but keymap changed for wider home position.
     NICELY_WIDE, // Same key sizes as low shift "less gaps", but keymap changed for wider home position.
     SEMI_WIDE, // Same key sizes as low shift wide hands; even same hand position; only Shift assignment moves. (This is the widest possible hand position that still fits the traditional Return key position.
@@ -84,8 +84,8 @@ export interface LayoutOptions {
     bottomArrows: boolean;
 
     // Ergoboards
-    eb65LowshiftVariant: EB65_LowShift_Variant;
-    eb65MidshiftVariant: EB65_MidShift_Variant;
+    ergoboardLowshiftVariant: ErgoboardLowshiftVariant;
+    ergoboardMidshiftVariant: ErgoboardMidshiftVariant;
 }
 
 export function isSplit(opts: LayoutOptions) {

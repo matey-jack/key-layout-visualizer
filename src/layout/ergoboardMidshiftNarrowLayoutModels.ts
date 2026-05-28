@@ -5,10 +5,11 @@ import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.t
 
 const keyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
-export const eb65MidshiftRightRetLayoutModel: LayoutModel = {
+export const ergoboardMidshiftRightRetLayoutModel: LayoutModel = {
     name: "Ergoboard 65 MidShift Narrow, Right Return",
     description: ``,
 
+    // row lengths: 16, 15, 15 (with 0.5u gap), 16, 14
     mainFingerAssignment: [
         [null, 1, 1, 1, 2, 3, 3, 3, 6, 6, 7, 8, 8, 8, null, null],
         [0, 0, 1, 2, 3, 3, 3, 6, 6, 7, 8, 9, 9, null],
@@ -67,23 +68,23 @@ export const eb65MidshiftRightRetLayoutModel: LayoutModel = {
 
     keyColorClass: keyColorHighlightsClass,
 }
-export const eb65CentralEnterLayoutModel: LayoutModel = {
-    ...eb65MidshiftRightRetLayoutModel,
+export const ergoboardCentralEnterLayoutModel: LayoutModel = {
+    ...ergoboardMidshiftRightRetLayoutModel,
     name: "Ergoboard 65 MidShift Narrow, Central Return",
-    keyWidths: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.keyWidths!, (matrix) => {
+    keyWidths: copyAndModifyKeymap(ergoboardMidshiftRightRetLayoutModel.keyWidths!, (matrix) => {
         matrix[KeyboardRows.Home][13] = 1.5;
         matrix[KeyboardRows.Home][14] = 1;
         return matrix;
     }),
-    frameMappings: mapValues(eb65MidshiftRightRetLayoutModel.frameMappings, (_, frameMapping) =>
+    frameMappings: mapValues(ergoboardMidshiftRightRetLayoutModel.frameMappings, (_, frameMapping) =>
         copyAndModifyKeymap(frameMapping, moveEnterToCenter)
     ),
-    mainFingerAssignment: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.mainFingerAssignment, (matrix) => {
+    mainFingerAssignment: copyAndModifyKeymap(ergoboardMidshiftRightRetLayoutModel.mainFingerAssignment, (matrix) => {
         matrix[KeyboardRows.Number][14] = Finger.RPinky;
         matrix[KeyboardRows.Home][14] = null;
         return matrix;
     }),
-    singleKeyEffort: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.singleKeyEffort, (matrix) => {
+    singleKeyEffort: copyAndModifyKeymap(ergoboardMidshiftRightRetLayoutModel.singleKeyEffort, (matrix) => {
         matrix[KeyboardRows.Number][14] = SKE_AWAY;
         matrix[KeyboardRows.Home][14] = null;
         return matrix;
@@ -99,10 +100,10 @@ function moveEnterToCenter(mapping: LayoutMapping): LayoutMapping {
     return mapping;
 }
 
-export const eb65VerticalEnterLayoutModel: LayoutModel = {
-    ...eb65MidshiftRightRetLayoutModel,
+export const ergoboardVerticalEnterLayoutModel: LayoutModel = {
+    ...ergoboardMidshiftRightRetLayoutModel,
     name: "Ergoboard 65 MidShift Narrow, Vertical Return",
-    keyWidths: copyAndModifyKeymap(eb65MidshiftRightRetLayoutModel.keyWidths!, (matrix) => {
+    keyWidths: copyAndModifyKeymap(ergoboardMidshiftRightRetLayoutModel.keyWidths!, (matrix) => {
         matrix[KeyboardRows.Home][13] = 1.5;   // Shift
         matrix[KeyboardRows.Home][14] = 1;     // Enter
         return matrix;

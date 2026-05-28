@@ -19,7 +19,7 @@ const thumb30FrameMapping: LayoutMapping = [
     [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
 ];
 
-export const eb65LowshiftLayoutModel: LayoutModel = {
+export const ergoboardLowshiftLayoutModel: LayoutModel = {
     name: "Ergoboard 65 LowShift Narrow",
     description: `"The most ergonomic key layout that fits into a standard "65%" keyboard case 
     and has a traditional inverted-T arrow key cluster."
@@ -75,10 +75,10 @@ export const eb65LowshiftLayoutModel: LayoutModel = {
     keyColorClass: keyColorHighlightsClass,
 }
 
-export const eb65BigEnterLayoutModel: LayoutModel = {
-    ...eb65LowshiftLayoutModel,
+export const ergoboardBigEnterLayoutModel: LayoutModel = {
+    ...ergoboardLowshiftLayoutModel,
     name: "Ergoboard 65 LowShift Big Enter",
-    keyWidths: copyAndModifyKeymap(eb65LowshiftLayoutModel.keyWidths, (matrix) => {
+    keyWidths: copyAndModifyKeymap(ergoboardLowshiftLayoutModel.keyWidths, (matrix) => {
         const homeRow = matrix[KeyboardRows.Home];
         homeRow.pop();
         homeRow[homeRow.length - 1] = 2.5;
@@ -90,8 +90,8 @@ export const eb65BigEnterLayoutModel: LayoutModel = {
         [KeymapTypeId.Thumb30]: copyAndModifyKeymap(thumb30FrameMapping, (m) => moveKeys(m, true)),
     },
 
-    mainFingerAssignment: copyAndModifyKeymap(eb65LowshiftLayoutModel.mainFingerAssignment!, (m) => removeKey(m)),
-    singleKeyEffort: copyAndModifyKeymap(eb65LowshiftLayoutModel.singleKeyEffort!, (m) => removeKey(m)),
+    mainFingerAssignment: copyAndModifyKeymap(ergoboardLowshiftLayoutModel.mainFingerAssignment!, (m) => removeKey(m)),
+    singleKeyEffort: copyAndModifyKeymap(ergoboardLowshiftLayoutModel.singleKeyEffort!, (m) => removeKey(m)),
 }
 
 function moveKeys(mapping: LayoutMapping, thumby: boolean): LayoutMapping {

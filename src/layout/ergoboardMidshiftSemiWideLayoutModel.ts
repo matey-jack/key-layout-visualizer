@@ -1,11 +1,11 @@
 import {KeyboardRows, KeymapTypeId, type LayoutModel,} from "../base-model.ts";
-import {eb65LowshiftWideLayoutModel} from './eb65LowshiftWideLayoutModel.ts';
+import {ergoboardLowshiftWideLayoutModel} from './ergoboardLowshiftWideLayoutModel.ts';
 import {SymmetricKeyWidth, zeroIndent} from './keyWidth.ts';
 
 const keyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
-export const eb65MidshiftSemiWideLayoutModel: LayoutModel = {
-    ...eb65LowshiftWideLayoutModel,
+export const ergoboardMidshiftSemiWideLayoutModel: LayoutModel = {
+    ...ergoboardLowshiftWideLayoutModel,
     name: "Ergoboard 65 MidShift Semi Wide",
     description: ``,
 
@@ -14,25 +14,25 @@ export const eb65MidshiftSemiWideLayoutModel: LayoutModel = {
 
     keyWidths: [
         keyWidths.row(0, 1.5, 1, 7.25),
-        ...eb65LowshiftWideLayoutModel.keyWidths.slice(1, 3),
+        ...ergoboardLowshiftWideLayoutModel.keyWidths.slice(1, 3),
         [0.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.25, 1, 1],
-        eb65LowshiftWideLayoutModel.keyWidths[KeyboardRows.Bottom],
+        ergoboardLowshiftWideLayoutModel.keyWidths[KeyboardRows.Bottom],
     ],
 
     mainFingerAssignment: [
         [1, 1, 1, 1, 2, 3, 3, 6, 6, 7, 8, 8, 8, null, null],
-        eb65LowshiftWideLayoutModel.mainFingerAssignment[KeyboardRows.Upper],
-        eb65LowshiftWideLayoutModel.mainFingerAssignment[KeyboardRows.Home],
+        ergoboardLowshiftWideLayoutModel.mainFingerAssignment[KeyboardRows.Upper],
+        ergoboardLowshiftWideLayoutModel.mainFingerAssignment[KeyboardRows.Home],
         [0, 0, 1, 2, 3, 3, 3, 3, 6, 6, 6, 7, 8, 9, null, null, null],
-        eb65LowshiftWideLayoutModel.mainFingerAssignment[KeyboardRows.Bottom],
+        ergoboardLowshiftWideLayoutModel.mainFingerAssignment[KeyboardRows.Bottom],
     ],
 
     singleKeyEffort: [
         [null, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, null, null],
-        eb65LowshiftWideLayoutModel.singleKeyEffort[KeyboardRows.Upper],
-        eb65LowshiftWideLayoutModel.singleKeyEffort[KeyboardRows.Home],
+        ergoboardLowshiftWideLayoutModel.singleKeyEffort[KeyboardRows.Upper],
+        ergoboardLowshiftWideLayoutModel.singleKeyEffort[KeyboardRows.Home],
         [3.0, 1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0, null, null, null],
-        eb65LowshiftWideLayoutModel.singleKeyEffort[KeyboardRows.Bottom],
+        ergoboardLowshiftWideLayoutModel.singleKeyEffort[KeyboardRows.Bottom],
     ],
 
     frameMappings: {
