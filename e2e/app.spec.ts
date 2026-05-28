@@ -155,18 +155,24 @@ test.describe('Keyboard Layout Visualizer', () => {
     // Errors will be caught in afterEach hook
   });
 
-  test('should handle show all mappings toggle without errors', async ({ page }) => {
-    // Find and click the "show all mappings" checkbox by label
-    const checkbox = page.locator('input[type="checkbox"]').filter({ has: page.locator('label:has-text("show all mappings")') }).first();
-    // Fallback approach if the above doesn't work - find by the label text
-    const checkboxByLabel = page.getByRole('checkbox', { name: /show all mappings/ });
-    const targetCheckbox = await checkboxByLabel.isVisible() ? checkboxByLabel : checkbox;
-    
-    await targetCheckbox.click();
+  test('should handle mapping filter radio buttons without errors', async ({ page }) => {
+    // Find and click each of the mapping filter radio buttons
+    const optInternational = page.getByRole('radio', { name: /international alphabets/i }).or(
+      page.locator('label').filter({ hasText: 'international alphabets' }).locator('input')
+    ).first();
+    await optInternational.click();
     await page.waitForLoadState('networkidle');
 
-    // Toggle it back
-    await targetCheckbox.click();
+    const optAll = page.getByRole('radio', { name: /show all mapping/i }).or(
+      page.locator('label').filter({ hasText: 'show all mapping' }).locator('input')
+    ).first();
+    await optAll.click();
+    await page.waitForLoadState('networkidle');
+
+    const optEnglish = page.getByRole('radio', { name: /recommended for English/i }).or(
+      page.locator('label').filter({ hasText: 'recommended for English' }).locator('input')
+    ).first();
+    await optEnglish.click();
     await page.waitForLoadState('networkidle');
     // Errors will be caught in afterEach hook
   });
