@@ -63,6 +63,26 @@ const thumb30MidshiftFrame: LayoutMapping = [
     ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
+const thumb32FrameMapping: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
+    ["⌦", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, [-1, 10]],
+    ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
+    ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl"],
+];
+
+const thumb32MidshiftFrame: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
+    ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
+    [0, 1, 2, 3, 4, "=", 9, 5, 6, 7, 8, [-2, 10]],
+    ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl"],
+];
+
+/*
+    The major/minor naming comes from musical intervals, since both Ergoslat variants have only two key sizes
+    and 1u is like a base note.
+ */
 export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
     const keyWidths = new SymmetricKeyWidth(13, [0, 0.25, 0, midShift ? 0.5 : 0, 0.25]);
 
@@ -70,10 +90,11 @@ export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
         [KeymapTypeId.Ansi30]: midShift ? ansi30MidshiftFrame : ansi30FrameMapping,
         [KeymapTypeId.Ansi32]: midShift ? ansi32MidshiftFrame : ansi32FrameMapping,
         [KeymapTypeId.Thumb30]: midShift ? thumb30MidshiftFrame : thumb30FrameMapping,
+        [KeymapTypeId.Thumb32]: midShift ? thumb32MidshiftFrame : thumb32FrameMapping,
     };
 
     return {
-        name: "Major Ergoslat 13/3",
+        name: "Major Ergoslat 13/3" + (midShift ? " MidShift" : ""),
         description: `A smaller ErgoPlank which still has enough keys to write messages, notes, and other texts 
         without excessively using higher layers. It omits only keys used for programming and more involved desktop work.
         While all keyboard layouts can be used with Android devices like smartphones and tablets, this one is specialized for that use case.
@@ -126,7 +147,7 @@ export function minorErgoslatLayoutModel(midShift: boolean): LayoutModel {
 
     return {
         ...base,
-        name: "Minor Ergoslat 13/3",
+        name: "Minor Ergoslat 13/3" + (midShift ? " MidShift" : ""),
         keyWidths: [
             keyWidths.row(0, 1.25),
             keyWidths.row(1, 1.25),
