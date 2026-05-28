@@ -165,22 +165,37 @@ export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
 
         mainFingerAssignment: [[null], ...lm.mainFingerAssignment.slice(1, 5)],
         singleKeyEffort: [[null], ...lm.singleKeyEffort.slice(1, 5)],
-        frameMappings: {
-            [KeymapTypeId.Ansi30]: numberlessKeymap(copyKeymap(lm.frameMappings[KeymapTypeId.Ansi30]!)),
-            [KeymapTypeId.Thumb30]: numberlessKeymap(copyKeymap(lm.frameMappings[KeymapTypeId.Thumb30]!)),
-        },
+        frameMappings: mapValues(lm.frameMappings, (_, mapping) =>
+            numberlessKeymap(copyKeymap(mapping))
+        ) as Partial<Record<KeymapTypeId, LayoutMapping>>,
     };
 }
 
 function numberlessKeymap(keymap: LayoutMapping): LayoutMapping {
-    keymap[KeyboardRows.Bottom][2] = keymap[KeyboardRows.Upper][0];
-    keymap[KeyboardRows.Bottom][7] = keymap[KeyboardRows.Upper][12];
+    const overriddenUpper0 = keymap[KeyboardRows.Upper][0];
+    const overriddenUpper12 = keymap[KeyboardRows.Upper][12];
 
     keymap[KeyboardRows.Number] = [null];
     keymap[KeyboardRows.Upper][0] = "Esc";
     keymap[KeyboardRows.Upper][12] = "⌫";
 
+    keymap[KeyboardRows.Bottom][2] = adjustPlaceholderRow(overriddenUpper0, -3);
+    keymap[KeyboardRows.Bottom][7] = adjustPlaceholderRow(overriddenUpper12, -3);
+
     return keymap;
+}
+
+function adjustPlaceholderRow(
+    v: string | number | null | [number, number],
+    offset: number
+): string | number | null | [number, number] {
+    if (typeof v === "number") {
+        return [offset, v];
+    }
+    if (Array.isArray(v)) {
+        return [v[0] + offset, v[1]];
+    }
+    return v;
 }
 
 function addBottomRowGaps(mapping: LayoutMapping): LayoutMapping {

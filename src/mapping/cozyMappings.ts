@@ -1,5 +1,5 @@
 import {type FlexMapping, KeymapTypeId} from '../base-model.ts';
-import {qwertzMapping} from './baseMappings.ts';
+import {qwertzMapping, semiQwertzMapping} from './baseMappings.ts';
 import {qwertyFlipTwistMapping} from './flipMappings.ts';
 
 export const cozyEnglish: FlexMapping = {
@@ -128,7 +128,7 @@ export const gemuetlichesMapping: FlexMapping = {
         Shows how I map Umlauts and punctuation on ANSI keyboards and the Ergodox.`,
     sourceUrl: "https://github.com/matey-jack/gemuetliche-tastatur",
     sourceLinkTitle: "GitHub: matey-jack/gemuetliche-tastatur",
-    comparisonBase: qwertzMapping,
+    comparisonBase: semiQwertzMapping,
 
     // I actually used this mapping on an ISO keyboard, so the right pinky keys are a bit different!
     mappings: {
