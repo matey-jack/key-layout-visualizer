@@ -80,11 +80,11 @@ export interface LayoutOptions {
     esSmallerThumbs: boolean;
 
     // ErgoPlank
-    angleMod: boolean;
     bottomArrows: boolean;
 
     // Ergoboards
     ergoboardLowshiftVariant: ErgoboardLowshiftVariant;
+    angleMod: boolean; // used for EbLowshiftWide only
     ergoboardMidshiftVariant: ErgoboardMidshiftVariant;
 }
 
