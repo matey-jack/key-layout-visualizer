@@ -13,9 +13,9 @@ import {
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {ErgoplankLayoutOptions} from "./ErgoplankLayoutOptions.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
-import {SplitOrthoLayoutOptions} from "./SplitOrthoLayoutOptions.tsx";
 import {BigramLines, KeyboardSvg, RowBasedKeyboard, StaggerLines} from "./KeyboardSvg.tsx";
 import {fillMapping, getKeyMovements, getKeyPositions} from "./layout-functions.ts";
+import {SplitOrthoLayoutOptions} from "./SplitOrthoLayoutOptions.tsx";
 import {TradeoffDiagram} from "./TradeoffDiagram.tsx";
 
 interface LayoutAreaProps {
@@ -25,7 +25,7 @@ interface LayoutAreaProps {
 function layoutSupportsFlipRetRub(options: LayoutOptions) {
     switch (options.type) {
         case LayoutType.Ergoplank:
-            return options.plankVariant >= PlankVariant.EP60;
+            return options.plankVariant >= PlankVariant.ERGOPLANK;
         case LayoutType.ANSI:
             return options.ansiVariant === AnsiVariant.AHKB;
     }

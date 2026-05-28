@@ -26,7 +26,7 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
     return <div class="plank-layout-options-container">
         <LayoutVariantButton variant={PlankVariant.KATANA_60} currentVariant={variant} setVariant={setVariant} name="Katana60"/>
 
-        <LayoutVariantButton variant={PlankVariant.ES13} currentVariant={variant} setVariant={setVariant} name="Ergoslat 13/3">
+        <LayoutVariantButton variant={PlankVariant.ERGOSLAT} currentVariant={variant} setVariant={setVariant} name="Ergoslat 13/3">
             <MidShiftCheckbox options={options} setOption={setOption}/>
             <CheckboxWithLabel label="57 keys"
                                type="radio"
@@ -45,7 +45,7 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
                                onChange={(checked) => checked && setOption({esNumberless: true, esSmallerThumbs: true})}/>
         </LayoutVariantButton>
 
-        <LayoutVariantButton variant={PlankVariant.EP60}
+        <LayoutVariantButton variant={PlankVariant.ERGOPLANK}
                             currentVariant={variant} setVariant={setVariant}
                             name="❤️ Ergoplank 15/5"
         >
@@ -55,7 +55,7 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
                                onChange={(arrows: boolean) => setOption({bottomArrows: arrows})}/>
         </LayoutVariantButton>
 
-        <LayoutVariantButton variant={PlankVariant.EB65_LOW_SHIFT}
+        <LayoutVariantButton variant={PlankVariant.ERGOBOARD_LOW_SHIFT}
                             currentVariant={variant} setVariant={setVariant}
                             name="Ergoboard 16/x (Lowshift)">
             {lowshiftVariant(EB65_LowShift_Variant.WIDE_HANDS, "Wide Hands 16/4.5")}
@@ -72,7 +72,7 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
             <FlipRetRubButton setOption={setOption} options={options}/>
         </LayoutVariantButton>
 
-        <LayoutVariantButton variant={PlankVariant.EB65_MID_SHIFT}
+        <LayoutVariantButton variant={PlankVariant.ERGOBOARD_MID_SHIFT}
                             currentVariant={variant} setVariant={setVariant}
                             name="❤️Ergoboard 16/x (Midshift)">
             <EbMidshiftLayoutOptions msVariant={options.eb65MidshiftVariant}

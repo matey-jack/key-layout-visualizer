@@ -34,7 +34,7 @@ import {
     createErgoPlankWithArrows,
     ergoPlank60LayoutModel
 } from "./layout/ergoPlank60LayoutModel.ts";
-import {majorErgoslatLayoutModel, minorErgoslatLayoutModel, makeErgoslatNumberless} from './layout/ergoslatLayoutModel.ts';
+import {majorErgoslatLayoutModel, makeErgoslatNumberless, minorErgoslatLayoutModel } from './layout/ergoslatLayoutModel.ts';
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
@@ -85,13 +85,13 @@ export function getPlankVariant(opts: LayoutOptions): LayoutModel {
     switch (opts.plankVariant) {
         case PlankVariant.KATANA_60:
             return katanaLayoutModel;
-        case PlankVariant.ES13: {
+        case PlankVariant.ERGOSLAT: {
             const baseModel = opts.esSmallerThumbs
                 ? minorErgoslatLayoutModel(opts.midShift)
                 : majorErgoslatLayoutModel(opts.midShift);
             return opts.esNumberless ? makeErgoslatNumberless(baseModel) : baseModel;
         }
-        case PlankVariant.EB65_LOW_SHIFT:
+        case PlankVariant.ERGOBOARD_LOW_SHIFT:
             // UI calls this method without variant parameters, so we need a default.
             switch (opts.eb65LowshiftVariant) {
                 case EB65_LowShift_Variant.LESS_GAPS:
@@ -101,7 +101,7 @@ export function getPlankVariant(opts: LayoutOptions): LayoutModel {
                 default:
                     return opts.angleMod ? eb65LowshiftWideAngleModLayoutModel : eb65LowshiftWideLayoutModel;
             }
-        case PlankVariant.EB65_MID_SHIFT:
+        case PlankVariant.ERGOBOARD_MID_SHIFT:
             switch (opts.eb65MidshiftVariant) {
                 case EB65_MidShift_Variant.EXTRA_WIDE:
                     return eb65MidshiftExtraWideLayoutModel;
