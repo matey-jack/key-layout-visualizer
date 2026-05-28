@@ -161,7 +161,7 @@ test.describe('Keyboard Layout Visualizer', () => {
     await tabInternational.click();
     await page.waitForLoadState('networkidle');
 
-    const tabAll = page.getByRole('button', { name: /show all mapping/i }).first();
+    const tabAll = page.getByRole('button', { name: /all mappings/i }).first();
     await tabAll.click();
     await page.waitForLoadState('networkidle');
 
