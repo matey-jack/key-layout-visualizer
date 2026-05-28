@@ -20,7 +20,7 @@ import {
     createErgoPlankWithArrows,
     ergoPlank60LayoutModel
 } from "./layout/ergoPlank60LayoutModel.ts";
-import {majorErgoslatLayoutModel, minorErgoslatLayoutModel, makeErgoslatNumberless} from './layout/ergoslatLayoutModel.ts';
+import {majorErgoslatLayoutModel, makeErgoslatNumberless, minorErgoslatLayoutModel } from './layout/ergoslatLayoutModel.ts';
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
@@ -82,6 +82,18 @@ function expectMatrixShape(matrix: unknown[][], lengths: number[], label: string
     matrix.forEach((row, idx) => {
         expect(row.length, `${label} row ${idx}`).toBe(lengths[idx]);
     });
+}
+
+function getStringKeys(frameMapping: unknown[][], initialKeys?: Iterable<string>): string[] {
+    const keys = new Set<string>(initialKeys);
+    frameMapping.forEach((row) => {
+        row.forEach((v) => {
+            if (typeof v === "string") {
+                keys.add(v);
+            }
+        });
+    });
+    return Array.from(keys).sort();
 }
 
 function rowWidth(model: LayoutModel, row: KeyboardRows) {
@@ -180,6 +192,27 @@ describe('frameMappings frame mapping validation', () => {
                      });
                  });
              });
+
+             const ansi30frame = model.frameMappings[KeymapTypeId.Ansi30];
+             const thumb30frame = model.frameMappings[KeymapTypeId.Thumb30];
+             if (ansi30frame && thumb30frame) {
+                 it('ansi30 and thumb30 have the same string keys (modulo - and /)', () => {
+                     const ansi30Array = getStringKeys(ansi30frame, ['-', '/']);
+                     const thumb30Array = getStringKeys(thumb30frame, ['-', '/']);
+                     expect(ansi30Array).toEqual(thumb30Array);
+                 });
+             }
+
+             const ansi32frame = model.frameMappings[KeymapTypeId.Ansi32];
+             const thumb32frame = model.frameMappings[KeymapTypeId.Thumb32];
+             if (ansi32frame && thumb32frame) {
+                 it('ansi32 and thumb32 have the same string keys', () => {
+                     const ansi32Array = getStringKeys(ansi32frame);
+                     const thumb32Array = getStringKeys(thumb32frame);
+                     expect(ansi32Array).toEqual(thumb32Array);
+                 });
+             }
+
          });
      });
  });
