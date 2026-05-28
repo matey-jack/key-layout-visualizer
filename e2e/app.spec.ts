@@ -155,24 +155,18 @@ test.describe('Keyboard Layout Visualizer', () => {
     // Errors will be caught in afterEach hook
   });
 
-  test('should handle mapping filter radio buttons without errors', async ({ page }) => {
-    // Find and click each of the mapping filter radio buttons
-    const optInternational = page.getByRole('radio', { name: /international alphabets/i }).or(
-      page.locator('label').filter({ hasText: 'international alphabets' }).locator('input')
-    ).first();
-    await optInternational.click();
+  test('should handle mapping filter tab buttons without errors', async ({ page }) => {
+    // Find and click each of the mapping filter tabs
+    const tabInternational = page.getByRole('button', { name: /international alphabets/i }).first();
+    await tabInternational.click();
     await page.waitForLoadState('networkidle');
 
-    const optAll = page.getByRole('radio', { name: /show all mapping/i }).or(
-      page.locator('label').filter({ hasText: 'show all mapping' }).locator('input')
-    ).first();
-    await optAll.click();
+    const tabAll = page.getByRole('button', { name: /show all mapping/i }).first();
+    await tabAll.click();
     await page.waitForLoadState('networkidle');
 
-    const optEnglish = page.getByRole('radio', { name: /recommended for English/i }).or(
-      page.locator('label').filter({ hasText: 'recommended for English' }).locator('input')
-    ).first();
-    await optEnglish.click();
+    const tabEnglish = page.getByRole('button', { name: /recommended for English/i }).first();
+    await tabEnglish.click();
     await page.waitForLoadState('networkidle');
     // Errors will be caught in afterEach hook
   });
