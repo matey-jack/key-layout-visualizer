@@ -1,8 +1,8 @@
 import {describe, expect, it} from "vitest";
-import {allMappings} from "./mappings.ts";
-import {qwertyMapping} from "./baseMappings.ts";
 import {KEYMAP_TYPES, KeymapTypeId} from "../base-model.ts";
+import {qwertyMapping} from "./baseMappings.ts";
 import {colemakMapping} from './colemakMappings.ts';
+import {allMappings} from "./mappings.ts";
 
 describe('new mappings property structure', () => {
     it('qwertyMapping has mappings property with Ansi30', () => {
@@ -18,9 +18,7 @@ describe('new mappings property structure', () => {
 });
 
 describe('mappings property validates against KEYMAP_TYPES', () => {
-    const mappingsWithNewProperty = allMappings.filter(m => m.mappings);
-
-    mappingsWithNewProperty.forEach((mapping) => {
+    allMappings.forEach((mapping) => {
         Object.entries(mapping.mappings!).forEach(([typeId, rows]) => {
             const keymapType = KEYMAP_TYPES[typeId as KeymapTypeId];
             const expectedKeysPerRow = keymapType.keysPerRow.filter((count) => count > 0);
@@ -63,6 +61,19 @@ describe('character coverage for core mappings', () => {
             it(`${mapping.name}`, () => {
                 const str = mapping.mappings[KeymapTypeId.Ansi32]!.join('');
                 const missing = requiredCharsAnsi32.split('').filter(c => !str.includes(c));
+                expect(missing).toEqual([]);
+            });
+        });
+    });
+
+    describe('Thumb32 mappings have all letters and \',.-äöü\'', () => {
+        const requiredCharsThumb32 = allLetters + ',.-äöü';
+        const thumb32Mappings = allMappings.filter(m => m.mappings?.[KeymapTypeId.Thumb32]);
+
+        thumb32Mappings.forEach((mapping) => {
+            it(`${mapping.name}`, () => {
+                const str = mapping.mappings[KeymapTypeId.Thumb32]!.join('');
+                const missing = requiredCharsThumb32.split('').filter(c => !str.includes(c));
                 expect(missing).toEqual([]);
             });
         });

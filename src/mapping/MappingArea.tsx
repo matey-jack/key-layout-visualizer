@@ -23,8 +23,12 @@ export enum MappingFilter {
     All = "all",
 }
 
+function hasInternationalMapping(mapping: FlexMapping) {
+    return !!mapping.mappings[KeymapTypeId.Ansi32] || !!mapping.mappings[KeymapTypeId.Thumb32];
+}
+
 function getInitialFilterMode(mapping: FlexMapping): MappingFilter {
-    if (mapping.mappings[KeymapTypeId.Ansi32]) {
+    if (hasInternationalMapping(mapping)) {
         return MappingFilter.International;
     }
     if (mapping.localMaximum) {
@@ -60,7 +64,7 @@ export function MappingList({appState}: MappingListProps) {
             case MappingFilter.English:
                 return mapping.localMaximum;
             case MappingFilter.International:
-                return mapping.name === "Qwerty" || mapping.techName === "QWERTY" || !!mapping.mappings[KeymapTypeId.Ansi32];
+                return mapping.name.toUpperCase() === "QWERTY" || hasInternationalMapping(mapping);
         }
         return true;
     });

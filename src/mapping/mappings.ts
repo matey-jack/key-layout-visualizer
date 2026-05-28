@@ -34,7 +34,7 @@
  */
 
 import {type FlexMapping, KeymapTypeId} from "../base-model.ts";
-import {qwertyMapping, qwertyWideMapping, qwertzMapping, qwprGermanMapping} from './baseMappings.ts';
+import {qwertyMapping, qwertyWideMapping, qwertzMapping} from './baseMappings.ts';
 import {
     assetMapping,
     colemakDhMapping,
@@ -48,7 +48,7 @@ import {
     minimakFullMapping,
     normanMapping,
 } from './colemakMappings.ts';
-import {cozyEnglish, cozyFlingH, cozyGerman, cozyPlusC, cozyPlusCH} from './cozyMappings.ts';
+import {cozyEnglish, cozyFlingH, cozyPlusC, cozyPlusCH, gemuetlichesMapping} from './cozyMappings.ts';
 import {
     carpalxQMapping,
     enTryMapping,
@@ -131,6 +131,39 @@ export const quipperThumbyMapping: FlexMapping = {
         ]
     },
     fallback: quipperMapping,
+}
+
+export const quipperGermanMapping: FlexMapping = {
+    name: "German Quipper",
+    description: `Qwpr for with German Umlauts. 
+    Note that it has less changes compared to qwertz than qwpr has to qwerty,
+    because the LO pair in qwerty actually fits German usage frequencies better.`,
+    comparisonBase: qwertzMapping,
+
+    mappings: {
+        [KeymapTypeId.Ansi32]: [
+            "qwprf" + "zukoöü",
+            "asdtg" + "hnileä",
+            "yxcvb" + "jm,.-",
+        ],
+    }
+}
+
+export const quipperThumbyGermanMapping: FlexMapping = {
+    name: "German Quipper Thumby",
+    description: `Qwpr with Thumbwith German Umlauts. 
+    Note that it has less changes compared to qwertz than qwpr has to qwerty,
+    because the LO pair in qwerty actually fits German usage frequencies better.`,
+    comparisonBase: qwertzMapping,
+
+    mappings: {
+        [KeymapTypeId.Thumb32]: [
+            "qwpbf" + "zkuoöü",
+            "asdrg" + "hnile",
+            "yxcvä" + "jm,.-",
+            "t"
+        ],
+    }
 }
 
 // There are too many contemporary mappings, and I have no good way to select representative ones,
@@ -248,17 +281,17 @@ export const allMappings: FlexMapping[] = [
     // qwertyFlipTwistThumbT,
     // etniMapping, // excluded, because the weird home finger position isn't reflected in our metrics (and no useable to me in practice).
     quipperMapping,
+    quipperGermanMapping,
+    quipperThumbyGermanMapping,
+    quipperThumbRMapping,
+    quipperThumbTMapping,
+    quipperThumbyMapping,
     cozyEnglish,
-    cozyGerman,
-    qwprGermanMapping,
-    // gemuetlichesMapping,
+    gemuetlichesMapping,
     cozyFlingH,
     // cozyPlusP,
     cozyPlusC,
     cozyPlusCH,
-    quipperThumbRMapping,
-    quipperThumbTMapping,
-    quipperThumbyMapping,
     assetMapping,
     // thumbyZero, // aka Qwerty Thumb-E
     // thumbyNero,

@@ -9,7 +9,7 @@ import {
     SKE_HOME,
 } from "../base-model.ts";
 import {mapValues} from "../library/records.ts";
-import {mirrorOdd, MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
+import {MonotonicKeyWidth, mirrorOdd, zeroIndent} from "./keyWidth.ts";
 import {copyAndModifyKeymap, copyKeymap, defaultKeyColor} from "./layout-functions.ts";
 
 const ibmKeyWidths = new MonotonicKeyWidth(15, zeroIndent, "ANSI/IBM");
@@ -179,6 +179,13 @@ export const ansiWideLayoutModel: LayoutModel = {
                 ["⇧", 0, 1, 2, 3, 4, '/', 5, 6, 7, 8, "⇧"],
                 ["Ctrl", "Cmd", "Alt", "⍽", 0, "AltGr", "Fn", "Ctrl"],
             ],
+            [KeymapTypeId.Thumb32]: [
+                ["`~", "1", "2", "3", "4", "5", "6", "=", "7", "8", "9", "0", "/", "⌫"],
+                ["↹", 0, 1, 2, 3, 4, 5, "\\", 6, 7, 8, 9, 10, "⌦"],
+                ["CAPS", 0, 1, 2, 3, 4, "'", 5, 6, 7, 8, 9, "⏎"],
+                ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
+                ["Ctrl", "Cmd", "Alt", "⍽", 0, "AltGr", "Fn", "Ctrl"],
+            ],
         },
     }
 ;
@@ -249,7 +256,7 @@ export function createApple(lm: LayoutModel): LayoutModel {
             Object.entries(lm.frameMappings)
                 .filter(([typeId]) => typeId !== KeymapTypeId.AnsiWide)
         ), (typeId, mapping) => {
-            const modifier = typeId === KeymapTypeId.Thumb30 ? addAppleThumbyBottom : addAppleBottom;
+            const modifier = (typeId === KeymapTypeId.Thumb30 || typeId === KeymapTypeId.Thumb32) ? addAppleThumbyBottom : addAppleBottom;
             return copyAndModifyKeymap(mapping, modifier);
         }) as typeof lm.frameMappings,
         mainFingerAssignment: copyAndModifyKeymap(lm.mainFingerAssignment, (matrix) => {
