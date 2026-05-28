@@ -30,6 +30,14 @@ const thumb30KeyMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "", "Alt", 0, "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
 ];
 
+const thumb32KeyMapping: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "\\", "/", "6", "7", "8", "9", "0", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, "`~", "'", 5, 6, 7, 8, 9, 10, "⇞"],
+    ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "⏎"],
+    ["⇧", 0, 1, 2, 3, 4, "=", 9, 5, 6, 7, 8, "⇧", "⇟"],
+    ["Ctrl", "Cmd", "", "Alt", 0, "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
+];
+
 export const xhkbLayoutModel: LayoutModel = {
     name: "Thumbs Up",
     description: `The Thumbs Up layout continues HHKB's idea of splitting large keys to a point that
@@ -95,6 +103,7 @@ export const xhkbLayoutModel: LayoutModel = {
         [KeymapTypeId.Ansi30]: ansi30KeyMapping,
         [KeymapTypeId.Ansi32]: ansi32KeyMapping,
         [KeymapTypeId.Thumb30]: thumb30KeyMapping,
+        [KeymapTypeId.Thumb32]: thumb32KeyMapping,
     },
 }
 
@@ -126,6 +135,7 @@ export const xhkbWithArrowsLayoutModel: LayoutModel = {
     frameMappings: {
         [KeymapTypeId.Ansi30]: copyAndModifyKeymap(ansi30KeyMapping, arrowBlockKeymap(false)),
         [KeymapTypeId.Thumb30]: copyAndModifyKeymap(thumb30KeyMapping, arrowBlockKeymap(true)),
+        [KeymapTypeId.Thumb32]: copyAndModifyKeymap(thumb32KeyMapping, arrowBlockKeymap(true)),
     },
     singleKeyEffort: replaceLast(xhkbLayoutModel.singleKeyEffort,
         [2.0, 2.0, 2.0, 1.0, 0.2, 0.2, 1.0, 2.0, null, null, null]
