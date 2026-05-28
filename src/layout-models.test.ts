@@ -67,6 +67,7 @@ const layoutModels: Array<LayoutModel> = [
     harmonic14WideLayoutModel,
     harmonic14TraditionalLayoutModel,
     katanaLayoutModel,
+    splitOrthoLayoutModel(false),
     splitOrthoLayoutModel(true),
 ];
 
@@ -196,7 +197,7 @@ describe('frameMappings frame mapping validation', () => {
              const ansi30frame = model.frameMappings[KeymapTypeId.Ansi30];
              const thumb30frame = model.frameMappings[KeymapTypeId.Thumb30];
              if (ansi30frame && thumb30frame) {
-                 it('ansi30 and thumb30 have the same string keys (modulo - and /)', () => {
+                 it('ansi30 and thumb30 have the same keys (modulo - and /)', () => {
                      const ansi30Array = getStringKeys(ansi30frame, ['-', '/']);
                      const thumb30Array = getStringKeys(thumb30frame, ['-', '/']);
                      expect(ansi30Array).toEqual(thumb30Array);
@@ -206,7 +207,7 @@ describe('frameMappings frame mapping validation', () => {
              const ansi32frame = model.frameMappings[KeymapTypeId.Ansi32];
              const thumb32frame = model.frameMappings[KeymapTypeId.Thumb32];
              if (ansi32frame && thumb32frame) {
-                 it('ansi32 and thumb32 have the same string keys', () => {
+                 it('ansi32 and thumb32 have the same keys', () => {
                      const ansi32Array = getStringKeys(ansi32frame);
                      const thumb32Array = getStringKeys(thumb32frame);
                      expect(ansi32Array).toEqual(thumb32Array);
@@ -216,6 +217,24 @@ describe('frameMappings frame mapping validation', () => {
          });
      });
  });
+
+describe("midShift variants don't change the character set", () => {
+    const pairs = [
+        [ majorErgoslatLayoutModel(false), majorErgoslatLayoutModel(true) ],
+        [ minorErgoslatLayoutModel(false), minorErgoslatLayoutModel(true) ],
+        [ splitOrthoLayoutModel(false), splitOrthoLayoutModel(true) ],
+        [ ergoPlank60LayoutModel, createErgoPlankMidShift(ergoPlank60LayoutModel) ],
+    ]
+     pairs.forEach(([lowShift, midShift]) => {
+         (Object.keys(lowShift.frameMappings) as KeymapTypeId[]).forEach((keymapType) => {
+             it(`${lowShift.name}[${keymapType}] has the same keys in low and mid shift variants`, () => {
+                 const lsKeys = getStringKeys(lowShift.frameMappings[keymapType]!);
+                 const msKeys = getStringKeys(midShift.frameMappings[keymapType]!);
+                 expect(lsKeys).toEqual(msKeys);
+             });
+         })
+     })
+});
 
 describe('Ergoslat numberless key placements', () => {
     it('moves upper row overridden keys to the bottom row instead of Home and End', () => {
