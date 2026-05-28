@@ -167,26 +167,19 @@ export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
         singleKeyEffort: [[null], ...lm.singleKeyEffort.slice(1, 5)],
         frameMappings: {
             [KeymapTypeId.Ansi30]: numberlessKeymap(copyKeymap(lm.frameMappings[KeymapTypeId.Ansi30]!)),
-            [KeymapTypeId.Thumb30]: moveReturn(numberlessKeymap(copyKeymap(lm.frameMappings[KeymapTypeId.Thumb30]!))),
+            [KeymapTypeId.Thumb30]: numberlessKeymap(copyKeymap(lm.frameMappings[KeymapTypeId.Thumb30]!)),
         },
     };
 }
 
-// TODO: re-evaluate this for both variants of all three Keymap types!
 function numberlessKeymap(keymap: LayoutMapping): LayoutMapping {
+    keymap[KeyboardRows.Bottom][2] = keymap[KeyboardRows.Upper][0];
+    keymap[KeyboardRows.Bottom][7] = keymap[KeyboardRows.Upper][12];
+
     keymap[KeyboardRows.Number] = [null];
     keymap[KeyboardRows.Upper][0] = "Esc";
-    // because of the gap, there's actually 13 entries in the upper row and 12 is the last.
-    keymap[KeyboardRows.Home][6] = keymap[KeyboardRows.Upper][12];
     keymap[KeyboardRows.Upper][12] = "⌫";
-    return keymap;
-}
 
-function moveReturn(keymap: LayoutMapping): LayoutMapping {
-    keymap[KeyboardRows.Home][6] = "'";
-    if (!keymap[KeyboardRows.Lower].includes("⏎")) {
-        keymap[KeyboardRows.Home][12] = "⏎";
-    }
     return keymap;
 }
 

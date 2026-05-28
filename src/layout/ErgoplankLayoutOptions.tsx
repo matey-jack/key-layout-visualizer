@@ -28,12 +28,21 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
 
         <LayoutVariantButton variant={PlankVariant.ES13} currentVariant={variant} setVariant={setVariant} name="Ergoslat 13/3">
             <MidShiftCheckbox options={options} setOption={setOption}/>
-            <CheckboxWithLabel label="numberless"
+            <CheckboxWithLabel label="57 keys"
+                               type="radio"
+                               groupName="ergoslat_keys"
+                               checked={!options.esNumberless && !options.esSmallerThumbs}
+                               onChange={(checked) => checked && setOption({esNumberless: false, esSmallerThumbs: false})}/>
+            <CheckboxWithLabel label="59 keys"
+                               type="radio"
+                               groupName="ergoslat_keys"
+                               checked={!options.esNumberless && options.esSmallerThumbs}
+                               onChange={(checked) => checked && setOption({esNumberless: false, esSmallerThumbs: true})}/>
+            <CheckboxWithLabel label="47 keys"
+                               type="radio"
+                               groupName="ergoslat_keys"
                                checked={options.esNumberless}
-                               onChange={(numberless) => setOption({esNumberless: numberless})}/>
-            <CheckboxWithLabel label="smaller thumb keys"
-                               checked={options.esSmallerThumbs}
-                               onChange={(smaller) => setOption({esSmallerThumbs: smaller})}/>
+                               onChange={(checked) => checked && setOption({esNumberless: true, esSmallerThumbs: true})}/>
         </LayoutVariantButton>
 
         <LayoutVariantButton variant={PlankVariant.EP60}
