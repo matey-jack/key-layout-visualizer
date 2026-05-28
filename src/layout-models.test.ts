@@ -94,13 +94,6 @@ const IGNORED_32_KEYS: Record<string, string[]> = {
     "ANSI/IBM with wide hand position": ["\\", "Menu"],
     "ANSI/Apple with wide hand position": ["\\"],
     "Thumbs Up": ["Ins"],
-    // TODO: all the ones with Return are probably wrong
-    "Major Ergoslat 13/3": ["'", "⏎"],
-    "Minor Ergoslat 13/3": ["'", "⏎"],
-    "Major Ergoslat 13/3 (numberless)": ["'", "⏎"],
-    "Minor Ergoslat 13/3 (numberless)": ["'", "⏎"],
-    "Ergoplank": ["⏎"],
-    "Ergoplank MidShift": ["⏎"],
 };
 
 function getExpectedRowLengths(model: LayoutModel): number[] {
