@@ -13,7 +13,7 @@ import {
     ergoboardMidshiftRightRetLayoutModel,
     ergoboardVerticalEnterLayoutModel,
 } from "./layout/ergoboardMidshiftNarrowLayoutModels.ts";
-import {ergoboardMidshiftNiceLayoutModel} from "./layout/ergoboardMidshiftNiceLayoutModel.ts";
+import {ergoboardMidshiftComfyLayoutModel} from "./layout/ergoboardMidshiftComfyLayoutModel.ts";
 import {ergoboardMidshiftSemiWideLayoutModel} from "./layout/ergoboardMidshiftSemiWideLayoutModel.ts";
 import {
     createErgoPlankMidShift,
@@ -51,7 +51,7 @@ const layoutModels: Array<LayoutModel> = [
     ergoboardBigEnterLayoutModel,
     ergoboardLowshiftWideLayoutModel,
     ergoboardLowshiftWideAngleModLayoutModel,
-    ergoboardMidshiftNiceLayoutModel,
+    ergoboardMidshiftComfyLayoutModel,
     ergoboardMidshiftRightRetLayoutModel,
     ergoboardCentralEnterLayoutModel,
     ergoboardVerticalEnterLayoutModel,

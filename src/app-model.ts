@@ -49,7 +49,7 @@ export enum ErgoboardLowshiftVariant {
 
 export enum ErgoboardMidshiftVariant {
     EXTRA_WIDE, // Same key sizes as low shift "wide hands", but keymap changed for wider home position.
-    NICELY_WIDE, // Same key sizes as low shift "less gaps", but keymap changed for wider home position.
+    COMFY_WIDE, // Same key sizes as low shift "less gaps", but keymap changed for wider home position.
     SEMI_WIDE, // Same key sizes as low shift wide hands; even same hand position; only Shift assignment moves. (This is the widest possible hand position that still fits the traditional Return key position.
     RIGHT_ENTER, // Similar key sizes as low shift "less gaps", same hand position, lower row 0.25 stagger.
     VERTICAL_ENTER, // Like "right enter", only Enter, Backspace, right Shift change.

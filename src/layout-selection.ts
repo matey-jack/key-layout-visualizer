@@ -27,7 +27,7 @@ import {
     ergoboardMidshiftRightRetLayoutModel,
     ergoboardVerticalEnterLayoutModel,
 } from "./layout/ergoboardMidshiftNarrowLayoutModels.ts";
-import {ergoboardMidshiftNiceLayoutModel} from "./layout/ergoboardMidshiftNiceLayoutModel.ts";
+import {ergoboardMidshiftComfyLayoutModel} from "./layout/ergoboardMidshiftComfyLayoutModel.ts";
 import {ergoboardMidshiftSemiWideLayoutModel} from './layout/ergoboardMidshiftSemiWideLayoutModel.ts';
 import {
     createErgoPlankMidShift,
@@ -115,7 +115,7 @@ export function getPlankVariant(opts: LayoutOptions): LayoutModel {
                 case ErgoboardMidshiftVariant.VERTICAL_ENTER:
                     return ergoboardVerticalEnterLayoutModel;
                 default: // default needed so Biome doesn't get scared by potential fall-through
-                    return ergoboardMidshiftNiceLayoutModel; // "wide hands"
+                    return ergoboardMidshiftComfyLayoutModel; // "comfy hands"
             }
         default: {
             const base = opts.midShift ? createErgoPlankMidShift(ergoPlankLayoutModel) : ergoPlankLayoutModel;
