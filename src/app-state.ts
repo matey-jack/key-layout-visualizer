@@ -3,8 +3,8 @@ import posthog from 'posthog-js';
 import {
     AnsiVariant,
     type AppState,
-    EB65_LowShift_Variant,
-    EB65_MidShift_Variant,
+    ErgoboardLowshiftVariant,
+    ErgoboardMidshiftVariant,
     HarmonicVariant,
     isSplit,
     type LayoutOptions,
@@ -116,7 +116,7 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
         {type: LayoutType.ANSI, ansiVariant: AnsiVariant.IBM, ansiWide: true},
         {type: LayoutType.Ergosplit},
         {type: LayoutType.Ergoplank, plankVariant: PlankVariant.ERGOPLANK},
-        {type: LayoutType.Ergoplank, plankVariant: PlankVariant.ERGOBOARD_MID_SHIFT, eb65MidshiftVariant: EB65_MidShift_Variant.NICELY_WIDE},
+        {type: LayoutType.Ergoplank, plankVariant: PlankVariant.ERGOBOARD_MID_SHIFT, ergoboardMidshiftVariant: ErgoboardMidshiftVariant.NICELY_WIDE},
         {type: LayoutType.Harmonic, harmonicVariant: HarmonicVariant.H13_Wide},
         {type: LayoutType.Harmonic, harmonicVariant: HarmonicVariant.H14_Traditional},
     ]
@@ -181,8 +181,8 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
             params.set("ep60arrows", layout.bottomArrows ? "1" : "0");
             params.set("esNumberless", layout.esNumberless ? "1" : "0");
             params.set("esSmallerThumbs", layout.esSmallerThumbs ? "1" : "0");
-            params.set("eb65ls", layout.eb65LowshiftVariant.toString());
-            params.set("eb65ms", layout.eb65MidshiftVariant.toString());
+            params.set("ergoboardLS", layout.ergoboardLowshiftVariant.toString());
+            params.set("ergoboardMS", layout.ergoboardMidshiftVariant.toString());
             subLayout = PlankVariant[layout.plankVariant] + (layout.bottomArrows ? "+arrows" : "") + (layout.esNumberless ? "+esNumberless" : "") + (layout.esSmallerThumbs ? "+esSmallerThumbs" : "");
             break;
     }
@@ -214,8 +214,8 @@ export function createAppState(): AppState {
         bottomArrows: s2b(params.get("ep60arrows")) ?? false,
         esNumberless: s2b(params.get("esNumberless")) ?? false,
         esSmallerThumbs: s2b(params.get("esSmallerThumbs")) ?? true,
-        eb65LowshiftVariant: s2i(params.get("eb65ls")) ?? EB65_LowShift_Variant.LESS_GAPS,
-        eb65MidshiftVariant: s2i(params.get("eb65ms")) ?? EB65_MidShift_Variant.NICELY_WIDE,
+        ergoboardLowshiftVariant: s2i(params.get("ergoboardLS") ?? params.get("eb65ls")) ?? ErgoboardLowshiftVariant.LESS_GAPS,
+        ergoboardMidshiftVariant: s2i(params.get("ergoboardMS") ?? params.get("eb65ms")) ?? ErgoboardMidshiftVariant.NICELY_WIDE,
         flipRetRub: false,
     });
     const layoutModel = computed(() => getLayoutModel(layoutOptionsState.value))

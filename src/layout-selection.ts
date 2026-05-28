@@ -1,7 +1,7 @@
 import {
     AnsiVariant,
-    EB65_LowShift_Variant,
-    EB65_MidShift_Variant,
+    ErgoboardLowshiftVariant,
+    ErgoboardMidshiftVariant,
     HarmonicVariant,
     type LayoutOptions,
     PlankVariant,
@@ -16,19 +16,19 @@ import {
     createHHKB,
     splitSpaceBar,
 } from "./layout/ansiLayoutModel.ts";
-import {eb65BigEnterLayoutModel, eb65LowshiftLayoutModel} from "./layout/eb65LowshiftLayoutModel.ts";
+import {ergoboardBigEnterLayoutModel, ergoboardLowshiftLayoutModel} from "./layout/ergoboardLowshiftLayoutModel.ts";
 import {
-    eb65LowshiftWideAngleModLayoutModel,
-    eb65LowshiftWideLayoutModel,
-} from "./layout/eb65LowshiftWideLayoutModel.ts";
-import {eb65MidshiftExtraWideLayoutModel} from "./layout/eb65MidshiftExtraWideLayoutModel.ts";
+    ergoboardLowshiftWideAngleModLayoutModel,
+    ergoboardLowshiftWideLayoutModel,
+} from "./layout/ergoboardLowshiftWideLayoutModel.ts";
+import {ergoboardMidshiftExtraWideLayoutModel} from "./layout/ergoboardMidshiftExtraWideLayoutModel.ts";
 import {
-    eb65CentralEnterLayoutModel,
-    eb65MidshiftRightRetLayoutModel,
-    eb65VerticalEnterLayoutModel,
-} from "./layout/eb65MidshiftNarrowLayoutModels.ts";
-import {eb65MidshiftNiceLayoutModel} from "./layout/eb65MidshiftNiceLayoutModel.ts";
-import {eb65MidshiftSemiWideLayoutModel} from './layout/eb65MidshiftSemiWideLayoutModel.ts';
+    ergoboardCentralEnterLayoutModel,
+    ergoboardMidshiftRightRetLayoutModel,
+    ergoboardVerticalEnterLayoutModel,
+} from "./layout/ergoboardMidshiftNarrowLayoutModels.ts";
+import {ergoboardMidshiftNiceLayoutModel} from "./layout/ergoboardMidshiftNiceLayoutModel.ts";
+import {ergoboardMidshiftSemiWideLayoutModel} from './layout/ergoboardMidshiftSemiWideLayoutModel.ts';
 import {
     createErgoPlankMidShift,
     createErgoPlankWithArrows,
@@ -60,9 +60,9 @@ const layoutModels: Array<LayoutModel> = [
     minorErgoslatLayoutModel(true),
     makeErgoslatNumberless(majorErgoslatLayoutModel(false)),
     makeErgoslatNumberless(minorErgoslatLayoutModel(false)),
-    eb65LowshiftLayoutModel,
-    eb65BigEnterLayoutModel,
-    eb65LowshiftWideLayoutModel,
+    ergoboardLowshiftLayoutModel,
+    ergoboardBigEnterLayoutModel,
+    ergoboardLowshiftWideLayoutModel,
 
 ];
 
@@ -93,29 +93,29 @@ export function getPlankVariant(opts: LayoutOptions): LayoutModel {
         }
         case PlankVariant.ERGOBOARD_LOW_SHIFT:
             // UI calls this method without variant parameters, so we need a default.
-            switch (opts.eb65LowshiftVariant) {
-                case EB65_LowShift_Variant.LESS_GAPS:
-                    return eb65LowshiftLayoutModel;
-                case EB65_LowShift_Variant.BIG_ENTER:
-                    return eb65BigEnterLayoutModel;
+            switch (opts.ergoboardLowshiftVariant) {
+                case ErgoboardLowshiftVariant.LESS_GAPS:
+                    return ergoboardLowshiftLayoutModel;
+                case ErgoboardLowshiftVariant.BIG_ENTER:
+                    return ergoboardBigEnterLayoutModel;
                 default:
-                    return opts.angleMod ? eb65LowshiftWideAngleModLayoutModel : eb65LowshiftWideLayoutModel;
+                    return opts.angleMod ? ergoboardLowshiftWideAngleModLayoutModel : ergoboardLowshiftWideLayoutModel;
             }
         case PlankVariant.ERGOBOARD_MID_SHIFT:
-            switch (opts.eb65MidshiftVariant) {
-                case EB65_MidShift_Variant.EXTRA_WIDE:
-                    return eb65MidshiftExtraWideLayoutModel;
-                case EB65_MidShift_Variant.SEMI_WIDE:
-                    return eb65MidshiftSemiWideLayoutModel;
+            switch (opts.ergoboardMidshiftVariant) {
+                case ErgoboardMidshiftVariant.EXTRA_WIDE:
+                    return ergoboardMidshiftExtraWideLayoutModel;
+                case ErgoboardMidshiftVariant.SEMI_WIDE:
+                    return ergoboardMidshiftSemiWideLayoutModel;
                 // next three are the "narrow hands" subvariants
-                case EB65_MidShift_Variant.CENTRAL_ENTER:
-                    return eb65CentralEnterLayoutModel;
-                case EB65_MidShift_Variant.RIGHT_ENTER:
-                    return eb65MidshiftRightRetLayoutModel;
-                case EB65_MidShift_Variant.VERTICAL_ENTER:
-                    return eb65VerticalEnterLayoutModel;
+                case ErgoboardMidshiftVariant.CENTRAL_ENTER:
+                    return ergoboardCentralEnterLayoutModel;
+                case ErgoboardMidshiftVariant.RIGHT_ENTER:
+                    return ergoboardMidshiftRightRetLayoutModel;
+                case ErgoboardMidshiftVariant.VERTICAL_ENTER:
+                    return ergoboardVerticalEnterLayoutModel;
                 default: // default needed so Biome doesn't get scared by potential fall-through
-                    return eb65MidshiftNiceLayoutModel; // "wide hands"
+                    return ergoboardMidshiftNiceLayoutModel; // "wide hands"
             }
         default: {
             const base = opts.midShift ? createErgoPlankMidShift(ergoPlankLayoutModel) : ergoPlankLayoutModel;

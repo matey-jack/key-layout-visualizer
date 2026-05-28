@@ -2,19 +2,19 @@ import {describe, expect, it} from "vitest";
 import {KEYMAP_TYPES, KeyboardRows, KeymapTypeId, type LayoutModel} from "./base-model.ts";
 import {ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createApple, createHHKB} from "./layout/ansiLayoutModel.ts";
-import {eb65BigEnterLayoutModel, eb65LowshiftLayoutModel} from "./layout/eb65LowshiftLayoutModel.ts";
+import {ergoboardBigEnterLayoutModel, ergoboardLowshiftLayoutModel} from "./layout/ergoboardLowshiftLayoutModel.ts";
 import {
-    eb65LowshiftWideAngleModLayoutModel,
-    eb65LowshiftWideLayoutModel,
-} from "./layout/eb65LowshiftWideLayoutModel.ts";
-import {eb65MidshiftExtraWideLayoutModel} from "./layout/eb65MidshiftExtraWideLayoutModel.ts";
+    ergoboardLowshiftWideAngleModLayoutModel,
+    ergoboardLowshiftWideLayoutModel,
+} from "./layout/ergoboardLowshiftWideLayoutModel.ts";
+import {ergoboardMidshiftExtraWideLayoutModel} from "./layout/ergoboardMidshiftExtraWideLayoutModel.ts";
 import {
-    eb65CentralEnterLayoutModel,
-    eb65MidshiftRightRetLayoutModel,
-    eb65VerticalEnterLayoutModel,
-} from "./layout/eb65MidshiftNarrowLayoutModels.ts";
-import {eb65MidshiftNiceLayoutModel} from "./layout/eb65MidshiftNiceLayoutModel.ts";
-import {eb65MidshiftSemiWideLayoutModel} from "./layout/eb65MidshiftSemiWideLayoutModel.ts";
+    ergoboardCentralEnterLayoutModel,
+    ergoboardMidshiftRightRetLayoutModel,
+    ergoboardVerticalEnterLayoutModel,
+} from "./layout/ergoboardMidshiftNarrowLayoutModels.ts";
+import {ergoboardMidshiftNiceLayoutModel} from "./layout/ergoboardMidshiftNiceLayoutModel.ts";
+import {ergoboardMidshiftSemiWideLayoutModel} from "./layout/ergoboardMidshiftSemiWideLayoutModel.ts";
 import {
     createErgoPlankMidShift,
     createErgoPlankWithArrows,
@@ -47,16 +47,16 @@ const layoutModels: Array<LayoutModel> = [
     minorErgoslatLayoutModel(true),
     makeErgoslatNumberless(majorErgoslatLayoutModel(false)),
     makeErgoslatNumberless(minorErgoslatLayoutModel(false)),
-    eb65LowshiftLayoutModel,
-    eb65BigEnterLayoutModel,
-    eb65LowshiftWideLayoutModel,
-    eb65LowshiftWideAngleModLayoutModel,
-    eb65MidshiftNiceLayoutModel,
-    eb65MidshiftRightRetLayoutModel,
-    eb65CentralEnterLayoutModel,
-    eb65VerticalEnterLayoutModel,
-    eb65MidshiftExtraWideLayoutModel,
-    eb65MidshiftSemiWideLayoutModel,
+    ergoboardLowshiftLayoutModel,
+    ergoboardBigEnterLayoutModel,
+    ergoboardLowshiftWideLayoutModel,
+    ergoboardLowshiftWideAngleModLayoutModel,
+    ergoboardMidshiftNiceLayoutModel,
+    ergoboardMidshiftRightRetLayoutModel,
+    ergoboardCentralEnterLayoutModel,
+    ergoboardVerticalEnterLayoutModel,
+    ergoboardMidshiftExtraWideLayoutModel,
+    ergoboardMidshiftSemiWideLayoutModel,
     ergoPlankLayoutModel,
     createErgoPlankMidShift(ergoPlankLayoutModel),
     createErgoPlankWithArrows(ergoPlankLayoutModel),

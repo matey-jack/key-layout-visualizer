@@ -1,9 +1,9 @@
 import {KEY_COLOR, KeyboardRows, KeymapTypeId, type LayoutModel} from "../base-model.ts";
-import {eb65LowshiftLayoutModel} from "./eb65LowshiftLayoutModel.ts";
+import {ergoboardLowshiftLayoutModel} from "./ergoboardLowshiftLayoutModel.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 // the indent on the bottom is not symmetric, thus managed manually via gaps.
-const eb65NiceKeyWidths = new SymmetricKeyWidth(16, zeroIndent);
+const ergoboardNiceKeyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
 const singleKeyEffort = [
     [null, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, null, null],
@@ -13,8 +13,8 @@ const singleKeyEffort = [
     [null, 2.0, 1.5, 1.5, 0.2, 1.0, 0.2, 1.0, null, 1.5, null, null, null, null],
 ];
 
-export const eb65MidshiftNiceLayoutModel: LayoutModel = {
-    ...eb65LowshiftLayoutModel,
+export const ergoboardMidshiftNiceLayoutModel: LayoutModel = {
+    ...ergoboardLowshiftLayoutModel,
     name: "Ergoboard 65 MidShift Nicely Wide",
 
     leftHomeIndex: 4,
@@ -65,10 +65,10 @@ export const eb65MidshiftNiceLayoutModel: LayoutModel = {
 
     keyWidths:
         [
-            eb65NiceKeyWidths.row(0, 1),
-            eb65NiceKeyWidths.row(1, 1.75),
-            eb65NiceKeyWidths.row(2, 1.5),
-            eb65NiceKeyWidths.row(3, 1.25)
+            ergoboardNiceKeyWidths.row(0, 1),
+            ergoboardNiceKeyWidths.row(1, 1.75),
+            ergoboardNiceKeyWidths.row(2, 1.5),
+            ergoboardNiceKeyWidths.row(3, 1.25)
                 .slice(0, -2)
                 .concat(0.25, 1, 1),
             /*

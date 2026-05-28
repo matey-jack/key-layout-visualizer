@@ -21,7 +21,7 @@ const thumb30KeyMapping: LayoutMapping = [
     [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
 ];
 
-export const eb65LowshiftWideLayoutModel: LayoutModel = {
+export const ergoboardLowshiftWideLayoutModel: LayoutModel = {
     name: "Ergoboard 65 LowShift Wide",
     description: `Widest possible hand position with the arrow cluster and lower row Shift keys.`,
 
@@ -76,10 +76,10 @@ function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
     return keymap;
 }
 
-export const eb65LowshiftWideAngleModLayoutModel: LayoutModel = {
-    ...eb65LowshiftWideLayoutModel,
-    name: `${eb65LowshiftWideLayoutModel.name} angle mod`,
-    frameMappings: mapValues(eb65LowshiftWideLayoutModel.frameMappings, (_, mapping) =>
+export const ergoboardLowshiftWideAngleModLayoutModel: LayoutModel = {
+    ...ergoboardLowshiftWideLayoutModel,
+    name: `${ergoboardLowshiftWideLayoutModel.name} angle mod`,
+    frameMappings: mapValues(ergoboardLowshiftWideLayoutModel.frameMappings, (_, mapping) =>
         copyAndModifyKeymap(mapping, angleModKeymap)
-    ) as typeof eb65LowshiftWideLayoutModel.frameMappings,
+    ) as typeof ergoboardLowshiftWideLayoutModel.frameMappings,
 };
