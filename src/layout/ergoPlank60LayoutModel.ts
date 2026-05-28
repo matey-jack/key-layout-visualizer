@@ -9,7 +9,7 @@ const ansi30FrameMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, "-", null, "=", 5, 6, 7, 8, 9, "\\"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", 9, 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
+    ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "Ins", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
 ];
 
 const ansi32FrameMapping: LayoutMapping = [
@@ -17,7 +17,7 @@ const ansi32FrameMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, "'", null, "=", 5, 6, 7, 8, 9, 10],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, 10],
     ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", 9, 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
+    ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "Ins", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
 ];
 
 const thumb30FrameMapping: LayoutMapping = [
@@ -25,7 +25,15 @@ const thumb30FrameMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, "=", null, "\\", 5, 6, 7, 8, 9, "⏎"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", "/", 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Fn", "Alt", 0, "", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
+    ["Ctrl", "Cmd", "Fn", "Alt", 0, "Ins", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
+];
+
+const thumb32FrameMapping: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "\\", "/", "6", "7", "8", "9", "0", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, "'", null, "=", 5, 6, 7, 8, 9, "⏎"],
+    ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, [-1, 10]],
+    ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", 9, 5, 6, 7, 8, "⇧"],
+    ["Ctrl", "Cmd", "Fn", "Alt", 0, "Ins", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
 ];
 
 export const ergoPlank60LayoutModel: LayoutModel = {
@@ -78,6 +86,7 @@ export const ergoPlank60LayoutModel: LayoutModel = {
         [KeymapTypeId.Ansi30]: ansi30FrameMapping,
         [KeymapTypeId.Ansi32]: ansi32FrameMapping,
         [KeymapTypeId.Thumb30]: thumb30FrameMapping,
+        [KeymapTypeId.Thumb32]: thumb32FrameMapping,
     },
 
     keyColorClass: ergoFamilyKeyColorClass(ansi30FrameMapping),
@@ -114,21 +123,28 @@ export function createErgoPlankMidShift(lm: LayoutModel): LayoutModel {
                 ['↹', 0, 1, 2, 3, 4, '-', null, "=", 5, 6, 7, 8, 9, "'"],
                 ['⇧', 0, 1, 2, 3, 4, '⇤', '⌦', '⇥', 5, 6, 7, 8, 9, '⇧'],
                 [0, 1, 2, 3, 4, '`~', '⇞', '⇟', '\\', 5, 6, 7, 8, 9],
-                ['Ctrl', 'Cmd', 'Fn', 'Alt', '⏎', '', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
+                ['Ctrl', 'Cmd', 'Fn', 'Alt', '⏎', 'Ins', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
             ],
             [KeymapTypeId.Ansi32]: [
                 ['Esc', '1', '2', '3', '4', '5', '\\', '/', '6', '7', '8', '9', '0', '⌫'],
-                ['↹', 0, 1, 2, 3, 4, [1, 10], null, "'", 5, 6, 7, 8, 9, 10],
+                ['↹', 0, 1, 2, 3, 4, "'", null, [1, 10], 5, 6, 7, 8, 9, 10],
                 ['⇧', 0, 1, 2, 3, 4, '⇤', '⌦', '⇥', 5, 6, 7, 8, 9, '⇧'],
                 [0, 1, 2, 3, 4, '`~', '⇞', '⇟', '=', 5, 6, 7, 8, 9],
-                ['Ctrl', 'Cmd', 'Fn', 'Alt', '⏎', '', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
+                ['Ctrl', 'Cmd', 'Fn', 'Alt', '⏎', 'Ins', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
             ],
             [KeymapTypeId.Thumb30]:  [
                 ['Esc', '1', '2', '3', '4', '5', '[', ']', '6', '7', '8', '9', '0', '⌫'],
-                ['↹', 0, 1, 2, 3, 4, '=', null, "'", 5, 6, 7, 8, 9, '⏎'],
+                ['↹', 0, 1, 2, 3, 4, '`~', null, "'", 5, 6, 7, 8, 9, '⏎'],
                 ['⇧', 0, 1, 2, 3, 4, '⇤', '⌦', '⇥', 5, 6, 7, 8, 9, '⇧'],
-                [0, 1, 2, 3, 4, '`~', '⇞', '⇟', '\\', 5, 6, 7, 8, '/'],
-                ['Ctrl', 'Cmd', 'Fn', 'Alt', 0, '', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
+                [0, 1, 2, 3, 4, '=', '⇞', '⇟', '\\', 5, 6, 7, 8, '/'],
+                ['Ctrl', 'Cmd', 'Fn', 'Alt', 0, 'Ins', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
+            ],
+            [KeymapTypeId.Thumb32]: [
+                ['Esc', '1', '2', '3', '4', '5', '\\', '/', '6', '7', '8', '9', '0', '⌫'],
+                ['↹', 0, 1, 2, 3, 4, "'", null, 10, 5, 6, 7, 8, 9, '⏎'],
+                ['⇧', 0, 1, 2, 3, 4, '⇤', '⌦', '⇥', 5, 6, 7, 8, 9, '⇧'],
+                [0, 1, 2, 3, 4, '`~', '⇞', '⇟', '=', 5, 6, 7, 8, 9],
+                ['Ctrl', 'Cmd', 'Fn', 'Alt', 0, 'Ins', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
             ],
         },
     }
@@ -142,6 +158,8 @@ export function createErgoPlankWithArrows(lm: LayoutModel): LayoutModel {
             [KeymapTypeId.Ansi30]: replaceLast(lm.frameMappings[KeymapTypeId.Ansi30]!,
                 [null, "Ctrl", "Cmd", "AltGr", "Alt", "⏎", "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]),
             [KeymapTypeId.Thumb30]: replaceLast(lm.frameMappings[KeymapTypeId.Thumb30]!,
+                [null, "Ctrl", "Cmd", "AltGr", "Alt", 0, "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]),
+            [KeymapTypeId.Thumb32]: replaceLast(lm.frameMappings[KeymapTypeId.Thumb32]!,
                 [null, "Ctrl", "Cmd", "AltGr", "Alt", 0, "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]),
         },
 
