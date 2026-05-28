@@ -19,7 +19,7 @@ export const qwertyMapping: FlexMapping = {
 }
 
 export const qwertyWideMapping: FlexMapping = {
-    name: "Qwerty Wide",
+    name: "Alternative Qwerty Wide",
     description: `Small changes to Qwerty for a wide hand position. 
     This makes it easy to swap keycaps on your keyboard to fit the layout, by not changing the J and \\| key position. e
     This is, how, as a nice side-effect, N moves to the home-row.
@@ -90,22 +90,6 @@ export const semiQwertzMapping: FlexMapping = {
             "qwert" + "zuiop",
             "asdfg" + "jnkl;",
             "yxcvb" + "hm,./",
-        ],
-    }
-}
-
-export const qwprGermanMapping: FlexMapping = {
-    name: "German Quipper",
-    description: `Qwpr for with German Umlauts. 
-    Note that it has less changes compared to qwertz than qwpr has to qwerty,
-    because the LO pair in qwerty actually fits German usage frequencies better.`,
-    comparisonBase: qwertzMapping,
-
-    mappings: {
-        [KeymapTypeId.Ansi32]: [
-            "qwprf" + "zukoöü",
-            "asdtg" + "hnileä",
-            "yxcvb" + "jm,.-",
         ],
     }
 }

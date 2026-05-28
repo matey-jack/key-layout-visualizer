@@ -1,5 +1,5 @@
 import {type FlexMapping, KeymapTypeId} from '../base-model.ts';
-import {qwertzMapping, semiQwertzMapping} from './baseMappings.ts';
+import {qwertzMapping} from './baseMappings.ts';
 import {qwertyFlipTwistMapping} from './flipMappings.ts';
 
 export const cozyEnglish: FlexMapping = {
@@ -26,28 +26,6 @@ export const cozyEnglish: FlexMapping = {
         ],
     },
     fallback: qwertyFlipTwistMapping,
-}
-
-export const cozyGerman: FlexMapping = {
-    name: "The Cozy Keyboard, German variant",
-    techName: "cozy-german",
-    sourceUrl: "https://github.com/matey-jack/gemuetliche-tastatur",
-    description: "German and English have very similar letter frequencies. " +
-        "I am writing a lot in both languages, and so I optimized for both. " +
-        "The result is a Cozy variant with just two changes: O and L stay as in Qwerty" +
-        "and Y and Z stay as in the standard German Qwertz. " +
-        "This reflects German letter frequencies and also makes it a bit easier to switch " +
-        "from the legacy Qwerty/Qwertz mapping. ",
-    comparisonBase: qwertzMapping,
-    mappings: {
-        [KeymapTypeId.Thumb30]: [
-            "qwbf-" + "z" + "kuop",
-            "asdrg" + "hnilt",
-            "yxcv" + ";" + "jm,.",
-            "e",
-        ]
-    },
-    fallback: qwertzMapping,
 }
 
 export const cozyPlusP: FlexMapping = {
@@ -113,22 +91,18 @@ export const cozyFlingH: FlexMapping = {
     fallback: cozyEnglish,
 }
 
-/*  Port of my personal German letter map.
-    Note that this supposes a mixed German/ANSI shift-pairing with notably `;:` mapped on `,.` and `=` on `0`.
-    Other Shift-mappings can vary, as well as the AltGr mappings, although it seems wise to swap Cmd/AltGr keys because
-    most of the German AltGr mappings are on the right hand. This way, we can actually move all of them to the right hand
-    (maybe with some compatibility alternatives like @ and € staying on the left as a second/alternative mapping), and thus
-    we'd only need one exclusive AltGr key. (A secondary AltGr could be tap/hold on `+` which is rare enough not to lead to
-    confusion. Similarly, a secondary tap/hold Fn on the Esc key. This would be so much better than my overloadings of `öy-`
-    on the Iris at the moment.)
- */
 export const gemuetlichesMapping: FlexMapping = {
     name: "Die Gemütliche Tastatur",
-    description: `Full mapping of The Cozy Keyboard, German variant. 
-        Shows how I map Umlauts and punctuation on ANSI keyboards and the Ergodox.`,
+    techName: "cozy-german",
+    description: "German and English have very similar letter frequencies. " +
+            "I am writing a lot in both languages, and so I optimized for both. " +
+            "The result is a Cozy variant with just two changes: O and L stay as in Qwerty" +
+            "and Y and Z stay as in the standard German Qwertz. " +
+            "This reflects German letter frequencies and also makes it a bit easier to switch " +
+            "from the legacy Qwerty/Qwertz mapping. ",
     sourceUrl: "https://github.com/matey-jack/gemuetliche-tastatur",
     sourceLinkTitle: "GitHub: matey-jack/gemuetliche-tastatur",
-    comparisonBase: semiQwertzMapping,
+    comparisonBase: qwertzMapping,
 
     // I actually used this mapping on an ISO keyboard, so the right pinky keys are a bit different!
     mappings: {
@@ -138,6 +112,12 @@ export const gemuetlichesMapping: FlexMapping = {
             "asdrg" + "'hnilt",
             "yxcv/" + "-jm,.",
             "e⌥"
+        ],
+        [KeymapTypeId.Thumb32]: [
+            "qwbfö" + "zkuopü",
+            "asdrg" + "hnilt",
+            "yxcvä" + "jm,.-",
+            "e"
         ],
         [KeymapTypeId.SplitOrtho]: [
             "qwbf'" + "zkuopü",
@@ -167,7 +147,7 @@ export const gemuetlichesMapping: FlexMapping = {
             "qwbfö" + "´ä" + "zkuopü",
             "asdrg" + "'" + "hnilt",
             "yxcv" + "/-" + "jm,.",
-            "\\e+"
+            "\\e⌥+"
         ],
     },
     fallback: qwertzMapping,

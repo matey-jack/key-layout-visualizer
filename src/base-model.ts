@@ -49,6 +49,9 @@ export enum KeymapTypeId {
      */
     Thumb30 = "thumb30",
 
+    // Mixes Ansi32 and Thumb30 to standardize thumb key usage in larger alphabets.
+    Thumb32 = "thumb32",
+
     // Layout-specific keymaps.
     // Only AnsiWide is special here, because it fills the same layout as ANSI, only that it's optimized for the wide
     // hand position. If a FlexMapping defines both, the "use wide key mapping" checkbox decides which is shown.
@@ -86,6 +89,11 @@ export const KEYMAP_TYPES: Record<KeymapTypeId, KeymapType> = {
         id: KeymapTypeId.Thumb30,
         keysPerRow: [0, 10, 10, 9, 1],
         description: "3×10 with thumb key replacing slash"
+    },
+    [KeymapTypeId.Thumb32]: {
+        id: KeymapTypeId.Thumb32,
+        keysPerRow: [0, 11, 10, 10, 1],
+        description: "Mixes Ansi32 and Thumb30 to standardize thumb key usage in larger alphabets."
     },
     [KeymapTypeId.Ansi]: {
         id: KeymapTypeId.Ansi,

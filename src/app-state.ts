@@ -29,7 +29,7 @@ function modifyWide(mapping: FlexMapping, opts: LayoutOptions): boolean {
         return opts.ansiWide;
     }
     // In other cases, force wide mode when the keymap needs it.
-    if (mapping.mappings[KeymapTypeId.AnsiWide] || mapping.mappings[KeymapTypeId.Thumb30]) {
+    if (mapping.mappings[KeymapTypeId.AnsiWide] || mapping.mappings[KeymapTypeId.Thumb30] || mapping.mappings[KeymapTypeId.Thumb32]) {
         return true;
     }
     return opts.ansiWide;
@@ -101,7 +101,7 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
      - in all other cases, we probably have a mapping that needs a specific layout, thus we do a general search.
      */
     if (layoutOptionsState.value.type === LayoutType.ANSI) {
-        if (newMapping.mappings[KeymapTypeId.Thumb30]) {
+        if (newMapping.mappings[KeymapTypeId.Thumb30] || newMapping.mappings[KeymapTypeId.Thumb32]) {
             if (layoutOptionsState.value.ansiVariant === AnsiVariant.HHKB) {
                 layoutOptionsState.value = {...layoutOptionsState.value, ansiVariant: AnsiVariant.IBM};
             }
