@@ -1,4 +1,7 @@
 html {
+    /* Reserve scrollbar space, so the content doesn't wiggle.
+       Apparently not needed in Firefox because it uses a floating scrollbar, even on Windows.
+    */
     scrollbar-gutter: stable;
 }
 
