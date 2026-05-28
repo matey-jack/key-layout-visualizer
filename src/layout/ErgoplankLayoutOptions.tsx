@@ -99,7 +99,7 @@ export function ErgoboardMidshiftLayoutOptions({msVariant, setMsVariant}: Ergobo
     const narrowSubvariant = msVariant > ErgoboardMidshiftVariant.SEMI_WIDE;
     return <>
         {midshiftVariant(ErgoboardMidshiftVariant.EXTRA_WIDE, "Extra Wide Hands 16/5.5")}
-        {midshiftVariant(ErgoboardMidshiftVariant.NICELY_WIDE, "❤️ Wide Hands 16/5")}
+        {midshiftVariant(ErgoboardMidshiftVariant.COMFY_WIDE, "❤️ Comfortably Wide 16/5")}
         {midshiftVariant(ErgoboardMidshiftVariant.SEMI_WIDE, "Semi Wide 16/4.5")}
 
         <CheckboxWithLabel label="Narrow Hands 16/4"

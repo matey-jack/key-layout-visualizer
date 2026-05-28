@@ -3,7 +3,7 @@ import {ergoboardLowshiftLayoutModel} from "./ergoboardLowshiftLayoutModel.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 
 // the indent on the bottom is not symmetric, thus managed manually via gaps.
-const ergoboardNiceKeyWidths = new SymmetricKeyWidth(16, zeroIndent);
+const ergoboardComfyKeyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
 const singleKeyEffort = [
     [null, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, null, null],
@@ -13,9 +13,9 @@ const singleKeyEffort = [
     [null, 2.0, 1.5, 1.5, 0.2, 1.0, 0.2, 1.0, null, 1.5, null, null, null, null],
 ];
 
-export const ergoboardMidshiftNiceLayoutModel: LayoutModel = {
+export const ergoboardMidshiftComfyLayoutModel: LayoutModel = {
     ...ergoboardLowshiftLayoutModel,
-    name: "Ergoboard 65 MidShift Nicely Wide",
+    name: "Ergoboard 65 MidShift Comfortably Wide",
 
     leftHomeIndex: 4,
     rightHomeIndex: 10,
@@ -65,10 +65,10 @@ export const ergoboardMidshiftNiceLayoutModel: LayoutModel = {
 
     keyWidths:
         [
-            ergoboardNiceKeyWidths.row(0, 1),
-            ergoboardNiceKeyWidths.row(1, 1.75),
-            ergoboardNiceKeyWidths.row(2, 1.5),
-            ergoboardNiceKeyWidths.row(3, 1.25)
+            ergoboardComfyKeyWidths.row(0, 1),
+            ergoboardComfyKeyWidths.row(1, 1.75),
+            ergoboardComfyKeyWidths.row(2, 1.5),
+            ergoboardComfyKeyWidths.row(3, 1.25)
                 .slice(0, -2)
                 .concat(0.25, 1, 1),
             /*
@@ -109,5 +109,3 @@ export const ergoboardMidshiftNiceLayoutModel: LayoutModel = {
         }
     },
 }
-
-

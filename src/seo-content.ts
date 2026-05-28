@@ -1,6 +1,6 @@
 import type {LayoutModel} from "./base-model.ts";
 import {ansiIBMLayoutModel} from "./layout/ansiLayoutModel.ts";
-import {ergoboardMidshiftNiceLayoutModel} from "./layout/ergoboardMidshiftNiceLayoutModel.ts";
+import {ergoboardMidshiftComfyLayoutModel} from "./layout/ergoboardMidshiftComfyLayoutModel.ts";
 import {ergoPlankLayoutModel} from "./layout/ergoPlankLayoutModel.ts";
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
@@ -20,7 +20,7 @@ export const allLayoutModels: LayoutModel[] = [
     harmonic12LayoutModel,
     katanaLayoutModel,
     ergoPlankLayoutModel,
-    ergoboardMidshiftNiceLayoutModel,
+    ergoboardMidshiftComfyLayoutModel,
     splitOrthoLayoutModel(true),
 ];
 

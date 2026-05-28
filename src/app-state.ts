@@ -116,7 +116,7 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
         {type: LayoutType.ANSI, ansiVariant: AnsiVariant.IBM, ansiWide: true},
         {type: LayoutType.Ergosplit},
         {type: LayoutType.Ergoplank, plankVariant: PlankVariant.ERGOPLANK},
-        {type: LayoutType.Ergoplank, plankVariant: PlankVariant.ERGOBOARD_MID_SHIFT, ergoboardMidshiftVariant: ErgoboardMidshiftVariant.NICELY_WIDE},
+        {type: LayoutType.Ergoplank, plankVariant: PlankVariant.ERGOBOARD_MID_SHIFT, ergoboardMidshiftVariant: ErgoboardMidshiftVariant.COMFY_WIDE},
         {type: LayoutType.Harmonic, harmonicVariant: HarmonicVariant.H13_Wide},
         {type: LayoutType.Harmonic, harmonicVariant: HarmonicVariant.H14_Traditional},
     ]
@@ -215,7 +215,7 @@ export function createAppState(): AppState {
         esNumberless: s2b(params.get("esNumberless")) ?? false,
         esSmallerThumbs: s2b(params.get("esSmallerThumbs")) ?? true,
         ergoboardLowshiftVariant: s2i(params.get("ebLsVariant") ?? params.get("eb65ls")) ?? ErgoboardLowshiftVariant.LESS_GAPS,
-        ergoboardMidshiftVariant: s2i(params.get("ebMsVariant") ?? params.get("eb65ms")) ?? ErgoboardMidshiftVariant.NICELY_WIDE,
+        ergoboardMidshiftVariant: s2i(params.get("ebMsVariant") ?? params.get("eb65ms")) ?? ErgoboardMidshiftVariant.COMFY_WIDE,
         flipRetRub: false,
     });
     const layoutModel = computed(() => getLayoutModel(layoutOptionsState.value))
