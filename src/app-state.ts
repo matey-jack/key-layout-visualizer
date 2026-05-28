@@ -213,7 +213,7 @@ export function createAppState(): AppState {
         plankVariant: s2i(params.get("plank")) ?? PlankVariant.EP60,
         bottomArrows: s2b(params.get("ep60arrows")) ?? false,
         esNumberless: s2b(params.get("esNumberless")) ?? false,
-        esSmallerThumbs: s2b(params.get("esSmallerThumbs")) ?? false,
+        esSmallerThumbs: s2b(params.get("esSmallerThumbs")) ?? true,
         eb65LowshiftVariant: s2i(params.get("eb65ls")) ?? EB65_LowShift_Variant.LESS_GAPS,
         eb65MidshiftVariant: s2i(params.get("eb65ms")) ?? EB65_MidShift_Variant.NICELY_WIDE,
         flipRetRub: false,
