@@ -48,14 +48,14 @@ export const eb65MidshiftExtraWideLayoutModel: LayoutModel = {
             ["↹", 0, 1, 2, 3, 4, "`~", "", "\\", 5, 6, 7, 8, 9, "⌫"],
             ["⇧", 0, 1, 2, 3, 4, "-", "⌦", "'", 5, 6, 7, 8, 9, "⇧"],
             [null, 0, 1, 2, 3, 4, "=", "⇤", "⇥", 9, 5, 6, 7, 8, null, "↑", null],
-            [null, "Ctrl", "Cmd", "Fn", "Alt", "⏎", "", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
+            [null, "Ctrl", "Cmd", "Fn", "Alt", "⏎", "Ins", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
         ],
         [KeymapTypeId.Thumb30]: [
             ["Esc", "1", "2", "3", "4", "5", "[", null, "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
             ["↹", 0, 1, 2, 3, 4, "`~", "Fn", "", 5, 6, 7, 8, 9, "⌫"],
             ["⇧", 0, 1, 2, 3, 4, "=", "⌦", "'", 5, 6, 7, 8, 9, "⇧"],
             [null, 0, 1, 2, 3, 4, "\\", "⇤", "⇥", "/", 5, 6, 7, 8, null, "↑", null],
-            [null, "Ctrl", "Cmd", "Alt", 0, "⏎", "", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
+            [null, "Ctrl", "Cmd", "Alt", 0, "⏎", "Ins", "⍽", "AltGr", null, "Ctrl", null, "←", "↓", "→"]
         ],
     },
 

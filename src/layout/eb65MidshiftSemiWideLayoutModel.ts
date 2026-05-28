@@ -6,7 +6,7 @@ const keyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
 export const eb65MidshiftSemiWideLayoutModel: LayoutModel = {
     ...eb65LowshiftWideLayoutModel,
-    name: "Ergoboard 65 MidShift Middle Wide",
+    name: "Ergoboard 65 MidShift Semi Wide",
     description: ``,
 
     staggerOffsets: [0.5, 0.25, 0, -0.25],
@@ -43,10 +43,10 @@ export const eb65MidshiftSemiWideLayoutModel: LayoutModel = {
             [null, 0, 1, 2, 3, 4, "=", "`~", "-", 5, 6, 7, 8, 9, null, "↑", null],
             [null, "Ctrl", "Cmd", "CAPS", "Alt", "⍽", "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
         ], [KeymapTypeId.Thumb30]: [
-            ["Esc", "1", "2", "3", "4", "5", "⌦", "6", "7", "8", "9", "0", "\\", "⇞", "⇟"],
+            ["Esc", "1", "2", "3", "4", "5", "⌦", "6", "7", "8", "9", "0", "Ins", "⇞", "⇟"],
             ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "'", "⌫"],
             ["⇧", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "⇧", "⏎"],
-            [null, 0, 1, 2, 3, 4, "=", "`~", "Ins", 5, 6, 7, 8, "/", null, "↑", null],
+            [null, 0, 1, 2, 3, 4, "=", "`~", "\\", 5, 6, 7, 8, "/", null, "↑", null],
             [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
         ],
     },

@@ -27,7 +27,7 @@ const thumb30KeyMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, "=", "`~", 5, 6, 7, 8, 9, "'", "⇞"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "⏎"],
     ["⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "⇟"],
-    ["Ctrl", "Cmd", "", "Alt", 0, "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
+    ["Ctrl", "Cmd", "Ins", "Alt", 0, "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
 ];
 
 const thumb32KeyMapping: LayoutMapping = [
@@ -35,7 +35,7 @@ const thumb32KeyMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, "`~", "'", 5, 6, 7, 8, 9, 10, "⇞"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "⏎"],
     ["⇧", 0, 1, 2, 3, 4, "=", 9, 5, 6, 7, 8, "⇧", "⇟"],
-    ["Ctrl", "Cmd", "", "Alt", 0, "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
+    ["Ctrl", "Cmd", "Ins", "Alt", 0, "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
 ];
 
 export const xhkbLayoutModel: LayoutModel = {
@@ -116,7 +116,7 @@ function arrowBlockKeymap(thumby: boolean) {
         keymap[KeyboardRows.Upper][14] = "Fn";  // Replacing ⇞
         keymap[KeyboardRows.Lower][13] = "↑";   // Replacing ⇟
         if (thumby) {
-            keymap[KeyboardRows.Bottom] = ["Ctrl", "Cmd", "", "Alt", 0, "⍽", "AltGr", "Ctrl", "←", "→", "↓"];
+            keymap[KeyboardRows.Bottom] = ["Ctrl", "Cmd", "Ins", "Alt", 0, "⍽", "AltGr", "Ctrl", "←", "→", "↓"];
         } else {
             keymap[KeyboardRows.Bottom] = ["Ctrl", "Cmd", "`~", "Alt", "⍽", "⍽", "AltGr", "Ctrl", "←", "→", "↓"];
         }
