@@ -81,6 +81,7 @@ export interface LayoutOptions {
 
     // ErgoPlank
     bottomArrows: boolean;
+    epRightReturn: boolean;
 
     // Ergoboards
     ergoboardLowshiftVariant: ErgoboardLowshiftVariant;
