@@ -50,14 +50,7 @@ export const qwertzMapping: FlexMapping = {
     techName: "QWERTZ",
     description: "Qwerty, but with z/y swapped and three more letters added instead of extended punctuation.",
     sourceUrl: "https://en.wikipedia.org/wiki/QWERTZ",
-    // This is not correct but needed as a diffing base for the Cozy German mapping that is only defined as a mapping30.
-    // Otherwise, the app will crash just by switching to Ortho layout on any mapping. :/
     mappings: {
-        [KeymapTypeId.Ansi30]: [
-            "qwert" + "zuiop",
-            "asdfg" + "jnkl;",
-            "yxcvb" + "hm,./",
-        ],
         [KeymapTypeId.Ansi32]: [
             "qwert" + "zuiopü",
             "asdfg" + "hjklöä",
@@ -85,6 +78,19 @@ export const qwertzMapping: FlexMapping = {
             "yxcvb" + "-" + "nm,.",
             "^⌥´≡"
         ]
+    }
+}
+
+export const semiQwertzMapping: FlexMapping = {
+    name: "German Qwertz with no Umlauts, only needed as technical comparison base.",
+    mappings: {
+        // This is not correct but needed as a diffing base for the Cozy German mapping that is only defined as a mapping30.
+        // Otherwise, the app will crash just by switching to Ortho layout on any mapping. :/
+        [KeymapTypeId.Ansi30]: [
+            "qwert" + "zuiop",
+            "asdfg" + "jnkl;",
+            "yxcvb" + "hm,./",
+        ],
     }
 }
 
