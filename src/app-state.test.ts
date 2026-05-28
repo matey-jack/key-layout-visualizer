@@ -83,3 +83,22 @@ describe("setLayout", () => {
         expect(appState.mapping.value).toBe(colemakMapping);
     })
 });
+
+describe("URL hash parameters", () => {
+    it("parses epRightRet from window.location.hash and serializes it back", () => {
+        // given
+        window.location.hash = "#layout=2&plank=2&epRightRet=1";
+        const appState = createAppState();
+
+        // then
+        expect(appState.layout.value.epRightReturn).toBe(true);
+
+        // when
+        appState.setLayout({ epRightReturn: false });
+
+        // then
+        const params = new URLSearchParams(window.location.hash.slice(1));
+        expect(params.get("epRightRet")).toBe("0");
+    });
+});
+

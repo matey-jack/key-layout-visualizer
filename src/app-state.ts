@@ -179,11 +179,12 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
         case LayoutType.Ergoplank:
             params.set("plank", layout.plankVariant.toString());
             params.set("bottomArrows", layout.bottomArrows ? "1" : "0");
+            params.set("epRightRet", layout.epRightReturn ? "1" : "0");
             params.set("esNumberless", layout.esNumberless ? "1" : "0");
             params.set("esSmallerThumbs", layout.esSmallerThumbs ? "1" : "0");
             params.set("ebLsVariant", layout.ergoboardLowshiftVariant.toString());
             params.set("ebMsVariant", layout.ergoboardMidshiftVariant.toString());
-            subLayout = PlankVariant[layout.plankVariant] + (layout.bottomArrows ? "+arrows" : "") + (layout.esNumberless ? "+esNumberless" : "") + (layout.esSmallerThumbs ? "+esSmallerThumbs" : "");
+            subLayout = PlankVariant[layout.plankVariant] + (layout.bottomArrows ? "+arrows" : "") + (layout.epRightReturn ? "+epRightReturn" : "") + (layout.esNumberless ? "+esNumberless" : "") + (layout.esSmallerThumbs ? "+esSmallerThumbs" : "");
             break;
     }
     posthog.register({
@@ -212,6 +213,7 @@ export function createAppState(): AppState {
         harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
         plankVariant: s2i(params.get("plank")) ?? PlankVariant.ERGOPLANK,
         bottomArrows: s2b(params.get("bottomArrows") ?? params.get("ep60arrows")) ?? false,
+        epRightReturn: s2b(params.get("epRightRet")) ?? false,
         esNumberless: s2b(params.get("esNumberless")) ?? false,
         esSmallerThumbs: s2b(params.get("esSmallerThumbs")) ?? true,
         ergoboardLowshiftVariant: s2i(params.get("ebLsVariant") ?? params.get("eb65ls")) ?? ErgoboardLowshiftVariant.LESS_GAPS,
