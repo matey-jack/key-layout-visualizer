@@ -51,28 +51,28 @@ export function MappingList({appState}: MappingListProps) {
     });
 
     return <div class="mapping-list-controls">
-        <div class="mapping-filter-group">
-            <CheckboxWithLabel
-                label="recommended for English"
-                type="radio"
-                groupName="mapping_filter"
-                checked={filterMode.value === MappingFilter.English}
-                onChange={(checked) => { if (checked) filterMode.value = MappingFilter.English; }}
-            />
-            <CheckboxWithLabel
-                label="international alphabets"
-                type="radio"
-                groupName="mapping_filter"
-                checked={filterMode.value === MappingFilter.International}
-                onChange={(checked) => { if (checked) filterMode.value = MappingFilter.International; }}
-            />
-            <CheckboxWithLabel
-                label="show all mappings"
-                type="radio"
-                groupName="mapping_filter"
-                checked={filterMode.value === MappingFilter.All}
-                onChange={(checked) => { if (checked) filterMode.value = MappingFilter.All; }}
-            />
+        <div class="mapping-filter-tabs">
+            <button
+                type="button"
+                class={`mapping-filter-tab${filterMode.value === MappingFilter.English ? " selected" : ""}`}
+                onClick={() => { filterMode.value = MappingFilter.English; }}
+            >
+                recommended for English
+            </button>
+            <button
+                type="button"
+                class={`mapping-filter-tab${filterMode.value === MappingFilter.International ? " selected" : ""}`}
+                onClick={() => { filterMode.value = MappingFilter.International; }}
+            >
+                international alphabets
+            </button>
+            <button
+                type="button"
+                class={`mapping-filter-tab${filterMode.value === MappingFilter.All ? " selected" : ""}`}
+                onClick={() => { filterMode.value = MappingFilter.All; }}
+            >
+                all mappings
+            </button>
         </div>
         <table class="mapping-list">
             <thead>
