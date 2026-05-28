@@ -47,6 +47,12 @@ export const splitOrthoLayoutModel = (midShift: boolean) : LayoutModel => ({
 
     frameMappings: {
         [KeymapTypeId.SplitOrtho]: fullMapping,
+        /*
+          Generally Ansi30 and Thumb30 have three character keys in the bottom row, while Ansi32 and Thumb32 have four.
+          Apart from the two removed keys to make space for the larger flex mapping (and the '-' vs '/' difference, only on Ansi30)
+          all the frame mappings should have the same keys.
+          (This is different from ANSI, where I reflect more differences between standard ANSI and German keymaps.)
+         */
         [KeymapTypeId.Ansi30]: midShift ? [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
@@ -58,7 +64,7 @@ export const splitOrthoLayoutModel = (midShift: boolean) : LayoutModel => ({
             // We use the freed space to improve `-` position, since this is the third most frequently used punctuation character.
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "-"],
-            ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+            ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
             ["Ctrl", "\\", "`", "Alt", "Cmd", "⏎", "⍽", "Ctrl", "AltGr", "Menu", "=", "Fn"],
         ],
@@ -71,7 +77,7 @@ export const splitOrthoLayoutModel = (midShift: boolean) : LayoutModel => ({
         ] : [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
             ["Ctrl", "/", "`", "Alt", "Cmd", "⏎", "⍽", "Ctrl", "AltGr", "'", "=", "Fn"],
         ],
