@@ -32,8 +32,8 @@ import {eb65MidshiftSemiWideLayoutModel} from './layout/eb65MidshiftSemiWideLayo
 import {
     createErgoPlankMidShift,
     createErgoPlankWithArrows,
-    ergoPlank60LayoutModel
-} from "./layout/ergoPlank60LayoutModel.ts";
+    ergoPlankLayoutModel
+} from "./layout/ergoPlankLayoutModel.ts";
 import {majorErgoslatLayoutModel, makeErgoslatNumberless, minorErgoslatLayoutModel } from './layout/ergoslatLayoutModel.ts';
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
@@ -118,7 +118,7 @@ export function getPlankVariant(opts: LayoutOptions): LayoutModel {
                     return eb65MidshiftNiceLayoutModel; // "wide hands"
             }
         default: {
-            const base = opts.midShift ? createErgoPlankMidShift(ergoPlank60LayoutModel) : ergoPlank60LayoutModel;
+            const base = opts.midShift ? createErgoPlankMidShift(ergoPlankLayoutModel) : ergoPlankLayoutModel;
             return opts.bottomArrows ? createErgoPlankWithArrows(base) : base;
         }
     }

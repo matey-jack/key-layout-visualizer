@@ -36,7 +36,7 @@ const thumb32FrameMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Fn", "Alt", 0, "Ins", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
 ];
 
-export const ergoPlank60LayoutModel: LayoutModel = {
+export const ergoPlankLayoutModel: LayoutModel = {
     name: "Ergoplank",
     description: `"The most ergonomic key layout that fits into a standard "60%" keyboard case."
     Hand distance is maximized. Row stagger is equal to a "cleave-style ergonomic" keyboard.
