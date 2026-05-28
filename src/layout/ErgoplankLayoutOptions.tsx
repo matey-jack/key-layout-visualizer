@@ -49,10 +49,26 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
                             currentVariant={variant} setVariant={setVariant}
                             name="❤️ Ergoplank 15/5"
         >
-            <MidShiftCheckbox options={options} setOption={setOption}/>
-            <CheckboxWithLabel label="Include arrow keys"
-                               checked={options.bottomArrows}
-                               onChange={(arrows: boolean) => setOption({bottomArrows: arrows})}/>
+            <CheckboxWithLabel label="low shift"
+                               type="radio"
+                               groupName="ergoplank_shift"
+                               checked={!options.midShift}
+                               onChange={(checked) => checked && setOption({midShift: false})}/>
+            <CheckboxWithLabel label="mid shift with angle mod"
+                               type="radio"
+                               groupName="ergoplank_shift"
+                               checked={options.midShift && !options.epRightReturn}
+                               onChange={(checked) => checked && setOption({midShift: true, epRightReturn: false})}/>
+            <CheckboxWithLabel label="mid shift with right Return key"
+                               type="radio"
+                               groupName="ergoplank_shift"
+                               checked={options.midShift && options.epRightReturn}
+                               onChange={(checked) => checked && setOption({midShift: true, epRightReturn: true})}/>
+            <div class="ergoplank-arrows-checkbox">
+                <CheckboxWithLabel label="Include arrow keys"
+                                   checked={options.bottomArrows}
+                                   onChange={(arrows: boolean) => setOption({bottomArrows: arrows})}/>
+            </div>
         </LayoutVariantButton>
 
         <LayoutVariantButton variant={PlankVariant.ERGOBOARD_LOW_SHIFT}

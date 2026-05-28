@@ -76,7 +76,7 @@
 
 .plank-layout-options-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1.25fr 1.5fr;
+    grid-template-columns: 0.5fr 1fr 1.5fr 1.25fr 1.5fr;
     justify-items: center;
 }
 
@@ -95,6 +95,10 @@
 .ergoplank-angle-mod-checkbox {
     margin-left: 1.25rem;
     margin-top: 0.15rem;
+}
+
+.ergoplank-arrows-checkbox {
+    margin-top: 0.75rem;
 }
 
 .layout-variant-button {
