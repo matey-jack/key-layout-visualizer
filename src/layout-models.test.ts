@@ -1,7 +1,7 @@
 import {describe, expect, it} from "vitest";
 import {KEYMAP_TYPES, KeyboardRows, KeymapTypeId, type LayoutModel} from "./base-model.ts";
 import {ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
-import {ansiIBMLayoutModel, ansiWideLayoutModel, createApple, createHHKB} from "./layout/ansiLayoutModel.ts";
+import {ansiIBMLayoutModel, ansiWideLayoutModel, createAN65, createApple, createHHKB} from "./layout/ansiLayoutModel.ts";
 import {ergoboardBigEnterLayoutModel, ergoboardLowshiftLayoutModel} from "./layout/ergoboardLowshiftLayoutModel.ts";
 import {
     ergoboardLowshiftWideAngleModLayoutModel,
@@ -38,6 +38,8 @@ const layoutModels: Array<LayoutModel> = [
     createApple(ansiIBMLayoutModel),
     createHHKB(ansiWideLayoutModel),
     createApple(ansiWideLayoutModel),
+    createAN65(ansiIBMLayoutModel),
+    createAN65(ansiWideLayoutModel),
     xhkbLayoutModel,
     xhkbWithArrowsLayoutModel,
     ahkbLayoutModel,
@@ -76,6 +78,7 @@ const layoutModels: Array<LayoutModel> = [
 // all of those might be just fine
 const IGNORED_30_KEYS: Record<string, string[]> = {
     "ANSI/IBM with wide hand position": ["Esc", "Menu"],
+    "AN65 with wide hand position": ["Esc", "Menu"],
     "ANSI/Apple with wide hand position": ["Esc"], // replaces duplicate Ctrl key
     // The single difference here is due to removing the duplicate space key.
     // (Would disappear if we had thumb-return from the start.)
@@ -94,6 +97,7 @@ const IGNORED_30_KEYS: Record<string, string[]> = {
 
 const IGNORED_32_KEYS: Record<string, string[]> = {
     "ANSI/IBM with wide hand position": ["\\", "Menu"],
+    "AN65 with wide hand position": ["\\", "Menu"],
     "ANSI/Apple with wide hand position": ["\\"],
     "Thumbs Up": ["Ins"],
 };

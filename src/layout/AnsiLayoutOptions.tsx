@@ -22,6 +22,7 @@ function ansiVariantNote(variant: AnsiVariant, wide: boolean): string {
         case AnsiVariant.IBM:   return `15/${denom}`;
         case AnsiVariant.APPLE: return `14.5/${denom}`;
         case AnsiVariant.HHKB:  return `15/${denom}`;
+        case AnsiVariant.AN65:  return `16/${denom}`;
         default: return "";
     }
 }
@@ -35,6 +36,7 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
         {variant: AnsiVariant.IBM, label: "IBM"},
         {variant: AnsiVariant.APPLE, label: "Apple"},
         {variant: AnsiVariant.HHKB, label: "HHKB"},
+        {variant: AnsiVariant.AN65, label: "AN65"},
         {variant: AnsiVariant.XHKB, label: "❤️ Thumbs Up"},
         // {variant: AnsiVariant.AHKB, label: "AHKB"},
     ];
