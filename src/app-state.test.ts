@@ -1,11 +1,16 @@
-import {describe, expect, it} from "vitest";
-import {AnsiVariant,} from "./app-model";
+import {describe, expect, it, beforeEach} from "vitest";
+import {AnsiVariant, HarmonicVariant} from "./app-model";
 import {createAppState} from "./app-state";
-import {LayoutType} from "./base-model";
+import {LayoutType, KeymapTypeId, type FlexMapping} from "./base-model";
+import {hasMatchingMapping} from "./layout/layout-functions";
 import {maltronMapping} from "./mapping/mappings";
 import {cozyEnglish} from './mapping/cozyMappings.ts';
 import {colemakMapping, colemakThumbyDMapping} from './mapping/colemakMappings.ts';
-import {qwertyWideMapping} from './mapping/baseMappings.ts';
+import {qwertyMapping, qwertyWideMapping} from './mapping/baseMappings.ts';
+
+beforeEach(() => {
+    window.location.hash = "";
+});
 
 describe("setMapping", () => {
     it("switches to ANSI wide for thumb-using keymap", () => {
@@ -48,6 +53,32 @@ describe("setMapping", () => {
         // then
         expect(appState.layout.value.type).toBe(LayoutType.ANSI);
     })
+
+    it("switches layout to Harmonic when setting a mapping that only supports Harmonic layout", () => {
+        // given
+        const appState = createAppState();
+        appState.setLayout({type: LayoutType.ANSI, ansiWide: false});
+
+        const harmonicOnlyMapping: FlexMapping = {
+            name: "Harmonic Only",
+            mappings: {
+                [KeymapTypeId.Harmonic13Wide]: [
+                    "qwbf" + "öü" + "kuop",
+                    "zasdrg" + "'" + "hniltä",
+                    "yxcv" + "/-" + "jm,.",
+                    "+e"
+                ]
+            }
+        };
+
+        // when
+        appState.setMapping(harmonicOnlyMapping);
+
+        // then
+        expect(appState.layout.value.type).toBe(LayoutType.Harmonic);
+        expect(appState.layout.value.harmonicVariant).toBe(HarmonicVariant.H13_Wide);
+        expect(appState.mapping.value).toBe(harmonicOnlyMapping);
+    });
 });
 
 describe("setLayout", () => {
@@ -82,6 +113,118 @@ describe("setLayout", () => {
         // then
         expect(appState.mapping.value).toBe(colemakMapping);
     })
+
+    it("falls back to qwertyMapping when fallback chain has no match", () => {
+        // given
+        const appState = createAppState();
+        const fallbackMapping: FlexMapping = {
+            name: "Custom Ortho Fallback",
+            mappings: {
+                [KeymapTypeId.SplitOrtho]: [
+                    "qpycb" + "vmuzl'",
+                    "anisf" + "dthor",
+                    ".,jg;" + "/wk-x",
+                    "⇤=e\\⇥",
+                ]
+            }
+        };
+        const customMapping: FlexMapping = {
+            name: "Custom Only Ortho",
+            fallback: fallbackMapping,
+            mappings: {
+                [KeymapTypeId.SplitOrtho]: [
+                    "qpycb" + "vmuzl'",
+                    "anisf" + "dthor",
+                    ".,jg;" + "/wk-x",
+                    "⇤=e\\⇥",
+                ]
+            }
+        };
+        appState.setLayout({type: LayoutType.Ergosplit});
+        appState.setMapping(customMapping);
+        expect(appState.mapping.value).toBe(customMapping);
+
+        // when - switch to ANSI layout (does not support SplitOrtho)
+        appState.setLayout({type: LayoutType.ANSI, ansiVariant: AnsiVariant.IBM});
+
+        // then
+        expect(appState.mapping.value).toBe(qwertyMapping);
+    });
+
+    it("falls back to the first layout-compatible mapping in allMappings when qwertyMapping is also incompatible", () => {
+        // given
+        const appState = createAppState();
+        const customMapping: FlexMapping = {
+            name: "Custom Ortho Only",
+            mappings: {
+                [KeymapTypeId.SplitOrtho]: [
+                    "qpycb" + "vmuzl'",
+                    "anisf" + "dthor",
+                    ".,jg;" + "/wk-x",
+                    "⇤=e\\⇥",
+                ]
+            }
+        };
+        appState.setLayout({type: LayoutType.Ergosplit});
+        appState.setMapping(customMapping);
+        expect(appState.mapping.value).toBe(customMapping);
+
+        // Temporarily clear qwertyMapping's mappings
+        const originalQwertyMappings = qwertyMapping.mappings;
+        qwertyMapping.mappings = {};
+
+        try {
+            // when - switch to ANSI layout (does not support SplitOrtho)
+            appState.setLayout({type: LayoutType.ANSI, ansiVariant: AnsiVariant.IBM});
+
+            // then
+            expect(appState.mapping.value).not.toBe(customMapping);
+            expect(appState.mapping.value).not.toBe(qwertyMapping);
+            expect(hasMatchingMapping(appState.layoutModel.value, appState.mapping.value)).toBe(true);
+        } finally {
+            // Restore
+            qwertyMapping.mappings = originalQwertyMappings;
+        }
+    });
+
+    it("handles circular mapping fallback chains without hanging, falling back to qwertyMapping", () => {
+        // given
+        const appState = createAppState();
+        const mappingA: FlexMapping = {
+            name: "Mapping A",
+            mappings: {
+                [KeymapTypeId.SplitOrtho]: [
+                    "qpycb" + "vmuzl'",
+                    "anisf" + "dthor",
+                    ".,jg;" + "/wk-x",
+                    "⇤=e\\⇥",
+                ]
+            }
+        };
+        const mappingB: FlexMapping = {
+            name: "Mapping B",
+            mappings: {
+                [KeymapTypeId.SplitOrtho]: [
+                    "qpycb" + "vmuzl'",
+                    "anisf" + "dthor",
+                    ".,jg;" + "/wk-x",
+                    "⇤=e\\⇥",
+                ]
+            }
+        };
+        mappingA.fallback = mappingB;
+        mappingB.fallback = mappingA;
+
+        appState.setLayout({type: LayoutType.Ergosplit});
+        appState.setMapping(mappingA);
+        expect(appState.mapping.value).toBe(mappingA);
+
+        // when - switch to ANSI layout (does not support SplitOrtho)
+        appState.setLayout({type: LayoutType.ANSI, ansiVariant: AnsiVariant.IBM});
+
+        // then
+        expect(appState.mapping.value).toBe(qwertyMapping);
+    });
 });
 
 describe("URL hash parameters", () => {
