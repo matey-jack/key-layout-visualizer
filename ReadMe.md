@@ -73,12 +73,63 @@ But mid-shift actually always works on all kinds of keyboards.
 Terminology used in this app:
  - mid-shift and low-shift as just explained: pinky-operated on the home row or below.
  - mix-shift: when the keyboard layout has a different Shift-key position depending on the selected keymap for letters.
- - switch-shift: when the app allows switching the Shift key position of a keyboard layout independently of the selected keymap. (This is not implemented as of this writing.)
+ - switch-shift: when the app allows switching the Shift key position of a keyboard layout independently of the selected keymap. 
 
 Observations and further work:
  - on the left hand, the CAPS key can be easily repurposed as Shift (which I did on my Laptops and my family can still use the laptop without problems, because the old Shift key is also Shift).
  - on the right hand, we can actually switch Shift and Return! On an ANSI keyboard with a wide-hand keymap, this is quite ergonomic and allows to transfer muscle-memory with a split ergo keyboard that has the same setup!
  - The right side of an ISO keyboard is less straight-forward because of the vertical Enter key and an intermediate 1u key between the pinky home (even in wide-mod) and Enter. Probably that 1u key should serve as Shift while the original Shift can take the lower-row character key that would otherwise flip to the center. And Enter stays Enter. 
+
+## Character Set and Shift-Pairings
+
+On the ANSI layouts I use the ANSI base character set for English keymaps and the German one for international keymaps.
+On the creative layouts, I use a mix of both: `+` represents the ANSI `=+` key and at the same time the German `+*` key
+and various `+` key pairs from other languages. 
+The reason for this is to emphasize the relative positioning of `+` and `-` which are often used together with Ctrl for zooming
+and possibly on a firmware layer for adjusting volume or brightness. 
+Also, the layout looks better when `+` and `-` are arranged closely or at least somehow symmetrically, on the same hand, 
+so that the other hand can keep pressing Ctrl (or a layer toggle).
+(Note that both keys can't always be close, because `-` is one of the most common punctuation keys 
+and thus mapped as part of the core 30 or 32 letters and punctutation keys.)
+Similar symmetry applies to `/` and `\` although they are not used together in shortcuts.
+
+Characters sacrificed to make space for the three additional letters on the larger alphabets are `[];`. 
+The brackets are usually mapped on the AltGr layer of ISO key maps, 
+while many languages map `;` and `:` to Shift `,` and `.`.
+Most ISO key maps also replace `\` with another key (often a punctuation character like `#` that is on the number row in ANSI),
+but since this is not standardized, I just kept `\`. 
+Similarly, I kept the apostrophe `'` on the base layer, simply because a lot of people of all languages now also write a lot of English
+as a second (or third) language. Thus, the apostrophe will be used a lot.
+
+This does not constitute a serious attempt to standardize punctuation across all Latin-based European alphabets,
+but doing such a thing would obviously help the hobby keyboardin community, because one could then reuse a lot of keycaps
+across languages and would only have to provide a few extra keycaps for specific letters. 
+Basically one slightly larger keycap set could cover all the languages! And bilingual people would have a much easier life, too!
+
+## Keyboard layout variants vs Keymap variants
+
+Keyboard layouts have different positions for the "command and control" type keys that are usually fit unto the keycaps
+which are wider than 1u. Whatever keys are left will be used for letters and punctuation. 
+(Numbers are fortunately very stable in their positioning.)
+Flex key maps change the position of the letters and the most important punctuation characters, 
+also leaving the remainin key for the remaining punctuation.
+
+This means that on keyboards that have several "big key" alternatives, 
+we need to provide frame mappings for each of the keymap types (depending on thumb letter use and alphabet size).
+Since we want to create sensible total key maps in each case, 
+we move the remaining punctuation around to keep more frequently used punctuation in easier to reach positions
+and keep the remaining ones in logical positions, where applicable.
+
+We try to keep the differences small between all the variants, for example, switching from English to German 
+(except on the ANSI keyboard, where character sets are more traditinal) should not change more keys than needed.
+(And this should be true in all variants of a keyboard layout.)
+Similarly switching from Quipper to Quipper Thumby should not change more keys than needed.
+(Although at least one key from the frame mapping needs to move from the bottom row up.)
+Also switching between MidShift and LowShift should not change more than needed.
+
+To visually verify this, you can switch back and forth between similar flex mappings on each keyboard variant
+and also switch back and forth between keyboard variants on each of the flex mapping types. 
+ - TODO: provide a small testing tool to list the differences for all those cases. 
 
 ## Scope
 
