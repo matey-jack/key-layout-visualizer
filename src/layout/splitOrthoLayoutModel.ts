@@ -58,7 +58,7 @@ export const splitOrthoLayoutModel = (midShift: boolean) : LayoutModel => ({
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
             ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "Ctrl"],
-            ["Alt", "\\", "`", "⌦", "Cmd", "⏎", "⍽", "Fn", "AltGr", "=", "-", "Menu"],
+            ["Alt", "\\", "`", "⌦", "Cmd", "⏎", "⍽", "Fn", "AltGr", "+", "-", "Menu"],
         ] : [
             // Mapping Enter as a thumb key allows `'` to stay in its Qwerty position.
             // We use the freed space to improve `-` position, since this is the third most frequently used punctuation character.
@@ -66,20 +66,20 @@ export const splitOrthoLayoutModel = (midShift: boolean) : LayoutModel => ({
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "-"],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", "\\", "`", "Alt", "Cmd", "⏎", "⍽", "Fn", "AltGr", "Menu", "=", "Ctrl"],
+            ["Ctrl", "\\", "`", "Alt", "Cmd", "⏎", "⍽", "Fn", "AltGr", "Menu", "+", "Ctrl"],
         ],
         [KeymapTypeId.Ansi32]: midShift ? [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
             ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, [-1, 10]],
-            ["Alt", "/", "`", "⌦", "Cmd", "⏎", "⍽", "Ctrl", "AltGr", "'", "=", "Fn"],
+            ["Alt", "/", "`", "⌦", "Cmd", "⏎", "⍽", "Ctrl", "AltGr", "'", "+", "Fn"],
         ] : [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", "/", "`", "Alt", "Cmd", "⏎", "⍽", "Ctrl", "AltGr", "'", "=", "Fn"],
+            ["Ctrl", "/", "`", "Alt", "Cmd", "⏎", "⍽", "Ctrl", "AltGr", "'", "+", "Fn"],
         ],
         [KeymapTypeId.Thumb30]: midShift ? [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
@@ -87,13 +87,13 @@ export const splitOrthoLayoutModel = (midShift: boolean) : LayoutModel => ({
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
             ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "Ctrl"],
             // left =+ key, because most thumb-letter key maps use B or nearby position for -_
-            ["Alt", "⌦", "=", "Cmd", 0, "⏎", "⍽", "Fn", "AltGr", "\\", "`", "Menu"],
+            ["Alt", "⌦", "+", "Cmd", 0, "⏎", "⍽", "Fn", "AltGr", "\\", "`", "Menu"],
         ] : [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "\\"],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "⇧"],
-            ["Ctrl", "Alt", "=", "Cmd", 0, "⏎", "⍽", "Ctrl", "AltGr", "Menu", "`", "Fn"],
+            ["Ctrl", "Alt", "+", "Cmd", 0, "⏎", "⍽", "Ctrl", "AltGr", "Menu", "`", "Fn"],
         ],
         [KeymapTypeId.Thumb32]: midShift ? [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
@@ -101,13 +101,13 @@ export const splitOrthoLayoutModel = (midShift: boolean) : LayoutModel => ({
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
             ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
             // now = is right again, where German and other key maps have the -_
-            ["Alt", "⌦", "`", "Cmd", 0, "⏎", "⍽",  "Ctrl", "AltGr", "/", "=", "Fn"],
+            ["Alt", "⌦", "`", "Cmd", 0, "⏎", "⍽",  "Ctrl", "AltGr", "/", "+", "Fn"],
         ] : [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", "Alt", "`", "Cmd", 0, "⏎", "⍽", "Ctrl", "AltGr", "/", "=", "Fn"],
+            ["Ctrl", "Alt", "`", "Cmd", 0, "⏎", "⍽", "Ctrl", "AltGr", "/", "+", "Fn"],
         ],
     },
 });

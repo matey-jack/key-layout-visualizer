@@ -33,7 +33,7 @@ export const harmonic14WideLayoutModel: LayoutModel = {
 
     frameMappings: {
         [KeymapTypeId.Ansi30]: [
-            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "`"], // 14 keys
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "+", "`"], // 14 keys
             ["↹", 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "⌫"], // 13 keys
             [[-1, 0], 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'"], // 14 keys
             // The move of key 9 to the middle is a change required to keep the key-to-finger assignments
@@ -42,7 +42,7 @@ export const harmonic14WideLayoutModel: LayoutModel = {
             ["Ctrl", "Cmd", "Alt", "⌦", "⍽", "⏎", "AltGr", "Menu", "Fn", "Ctrl"], // 10 keys
         ],
         [KeymapTypeId.Thumb30]: [
-            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "=", "`", ""], // 14 keys
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "+", "`", ""], // 14 keys
             ["↹", 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "⌫"], // 13 keys
             [[-1, 0], 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'"], // 14 keys
             ["⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧"], // 13 keys
