@@ -183,17 +183,17 @@ export function createErgoPlankMidShiftRightReturn(lm: LayoutModel): LayoutModel
             ],
             [KeymapTypeId.Thumb30]:  [
                 ['Esc', '1', '2', '3', '4', '5', '[', ']', '6', '7', '8', '9', '0', '⌫'],
-                ['↹', 0, 1, 2, 3, 4, '`~', null, "'", 5, 6, 7, 8, 9, '⏎'],
-                ['⇧', 0, 1, 2, 3, 4, '⇤', '⌦', '⇥', 5, 6, 7, 8, 9, '⇧'],
-                [0, 1, 2, 3, 4, '=', '⇞', '⇟', '\\', 5, 6, 7, 8, '/'],
-                ['Ctrl', 'Cmd', 'Fn', 'Alt', 0, 'Ins', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
+                ['↹', 0, 1, 2, 3, 4, '=', null, '\\', 5, 6, 7, 8, 9, "'"],
+                ['⇧', 0, 1, 2, 3, 4, '⇤', '`~', '⇥', 5, 6, 7, 8, 9, '⇧'],
+                ['Ctrl', 0, 1, 2, 3, 4, '⇞', '⇟', '/', 5, 6, 7, 8, '⏎'],
+                ['Cmd', 'Fn', '⌦', 'Alt', 0, 'Ins', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
             ],
             [KeymapTypeId.Thumb32]: [
                 ['Esc', '1', '2', '3', '4', '5', '\\', '/', '6', '7', '8', '9', '0', '⌫'],
-                ['↹', 0, 1, 2, 3, 4, "'", null, 10, 5, 6, 7, 8, 9, '⏎'],
-                ['⇧', 0, 1, 2, 3, 4, '⇤', '⌦', '⇥', 5, 6, 7, 8, 9, '⇧'],
-                [0, 1, 2, 3, 4, '`~', '⇞', '⇟', '=', 5, 6, 7, 8, 9],
-                ['Ctrl', 'Cmd', 'Fn', 'Alt', 0, 'Ins', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
+                ['↹', 0, 1, 2, 3, 4, "'", null, "=", 5, 6, 7, 8, 9, 10],
+                ['⇧', 0, 1, 2, 3, 4, '⇤', '`~', '⇥', 5, 6, 7, 8, 9, '⇧'],
+                ['Ctrl', 0, 1, 2, 3, 4, '⇞', '⇟', 9, 5, 6, 7, 8, '⏎'],
+                ['Cmd', 'Fn', '⌦', 'Alt', 0, 'Ins', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
             ],
         },
     }
@@ -203,8 +203,13 @@ export function createErgoPlankWithArrows(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
         name: lm.name + " with cursor block",
+        // TODO: change this to programmatically replace only from the middle key to the right with ["Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]
+        //       and on the left side, replace "Fn" with AltGr.
+        //       This way, a single replacement works not only for all keymap types, but also for all keyboard layout variants.
         frameMappings: {
             [KeymapTypeId.Ansi30]: replaceLast(lm.frameMappings[KeymapTypeId.Ansi30]!,
+                [null, "Ctrl", "Cmd", "AltGr", "Alt", "⏎", "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]),
+            [KeymapTypeId.Ansi32]: replaceLast(lm.frameMappings[KeymapTypeId.Ansi32]!,
                 [null, "Ctrl", "Cmd", "AltGr", "Alt", "⏎", "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]),
             [KeymapTypeId.Thumb30]: replaceLast(lm.frameMappings[KeymapTypeId.Thumb30]!,
                 [null, "Ctrl", "Cmd", "AltGr", "Alt", 0, "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]),
