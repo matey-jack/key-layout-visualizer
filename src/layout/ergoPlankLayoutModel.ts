@@ -1,4 +1,5 @@
 import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
+import {mapValues} from "../library/records.ts";
 import {mirrorOdd, SymmetricKeyWidth} from "./keyWidth.ts";
 import {ergoFamilyKeyColorClass} from "./layout-functions.ts";
 
@@ -203,19 +204,7 @@ export function createErgoPlankWithArrows(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
         name: lm.name + " with cursor block",
-        // TODO: change this to programmatically replace only from the middle key to the right with ["Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]
-        //       and on the left side, replace "Fn" with AltGr.
-        //       This way, a single replacement works not only for all keymap types, but also for all keyboard layout variants.
-        frameMappings: {
-            [KeymapTypeId.Ansi30]: replaceLast(lm.frameMappings[KeymapTypeId.Ansi30]!,
-                [null, "Ctrl", "Cmd", "AltGr", "Alt", "⏎", "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]),
-            [KeymapTypeId.Ansi32]: replaceLast(lm.frameMappings[KeymapTypeId.Ansi32]!,
-                [null, "Ctrl", "Cmd", "AltGr", "Alt", "⏎", "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]),
-            [KeymapTypeId.Thumb30]: replaceLast(lm.frameMappings[KeymapTypeId.Thumb30]!,
-                [null, "Ctrl", "Cmd", "AltGr", "Alt", 0, "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]),
-            [KeymapTypeId.Thumb32]: replaceLast(lm.frameMappings[KeymapTypeId.Thumb32]!,
-                [null, "Ctrl", "Cmd", "AltGr", "Alt", 0, "Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"]),
-        },
+        frameMappings: mapValues(lm.frameMappings, (_, mapping) => replaceBottomKeys(mapping)),
 
         singleKeyEffort: replaceLast(lm.singleKeyEffort,
             [null, 3.0, 3.0, 2.0, 1.5, 0.2, 1.5, 0.2, 1.5, null, null, null, null, null]
@@ -234,4 +223,13 @@ export function createErgoPlankWithArrows(lm: LayoutModel): LayoutModel {
 
 function replaceLast<T>(list: T[], last: T) {
     return [...list.slice(0, -1), last];
+}
+
+function replaceBottomKeys(list:  LayoutMapping):  LayoutMapping {
+    const lastRow = list[list.length - 1];
+    const left = lastRow.slice(0, 5);
+    const leftMod = left.map(key => key === "Fn" ? "AltGr" : key);
+    const right = ["Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"];
+    const newBottomRow = [null, ...leftMod, ...right];
+    return [...list.slice(0, -1), newBottomRow];
 }
