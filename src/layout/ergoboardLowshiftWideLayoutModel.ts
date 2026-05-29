@@ -6,7 +6,7 @@ import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.t
 const keyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
 const thirtyKeyMapping: LayoutMapping = [
-    ["Esc", "1", "2", "3", "4", "5", "`~", null, "6", "7", "8", "9", "0", "=", "⇞", "⇟"],
+    ["Esc", "1", "2", "3", "4", "5", "`~", null, "6", "7", "8", "9", "0", "+", "⇞", "⇟"],
     ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "-", "⌫"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
     [null, "⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "↑", null],
@@ -15,7 +15,7 @@ const thirtyKeyMapping: LayoutMapping = [
 
 const thumb30KeyMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "`~", null, "6", "7", "8", "9", "0", "Ins", "⇞", "⇟"],
-    ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "=", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "+", "⌫"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
     [null, "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
     [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],

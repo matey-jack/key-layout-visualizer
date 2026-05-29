@@ -69,7 +69,7 @@ function hasLettersNumbersAndProsePunctuation(filledMapping: string[][]) {
 describe('fillMapping', () => {
     it('Harmonic 13 wide layout 30-key qwerty exact test', () => {
         const actual = fillMapping(harmonic13WideLayoutModel, qwertyMapping)!;
-        expect(actual[0]).toStrictEqual(["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="]);
+        expect(actual[0]).toStrictEqual(["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "+"]);
         expect(actual[1]).toStrictEqual(["↹", "w", "e", "r", "t", "`", "y", "u", "i", "o", "p", "⌫",]);
         expect(actual[2]).toStrictEqual(["q", "a", "s", "d", "f", "g", "\\", "h", "j", "k", "l", ";", "'"]);
         expect(actual[3]).toStrictEqual(["⇧", "z", "x", "c", "v", "b", "/", "n", "m", ",", ".", "⇧",]);

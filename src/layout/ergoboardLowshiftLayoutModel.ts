@@ -6,14 +6,14 @@ const keyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
 const ansi30FrameMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-    ["↹", 0, 1, 2, 3, 4, "=", null, 5, 6, 7, 8, 9, "-", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, "+", null, 5, 6, 7, 8, 9, "-", "⌫"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
     ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "↑", null],
     [null, "Ctrl", "Cmd", "CAPS", "Alt", "⍽", "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
 ];
 const thumb30FrameMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-    ["↹", 0, 1, 2, 3, 4, null, null, 5, 6, 7, 8, 9, "=", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, null, null, 5, 6, 7, 8, 9, "+", "⌫"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
     ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
     [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
@@ -95,7 +95,7 @@ export const ergoboardBigEnterLayoutModel: LayoutModel = {
 }
 
 function moveKeys(mapping: LayoutMapping, thumby: boolean): LayoutMapping {
-    mapping[KeyboardRows.Number][7] = "=";
+    mapping[KeyboardRows.Number][7] = "+";
     mapping[KeyboardRows.Upper][6] = thumby ? "`~" : "-";
     mapping[KeyboardRows.Upper].splice(-2, 2, "'", "⌫");
     mapping[KeyboardRows.Home].splice(-2, 2, "⏎");

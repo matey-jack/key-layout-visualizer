@@ -45,7 +45,7 @@ export const harmonic14TraditionalLayoutModel: LayoutModel = {
     frameMappings: {
         [KeymapTypeId.Harmonic14T]: fullMapping,
         [KeymapTypeId.Ansi30]: [
-            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "=", "⌫"], // 13 keys
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "+", "⌫"], // 13 keys
             ["↹", 0, 1, 2, 3, 4, "`", 5, 6, 7, 8, 9, "'", "\\"], // 14 keys
             ["¤", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "⏎"], // 13 keys
             ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"], // 12 keys
@@ -53,7 +53,7 @@ export const harmonic14TraditionalLayoutModel: LayoutModel = {
         ],
         [KeymapTypeId.Thumb30]: [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "`", "⌫"], // 13 keys
-            ["↹", 0, 1, 2, 3, 4, "=", 5, 6, 7, 8, 9, "'", "\\"], // 14 keys
+            ["↹", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, "'", "\\"], // 14 keys
             ["¤", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "⏎"], // 13 keys
             ["⇧", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, "⇧"], // 12 keys
             ["Ctrl", "Cmd", "Alt", "/", "⌦", "⍽", 0, "AltGr", "Menu", "Fn", "Ctrl"], // 11 keys
