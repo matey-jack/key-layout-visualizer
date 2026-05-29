@@ -1,5 +1,5 @@
 .keyboard-frame {
-    fill: #ecfafa;
+    fill: #fff4e6;
     stroke: black;
 }
 
@@ -93,19 +93,19 @@
 
 .viz-plain {
     .key-outline {
-        fill: lightgrey;
+        fill: #faf5eb;
     }
 
     .key-outline.home-key {
-        fill: #d6ceb6;
+        fill: #ebdcb9;
     }
 
     .key-outline.edge-key {
-        fill: darkgrey;
+        fill: #d5cbbe;
     }
 
     .key-outline.highlighted-key {
-        fill: #a68a85;
+        fill: #cca096;
     }
 }
 
