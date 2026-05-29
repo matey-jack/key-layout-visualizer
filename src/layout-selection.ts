@@ -11,6 +11,7 @@ import {ahkbAddAngleMod, ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
 import {
     ansiIBMLayoutModel,
     ansiWideLayoutModel,
+    createAN65,
     createAnsiMidShift,
     createApple,
     createHHKB,
@@ -142,6 +143,9 @@ export function getAnsiVariant(layoutOptions: LayoutOptions) {
             break;
         case AnsiVariant.HHKB:
             base = createHHKB(base);
+            break;
+        case AnsiVariant.AN65:
+            base = createAN65(base);
             break;
         // no need to split the space bar, because it's already split
         case AnsiVariant.XHKB:

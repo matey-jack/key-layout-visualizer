@@ -44,7 +44,7 @@ test.describe('SVG Download', () => {
     const download = await downloadPromise;
     
     // Save to temporary location
-    const tempPath = 'temp-download.svg';
+    const tempPath = 'temp-download-1.svg';
     await download.saveAs(tempPath);
     
     try {
@@ -85,7 +85,7 @@ test.describe('SVG Download', () => {
     await page.locator('a.download-svg-link').click();
     const download = await downloadPromise;
     
-    const tempPath = 'temp-download.svg';
+    const tempPath = 'temp-download-2.svg';
     await download.saveAs(tempPath);
     
     try {
@@ -115,7 +115,7 @@ test.describe('SVG Download', () => {
     await page.locator('a.download-svg-link').click();
     const download = await downloadPromise;
     
-    const tempPath = 'temp-download.svg';
+    const tempPath = 'temp-download-3.svg';
     await download.saveAs(tempPath);
     
     try {
@@ -148,7 +148,7 @@ test.describe('SVG Download', () => {
     await page.locator('a.download-svg-link').click();
     const download = await downloadPromise;
     
-    const tempPath = 'temp-download.svg';
+    const tempPath = 'temp-download-4.svg';
     await download.saveAs(tempPath);
     
     try {
@@ -223,7 +223,7 @@ test.describe('SVG Download', () => {
     await page.locator('a.download-svg-link').click();
     const download = await downloadPromise;
     
-    const tempPath = 'temp-download.svg';
+    const tempPath = 'temp-download-5.svg';
     await download.saveAs(tempPath);
     
     try {

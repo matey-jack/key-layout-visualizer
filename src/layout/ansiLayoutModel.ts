@@ -342,3 +342,56 @@ function splitKeys(matrix: LayoutMapping): LayoutMapping {
     matrix[KeyboardRows.Bottom] = [null, "Alt", "Cmd", "⍽", "Cmd", "Alt", null];
     return matrix
 }
+
+export function createAN65(lm: LayoutModel): LayoutModel {
+    return {
+        ...lm,
+        name: lm.name.replace(ansiIBMLayoutModel.name, "AN65"),
+        description: `So-called 65% only became popular in the 2010s and 2020s and now they are everywhere in many different variants.
+        The bottom row of such models varies and also what key labels are used on the extra keys, 
+        but all the key sizes except space and modifiers seem to be standardized.
+        Like on the HHKB, an Fn key is used to achieve the function of missing keys.`,
+        keyWidths: copyAndModifyKeymap(lm.keyWidths, (matrix) => {
+            matrix[KeyboardRows.Number].push(1);
+            matrix[KeyboardRows.Upper].push(1);
+            matrix[KeyboardRows.Home].push(1);
+            matrix[KeyboardRows.Lower].pop();
+            matrix[KeyboardRows.Lower].push(1.75, 1, 1);
+            // I actually prefer the variant with only two right-side modifiers and a bit of space between them and the arrows.
+            // But let's keep this, because it allows thumb-letter key maps...
+            matrix[KeyboardRows.Bottom] = [1.25, 1.25, 1.25, 6.25, 1, 1, 1, 1, 1, 1];
+            return matrix;
+        }),
+        frameMappings: mapValues(lm.frameMappings, (_, mapping) => {
+            return copyAndModifyKeymap(mapping, (matrix) => {
+                matrix[KeyboardRows.Number].push("⌦");
+                matrix[KeyboardRows.Upper].push("Ins");
+                matrix[KeyboardRows.Home].push("⇞");
+                matrix[KeyboardRows.Lower].pop();
+                matrix[KeyboardRows.Lower].push("⇧", "↑", "⇟");
+                matrix[KeyboardRows.Bottom].pop();
+                matrix[KeyboardRows.Bottom].push("←", "↓", "→");
+                return matrix;
+            });
+        }) as typeof lm.frameMappings,
+        mainFingerAssignment: copyAndModifyKeymap(lm.mainFingerAssignment, (matrix) => {
+            matrix[KeyboardRows.Number].push(null);
+            matrix[KeyboardRows.Upper].push(null);
+            matrix[KeyboardRows.Home].push(null);
+            matrix[KeyboardRows.Lower].pop();
+            matrix[KeyboardRows.Lower].push(Finger.RPinky, null, null);
+            matrix[KeyboardRows.Bottom] = [Finger.LPinky, Finger.LPinky, Finger.LRing, Finger.RThumb, Finger.RMiddle, Finger.RRing, Finger.RPinky, null, null, null];
+            return matrix;
+        }),
+        singleKeyEffort: copyAndModifyKeymap(lm.singleKeyEffort, (matrix) => {
+            matrix[KeyboardRows.Number].push(null);
+            matrix[KeyboardRows.Upper].push(null);
+            matrix[KeyboardRows.Home].push(null);
+            matrix[KeyboardRows.Lower].pop();
+            matrix[KeyboardRows.Lower].push(2.0, null, null);
+            matrix[KeyboardRows.Bottom] = [2.0, 2.0, null, 0.2, 3.0, null, 2.0, null, null, null];
+            return matrix;
+        }),
+    };
+}
+

@@ -8,6 +8,7 @@ export enum AnsiVariant {
     HHKB,
     XHKB,
     AHKB,
+    AN65,
 }
 
 /*
