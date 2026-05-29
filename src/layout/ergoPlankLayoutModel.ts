@@ -94,10 +94,10 @@ export const ergoPlankLayoutModel: LayoutModel = {
 
 const midShiftKeyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0.5, 0.5]);
 
-export function createErgoPlankMidShift(lm: LayoutModel): LayoutModel {
+export function createErgoPlankMidShiftLowerCharacters(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
-        name: "Ergoplank MidShift",
+        name: "Ergoplank MidShift Lower Row Characters",
         description: `"The most ergonomic key layout that fits into a standard "60%" keyboard case."
     Hand distance is maximized. Row stagger is equal to a "cleave-style ergonomic" keyboard.
     Thumb keys are added. 
@@ -131,6 +131,55 @@ export function createErgoPlankMidShift(lm: LayoutModel): LayoutModel {
                 ['⇧', 0, 1, 2, 3, 4, '⇤', '⌦', '⇥', 5, 6, 7, 8, 9, '⇧'],
                 [0, 1, 2, 3, 4, '`~', '⇞', '⇟', '=', 5, 6, 7, 8, 9],
                 ['Ctrl', 'Cmd', 'Fn', 'Alt', '⏎', 'Ins', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
+            ],
+            [KeymapTypeId.Thumb30]:  [
+                ['Esc', '1', '2', '3', '4', '5', '[', ']', '6', '7', '8', '9', '0', '⌫'],
+                ['↹', 0, 1, 2, 3, 4, '`~', null, "'", 5, 6, 7, 8, 9, '⏎'],
+                ['⇧', 0, 1, 2, 3, 4, '⇤', '⌦', '⇥', 5, 6, 7, 8, 9, '⇧'],
+                [0, 1, 2, 3, 4, '=', '⇞', '⇟', '\\', 5, 6, 7, 8, '/'],
+                ['Ctrl', 'Cmd', 'Fn', 'Alt', 0, 'Ins', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
+            ],
+            [KeymapTypeId.Thumb32]: [
+                ['Esc', '1', '2', '3', '4', '5', '\\', '/', '6', '7', '8', '9', '0', '⌫'],
+                ['↹', 0, 1, 2, 3, 4, "'", null, 10, 5, 6, 7, 8, 9, '⏎'],
+                ['⇧', 0, 1, 2, 3, 4, '⇤', '⌦', '⇥', 5, 6, 7, 8, 9, '⇧'],
+                [0, 1, 2, 3, 4, '`~', '⇞', '⇟', '=', 5, 6, 7, 8, 9],
+                ['Ctrl', 'Cmd', 'Fn', 'Alt', 0, 'Ins', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
+            ],
+        },
+    }
+}
+
+export function createErgoPlankMidShiftRightReturn(lm: LayoutModel): LayoutModel {
+    return {
+        ...lm,
+        name: "Ergoplank MidShift Lower Right Return",
+        description: `"The most ergonomic key layout that fits into a standard "60%" keyboard case."
+            Hand distance is maximized. Row stagger is equal to a "cleave-style ergonomic" keyboard.
+            Thumb keys are added. 
+            Key cap sizes are harmonized to facilitate customizing the keymap. 
+            This is based on the "Harmonic" layout as well as the "Katana" design by RominRonin. 
+            Ths variant takes the MidShift from split-ortho layouts and leaves the Return key on the keyboard side where
+            it can occupy the large key in the lower row and be operated by your thumb when the hand is on the mouse. 
+            (Simply mirror Return and Ctrl if you use the other hand for your mouse or trackpad.)
+            Moving Ctrl one-up on the opposite side also makes the one-handed shortcuts Ctrl+F, Ctrl+R, Ctrl+S, Ctrl+W etc.
+            easier to press.`,
+        // physical key widths and finger assignments are the same as for low-shift.
+
+        frameMappings:  {
+            [KeymapTypeId.Ansi30]: [
+                ['Esc', '1', '2', '3', '4', '5', '[', ']', '6', '7', '8', '9', '0', '⌫'],
+                ['↹', 0, 1, 2, 3, 4, '-', null, "=", 5, 6, 7, 8, 9, "'"],
+                ['⇧', 0, 1, 2, 3, 4, '⇤', '\\', '⇥', 5, 6, 7, 8, 9, '⇧'],
+                ['Ctrl', 0, 1, 2, 3, 4, '⇞', '⇟', 9, 5, 6, 7, 8, '⏎'],
+                ['Cmd', 'Fn', '`~', 'Alt', '⌦', 'Ins', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
+            ],
+            [KeymapTypeId.Ansi32]: [
+                ['Esc', '1', '2', '3', '4', '5', '\\', '/', '6', '7', '8', '9', '0', '⌫'],
+                ['↹', 0, 1, 2, 3, 4, "'", null, [1, 10], 5, 6, 7, 8, 9, 10],
+                ['⇧', 0, 1, 2, 3, 4, '⇤', '=', '⇥', 5, 6, 7, 8, 9, '⇧'],
+                ['Ctrl', 0, 1, 2, 3, 4, '⇞', '⇟', 9, 5, 6, 7, 8, '⏎'],
+                ['Cmd', 'Fn', '`~', 'Alt', '⌦', 'Ins', '⍽', 'AltGr', 'Menu', 'Cmd', 'Ctrl']
             ],
             [KeymapTypeId.Thumb30]:  [
                 ['Esc', '1', '2', '3', '4', '5', '[', ']', '6', '7', '8', '9', '0', '⌫'],

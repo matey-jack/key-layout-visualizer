@@ -21,16 +21,16 @@ import {
     ergoboardLowshiftWideAngleModLayoutModel,
     ergoboardLowshiftWideLayoutModel,
 } from "./layout/ergoboardLowshiftWideLayoutModel.ts";
+import {ergoboardMidshiftComfyLayoutModel} from "./layout/ergoboardMidshiftComfyLayoutModel.ts";
 import {ergoboardMidshiftExtraWideLayoutModel} from "./layout/ergoboardMidshiftExtraWideLayoutModel.ts";
 import {
     ergoboardCentralEnterLayoutModel,
     ergoboardMidshiftRightRetLayoutModel,
     ergoboardVerticalEnterLayoutModel,
 } from "./layout/ergoboardMidshiftNarrowLayoutModels.ts";
-import {ergoboardMidshiftComfyLayoutModel} from "./layout/ergoboardMidshiftComfyLayoutModel.ts";
 import {ergoboardMidshiftSemiWideLayoutModel} from './layout/ergoboardMidshiftSemiWideLayoutModel.ts';
 import {
-    createErgoPlankMidShift,
+    createErgoPlankMidShiftLowerCharacters, createErgoPlankMidShiftRightReturn,
     createErgoPlankWithArrows,
     ergoPlankLayoutModel
 } from "./layout/ergoPlankLayoutModel.ts";
@@ -118,7 +118,9 @@ export function getPlankVariant(opts: LayoutOptions): LayoutModel {
                     return ergoboardMidshiftComfyLayoutModel; // "comfy hands"
             }
         default: {
-            const base = opts.midShift ? createErgoPlankMidShift(ergoPlankLayoutModel) : ergoPlankLayoutModel;
+            const base = !opts.midShift ? ergoPlankLayoutModel
+                : (opts.epRightReturn ? createErgoPlankMidShiftRightReturn(ergoPlankLayoutModel)
+                : createErgoPlankMidShiftLowerCharacters(ergoPlankLayoutModel));
             return opts.bottomArrows ? createErgoPlankWithArrows(base) : base;
         }
     }
