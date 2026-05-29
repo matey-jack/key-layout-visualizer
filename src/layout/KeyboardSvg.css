@@ -156,6 +156,10 @@
     background-color: #f3bfac;
 }
 
+.key-size-square {
+    fill: #faf5eb;
+}
+
 .key-size-0 {
     fill: #fb7b77;
 }
@@ -380,6 +384,10 @@
     margin: 0.2rem;
     margin-right: 0.5rem;
     border: 1px solid black;
+}
+
+.keysize-legend-item.key-size-square {
+    background: #faf5eb;
 }
 
 .keysize-legend-item.key-size-0 {
