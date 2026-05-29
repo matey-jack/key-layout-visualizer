@@ -97,8 +97,8 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
     }
     /*
     Tweaking the layout option to find a layout model that can serve the selected mapping has two steps:
-     - if the new mapping needs a thumb key and we are on ANSI, then switch on the 'wide' flag. (And switch off HHKB.)
-     - in all other cases, we probably have a mapping that needs a specific layout, thus we do a general search.
+     - if the new mapping needs a thumb key, and we are on ANSI, then switch on the 'wide' flag. (And switch off HHKB.)
+     - in all other cases, we probably have a mapping that needs a specific layout; thus we do a general search.
      */
     if (layoutOptionsState.value.type === LayoutType.ANSI) {
         if (newMapping.mappings[KeymapTypeId.Thumb30] || newMapping.mappings[KeymapTypeId.Thumb32]) {
