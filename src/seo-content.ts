@@ -1,7 +1,8 @@
 import type {LayoutModel} from "./base-model.ts";
-import {ansiIBMLayoutModel} from "./layout/ansiLayoutModel.ts";
+import {ansiIBMLayoutModel, createApple, createHHKB} from "./layout/ansiLayoutModel.ts";
 import {ergoboardMidshiftComfyLayoutModel} from "./layout/ergoboardMidshiftComfyLayoutModel.ts";
 import {ergoPlankLayoutModel} from "./layout/ergoPlankLayoutModel.ts";
+import {minorErgoslatLayoutModel} from './layout/ergoslatLayoutModel.ts';
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
@@ -9,16 +10,22 @@ import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLa
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
+import {xhkbLayoutModel} from './layout/xhkbLayoutModel.ts';
 import {allMappings} from "./mapping/mappings.ts";
 
+// No need to include all variants, since this only extracts the description, which is often the same or mostly the same.
 export const allLayoutModels: LayoutModel[] = [
     ansiIBMLayoutModel,
+    createApple(ansiIBMLayoutModel),
+    createHHKB(ansiIBMLayoutModel),
+    xhkbLayoutModel,
     harmonic14WideLayoutModel,
     harmonic14TraditionalLayoutModel,
     harmonic13WideLayoutModel,
     harmonic13MidshiftLayoutModel,
     harmonic12LayoutModel,
     katanaLayoutModel,
+    minorErgoslatLayoutModel(true),
     ergoPlankLayoutModel,
     ergoboardMidshiftComfyLayoutModel,
     splitOrthoLayoutModel(true),
