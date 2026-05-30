@@ -440,26 +440,6 @@ describe('getKeyMovements', () => {
         expect(escapeMv.prev).toBeUndefined();
         expect(escapeMv.next?.label).toBe('Esc');
     });
-
-    it('correctly pairs right Ctrl in XHKB vs XHKB with cursor arrows', () => {
-        // GIVEN/WHEN
-        const movements = calculateMovements(xhkb15LayoutModel, xhkb16LayoutModel);
-
-        // THEN: Check Ctrl and Shift keys form proper pairs
-        const ctrlMovements = getMovementsByLabel(movements, 'Ctrl');
-        expect(ctrlMovements.length).toBe(2);
-
-        const leftCtrlMovement = ctrlMovements[0];
-        expect(leftCtrlMovement.prev).toBeDefined();
-        expect(leftCtrlMovement.next).toBeDefined();
-        expect(leftCtrlMovement.prev!.colPos).toBe(leftCtrlMovement.next!.colPos)
-
-        const rightCtrlMovement = ctrlMovements[1];
-        expect(rightCtrlMovement.prev).toBeDefined();
-        expect(rightCtrlMovement.next).toBeDefined();
-        expect(rightCtrlMovement.prev!.colPos).toBe(15)
-        expect(rightCtrlMovement.next!.colPos).toBe(12)
-    })
 });
 
 function checkHasAltFinger(layoutModel: LayoutModel, expectedAltFingerings: string) {

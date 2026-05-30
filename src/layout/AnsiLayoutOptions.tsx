@@ -28,10 +28,10 @@ function ansiVariantNote(variant: AnsiVariant, wide: boolean): string {
 }
 
 export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptionsProps) {
-    const {ansiWide, ansiVariant, ansiSplit, angleMod, bottomArrows} = options;
+    const {ansiWide, ansiVariant, ansiSplit, angleMod, thumbsUp16} = options;
     const wideDisabled = onlySupportsWide(mapping.value) || naturallyWideVariants.includes(ansiVariant);
     const splitDisabled = (ansiVariant === AnsiVariant.HHKB) ||
-        ((ansiVariant === AnsiVariant.XHKB) && bottomArrows);
+        ((ansiVariant === AnsiVariant.XHKB) && thumbsUp16);
     const setVariant = (variant: AnsiVariant) => setOption({ansiVariant: variant});
     const variantOptions = [
         {variant: AnsiVariant.IBM, label: "IBM"},
@@ -59,9 +59,18 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
                         {option.variant === AnsiVariant.XHKB &&
                             <div class="ansi-ahkb-options-container">
                                 <CheckboxWithLabel
-                                    label="Include arrow keys"
-                                    checked={options.bottomArrows}
-                                    onChange={(arrows) => setOption({bottomArrows: arrows})}
+                                    label="Thumbs Up 15/4"
+                                    type="radio"
+                                    groupName="thumbs_up_variant"
+                                    checked={!thumbsUp16}
+                                    onChange={(checked) => checked && setOption({thumbsUp16: false})}
+                                />
+                                <CheckboxWithLabel
+                                    label="Thumbs Up 16/5"
+                                    type="radio"
+                                    groupName="thumbs_up_variant"
+                                    checked={thumbsUp16}
+                                    onChange={(checked) => checked && setOption({thumbsUp16: true})}
                                 />
                             </div>
                         }
