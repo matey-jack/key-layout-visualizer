@@ -362,6 +362,8 @@ export function createAN65(lm: LayoutModel): LayoutModel {
             matrix[KeyboardRows.Bottom] = [1.25, 1.25, 1.25, 6.25, 1, 1, 1, 1, 1, 1];
             return matrix;
         }),
+        // try to make it less heavy on the right, but fail, because the entire design is flawed from the start.
+        splitColumns: [7, 7, 7, 6, 4],
         frameMappings: mapValues(lm.frameMappings, (_, mapping) => {
             return copyAndModifyKeymap(mapping, (matrix) => {
                 matrix[KeyboardRows.Number].push("⌦");

@@ -10,7 +10,7 @@ import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLa
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
-import {xhkbLayoutModel} from './layout/xhkbLayoutModel.ts';
+import {xhkb15LayoutModel} from './layout/xhkbLayoutModel.ts';
 import {allMappings} from "./mapping/mappings.ts";
 
 // No need to include all variants, since this only extracts the description, which is often the same or mostly the same.
@@ -18,7 +18,7 @@ export const allLayoutModels: LayoutModel[] = [
     ansiIBMLayoutModel,
     createApple(ansiIBMLayoutModel),
     createHHKB(ansiIBMLayoutModel),
-    xhkbLayoutModel,
+    xhkb15LayoutModel,
     harmonic14WideLayoutModel,
     harmonic14TraditionalLayoutModel,
     harmonic13WideLayoutModel,

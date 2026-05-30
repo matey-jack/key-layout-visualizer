@@ -28,7 +28,7 @@ import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLa
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
-import {xhkbLayoutModel, xhkbWithArrowsLayoutModel} from "./layout/xhkbLayoutModel.ts";
+import {xhkb15LayoutModel, xhkb16LayoutModel} from "./layout/xhkbLayoutModel.ts";
 import {sum} from "./library/math.ts";
 
 const layoutModels: Array<LayoutModel> = [
@@ -40,8 +40,8 @@ const layoutModels: Array<LayoutModel> = [
     createApple(ansiWideLayoutModel),
     createAN65(ansiIBMLayoutModel),
     createAN65(ansiWideLayoutModel),
-    xhkbLayoutModel,
-    xhkbWithArrowsLayoutModel,
+    xhkb15LayoutModel,
+    xhkb16LayoutModel,
     ahkbLayoutModel,
     majorErgoslatLayoutModel(false),
     majorErgoslatLayoutModel(true),
@@ -75,15 +75,16 @@ const layoutModels: Array<LayoutModel> = [
     splitOrthoLayoutModel(true),
 ];
 
-// all of those might be just fine
+// Expected differences between ansi30 and thumb30
+// TODO: use the .name references throughout to avoid test failures when names change
 const IGNORED_30_KEYS: Record<string, string[]> = {
     "ANSI/IBM with wide hand position": ["Esc", "Menu"],
     "AN65 with wide hand position": ["Esc", "Menu"],
     "ANSI/Apple with wide hand position": ["Esc"], // replaces duplicate Ctrl key
     // The single difference here is due to removing the duplicate space key.
     // (Would disappear if we had thumb-return from the start.)
-    "Thumbs Up": ["Ins"],
-    "Thumbs Up with cursor block": ["Ins"],
+    [xhkb15LayoutModel.name]: ["Ins"],
+    [xhkb16LayoutModel.name]: ["Ins"],
     "Ergoboard 65 LowShift Big Enter": ["`~"],
     "Ergoboard 65 LowShift Wide": ["Ins"],
     "Ergoboard 65 LowShift Wide angle mod": ["Ins"],
@@ -99,7 +100,7 @@ const IGNORED_32_KEYS: Record<string, string[]> = {
     "ANSI/IBM with wide hand position": ["\\", "Menu"],
     "AN65 with wide hand position": ["\\", "Menu"],
     "ANSI/Apple with wide hand position": ["\\"],
-    "Thumbs Up": ["Ins"],
+    [xhkb15LayoutModel.name]: ["Ins"],
 };
 
 function getExpectedRowLengths(model: LayoutModel): number[] {
