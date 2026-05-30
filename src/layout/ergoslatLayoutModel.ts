@@ -2,6 +2,7 @@ import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "
 import {mapValues} from "../library/records.ts";
 import {mirror, SymmetricKeyWidth} from "./keyWidth.ts";
 import {copyKeymap, ergoFamilyKeyColorClass} from "./layout-functions.ts";
+import {patchThumb30, patchThumb32} from "./permutation-functions.ts";
 
 /*
     We need to account for three independent variables when placing the Shift and Enter keys,
@@ -45,39 +46,20 @@ const ansi32MidshiftFrame: LayoutMapping = [
     ["Ctrl", "Cmd", "Alt", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
+// The four thumb frames are derived from their ansi counterparts by cyclic permutation:
+// a letter moves onto the thumb (FlexMapping [4,0]), Return moves up off the bottom row, and the
+// thirty-key frames swap '-' out for an explicit '/'. See permute()/patchThumb* in layout-functions.
+// (Read e.g. "[4,0]⏎-" as: the thumb letter takes ⏎'s place, ⏎ takes '-'s place, '-' leaves.)
+
 // top-right Return mapping isn't great, because in the Major variant, this is a 1u key.
 // we can map Return in the bottom row, but then a modifier would have to go somewhere above the bottom.
-const thumb30FrameMapping: LayoutMapping = [
-    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-    ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
-    ["⌦", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, "'"],
-    ["⇧", 0, 1, 2, 3, 4, "/", 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl"],
-];
+const thumb30FrameMapping: LayoutMapping = patchThumb30(ansi30FrameMapping, "[4,0]⏎-", "/[3,9]");
 
-const thumb30MidshiftFrame: LayoutMapping = [
-    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-    ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
-    ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
-    [0, 1, 2, 3, 4, "+", "'", 5, 6, 7, 8, "/"],
-    ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl"],
-];
+const thumb30MidshiftFrame: LayoutMapping = patchThumb30(ansi30MidshiftFrame, "[4,0]⏎'-", "/[3,9]");
 
-const thumb32FrameMapping: LayoutMapping = [
-    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-    ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
-    ["⌦", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, [-1, 10]],
-    ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl"],
-];
+const thumb32FrameMapping: LayoutMapping = patchThumb32(ansi32FrameMapping, "[4,0]⏎[1,10][2,10]");
 
-const thumb32MidshiftFrame: LayoutMapping = [
-    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-    ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
-    ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
-    [0, 1, 2, 3, 4, "+", 9, 5, 6, 7, 8, [-2, 10]],
-    ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl"],
-];
+const thumb32MidshiftFrame: LayoutMapping = patchThumb32(ansi32MidshiftFrame, "[4,0]⏎[1,10][3,9]+[2,10]");
 
 /*
     The major/minor naming comes from musical intervals, since both Ergoslat variants have only two key sizes
