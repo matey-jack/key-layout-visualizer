@@ -84,6 +84,18 @@ function setLayout(
     layoutOptionsState.value = newLayoutOptions;
 }
 
+function findMatchingLayout(
+    newMapping: FlexMapping, opts: LayoutOptions, fallbackLayouts: Partial<LayoutOptions>[]
+): LayoutOptions | undefined {
+    for (const mods of fallbackLayouts) {
+        const newOpts = {...opts, ...mods};
+        const model = getLayoutModel(newOpts);
+        if (hasMatchingMapping(model, newMapping)) {
+            return newOpts;
+        }
+    }
+}
+
 /**
  * This function sets the FlexMapping and changes the layout model if the current one doesn't support the new mapping.
  * We try to change the layout as little as possible: first try to switch options (such as ANSI wide) only,
@@ -120,14 +132,10 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
         {type: LayoutType.Harmonic, harmonicVariant: HarmonicVariant.H13_Wide},
         {type: LayoutType.Harmonic, harmonicVariant: HarmonicVariant.H14_Traditional},
     ]
-    for (const opts of fallbackLayouts) {
-        const newOpts = {...(layoutOptionsState.value), ...opts};
-        const model = getLayoutModel(newOpts);
-        if (hasMatchingMapping(model, newMapping)) {
-            mappingState.value = newMapping;
-            layoutOptionsState.value = newOpts;
-            return;
-        }
+    const newOpts = findMatchingLayout(newMapping, layoutOptionsState.value, fallbackLayouts);
+    if (newOpts) {
+        mappingState.value = newMapping;
+        layoutOptionsState.value = newOpts;
     }
 }
 
