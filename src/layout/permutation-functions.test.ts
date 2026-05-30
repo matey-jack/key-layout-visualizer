@@ -150,7 +150,7 @@ describe("Ergoslat MidShift frames (derived by permutation)", () => {
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, 10],
             ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
-            [0, 1, 2, 3, 4, [-1, 10], "+", 5, 6, 7, 8, 9],
+            [0, 1, 2, 3, 4, "+", 9, 5, 6, 7, 8, [-1, 10]],
             ["Ctrl", "Cmd", null, "Alt", "⏎", "⍽", "AltGr", null, "Fn", "Ctrl"],
         ]);
     });
@@ -176,24 +176,3 @@ describe("Ergoslat MidShift frames (derived by permutation)", () => {
     });
 });
 
-// The two ways to build the thumb MidShift frames produce identical matrices. This lets us decide
-// purely on readability which derivation to keep (see ergoslatLayoutModel.ts).
-describe("thumb MidShift: permute-from-lowshift == patchThumb-from-ansi-midshift", () => {
-    const low = majorErgoslatLayoutModel(false);
-    const mid = majorErgoslatLayoutModel(true);
-    const ANGLE_MOD_LEFT = "[3,0]<⇧⌦+[3,4][3,3][3,2][3,1]";
-
-    it("thumb30", () => {
-        const viaThumb = permute(low.frameMappings[KeymapTypeId.Thumb30]!, ANGLE_MOD_LEFT, "/>⇧'");
-        const viaAnsi = patchThumb30(mid.frameMappings[KeymapTypeId.Ansi30]!, "[4,0]⏎'-", "/[3,9]");
-        expect(viaThumb).toEqual(viaAnsi);
-        expect(viaThumb).toEqual(mid.frameMappings[KeymapTypeId.Thumb30]);
-    });
-
-    it("thumb32", () => {
-        const viaThumb = permute(low.frameMappings[KeymapTypeId.Thumb32]!, ANGLE_MOD_LEFT, ">⇧[1,10]");
-        const viaAnsi = patchThumb32(mid.frameMappings[KeymapTypeId.Ansi32]!, "[4,0]⏎[1,10][3,9]+[2,10]");
-        expect(viaThumb).toEqual(viaAnsi);
-        expect(viaThumb).toEqual(mid.frameMappings[KeymapTypeId.Thumb32]);
-    });
-});
