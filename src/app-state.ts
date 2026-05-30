@@ -58,10 +58,11 @@ function modifySplit(opts: LayoutOptions) {
  * that can be changed to achieve a fit.
  */
 function setLayout(
-    opts: LayoutOptions,
+    layoutOptions: Partial<LayoutOptions>,
     layoutOptionsState: Signal<LayoutOptions>,
     mapping: Signal<FlexMapping>,
 ) {
+    const opts = {...layoutOptionsState.value, ...layoutOptions};
     // Wide and split are not available for all ANSI variants, so adapt them to the current variant.
     let newLayoutOptions = (opts.type === LayoutType.ANSI)
         ? {
@@ -73,7 +74,15 @@ function setLayout(
     let newLayoutModel = getLayoutModel(newLayoutOptions);
     if (!hasMatchingMapping(newLayoutModel, mapping.value)) {
         const fallbackSubvariants = getFallbackLayouts(newLayoutOptions);
-        const matchingOpts = findMatchingLayout(mapping.value, newLayoutOptions, fallbackSubvariants);
+        const filteredFallbackSubvariants = fallbackSubvariants.filter(mods => {
+            for (const key of Object.keys(layoutOptions) as (keyof LayoutOptions)[]) {
+                if (key in mods && mods[key] !== layoutOptions[key]) {
+                    return false;
+                }
+            }
+            return true;
+        });
+        const matchingOpts = findMatchingLayout(mapping.value, newLayoutOptions, filteredFallbackSubvariants);
         if (matchingOpts) {
             newLayoutOptions = matchingOpts;
             newLayoutModel = getLayoutModel(newLayoutOptions);
@@ -320,7 +329,7 @@ export function createAppState(): AppState {
         setLayout: (layoutOptions: Partial<LayoutOptions>) => {
             previousLayoutModelState.value = layoutModel.value;
             previousMappingState.value = mappingState.value;
-            setLayout({...layoutOptionsState.value, ...layoutOptions}, layoutOptionsState, mappingState);
+            setLayout(layoutOptions, layoutOptionsState, mappingState);
         },
         layoutModel,
         prevLayoutModel: computed(() => previousLayoutModelState.value),
