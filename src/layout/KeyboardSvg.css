@@ -196,6 +196,7 @@
     font-size: 24px;
     font-family: Verdana, sans-serif;
     /*font-weight: bold;*/
+    transform: translateX(var(--to-label-x));
 }
 
 .key-label.keyboard-symbol {
@@ -328,6 +329,19 @@
     }
     to {
         width: var(--to-ribbon-width);
+    }
+}
+
+.key-label.animating {
+    animation: labelMove 1s ease-in-out forwards;
+}
+
+@keyframes labelMove {
+    from {
+        transform: translateX(var(--from-label-x));
+    }
+    to {
+        transform: translateX(var(--to-label-x));
     }
 }
 

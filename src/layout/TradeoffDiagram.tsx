@@ -129,8 +129,7 @@ export function TradeoffDiagram({layout, selectedMapping, onSelectMapping}: Trad
     const lineHeight = 18;
 
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
-             viewBox={`${VIEW_X} ${VIEW_Y} ${VIEW_W} ${VIEW_H}`}
+        <svg viewBox={`${VIEW_X} ${VIEW_Y} ${VIEW_W} ${VIEW_H}`}
              class="tradeoff-svg">
             <title>Learning effort trade-off</title>
 

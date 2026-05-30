@@ -56,7 +56,7 @@ export const KeyboardSvg = ({vizType, keyMovements, showFrame, children}: Keyboa
     };
 
     return <div>
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox={`0 -50 ${totalWidth * keyUnit} 600`}
+        <svg viewBox={`0 -50 ${totalWidth * keyUnit} 600`}
              class={`keyboard-svg ${clazz}`}>
             <title>Keyboard Layout Diagram</title>
             {showFrame && <g className="keyboard-frame-group animating" key={`${nextDims.x}-${nextDims.width}`} style={frameGroupStyle}>
@@ -123,7 +123,7 @@ const isometric3dOffset = 8;
 const keycapCornerRadius = 6;
 
 export function Key(props: KeyProps) {
-    const {row, col, prevRow, prevCol, width, prevWidth} = props;
+    const {row, col, prevRow, prevCol, width, prevWidth, label, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker, layer = 'base'} = props;
     const x = col * keyUnit + keyPadding;
     const y = row * keyUnit + keyPadding;
     const fromX = prevCol * keyUnit + keyPadding;
@@ -131,8 +131,16 @@ export function Key(props: KeyProps) {
     const rectWidth = keyUnit * width - 2 * keyPadding;
     const fromRectWidth = keyUnit * prevWidth - 2 * keyPadding;
 
+    const labelClass =
+        isKeyboardSymbol(label) ? "keyboard-symbol"
+            : isKeyName(label) ? "key-name"
+                : "";
+
     const ribbonWidth = rectWidth - 2 * keyRibbonPaddingV;
     const fromRibbonWidth = fromRectWidth - 2 * keyRibbonPaddingV;
+
+    const labelX = labelClass ? (keyUnit * width / 2) : 20;
+    const fromLabelX = labelClass ? (keyUnit * prevWidth / 2) : 20;
 
     // Use CSS custom properties to set initial and final positions and widths
     const groupStyle = {
@@ -146,24 +154,20 @@ export function Key(props: KeyProps) {
         '--to-bottom-width': `${rectWidth - keycapCornerRadius / 2}px`,
         '--from-ribbon-width': `${fromRibbonWidth}px`,
         '--to-ribbon-width': `${ribbonWidth}px`,
+        '--from-label-x': `${fromLabelX}px`,
+        '--to-label-x': `${labelX}px`,
         transform: `translate(var(--from-x), var(--from-y))`,
         transformOrigin: "0 0"
     };
 
-    const {label, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker, layer = 'base'} = props;
-    const labelClass =
-        isKeyboardSymbol(label) ? "keyboard-symbol"
-            : isKeyName(label) ? "key-name"
-                : "";
-
     const text = (labelClass) ?
         // center all the non-character key labels
-        <text x={keyUnit * width / 2} y={keyUnit * height / 2} className={"key-label " + labelClass}>
+        <text x={0} y={keyUnit * height / 2} className={"key-label animating " + labelClass}>
             {label}
         </text>
         :
         // left align labels for character keys
-        <text x={20} y={60} className="key-label">
+        <text x={0} y={60} className="key-label animating">
             {label}
         </text>
 
