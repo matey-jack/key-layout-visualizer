@@ -19,21 +19,29 @@ describe("permute", () => {
         expect(permute(base, "ab", "cd")).toEqual([["b", "a", "d", "c"]]);
     });
 
-    it("references placeholder cells by [flexRow,col]", () => {
+    it("references placeholder cells by [flexRow:col]", () => {
         const base: LayoutMapping = [
             ["A", 10],
             ["B", 20],
         ];
-        expect(permute(base, "[0,10][1,20]")).toEqual([
+        expect(permute(base, "[0:10][1:20]")).toEqual([
             ["A", [1, 20]],
             ["B", [0, 10]],
         ]);
     });
 
+    it("expands [flexRow:c1,c2,...] to one reference per column, in cycle order", () => {
+        const base: LayoutMapping = [[0, 1, 2, 3]];
+        // [0:0,1,2,3] is shorthand for [0:0][0:1][0:2][0:3]: each cell takes the next one's place,
+        // and the last wraps into the first, so every value shifts one column to the right.
+        expect(permute(base, "[0:0,1,2,3]")).toEqual([[3, 0, 1, 2]]);
+        expect(permute(base, "[0:0,1,2,3]")).toEqual(permute(base, "[0:0][0:1][0:2][0:3]"));
+    });
+
     it("handles an entering key (first) and a leaving key (last) as an open chain", () => {
-        // ⏎ moves onto -'s cell, the new letter [1,7] enters where ⏎ was, and - leaves.
+        // ⏎ moves onto -'s cell, the new letter [1:7] enters where ⏎ was, and - leaves.
         const base: LayoutMapping = [["⏎", "-"]];
-        expect(permute(base, "[1,7]⏎-")).toEqual([[[1, 7], "⏎"]]);
+        expect(permute(base, "[1:7]⏎-")).toEqual([[[1, 7], "⏎"]]);
     });
 
     it("picks the right-most copy of a duplicated label with '>'", () => {
@@ -72,7 +80,7 @@ describe("permute", () => {
 
     it("throws when an entering key is not the first token", () => {
         const base: LayoutMapping = [["a", "b"]];
-        expect(() => permute(base, "a[9,9]")).toThrow(/must be the first token/);
+        expect(() => permute(base, "a[9:9]")).toThrow(/must be the first token/);
     });
 
     it("throws when a token matches more than one cell", () => {
@@ -82,8 +90,11 @@ describe("permute", () => {
 
     it("throws on a malformed coordinate token", () => {
         const base: LayoutMapping = [["a", 1]];
-        expect(() => permute(base, "[1,2")).toThrow(/Unclosed/);
-        expect(() => permute(base, "[1]")).toThrow(/Bad coordinate/);
+        expect(() => permute(base, "[1:2")).toThrow(/Unclosed/);
+        expect(() => permute(base, "[1]")).toThrow(/Bad coordinate/);       // missing ':col'
+        expect(() => permute(base, "[1,2]")).toThrow(/Bad coordinate/);     // old comma form is rejected
+        expect(() => permute(base, "[1:]")).toThrow(/Bad coordinate/);      // empty column
+        expect(() => permute(base, "[1:2,]")).toThrow(/Bad coordinate/);    // trailing empty column
     });
 });
 
@@ -95,9 +106,9 @@ describe("patchThumb30 / patchThumb32 invariant checks", () => {
     });
 
     it("patchThumb32 throws when a frame key is added", () => {
-        // [4,0] enters (thumb letter) but '-' also leaves -> a label change patchThumb32 forbids.
+        // [4:0] enters (thumb letter) but '-' also leaves -> a label change patchThumb32 forbids.
         const base: LayoutMapping = [["-", 0]];
-        expect(() => patchThumb32(base, "[4,0]-")).toThrow(/patchThumb32/);
+        expect(() => patchThumb32(base, "[4:0]-")).toThrow(/patchThumb32/);
     });
 });
 

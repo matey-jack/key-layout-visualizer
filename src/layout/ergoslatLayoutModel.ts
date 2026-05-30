@@ -29,11 +29,11 @@ const ansi32FrameMapping: LayoutMapping = [
 ];
 
 // The thumb frames are derived from their ansi counterparts by cyclic permutation:
-// a letter moves onto the thumb (FlexMapping [4,0]), Return moves up off the bottom row, and the
+// a letter moves onto the thumb (FlexMapping [4:0]), Return moves up off the bottom row, and the
 // thirty-key frames swap '-' out for an explicit '/'.
-// Read e.g. "[4,0]⏎-" as: the thumb letter takes ⏎'s place, ⏎ takes '-'s place, '-' leaves.
-const thumb30FrameMapping: LayoutMapping = patchThumb30(ansi30FrameMapping, "[4,0]⏎-", "/[3,9]");
-const thumb32FrameMapping: LayoutMapping = patchThumb32(ansi32FrameMapping, "[4,0]⏎[1,10][2,10]");
+// Read e.g. "[4:0]⏎-" as: the thumb letter takes ⏎'s place, ⏎ takes '-'s place, '-' leaves.
+const thumb30FrameMapping: LayoutMapping = patchThumb30(ansi30FrameMapping, "[4:0]⏎-", "/[3:9]");
+const thumb32FrameMapping: LayoutMapping = patchThumb32(ansi32FrameMapping, "[4:0]⏎[1:10][2:10]");
 
 /*
     The major/minor naming comes from musical intervals, since both Ergoslat variants have only two key sizes
@@ -46,7 +46,7 @@ export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
     // is exactly that shared left-side rotation; the trailing cycle then settles each frame's own
     // punctuation / Return.
     // <⇧ and >⇧ pick the left and right of the two identical "⇧" keys, which a plain label can't disambiguate.
-    const ANGLE_MOD_LEFT = "[3,0]<⇧⌦+[3,4][3,3][3,2][3,1]";
+    const ANGLE_MOD_LEFT = "<⇧⌦+[3:4,3,2,1,0]";
 
     return {
         name: "Major Ergoslat 13/3" + (midShift ? " MidShift" : ""),
@@ -91,10 +91,10 @@ export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
         symmetricStagger: true,
 
         frameMappings: midShift ?{
-            [KeymapTypeId.Ansi30]: permute(ansi30FrameMapping, ANGLE_MOD_LEFT, "-[3,9]>⇧'"),
-            [KeymapTypeId.Ansi32]: permute(ansi32FrameMapping, ANGLE_MOD_LEFT, ">⇧[2,10]"),
+            [KeymapTypeId.Ansi30]: permute(ansi30FrameMapping, ANGLE_MOD_LEFT, "-[3:9]>⇧'"),
+            [KeymapTypeId.Ansi32]: permute(ansi32FrameMapping, ANGLE_MOD_LEFT, ">⇧[2:10]"),
             [KeymapTypeId.Thumb30]: permute(thumb30FrameMapping, ANGLE_MOD_LEFT, "/>⇧'"),
-            [KeymapTypeId.Thumb32]: permute(thumb32FrameMapping, ANGLE_MOD_LEFT, ">⇧[1,10]"),
+            [KeymapTypeId.Thumb32]: permute(thumb32FrameMapping, ANGLE_MOD_LEFT, ">⇧[1:10]"),
         } : {
             [KeymapTypeId.Ansi30]: ansi30FrameMapping,
             [KeymapTypeId.Ansi32]: ansi32FrameMapping,

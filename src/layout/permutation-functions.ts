@@ -9,9 +9,10 @@ import {copyKeymap} from "./layout-functions.ts";
 //
 // A cycle is a string of tokens. A token is either:
 //   - a single-character key label, e.g.   a  /  -  '  +  ⏎  ⌦  ⇧
-//   - a placeholder reference in [flexRow,col] form, e.g. [1,10] or [4,0], naming the FlexMapping
+//   - a placeholder reference in [flexRow:col] form, e.g. [1:10] or [4:0], naming the FlexMapping
 //     cell a letter is pulled from. The first index is the absolute FlexMapping row, exactly like
-//     the [row,col] tuples in a frame mapping.
+//     the [row,col] tuples in a frame mapping. A run of cells on the same row may be written
+//     [flexRow:col1,col2,...] as shorthand for [flexRow:col1][flexRow:col2]..., listed in cycle order.
 //   - a duplicated label prefixed with '<' or '>', e.g. <⇧ or >⇧, picking the copy with the smallest
 //     ('<', left) or largest ('>', right) column index. Any copies in between are not addressable, and
 //     a tie for that extreme throws. Use it to point at a key a plain label can't pick out alone.
@@ -24,9 +25,9 @@ import {copyKeymap} from "./layout-functions.ts";
 type Coord = [number, number]; // [flexRow, col]
 type CycleToken = { label: string } | { coord: Coord } | { edge: "<" | ">"; key: string };
 
-// Splits a cycle spec such as "a[1,10]<⇧-" into its ordered tokens.
-// '[r,c]' is a FlexMapping letter reference, '<X'/'>X' picks the left-/right-most copy of a duplicated
-// label X, any other character is a literal key label.
+// Splits a cycle spec such as "a[1:10]<⇧-" into its ordered tokens.
+// '[r:c]' is a FlexMapping letter reference ('[r:c1,c2,...]' expands to one reference per column),
+// '<X'/'>X' picks the left-/right-most copy of a duplicated label X, any other character is a literal key label.
 function parseCycle(spec: string): CycleToken[] {
     const tokens: CycleToken[] = [];
     for (let i = 0; i < spec.length;) {
@@ -34,11 +35,17 @@ function parseCycle(spec: string): CycleToken[] {
         if (ch === "[") {
             const end = spec.indexOf("]", i);
             if (end < 0) throw new Error(`Unclosed '[' in cycle "${spec}".`);
-            const parts = spec.slice(i + 1, end).split(",").map((s) => Number(s.trim()));
-            if (parts.length !== 2 || parts.some(Number.isNaN)) {
-                throw new Error(`Bad coordinate token in cycle "${spec}".`);
+            const inner = spec.slice(i + 1, end);
+            const [rowPart, colPart, ...rest] = inner.split(":");
+            if (colPart === undefined || rest.length > 0) {
+                throw new Error(`Bad coordinate token "[${inner}]" in cycle "${spec}"; expected [row:col] or [row:col,col,...].`);
             }
-            tokens.push({coord: [parts[0], parts[1]]});
+            const row = Number(rowPart.trim());
+            const cols = colPart.split(",").map((s) => s.trim());
+            if (Number.isNaN(row) || cols.some((s) => s === "" || Number.isNaN(Number(s)))) {
+                throw new Error(`Bad coordinate token "[${inner}]" in cycle "${spec}".`);
+            }
+            for (const c of cols) tokens.push({coord: [row, Number(c)]});
             i = end + 1;
         } else if (ch === "<" || ch === ">") {
             const key = spec[i + 1];
@@ -56,7 +63,7 @@ function parseCycle(spec: string): CycleToken[] {
 // Printable form of a token, used in error messages.
 const tokenLabel = (t: CycleToken) =>
     "label" in t ? `'${t.label}'`
-        : "coord" in t ? `[${t.coord[0]},${t.coord[1]}]`
+        : "coord" in t ? `[${t.coord[0]}:${t.coord[1]}]`
             : `${t.edge}'${t.key}'`;
 
 // The FlexMapping cell a grid cell pulls its letter from, or null for a literal label / gap.
