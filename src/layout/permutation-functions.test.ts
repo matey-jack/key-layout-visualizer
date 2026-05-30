@@ -38,6 +38,18 @@ describe("permute", () => {
         expect(permute(base, "[1,7]⏎-")).toEqual([[[1, 7], "⏎"]]);
     });
 
+    it("references a specific grid cell with (r,c) to disambiguate duplicate labels", () => {
+        const base: LayoutMapping = [["⇧", "a", "⇧"]];
+        // move only the right ⇧ (grid (0,2)) into a's place; a takes that ⇧'s old place.
+        expect(permute(base, "(0,2)a")).toEqual([["⇧", "⇧", "a"]]);
+    });
+
+    it("moves a placeholder referenced by grid cell, re-encoding it for the new row", () => {
+        // grid (0,1) holds FlexMapping [0,7]; moved down into z's cell it becomes row-relative.
+        const base: LayoutMapping = [["x", 7], ["y", "z"]];
+        expect(permute(base, "(0,1)z")).toEqual([["x", "z"], ["y", [-1, 7]]]);
+    });
+
     it("does not mutate the base mapping", () => {
         const base: LayoutMapping = [["a", "b"]];
         permute(base, "ab");
@@ -99,5 +111,73 @@ describe("Ergoslat thumb frames (derived by permutation)", () => {
             ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
             ["Ctrl", "Cmd", null, "Alt", 0, "⍽", "AltGr", null, "Fn", "Ctrl"],
         ]);
+    });
+});
+
+// Full-matrix lock for the Ergoslat MidShift frames, now derived from their LowShift frames by
+// permutation. Read back from the Major Ergoslat MidShift model.
+describe("Ergoslat MidShift frames (derived by permutation)", () => {
+    const mid = majorErgoslatLayoutModel(true);
+
+    it("Ansi30 MidShift matches the expected full matrix", () => {
+        expect(mid.frameMappings[KeymapTypeId.Ansi30]).toEqual([
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "'"],
+            ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
+            [0, 1, 2, 3, 4, "+", "-", 5, 6, 7, 8, 9],
+            ["Ctrl", "Cmd", null, "Alt", "⏎", "⍽", "AltGr", null, "Fn", "Ctrl"],
+        ]);
+    });
+
+    it("Ansi32 MidShift matches the expected full matrix", () => {
+        expect(mid.frameMappings[KeymapTypeId.Ansi32]).toEqual([
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, 10],
+            ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
+            [0, 1, 2, 3, 4, [-1, 10], "+", 5, 6, 7, 8, 9],
+            ["Ctrl", "Cmd", null, "Alt", "⏎", "⍽", "AltGr", null, "Fn", "Ctrl"],
+        ]);
+    });
+
+    it("Thumb30 MidShift matches the expected full matrix", () => {
+        expect(mid.frameMappings[KeymapTypeId.Thumb30]).toEqual([
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
+            [0, 1, 2, 3, 4, "+", "'", 5, 6, 7, 8, "/"],
+            ["Ctrl", "Cmd", null, "Alt", 0, "⍽", "AltGr", null, "Fn", "Ctrl"],
+        ]);
+    });
+
+    it("Thumb32 MidShift matches the expected full matrix", () => {
+        expect(mid.frameMappings[KeymapTypeId.Thumb32]).toEqual([
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
+            [0, 1, 2, 3, 4, "+", 9, 5, 6, 7, 8, [-2, 10]],
+            ["Ctrl", "Cmd", null, "Alt", 0, "⍽", "AltGr", null, "Fn", "Ctrl"],
+        ]);
+    });
+});
+
+// The two ways to build the thumb MidShift frames produce identical matrices. This lets us decide
+// purely on readability which derivation to keep (see ergoslatLayoutModel.ts).
+describe("thumb MidShift: permute-from-lowshift == patchThumb-from-ansi-midshift", () => {
+    const low = majorErgoslatLayoutModel(false);
+    const mid = majorErgoslatLayoutModel(true);
+    const ANGLE_MOD_LEFT = "[3,0](3,0)⌦+[3,4][3,3][3,2][3,1]";
+
+    it("thumb30", () => {
+        const viaThumb = permute(low.frameMappings[KeymapTypeId.Thumb30]!, ANGLE_MOD_LEFT, "/(3,11)'");
+        const viaAnsi = patchThumb30(mid.frameMappings[KeymapTypeId.Ansi30]!, "[4,0]⏎'-", "/[3,9]");
+        expect(viaThumb).toEqual(viaAnsi);
+        expect(viaThumb).toEqual(mid.frameMappings[KeymapTypeId.Thumb30]);
+    });
+
+    it("thumb32", () => {
+        const viaThumb = permute(low.frameMappings[KeymapTypeId.Thumb32]!, ANGLE_MOD_LEFT, "(3,11)[1,10]");
+        const viaAnsi = patchThumb32(mid.frameMappings[KeymapTypeId.Ansi32]!, "[4,0]⏎[1,10][3,9]+[2,10]");
+        expect(viaThumb).toEqual(viaAnsi);
+        expect(viaThumb).toEqual(mid.frameMappings[KeymapTypeId.Thumb32]);
     });
 });

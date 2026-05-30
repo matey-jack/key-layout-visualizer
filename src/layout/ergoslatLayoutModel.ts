@@ -2,7 +2,7 @@ import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "
 import {mapValues} from "../library/records.ts";
 import {mirror, SymmetricKeyWidth} from "./keyWidth.ts";
 import {copyKeymap, ergoFamilyKeyColorClass} from "./layout-functions.ts";
-import {patchThumb30, patchThumb32} from "./permutation-functions.ts";
+import {patchThumb30, patchThumb32, permute} from "./permutation-functions.ts";
 
 /*
     We need to account for three independent variables when placing the Shift and Enter keys,
@@ -20,16 +20,6 @@ const ansi30FrameMapping: LayoutMapping = [
     ["Ctrl", "Cmd", null, "Alt", "⏎", "⍽", "AltGr", null, "Fn", "Ctrl"],
 ];
 
-// This would be better with the right-most lower row key being a 1u.
-// But since keymaps with a thumb-letter have ⏎ in that position, it would be worse for them.
-const ansi30MidshiftFrame: LayoutMapping = [
-    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-    ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "'"],
-    ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
-    [0, 1, 2, 3, 4, "+", "-" ,5, 6, 7, 8, 9],
-    ["Ctrl", "Cmd", null, "Alt", "⏎", "⍽", "AltGr", null, "Fn", "Ctrl"],
-];
-
 const ansi32FrameMapping: LayoutMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, 10],
@@ -38,28 +28,35 @@ const ansi32FrameMapping: LayoutMapping = [
     ["Ctrl", "Cmd", null, "Alt", "⏎", "⍽", "AltGr", null, "Fn", "Ctrl"],
 ];
 
-const ansi32MidshiftFrame: LayoutMapping = [
-    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-    ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, 10],
-    ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
-    [0, 1, 2, 3, 4, [-1, 10], "+", 5, 6, 7, 8, 9],
-    ["Ctrl", "Cmd", null, "Alt", "⏎", "⍽", "AltGr", null, "Fn", "Ctrl"],
-];
-
 // The four thumb frames are derived from their ansi counterparts by cyclic permutation:
 // a letter moves onto the thumb (FlexMapping [4,0]), Return moves up off the bottom row, and the
-// thirty-key frames swap '-' out for an explicit '/'. See permute()/patchThumb* in layout-functions.
+// thirty-key frames swap '-' out for an explicit '/'. See permute()/patchThumb* in permutation-functions.
 // (Read e.g. "[4,0]⏎-" as: the thumb letter takes ⏎'s place, ⏎ takes '-'s place, '-' leaves.)
 
 // top-right Return mapping isn't great, because in the Major variant, this is a 1u key.
 // we can map Return in the bottom row, but then a modifier would have to go somewhere above the bottom.
 const thumb30FrameMapping: LayoutMapping = patchThumb30(ansi30FrameMapping, "[4,0]⏎-", "/[3,9]");
 
-const thumb30MidshiftFrame: LayoutMapping = patchThumb30(ansi30MidshiftFrame, "[4,0]⏎'-", "/[3,9]");
-
 const thumb32FrameMapping: LayoutMapping = patchThumb32(ansi32FrameMapping, "[4,0]⏎[1,10][2,10]");
 
-const thumb32MidshiftFrame: LayoutMapping = patchThumb32(ansi32MidshiftFrame, "[4,0]⏎[1,10][3,9]+[2,10]");
+// The MidShift frames are the LowShift ones with the left half "angle-modded": the two lower-row
+// Shift keys move up to the home row and the left letter block slides one column left. ANGLE_MOD_LEFT
+// is exactly that shared left-side rotation; the trailing cycle then settles each frame's own
+// punctuation / Return. A grid ref like (3,0) points at one specific cell – here a lower-row Shift –
+// to disambiguate the two identical "⇧" keys, which a plain label can't.
+const ANGLE_MOD_LEFT = "[3,0](3,0)⌦+[3,4][3,3][3,2][3,1]";
+
+// (Ansi32 threads its extra letter through the middle, so it needs one longer cycle of its own.)
+const ansi30MidshiftFrame: LayoutMapping = permute(ansi30FrameMapping, ANGLE_MOD_LEFT, "-[3,9](3,11)'");
+
+const ansi32MidshiftFrame: LayoutMapping = permute(ansi32FrameMapping, "[3,0](3,0)⌦+[3,9](3,11)[2,10][3,4][3,3][3,2][3,1]");
+
+// These two derive straight from their thumb LowShift frames, reusing ANGLE_MOD_LEFT. (An equivalent
+// form derives them from the ansi MidShift frames via patchThumb30/32; permutation-functions.test.ts
+// asserts the two yield identical matrices.)
+const thumb30MidshiftFrame: LayoutMapping = permute(thumb30FrameMapping, ANGLE_MOD_LEFT, "/(3,11)'");
+
+const thumb32MidshiftFrame: LayoutMapping = permute(thumb32FrameMapping, ANGLE_MOD_LEFT, "(3,11)[1,10]");
 
 /*
     The major/minor naming comes from musical intervals, since both Ergoslat variants have only two key sizes
