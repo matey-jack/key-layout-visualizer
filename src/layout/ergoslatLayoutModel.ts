@@ -42,21 +42,21 @@ const thumb32FrameMapping: LayoutMapping = patchThumb32(ansi32FrameMapping, "[4,
 // The MidShift frames are the LowShift ones with the left half "angle-modded": the two lower-row
 // Shift keys move up to the home row and the left letter block slides one column left. ANGLE_MOD_LEFT
 // is exactly that shared left-side rotation; the trailing cycle then settles each frame's own
-// punctuation / Return. A grid ref like (3,0) points at one specific cell – here a lower-row Shift –
-// to disambiguate the two identical "⇧" keys, which a plain label can't.
-const ANGLE_MOD_LEFT = "[3,0](3,0)⌦+[3,4][3,3][3,2][3,1]";
+// punctuation / Return. <⇧ / >⇧ pick the left / right of the two identical "⇧" keys, which a plain
+// label can't disambiguate.
+const ANGLE_MOD_LEFT = "[3,0]<⇧⌦+[3,4][3,3][3,2][3,1]";
 
 // (Ansi32 threads its extra letter through the middle, so it needs one longer cycle of its own.)
-const ansi30MidshiftFrame: LayoutMapping = permute(ansi30FrameMapping, ANGLE_MOD_LEFT, "-[3,9](3,11)'");
+const ansi30MidshiftFrame: LayoutMapping = permute(ansi30FrameMapping, ANGLE_MOD_LEFT, "-[3,9]>⇧'");
 
-const ansi32MidshiftFrame: LayoutMapping = permute(ansi32FrameMapping, "[3,0](3,0)⌦+[3,9](3,11)[2,10][3,4][3,3][3,2][3,1]");
+const ansi32MidshiftFrame: LayoutMapping = permute(ansi32FrameMapping, "[3,0]<⇧⌦+[3,9]>⇧[2,10][3,4][3,3][3,2][3,1]");
 
 // These two derive straight from their thumb LowShift frames, reusing ANGLE_MOD_LEFT. (An equivalent
 // form derives them from the ansi MidShift frames via patchThumb30/32; permutation-functions.test.ts
 // asserts the two yield identical matrices.)
-const thumb30MidshiftFrame: LayoutMapping = permute(thumb30FrameMapping, ANGLE_MOD_LEFT, "/(3,11)'");
+const thumb30MidshiftFrame: LayoutMapping = permute(thumb30FrameMapping, ANGLE_MOD_LEFT, "/>⇧'");
 
-const thumb32MidshiftFrame: LayoutMapping = permute(thumb32FrameMapping, ANGLE_MOD_LEFT, "(3,11)[1,10]");
+const thumb32MidshiftFrame: LayoutMapping = permute(thumb32FrameMapping, ANGLE_MOD_LEFT, ">⇧[1,10]");
 
 /*
     The major/minor naming comes from musical intervals, since both Ergoslat variants have only two key sizes

@@ -12,35 +12,39 @@ import {copyKeymap} from "./layout-functions.ts";
 //   - a placeholder reference in [flexRow,col] form, e.g. [1,10] or [4,0], naming the
 //     FlexMapping cell a letter is pulled from. The first index is ALWAYS the FlexMapping row,
 //     so a bare `10` on grid row 1 is [1,10], and a `[-1,10]` on grid row 3 is [2,10].
-//   - a grid-cell reference in (row,col) form, e.g. (3,0), naming one specific cell of the mapping.
-//     Use it to point at a key a plain label can't pick out – e.g. one of the two identical "⇧".
+//   - a duplicated label prefixed with '<' or '>', e.g. <⇧ or >⇧, picking the copy with the smallest
+//     ('<', left) or largest ('>', right) column index. Any copies in between are not addressable, and
+//     a tie for that extreme throws. Use it to point at a key a plain label can't pick out alone.
 //
 // Semantics of "abc": a takes the place of b, b takes the place of c, c takes the place of a.
 // A key entering the mapping (new) may appear only as the FIRST token; a key leaving only as the
 // LAST. With both present the cycle is an open chain: the first key is placed, the last is dropped,
 // and there is no wrap-around (so the column count stays the same).
 
-type Coord = [number, number]; // [flexRow, col] for letters, or [row, col] for a grid ref
-type CycleToken = { label: string } | { coord: Coord } | { grid: Coord };
+type Coord = [number, number]; // [flexRow, col]
+type CycleToken = { label: string } | { coord: Coord } | { edge: "<" | ">"; key: string };
 
-// Splits a cycle spec such as "a[1,10](3,0)-" into its ordered tokens.
-// '[r,c]' is a FlexMapping letter reference, '(r,c)' is a grid-cell reference, any other character
-// is a literal key label.
+// Splits a cycle spec such as "a[1,10]<⇧-" into its ordered tokens.
+// '[r,c]' is a FlexMapping letter reference, '<X'/'>X' picks the left-/right-most copy of a duplicated
+// label X, any other character is a literal key label.
 function parseCycle(spec: string): CycleToken[] {
     const tokens: CycleToken[] = [];
     for (let i = 0; i < spec.length;) {
         const ch = spec[i];
-        if (ch === "[" || ch === "(") {
-            const close = ch === "[" ? "]" : ")";
-            const end = spec.indexOf(close, i);
-            if (end < 0) throw new Error(`Unclosed '${ch}' in cycle "${spec}".`);
+        if (ch === "[") {
+            const end = spec.indexOf("]", i);
+            if (end < 0) throw new Error(`Unclosed '[' in cycle "${spec}".`);
             const parts = spec.slice(i + 1, end).split(",").map((s) => Number(s.trim()));
             if (parts.length !== 2 || parts.some(Number.isNaN)) {
                 throw new Error(`Bad coordinate token in cycle "${spec}".`);
             }
-            const coord: Coord = [parts[0], parts[1]];
-            tokens.push(ch === "[" ? {coord} : {grid: coord});
+            tokens.push({coord: [parts[0], parts[1]]});
             i = end + 1;
+        } else if (ch === "<" || ch === ">") {
+            const key = spec[i + 1];
+            if (key === undefined) throw new Error(`Dangling '${ch}' at end of cycle "${spec}".`);
+            tokens.push({edge: ch, key});
+            i += 2;
         } else {
             tokens.push({label: ch});
             i += 1;
@@ -53,7 +57,7 @@ function parseCycle(spec: string): CycleToken[] {
 const tokenLabel = (t: CycleToken) =>
     "label" in t ? `'${t.label}'`
         : "coord" in t ? `[${t.coord[0]},${t.coord[1]}]`
-            : `(${t.grid[0]},${t.grid[1]})`;
+            : `${t.edge}'${t.key}'`;
 
 // The FlexMapping cell a grid cell pulls its letter from, or null for a literal label / gap.
 function cellFlexCoord(value: LayoutMappingEntry, gridRow: number): Coord | null {
@@ -66,10 +70,24 @@ function cellFlexCoord(value: LayoutMappingEntry, gridRow: number): Coord | null
 const encodeFlex = ([fr, col]: Coord, destRow: number): LayoutMappingEntry =>
     fr === destRow ? col : [fr - destRow, col];
 
+// Picks the left-most ('<') or right-most ('>') cell holding key, comparing column index only.
+// Throws if the key is absent, or if two copies tie for that extreme column (which shouldn't happen).
+function findEdge(mapping: LayoutMapping, edge: "<" | ">", key: string): [number, number] {
+    const matches: [number, number][] = [];
+    mapping.forEach((row, r) => row.forEach((value, c) => {
+        if (value === key) matches.push([r, c]);
+    }));
+    if (matches.length === 0) throw new Error(`Cycle token ${edge}'${key}' matches no cell.`);
+    const targetCol = edge === "<" ? Math.min(...matches.map((m) => m[1])) : Math.max(...matches.map((m) => m[1]));
+    const selected = matches.filter((m) => m[1] === targetCol);
+    if (selected.length > 1) throw new Error(`Cycle token ${edge}'${key}' is ambiguous: ${selected.length} copies share column ${targetCol}.`);
+    return selected[0];
+}
+
 // Finds the grid cell a token currently occupies, or null when its key isn't present (= entering).
-// A grid token always resolves to its own cell. Throws if a label/letter token is ambiguous.
+// Throws if a label/letter token is ambiguous, or an edge token's extreme column is tied.
 function findToken(mapping: LayoutMapping, token: CycleToken): [number, number] | null {
-    if ("grid" in token) return token.grid;
+    if ("edge" in token) return findEdge(mapping, token.edge, token.key);
     const matches: [number, number][] = [];
     mapping.forEach((row, r) =>
         row.forEach((value, c) => {
@@ -86,13 +104,10 @@ function findToken(mapping: LayoutMapping, token: CycleToken): [number, number] 
 }
 
 // The value a token contributes when it lands on grid row destRow (placeholders stay row-relative).
-// A grid token carries whatever key currently sits in its cell.
-function tokenValue(token: CycleToken, destRow: number, base: LayoutMapping): LayoutMappingEntry {
+function tokenValue(token: CycleToken, destRow: number): LayoutMappingEntry {
     if ("label" in token) return token.label;
-    if ("coord" in token) return encodeFlex(token.coord, destRow);
-    const value = base[token.grid[0]][token.grid[1]];
-    const fc = cellFlexCoord(value, token.grid[0]);
-    return fc ? encodeFlex(fc, destRow) : value;
+    if ("edge" in token) return token.key;
+    return encodeFlex(token.coord, destRow);
 }
 
 // Returns a copy of a frame mapping with the given cyclic permutations applied (see the note above
@@ -113,7 +128,7 @@ export function permute(base: LayoutMapping, ...cycles: string[]): LayoutMapping
             const dest = positions[(i + 1) % n];
             // ...unless the first token is entering (no place of its own): then the last token leaves.
             if (dest === null) continue;
-            result[dest[0]][dest[1]] = tokenValue(tokens[i], dest[0], base);
+            result[dest[0]][dest[1]] = tokenValue(tokens[i], dest[0]);
         }
     }
     return result;

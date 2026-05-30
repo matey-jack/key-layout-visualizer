@@ -38,16 +38,32 @@ describe("permute", () => {
         expect(permute(base, "[1,7]⏎-")).toEqual([[[1, 7], "⏎"]]);
     });
 
-    it("references a specific grid cell with (r,c) to disambiguate duplicate labels", () => {
+    it("picks the right-most copy of a duplicated label with '>'", () => {
         const base: LayoutMapping = [["⇧", "a", "⇧"]];
-        // move only the right ⇧ (grid (0,2)) into a's place; a takes that ⇧'s old place.
-        expect(permute(base, "(0,2)a")).toEqual([["⇧", "⇧", "a"]]);
+        // >⇧ is the larger-column ⇧; swap it with a.
+        expect(permute(base, ">⇧a")).toEqual([["⇧", "⇧", "a"]]);
     });
 
-    it("moves a placeholder referenced by grid cell, re-encoding it for the new row", () => {
-        // grid (0,1) holds FlexMapping [0,7]; moved down into z's cell it becomes row-relative.
-        const base: LayoutMapping = [["x", 7], ["y", "z"]];
-        expect(permute(base, "(0,1)z")).toEqual([["x", "z"], ["y", [-1, 7]]]);
+    it("picks the left-most copy of a duplicated label with '<'", () => {
+        const base: LayoutMapping = [["⇧", "a", "⇧"]];
+        // <⇧ is the smaller-column ⇧; swap it with a.
+        expect(permute(base, "<⇧a")).toEqual([["a", "⇧", "⇧"]]);
+    });
+
+    it("compares column index across rows, ignoring row", () => {
+        const base: LayoutMapping = [["x", "⇧"], ["⇧", "y"]];
+        // <⇧ is the column-0 copy (in row 1), not the column-1 copy in row 0; swap it with x.
+        expect(permute(base, "<⇧x")).toEqual([["⇧", "⇧"], ["x", "y"]]);
+    });
+
+    it("throws when two copies tie for the selected extreme column", () => {
+        const base: LayoutMapping = [["⇧", "a"], ["⇧", "b"]];
+        // both ⇧ are in column 0, so '<' can't choose.
+        expect(() => permute(base, "<⇧a")).toThrow(/ambiguous|column/);
+    });
+
+    it("throws on a dangling edge prefix", () => {
+        expect(() => permute([["⇧"]], "a<")).toThrow(/Dangling/);
     });
 
     it("does not mutate the base mapping", () => {
@@ -165,17 +181,17 @@ describe("Ergoslat MidShift frames (derived by permutation)", () => {
 describe("thumb MidShift: permute-from-lowshift == patchThumb-from-ansi-midshift", () => {
     const low = majorErgoslatLayoutModel(false);
     const mid = majorErgoslatLayoutModel(true);
-    const ANGLE_MOD_LEFT = "[3,0](3,0)⌦+[3,4][3,3][3,2][3,1]";
+    const ANGLE_MOD_LEFT = "[3,0]<⇧⌦+[3,4][3,3][3,2][3,1]";
 
     it("thumb30", () => {
-        const viaThumb = permute(low.frameMappings[KeymapTypeId.Thumb30]!, ANGLE_MOD_LEFT, "/(3,11)'");
+        const viaThumb = permute(low.frameMappings[KeymapTypeId.Thumb30]!, ANGLE_MOD_LEFT, "/>⇧'");
         const viaAnsi = patchThumb30(mid.frameMappings[KeymapTypeId.Ansi30]!, "[4,0]⏎'-", "/[3,9]");
         expect(viaThumb).toEqual(viaAnsi);
         expect(viaThumb).toEqual(mid.frameMappings[KeymapTypeId.Thumb30]);
     });
 
     it("thumb32", () => {
-        const viaThumb = permute(low.frameMappings[KeymapTypeId.Thumb32]!, ANGLE_MOD_LEFT, "(3,11)[1,10]");
+        const viaThumb = permute(low.frameMappings[KeymapTypeId.Thumb32]!, ANGLE_MOD_LEFT, ">⇧[1,10]");
         const viaAnsi = patchThumb32(mid.frameMappings[KeymapTypeId.Ansi32]!, "[4,0]⏎[1,10][3,9]+[2,10]");
         expect(viaThumb).toEqual(viaAnsi);
         expect(viaThumb).toEqual(mid.frameMappings[KeymapTypeId.Thumb32]);
