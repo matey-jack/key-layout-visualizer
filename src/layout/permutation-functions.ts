@@ -200,6 +200,7 @@ export function patchThumb30(base: LayoutMapping, ...cycles: string[]): LayoutMa
     const {entered, exited} = frameDiff(base, result);
     const ok =
         entered.has("F:4,0") &&
+        exited.has("F:3,9") &&
         sameSet(labelsIn(entered), ["L:/"]) &&
         sameSet(labelsIn(exited), ["L:-"]) &&
         lettersIn(entered).length === 1 &&
@@ -215,6 +216,7 @@ export function patchThumb32(base: LayoutMapping, ...cycles: string[]): LayoutMa
     const {entered, exited} = frameDiff(base, result);
     const ok =
         entered.has("F:4,0") &&
+        exited.has("F:2,10") &&
         labelsIn(entered).length === 0 &&
         labelsIn(exited).length === 0 &&
         lettersIn(entered).length === 1 &&
