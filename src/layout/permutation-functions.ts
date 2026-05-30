@@ -78,15 +78,28 @@ function cellFlexCoord(value: LayoutMappingEntry, gridRow: number): Coord | null
 const encodeFlex = ([fr, col]: Coord, destRow: number): LayoutMappingEntry =>
     fr === destRow ? col : [fr, col];
 
+// Every [row, col] whose cell value satisfies the predicate, scanned in row-major order.
+function cellsMatching(
+    mapping: LayoutMapping,
+    pred: (value: LayoutMappingEntry, r: number, c: number) => boolean
+): Coord[] {
+    const matches: Coord[] = [];
+    mapping.forEach((row, r) =>
+        row.forEach((value, c) => {
+            if (pred(value, r, c)) matches.push([r, c]);
+        })
+    );
+    return matches;
+}
+
 // Picks the left-most ('<') or right-most ('>') cell holding key, comparing column index only.
 // Throws if the key is absent, or if two copies tie for that extreme column (which shouldn't happen).
-function findEdge(mapping: LayoutMapping, edge: "<" | ">", key: string): [number, number] {
-    const matches: [number, number][] = [];
-    mapping.forEach((row, r) => row.forEach((value, c) => {
-        if (value === key) matches.push([r, c]);
-    }));
+function findEdge(mapping: LayoutMapping, edge: "<" | ">", key: string): Coord {
+    const matches = cellsMatching(mapping, (value) => value === key);
     if (matches.length === 0) throw new Error(`Cycle token ${edge}'${key}' matches no cell.`);
-    const targetCol = edge === "<" ? Math.min(...matches.map((m) => m[1])) : Math.max(...matches.map((m) => m[1]));
+    const targetCol = edge === "<"
+        ? Math.min(...matches.map((m) => m[1]))
+        : Math.max(...matches.map((m) => m[1]));
     const selected = matches.filter((m) => m[1] === targetCol);
     if (selected.length > 1) throw new Error(`Cycle token ${edge}'${key}' is ambiguous: ${selected.length} copies share column ${targetCol}.`);
     return selected[0];
@@ -94,19 +107,14 @@ function findEdge(mapping: LayoutMapping, edge: "<" | ">", key: string): [number
 
 // Finds the grid cell a token currently occupies, or null when its key isn't present (= entering).
 // Throws if a label/letter token is ambiguous, or an edge token's extreme column is tied.
-function findToken(mapping: LayoutMapping, token: CycleToken): [number, number] | null {
+function findToken(mapping: LayoutMapping, token: CycleToken): Coord | null {
     if ("edge" in token) return findEdge(mapping, token.edge, token.key);
-    const matches: [number, number][] = [];
-    mapping.forEach((row, r) =>
-        row.forEach((value, c) => {
-            if ("label" in token) {
-                if (value === token.label) matches.push([r, c]);
-            } else {
-                const fc = cellFlexCoord(value, r);
-                if (fc && fc[0] === token.coord[0] && fc[1] === token.coord[1]) matches.push([r, c]);
-            }
-        })
-    );
+    const matches = "label" in token
+        ? cellsMatching(mapping, (value) => value === token.label)
+        : cellsMatching(mapping, (value, r) => {
+            const fc = cellFlexCoord(value, r);
+            return fc !== null && fc[0] === token.coord[0] && fc[1] === token.coord[1];
+        });
     if (matches.length > 1) throw new Error(`Cycle token ${tokenLabel(token)} matches ${matches.length} cells (must be unique).`);
     return matches[0] ?? null;
 }
