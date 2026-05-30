@@ -122,8 +122,13 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
             return;
         }
     }
-    // only need to include layouts which we know to have some mappings exclusive to them.
-    const fallbackLayouts: Partial<LayoutOptions>[] = [
+    const fallbackLayouts: Partial<LayoutOptions>[] = [];
+    switch (layoutOptionsState.value.type) {
+        case LayoutType.Harmonic:
+            fallbackLayouts.push(...Object.keys(HarmonicVariant).map((val) => ({harmonicVariant: val})))
+    }
+    // Final fallbacks: all layouts that have some mappings exclusive to them.
+    fallbackLayouts.push(...[
         {type: LayoutType.ANSI, ansiVariant: AnsiVariant.IBM},
         {type: LayoutType.ANSI, ansiVariant: AnsiVariant.IBM, ansiWide: true},
         {type: LayoutType.Ergosplit},
@@ -131,7 +136,7 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
         {type: LayoutType.Ergoplank, plankVariant: PlankVariant.ERGOBOARD_MID_SHIFT, ergoboardMidshiftVariant: ErgoboardMidshiftVariant.COMFY_WIDE},
         {type: LayoutType.Harmonic, harmonicVariant: HarmonicVariant.H13_Wide},
         {type: LayoutType.Harmonic, harmonicVariant: HarmonicVariant.H14_Traditional},
-    ]
+    ]);
     const newOpts = findMatchingLayout(newMapping, layoutOptionsState.value, fallbackLayouts);
     if (newOpts) {
         mappingState.value = newMapping;
