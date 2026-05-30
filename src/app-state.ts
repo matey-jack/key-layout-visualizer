@@ -55,14 +55,22 @@ function setLayout(
     mapping: Signal<FlexMapping>,
 ) {
     // Wide and split are not available for all ANSI variants, so adapt them to the current variant.
-    const newLayoutOptions = (opts.type === LayoutType.ANSI)
+    let newLayoutOptions = (opts.type === LayoutType.ANSI)
         ? {
             ...opts,
             ansiWide: modifyWide(mapping.value, opts),
             ansiSplit: modifySplit(opts),
         }
         : opts;
-    const newLayoutModel = getLayoutModel(newLayoutOptions);
+    let newLayoutModel = getLayoutModel(newLayoutOptions);
+    if (!hasMatchingMapping(newLayoutModel, mapping.value)) {
+        const fallbackSubvariants = getFallbackLayouts(newLayoutOptions);
+        const matchingOpts = findMatchingLayout(mapping.value, newLayoutOptions, fallbackSubvariants);
+        if (matchingOpts) {
+            newLayoutOptions = matchingOpts;
+            newLayoutModel = getLayoutModel(newLayoutOptions);
+        }
+    }
     if (!hasMatchingMapping(newLayoutModel, mapping.value)) {
         // We go through a fallback chain to find a matching mapping that is not too far from the previous one.
         const seen = new Set<string>();
@@ -107,6 +115,38 @@ const allErgoboardLowShiftVariants = enumValues<ErgoboardLowshiftVariant>(Ergobo
     (val) => ({plankVariant: PlankVariant.ERGOBOARD_LOW_SHIFT, ergoboardLowshiftVariant: val})
 );
 
+function getFallbackLayouts(opts: LayoutOptions): Partial<LayoutOptions>[] {
+    const fallbackLayouts: Partial<LayoutOptions>[] = [];
+    switch (opts.type) {
+        case LayoutType.Harmonic:
+            fallbackLayouts.push(...enumValues<HarmonicVariant>(HarmonicVariant).map(
+                (val) => ({harmonicVariant: val})
+            ));
+            break;
+        case LayoutType.Ergoplank:
+            switch (opts.plankVariant) {
+                case PlankVariant.ERGOBOARD_LOW_SHIFT:
+                    fallbackLayouts.push(...allErgoboardLowShiftVariants);
+                    break;
+                case PlankVariant.ERGOBOARD_MID_SHIFT:
+                    fallbackLayouts.push(...allErgoboardMidshiftVariants);
+                    break;
+            }
+            // This relies on Ergoslat and Ergoplank subvariants all supporting the same set of mappings,
+            // so the fallback is to the sub-variant that was last selected.
+            // Similarly, for Ergoboard MidShift and LowShift, we first try the variant last selected.
+            fallbackLayouts.push(...enumValues<PlankVariant>(PlankVariant).map(
+                (val) => ({plankVariant: val})
+            ));
+            // And then try all the subvariants. (This duplicates entries from above,
+            // but it's a fair price for not having to complicate the code even more.)
+            fallbackLayouts.push(...allErgoboardLowShiftVariants);
+            fallbackLayouts.push(...allErgoboardMidshiftVariants);
+            break;
+    }
+    return fallbackLayouts;
+}
+
 /**
  * This function sets the FlexMapping and changes the layout model if the current one doesn't support the new mapping.
  * We try to change the layout as little as possible: first try to switch options (such as ANSI wide) only,
@@ -139,34 +179,7 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
      */
     // console.log(`current Layout: ${JSON.stringify(layoutOptionsState.value)}`)
     // console.log(`switching Mapping to: ${newMapping.name}`)
-    const fallbackLayouts: Partial<LayoutOptions>[] = [];
-    switch (layoutOptionsState.value.type) {
-        case LayoutType.Harmonic:
-            fallbackLayouts.push(...enumValues<HarmonicVariant>(HarmonicVariant).map(
-                (val) => ({harmonicVariant: val})
-            ));
-            break;
-        case LayoutType.Ergoplank:
-            switch (layoutOptionsState.value.plankVariant) {
-                case PlankVariant.ERGOBOARD_LOW_SHIFT:
-                    fallbackLayouts.push(...allErgoboardLowShiftVariants);
-                    break;
-                case PlankVariant.ERGOBOARD_MID_SHIFT:
-                    fallbackLayouts.push(...allErgoboardMidshiftVariants);
-                    break;
-            }
-            // This relies on Ergoslat and Ergoplank subvariants all supporting the same set of mappings,
-            // so the fallback is to the sub-variant that was last selected.
-            // Similarly, for Ergoboard MidShift and LowShift, we first try the variant last selected.
-            fallbackLayouts.push(...enumValues<PlankVariant>(PlankVariant).map(
-                (val) => ({plankVariant: val})
-            ));
-            // And then try all the subvariants. (This duplicates entries from above,
-            // but it's a fair price for not having to complicate the code even more.)
-            fallbackLayouts.push(...allErgoboardLowShiftVariants);
-            fallbackLayouts.push(...allErgoboardMidshiftVariants);
-            break;
-    }
+    const fallbackLayouts = getFallbackLayouts(layoutOptionsState.value);
     // Final fallbacks: all layouts that have some mappings exclusive to them.
     fallbackLayouts.push(...[
         {type: LayoutType.ANSI, ansiVariant: AnsiVariant.IBM},
