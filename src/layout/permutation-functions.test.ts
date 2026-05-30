@@ -76,9 +76,8 @@ describe("patchThumb30 / patchThumb32 invariant checks", () => {
 });
 
 // Full-matrix lock for the Ergoslat thumb frames. They are not exported, so we read them back from
-// the Major Ergoslat model (which wraps each permutation result with addBottomRowGaps). Asserting the
-// whole matrix guards both the cycles in ergoslatLayoutModel.ts and the permute() machinery itself.
-// We only pin these for this one layout model.
+// the Major Ergoslat model. Asserting the whole matrix guards both the cycles in
+// ergoslatLayoutModel.ts and the permute() machinery itself. We only pin these for this one model.
 describe("Ergoslat thumb frames (derived by permutation)", () => {
     const major = majorErgoslatLayoutModel(false);
 

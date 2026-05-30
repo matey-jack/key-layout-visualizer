@@ -17,7 +17,7 @@ const ansi30FrameMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "-"],
     ["⌦", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Alt", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
+    ["Ctrl", "Cmd", null, "Alt", "⏎", "⍽", "AltGr", null, "Fn", "Ctrl"],
 ];
 
 // This would be better with the right-most lower row key being a 1u.
@@ -27,7 +27,7 @@ const ansi30MidshiftFrame: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
     [0, 1, 2, 3, 4, "+", "-" ,5, 6, 7, 8, 9],
-    ["Ctrl", "Cmd", "Alt", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
+    ["Ctrl", "Cmd", null, "Alt", "⏎", "⍽", "AltGr", null, "Fn", "Ctrl"],
 ];
 
 const ansi32FrameMapping: LayoutMapping = [
@@ -35,7 +35,7 @@ const ansi32FrameMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, 10],
     ["⌦", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, 10],
     ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Alt", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
+    ["Ctrl", "Cmd", null, "Alt", "⏎", "⍽", "AltGr", null, "Fn", "Ctrl"],
 ];
 
 const ansi32MidshiftFrame: LayoutMapping = [
@@ -43,7 +43,7 @@ const ansi32MidshiftFrame: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, 10],
     ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
     [0, 1, 2, 3, 4, [-1, 10], "+", 5, 6, 7, 8, 9],
-    ["Ctrl", "Cmd", "Alt", "⏎", "⍽", "AltGr", "Fn", "Ctrl"],
+    ["Ctrl", "Cmd", null, "Alt", "⏎", "⍽", "AltGr", null, "Fn", "Ctrl"],
 ];
 
 // The four thumb frames are derived from their ansi counterparts by cyclic permutation:
@@ -67,13 +67,6 @@ const thumb32MidshiftFrame: LayoutMapping = patchThumb32(ansi32MidshiftFrame, "[
  */
 export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
     const keyWidths = new SymmetricKeyWidth(13, [0, 0.25, 0, midShift ? 0.5 : 0, 0.25]);
-
-    const baseMappings = {
-        [KeymapTypeId.Ansi30]: midShift ? ansi30MidshiftFrame : ansi30FrameMapping,
-        [KeymapTypeId.Ansi32]: midShift ? ansi32MidshiftFrame : ansi32FrameMapping,
-        [KeymapTypeId.Thumb30]: midShift ? thumb30MidshiftFrame : thumb30FrameMapping,
-        [KeymapTypeId.Thumb32]: midShift ? thumb32MidshiftFrame : thumb32FrameMapping,
-    };
 
     return {
         name: "Major Ergoslat 13/3" + (midShift ? " MidShift" : ""),
@@ -117,7 +110,12 @@ export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
         staggerOffsets: [0.5, 0.25, 0, -0.5],
         symmetricStagger: true,
 
-        frameMappings: mapValues(baseMappings, (_, mapping) => addBottomRowGaps(mapping)) as Partial<Record<KeymapTypeId, LayoutMapping>>,
+        frameMappings: {
+            [KeymapTypeId.Ansi30]: midShift ? ansi30MidshiftFrame : ansi30FrameMapping,
+            [KeymapTypeId.Ansi32]: midShift ? ansi32MidshiftFrame : ansi32FrameMapping,
+            [KeymapTypeId.Thumb30]: midShift ? thumb30MidshiftFrame : thumb30FrameMapping,
+            [KeymapTypeId.Thumb32]: midShift ? thumb32MidshiftFrame : thumb32FrameMapping,
+        },
 
         keyColorClass: ergoFamilyKeyColorClass(ansi30FrameMapping),
     };
@@ -199,14 +197,6 @@ function adjustPlaceholderRow(
         return [v[0] + offset, v[1]];
     }
     return v;
-}
-
-function addBottomRowGaps(mapping: LayoutMapping): LayoutMapping {
-    const newMapping = mapping.map((row) => [...row]);
-    const bottomRow = newMapping[KeyboardRows.Bottom];
-    bottomRow.splice(2, 0, null);
-    bottomRow.splice(bottomRow.length - 2, 0, null);
-    return newMapping;
 }
 
 function replaceBottomRowGaps(mapping: LayoutMapping): LayoutMapping {
