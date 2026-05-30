@@ -48,6 +48,14 @@ function modifySplit(opts: LayoutOptions) {
  * This function sets the keyboard layout model and options.
  * It also changes the FlexMapping, if the current one does not fit on the new layout.
  * (This is why we need a setter function and don't expose the raw signal in the app state!)
+ *
+ * Note that settings for layout variants and subvariants and options are kept even when the layout type is
+ * currently not selected. When coming back to a layout type, we could have a mapping active which doesn't support
+ * this previously selected subtype (variant). In this case, the variant is changed to one that supports it.
+ * (If none exists, we change the mapping as described above.)
+ *
+ * When changing explicitly to a variant or subvariant this does not apply, in this case the mapping is the only thing
+ * that can be changed to achieve a fit.
  */
 function setLayout(
     opts: LayoutOptions,
