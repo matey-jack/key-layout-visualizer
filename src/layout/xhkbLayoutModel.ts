@@ -175,7 +175,7 @@ export const xhkb16LayoutModel: LayoutModel = {
         if (col === 0) return KEY_COLOR.EDGE;
         if (col <= 5) return KEY_COLOR.BORING;
         if (col <= 8) return KEY_COLOR.EDGE;
-        const rightEdge = [13, 14, 13, 12]
+        const rightEdge = [13, 14, 13, 13]
         if (col <= rightEdge[row]) return KEY_COLOR.BORING;
         return KEY_COLOR.EDGE;
     },

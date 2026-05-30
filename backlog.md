@@ -88,6 +88,7 @@ refactorings done (or decided against):
     This should make it much easier to select the next-best layout if the current one does not support the keymap: we can simply "walk up the variant tree". 
     Similarly, when switching layout or layout options, we can do a similarity search (by the first word of the keymap name) for a matching keymap.
  - modularized the CSS
+ - add GHA pipeline for dependency updates
 
  - "ANSI wide" is the only layout option which influences how keymap metrics are calculated and which keymaps apply.
    But all the Harmonic and Ergo(Plank|Board) options are filtered through the setLayout mechanism. Is that what we want?
@@ -140,7 +141,8 @@ bugs:
 - fix altFinger configuration for Harmonic variants AND show it in finger viz ==> or remove Alt-finger stuff from app
 
 refactoring:
-- add GHA pipeline for dependency updates
+- use GHA for fast-forward merging of PRs
+- find out if redundancy in the CSS can be reduced 
 - run e2e tests headless on GHA
 - remove home finger properties; use keyEffort==Home instead.
 - Straighten the naming convention for the Ergoplank family to go by with in columns (plus optionally, gap size in columns).
