@@ -45,28 +45,6 @@ import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 import {xhkbLayoutModel, xhkbWithArrowsLayoutModel} from "./layout/xhkbLayoutModel.ts";
 
-const layoutModels: Array<LayoutModel> = [
-    ansiIBMLayoutModel,
-    ansiWideLayoutModel,
-    createHHKB(ansiIBMLayoutModel),
-    createApple(ansiIBMLayoutModel),
-    createHHKB(ansiWideLayoutModel),
-    createApple(ansiWideLayoutModel),
-    xhkbLayoutModel,
-    xhkbWithArrowsLayoutModel,
-    ahkbLayoutModel,
-    majorErgoslatLayoutModel(false),
-    majorErgoslatLayoutModel(true),
-    minorErgoslatLayoutModel(false),
-    minorErgoslatLayoutModel(true),
-    makeErgoslatNumberless(majorErgoslatLayoutModel(false)),
-    makeErgoslatNumberless(minorErgoslatLayoutModel(false)),
-    ergoboardLowshiftLayoutModel,
-    ergoboardBigEnterLayoutModel,
-    ergoboardLowshiftWideLayoutModel,
-
-];
-
 export function getHarmonicVariant(variant: HarmonicVariant): LayoutModel {
     switch (variant) {
         case HarmonicVariant.H14_Wide:
