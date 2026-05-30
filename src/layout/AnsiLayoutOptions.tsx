@@ -16,13 +16,13 @@ export interface AnsiLayoutOptionsProps {
 const naturallyWideVariants = [AnsiVariant.AHKB, AnsiVariant.XHKB];
 
 function ansiVariantNote(variant: AnsiVariant, wide: boolean): string {
-    if (variant === AnsiVariant.XHKB) return "15/4";
     const denom = wide ? "3" : "2";
     switch (variant) {
         case AnsiVariant.IBM:   return `15/${denom}`;
         case AnsiVariant.APPLE: return `14.5/${denom}`;
         case AnsiVariant.HHKB:  return `15/${denom}`;
         case AnsiVariant.AN65:  return `16/${denom}`;
+        case AnsiVariant.XHKB:  return `15/4 or 16/5`;
         default: return "";
     }
 }
@@ -59,14 +59,14 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
                         {option.variant === AnsiVariant.XHKB &&
                             <div class="ansi-ahkb-options-container">
                                 <CheckboxWithLabel
-                                    label="Thumbs Up 15/4"
+                                    label="15/4"
                                     type="radio"
                                     groupName="thumbs_up_variant"
                                     checked={!thumbsUp16}
                                     onChange={(checked) => checked && setOption({thumbsUp16: false})}
                                 />
                                 <CheckboxWithLabel
-                                    label="Thumbs Up 16/5"
+                                    label="16/5"
                                     type="radio"
                                     groupName="thumbs_up_variant"
                                     checked={thumbsUp16}
