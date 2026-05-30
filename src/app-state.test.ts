@@ -1,5 +1,5 @@
 import {beforeEach, describe, expect, it } from "vitest";
-import {AnsiVariant, HarmonicVariant, PlankVariant} from "./app-model";
+import {AnsiVariant, ErgoboardMidshiftVariant, HarmonicVariant, PlankVariant} from "./app-model";
 import {createAppState} from "./app-state";
 import {type FlexMapping, KeymapTypeId, LayoutType } from "./base-model";
 import {hasMatchingMapping} from "./layout/layout-functions";
@@ -94,6 +94,25 @@ describe("setMapping", () => {
         // then
         expect(appState.layout.value.type).toBe(LayoutType.Ergoplank);
         expect(appState.layout.value.plankVariant).toBe(PlankVariant.ERGOSLAT);
+        expect(appState.mapping.value).toBe(qwertzMapping);
+    });
+
+    it("switches to Ergoboard MidShift Comfy Wide when active layout is a MidShift narrow variant and qwertzMapping is selected", () => {
+        // given
+        const appState = createAppState();
+        appState.setLayout({
+            type: LayoutType.Ergoplank,
+            plankVariant: PlankVariant.ERGOBOARD_MID_SHIFT,
+            ergoboardMidshiftVariant: ErgoboardMidshiftVariant.RIGHT_ENTER, // narrow variant
+        });
+
+        // when
+        appState.setMapping(qwertzMapping);
+
+        // then
+        expect(appState.layout.value.type).toBe(LayoutType.Ergoplank);
+        expect(appState.layout.value.plankVariant).toBe(PlankVariant.ERGOBOARD_MID_SHIFT);
+        expect(appState.layout.value.ergoboardMidshiftVariant).toBe(ErgoboardMidshiftVariant.COMFY_WIDE);
         expect(appState.mapping.value).toBe(qwertzMapping);
     });
 });
