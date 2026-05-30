@@ -127,7 +127,7 @@ export function getAnsiVariant(layoutOptions: LayoutOptions) {
             break;
         // no need to split the space bar, because it's already split
         case AnsiVariant.XHKB:
-            return layoutOptions.bottomArrows ? xhkb16LayoutModel : xhkb15LayoutModel;
+            return layoutOptions.thumbsUp16 ? xhkb16LayoutModel : xhkb15LayoutModel;
         case AnsiVariant.AHKB:
             return layoutOptions.angleMod ? ahkbAddAngleMod(ahkbLayoutModel) : ahkbLayoutModel;
     }

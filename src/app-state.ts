@@ -236,7 +236,8 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
             params.set("split", layout.ansiSplit ? "1" : "0");
             params.set("wide", layout.ansiWide ? "1" : "0");
             params.set("ansi", layout.ansiVariant.toString());
-            subLayout = AnsiVariant[layout.ansiVariant] + layout.ansiWide ? "+wide" : "" + layout.ansiSplit ? "+split" : "";
+            params.set("thumbsUp16", layout.thumbsUp16 ? "1" : "0");
+            subLayout = AnsiVariant[layout.ansiVariant] + (layout.ansiWide ? "+wide" : "") + (layout.ansiSplit ? "+split" : "") + (layout.ansiVariant === AnsiVariant.XHKB && layout.thumbsUp16 ? "+16" : "");
             break;
         case LayoutType.Harmonic:
             params.set("harmonic", layout.harmonicVariant.toString());
@@ -275,6 +276,7 @@ export function createAppState(): AppState {
         ansiVariant,
         ansiSplit: s2b(params.get("split")) ?? false,
         ansiWide: ansiVariant === AnsiVariant.AHKB ? true : s2b(params.get("wide")) ?? false,
+        thumbsUp16: s2b(params.get("thumbsUp16")) ?? (ansiVariant === AnsiVariant.XHKB && !!s2b(params.get("bottomArrows"))) ?? false,
         angleMod: s2b(params.get("angle")) ?? false,
         harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
         plankVariant: s2i(params.get("plank")) ?? PlankVariant.ERGOPLANK,
