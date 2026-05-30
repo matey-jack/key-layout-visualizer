@@ -118,6 +118,30 @@ describe("setMapping", () => {
 });
 
 describe("setLayout", () => {
+    it("preserves mapping and switches layout to a compatible sub-variant when setLayout is called with an incompatible sub-variant", () => {
+        // given 1: set the Ergoplank subvariant (to stay selected in the background)
+        const appState = createAppState();
+        appState.setLayout({
+            type: LayoutType.Ergoplank,
+            plankVariant: PlankVariant.ERGOBOARD_MID_SHIFT,
+            ergoboardMidshiftVariant: ErgoboardMidshiftVariant.RIGHT_ENTER,
+        });
+
+        // given 2: select another variant and mapping
+        appState.setLayout({type: LayoutType.ANSI});
+        appState.setMapping(qwertzMapping);
+        expect(appState.mapping.value).toBe(qwertzMapping);
+
+        // when - switch to Ergoboard (previously selected subvariant)
+        appState.setLayout({type: LayoutType.Ergoplank,});
+
+        // then - it should automatically fall back to COMFY_WIDE to preserve the qwertzMapping
+        expect(appState.layout.value.type).toBe(LayoutType.Ergoplank);
+        expect(appState.layout.value.plankVariant).toBe(PlankVariant.ERGOBOARD_MID_SHIFT);
+        expect(appState.layout.value.ergoboardMidshiftVariant).toBe(ErgoboardMidshiftVariant.COMFY_WIDE);
+        expect(appState.mapping.value).toBe(qwertzMapping);
+    });
+
     it("changes layout type from default", () => {
         // given
         const appState = createAppState();
