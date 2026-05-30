@@ -51,7 +51,7 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
                         currentVariant={ansiVariant}
                         setVariant={setVariant}
                         name={option.label}
-                        note={ansiVariantNote(option.variant, ansiWide)}
+                        note={option.variant === AnsiVariant.XHKB && ansiVariant === AnsiVariant.XHKB ? "" : ansiVariantNote(option.variant, ansiWide)}
                     >
                         {(option.variant === AnsiVariant.IBM || option.variant === AnsiVariant.APPLE) &&
                             <MidShiftCheckbox options={options} setOption={setOption}/>
