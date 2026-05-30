@@ -84,7 +84,7 @@ const IGNORED_30_KEYS: Record<string, string[]> = {
     // The single difference here is due to removing the duplicate space key.
     // (Would disappear if we had thumb-return from the start.)
     [xhkb15LayoutModel.name]: ["Ins"],
-    [xhkb16LayoutModel.name]: ["Ins"],
+    [xhkb16LayoutModel.name]: ["€"],
     "Ergoboard 65 LowShift Big Enter": ["`~"],
     "Ergoboard 65 LowShift Wide": ["Ins"],
     "Ergoboard 65 LowShift Wide angle mod": ["Ins"],
@@ -101,6 +101,7 @@ const IGNORED_32_KEYS: Record<string, string[]> = {
     "AN65 with wide hand position": ["\\", "Menu"],
     "ANSI/Apple with wide hand position": ["\\"],
     [xhkb15LayoutModel.name]: ["Ins"],
+    [xhkb16LayoutModel.name]: ["€"],
 };
 
 function getExpectedRowLengths(model: LayoutModel): number[] {
