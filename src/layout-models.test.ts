@@ -1,7 +1,13 @@
 import {describe, expect, it} from "vitest";
 import {KEYMAP_TYPES, KeyboardRows, KeymapTypeId, type LayoutModel} from "./base-model.ts";
 import {ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
-import {ansiIBMLayoutModel, ansiWideLayoutModel, createAN65, createApple, createHHKB} from "./layout/ansiLayoutModel.ts";
+import {
+    ansiIBMLayoutModel,
+    ansiWideLayoutModel,
+    createAN65,
+    createApple,
+    createHHKB
+} from "./layout/ansiLayoutModel.ts";
 import {ergoboardBigEnterLayoutModel, ergoboardLowshiftLayoutModel} from "./layout/ergoboardLowshiftLayoutModel.ts";
 import {
     ergoboardLowshiftWideAngleModLayoutModel,
@@ -16,11 +22,16 @@ import {
 } from "./layout/ergoboardMidshiftNarrowLayoutModels.ts";
 import {ergoboardMidshiftSemiWideLayoutModel} from "./layout/ergoboardMidshiftSemiWideLayoutModel.ts";
 import {
-    createErgoPlankMidShiftLowerCharacters, createErgoPlankMidShiftRightReturn,
+    createErgoPlankMidShiftLowerCharacters,
+    createErgoPlankMidShiftRightReturn,
     createErgoPlankWithArrows,
     ergoPlankLayoutModel
 } from "./layout/ergoPlankLayoutModel.ts";
-import {majorErgoslatLayoutModel, makeErgoslatNumberless, minorErgoslatLayoutModel } from './layout/ergoslatLayoutModel.ts';
+import {
+    majorErgoslatLayoutModel,
+    makeErgoslatNumberless,
+    minorErgoslatLayoutModel
+} from './layout/ergoslatLayoutModel.ts';
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
@@ -182,14 +193,9 @@ function collectPlaceholdersByFlexRow(frameMapping: unknown[][]): Map<number, nu
     frameMapping.forEach((row, rowIndex) => {
         row.forEach((v) => {
             if (typeof v === "number") {
-                // Simple number: references same row in FlexMapping
                 result.get(rowIndex)!.push(v);
             } else if (Array.isArray(v)) {
-                // Tuple [rowOffset, col]: references row (rowIndex + offset) in FlexMapping
-                const flexRow = rowIndex + v[0];
-                if (flexRow >= 0) {
-                    result.get(flexRow)!.push(v[1]);
-                }
+                result.get(v[0])!.push(v[1]);
             }
         });
     });

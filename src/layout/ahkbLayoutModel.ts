@@ -101,7 +101,7 @@ export function ahkbAddAngleMod(lm: LayoutModel = ahkbLayoutModel): LayoutModel 
 
 function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
     const lowerRow = keymap[KeyboardRows.Lower];
-    keymap[KeyboardRows.Home][0] = [1, 0];
+    keymap[KeyboardRows.Home][0] = [3, 0];
     lowerRow.splice(1, 1);
 
     const backslashIndex = lowerRow.indexOf("\\");

@@ -165,21 +165,20 @@ function numberlessKeymap(keymap: LayoutMapping): LayoutMapping {
     keymap[KeyboardRows.Upper][0] = "Esc";
     keymap[KeyboardRows.Upper][12] = "⌫";
 
-    keymap[KeyboardRows.Bottom][2] = adjustPlaceholderRow(overriddenUpper0, -3);
-    keymap[KeyboardRows.Bottom][7] = adjustPlaceholderRow(overriddenUpper12, -3);
+    keymap[KeyboardRows.Bottom][2] = adjustPlaceholderRow(overriddenUpper0, KeyboardRows.Upper);
+    keymap[KeyboardRows.Bottom][7] = adjustPlaceholderRow(overriddenUpper12, KeyboardRows.Upper);
 
     return keymap;
 }
 
+// Pins a placeholder that is being moved to another row: a same-row number becomes an absolute
+// [sourceRow, col] reference; an already-absolute tuple (or a label / gap) is unchanged.
 function adjustPlaceholderRow(
     v: string | number | null | [number, number],
-    offset: number
+    sourceRow: number
 ): string | number | null | [number, number] {
     if (typeof v === "number") {
-        return [offset, v];
-    }
-    if (Array.isArray(v)) {
-        return [v[0] + offset, v[1]];
+        return [sourceRow, v];
     }
     return v;
 }

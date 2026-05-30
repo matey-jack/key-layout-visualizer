@@ -9,9 +9,9 @@ import {copyKeymap} from "./layout-functions.ts";
 //
 // A cycle is a string of tokens. A token is either:
 //   - a single-character key label, e.g.   a  /  -  '  +  ⏎  ⌦  ⇧
-//   - a placeholder reference in [flexRow,col] form, e.g. [1,10] or [4,0], naming the
-//     FlexMapping cell a letter is pulled from. The first index is ALWAYS the FlexMapping row,
-//     so a bare `10` on grid row 1 is [1,10], and a `[-1,10]` on grid row 3 is [2,10].
+//   - a placeholder reference in [flexRow,col] form, e.g. [1,10] or [4,0], naming the FlexMapping
+//     cell a letter is pulled from. The first index is the absolute FlexMapping row, exactly like
+//     the [row,col] tuples in a frame mapping.
 //   - a duplicated label prefixed with '<' or '>', e.g. <⇧ or >⇧, picking the copy with the smallest
 //     ('<', left) or largest ('>', right) column index. Any copies in between are not addressable, and
 //     a tie for that extreme throws. Use it to point at a key a plain label can't pick out alone.
@@ -62,13 +62,14 @@ const tokenLabel = (t: CycleToken) =>
 // The FlexMapping cell a grid cell pulls its letter from, or null for a literal label / gap.
 function cellFlexCoord(value: LayoutMappingEntry, gridRow: number): Coord | null {
     if (typeof value === "number") return [gridRow, value];
-    if (Array.isArray(value)) return [gridRow + value[0], value[1]];
+    if (Array.isArray(value)) return [value[0], value[1]];
     return null;
 }
 
-// Re-encodes a FlexMapping coordinate as the value stored on grid row destRow (row-relative).
+// Encodes a FlexMapping coordinate as the value stored on grid row destRow: a bare column number
+// when it lands on its own row, otherwise an absolute [flexRow, col] tuple.
 const encodeFlex = ([fr, col]: Coord, destRow: number): LayoutMappingEntry =>
-    fr === destRow ? col : [fr - destRow, col];
+    fr === destRow ? col : [fr, col];
 
 // Picks the left-most ('<') or right-most ('>') cell holding key, comparing column index only.
 // Throws if the key is absent, or if two copies tie for that extreme column (which shouldn't happen).
@@ -103,7 +104,8 @@ function findToken(mapping: LayoutMapping, token: CycleToken): [number, number] 
     return matches[0] ?? null;
 }
 
-// The value a token contributes when it lands on grid row destRow (placeholders stay row-relative).
+// The value a token contributes when it lands on grid row destRow (a placeholder becomes a bare
+// column number on its own row, or keeps its absolute [flexRow, col] otherwise).
 function tokenValue(token: CycleToken, destRow: number): LayoutMappingEntry {
     if ("label" in token) return token.label;
     if ("edge" in token) return token.key;

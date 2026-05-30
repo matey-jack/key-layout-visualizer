@@ -146,7 +146,7 @@ export const mergeMapping = (
     layoutMapping.map((layoutRow, r) =>
         layoutRow.map((layoutValue, c) => {
                 try {
-                    const v = Array.isArray(layoutValue) ? flexMapping[r + layoutValue[0]][layoutValue[1]]
+                    const v = Array.isArray(layoutValue) ? flexMapping[layoutValue[0]][layoutValue[1]]
                         : (typeof layoutValue === 'number') ? flexMapping[r][layoutValue]
                             : layoutValue as string;
                     if (v === leaveEmpty) return "";

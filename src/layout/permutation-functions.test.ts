@@ -19,16 +19,14 @@ describe("permute", () => {
         expect(permute(base, "ab", "cd")).toEqual([["b", "a", "d", "c"]]);
     });
 
-    it("references placeholder cells by [flexRow,col] and stores them row-relative", () => {
-        // (0,1) is FlexMapping [0,10]; (1,1) is FlexMapping [1,20].
+    it("references placeholder cells by [flexRow,col]", () => {
         const base: LayoutMapping = [
             ["A", 10],
             ["B", 20],
         ];
-        // Swap the two letters across rows: each must be re-encoded relative to its new row.
         expect(permute(base, "[0,10][1,20]")).toEqual([
             ["A", [1, 20]],
-            ["B", [-1, 10]],
+            ["B", [0, 10]],
         ]);
     });
 
@@ -123,7 +121,7 @@ describe("Ergoslat thumb frames (derived by permutation)", () => {
         expect(major.frameMappings[KeymapTypeId.Thumb32]).toEqual([
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
-            ["⌦", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, [-1, 10]],
+            ["⌦", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, [1, 10]],
             ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
             ["Ctrl", "Cmd", null, "Alt", 0, "⍽", "AltGr", null, "Fn", "Ctrl"],
         ]);
@@ -150,7 +148,7 @@ describe("Ergoslat MidShift frames (derived by permutation)", () => {
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, 10],
             ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
-            [0, 1, 2, 3, 4, "+", 9, 5, 6, 7, 8, [-1, 10]],
+            [0, 1, 2, 3, 4, "+", 9, 5, 6, 7, 8, [2, 10]],
             ["Ctrl", "Cmd", null, "Alt", "⏎", "⍽", "AltGr", null, "Fn", "Ctrl"],
         ]);
     });
@@ -170,7 +168,7 @@ describe("Ergoslat MidShift frames (derived by permutation)", () => {
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
-            [0, 1, 2, 3, 4, "+", 9, 5, 6, 7, 8, [-2, 10]],
+            [0, 1, 2, 3, 4, "+", 9, 5, 6, 7, 8, [1, 10]],
             ["Ctrl", "Cmd", null, "Alt", 0, "⍽", "AltGr", null, "Fn", "Ctrl"],
         ]);
     });

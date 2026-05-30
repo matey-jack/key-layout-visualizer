@@ -270,6 +270,8 @@ export enum MappingChange {
     SwapHands,
 }
 
+// A frame-mapping cell: a literal key label (string), a gap (null), a FlexMapping column in this
+// same row (number), or an absolute [flexRow, col] reference to a letter from another row.
 export type LayoutMappingEntry = (string | number | null | [number, number]);
 export type LayoutMapping = LayoutMappingEntry[][];
 

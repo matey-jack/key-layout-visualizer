@@ -69,7 +69,7 @@ export const ergoboardLowshiftWideLayoutModel: LayoutModel = {
 }
 
 function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
-    keymap[KeyboardRows.Home][0] = [1, 0];  // qwerty Z
+    keymap[KeyboardRows.Home][0] = [3, 0];  // qwerty Z (on the Lower row)
     const lowerRow = keymap[KeyboardRows.Lower];
     lowerRow.splice(2, 1); // remove Z
     lowerRow.splice(7, 0, "⌦");
