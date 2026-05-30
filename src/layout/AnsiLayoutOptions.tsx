@@ -28,9 +28,10 @@ function ansiVariantNote(variant: AnsiVariant, wide: boolean): string {
 }
 
 export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptionsProps) {
-    const {ansiWide, ansiVariant, ansiSplit, angleMod} = options;
+    const {ansiWide, ansiVariant, ansiSplit, angleMod, bottomArrows} = options;
     const wideDisabled = onlySupportsWide(mapping.value) || naturallyWideVariants.includes(ansiVariant);
-    const splitDisabled = ansiVariant === AnsiVariant.HHKB;
+    const splitDisabled = (ansiVariant === AnsiVariant.HHKB) ||
+        ((ansiVariant === AnsiVariant.XHKB) && bottomArrows);
     const setVariant = (variant: AnsiVariant) => setOption({ansiVariant: variant});
     const variantOptions = [
         {variant: AnsiVariant.IBM, label: "IBM"},

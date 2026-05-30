@@ -38,13 +38,13 @@ import {
     mergeMapping,
 } from "./layout-functions.ts";
 import {splitOrthoLayoutModel} from "./splitOrthoLayoutModel.ts";
-import {xhkbLayoutModel, xhkbWithArrowsLayoutModel} from "./xhkbLayoutModel.ts";
+import {xhkb15LayoutModel, xhkb16LayoutModel} from "./xhkbLayoutModel.ts";
 
 const allLayoutModels = [
     ansiIBMLayoutModel,
     createHHKB(ansiIBMLayoutModel),
     ahkbLayoutModel,
-    xhkbLayoutModel,
+    xhkb15LayoutModel,
     harmonic14WideLayoutModel,
     harmonic14TraditionalLayoutModel,
     harmonic13WideLayoutModel,
@@ -443,7 +443,7 @@ describe('getKeyMovements', () => {
 
     it('correctly pairs right Ctrl in XHKB vs XHKB with cursor arrows', () => {
         // GIVEN/WHEN
-        const movements = calculateMovements(xhkbLayoutModel, xhkbWithArrowsLayoutModel);
+        const movements = calculateMovements(xhkb15LayoutModel, xhkb16LayoutModel);
 
         // THEN: Check Ctrl and Shift keys form proper pairs
         const ctrlMovements = getMovementsByLabel(movements, 'Ctrl');

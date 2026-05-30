@@ -43,7 +43,7 @@ import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLa
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
-import {xhkbLayoutModel, xhkbWithArrowsLayoutModel} from "./layout/xhkbLayoutModel.ts";
+import {xhkb15LayoutModel, xhkb16LayoutModel} from "./layout/xhkbLayoutModel.ts";
 
 export function getHarmonicVariant(variant: HarmonicVariant): LayoutModel {
     switch (variant) {
@@ -127,7 +127,7 @@ export function getAnsiVariant(layoutOptions: LayoutOptions) {
             break;
         // no need to split the space bar, because it's already split
         case AnsiVariant.XHKB:
-            return layoutOptions.bottomArrows ? xhkbWithArrowsLayoutModel : xhkbLayoutModel;
+            return layoutOptions.bottomArrows ? xhkb16LayoutModel : xhkb15LayoutModel;
         case AnsiVariant.AHKB:
             return layoutOptions.angleMod ? ahkbAddAngleMod(ahkbLayoutModel) : ahkbLayoutModel;
     }
