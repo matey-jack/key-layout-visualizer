@@ -92,10 +92,9 @@ export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
 
         frameMappings: midShift ?{
             [KeymapTypeId.Ansi30]: permute(ansi30FrameMapping, ANGLE_MOD_LEFT, "-[3,9]>⇧'"),
-            [KeymapTypeId.Thumb30]:  permute(thumb30FrameMapping, ANGLE_MOD_LEFT, "/>⇧'"),
-            [KeymapTypeId.Thumb32]:  permute(thumb32FrameMapping, ANGLE_MOD_LEFT, ">⇧[1,10]"),
-            // (Ansi32 threads its extra letter through the middle, so it needs one longer cycle of its own.)
-            [KeymapTypeId.Ansi32]:  permute(ansi32FrameMapping, "[3,0]<⇧⌦+[3,9]>⇧[2,10][3,4][3,3][3,2][3,1]"),
+            [KeymapTypeId.Ansi32]: permute(ansi32FrameMapping, ANGLE_MOD_LEFT, ">⇧[2,10]"),
+            [KeymapTypeId.Thumb30]: permute(thumb30FrameMapping, ANGLE_MOD_LEFT, "/>⇧'"),
+            [KeymapTypeId.Thumb32]: permute(thumb32FrameMapping, ANGLE_MOD_LEFT, ">⇧[1,10]"),
         } : {
             [KeymapTypeId.Ansi30]: ansi30FrameMapping,
             [KeymapTypeId.Ansi32]: ansi32FrameMapping,
