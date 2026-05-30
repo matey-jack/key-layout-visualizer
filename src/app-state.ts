@@ -74,9 +74,16 @@ function setLayout(
     let newLayoutModel = getLayoutModel(newLayoutOptions);
     if (!hasMatchingMapping(newLayoutModel, mapping.value)) {
         const fallbackSubvariants = getFallbackLayouts(newLayoutOptions);
+        const explicitOptions = { ...layoutOptions };
+        if ("ergoboardLowshiftVariant" in layoutOptions) {
+            explicitOptions.plankVariant = PlankVariant.ERGOBOARD_LOW_SHIFT;
+        }
+        if ("ergoboardMidshiftVariant" in layoutOptions) {
+            explicitOptions.plankVariant = PlankVariant.ERGOBOARD_MID_SHIFT;
+        }
         const filteredFallbackSubvariants = fallbackSubvariants.filter(mods => {
-            for (const key of Object.keys(layoutOptions) as (keyof LayoutOptions)[]) {
-                if (key in mods && mods[key] !== layoutOptions[key]) {
+            for (const key of Object.keys(explicitOptions) as (keyof LayoutOptions)[]) {
+                if (key in mods && mods[key] !== explicitOptions[key]) {
                     return false;
                 }
             }
