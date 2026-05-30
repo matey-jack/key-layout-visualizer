@@ -164,7 +164,7 @@ describe("setLayout", () => {
         expect(appState.mapping.value).toBe(qwertzMapping);
     });
 
-    it("does not fallback to another variant or subvariant when setLayout is called explicitly with an incompatible variant or subvariant, but instead falls back the mapping", () => {
+    it("does not fallback to another variant when setLayout is called explicitly with an incompatible variant, but instead falls back the mapping", () => {
         // given
         const appState = createAppState();
         appState.setLayout({
@@ -180,6 +180,29 @@ describe("setLayout", () => {
 
         // then - layout variant should be KATANA_60, and mapping should fallback
         expect(appState.layout.value.plankVariant).toBe(PlankVariant.KATANA_60);
+        expect(appState.mapping.value).not.toBe(qwertzMapping);
+    });
+
+    it("when setLayout is called explicitly with an incompatible subvariant, fall back the mapping", () => {
+        // given
+        const appState = createAppState();
+        appState.setLayout({
+            type: LayoutType.Ergoplank,
+            plankVariant: PlankVariant.ERGOBOARD_MID_SHIFT,
+            ergoboardMidshiftVariant: ErgoboardMidshiftVariant.COMFY_WIDE
+        });
+        appState.setMapping(qwertzMapping);
+        expect(appState.layout.value.type).toBe(LayoutType.Ergoplank);
+        expect(appState.layout.value.plankVariant).toBe(PlankVariant.ERGOBOARD_MID_SHIFT);
+        expect(appState.layout.value.ergoboardMidshiftVariant).toBe(ErgoboardMidshiftVariant.COMFY_WIDE);
+        expect(appState.mapping.value).toBe(qwertzMapping);
+
+        // when - switch subvariant explicitly to KATANA_60 which does not support qwertzMapping
+        appState.setLayout({ ergoboardMidshiftVariant: ErgoboardMidshiftVariant.RIGHT_ENTER });
+
+        // then - layout variant should be KATANA_60, and mapping should fallback
+        expect(appState.layout.value.plankVariant).toBe(PlankVariant.ERGOBOARD_MID_SHIFT);
+        expect(appState.layout.value.ergoboardMidshiftVariant).toBe(ErgoboardMidshiftVariant.RIGHT_ENTER);
         expect(appState.mapping.value).not.toBe(qwertzMapping);
     });
 
