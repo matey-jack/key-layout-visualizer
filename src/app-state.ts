@@ -14,8 +14,10 @@ import {type FlexMapping, KeymapTypeId, type LayoutModel, LayoutType, Visualizat
 import {getBigramMovements} from "./bigrams.ts";
 import {diffToBase, fillMapping, getKeyPositions, hasMatchingMapping} from "./layout/layout-functions.ts";
 import {getLayoutModel} from "./layout-selection.ts";
+import {enumValues} from "./library/enum.ts";
 import {qwertyMapping} from "./mapping/baseMappings.ts";
 import {allMappings} from "./mapping/mappings.ts";
+
 
 function modifyWide(mapping: FlexMapping, opts: LayoutOptions): boolean {
     switch (opts.ansiVariant) {
@@ -89,12 +91,21 @@ function findMatchingLayout(
 ): LayoutOptions | undefined {
     for (const mods of fallbackLayouts) {
         const newOpts = {...opts, ...mods};
+        // console.log(`trying ${JSON.stringify(mods)}`)
         const model = getLayoutModel(newOpts);
         if (hasMatchingMapping(model, newMapping)) {
             return newOpts;
         }
     }
 }
+
+const allErgoboardMidshiftVariants = enumValues<ErgoboardMidshiftVariant>(ErgoboardMidshiftVariant).map(
+    (val) => ({plankVariant: PlankVariant.ERGOBOARD_MID_SHIFT, ergoboardMidshiftVariant: val})
+);
+
+const allErgoboardLowShiftVariants = enumValues<ErgoboardLowshiftVariant>(ErgoboardLowshiftVariant).map(
+    (val) => ({plankVariant: PlankVariant.ERGOBOARD_LOW_SHIFT, ergoboardLowshiftVariant: val})
+);
 
 /**
  * This function sets the FlexMapping and changes the layout model if the current one doesn't support the new mapping.
@@ -122,10 +133,39 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
             return;
         }
     }
+    /*
+        For layout types other than ANSI we systematically widen the options by first searching for alternatives
+        inside the same group.
+     */
+    // console.log(`current Layout: ${JSON.stringify(layoutOptionsState.value)}`)
+    // console.log(`switching Mapping to: ${newMapping.name}`)
     const fallbackLayouts: Partial<LayoutOptions>[] = [];
     switch (layoutOptionsState.value.type) {
         case LayoutType.Harmonic:
-            fallbackLayouts.push(...Object.keys(HarmonicVariant).map((val) => ({harmonicVariant: val})))
+            fallbackLayouts.push(...enumValues<HarmonicVariant>(HarmonicVariant).map(
+                (val) => ({harmonicVariant: val})
+            ));
+            break;
+        case LayoutType.Ergoplank:
+            switch (layoutOptionsState.value.plankVariant) {
+                case PlankVariant.ERGOBOARD_LOW_SHIFT:
+                    fallbackLayouts.push(...allErgoboardLowShiftVariants);
+                    break;
+                case PlankVariant.ERGOBOARD_MID_SHIFT:
+                    fallbackLayouts.push(...allErgoboardMidshiftVariants);
+                    break;
+            }
+            // This relies on Ergoslat and Ergoplank subvariants all supporting the same set of mappings,
+            // so the fallback is to the sub-variant that was last selected.
+            // Similarly, for Ergoboard MidShift and LowShift, we first try the variant last selected.
+            fallbackLayouts.push(...enumValues<PlankVariant>(PlankVariant).map(
+                (val) => ({plankVariant: val})
+            ));
+            // And then try all the subvariants. (This duplicates entries from above,
+            // but it's a fair price for not having to complicate the code even more.)
+            fallbackLayouts.push(...allErgoboardLowShiftVariants);
+            fallbackLayouts.push(...allErgoboardMidshiftVariants);
+            break;
     }
     // Final fallbacks: all layouts that have some mappings exclusive to them.
     fallbackLayouts.push(...[
