@@ -318,6 +318,19 @@
     }
 }
 
+.key-ribbon.animating {
+    animation: ribbonResize 1s ease-in-out forwards;
+}
+
+@keyframes ribbonResize {
+    from {
+        width: var(--from-ribbon-width);
+    }
+    to {
+        width: var(--to-ribbon-width);
+    }
+}
+
 .pinky {
     fill: #BCA7D4;
 }

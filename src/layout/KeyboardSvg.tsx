@@ -131,6 +131,9 @@ export function Key(props: KeyProps) {
     const rectWidth = keyUnit * width - 2 * keyPadding;
     const fromRectWidth = keyUnit * prevWidth - 2 * keyPadding;
 
+    const ribbonWidth = rectWidth - 2 * keyRibbonPaddingV;
+    const fromRibbonWidth = fromRectWidth - 2 * keyRibbonPaddingV;
+
     // Use CSS custom properties to set initial and final positions and widths
     const groupStyle = {
         '--from-x': `${fromX}px`,
@@ -141,6 +144,8 @@ export function Key(props: KeyProps) {
         '--to-width': `${rectWidth}px`,
         '--from-bottom-width': `${fromRectWidth - keycapCornerRadius / 2}px`,
         '--to-bottom-width': `${rectWidth - keycapCornerRadius / 2}px`,
+        '--from-ribbon-width': `${fromRibbonWidth}px`,
+        '--to-ribbon-width': `${ribbonWidth}px`,
         transform: `translate(var(--from-x), var(--from-y))`,
         transformOrigin: "0 0"
     };
@@ -163,10 +168,10 @@ export function Key(props: KeyProps) {
         </text>
 
     const keyRibbon = ribbonClass &&
-        <rect class={"key-ribbon " + ribbonClass}
+        <rect class={"key-ribbon animating " + ribbonClass}
               x={keyRibbonPaddingV}
               y={keyRibbonPaddingH}
-              width={keyUnit * width - 2 * (keyPadding + keyRibbonPaddingV)}
+              width={ribbonWidth}
               height={keyUnit * height - 2 * (keyPadding + keyRibbonPaddingH)}/>
 
     const frequencyCircle = frequencyCircleRadius &&
