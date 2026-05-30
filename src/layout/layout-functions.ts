@@ -3,11 +3,11 @@ import {
     type FlexMapping,
     hand,
     KEY_COLOR,
+    KEYMAP_TYPES,
     KeyboardRows,
     type KeyColor,
-    KEYMAP_TYPES,
-    KeymapTypeId,
     type KeyMovement,
+    KeymapTypeId,
     type KeyPosition,
     type LayoutMapping,
     type LayoutModel,
@@ -129,7 +129,9 @@ export function hasMatchingMapping(layout: LayoutModel, flexMapping: FlexMapping
 
 // Thanks to those, we can keep the flex mappings as simple strings. (Which I think is more readable.)
 const keyLabelShortcuts: Record<string, string> = {
-    "⌥": "AltGr",
+    "^": "Ctrl",
+    "⎇": "Alt",
+    "⌥": "AltGr", // this the symbol of the MacOS Opt key, which has a similar function.
     "⇪": "CAPS",
     "≡": "Menu",
     "ƒ": "Fn",
