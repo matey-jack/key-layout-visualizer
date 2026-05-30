@@ -1,12 +1,12 @@
-import {describe, expect, it, beforeEach} from "vitest";
-import {AnsiVariant, HarmonicVariant} from "./app-model";
+import {beforeEach, describe, expect, it } from "vitest";
+import {AnsiVariant, HarmonicVariant, PlankVariant} from "./app-model";
 import {createAppState} from "./app-state";
-import {LayoutType, KeymapTypeId, type FlexMapping} from "./base-model";
+import {type FlexMapping, KeymapTypeId, LayoutType } from "./base-model";
 import {hasMatchingMapping} from "./layout/layout-functions";
-import {maltronMapping} from "./mapping/mappings";
-import {cozyEnglish} from './mapping/cozyMappings.ts';
+import {qwertyMapping, qwertyWideMapping, qwertzMapping} from './mapping/baseMappings.ts';
 import {colemakMapping, colemakThumbyDMapping} from './mapping/colemakMappings.ts';
-import {qwertyMapping, qwertyWideMapping} from './mapping/baseMappings.ts';
+import {cozyEnglish} from './mapping/cozyMappings.ts';
+import {maltronMapping} from "./mapping/mappings";
 
 beforeEach(() => {
     window.location.hash = "";
@@ -78,6 +78,23 @@ describe("setMapping", () => {
         expect(appState.layout.value.type).toBe(LayoutType.Harmonic);
         expect(appState.layout.value.harmonicVariant).toBe(HarmonicVariant.H13_Wide);
         expect(appState.mapping.value).toBe(harmonicOnlyMapping);
+    });
+
+    it("switches layout recursively to try all plank sub-variants when setting a mapping", () => {
+        // given
+        const appState = createAppState();
+        appState.setLayout({
+            type: LayoutType.Ergoplank,
+            plankVariant: PlankVariant.KATANA_60, // only supports Ansi30
+        });
+
+        // when
+        appState.setMapping(qwertzMapping);
+
+        // then
+        expect(appState.layout.value.type).toBe(LayoutType.Ergoplank);
+        expect(appState.layout.value.plankVariant).toBe(PlankVariant.ERGOSLAT);
+        expect(appState.mapping.value).toBe(qwertzMapping);
     });
 });
 
