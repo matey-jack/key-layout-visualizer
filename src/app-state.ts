@@ -5,6 +5,7 @@ import {
     type AppState,
     ErgoboardLowshiftVariant,
     ErgoboardMidshiftVariant,
+    ErgoplankArrows,
     HarmonicVariant,
     isSplit,
     type LayoutOptions,
@@ -209,7 +210,7 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
         {type: LayoutType.ANSI, ansiVariant: AnsiVariant.IBM},
         {type: LayoutType.ANSI, ansiVariant: AnsiVariant.IBM, ansiWide: true},
         {type: LayoutType.Ergosplit},
-        {type: LayoutType.Ergoplank, plankVariant: PlankVariant.ERGOPLANK},
+        {type: LayoutType.Ergoplank, plankVariant: PlankVariant.ERGOPLANK15},
         {type: LayoutType.Ergoplank, plankVariant: PlankVariant.ERGOBOARD_MID_SHIFT, ergoboardMidshiftVariant: ErgoboardMidshiftVariant.COMFY_WIDE},
         {type: LayoutType.Harmonic, harmonicVariant: HarmonicVariant.H13_Wide},
         {type: LayoutType.Harmonic, harmonicVariant: HarmonicVariant.H14_Traditional},
@@ -269,13 +270,13 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
             break;
         case LayoutType.Ergoplank:
             params.set("plank", layout.plankVariant.toString());
-            params.set("bottomArrows", layout.bottomArrows ? "1" : "0");
+            params.set("epArrows", layout.epArrows.toString());
             params.set("epRightRet", layout.epRightReturn ? "1" : "0");
             params.set("esNumberless", layout.esNumberless ? "1" : "0");
             params.set("esSmallerThumbs", layout.esSmallerThumbs ? "1" : "0");
             params.set("ebLsVariant", layout.ergoboardLowshiftVariant.toString());
             params.set("ebMsVariant", layout.ergoboardMidshiftVariant.toString());
-            subLayout = PlankVariant[layout.plankVariant] + (layout.bottomArrows ? "+arrows" : "") + (layout.epRightReturn ? "+epRightReturn" : "") + (layout.esNumberless ? "+esNumberless" : "") + (layout.esSmallerThumbs ? "+esSmallerThumbs" : "");
+            subLayout = PlankVariant[layout.plankVariant] + (layout.epArrows === ErgoplankArrows.Inline ? "+inline-arrows" : layout.epArrows === ErgoplankArrows.Center ? "+center-arrows" : "") + (layout.epRightReturn ? "+epRightReturn" : "") + (layout.esNumberless ? "+esNumberless" : "") + (layout.esSmallerThumbs ? "+esSmallerThumbs" : "");
             break;
         case LayoutType.Ergosplit:
             params.set("soThumbShift", layout.soThumbShift ? "1" : "0");
@@ -296,6 +297,7 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
 export function createAppState(): AppState {
     const params = new URLSearchParams(window.location.hash.slice(1));
     const ansiVariant = s2i(params.get("ansi")) ?? AnsiVariant.IBM;
+    const epArrows = s2i(params.get("epArrows")) ?? (s2b(params.get("bottomArrows") ?? params.get("ep60arrows")) ? ErgoplankArrows.Inline : ErgoplankArrows.None);
     // important to use ?? because (the falsy) 0 is a proper value that should not trigger the default.
     const layoutOptionsState: Signal<LayoutOptions> = signal<LayoutOptions>({
         type: s2i(params.get("layout")) ?? LayoutType.ANSI,
@@ -304,11 +306,11 @@ export function createAppState(): AppState {
         ansiVariant,
         ansiSplit: s2b(params.get("split")) ?? false,
         ansiWide: ansiVariant === AnsiVariant.AHKB ? true : s2b(params.get("wide")) ?? false,
-        thumbsUp16: s2b(params.get("thumbsUp16")) ?? (ansiVariant === AnsiVariant.XHKB && !!s2b(params.get("bottomArrows"))) ?? false,
+        thumbsUp16: s2b(params.get("thumbsUp16")) ?? (ansiVariant === AnsiVariant.XHKB && epArrows !== ErgoplankArrows.None) ?? false,
         angleMod: s2b(params.get("angle")) ?? false,
         harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
-        plankVariant: s2i(params.get("plank")) ?? PlankVariant.ERGOPLANK,
-        bottomArrows: s2b(params.get("bottomArrows") ?? params.get("ep60arrows")) ?? false,
+        plankVariant: s2i(params.get("plank")) ?? PlankVariant.ERGOPLANK15,
+        epArrows,
         epRightReturn: s2b(params.get("epRightRet")) ?? false,
         esNumberless: s2b(params.get("esNumberless")) ?? false,
         esSmallerThumbs: s2b(params.get("esSmallerThumbs")) ?? true,

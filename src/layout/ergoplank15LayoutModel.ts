@@ -38,7 +38,7 @@ const thumb32FrameMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Fn", "Alt", 0, "Ins", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
 ];
 
-export const ergoPlankLayoutModel: LayoutModel = {
+export const ergoplank15LayoutModel: LayoutModel = {
     name: "Ergoplank",
     description: `"The most ergonomic key layout that fits into a standard "60%" keyboard case."
     Hand distance is maximized. Row stagger is equal to a "cleave-style ergonomic" keyboard.
@@ -94,7 +94,7 @@ export const ergoPlankLayoutModel: LayoutModel = {
     keyColorClass: ergoFamilyKeyColorClass(ansi30FrameMapping),
 }
 
-const midShiftKeyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0.5, 0.5]);
+const lowerCharactersKeyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0.5, 0.5]);
 
 // Shared left-side "angle-mod" rotation used by the MidShift lower-row-characters frames.
 const ANGLE_MOD_LEFT = "<⇧⌦`[3:4,3,2,1,0]";
@@ -110,13 +110,13 @@ export function createErgoPlankMidShiftLowerCharacters(lm: LayoutModel): LayoutM
     This is based on the "Harmonic" layout as well as the "Katana" design by RominRonin. 
     The MidShift variant takes even more inspiration from split-ortho layouts 
     with the side-effect of keeping ANSI fingerings on the right lower row and the comfortable 'angle-mod' on its left.`,
-        rowIndent: midShiftKeyWidths.rowIndent,
+        rowIndent: lowerCharactersKeyWidths.rowIndent,
 
         keyWidths: [
-            midShiftKeyWidths.row(0, 1.5),
-            midShiftKeyWidths.row(1, 1.25),
-            midShiftKeyWidths.row(2, 1),
-            midShiftKeyWidths.row(3, 1),
+            lowerCharactersKeyWidths.row(0, 1.5),
+            lowerCharactersKeyWidths.row(1, 1.25),
+            lowerCharactersKeyWidths.row(2, 1),
+            lowerCharactersKeyWidths.row(3, 1),
             // With 0.5 indent and 0.5u from the central 1u key, both halves have exactly 7.25u.
             // To compensate for the larger indent compared to the base variant, we simply make the outer-most key smaller.
             mirrorOdd(1.25, 1.25, 1.25, 1.25, 1.5, 1),
@@ -158,11 +158,11 @@ export function createErgoPlankMidShiftRightReturn(lm: LayoutModel): LayoutModel
     }
 }
 
-export function createErgoPlankWithArrows(lm: LayoutModel): LayoutModel {
+export function createErgoPlankInlineArrows(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
-        name: lm.name + " with cursor block",
-        frameMappings: mapValues(lm.frameMappings, (_, mapping) => replaceBottomKeys(mapping)),
+        name: lm.name + " with inline arrow keys",
+        frameMappings: mapValues(lm.frameMappings, (_, mapping) => addInlineArrows(mapping)),
 
         singleKeyEffort: replaceLast(lm.singleKeyEffort,
             [null, 3.0, 3.0, 2.0, 1.5, 0.2, 1.5, 0.2, 1.5, null, null, null, null, null]
@@ -183,11 +183,61 @@ function replaceLast<T>(list: T[], last: T) {
     return [...list.slice(0, -1), last];
 }
 
-function replaceBottomKeys(list:  LayoutMapping):  LayoutMapping {
+function addInlineArrows(list: LayoutMapping):  LayoutMapping {
     const lastRow = list[list.length - 1];
     const left = lastRow.slice(0, 5);
     const leftMod = left.map(key => key === "Fn" ? "AltGr" : key);
     const right = ["Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"];
     const newBottomRow = [null, ...leftMod, ...right];
     return [...list.slice(0, -1), newBottomRow];
+}
+
+export function createErgoPlankCenterArrows(lm: LayoutModel): LayoutModel {
+    // For the "lower row characters" variant, we can tune the stagger to a perfect 0.25,
+    // which the others don't support because lower left keys would move away from their fingers.
+    // (The famous angle-mod problem.)
+    const lowerEdgeWidth = lm.keyWidths[KeyboardRows.Lower][0];
+    let upArrowGap = 0.5;
+    if (lowerEdgeWidth === 1) {
+        upArrowGap = 0.25;
+    }
+    return {
+        ...lm,
+        name: lm.name + " with center arrow keys",
+        frameMappings: mapValues(lm.frameMappings, (_, mapping) => addCenterArrows(mapping)),
+
+        singleKeyEffort: [
+            ...lm.singleKeyEffort.slice(0, 3),
+            [1.0, 1.5, 1.5, 1.0, 2.0, 3.0, null, null, null, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0],
+            [3.0, 3.0, 2.0, 0.2, null, null, null, null, null, 0.2, 1.5, 2.0, 3.0]
+        ],
+        mainFingerAssignment: [
+            ...lm.mainFingerAssignment.slice(0, 3),
+            [0, 1, 2, 3, 3, 3, null, null, null, 6, 6, 6, 7, 8, 9],
+            [0, 1, 2, 4, null, null, null, null, null, 5, 5, 7, 9]
+        ],
+        // Set keyWidths for rows 3 and 4 (index 3 and 4), keeping left and right edge key sizes from the base layout
+        keyWidths: [
+            ...lm.keyWidths.slice(0, 3),
+            mirrorOdd(lowerEdgeWidth, 1, 1, 1, 1, 1, upArrowGap, 1),
+            mirrorOdd(1.5, 1.25, 1.25, 1.5, 0.25, 1, 1),
+        ],
+    }
+}
+
+function addCenterArrows(list: LayoutMapping): LayoutMapping {
+    const lowerLeft = list[KeyboardRows.Lower].slice(0, 6);
+    const lowerRight = list[KeyboardRows.Lower].slice(8);
+    const lowerRow = [...lowerLeft, null, "↑", null, ...lowerRight];
+
+    // Bottom Row: move Fn to the right
+    const oldBottomRow = list[KeyboardRows.Bottom];
+    const bottomLeft = oldBottomRow.slice(0, 5).filter(key => key !== "Fn");
+    const newBottomRow = [
+        ...bottomLeft,
+        null, "←", "↓", "→", null,
+        oldBottomRow[6], oldBottomRow[7], "Fn", oldBottomRow[10]
+    ];
+
+    return [...list.slice(0, 3), lowerRow, newBottomRow];
 }

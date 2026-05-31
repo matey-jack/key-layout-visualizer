@@ -1,4 +1,10 @@
-import {ErgoboardLowshiftVariant, ErgoboardMidshiftVariant, type LayoutOptions, PlankVariant} from "../app-model.ts";
+import {
+    type ErgoboardLowshiftVariant,
+    ErgoboardMidshiftVariant,
+    ErgoplankArrows,
+    type LayoutOptions,
+    PlankVariant
+} from "../app-model.ts";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {LayoutVariantButton} from "../components/LayoutVariantButton.tsx";
 import {FlipRetRubButton} from "./components/FlipRetRubButton.tsx";
@@ -23,6 +29,7 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
         </div>
     }
 
+
     return <div class="plank-layout-options-container">
         <LayoutVariantButton variant={PlankVariant.KATANA_60} currentVariant={variant} setVariant={setVariant} name="Katana60"/>
 
@@ -45,47 +52,53 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
                                onChange={(checked) => checked && setOption({esNumberless: true, esSmallerThumbs: true})}/>
         </LayoutVariantButton>
 
-        <LayoutVariantButton variant={PlankVariant.ERGOPLANK}
+        <LayoutVariantButton variant={PlankVariant.ERGOPLANK15}
                             currentVariant={variant} setVariant={setVariant}
                             name="❤️ Ergoplank 15/5"
         >
-            <CheckboxWithLabel label="low shift"
-                               type="radio"
-                               groupName="ergoplank_shift"
-                               checked={!options.midShift}
-                               onChange={(checked) => checked && setOption({midShift: false})}/>
-            <CheckboxWithLabel label="mid shift with angle mod"
-                               type="radio"
-                               groupName="ergoplank_shift"
-                               checked={options.midShift && !options.epRightReturn}
-                               onChange={(checked) => checked && setOption({midShift: true, epRightReturn: false})}/>
-            <CheckboxWithLabel label="mid shift with right Return key"
-                               type="radio"
-                               groupName="ergoplank_shift"
-                               checked={options.midShift && options.epRightReturn}
-                               onChange={(checked) => checked && setOption({midShift: true, epRightReturn: true})}/>
-            <div class="ergoplank-arrows-checkbox">
-                <CheckboxWithLabel label="Include arrow keys"
-                                   checked={options.bottomArrows}
-                                   onChange={(arrows: boolean) => setOption({bottomArrows: arrows})}/>
+            <div class="ergoplank-group-label">Lower Row</div>
+            <div class="ergoplank-button-group">
+                <button type="button"
+                        class={"ergoplank-option-button" + (!options.midShift ? " selected" : "")}
+                        onClick={() => setOption({midShift: false})}>
+                    Shift
+                </button>
+                <button type="button"
+                        class={"ergoplank-option-button" + (options.midShift && !options.epRightReturn ? " selected" : "")}
+                        onClick={() => setOption({midShift: true, epRightReturn: false})}>
+                    Characters
+                </button>
+                <button type="button"
+                        class={"ergoplank-option-button" + (options.midShift && options.epRightReturn ? " selected" : "")}
+                        onClick={() => setOption({midShift: true, epRightReturn: true})}>
+                    Enter
+                </button>
+            </div>
+            <hr class="ergoplank-divider"/>
+            <div class="ergoplank-group-label">Arrows</div>
+            <div class="ergoplank-button-group">
+                <button type="button"
+                        class={"ergoplank-option-button" + (options.epArrows === ErgoplankArrows.None ? " selected" : "")}
+                        onClick={() => setOption({epArrows: ErgoplankArrows.None})}>
+                    None
+                </button>
+                <button type="button"
+                        class={"ergoplank-option-button" + (options.epArrows === ErgoplankArrows.Inline ? " selected" : "")}
+                        onClick={() => setOption({epArrows: ErgoplankArrows.Inline})}>
+                    Inline
+                </button>
+                <button type="button"
+                        class={"ergoplank-option-button" + (options.epArrows === ErgoplankArrows.Center ? " selected" : "")}
+                        onClick={() => setOption({epArrows: ErgoplankArrows.Center})}>
+                    Center
+                </button>
             </div>
         </LayoutVariantButton>
 
-        <LayoutVariantButton variant={PlankVariant.ERGOBOARD_LOW_SHIFT}
+        <LayoutVariantButton variant={PlankVariant.ERGOBOARD_CENTRAL}
                             currentVariant={variant} setVariant={setVariant}
-                            name="Ergoboard 16/x (Lowshift)">
-            {lowshiftVariant(ErgoboardLowshiftVariant.WIDE_HANDS, "Wide Hands 16/4.5")}
-            {options.ergoboardLowshiftVariant === ErgoboardLowshiftVariant.WIDE_HANDS &&
-                <div class="ergoplank-angle-mod-checkbox">
-                    <CheckboxWithLabel label="angle mod"
-                                       checked={options.angleMod}
-                                       onChange={(angle) => setOption({angleMod: angle})}/>
-                </div>
-            }
-            {lowshiftVariant(ErgoboardLowshiftVariant.LESS_GAPS, "Less Gaps 16/4")}
-            {/* Disabled, because the second thumb keys are hard to reach with such big central thumb keys!
-            {lowshiftVariant(ErgoboardLowshiftVariant.BIG_ENTER, "Big Enter & Space 16/4")}*/}
-            <FlipRetRubButton setOption={setOption} options={options}/>
+                            name="Ergoboard Central"
+        >
         </LayoutVariantButton>
 
         <LayoutVariantButton variant={PlankVariant.ERGOBOARD_MID_SHIFT}

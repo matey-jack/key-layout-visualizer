@@ -35,7 +35,8 @@ export enum PlankVariant {
 
     // 15 keys in home row for widest possible hand distance.
     // The "include arrows" flag only applies to this one.
-    ERGOPLANK,
+    ERGOPLANK15,
+    ERGOBOARD_CENTRAL,
 
     // 16 keys width for all variants, different hand distance for each.
     ERGOBOARD_LOW_SHIFT,
@@ -55,6 +56,12 @@ export enum ErgoboardMidshiftVariant {
     RIGHT_ENTER, // Similar key sizes as low shift "less gaps", same hand position, lower row 0.25 stagger.
     VERTICAL_ENTER, // Like "right enter", only Enter, Backspace, right Shift change.
     CENTRAL_ENTER, // Same as RIGHT_ENTER, but 1.5u key in upper row gap.
+}
+
+export enum ErgoplankArrows {
+    None,
+    Inline,
+    Center,
 }
 
 export interface LayoutOptions {
@@ -82,7 +89,7 @@ export interface LayoutOptions {
     esSmallerThumbs: boolean;
 
     // ErgoPlank
-    bottomArrows: boolean;
+    epArrows: ErgoplankArrows;
     epRightReturn: boolean;
 
     // Ergoboards

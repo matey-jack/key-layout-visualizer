@@ -77,7 +77,7 @@
 
 .plank-layout-options-container {
     display: grid;
-    grid-template-columns: 0.5fr 1fr 1.5fr 1.25fr 1.5fr;
+    grid-template-columns: 0.5fr 1fr 1.4fr 1.4fr 1.5fr;
     justify-items: center;
 }
 
@@ -299,4 +299,53 @@ label.disabled {
 .tradeoff-point-group.selected .tradeoff-point {
     stroke: #003fae;
     stroke-width: 2.5;
+}
+
+.ergoplank-button-group {
+    display: flex;
+    gap: 0.35rem;
+    margin-top: 0.35rem;
+    margin-bottom: 0.75rem;
+    justify-content: flex-start;
+}
+
+.ergoplank-option-button {
+    padding: 0.35rem 0.65rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #fafbfc;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #333;
+    font-family: inherit;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.ergoplank-option-button:hover {
+    background-color: #f1f3f5;
+    border-color: #abb2b9;
+}
+
+.ergoplank-option-button.selected {
+    background-color: #5cdbef;
+    border-color: #003fae;
+    color: #003fae;
+    font-weight: bold;
+}
+
+.ergoplank-group-label {
+    font-weight: bold;
+    font-size: 0.85rem;
+    color: #495057;
+    text-align: left;
+    margin-top: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.ergoplank-divider {
+    border: 0;
+    height: 1px;
+    background: #e9ecef;
+    margin: 0.75rem 0;
+    width: 100%;
 }
