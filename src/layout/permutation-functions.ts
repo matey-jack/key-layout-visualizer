@@ -124,6 +124,55 @@ function findToken(mapping: LayoutMapping, token: CycleToken): Coord | null {
     return matches[0] ?? null;
 }
 
+const cycleAbbreviations: Record<string, string | string[]> = {
+    "^": "Ctrl",
+    "A": ["Alt", "AltGr"],
+    "C": "Cmd",
+    "S": ["Shift", "⇧"],
+    "F": "Fn",
+    "P": "CAPS",
+    "M": "Menu",
+};
+
+function expandShortcut(shortcut: string): string[] {
+    const val = cycleAbbreviations[shortcut];
+    if (val === undefined) return [shortcut];
+    return Array.isArray(val) ? val : [val];
+}
+
+// Resolves a shortcut for a label token against the base mapping.
+function resolveAbbreviation(base: LayoutMapping, shortcut: string): string {
+    const candidates = expandShortcut(shortcut);
+    if (candidates.length === 1) return candidates[0];
+
+    const matches = cellsMatching(base, (value) => typeof value === "string" && candidates.includes(value));
+    if (matches.length === 0) return candidates[0];
+
+    const presentCandidates = new Set(matches.map(([r, c]) => base[r][c] as string));
+    if (presentCandidates.size === 1) {
+        return [...presentCandidates][0];
+    }
+    return shortcut;
+}
+
+// Resolves a shortcut for an edge token against the base mapping.
+function resolveAbbreviationForEdge(base: LayoutMapping, edge: "<" | ">", shortcut: string): string {
+    const candidates = expandShortcut(shortcut);
+    if (candidates.length === 1) return candidates[0];
+
+    const matches = cellsMatching(base, (value) => typeof value === "string" && candidates.includes(value));
+    if (matches.length === 0) return candidates[0];
+
+    const targetCol = edge === "<"
+        ? Math.min(...matches.map((m) => m[1]))
+        : Math.max(...matches.map((m) => m[1]));
+    const selected = matches.filter((m) => m[1] === targetCol);
+    if (selected.length === 0) return candidates[0];
+
+    const [r, c] = selected[0];
+    return base[r][c] as string;
+}
+
 // Lets a single-character label stand in for a two-character one by its first character: with no exact
 // single-char match in the base but exactly one 2-char label starting with that character, the token is
 // rewritten to that full label. An exact match wins; an ambiguous first character is left as-is.
@@ -137,8 +186,14 @@ function resolveLabel(base: LayoutMapping, label: string): string {
 
 // Resolves single-char label tokens (and edge keys) against the base mapping (see resolveLabel).
 function resolveToken(base: LayoutMapping, token: CycleToken): CycleToken {
-    if ("label" in token) return {label: resolveLabel(base, token.label)};
-    if ("edge" in token) return {edge: token.edge, key: resolveLabel(base, token.key)};
+    if ("label" in token) {
+        const expanded = resolveAbbreviation(base, token.label);
+        return {label: resolveLabel(base, expanded)};
+    }
+    if ("edge" in token) {
+        const expanded = resolveAbbreviationForEdge(base, token.edge, token.key);
+        return {edge: token.edge, key: resolveLabel(base, expanded)};
+    }
     return token;
 }
 

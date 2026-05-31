@@ -108,6 +108,47 @@ describe("permute", () => {
         expect(() => permute(base, "[1:]")).toThrow(/Bad coordinate/);      // empty column
         expect(() => permute(base, "[1:2,]")).toThrow(/Bad coordinate/);    // trailing empty column
     });
+
+    it("resolves easy-to-type abbreviations correctly", () => {
+        const base: LayoutMapping = [
+            ["Ctrl", "Alt", "Cmd", "Shift", "Fn", "CAPS", "Menu"]
+        ];
+        // ^ -> Ctrl, A -> Alt, C -> Cmd, S -> Shift, F -> Fn, P -> CAPS, M -> Menu
+        expect(permute(base, "^A", "CS", "FP")).toEqual([
+            ["Alt", "Ctrl", "Shift", "Cmd", "CAPS", "Fn", "Menu"]
+        ]);
+    });
+
+    it("resolves multi-target abbreviations like A and S based on presence", () => {
+        const base: LayoutMapping = [
+            ["AltGr", "⇧"]
+        ];
+        // A should resolve to AltGr, S should resolve to ⇧
+        expect(permute(base, "AS")).toEqual([
+            ["⇧", "AltGr"]
+        ]);
+    });
+
+    it("disambiguates multi-target abbreviations using edge indicators", () => {
+        const base: LayoutMapping = [
+            ["Alt", "a", "AltGr"]
+        ];
+        // <A is Alt, >A is AltGr. Swap them.
+        expect(permute(base, "<A>A")).toEqual([
+            ["AltGr", "a", "Alt"]
+        ]);
+    });
+
+    it("falls back to the first candidate if none are present in base", () => {
+        const base: LayoutMapping = [
+            ["a", "b"]
+        ];
+        // Since no Alt or AltGr exists, A resolves to Alt.
+        // As it doesn't exist, we can use it as an entering key.
+        expect(permute(base, "Ab")).toEqual([
+            ["a", "Alt"]
+        ]);
+    });
 });
 
 describe("patchThumb30 / patchThumb32 invariant checks", () => {
@@ -195,5 +236,6 @@ describe("Ergoslat MidShift frames (derived by permutation)", () => {
             ["Ctrl", "Cmd", null, "Alt", 0, "⍽", "AltGr", null, "Fn", "Ctrl"],
         ]);
     });
+
 });
 

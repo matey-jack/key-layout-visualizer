@@ -150,34 +150,10 @@ export function createErgoPlankMidShiftRightReturn(lm: LayoutModel): LayoutModel
         // physical key widths and finger assignments are the same as for low-shift.
 
         frameMappings:  {
-            [KeymapTypeId.Ansi30]: [
-                ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
-                ["↹", 0, 1, 2, 3, 4, "-", null, "+", 5, 6, 7, 8, 9, "'"],
-                ["⇧", 0, 1, 2, 3, 4, "⇤", "\\", "⇥", 5, 6, 7, 8, 9, "⇧"],
-                ["Ctrl", 0, 1, 2, 3, 4, "⇞", "⇟", 9, 5, 6, 7, 8, "⏎"],
-                ["Cmd", "Fn", "`~", "Alt", "⌦", "Ins", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"]
-            ],
-            [KeymapTypeId.Ansi32]: [
-                ["Esc", "1", "2", "3", "4", "5", "\\", "/", "6", "7", "8", "9", "0", "⌫"],
-                ["↹", 0, 1, 2, 3, 4, "'", null, [2, 10], 5, 6, 7, 8, 9, 10],
-                ["⇧", 0, 1, 2, 3, 4, "⇤", "+", "⇥", 5, 6, 7, 8, 9, "⇧"],
-                ["Ctrl", 0, 1, 2, 3, 4, "⇞", "⇟", 9, 5, 6, 7, 8, "⏎"],
-                ["Cmd", "Fn", "`~", "Alt", "⌦", "Ins", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"]
-            ],
-            [KeymapTypeId.Thumb30]:  [
-                ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
-                ["↹", 0, 1, 2, 3, 4, "+", null, "\\", 5, 6, 7, 8, 9, "'"],
-                ["⇧", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "⇧"],
-                ["Ctrl", 0, 1, 2, 3, 4, "⇞", "⇟", "/", 5, 6, 7, 8, "⏎"],
-                ["Cmd", "Fn", "⌦", "Alt", 0, "Ins", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"]
-            ],
-            [KeymapTypeId.Thumb32]: [
-                ["Esc", "1", "2", "3", "4", "5", "\\", "/", "6", "7", "8", "9", "0", "⌫"],
-                ["↹", 0, 1, 2, 3, 4, "'", null, "+", 5, 6, 7, 8, 9, 10],
-                ["⇧", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "⇧"],
-                ["Ctrl", 0, 1, 2, 3, 4, "⇞", "⇟", 9, 5, 6, 7, 8, "⏎"],
-                ["Cmd", "Fn", "⌦", "Alt", 0, "Ins", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"]
-            ],
+            [KeymapTypeId.Ansi30]: permute(lm.frameMappings[KeymapTypeId.Ansi30]!, "`F<C<^<S⌦⏎>S'\\"),
+            [KeymapTypeId.Ansi32]: permute(lm.frameMappings[KeymapTypeId.Ansi32]!, "[2:10]+`F<C<^<S⌦⏎>S"),
+            [KeymapTypeId.Thumb30]: permute(lm.frameMappings[KeymapTypeId.Thumb30]!, "<S⌦F<C<^", "⏎>S'"),
+            [KeymapTypeId.Thumb32]: permute(lm.frameMappings[KeymapTypeId.Thumb32]!, "<S⌦F<C<^", "⏎>S[1:10]"),
         },
     }
 }

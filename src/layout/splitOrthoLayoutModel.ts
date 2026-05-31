@@ -1,4 +1,5 @@
-import {KeymapTypeId, type LayoutModel} from "../base-model.ts";
+import {KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
+import {permute} from "./permutation-functions.ts";
 
 // I arbitrarily decide that the top (number) row shall not be changed by the flex mapping.
 // But there has to be an empty list in the mapping to keep the format consistent with the algorithms.
@@ -10,6 +11,47 @@ const fullMapping = [
     ["Alt", 0, 1, "Cmd", 2, "⏎", "⍽", 3, "AltGr", 4, "Fn", "Cmd"],
 ];
 
+/*
+  Generally Ansi30 and Thumb30 have three character keys in the bottom row, while Ansi32 and Thumb32 have four.
+  Apart from the two removed keys to make space for the larger flex mapping (and the '-' vs '/' difference, only on Ansi30)
+  all the frame mappings should have the same keys.
+  (This is different from ANSI, where I reflect more differences between standard ANSI and German keymaps.)
+ */
+const ansi30Base: LayoutMapping = [
+    // Mapping Enter as a thumb key allows `'` to stay in its Qwerty position.
+    // We use the freed space to improve `-` position, since this is the third most frequently used punctuation character.
+    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "-"],
+    ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+    ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+    ["Ctrl", "\\", "`", "Alt", "Cmd", "⏎", "⍽", "Fn", "AltGr", "Menu", "+", "Ctrl"],
+];
+
+const ansi32Base: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+    ["Ctrl", "/", "`", "Alt", "Cmd", "⏎", "⍽", "Ctrl", "AltGr", "'", "+", "Fn"],
+];
+
+const thumb30Base: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "\\"],
+    ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+    ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "⇧"],
+    ["Ctrl", "Alt", "+", "Cmd", 0, "⏎", "⍽", "Ctrl", "AltGr", "Menu", "`", "Fn"],
+];
+
+const thumb32Base: LayoutMapping = [
+    ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+    ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+    ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+    ["Ctrl", "Alt", "`", "Cmd", 0, "⏎", "⍽", "Ctrl", "AltGr", "/", "+", "Fn"],
+];
+
+const LEFT_MIDSHIFT_CYCLE = "⌦<A<^<S";
 export const splitOrthoLayoutModel = (midShift: boolean) : LayoutModel => ({
     name: "Split Ergonomic",
     description: "The Ortholinear key layout is especially popular with two-piece keyboards. " +
@@ -47,67 +89,10 @@ export const splitOrthoLayoutModel = (midShift: boolean) : LayoutModel => ({
 
     frameMappings: {
         [KeymapTypeId.SplitOrtho]: fullMapping,
-        /*
-          Generally Ansi30 and Thumb30 have three character keys in the bottom row, while Ansi32 and Thumb32 have four.
-          Apart from the two removed keys to make space for the larger flex mapping (and the '-' vs '/' difference, only on Ansi30)
-          all the frame mappings should have the same keys.
-          (This is different from ANSI, where I reflect more differences between standard ANSI and German keymaps.)
-         */
-        [KeymapTypeId.Ansi30]: midShift ? [
-            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
-            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "Ctrl"],
-            ["Alt", "\\", "`", "⌦", "Cmd", "⏎", "⍽", "Fn", "AltGr", "+", "-", "Menu"],
-        ] : [
-            // Mapping Enter as a thumb key allows `'` to stay in its Qwerty position.
-            // We use the freed space to improve `-` position, since this is the third most frequently used punctuation character.
-            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "-"],
-            ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
-            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", "\\", "`", "Alt", "Cmd", "⏎", "⍽", "Fn", "AltGr", "Menu", "+", "Ctrl"],
-        ],
-        [KeymapTypeId.Ansi32]: midShift ? [
-            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, [2, 10]],
-            ["Alt", "/", "`", "⌦", "Cmd", "⏎", "⍽", "Ctrl", "AltGr", "'", "+", "Fn"],
-        ] : [
-            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", "/", "`", "Alt", "Cmd", "⏎", "⍽", "Ctrl", "AltGr", "'", "+", "Fn"],
-        ],
-        [KeymapTypeId.Thumb30]: midShift ? [
-            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
-            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "Ctrl"],
-            // left =+ key, because most thumb-letter key maps use B or nearby position for -_
-            ["Alt", "⌦", "+", "Cmd", 0, "⏎", "⍽", "Fn", "AltGr", "\\", "`", "Menu"],
-        ] : [
-            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "\\"],
-            ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
-            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "⇧"],
-            ["Ctrl", "Alt", "+", "Cmd", 0, "⏎", "⍽", "Ctrl", "AltGr", "Menu", "`", "Fn"],
-        ],
-        [KeymapTypeId.Thumb32]: midShift ? [
-            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
-            // now = is right again, where German and other key maps have the -_
-            ["Alt", "⌦", "`", "Cmd", 0, "⏎", "⍽",  "Ctrl", "AltGr", "/", "+", "Fn"],
-        ] : [
-            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
-            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", "Alt", "`", "Cmd", 0, "⏎", "⍽", "Ctrl", "AltGr", "/", "+", "Fn"],
-        ],
+        [KeymapTypeId.Ansi30]: midShift ? permute(ansi30Base, LEFT_MIDSHIFT_CYCLE, "'-+M>^>S") : ansi30Base,
+        [KeymapTypeId.Thumb30]: midShift ? permute(thumb30Base, LEFT_MIDSHIFT_CYCLE, "'\\MF>^>S") : thumb30Base,
+
+        [KeymapTypeId.Ansi32]: midShift ? permute(ansi32Base, LEFT_MIDSHIFT_CYCLE, ">S[2:10]") : ansi32Base,
+        [KeymapTypeId.Thumb32]: midShift ? permute(thumb32Base, LEFT_MIDSHIFT_CYCLE, ">S'") : thumb32Base,
     },
 });
