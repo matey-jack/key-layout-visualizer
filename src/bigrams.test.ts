@@ -92,6 +92,6 @@ describe("top 100 bigrams Colemak", () => {
     });
 
     it("on SplitOrtho", () => {
-        printTop100(splitOrthoLayoutModel(), "SplitOrtho");
+        printTop100(splitOrthoLayoutModel(false), "SplitOrtho");
     });
 })

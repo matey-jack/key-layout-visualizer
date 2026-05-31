@@ -82,7 +82,8 @@ const layoutModels: Array<LayoutModel> = [
     harmonic14WideLayoutModel,
     harmonic14TraditionalLayoutModel,
     katanaLayoutModel,
-    splitOrthoLayoutModel(),
+    splitOrthoLayoutModel(false),
+    splitOrthoLayoutModel(true),
 ];
 
 // Expected differences between ansi30 and thumb30

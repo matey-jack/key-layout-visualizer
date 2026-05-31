@@ -53,7 +53,7 @@ const allLayoutModels = [
     katanaLayoutModel,
     ergoPlankLayoutModel,
     ergoboardMidshiftComfyLayoutModel,
-    splitOrthoLayoutModel(),
+    splitOrthoLayoutModel(false),
 ];
 
 function hasLettersNumbersAndProsePunctuation(filledMapping: string[][]) {
@@ -99,7 +99,7 @@ describe('fillMapping', () => {
     })
 
     it(`Split Ortho full layout maps all important characters`, () => {
-        hasLettersNumbersAndProsePunctuation(fillMapping(splitOrthoLayoutModel(), cozyEnglish)!);
+        hasLettersNumbersAndProsePunctuation(fillMapping(splitOrthoLayoutModel(false), cozyEnglish)!);
     });
 
     // this is currently not used in the app, but let's keep it working
@@ -139,7 +139,7 @@ describe('findMatchingKeymapType', () => {
     });
 
     it('finds Ansi30 match for qwertyMapping on splitOrthoLayoutModel', () => {
-        const match = findMatchingKeymapType(splitOrthoLayoutModel(), qwertyMapping);
+        const match = findMatchingKeymapType(splitOrthoLayoutModel(false), qwertyMapping);
         expect(match).toBeDefined();
         expect(match!.typeId).toBe(KeymapTypeId.Ansi30);
     });
@@ -158,8 +158,8 @@ describe('new keymap type system - fillMappingNew', () => {
     });
 
     it('produces same result as fillMapping for qwerty on splitOrtho', () => {
-        const oldResult = fillMapping(splitOrthoLayoutModel(), qwertyMapping);
-        const newResult = fillMapping(splitOrthoLayoutModel(), qwertyMapping);
+        const oldResult = fillMapping(splitOrthoLayoutModel(false), qwertyMapping);
+        const newResult = fillMapping(splitOrthoLayoutModel(false), qwertyMapping);
         expect(newResult).toEqual(oldResult);
     });
 
@@ -176,7 +176,7 @@ describe('new keymap type system - hasMatchingMappingNew', () => {
     });
 
     it('returns true for qwertyMapping on splitOrthoLayoutModel', () => {
-        expect(hasMatchingMapping(splitOrthoLayoutModel(), qwertyMapping)).toBe(true);
+        expect(hasMatchingMapping(splitOrthoLayoutModel(false), qwertyMapping)).toBe(true);
     });
 
     it('falls back to old system for mappings without new property', () => {

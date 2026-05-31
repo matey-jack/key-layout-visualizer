@@ -31,3 +31,8 @@ The local app runs under http://localhost:3000 (or whichever port [vite.config.t
 
 The Playwright tests are in the `e2e/` directory. 
 
+# Code Style Guidelines
+
+Avoid optional parameters unless there's a good reason, like when there are several or most callers really use the same value.
+Prefer to add parameter values at each call site and make the parameter mandatory. 
+
