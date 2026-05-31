@@ -130,6 +130,7 @@ export function hasMatchingMapping(layout: LayoutModel, flexMapping: FlexMapping
 // Thanks to those, we can keep the flex mappings as simple strings. (Which I think is more readable.)
 const keyLabelShortcuts: Record<string, string> = {
     "^": "Ctrl",
+    "⌘": "Cmd",
     "⎇": "Alt",
     "⌥": "AltGr", // this the symbol of the MacOS Opt key, which has a similar function.
     "⇪": "CAPS",
