@@ -82,8 +82,7 @@ const layoutModels: Array<LayoutModel> = [
     harmonic14WideLayoutModel,
     harmonic14TraditionalLayoutModel,
     katanaLayoutModel,
-    splitOrthoLayoutModel(false),
-    splitOrthoLayoutModel(true),
+    splitOrthoLayoutModel(),
 ];
 
 // Expected differences between ansi30 and thumb30
@@ -264,7 +263,6 @@ describe("midShift variants don't change the character set", () => {
     const pairs = [
         [ majorErgoslatLayoutModel(false), majorErgoslatLayoutModel(true) ],
         [ minorErgoslatLayoutModel(false), minorErgoslatLayoutModel(true) ],
-        [ splitOrthoLayoutModel(false), splitOrthoLayoutModel(true) ],
         [ ergoPlankLayoutModel, createErgoPlankMidShiftLowerCharacters(ergoPlankLayoutModel) ],
     ]
      pairs.forEach(([lowShift, midShift]) => {

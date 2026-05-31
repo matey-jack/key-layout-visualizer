@@ -28,7 +28,7 @@ export const allLayoutModels: LayoutModel[] = [
     minorErgoslatLayoutModel(true),
     ergoPlankLayoutModel,
     ergoboardMidshiftComfyLayoutModel,
-    splitOrthoLayoutModel(true),
+    splitOrthoLayoutModel(),
 ];
 
 export function generateSeoContent(): string {
