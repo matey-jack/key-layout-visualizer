@@ -1,0 +1,52 @@
+nice to have features:
+- slow down the animation when the user holds the mouse or finger on the layout type/variant buttons (or other controls).
+- Ergoplank and Katana logos to fill the gap, especially Ergoboard 65 Midshift with a nice connection between both gaps.
+  (Alternatively, show a Thinkpad-style pointing nipple in that gap.)
+- compress some of the UI when scrolling, so that the Keyboard SVG always stays up top and buttons (both type and variant) maybe on the side of the SVG?
+    Show only the selected buttons and a "Change..." link which scrolls back up, so that all buttons are visible again.
+- add some more explanations, especially for:
+  + the "wide" mappings
+  + Harmonic and Ortho general texts (maybe (i) icon in layout bar). But still repeat that text under the H and O variants.
+
+- check the consistency of all mappings:
+   + variants for different layouts should be consistent (only have differences clearly attributed to the layout)
+   + maybe check if some full-mappings can be omitted, because thumb30 and 3×10 do the job well enough?
+   + related thumby variants should be consistent (only have the intended differences)
+     * especially Thumby-KU
+
+bugs:
+- the comparisonBase mapping needs to have definitions on all layouts, thus at least a mapping30 (which is supported everywhere).
+   Add that for qwertz and maybe add a full mapping for the ortho board to make the comparison more meaningful.
+- on Thumby / Cozy Keyboard English variant, the apostrophe is counted as "changed on same finger" on the ortho layout,
+  but not on ANSI wide, although it's on the same position.
+  It should not be counted as changed on either, because the change is due to the wide layout, not the letter mapping.
+
+refactoring:
+- find out if redundancy in the CSS can be reduced
+- run e2e tests headless on GHA
+- remove home finger properties; use keyEffort==Home instead.
+
+- I find that the key/finger/effort matrix is easier to edit by hand than write in abstractions. Copy, paste, adapt, ... and win!
+   But we could still add a helper function to generate an initial finger and effort matrix given a layout (by key matrix, keyWidths, and index finger columns).
+   That would be fun to write and serve as documentation of my fingering and effort theory. But also useless at the moment, since I don't plan to add any new layouts.
+
+better visual design:
+   - scoring and description of learning/single key/bigram classes
+   - Mapping Name not be centered when it wraps to two lines.
+   - Enter and Space as a lighter shade of the special-key background (will change when a letter is mapped to the key)
+   - show both special-key background and finger assignment / effort score colors:
+     + either use SVG pattern to create stripes in both colors.
+     + or use the finger/score color in combination with a thick border around the key. (As we do with the home row in the fingers viz.)
+   - Change description fields of layout and mapping data to JSX.Component (or markdown)
+
+optional features:
+- mouse hover in bigram viz to only show lines in/out of one key.
+  + Create a specific detail view to show the frequency of those.
+- 'frame layout' options for nav/del keys
+- Alternatively, offer an option to hide all keys outside the core 30 mapping (labeled "show only letters and prose punctuation").
+  (Especially split ortho keyboards have too many permutations that people are using.)
+- add "specialized" column to mapping list and mention the meaning in the mapping description in the Details Area.
+  + when a mapping has both core and full mappings defined for a layout, show both in the list!
+- hex-shaped keys for the Harmonic
+- only deduct half the learning points for changed punctuation keys. (Relevant only for `;`, since `-` is out of the box and others aren't moved.)
+

@@ -1,0 +1,23 @@
+Those are things that I seriously plan on doing.
+Feature ideas that I am not so sure about are in `ideas.txt`.
+
+small improvements:
+ - SplitOrtho should not have Low Shift variant. Mid Shift should be the default and Thumb Shift should be an option.
+
+Prompt for creating the Ergoplank 16:
+        rename the PlankVariant.Ergoplank to Ergoplank15 and create a new Ergoplank16. It should have its own button and the same options in PlankLayoutOptions. It should have its own file for the layout model. (Also rename the layout model and file for the Ergoplank15.)
+        The Ergoplank16 should add central navigation keys to the Ergoplank15 similar to what the Thumbs Up 16 does compared to the Thumbs Up 15.
+        Refer to `docs/layout-design-guide.md` to learn about any trade-offs to consider when placing keys.
+
+
+
+further refactorings:
+ - check the similarity relationship of Ergoboard Low Shift and Mid Shift (I think that each Low Shift version has at least one Mid Shift sibling with the exact same edge key sizes!?). Maybe permute() can be used to simplify the keymaps here.
+ - check if some more thumbXX frame mappings can be generated with the permute() function.
+
+missing core features:
+- SVG export (with a title stating name of layout and keymap) ✅ except:
+  - add metadata for to-scale printing (might need PDF?)
+  - add a ruler to the SVG so people can zoom to scale on their laptop or tablet
+- export to keyboard layout editor format, https://www.keyboard-layout-editor.com/, because that is used as a spec by hardward keyboard builders.
+  (Having the export will help us to remove remaining ambiguities of how the SVG pics translate to actual hardware!)
