@@ -98,7 +98,7 @@ export const splitOrthoLayoutModel = (soThumbShift: boolean) : LayoutModel => ({
     //   Ansi32:         >⇧ → >Ctrl spot, >Ctrl → [2:10] spot, [2:10] → >⇧ spot (becomes flex key 10 on row 2)
     //   Thumb32:        >Ctrl → ' spot, ' → >⇧ spot, >⇧ → >Ctrl spot
     frameMappings: soThumbShift ? {
-        [KeymapTypeId.SplitOrtho]: permute(fullMapping, "<S[4:2]", ">S[4:3]"),
+        [KeymapTypeId.SplitOrtho]: permute(fullMapping, "<S[4:2]⏎>^F[4:1]", ">S[4:3]"),
         [KeymapTypeId.Ansi30]:     permute(ansi30Base,  SO_LEFT_TS_ANSI,  "F+-'>S"),
         [KeymapTypeId.Thumb30]:    permute(thumb30Base, "<S[4:0]⏎>^\\⌦", ">SF`'"),
         [KeymapTypeId.Ansi32]:     permute(ansi32Base,  SO_LEFT_TS_ANSI,  ">S>^[2:10]"),

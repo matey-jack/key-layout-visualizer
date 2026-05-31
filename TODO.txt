@@ -2,7 +2,6 @@ Those are things that I seriously plan on doing.
 Feature ideas that I am not so sure about are in `ideas.txt`.
 
 small improvements:
- - SplitOrtho should not have Low Shift variant. Mid Shift should be the default and Thumb Shift should be an option.
 
 Prompt for creating the Ergoplank 16:
         rename the PlankVariant.Ergoplank to Ergoplank15 and create a new Ergoplank16. It should have its own button and the same options in PlankLayoutOptions. It should have its own file for the layout model. (Also rename the layout model and file for the Ergoplank15.)
