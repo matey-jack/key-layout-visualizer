@@ -55,7 +55,7 @@ const thumb32Base: LayoutMapping = [
 // thumbShift cycles: ⇧ moves to the second thumb key from center on each side.
 // Left side: <S → Cmd/flex-letter spot, Cmd/flex-letter → ⌦ spot, ⌦ → <S spot.
 const SO_LEFT_TS_ANSI = "<SC⌦";    // for Ansi30 and Ansi32
-const SO_LEFT_TS_THUMB = "<S[4:0]⌦"; // for Thumb30 and Thumb32
+ // for Thumb30 and Thumb32
 
 export const splitOrthoLayoutModel = (soThumbShift: boolean) : LayoutModel => ({
     name: "Split Ergonomic",
@@ -102,7 +102,7 @@ export const splitOrthoLayoutModel = (soThumbShift: boolean) : LayoutModel => ({
         [KeymapTypeId.Ansi30]:     permute(ansi30Base,  SO_LEFT_TS_ANSI,  "F+-'>S"),
         [KeymapTypeId.Thumb30]:    permute(thumb30Base, "<S[4:0]⏎>^\\⌦", ">SF`'"),
         [KeymapTypeId.Ansi32]:     permute(ansi32Base,  SO_LEFT_TS_ANSI,  ">S>^[2:10]"),
-        [KeymapTypeId.Thumb32]:    permute(thumb32Base, SO_LEFT_TS_THUMB, ">^'>S"),
+        [KeymapTypeId.Thumb32]:    permute(thumb32Base, ">S>^/⌦<S[4:0]⏎'"),
     } : {
         [KeymapTypeId.SplitOrtho]: fullMapping,
         [KeymapTypeId.Ansi30]:     ansi30Base,
