@@ -277,6 +277,9 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
             params.set("ebMsVariant", layout.ergoboardMidshiftVariant.toString());
             subLayout = PlankVariant[layout.plankVariant] + (layout.bottomArrows ? "+arrows" : "") + (layout.epRightReturn ? "+epRightReturn" : "") + (layout.esNumberless ? "+esNumberless" : "") + (layout.esSmallerThumbs ? "+esSmallerThumbs" : "");
             break;
+        case LayoutType.Ergosplit:
+            params.set("soThumbShift", layout.soThumbShift ? "1" : "0");
+            break;
     }
     posthog.register({
         viz: VisualizationType[vizType.value],
@@ -297,6 +300,7 @@ export function createAppState(): AppState {
     const layoutOptionsState: Signal<LayoutOptions> = signal<LayoutOptions>({
         type: s2i(params.get("layout")) ?? LayoutType.ANSI,
         midShift: s2b(params.get("midShift")) ?? false,
+        soThumbShift: s2b(params.get("soThumbShift")) ?? false,
         ansiVariant,
         ansiSplit: s2b(params.get("split")) ?? false,
         ansiWide: ansiVariant === AnsiVariant.AHKB ? true : s2b(params.get("wide")) ?? false,

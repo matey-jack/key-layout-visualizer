@@ -10,7 +10,7 @@ const fullMapping = [
     ["Alt", 0, 1, "Cmd", 2, "⏎", "⍽", 3, "AltGr", 4, "Fn", "Cmd"],
 ];
 
-export const splitOrthoLayoutModel = () : LayoutModel => ({
+export const splitOrthoLayoutModel = (soThumbShift = false) : LayoutModel => ({
     name: "Split Ergonomic",
     description: "The Ortholinear key layout is especially popular with two-piece keyboards. " +
         "This allows to position and rotate the two keyboard halves to make columns line up exactly with your finger's natural extension movement. " +
@@ -53,21 +53,39 @@ export const splitOrthoLayoutModel = () : LayoutModel => ({
           all the frame mappings should have the same keys.
           (This is different from ANSI, where I reflect more differences between standard ANSI and German keymaps.)
          */
-        [KeymapTypeId.Ansi30]: [
+        [KeymapTypeId.Ansi30]: soThumbShift ? [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+            ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+            ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "Ctrl"],
+            ["Alt", "\\", "`", "⌦", "⇧", "⏎", "⍽", "⇧", "AltGr", "+", "-", "Menu"],
+        ] : [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
             ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "Ctrl"],
             ["Alt", "\\", "`", "⌦", "Cmd", "⏎", "⍽", "Fn", "AltGr", "+", "-", "Menu"],
         ],
-        [KeymapTypeId.Ansi32]: [
+        [KeymapTypeId.Ansi32]: soThumbShift ? [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, [2, 10]],
+            ["Alt", "/", "`", "⌦", "⇧", "⏎", "⍽", "⇧", "AltGr", "'", "+", "Fn"],
+        ] : [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
             ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, [2, 10]],
             ["Alt", "/", "`", "⌦", "Cmd", "⏎", "⍽", "Ctrl", "AltGr", "'", "+", "Fn"],
         ],
-        [KeymapTypeId.Thumb30]: [
+        [KeymapTypeId.Thumb30]: soThumbShift ? [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+            ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+            ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "Ctrl"],
+            ["Alt", "⌦", "+", "Cmd", "⇧", "⏎", "⍽", "⇧", "AltGr", "\\", "`", "Menu"],
+        ] : [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
@@ -75,7 +93,13 @@ export const splitOrthoLayoutModel = () : LayoutModel => ({
             // left =+ key, because most thumb-letter key maps use B or nearby position for -_
             ["Alt", "⌦", "+", "Cmd", 0, "⏎", "⍽", "Fn", "AltGr", "\\", "`", "Menu"],
         ],
-        [KeymapTypeId.Thumb32]: [
+        [KeymapTypeId.Thumb32]: soThumbShift ? [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+            ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
+            ["Alt", "⌦", "`", "Cmd", "⇧", "⏎", "⍽", "⇧", "AltGr", "/", "+", "Fn"],
+        ] : [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],

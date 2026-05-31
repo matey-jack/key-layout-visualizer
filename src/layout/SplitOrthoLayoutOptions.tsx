@@ -1,5 +1,5 @@
-import {type LayoutOptions} from "../app-model.ts";
-import {MidShiftCheckbox} from "./components/MidShiftCheckbox.tsx";
+import type {LayoutOptions} from "../app-model.ts";
+import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 
 export interface SplitOrthoLayoutOptionsProps {
     options: LayoutOptions;
@@ -8,6 +8,8 @@ export interface SplitOrthoLayoutOptionsProps {
 
 export function SplitOrthoLayoutOptions({options, setOption}: SplitOrthoLayoutOptionsProps) {
     return <div class="split-ortho-layout-options-container">
-        <MidShiftCheckbox options={options} setOption={setOption}/>
+        <CheckboxWithLabel label="Thumb Shift"
+                           checked={options.soThumbShift}
+                           onChange={(checked) => setOption({soThumbShift: checked})}/>
     </div>
 }

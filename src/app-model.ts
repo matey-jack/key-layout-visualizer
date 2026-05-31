@@ -89,6 +89,9 @@ export interface LayoutOptions {
     ergoboardLowshiftVariant: ErgoboardLowshiftVariant;
     angleMod: boolean; // used for EbLowshiftWide only
     ergoboardMidshiftVariant: ErgoboardMidshiftVariant;
+
+    // ErgoSplit aka SplitOrtho
+    soThumbShift: boolean;
 }
 
 export function isSplit(opts: LayoutOptions) {
