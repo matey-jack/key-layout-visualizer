@@ -17,6 +17,11 @@ import {copyKeymap} from "./layout-functions.ts";
 //     ('<', left) or largest ('>', right) column index. Any copies in between are not addressable, and
 //     a tie for that extreme throws. Use it to point at a key a plain label can't pick out alone.
 //
+// A single-character label token may stand in for a two-character label by its first character:
+// if the base has no exact single-char match but exactly one cell holds a 2-char label starting with
+// that character (e.g. '`' -> '`~'), the token resolves to the full label. An exact single-char match
+// always wins, and a tie between two such 2-char labels is left unresolved (so findToken throws).
+//
 // Semantics of "abc": a takes the place of b, b takes the place of c, c takes the place of a.
 // A key entering the mapping (new) may appear only as the FIRST token; a key leaving only as the
 // LAST. With both present the cycle is an open chain: the first key is placed, the last is dropped,
@@ -119,6 +124,24 @@ function findToken(mapping: LayoutMapping, token: CycleToken): Coord | null {
     return matches[0] ?? null;
 }
 
+// Lets a single-character label stand in for a two-character one by its first character: with no exact
+// single-char match in the base but exactly one 2-char label starting with that character, the token is
+// rewritten to that full label. An exact match wins; an ambiguous first character is left as-is.
+function resolveLabel(base: LayoutMapping, label: string): string {
+    if (cellsMatching(base, (value) => value === label).length > 0) return label;
+    const wider = cellsMatching(base, (value) => typeof value === "string" && value.length === 2 && value[0] === label);
+    if (wider.length !== 1) return label;
+    const [r, c] = wider[0];
+    return base[r][c] as string;
+}
+
+// Resolves single-char label tokens (and edge keys) against the base mapping (see resolveLabel).
+function resolveToken(base: LayoutMapping, token: CycleToken): CycleToken {
+    if ("label" in token) return {label: resolveLabel(base, token.label)};
+    if ("edge" in token) return {edge: token.edge, key: resolveLabel(base, token.key)};
+    return token;
+}
+
 // The value a token contributes when it lands on grid row destRow (a placeholder becomes a bare
 // column number on its own row, or keeps its absolute [flexRow, col] otherwise).
 function tokenValue(token: CycleToken, destRow: number): LayoutMappingEntry {
@@ -132,7 +155,7 @@ function tokenValue(token: CycleToken, destRow: number): LayoutMappingEntry {
 export function permute(base: LayoutMapping, ...cycles: string[]): LayoutMapping {
     const result = copyKeymap(base);
     for (const spec of cycles) {
-        const tokens = parseCycle(spec);
+        const tokens = parseCycle(spec).map((t) => resolveToken(base, t));
         const positions = tokens.map((t) => findToken(base, t));
         positions.forEach((pos, i) => {
             if (pos === null && i !== 0) {

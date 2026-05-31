@@ -2,6 +2,7 @@ import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "
 import {mapValues} from "../library/records.ts";
 import {mirrorOdd, SymmetricKeyWidth} from "./keyWidth.ts";
 import {ergoFamilyKeyColorClass} from "./layout-functions.ts";
+import {permute} from "./permutation-functions.ts";
 
 const keyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0, 0.25]);
 
@@ -95,6 +96,9 @@ export const ergoPlankLayoutModel: LayoutModel = {
 
 const midShiftKeyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0.5, 0.5]);
 
+// Shared left-side "angle-mod" rotation used by the MidShift lower-row-characters frames.
+const ANGLE_MOD_LEFT = "<⇧⌦`[3:4,3,2,1,0]";
+
 export function createErgoPlankMidShiftLowerCharacters(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
@@ -118,35 +122,13 @@ export function createErgoPlankMidShiftLowerCharacters(lm: LayoutModel): LayoutM
             mirrorOdd(1.25, 1.25, 1.25, 1.25, 1.5, 1),
         ],
 
+        // Thumb30 needs its own left cycle because + (not `~) ends up on its home row,
+        // so the cycle threads + in before the letter block.
         frameMappings:  {
-            [KeymapTypeId.Ansi30]: [
-                ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
-                ["↹", 0, 1, 2, 3, 4, "-", null, "+", 5, 6, 7, 8, 9, "'"],
-                ["⇧", 0, 1, 2, 3, 4, "⇤", "⌦", "⇥", 5, 6, 7, 8, 9, "⇧"],
-                [0, 1, 2, 3, 4, "`~", "⇞", "⇟", "\\", 5, 6, 7, 8, 9],
-                ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "Ins", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"]
-            ],
-            [KeymapTypeId.Ansi32]: [
-                ["Esc", "1", "2", "3", "4", "5", "\\", "/", "6", "7", "8", "9", "0", "⌫"],
-                ["↹", 0, 1, 2, 3, 4, "'", null, [2, 10], 5, 6, 7, 8, 9, 10],
-                ["⇧", 0, 1, 2, 3, 4, "⇤", "⌦", "⇥", 5, 6, 7, 8, 9, "⇧"],
-                [0, 1, 2, 3, 4, "`~", "⇞", "⇟", "+", 5, 6, 7, 8, 9],
-                ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "Ins", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"]
-            ],
-            [KeymapTypeId.Thumb30]:  [
-                ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
-                ["↹", 0, 1, 2, 3, 4, "`~", null, "'", 5, 6, 7, 8, 9, "⏎"],
-                ["⇧", 0, 1, 2, 3, 4, "⇤", "⌦", "⇥", 5, 6, 7, 8, 9, "⇧"],
-                [0, 1, 2, 3, 4, "+", "⇞", "⇟", "\\", 5, 6, 7, 8, "/"],
-                ["Ctrl", "Cmd", "Fn", "Alt", 0, "Ins", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"]
-            ],
-            [KeymapTypeId.Thumb32]: [
-                ["Esc", "1", "2", "3", "4", "5", "\\", "/", "6", "7", "8", "9", "0", "⌫"],
-                ["↹", 0, 1, 2, 3, 4, "'", null, 10, 5, 6, 7, 8, 9, "⏎"],
-                ["⇧", 0, 1, 2, 3, 4, "⇤", "⌦", "⇥", 5, 6, 7, 8, 9, "⇧"],
-                [0, 1, 2, 3, 4, "`~", "⇞", "⇟", "+", 5, 6, 7, 8, 9],
-                ["Ctrl", "Cmd", "Fn", "Alt", 0, "Ins", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"]
-            ],
+            [KeymapTypeId.Ansi30]: permute(lm.frameMappings[KeymapTypeId.Ansi30]!, ANGLE_MOD_LEFT, ">⇧'\\[3:9]"),
+            [KeymapTypeId.Thumb30]: permute(lm.frameMappings[KeymapTypeId.Thumb30]!, "<⇧⌦`+[3:4,3,2,1,0]", ">⇧'\\/"),
+            [KeymapTypeId.Ansi32]: permute(lm.frameMappings[KeymapTypeId.Ansi32]!, ANGLE_MOD_LEFT, ">⇧[2:10]+[3:9]"),
+            [KeymapTypeId.Thumb32]: permute(lm.frameMappings[KeymapTypeId.Thumb32]!, ANGLE_MOD_LEFT, ">⇧[1:10]+[3:9]"),
         },
     }
 }

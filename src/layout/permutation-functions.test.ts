@@ -83,6 +83,18 @@ describe("permute", () => {
         expect(() => permute(base, "a[9:9]")).toThrow(/must be the first token/);
     });
 
+    it("lets a single-char token stand in for a 2-char label by its first character", () => {
+        const base: LayoutMapping = [["`~", "a"]];
+        // ` has no exact match but uniquely starts the 2-char label `~, so it resolves to it.
+        expect(permute(base, "`a")).toEqual([["a", "`~"]]);
+    });
+
+    it("prefers an exact single-char match over a 2-char label resolution", () => {
+        const base: LayoutMapping = [["`", "`~", "a"]];
+        // The literal ` exists, so the token binds to it, leaving `~ untouched.
+        expect(permute(base, "`a")).toEqual([["a", "`~", "`"]]);
+    });
+
     it("throws when a token matches more than one cell", () => {
         const base: LayoutMapping = [["x", "x"]];
         expect(() => permute(base, "xy")).toThrow(/must be unique/);
