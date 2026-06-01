@@ -4,6 +4,8 @@ import {mirrorOdd, SymmetricKeyWidth} from "./keyWidth.ts";
 import {ergoFamilyKeyColorClass} from "./layout-functions.ts";
 import {permute} from "./permutation-functions.ts";
 
+// TODO: find a way to evaluate if this chamfering of the bottom corner is as useful as it is pretty.
+//       Given that our arms come from that direction, moving the edge key toward the center, might make it harder to hit.
 const keyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0, 0.25]);
 
 const ansi30FrameMapping: LayoutMapping = [
