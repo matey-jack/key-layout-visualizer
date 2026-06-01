@@ -122,3 +122,10 @@ Home/End ⇤ ⇥  and Page Up/Down ⇞ ⇟ naturally go together with the added 
 Insert and Delete are traditionally paired as well, but since the Delete key is much more important and the Insert key barely has any use today, Delete will get a preferred spot (see above) and Insert might not even be a base layer key at all.
 But one can pair them by mapping Insert onto a layer of the physical Delete key!
 
+Note that Home and End are often used during typing (for example to go back to where one was writing after having made an edit a few words back in that line).
+Therefore, it makes sense to have them mapped to the keyboard center to be reached with the index finger. (It's a wide reach, but at least your hands are not blocking the key from being seen.)
+Placing them in the bottom row (underneath the hands) can also work, because one can memorize the finger curl to hit them pretty quickly. And it doesn't happen as often as typing characters, so it doesn't have to be that fast. In my experience, bottom row keys can be hit comfortably with a knuckle. That's much less straining than trying to move your fingertip there!
+
+Page Up and Down, on the other hand, are more often used when reading only and therefore should be positioned towards the edge of the keyboard, so one's hand can rest completely on the table. Having them on the top (number) row is bad, because the hand would rest on the keyboard or have to stretch a lot to reach them. This is why the Ergoplank has them mapped in the center of the lower row while Ergoboard and Thumbs Up have them mapped on the right side of the keyboard, where the hand can rest next to the keyboard. Thumbs Up is the only one that actually maps Page Up above Page Down.
+
+If there are no physical Page Up/Down keys (or even no physical Home/End) then it's a good mnemonic to map them on higher layers of each other or the arrow keys if those exist. 
