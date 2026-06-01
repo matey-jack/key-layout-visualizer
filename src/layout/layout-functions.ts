@@ -273,7 +273,7 @@ export function getKeyPositions(layoutModel: LayoutModel, split: boolean, fullMa
   from two different finger home keys. This definition affects exactly 6 keys on qwerty (and most ErgoPlank family members,
   with the notable exception of the EB16/5 MS) and it affects 12 keys on all the Harmonic keyboards.
  */
-    const homeRowKeys = result.filter(k => k.row === KeyboardRows.Home);
+    const homeRowKeys = result.filter(k => k.row === KeyboardRows.Home && k.finger != null);
     for (const k of result) {
         if (k.row !== KeyboardRows.Upper && k.row !== KeyboardRows.Lower) continue;
         const nearby = homeRowKeys.filter(h => Math.abs(h.colPos - k.colPos) <= 0.5);
