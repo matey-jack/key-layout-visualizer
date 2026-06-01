@@ -7,21 +7,15 @@
     flex-direction: row;
     width: 100%;
     margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid var(--ui-btn-border);
+    border-radius: var(--btn-radius);
     overflow: hidden;
 }
 
 .mapping-filter-tab {
-    flex: 1;
-    min-width: 0;
-    background-color: #f9f9f9;
-    border: none;
-    border-right: 1px solid #ccc;
+    /* width, divider, and selected/hover come from .toggle-btn + .toggle-btn--seg.
+       These override the default padding and add multi-line text handling. */
     padding: 0.5rem 0.25rem;
-    font-size: 0.85rem;
-    font-family: inherit;
-    cursor: pointer;
     text-align: center;
     white-space: normal;
     word-break: keep-all;
@@ -29,21 +23,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.15s ease;
 }
 
 .mapping-filter-tab:last-child {
     border-right: none;
-}
-
-.mapping-filter-tab:hover:not(.selected) {
-    background-color: #eaeaea;
-}
-
-.mapping-filter-tab.selected {
-    background-color: #5cdbef;
-    color: #003fae;
-    font-weight: bold;
 }
 
 .mapping-list {

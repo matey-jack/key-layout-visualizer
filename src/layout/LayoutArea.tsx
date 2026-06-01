@@ -158,7 +158,7 @@ function TopBarKeyboardTab({layoutType, layoutName, layoutNote, currentLayout, s
     return <div class={"top-bar-keyboard-tab-label-and-note" + (selected ? " selected" : "")}>
         <button type="button"
                 onClick={() => setLayout({type: layoutType})}
-                class="top-bar-keyboard-tab-label"
+                class={"toggle-btn toggle-btn--lg top-bar-keyboard-tab-label" + (selected ? " selected" : "")}
         >
             {layoutName}
         </button>

@@ -146,14 +146,14 @@ export const LayoutTypeNames = [
     "ANSI / TypeWriter",
     "Harmonic family",
     "Ergoplank / Katana",
-    "Split Ortho",
+    "Split Orthogonal",
 ];
 
 export const LayoutTypeNotes =[
     "Irregular stagger.",
     "Symmetric 0.5u stagger.",
     "Symmetric 0.25u stagger.",
-    "No row stagger, optional column-stagger."
+    "Optional column-stagger."
 ]
 
 // Enum values need to be fixed as 0..4 because we have literal arrays indexed with this.

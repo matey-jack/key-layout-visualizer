@@ -1,32 +1,41 @@
 .layout-top-bar-container {
     display: grid;
-    justify-items: center;
-    grid-template-columns: 1fr minmax(0, 2fr) minmax(0, 2fr) minmax(0, 2fr) minmax(0, 2fr) 1fr;
-    gap: 1rem;
-    width: 95%;
-    padding: 1rem;
+    justify-items: stretch;
+    grid-template-columns: 0.5fr minmax(0, 2fr) minmax(0, 2fr) minmax(0, 2fr) minmax(0, 2fr) 0.5fr;
+    gap: 1.5rem;
+    width: 98%;
+    /* extra bottom padding reserves room for the floating (absolute) note below the buttons */
+    padding: 1rem 1rem 1.5rem 1rem;
 }
 
 .layout-top-bar-container > div {
     text-align: center;
+    width: 100%;
+}
+
+/* anchor for the absolutely-positioned note */
+.top-bar-keyboard-tab-label-and-note {
+    position: relative;
 }
 
 .top-bar-keyboard-tab-label {
-    background-color: #f0f0f0;
-    padding: 1rem;
-    border-radius: 4px;
-}
-
-.top-bar-keyboard-tab-label-and-note.selected .top-bar-keyboard-tab-label {
-    background-color: #5cdbef;
-    border: 1px solid #003fae;
+    width: 100%;
+    /* fill the grid cell so every button matches the tallest one */
+    height: 100%;
 }
 
 .top-bar-keyboard-tab-note {
+    /* lifted out of the column so it can stay on one line and grow past the
+       column edges (centered under the button) instead of wrapping tall */
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 90vw;
     padding: 0.5rem;
     font-style: italic;
-    min-height: 1.5em;
-    display: block;
+    text-align: center;
     visibility: hidden;
 }
 
@@ -104,13 +113,6 @@
 
 .layout-variant-button {
     margin: 0.25rem 0.5rem;
-    padding: 0.4rem 0.5rem;
-    border-radius: 4px;
-}
-
-.layout-variant-button-and-children.selected .layout-variant-button {
-    background-color: #5cdbef;
-    border: 1px solid #003fae;
 }
 
 .layout-variant-note {
@@ -172,12 +174,6 @@ label.disabled {
 
 .viz-type-button {
     margin: 0.3rem;
-    border-radius: 4px;
-
-    &.selected {
-        background-color: #5cdbef;
-        border: 1px solid #003fae;
-    }
 }
 
 .download-klc-link {
@@ -307,30 +303,6 @@ label.disabled {
     margin-top: 0.35rem;
     margin-bottom: 0.75rem;
     justify-content: flex-start;
-}
-
-.ergoplank-option-button {
-    padding: 0.35rem 0.65rem;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    background-color: #fafbfc;
-    cursor: pointer;
-    font-size: 0.85rem;
-    color: #333;
-    font-family: inherit;
-    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
-}
-
-.ergoplank-option-button:hover {
-    background-color: #f1f3f5;
-    border-color: #abb2b9;
-}
-
-.ergoplank-option-button.selected {
-    background-color: #5cdbef;
-    border-color: #003fae;
-    color: #003fae;
-    font-weight: bold;
 }
 
 .ergoplank-group-label {

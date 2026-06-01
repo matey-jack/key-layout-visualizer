@@ -42,17 +42,17 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
             <div class="ergoplank-group-label">Lower Row</div>
             <div class="ergoplank-button-group">
                 <button type="button"
-                        class={"ergoplank-option-button" + (!options.midShift ? " selected" : "")}
+                        class={"toggle-btn toggle-btn--sm" + (!options.midShift ? " selected" : "")}
                         onClick={() => setOption({midShift: false})}>
                     Shift
                 </button>
                 <button type="button"
-                        class={"ergoplank-option-button" + (options.midShift && !options.epRightReturn ? " selected" : "")}
+                        class={"toggle-btn toggle-btn--sm" + (options.midShift && !options.epRightReturn ? " selected" : "")}
                         onClick={() => setOption({midShift: true, epRightReturn: false})}>
                     Characters
                 </button>
                 <button type="button"
-                        class={"ergoplank-option-button" + (options.midShift && options.epRightReturn ? " selected" : "")}
+                        class={"toggle-btn toggle-btn--sm" + (options.midShift && options.epRightReturn ? " selected" : "")}
                         onClick={() => setOption({midShift: true, epRightReturn: true})}>
                     Enter
                 </button>
@@ -61,17 +61,17 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
             <div class="ergoplank-group-label">Arrows</div>
             <div class="ergoplank-button-group">
                 <button type="button"
-                        class={"ergoplank-option-button" + (options.epArrows === ErgoplankArrows.None ? " selected" : "")}
+                        class={"toggle-btn toggle-btn--sm" + (options.epArrows === ErgoplankArrows.None ? " selected" : "")}
                         onClick={() => setOption({epArrows: ErgoplankArrows.None})}>
                     None
                 </button>
                 <button type="button"
-                        class={"ergoplank-option-button" + (options.epArrows === ErgoplankArrows.Inline ? " selected" : "")}
+                        class={"toggle-btn toggle-btn--sm" + (options.epArrows === ErgoplankArrows.Inline ? " selected" : "")}
                         onClick={() => setOption({epArrows: ErgoplankArrows.Inline})}>
                     Inline
                 </button>
                 <button type="button"
-                        class={"ergoplank-option-button" + (options.epArrows === ErgoplankArrows.Center ? " selected" : "")}
+                        class={"toggle-btn toggle-btn--sm" + (options.epArrows === ErgoplankArrows.Center ? " selected" : "")}
                         onClick={() => setOption({epArrows: ErgoplankArrows.Center})}>
                     Center
                 </button>

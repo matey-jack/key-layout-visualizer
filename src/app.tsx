@@ -62,7 +62,7 @@ interface VizTypeButtonProps {
 
 function VizTypeButton({vizType, signal, children}: VizTypeButtonProps) {
     return <button type="button"
-        class={"viz-type-button" + (vizType === signal.value ? " selected" : "")}
+        class={"toggle-btn toggle-btn--ui viz-type-button" + (vizType === signal.value ? " selected" : "")}
         onClick={() => {signal.value = vizType;}}
     >
         {children}

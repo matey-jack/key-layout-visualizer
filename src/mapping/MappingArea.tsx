@@ -46,7 +46,7 @@ interface FilterTabButtonProps {
 function FilterTabButton({filter, filterSignal, label}: FilterTabButtonProps) {
     return <button
         type="button"
-        class={`mapping-filter-tab${filterSignal.value === filter ? " selected" : ""}`}
+        class={`toggle-btn toggle-btn--ui toggle-btn--seg toggle-btn--sm mapping-filter-tab${filterSignal.value === filter ? " selected" : ""}`}
         onClick={() => { filterSignal.value = filter; }}
     >
         {label}

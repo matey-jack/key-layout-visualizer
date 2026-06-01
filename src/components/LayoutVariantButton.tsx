@@ -14,7 +14,7 @@ export function LayoutVariantButton<T>({variant, currentVariant, setVariant, nam
     const selected = variant === currentVariant;
     return <div class={"layout-variant-button-and-children" + (selected ? " selected" : "")}>
         <button type="button"
-            className="layout-variant-button"
+            className={"toggle-btn layout-variant-button" + (selected ? " selected" : "")}
             onClick={() => setVariant(variant)}
         >
             {name}
