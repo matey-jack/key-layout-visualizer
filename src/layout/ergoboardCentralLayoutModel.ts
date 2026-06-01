@@ -1,5 +1,6 @@
 import {KEY_COLOR, KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
 import {mirrorOdd, SymmetricKeyWidth} from './keyWidth.ts';
+import {patchThumb30, patchThumb32, permute} from './permutation-functions.ts';
 
 const keyWidthsGen = new SymmetricKeyWidth(16, [0, 0, 0, 0, 0.5]);
 
@@ -15,6 +16,14 @@ const ansi30FrameMapping: LayoutMapping = [
     ["Esc", "`~", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
     ["↹", 0, 1, 2, 3, 4, "-", null, "+", 5, 6, 7, 8, 9, "⌫"],
     ["⇧", 0, 1, 2, 3, 4, "\\", "Ins", "'", 5, 6, 7, 8, 9, "⇧"],
+    ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "↑", null, "⇥", 5, 6, 7, 8, 9, "Fn"],
+    ["Cmd", "⌦", "Alt", "⏎", null, "←", "↓", "→", null, "⍽", "AltGr", "Menu", "Ctrl"],
+];
+
+const ansi32FrameMapping: LayoutMapping = [
+    ["Esc", "`~", "1", "2", "3", "4", "5", "⇤", "⇥", "6", "7", "8", "9", "0", "⇞", "⇟"],
+    ["↹", 0, 1, 2, 3, 4, [2, 10], null, 10, 5, 6, 7, 8, 9, "⌫"],
+    ["⇧", 0, 1, 2, 3, 4, "/", "\\", "'", 5, 6, 7, 8, 9, "⇧"],
     ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "↑", null, "⇥", 5, 6, 7, 8, 9, "Fn"],
     ["Cmd", "⌦", "Alt", "⏎", null, "←", "↓", "→", null, "⍽", "AltGr", "Menu", "Ctrl"],
 ];
@@ -46,27 +55,13 @@ export const ergoboardCentralLayoutModel: LayoutModel = {
 
     frameMappings: {
         [KeymapTypeId.Ansi30]: ansi30FrameMapping,
-        [KeymapTypeId.Ansi32]: [
-            ["Esc", "`~", "1", "2", "3", "4", "5", "⇤", "⇥", "6", "7", "8", "9", "0", "⇞", "⇟"],
-            ["↹", 0, 1, 2, 3, 4, [2, 10], null, 10, 5, 6, 7, 8, 9, "⌫"],
-            ["⇧", 0, 1, 2, 3, 4, "/", "\\", "'", 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "↑", null, "⇥", 5, 6, 7, 8, 9, "Fn"],
-            ["Cmd", "⌦", "Alt", "⏎", null, "←", "↓", "→", null, "⍽", "AltGr", "Menu", "Ctrl"],
-        ],
-        [KeymapTypeId.Thumb30]: [
-            ["Esc", "`~", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
-            ["↹", 0, 1, 2, 3, 4, "-", null, "+", 5, 6, 7, 8, 9, "⌫"],
-            ["⇧", 0, 1, 2, 3, 4, "'", "Ins", "\\", 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "↑", null, "⇥", 5, 6, 7, 8, "/", "Fn"],
-            ["Cmd", "⌦", "Alt", "⏎", null, "←", "↓", "→", null, "⍽", "AltGr", "Menu", "Ctrl"],
-        ],
-        [KeymapTypeId.Thumb32]: [
-            ["Esc", "`~", "1", "2", "3", "4", "5", "⇤", "⇥", "6", "7", "8", "9", "0", "⇞", "⇟"],
-            ["↹", 0, 1, 2, 3, 4, "\\", null, 10, 5, 6, 7, 8, 9, "⌫"],
-            ["⇧", 0, 1, 2, 3, 4, "/", "Ins", "'", 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", 0, 1, 2, 3, 4, "\\", null, "↑", null, "⇥", 5, 6, 7, 8, 9, "Fn"],
-            ["Cmd", "⌦", "Alt", "⏎", null, "←", "↓", "→", null, "⍽", "AltGr", "Menu", "Ctrl"],
-        ],
+        [KeymapTypeId.Thumb30]: patchThumb30(ansi30FrameMapping, "[4:0]⏎F+-", "/[3:9]"),
+        [KeymapTypeId.Ansi32]: ansi32FrameMapping,
+        [KeymapTypeId.Thumb32]: permute(
+            patchThumb32(ansi32FrameMapping, "[4:0]⏎F[2:10]"),
+            // just an attempt to have no modifier/command key in the main area ;-)
+            "€FM"
+        ),
     },
 
     keyColorClass(label: string, row: KeyboardRows, col: number) {
