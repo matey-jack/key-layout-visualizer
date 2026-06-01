@@ -47,7 +47,7 @@
 - Ergoboard variants (all my 65% type variants don't look like a simple Plank anymore, therefore "board".) 
  - EB Mid Enter and Big Enter
  - EB MidShift with horizontal and vertical Enter
- - Note the slightly confusing wording: "mid shift" refers to the middle row, whereas "mid enter" refers to a medium size and to a key position not at the edge. 
+ - Note the slightly confusing wording: "Mid-shift" refers to the middle row, whereas "mid enter" refers to a medium size and to a key position not at the edge.
  - EB MidShift vertical Enter (and 1.75u backspace)
 - Ergoslat, with and without number row
 
@@ -70,7 +70,7 @@
 - added a thumb23 KeyMapType so that my cozy key map can be represented including the German characters
 - added a filter for non-English keymaps in the mapping list – and at least one or two French mappings to show off
   that the international support is generic.
-- SplitOrtho: Mid Shift is now the default and Thumb Shift an option.
+- SplitOrtho: Mid-shift is now the default and Thumb Shift an option.
 
 
 bugs fixed:

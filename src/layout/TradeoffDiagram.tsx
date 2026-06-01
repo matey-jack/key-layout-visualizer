@@ -131,7 +131,7 @@ export function TradeoffDiagram({layout, selectedMapping, onSelectMapping}: Trad
     return (
         <svg viewBox={`${VIEW_X} ${VIEW_Y} ${VIEW_W} ${VIEW_H}`}
              class="tradeoff-svg">
-            <title>Learning effort trade-off</title>
+            <title>Learning Effort Trade-off</title>
 
             {/* Background covering the whole SVG */}
             <rect x={VIEW_X} y={VIEW_Y}

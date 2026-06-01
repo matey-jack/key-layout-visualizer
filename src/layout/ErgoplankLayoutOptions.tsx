@@ -91,13 +91,13 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
 
         <LayoutVariantButton variant={PlankVariant.ERGOBOARD_CENTRAL}
                             currentVariant={variant} setVariant={setVariant}
-                            name="❤️Ergoboard Central"
+                            name="❤️ Ergoboard 16/5 Central"
         >
         </LayoutVariantButton>
 
         <LayoutVariantButton variant={PlankVariant.ERGOBOARD_MID_SHIFT}
                             currentVariant={variant} setVariant={setVariant}
-                            name="Ergoboard 16/x (Midshift)">
+                            name="Ergoboard 16/x Legacy Ed">
             <div class="variant-options-row">
                 <div class="variant-option-column">
                     <ErgoboardMidshiftLayoutOptions msVariant={options.ergoboardMidshiftVariant}

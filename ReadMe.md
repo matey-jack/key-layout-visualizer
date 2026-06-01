@@ -62,16 +62,16 @@ Thanks to the row staggering, this position is easy enough to reach for the pink
 On split ergo keyboards, which are usually ortholinear or column-staggered, this typewriter-like position of the Shift key becomes problematic:
  - the Shift key in the lower row does not overlap with the pinky home key anymore. Instead, it's an awkward diagonal move.
  - this matters even more, since split ergo keyboards have a key arrangement that encourages less hand movement.
- - finally, since most split-ergo keyboards have uniform key sizes, there is no reason to keep Shift on its standard position. Many keyboards have it on a thumb key; others have it on the home row just next to the pinky's home position. That's what I call "mid-shift".
+ - finally, since most split-ergo keyboards have uniform key sizes, there is no reason to keep Shift on its standard position. Many keyboards have it on a thumb key; others have it on the home row just next to the pinky's home position. That's what I call "Mid-shift".
 
 Since the Shift key is used more often than some letters or other characters, it should definitely not get a harder-to-reach position than those letters and other characters. 
 This is why the "low-shift" (typewriter-like) position doesn't make any sense in an (ortho or col-stag) ergonomic keyboard.
 And this raises a question for the "intermediate ergonomic" keyboards, that are still row-staggered: 
 low-shift works on those, if there is enough overlap between the Shift and pinky-home keys. 
-But mid-shift actually always works on all kinds of keyboards.
+But Mid-shift actually always works on all kinds of keyboards.
 
 Terminology used in this app:
- - mid-shift and low-shift as just explained: pinky-operated on the home row or below.
+ - Mid-shift and low-shift as just explained: pinky-operated on the home row or below.
  - mix-shift: when the keyboard layout has a different Shift-key position depending on the selected keymap for letters.
  - switch-shift: when the app allows switching the Shift key position of a keyboard layout independently of the selected keymap. 
 

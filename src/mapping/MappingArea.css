@@ -15,7 +15,7 @@
 .mapping-filter-tab {
     /* width, divider, and selected/hover come from .toggle-btn + .toggle-btn--seg.
        These override the default padding and add multi-line text handling. */
-    padding: 0.5rem 0.25rem;
+    padding: 0.5rem 1rem;
     text-align: center;
     white-space: normal;
     word-break: keep-all;

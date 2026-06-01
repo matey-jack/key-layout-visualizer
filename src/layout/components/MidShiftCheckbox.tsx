@@ -7,7 +7,7 @@ type MidShiftCheckboxProps = {
 }
 
 export function MidShiftCheckbox({options, setOption}: MidShiftCheckboxProps) {
-    return <CheckboxWithLabel label="Mid-Shift"
+    return <CheckboxWithLabel label="Mid-shift"
                               checked={options.midShift}
                               onChange={(midShift) => setOption({midShift})}/>
 }

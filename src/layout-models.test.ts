@@ -280,7 +280,7 @@ describe("midShift variants don't change the character set", () => {
     ]
      pairs.forEach(([lowShift, midShift]) => {
          (Object.keys(lowShift.frameMappings) as KeymapTypeId[]).forEach((keymapType) => {
-             it(`${lowShift.name}[${keymapType}] has the same keys in low and mid shift variants`, () => {
+             it(`${lowShift.name}[${keymapType}] has the same keys in Low- and Mid-shift variants`, () => {
                  const lsKeys = getStringKeys(lowShift.frameMappings[keymapType]!);
                  const msKeys = getStringKeys(midShift.frameMappings[keymapType]!);
                  expect(lsKeys).toEqual(msKeys);

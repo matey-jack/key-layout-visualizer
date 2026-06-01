@@ -466,7 +466,7 @@ describe('getKeyPositions hasAltFinger - matches layoutModel.hasAltFinger', () =
         checkHasAltFinger(harmonic13MidshiftLayoutModel, "weriop" + "xcvm,.");
     });
 
-    it('ErgoPlank (low shift)', () => {
+    it('ErgoPlank (Low-shift)', () => {
         checkHasAltFinger(ergoplank15LayoutModel, "zxcm,.");
     });
 

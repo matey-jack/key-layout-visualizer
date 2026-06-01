@@ -56,7 +56,7 @@ export function getHarmonicVariant(variant: HarmonicVariant): LayoutModel {
             return harmonic14TraditionalLayoutModel;
         case HarmonicVariant.H13_Wide:
             return harmonic13WideLayoutModel;
-        case HarmonicVariant.H13_MidShift:
+        case HarmonicVariant.H13_Mid_shift:
             return harmonic13MidshiftLayoutModel;
         default:
             return harmonic12LayoutModel;

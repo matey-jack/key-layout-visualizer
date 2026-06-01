@@ -2,10 +2,7 @@ Those are things that I seriously plan on doing.
 Feature ideas that I am not so sure about are in `ideas.txt`.
 
 small improvements:
- - unify selected style of buttons (bold blue text)
- - make all layout variant buttons equally spaced (and maybe even have the same button size)
-   let the options be centered under each button and take up space into the neighbors' territory.
-   (in case of first and last column, left or right align, respectively)
+ - Ergoplank layout option presentation in UI: could be nicer, but some variants might be deleted soon anyway.
 
 further refactorings:
  - check if some more thumbXX frame mappings can be generated with the patchThumb3x functions.

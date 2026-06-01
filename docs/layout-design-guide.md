@@ -25,16 +25,16 @@ Keys at the edge of a row usually fill the entire space created by the stagger, 
 
 # Shift needs to be placed close to a home key
 
-## Low Shift 
+## Low-shift 
 
 If Shift is in the traditional lower row outside position, then it needs to at least overlap the pinky finger's home key.
 (Moving the home keys to the right as in the ANSI/Colemak wide mod works towards this and is the only option in all of the custom layouts.) 
-We call this the "low shift". 
+We call this the "Low-shift". 
 On orthogonally aligned layouts, there is no partial overlap between keys of different rows, thus the only acceptable position is the key directly below the pinky's home key. 
 In both cases (ortho and row-staggered), the conventional position of `/` (in the US keymap) or `-` (in the German one) will conflict and that character has to move.
 Similarly, on the left side, it prevents us from properly staggering `z` (and all its neighboring keys) a little outward to align the finger movement in a straight line when using symmetrical row-staggering.
 
-## Mid Shift 
+## Mid-shift 
 
 Another great position for the Shift key is just one key outside the pinky's position on the home row. 
 This is very comfortable and has the advantage of allowing the same movement both on ortho and row-staggered keyboards, which is great if you use both of them regularly. 
@@ -45,7 +45,7 @@ The disadvantage is that this is hard to get working on a traditionally-shaped r
 
 Since thumbs don't have much trained muscle memory from traditional keyboards, it's easy to assign them new duties.
 Also, thumbs move more independently of the other fingers and Shift on a thumb can be used to get away with just using a single Shift key.
-A side advantage compared to Mid Shift is that the apostrohe's muscle memory can be kept.
+A side advantage compared to Mid-shift is that the apostrohe's muscle memory can be kept.
 
 # Other important non-character keys
 
@@ -74,7 +74,7 @@ A wide hand position naturally has the smallest edge keys in the home-row where 
 The inward stagger then creates the next-smallest edge key in the row above which is the closest available alternative spot for the Enter key.
 Because Enter on small keys doesn't look good, and in particular 1u keys so close to the finger's home positions are better used for character keys, it's often best to simply map Enter to one of the new central bottom row keys. 
 
-An exciting alternative opens in Mid Shift layouts: due to the staggering, the traditional, now freed, Shift key position ends up to be one of the wider keys on the board and is an excellent place to map Enter.
+An exciting alternative opens in Mid-shift layouts: due to the staggering, the traditional, now freed, Shift key position ends up to be one of the wider keys on the board and is an excellent place to map Enter.
 It's close to where people expect it and can be hit with one's thumb while using the mouse.
 And being there in the lower row, maybe with a keycap that has a highlight color, it looks a bit like a lowrider car.
 
@@ -88,7 +88,7 @@ Anyway, but Escape and Tab take any key size that they can get and usually it wi
 
 This shouldn't be a primary key, since it can be activated by pressing both Shift keys together or be mapped on another layer.
 
-And if you really want a base-layer Caps key, then I recommend to put it somewhere else and liberate its traditional position for some other function such as Mid Shift or Delete or even a character if it happens to be 1u key in the layout.
+And if you really want a base-layer Caps key, then I recommend to put it somewhere else and liberate its traditional position for some other function such as Mid-shift or Delete or even a character if it happens to be 1u key in the layout.
 
 ## Delete
 

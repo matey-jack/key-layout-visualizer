@@ -20,7 +20,7 @@ export enum HarmonicVariant {
     H14_Wide,  // wide home row, lower row shift.
     H14_Traditional,  // narrow home row, lower row 2u shift.
     H13_Wide, // narrow home row, lower row shift.
-    H13_MidShift, // narrow home row, home row shift.
+    H13_Mid_shift, // narrow home row, home row shift.
     H12, // wide home row, lower row shift.
     // The H12 has no nickname, since an H12 narrow doesn't have enough keys to be practical.
 }
@@ -50,10 +50,10 @@ export enum ErgoboardLowshiftVariant {
 }
 
 export enum ErgoboardMidshiftVariant {
-    EXTRA_WIDE, // Same key sizes as low shift "wide hands", but keymap changed for wider home position.
-    COMFY_WIDE, // Same key sizes as low shift "less gaps", but keymap changed for wider home position.
-    SEMI_WIDE, // Same key sizes as low shift wide hands; even same hand position; only Shift assignment moves. (This is the widest possible hand position that still fits the traditional Return key position.
-    RIGHT_ENTER, // Similar key sizes as low shift "less gaps", same hand position, lower row 0.25 stagger.
+    EXTRA_WIDE, // Same key sizes as Low-shift "wide hands", but keymap changed for wider home position.
+    COMFY_WIDE, // Same key sizes as Low-shift "less gaps", but keymap changed for wider home position.
+    SEMI_WIDE, // Same key sizes as Low-shift wide hands; even same hand position; only Shift assignment moves. (This is the widest possible hand position that still fits the traditional Return key position.
+    RIGHT_ENTER, // Similar key sizes as Low-shift "less gaps", same hand position, lower row 0.25 stagger.
     VERTICAL_ENTER, // Like "right enter", only Enter, Backspace, right Shift change.
     CENTRAL_ENTER, // Same as RIGHT_ENTER, but 1.5u key in upper row gap.
 }

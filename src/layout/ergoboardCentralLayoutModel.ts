@@ -31,7 +31,7 @@ const ansi32FrameMapping: LayoutMapping = [
 export const ergoboardCentralLayoutModel: LayoutModel = {
     name: "Ergoboard with Central Arrows",
     description: `A 16u wide variant of the Ergoplank with central navigation keys.
-    Edit the keyWidths and frameMappings directly in code to experiment with stagger and gaps!`,
+    It doesn't need any variants or options, because it's just great as it is. `,
     rowIndent: keyWidthsGen.rowIndent,
     keyWidths,
     mainFingerAssignment: [
