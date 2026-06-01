@@ -8,6 +8,7 @@ import {
     createApple,
     createHHKB
 } from "./layout/ansiLayoutModel.ts";
+import {ergoboardCentralLayoutModel} from './layout/ergoboardCentralLayoutModel.ts';
 import {ergoboardBigEnterLayoutModel, ergoboardLowshiftLayoutModel} from "./layout/ergoboardLowshiftLayoutModel.ts";
 import {
     ergoboardLowshiftWideAngleModLayoutModel,
@@ -55,12 +56,30 @@ const layoutModels: Array<LayoutModel> = [
     xhkb15LayoutModel,
     xhkb16LayoutModel,
     ahkbLayoutModel,
+    // Harmonics
+    harmonic12LayoutModel,
+    harmonic13WideLayoutModel,
+    harmonic13MidshiftLayoutModel,
+    harmonic14WideLayoutModel,
+    harmonic14TraditionalLayoutModel,
+    // Ergoplanks
+    katanaLayoutModel,
     majorErgoslatLayoutModel(false),
     majorErgoslatLayoutModel(true),
     minorErgoslatLayoutModel(false),
     minorErgoslatLayoutModel(true),
     makeErgoslatNumberless(majorErgoslatLayoutModel(false)),
     makeErgoslatNumberless(minorErgoslatLayoutModel(false)),
+    ergoplank15LayoutModel,
+    createErgoPlankMidShiftLowerCharacters(ergoplank15LayoutModel),
+    createErgoPlankMidShiftRightReturn(ergoplank15LayoutModel),
+    createErgoPlankInlineArrows(ergoplank15LayoutModel),
+    createErgoPlankInlineArrows(createErgoPlankMidShiftLowerCharacters(ergoplank15LayoutModel)),
+    createErgoPlankInlineArrows(createErgoPlankMidShiftRightReturn(ergoplank15LayoutModel)),
+    createErgoPlankCenterArrows(ergoplank15LayoutModel),
+    createErgoPlankCenterArrows(createErgoPlankMidShiftLowerCharacters(ergoplank15LayoutModel)),
+    createErgoPlankCenterArrows(createErgoPlankMidShiftRightReturn(ergoplank15LayoutModel)),
+    ergoboardCentralLayoutModel,
     ergoboardLowshiftLayoutModel,
     ergoboardBigEnterLayoutModel,
     ergoboardLowshiftWideLayoutModel,
@@ -71,21 +90,7 @@ const layoutModels: Array<LayoutModel> = [
     ergoboardVerticalEnterLayoutModel,
     ergoboardMidshiftExtraWideLayoutModel,
     ergoboardMidshiftSemiWideLayoutModel,
-    ergoplank15LayoutModel,
-    createErgoPlankMidShiftLowerCharacters(ergoplank15LayoutModel),
-    createErgoPlankMidShiftRightReturn(ergoplank15LayoutModel),
-    createErgoPlankInlineArrows(ergoplank15LayoutModel),
-    createErgoPlankInlineArrows(createErgoPlankMidShiftLowerCharacters(ergoplank15LayoutModel)),
-    createErgoPlankInlineArrows(createErgoPlankMidShiftRightReturn(ergoplank15LayoutModel)),
-    createErgoPlankCenterArrows(ergoplank15LayoutModel),
-    createErgoPlankCenterArrows(createErgoPlankMidShiftLowerCharacters(ergoplank15LayoutModel)),
-    createErgoPlankCenterArrows(createErgoPlankMidShiftRightReturn(ergoplank15LayoutModel)),
-    harmonic12LayoutModel,
-    harmonic13WideLayoutModel,
-    harmonic13MidshiftLayoutModel,
-    harmonic14WideLayoutModel,
-    harmonic14TraditionalLayoutModel,
-    katanaLayoutModel,
+    // Ergosplits
     splitOrthoLayoutModel(false),
     splitOrthoLayoutModel(true),
 ];

@@ -1,10 +1,4 @@
-import {
-    type ErgoboardLowshiftVariant,
-    ErgoboardMidshiftVariant,
-    ErgoplankArrows,
-    type LayoutOptions,
-    PlankVariant
-} from "../app-model.ts";
+import {ErgoboardMidshiftVariant, ErgoplankArrows, type LayoutOptions, PlankVariant} from "../app-model.ts";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {LayoutVariantButton} from "../components/LayoutVariantButton.tsx";
 import {FlipRetRubButton} from "./components/FlipRetRubButton.tsx";
@@ -18,17 +12,6 @@ export interface PlankLayoutOptionsProps {
 export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsProps) {
     const variant = options.plankVariant;
     const setVariant = (plankVariant: PlankVariant) => setOption({plankVariant});
-
-    function lowshiftVariant(v: ErgoboardLowshiftVariant, label: string) {
-        return <div class="ergoplank-lowshift-variants-container">
-            <CheckboxWithLabel label={label}
-                               type="radio"
-                               groupName="lowshift_variant"
-                               checked={options.ergoboardLowshiftVariant === v}
-                               onChange={(checked) => checked && setOption({ergoboardLowshiftVariant: v})}/>
-        </div>
-    }
-
 
     return <div class="plank-layout-options-container">
         <LayoutVariantButton variant={PlankVariant.KATANA_60} currentVariant={variant} setVariant={setVariant} name="Katana60"/>

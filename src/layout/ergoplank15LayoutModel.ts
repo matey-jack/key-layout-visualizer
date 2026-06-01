@@ -53,18 +53,18 @@ export const ergoplank15LayoutModel: LayoutModel = {
     mainFingerAssignment: [
         [1, 1, 1, 2, 3, 3, 3, 6, 6, 6, 7, 8, 8, 8],
         [1, 0, 1, 2, 3, 3, 3, null, 6, 6, 6, 7, 8, 9, 9],
-        [0, 0, 1, 2, 3, 3, 3, 6, 6, 6, 6, 7, 8, 9, 9],
-        [0, 1, 2, 3, 3, 3, 3, 6, 6, 6, 6, 7, 8, 9],
-        [0, 1, 2, 4, 4, 5, 5, 5, 7, 8, 9],
+        [0, 0, 1, 2, 3, 3, null, null, null, 6, 6, 7, 8, 9, 9],
+        [0, 1, 2, 3, 3, 3, null, null, 6, 6, 6, 7, 8, 9],
+        [0, 1, 2, 4, 4, null, 5, 5, 7, 8, 9],
     ],
 
     // Only fixed values can be used. see base-model.ts SKE_*
     singleKeyEffort: [
-        [3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0],
-        [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, 3.0, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0],
-        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, 3.0, 3.0, 3.0, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
-        [1.0, 1.5, 1.5, 1.0, 2.0, 3.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0],
-        [3.0, 3.0, 2.0, 1.5, 0.2, 1.5, 0.2, 1.5, 2.0, 3.0, 3.0],
+        [null, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0],
+        [2.0, 2.0, 1.0, 1.0, 1.5, 2.0, 3.0, null, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0],
+        [1.5, 0.2, 0.2, 0.2, 0.2, 2.0, null, null, null, 2.0, 0.2, 0.2, 0.2, 0.2, 1.5],
+        [1.0, 1.5, 1.5, 1.0, 2.0, 3.0, null, null, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0],
+        [3.0, 3.0, 2.0, 1.5, 0.2, null, 0.2, 1.5, 2.0, 3.0, 3.0],
     ],
 
     rowIndent: keyWidths.rowIndent,
@@ -165,10 +165,10 @@ export function createErgoPlankInlineArrows(lm: LayoutModel): LayoutModel {
         frameMappings: mapValues(lm.frameMappings, (_, mapping) => addInlineArrows(mapping)),
 
         singleKeyEffort: replaceLast(lm.singleKeyEffort,
-            [null, 3.0, 3.0, 2.0, 1.5, 0.2, 1.5, 0.2, 1.5, null, null, null, null, null]
+            [null, 3.0, 3.0, 2.0, 1.5, 0.2, null, 0.2, 1.5, null, null, null, null, null]
         ),
         mainFingerAssignment: replaceLast(lm.mainFingerAssignment,
-            [null, 0, 1, 2, 4, 4, 5, 5, 5, null, null, null, null, null]
+            [null, 0, 1, 2, 4, 4, null, 5, 5, null, null, null, null, null]
         ),
         // remove the bottom row indent
         rowIndent: [...lm.rowIndent.slice(0, 4), 0] as typeof lm.rowIndent,
@@ -196,10 +196,12 @@ export function createErgoPlankCenterArrows(lm: LayoutModel): LayoutModel {
     // For the "lower row characters" variant, we can tune the stagger to a perfect 0.25,
     // which the others don't support because lower left keys would move away from their fingers.
     // (The famous angle-mod problem.)
+    const rowIndent = [...lm.rowIndent] as typeof lm.rowIndent;
     const lowerEdgeWidth = lm.keyWidths[KeyboardRows.Lower][0];
     let upArrowGap = 0.5;
     if (lowerEdgeWidth === 1) {
         upArrowGap = 0.25;
+        rowIndent[KeyboardRows.Lower] = 0.75;
     }
     return {
         ...lm,
@@ -211,6 +213,7 @@ export function createErgoPlankCenterArrows(lm: LayoutModel): LayoutModel {
             [1.0, 1.5, 1.5, 1.0, 2.0, 3.0, null, null, null, 3.0, 2.0, 1.0, 1.5, 1.5, 1.0],
             [3.0, 3.0, 2.0, 0.2, null, null, null, null, null, 0.2, 1.5, 2.0, 3.0]
         ],
+        rowIndent,
         mainFingerAssignment: [
             ...lm.mainFingerAssignment.slice(0, 3),
             [0, 1, 2, 3, 3, 3, null, null, null, 6, 6, 6, 7, 8, 9],
