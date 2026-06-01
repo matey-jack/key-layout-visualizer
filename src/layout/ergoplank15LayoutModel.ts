@@ -193,12 +193,13 @@ function addInlineArrows(list: LayoutMapping):  LayoutMapping {
 }
 
 export function createErgoPlankCenterArrows(lm: LayoutModel): LayoutModel {
+    const rowIndent = [...lm.rowIndent] as typeof lm.rowIndent;
+    rowIndent[KeyboardRows.Bottom] = 0.25;
+    let upArrowGap = 0.5;
     // For the "lower row characters" variant, we can tune the stagger to a perfect 0.25,
     // which the others don't support because lower left keys would move away from their fingers.
     // (The famous angle-mod problem.)
-    const rowIndent = [...lm.rowIndent] as typeof lm.rowIndent;
     const lowerEdgeWidth = lm.keyWidths[KeyboardRows.Lower][0];
-    let upArrowGap = 0.5;
     if (lowerEdgeWidth === 1) {
         upArrowGap = 0.25;
         rowIndent[KeyboardRows.Lower] = 0.75;

@@ -3,12 +3,13 @@ Feature ideas that I am not so sure about are in `ideas.txt`.
 
 small improvements:
  - unify selected style of buttons (bold blue text)
-
-
+ - fix highlight on Ergoplank with central arrows
+ - make all layout variant buttons equally spaced (and maybe even have the same button size)
+   let the options be centered under each button and take up space into the neighbors' territory.
+   (in case of first and last column, left or right align, respectively)
 
 further refactorings:
- - check the similarity relationship of Ergoboard Low Shift and Mid Shift (I think that each Low Shift version has at least one Mid Shift sibling with the exact same edge key sizes!?). Maybe permute() can be used to simplify the keymaps here.
- - check if some more thumbXX frame mappings can be generated with the permute() function.
+ - check if some more thumbXX frame mappings can be generated with the patchThumb3x functions.
 
 missing core features:
 - SVG export (with a title stating name of layout and keymap) ✅ except:
