@@ -41,6 +41,10 @@ body {
     --ui-btn-sel-text: #594600;
 }
 
+h1 {
+    margin-left: 10%;
+}
+
 /* Shared base class for all "pick-exactly-one" toggle buttons. */
 .toggle-btn {
     background-color: var(--btn-bg);
