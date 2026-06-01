@@ -47,7 +47,7 @@ export function DetailsArea({appState}: DetailsAreaProps) {
     const layout = appState.layoutModel.value;
     const mapping = appState.mapping.value;
     const vizType = appState.vizType.value;
-    return <div>
+    return <div class="details-area">
         {isLayoutViz(vizType)
             ? <div className="layout-description">
                 <TruncatedText text={layout.description}/>

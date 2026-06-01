@@ -1,3 +1,9 @@
+.details-area {
+    /* Reserve space so switching visualizations doesn't jump the page height,
+       and so the bottom background fade always has room to sit beneath the content. */
+    min-height: 40rem;
+}
+
 .layout-description {
     margin-bottom: 1rem;
 }

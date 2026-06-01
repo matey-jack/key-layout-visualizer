@@ -6,7 +6,14 @@ html {
 }
 
 body {
-    font-family: 'Nunito Sans', sans-serif;;
+    font-family: 'Nunito Sans', sans-serif;
+    background-color: #fff;                                   /* the white middle */
+    background-image:
+        linear-gradient(to bottom, #cfe8f5, #fff),            /* top fade */
+        linear-gradient(to top, #cfe8f5, #fff);               /* bottom fade */
+    background-repeat: no-repeat, no-repeat;
+    background-size: 100% 360px, 100% 360px;                  /* tune these heights */
+    background-position: top, bottom;
 }
 
 :root {
