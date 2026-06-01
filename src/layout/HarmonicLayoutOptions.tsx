@@ -11,10 +11,10 @@ export function HarmonicLayoutOptions({options, setOption}: HarmonicLayoutOption
     const setVariant = (harmonicVariant: HarmonicVariant) => setOption({harmonicVariant});
 
     return <div class="harmonic-layout-options-container">
-        <LayoutVariantButton variant={HarmonicVariant.H14_Wide} currentVariant={variant} setVariant={setVariant} name="14/4 Macro"/>
-        <LayoutVariantButton variant={HarmonicVariant.H14_Traditional} currentVariant={variant} setVariant={setVariant} name="14/3 Traditional"/>
-        <LayoutVariantButton variant={HarmonicVariant.H13_Wide} currentVariant={variant} setVariant={setVariant} name="13/3 Balance"/>
-        <LayoutVariantButton variant={HarmonicVariant.H13_MidShift} currentVariant={variant} setVariant={setVariant} name="13/2 MidShift"/>
         <LayoutVariantButton variant={HarmonicVariant.H12} currentVariant={variant} setVariant={setVariant} name="12/2 Mini"/>
+        <LayoutVariantButton variant={HarmonicVariant.H13_MidShift} currentVariant={variant} setVariant={setVariant} name="13/2 MidShift"/>
+        <LayoutVariantButton variant={HarmonicVariant.H13_Wide} currentVariant={variant} setVariant={setVariant} name="13/3 Balance"/>
+        <LayoutVariantButton variant={HarmonicVariant.H14_Traditional} currentVariant={variant} setVariant={setVariant} name="14/3 Traditional"/>
+        <LayoutVariantButton variant={HarmonicVariant.H14_Wide} currentVariant={variant} setVariant={setVariant} name="14/4 Macro"/>
     </div>
 }
