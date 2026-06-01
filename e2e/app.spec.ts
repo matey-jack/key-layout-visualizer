@@ -198,7 +198,7 @@ test.describe('Keyboard Layout Visualizer', () => {
 
     // Switch to a different visualization
     const vizButtons = page.locator('button.viz-type-button');
-    const secondButton = vizButtons.nth(0);
+    const secondButton = vizButtons.nth(2);
     await secondButton.click();
     await page.waitForLoadState('networkidle');
 

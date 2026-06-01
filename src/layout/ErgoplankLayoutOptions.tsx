@@ -97,13 +97,13 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
 
         <LayoutVariantButton variant={PlankVariant.ERGOBOARD_CENTRAL}
                             currentVariant={variant} setVariant={setVariant}
-                            name="Ergoboard Central"
+                            name="❤️Ergoboard Central"
         >
         </LayoutVariantButton>
 
         <LayoutVariantButton variant={PlankVariant.ERGOBOARD_MID_SHIFT}
                             currentVariant={variant} setVariant={setVariant}
-                            name="❤️Ergoboard 16/x (Midshift)">
+                            name="Ergoboard 16/x (Midshift)">
             <ErgoboardMidshiftLayoutOptions msVariant={options.ergoboardMidshiftVariant}
                                      setMsVariant={(v) => setOption({ergoboardMidshiftVariant: v})}/>
             <FlipRetRubButton setOption={setOption} options={options}/>

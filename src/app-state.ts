@@ -325,7 +325,7 @@ export function createAppState(): AppState {
     const mappingState = signal(getMappingByName(params.get("mapping")));
     // Initialize previousMappingState with the current mapping to avoid null handling
     const previousMappingState = signal(mappingState.value);
-    const vizType = signal(s2i(params.get("viz")) ?? VisualizationType.LayoutFingering)
+    const vizType = signal(s2i(params.get("viz")) ?? VisualizationType.LayoutPlain)
 
     const mappingDiff = computed(() =>
         diffToBase(layoutModel.value, mappingState.value)
