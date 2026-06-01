@@ -204,10 +204,11 @@ export function createErgoPlankCenterArrows(lm: LayoutModel): LayoutModel {
         upArrowGap = 0.25;
         rowIndent[KeyboardRows.Lower] = 0.75;
     }
+    const frameMappings = mapValues(lm.frameMappings, (_, mapping) => addCenterArrows(mapping));
     return {
         ...lm,
         name: lm.name + " with center arrow keys",
-        frameMappings: mapValues(lm.frameMappings, (_, mapping) => addCenterArrows(mapping)),
+        frameMappings,
 
         singleKeyEffort: [
             ...lm.singleKeyEffort.slice(0, 3),
@@ -226,6 +227,8 @@ export function createErgoPlankCenterArrows(lm: LayoutModel): LayoutModel {
             mirrorOdd(lowerEdgeWidth, 1, 1, 1, 1, 1, upArrowGap, 1),
             mirrorOdd(1.5, 1.25, 1.25, 1.5, 0.25, 1, 1),
         ],
+        // pass the changed layout of the lower row.
+        keyColorClass: ergoFamilyKeyColorClass(frameMappings[KeymapTypeId.Ansi30]),
     }
 }
 
