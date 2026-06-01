@@ -17,64 +17,75 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
         <LayoutVariantButton variant={PlankVariant.KATANA_60} currentVariant={variant} setVariant={setVariant} name="Katana60"/>
 
         <LayoutVariantButton variant={PlankVariant.ERGOSLAT} currentVariant={variant} setVariant={setVariant} name="Ergoslat 13/3">
-            <MidShiftCheckbox options={options} setOption={setOption}/>
-            <CheckboxWithLabel label="57 keys"
-                               type="radio"
-                               groupName="ergoslat_keys"
-                               checked={!options.esNumberless && !options.esSmallerThumbs}
-                               onChange={(checked) => checked && setOption({esNumberless: false, esSmallerThumbs: false})}/>
-            <CheckboxWithLabel label="59 keys"
-                               type="radio"
-                               groupName="ergoslat_keys"
-                               checked={!options.esNumberless && options.esSmallerThumbs}
-                               onChange={(checked) => checked && setOption({esNumberless: false, esSmallerThumbs: true})}/>
-            <CheckboxWithLabel label="47 keys"
-                               type="radio"
-                               groupName="ergoslat_keys"
-                               checked={options.esNumberless}
-                               onChange={(checked) => checked && setOption({esNumberless: true, esSmallerThumbs: true})}/>
+            <div class="variant-options-row">
+                <div class="variant-option-column">
+                    <MidShiftCheckbox options={options} setOption={setOption}/>
+                </div>
+                <div class="variant-option-column">
+                    <CheckboxWithLabel label="57 keys"
+                                       type="radio"
+                                       groupName="ergoslat_keys"
+                                       checked={!options.esNumberless && !options.esSmallerThumbs}
+                                       onChange={(checked) => checked && setOption({esNumberless: false, esSmallerThumbs: false})}/>
+                    <CheckboxWithLabel label="59 keys"
+                                       type="radio"
+                                       groupName="ergoslat_keys"
+                                       checked={!options.esNumberless && options.esSmallerThumbs}
+                                       onChange={(checked) => checked && setOption({esNumberless: false, esSmallerThumbs: true})}/>
+                    <CheckboxWithLabel label="47 keys"
+                                       type="radio"
+                                       groupName="ergoslat_keys"
+                                       checked={options.esNumberless}
+                                       onChange={(checked) => checked && setOption({esNumberless: true, esSmallerThumbs: true})}/>
+                </div>
+            </div>
         </LayoutVariantButton>
 
         <LayoutVariantButton variant={PlankVariant.ERGOPLANK15}
                             currentVariant={variant} setVariant={setVariant}
                             name="❤️ Ergoplank 15/5"
         >
-            <div class="ergoplank-group-label">Lower Row</div>
-            <div class="ergoplank-button-group">
-                <button type="button"
-                        class={"toggle-btn toggle-btn--sm" + (!options.midShift ? " selected" : "")}
-                        onClick={() => setOption({midShift: false})}>
-                    Shift
-                </button>
-                <button type="button"
-                        class={"toggle-btn toggle-btn--sm" + (options.midShift && !options.epRightReturn ? " selected" : "")}
-                        onClick={() => setOption({midShift: true, epRightReturn: false})}>
-                    Characters
-                </button>
-                <button type="button"
-                        class={"toggle-btn toggle-btn--sm" + (options.midShift && options.epRightReturn ? " selected" : "")}
-                        onClick={() => setOption({midShift: true, epRightReturn: true})}>
-                    Enter
-                </button>
-            </div>
-            <hr class="ergoplank-divider"/>
-            <div class="ergoplank-group-label">Arrows</div>
-            <div class="ergoplank-button-group">
-                <button type="button"
-                        class={"toggle-btn toggle-btn--sm" + (options.epArrows === ErgoplankArrows.None ? " selected" : "")}
-                        onClick={() => setOption({epArrows: ErgoplankArrows.None})}>
-                    None
-                </button>
-                <button type="button"
-                        class={"toggle-btn toggle-btn--sm" + (options.epArrows === ErgoplankArrows.Inline ? " selected" : "")}
-                        onClick={() => setOption({epArrows: ErgoplankArrows.Inline})}>
-                    Inline
-                </button>
-                <button type="button"
-                        class={"toggle-btn toggle-btn--sm" + (options.epArrows === ErgoplankArrows.Center ? " selected" : "")}
-                        onClick={() => setOption({epArrows: ErgoplankArrows.Center})}>
-                    Center
-                </button>
+            <div class="variant-options-row">
+                <div class="variant-option-column">
+                    <div class="ergoplank-group-label">Lower Row</div>
+                    <div class="ergoplank-button-group">
+                        <button type="button"
+                                class={"toggle-btn toggle-btn--sm" + (!options.midShift ? " selected" : "")}
+                                onClick={() => setOption({midShift: false})}>
+                            Shift
+                        </button>
+                        <button type="button"
+                                class={"toggle-btn toggle-btn--sm" + (options.midShift && !options.epRightReturn ? " selected" : "")}
+                                onClick={() => setOption({midShift: true, epRightReturn: false})}>
+                            Characters
+                        </button>
+                        <button type="button"
+                                class={"toggle-btn toggle-btn--sm" + (options.midShift && options.epRightReturn ? " selected" : "")}
+                                onClick={() => setOption({midShift: true, epRightReturn: true})}>
+                            Enter
+                        </button>
+                    </div>
+                </div>
+                <div class="variant-option-column">
+                    <div class="ergoplank-group-label">Arrows</div>
+                    <div class="ergoplank-button-group">
+                        <button type="button"
+                                class={"toggle-btn toggle-btn--sm" + (options.epArrows === ErgoplankArrows.None ? " selected" : "")}
+                                onClick={() => setOption({epArrows: ErgoplankArrows.None})}>
+                            None
+                        </button>
+                        <button type="button"
+                                class={"toggle-btn toggle-btn--sm" + (options.epArrows === ErgoplankArrows.Inline ? " selected" : "")}
+                                onClick={() => setOption({epArrows: ErgoplankArrows.Inline})}>
+                            Inline
+                        </button>
+                        <button type="button"
+                                class={"toggle-btn toggle-btn--sm" + (options.epArrows === ErgoplankArrows.Center ? " selected" : "")}
+                                onClick={() => setOption({epArrows: ErgoplankArrows.Center})}>
+                            Center
+                        </button>
+                    </div>
+                </div>
             </div>
         </LayoutVariantButton>
 
@@ -87,9 +98,15 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
         <LayoutVariantButton variant={PlankVariant.ERGOBOARD_MID_SHIFT}
                             currentVariant={variant} setVariant={setVariant}
                             name="Ergoboard 16/x (Midshift)">
-            <ErgoboardMidshiftLayoutOptions msVariant={options.ergoboardMidshiftVariant}
-                                     setMsVariant={(v) => setOption({ergoboardMidshiftVariant: v})}/>
-            <FlipRetRubButton setOption={setOption} options={options}/>
+            <div class="variant-options-row">
+                <div class="variant-option-column">
+                    <ErgoboardMidshiftLayoutOptions msVariant={options.ergoboardMidshiftVariant}
+                                             setMsVariant={(v) => setOption({ergoboardMidshiftVariant: v})}/>
+                </div>
+                <div class="variant-option-column">
+                    <FlipRetRubButton setOption={setOption} options={options}/>
+                </div>
+            </div>
         </LayoutVariantButton>
     </div>
 }
