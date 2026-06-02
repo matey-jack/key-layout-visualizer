@@ -15,13 +15,40 @@ The row stagger should be 0.25u symmetric with the higher rows being staggered b
 (Which reminds me to redefine that row-names enum so that higher rows actually have higher enum numbers.)
 An exception can be made with a 0.5 stagger for the lowest row, because that leads to fewer gaps in the keyboard (and it's the conventional lower-row stagger since the invention of the typewriter).
 
-The stagger reconciles in the middle of the keyboard either by leaving some 0.5u gaps, or adding a 1.5u key. 
-Exceptionally, there could also be a 1.5u gap to avoid asymmetry; or two 1.25u keys if there are good options to map non-character keys unto them. 
+The stagger reconciles in the middle of the keyboard either by leaving gaps or adding larger keys to cover those gaps.
+Since the key switch sits always in the middle of a key, the decision whether to leave a gap or use a large key cap affects the position of the switch and has to be decided when making the switch-plate or PCB.
+(Of course, you can always put a smaller keycap on a switch than was intended, but then you'll end up with gaps on each side, instead of a single one.)
 
 Keys at the edge of a row usually fill the entire space created by the stagger, but there are reasons to put smaller keys there as well:
- - if the key is to be used as a character key it can be 1u
- - if the key would otherwise be the only one (or only pair) of this size
- - "chamfering" the corners of the bottom row, especially if it helps to create a regular size (or combination of sizes) for the keys in that row.
+ - if the key is to be used as a character key, it can be 1u instead.
+ - if the key would otherwise be the only one (or only pair) of this size, it can be a smaller size instead.
+ - "chamfering" the corners of the bottom row, especially if it helps to create a regular size (or combination of sizes) for the keys in that row. 
+
+## Details on the gaps that reconcile symmetric staggering
+
+Four rows of keys with a uniform stagger of 0.25 will leave a 0.5u gap in two of the four rows.
+(Assuming that all key widths are integer multiples of 0.25u) one of those gaps can be centered exactly on the centerline of the keyboard.
+(For layouts with symmetric hand positions and an odd width, like the Ergoplank 15, the centered gap will be in the row with the 1.25u edge keys.)
+If that also happens the centerline between the two hand positions, this will be very beautiful.
+The other gap will be off-center by 0.5u, meaning that when it's placed as close as possible to the center, then one of it's edges will be 0.25u apart from the center.
+
+This can be made symmetric in two different ways:
+ - merge the gap with the 1u key position on the centerline to get a symmetrically centered 1.5u gap. This can then also be used to place a 1.5u key. Delete or Insert conservative candidates for this placement. Tab, Enter and Backspace are also possible, or using it for a special function macro like "Paste". (I once had a key that did "copy" on long-press and "paste" on single-press. That was fun!)
+ - if the hand positions are not symmetric on the keyboard (as happens when the layout has some traditional vibes from putting a large Enter key on the right side or placing navigation arrows there), then the gap could be symmetrically centered on the line between the hands. But still, having two gaps centered on two different kinds of center doesn't look as nice.
+
+The Ergoplank layout avoids the off-center by using a 0.5u stagger on the lower row, which is the same as on typewriters and legacy keyboards.
+This locks the design in a way that the gap will be the row above the home-row and the edge key sizes from top to lower row will be 1.5, 0.25, 1, and 1.5. 
+Since it doesn't have a pair of 1.75u edge keys, this fits one more key on the same surface, and offers simpler logistics with only three sizes of keycaps to deal with.
+
+The Ergoboard with central arrows fills the second gap by putting the Up arrow centered into a 1.5u spot, leaving a 0.25u gap on each side that can be used to find the key by tactile feel. 
+Given the symmetric hand position, this also locks down the sizes of edge keys completely. 
+The gap also appears in the upper (letter) row center and the edge key sizes from top down are 1, 1.75, 1.5, and 1.25u.
+
+Just to be clear, both on the Ergoplank and Ergoboard Central, those edge key size distributions follow directly from the decision to avoid the off-center gap and there is no other way, unless hand position is made asymmetric.
+Examples for the latter are the Ergoboard Extra-Wide and Semi-Wide. 
+As they are shown in the app, one 0.5u gap is centered between hand positions and the other is extended to a 1.5u key also centered between hand positions.  
+But if you look closely, you'll see that this 1.5u key could be replaced with a 1u key plus a gap that would be directly on the centerline of the keyboard. 
+But that's actually not so pretty, thus the layouts use the 1.5u key in this spot.
 
 # Shift needs to be placed close to a home key
 

@@ -38,6 +38,16 @@ This went on for many decades until more ergonomically shaped keyboards started 
 I say, "gain traction," because some ergonomic keyboards such as the Kinesis and Maltron are also ancient by modern standards.
 (My definition of "ancient" is "before most of us were born."))
 
+Names I use for the keyboard rows:
+ - Number row (or top row)
+ - Upper (letter) row
+ - Home row
+ - Lower (letter) row
+ - Bottom row
+
+In the source code, those are numbered from the top starting with 0, because those are the indices into arrays of rows.
+All my documentation refers to the rows by name and even in code, I use the `enum KeyboardRows` everywhere.
+
 ### "Casual" key maps: easy to learn and switch from and back to qwerty.
 
 Most keyboard mapping comparisons today focus on thoroughly optimized mappings of letters which have no resemblance to 
@@ -65,15 +75,16 @@ On split ergo keyboards, which are usually ortholinear or column-staggered, this
  - finally, since most split-ergo keyboards have uniform key sizes, there is no reason to keep Shift on its standard position. Many keyboards have it on a thumb key; others have it on the home row just next to the pinky's home position. That's what I call "Mid-shift".
 
 Since the Shift key is used more often than some letters or other characters, it should definitely not get a harder-to-reach position than those letters and other characters. 
-This is why the "low-shift" (typewriter-like) position doesn't make any sense in an (ortho or col-stag) ergonomic keyboard.
+This is why the "Low-shift" (typewriter-like) position doesn't make any sense in an (ortho or col-stag) ergonomic keyboard.
 And this raises a question for the "intermediate ergonomic" keyboards, that are still row-staggered: 
 low-shift works on those, if there is enough overlap between the Shift and pinky-home keys. 
 But Mid-shift actually always works on all kinds of keyboards.
 
 Terminology used in this app:
- - Mid-shift and low-shift as just explained: pinky-operated on the home row or below.
- - mix-shift: when the keyboard layout has a different Shift-key position depending on the selected keymap for letters.
- - switch-shift: when the app allows switching the Shift key position of a keyboard layout independently of the selected keymap. 
+ - Mid-shift and Low-shift as just explained: pinky-operated on the home row or below.
+ - Mix-shift: when the keyboard layout has a different Shift-key position depending on the selected keymap for letters.
+   (Currently no such layout exists, because I found it distracting.)
+ - Switch-shift: when the app allows switching the Shift key position of a keyboard layout independently of the selected keymap. 
 
 Observations and further work:
  - on the left hand, the CAPS key can be easily repurposed as Shift (which I did on my Laptops and my family can still use the laptop without problems, because the old Shift key is also Shift).
