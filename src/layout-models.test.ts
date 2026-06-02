@@ -122,7 +122,6 @@ const IGNORED_32_KEYS: Record<string, string[]> = {
     "ANSI/Apple with wide hand position": ["\\"],
     [xhkb15LayoutModel.name]: ["Ins"],
     [xhkb16LayoutModel.name]: ["€"],
-    [ergoboardCentralLayoutModel.name]: ["€", "Menu"],
 };
 
 function getExpectedRowLengths(model: LayoutModel): number[] {

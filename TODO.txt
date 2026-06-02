@@ -2,7 +2,7 @@ Those are things that I seriously plan on doing.
 Feature ideas that I am not so sure about are in `ideas.txt`.
 
 small improvements:
- - Ergoplank layout option presentation in UI: could be nicer, but some variants might be deleted soon anyway.
+ - turn all the layout option radio lists (affects Thumbs Up, Ergoslat, Ergoboard Legacy Ed) into buttons like they are on the Ergoplank already.
 
 further refactorings:
  - check if some more thumbXX frame mappings can be generated with the patchThumb3x functions.

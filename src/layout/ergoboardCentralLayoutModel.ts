@@ -21,11 +21,11 @@ const ansi30FrameMapping: LayoutMapping = [
 ];
 
 const ansi32FrameMapping: LayoutMapping = [
-    ["Esc", "`~", "1", "2", "3", "4", "5", "⇤", "⇥", "6", "7", "8", "9", "0", "⇞", "⇟"],
+    ["Esc", "`~", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
     ["↹", 0, 1, 2, 3, 4, [2, 10], null, 10, 5, 6, 7, 8, 9, "⌫"],
-    ["⇧", 0, 1, 2, 3, 4, "/", "\\", "'", 5, 6, 7, 8, 9, "⇧"],
+    ["⇧", 0, 1, 2, 3, 4, "/", "+", "'", 5, 6, 7, 8, 9, "⇧"],
     ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "↑", null, "⇥", 5, 6, 7, 8, 9, "Fn"],
-    ["Cmd", "⌦", "Alt", "⏎", null, "←", "↓", "→", null, "⍽", "AltGr", "Menu", "Ctrl"],
+    ["Cmd", "⌦", "Alt", "⏎", null, "←", "↓", "→", null, "⍽", "AltGr", "Ins", "Ctrl"],
 ];
 
 export const ergoboardCentralLayoutModel: LayoutModel = {
@@ -58,9 +58,7 @@ export const ergoboardCentralLayoutModel: LayoutModel = {
         [KeymapTypeId.Thumb30]: patchThumb30(ansi30FrameMapping, "[4:0]⏎F+-", "/[3:9]"),
         [KeymapTypeId.Ansi32]: ansi32FrameMapping,
         [KeymapTypeId.Thumb32]: permute(
-            patchThumb32(ansi32FrameMapping, "[4:0]⏎F[2:10]"),
-            // just an attempt to have no modifier/command key in the main area ;-)
-            "€FM"
+            patchThumb32(ansi32FrameMapping, "[4:0]⏎FI+[2:10]"),
         ),
     },
 
