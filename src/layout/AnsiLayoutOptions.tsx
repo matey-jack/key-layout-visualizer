@@ -55,7 +55,11 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
                         shareSpace={option.variant === AnsiVariant.XHKB}
                     >
                         {(option.variant === AnsiVariant.IBM || option.variant === AnsiVariant.APPLE) &&
-                            <MidShiftCheckbox options={options} setOption={setOption}/>
+                            <div class="variant-options-row">
+                                <div class="variant-option-column">
+                                    <MidShiftCheckbox options={options} setOption={setOption}/>
+                                </div>
+                            </div>
                         }
                         {option.variant === AnsiVariant.XHKB &&
                             <div class="variant-options-row">
