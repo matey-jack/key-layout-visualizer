@@ -80,7 +80,7 @@ test.describe('Keyboard Layout Visualizer', () => {
   });
 
   test('should have all layout type buttons', async ({ page }) => {
-    const layoutTypeButtons = page.locator('button.top-bar-keyboard-tab-label');
+    const layoutTypeButtons = page.locator('button.layout-type-button');
     const buttonTexts = await layoutTypeButtons.allTextContents();
 
     expect(buttonTexts.length).toBeGreaterThanOrEqual(3);
@@ -182,7 +182,7 @@ test.describe('Keyboard Layout Visualizer', () => {
     await mappingRow.click();
 
     // Click a layout type button
-    const layoutButton = page.locator('button.top-bar-keyboard-tab-label').nth(1);
+    const layoutButton = page.locator('button.layout-type-button').nth(1);
     await layoutButton.click();
     await page.waitForLoadState('networkidle');
 
