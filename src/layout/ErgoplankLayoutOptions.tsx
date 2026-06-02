@@ -1,4 +1,4 @@
-import {ErgoboardMidshiftVariant, ErgoplankArrows, type LayoutOptions, PlankVariant} from "../app-model.ts";
+import {ErgoboardVariant, ErgoplankArrows, type LayoutOptions, PlankVariant} from "../app-model.ts";
 import {LayoutVariantButton} from "../components/LayoutVariantButton.tsx";
 import {FlipRetRubButton} from "./components/FlipRetRubButton.tsx";
 import {MidShiftCheckbox} from "./components/MidShiftCheckbox.tsx";
@@ -100,8 +100,8 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
                             currentVariant={variant} setVariant={setVariant}
                             name="Ergoboard 16/x Legacy Ed">
             <div class="variant-options-row">
-                <ErgoboardMidshiftLayoutOptions msVariant={options.ergoboardMidshiftVariant}
-                                         setMsVariant={(v) => setOption({ergoboardMidshiftVariant: v})}/>
+                <ErgoboardLayoutOptions msVariant={options.ergoboardMidshiftVariant}
+                                        setMsVariant={(v) => setOption({ergoboardMidshiftVariant: v})}/>
                 <div class="variant-option-column">
                     <FlipRetRubButton setOption={setOption} options={options}/>
                 </div>
@@ -110,15 +110,15 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
     </div>
 }
 
-type ErgoboardMidshiftLayoutOptions = {
-    msVariant: ErgoboardMidshiftVariant;
-    setMsVariant: (v: ErgoboardMidshiftVariant) => void;
+type ErgoboardLayoutOptionsProps = {
+    msVariant: ErgoboardVariant;
+    setMsVariant: (v: ErgoboardVariant) => void;
 }
 
-export function ErgoboardMidshiftLayoutOptions({msVariant, setMsVariant}: ErgoboardMidshiftLayoutOptions) {
-    const narrowSubvariant = msVariant > ErgoboardMidshiftVariant.SEMI_WIDE;
+export function ErgoboardLayoutOptions({msVariant, setMsVariant}: ErgoboardLayoutOptionsProps) {
+    const narrowSubvariant = msVariant > ErgoboardVariant.SEMI_WIDE;
 
-    function midshiftButton(msVar: ErgoboardMidshiftVariant, label: string, selected: boolean) {
+    function midshiftButton(msVar: ErgoboardVariant, label: string, selected: boolean) {
         return <button type="button"
                        class={"toggle-btn toggle-btn--sm" + (selected ? " selected" : "")}
                        onClick={() => setMsVariant(msVar)}>
@@ -130,19 +130,19 @@ export function ErgoboardMidshiftLayoutOptions({msVariant, setMsVariant}: Ergobo
     // with no group labels there's room, and stacking avoids overflowing the page.
     return <div class="variant-option-column">
         <div class="ergoplank-button-group">
-            {midshiftButton(ErgoboardMidshiftVariant.EXTRA_WIDE, "16/5.5", msVariant === ErgoboardMidshiftVariant.EXTRA_WIDE)}
-            {midshiftButton(ErgoboardMidshiftVariant.COMFY_WIDE, "16/5", msVariant === ErgoboardMidshiftVariant.COMFY_WIDE)}
-            {midshiftButton(ErgoboardMidshiftVariant.SEMI_WIDE, "16/4.5", msVariant === ErgoboardMidshiftVariant.SEMI_WIDE)}
-            {midshiftButton(ErgoboardMidshiftVariant.RIGHT_ENTER, "16/4", narrowSubvariant)}
+            {midshiftButton(ErgoboardVariant.EXTRA_WIDE, "16/5.5", msVariant === ErgoboardVariant.EXTRA_WIDE)}
+            {midshiftButton(ErgoboardVariant.COMFY_WIDE, "16/5", msVariant === ErgoboardVariant.COMFY_WIDE)}
+            {midshiftButton(ErgoboardVariant.SEMI_WIDE, "16/4.5", msVariant === ErgoboardVariant.SEMI_WIDE)}
+            {midshiftButton(ErgoboardVariant.RIGHT_ENTER, "16/4", narrowSubvariant)}
         </div>
 
         {narrowSubvariant &&
             <div class="ergoboard-inline-group">
                 <div class="ergoplank-group-label">Enter key:</div>
                 <div class="ergoplank-button-group">
-                    {midshiftButton(ErgoboardMidshiftVariant.RIGHT_ENTER, "Right", msVariant === ErgoboardMidshiftVariant.RIGHT_ENTER)}
-                    {midshiftButton(ErgoboardMidshiftVariant.CENTRAL_ENTER, "Central", msVariant === ErgoboardMidshiftVariant.CENTRAL_ENTER)}
-                    {midshiftButton(ErgoboardMidshiftVariant.VERTICAL_ENTER, "Vertical", msVariant === ErgoboardMidshiftVariant.VERTICAL_ENTER)}
+                    {midshiftButton(ErgoboardVariant.RIGHT_ENTER, "Right", msVariant === ErgoboardVariant.RIGHT_ENTER)}
+                    {midshiftButton(ErgoboardVariant.CENTRAL_ENTER, "Central", msVariant === ErgoboardVariant.CENTRAL_ENTER)}
+                    {midshiftButton(ErgoboardVariant.VERTICAL_ENTER, "Vertical", msVariant === ErgoboardVariant.VERTICAL_ENTER)}
                 </div>
             </div>
         }

@@ -1,7 +1,7 @@
 import {
     AnsiVariant,
     ErgoboardLowshiftVariant,
-    ErgoboardMidshiftVariant,
+    ErgoboardVariant,
     ErgoplankArrows,
     HarmonicVariant,
     type LayoutOptions,
@@ -85,16 +85,16 @@ export function getPlankVariant(opts: LayoutOptions): LayoutModel {
             }
         case PlankVariant.ERGOBOARD_MID_SHIFT:
             switch (opts.ergoboardMidshiftVariant) {
-                case ErgoboardMidshiftVariant.EXTRA_WIDE:
+                case ErgoboardVariant.EXTRA_WIDE:
                     return ergoboardMidshiftExtraWideLayoutModel;
-                case ErgoboardMidshiftVariant.SEMI_WIDE:
+                case ErgoboardVariant.SEMI_WIDE:
                     return ergoboardMidshiftSemiWideLayoutModel;
                 // next three are the "narrow hands" subvariants
-                case ErgoboardMidshiftVariant.CENTRAL_ENTER:
+                case ErgoboardVariant.CENTRAL_ENTER:
                     return ergoboardCentralEnterLayoutModel;
-                case ErgoboardMidshiftVariant.RIGHT_ENTER:
+                case ErgoboardVariant.RIGHT_ENTER:
                     return ergoboardMidshiftRightRetLayoutModel;
-                case ErgoboardMidshiftVariant.VERTICAL_ENTER:
+                case ErgoboardVariant.VERTICAL_ENTER:
                     return ergoboardVerticalEnterLayoutModel;
                 default: // default needed so Biome doesn't get scared by potential fall-through
                     return ergoboardMidshiftComfyLayoutModel; // "comfy hands"

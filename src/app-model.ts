@@ -49,7 +49,7 @@ export enum ErgoboardLowshiftVariant {
     BIG_ENTER,
 }
 
-export enum ErgoboardMidshiftVariant {
+export enum ErgoboardVariant {
     EXTRA_WIDE, // Same key sizes as Low-shift "wide hands", but keymap changed for wider home position.
     COMFY_WIDE, // Same key sizes as Low-shift "less gaps", but keymap changed for wider home position.
     SEMI_WIDE, // Same key sizes as Low-shift wide hands; even same hand position; only Shift assignment moves. (This is the widest possible hand position that still fits the traditional Return key position.
@@ -95,7 +95,7 @@ export interface LayoutOptions {
     // Ergoboards
     ergoboardLowshiftVariant: ErgoboardLowshiftVariant;
     angleMod: boolean; // used for EbLowshiftWide only
-    ergoboardMidshiftVariant: ErgoboardMidshiftVariant;
+    ergoboardMidshiftVariant: ErgoboardVariant;
 
     // ErgoSplit aka SplitOrtho
     soThumbShift: boolean;
