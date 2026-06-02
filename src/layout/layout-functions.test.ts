@@ -37,7 +37,7 @@ import {
     mergeMapping,
 } from "./layout-functions.ts";
 import {splitOrthoLayoutModel} from "./splitOrthoLayoutModel.ts";
-import {xhkb15LayoutModel, xhkb16LayoutModel} from "./xhkbLayoutModel.ts";
+import {xhkb15LayoutModel} from "./xhkbLayoutModel.ts";
 
 const allLayoutModels = [
     ansiIBMLayoutModel,
