@@ -78,8 +78,8 @@ function setLayout(
         if ("ergoboardLowshiftVariant" in layoutOptions) {
             explicitOptions.plankVariant = PlankVariant.ERGOBOARD_LOW_SHIFT;
         }
-        if ("ergoboardMidshiftVariant" in layoutOptions) {
-            explicitOptions.plankVariant = PlankVariant.ERGOBOARD_MID_SHIFT;
+        if ("ergoboardVariant" in layoutOptions) {
+            explicitOptions.plankVariant = PlankVariant.ERGOBOARD_LEGACY;
         }
         const filteredFallbackSubvariants = fallbackSubvariants.filter(mods => {
             for (const key of Object.keys(explicitOptions) as (keyof LayoutOptions)[]) {
@@ -131,8 +131,8 @@ function findMatchingLayout(
     }
 }
 
-const allErgoboardMidshiftVariants = enumValues<ErgoboardVariant>(ErgoboardVariant).map(
-    (val) => ({plankVariant: PlankVariant.ERGOBOARD_MID_SHIFT, ergoboardMidshiftVariant: val})
+const allErgoboardVariants = enumValues<ErgoboardVariant>(ErgoboardVariant).map(
+    (val) => ({plankVariant: PlankVariant.ERGOBOARD_LEGACY, ergoboardVariant: val})
 );
 
 const allErgoboardLowShiftVariants = enumValues<ErgoboardLowshiftVariant>(ErgoboardLowshiftVariant).map(
@@ -152,8 +152,8 @@ function getFallbackLayouts(opts: LayoutOptions): Partial<LayoutOptions>[] {
                 case PlankVariant.ERGOBOARD_LOW_SHIFT:
                     fallbackLayouts.push(...allErgoboardLowShiftVariants);
                     break;
-                case PlankVariant.ERGOBOARD_MID_SHIFT:
-                    fallbackLayouts.push(...allErgoboardMidshiftVariants);
+                case PlankVariant.ERGOBOARD_LEGACY:
+                    fallbackLayouts.push(...allErgoboardVariants);
                     break;
             }
             // This relies on Ergoslat and Ergoplank subvariants all supporting the same set of mappings,
@@ -165,7 +165,7 @@ function getFallbackLayouts(opts: LayoutOptions): Partial<LayoutOptions>[] {
             // And then try all the subvariants. (This duplicates entries from above,
             // but it's a fair price for not having to complicate the code even more.)
             fallbackLayouts.push(...allErgoboardLowShiftVariants);
-            fallbackLayouts.push(...allErgoboardMidshiftVariants);
+            fallbackLayouts.push(...allErgoboardVariants);
             break;
     }
     return fallbackLayouts;
@@ -209,8 +209,8 @@ export function setMapping(newMapping: FlexMapping, layoutOptionsState: Signal<L
         {type: LayoutType.ANSI, ansiVariant: AnsiVariant.IBM},
         {type: LayoutType.ANSI, ansiVariant: AnsiVariant.IBM, ansiWide: true},
         {type: LayoutType.Ergosplit},
-        {type: LayoutType.Ergoplank, plankVariant: PlankVariant.ERGOPLANK15},
-        {type: LayoutType.Ergoplank, plankVariant: PlankVariant.ERGOBOARD_MID_SHIFT, ergoboardMidshiftVariant: ErgoboardVariant.COMFY_WIDE},
+        {type: LayoutType.Ergoplank, plankVariant: PlankVariant.ERGOPLANK},
+        {type: LayoutType.Ergoplank, plankVariant: PlankVariant.ERGOBOARD_LEGACY, ergoboardVariant: ErgoboardVariant.COMFY_WIDE},
         {type: LayoutType.Harmonic, harmonicVariant: HarmonicVariant.H13_Wide},
         {type: LayoutType.Harmonic, harmonicVariant: HarmonicVariant.H14_Traditional},
     ]);
@@ -274,7 +274,7 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
             params.set("esNumberless", layout.esNumberless ? "1" : "0");
             params.set("esSmallerThumbs", layout.esSmallerThumbs ? "1" : "0");
             params.set("ebLsVariant", layout.ergoboardLowshiftVariant.toString());
-            params.set("ebMsVariant", layout.ergoboardMidshiftVariant.toString());
+            params.set("ebMsVariant", layout.ergoboardVariant.toString());
             subLayout = PlankVariant[layout.plankVariant] + (layout.epArrows === ErgoplankArrows.Inline ? "+inline-arrows" : layout.epArrows === ErgoplankArrows.Center ? "+center-arrows" : "") + (layout.epRightReturn ? "+epRightReturn" : "") + (layout.esNumberless ? "+esNumberless" : "") + (layout.esSmallerThumbs ? "+esSmallerThumbs" : "");
             break;
         case LayoutType.Ergosplit:
@@ -308,13 +308,13 @@ export function createAppState(): AppState {
         thumbsUp16: s2b(params.get("thumbsUp16")) ?? (ansiVariant === AnsiVariant.XHKB && epArrows !== ErgoplankArrows.None) ?? false,
         angleMod: s2b(params.get("angle")) ?? false,
         harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
-        plankVariant: s2i(params.get("plank")) ?? PlankVariant.ERGOPLANK15,
+        plankVariant: s2i(params.get("plank")) ?? PlankVariant.ERGOPLANK,
         epArrows,
         epRightReturn: s2b(params.get("epRightRet")) ?? false,
         esNumberless: s2b(params.get("esNumberless")) ?? false,
         esSmallerThumbs: s2b(params.get("esSmallerThumbs")) ?? true,
         ergoboardLowshiftVariant: s2i(params.get("ebLsVariant") ?? params.get("eb65ls")) ?? ErgoboardLowshiftVariant.LESS_GAPS,
-        ergoboardMidshiftVariant: s2i(params.get("ebMsVariant") ?? params.get("eb65ms")) ?? ErgoboardVariant.COMFY_WIDE,
+        ergoboardVariant: s2i(params.get("ebMsVariant") ?? params.get("eb65ms")) ?? ErgoboardVariant.COMFY_WIDE,
         flipRetRub: false,
     });
     const layoutModel = computed(() => getLayoutModel(layoutOptionsState.value))

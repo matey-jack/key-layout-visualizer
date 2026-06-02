@@ -25,7 +25,7 @@ interface LayoutAreaProps {
 function layoutSupportsFlipRetRub(options: LayoutOptions) {
     switch (options.type) {
         case LayoutType.Ergoplank:
-            return options.plankVariant >= PlankVariant.ERGOPLANK15;
+            return options.plankVariant >= PlankVariant.ERGOPLANK;
     }
     return false;
 }

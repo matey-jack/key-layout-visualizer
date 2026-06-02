@@ -34,12 +34,12 @@ export enum PlankVariant {
 
     // 15 keys in home row for widest possible hand distance.
     // The "include arrows" flag only applies to this one.
-    ERGOPLANK15,
+    ERGOPLANK,
     ERGOBOARD_CENTRAL,
 
     // 16 keys width for all variants, different hand distance for each.
     ERGOBOARD_LOW_SHIFT,
-    ERGOBOARD_MID_SHIFT,
+    ERGOBOARD_LEGACY,
 }
 
 export enum ErgoboardLowshiftVariant {
@@ -94,7 +94,7 @@ export interface LayoutOptions {
     // Ergoboards
     ergoboardLowshiftVariant: ErgoboardLowshiftVariant;
     angleMod: boolean; // used for EbLowshiftWide only
-    ergoboardMidshiftVariant: ErgoboardVariant;
+    ergoboardVariant: ErgoboardVariant;
 
     // ErgoSplit aka SplitOrtho
     soThumbShift: boolean;

@@ -102,8 +102,8 @@ describe("setMapping", () => {
         const appState = createAppState();
         appState.setLayout({
             type: LayoutType.Ergoplank,
-            plankVariant: PlankVariant.ERGOBOARD_MID_SHIFT,
-            ergoboardMidshiftVariant: ErgoboardVariant.RIGHT_ENTER, // narrow variant
+            plankVariant: PlankVariant.ERGOBOARD_LEGACY,
+            ergoboardVariant: ErgoboardVariant.RIGHT_ENTER, // narrow variant
         });
 
         // when
@@ -111,8 +111,8 @@ describe("setMapping", () => {
 
         // then
         expect(appState.layout.value.type).toBe(LayoutType.Ergoplank);
-        expect(appState.layout.value.plankVariant).toBe(PlankVariant.ERGOBOARD_MID_SHIFT);
-        expect(appState.layout.value.ergoboardMidshiftVariant).toBe(ErgoboardVariant.COMFY_WIDE);
+        expect(appState.layout.value.plankVariant).toBe(PlankVariant.ERGOBOARD_LEGACY);
+        expect(appState.layout.value.ergoboardVariant).toBe(ErgoboardVariant.COMFY_WIDE);
         expect(appState.mapping.value).toBe(qwertzMapping);
     });
 });
@@ -145,8 +145,8 @@ describe("setLayout", () => {
         const appState = createAppState();
         appState.setLayout({
             type: LayoutType.Ergoplank,
-            plankVariant: PlankVariant.ERGOBOARD_MID_SHIFT,
-            ergoboardMidshiftVariant: ErgoboardVariant.RIGHT_ENTER,
+            plankVariant: PlankVariant.ERGOBOARD_LEGACY,
+            ergoboardVariant: ErgoboardVariant.RIGHT_ENTER,
         });
 
         // given 2: select another variant and mapping
@@ -159,8 +159,8 @@ describe("setLayout", () => {
 
         // then - it should automatically fall back to COMFY_WIDE to preserve the qwertzMapping
         expect(appState.layout.value.type).toBe(LayoutType.Ergoplank);
-        expect(appState.layout.value.plankVariant).toBe(PlankVariant.ERGOBOARD_MID_SHIFT);
-        expect(appState.layout.value.ergoboardMidshiftVariant).toBe(ErgoboardVariant.COMFY_WIDE);
+        expect(appState.layout.value.plankVariant).toBe(PlankVariant.ERGOBOARD_LEGACY);
+        expect(appState.layout.value.ergoboardVariant).toBe(ErgoboardVariant.COMFY_WIDE);
         expect(appState.mapping.value).toBe(qwertzMapping);
     });
 
@@ -188,21 +188,21 @@ describe("setLayout", () => {
         const appState = createAppState();
         appState.setLayout({
             type: LayoutType.Ergoplank,
-            plankVariant: PlankVariant.ERGOBOARD_MID_SHIFT,
-            ergoboardMidshiftVariant: ErgoboardVariant.COMFY_WIDE
+            plankVariant: PlankVariant.ERGOBOARD_LEGACY,
+            ergoboardVariant: ErgoboardVariant.COMFY_WIDE
         });
         appState.setMapping(qwertzMapping);
         expect(appState.layout.value.type).toBe(LayoutType.Ergoplank);
-        expect(appState.layout.value.plankVariant).toBe(PlankVariant.ERGOBOARD_MID_SHIFT);
-        expect(appState.layout.value.ergoboardMidshiftVariant).toBe(ErgoboardVariant.COMFY_WIDE);
+        expect(appState.layout.value.plankVariant).toBe(PlankVariant.ERGOBOARD_LEGACY);
+        expect(appState.layout.value.ergoboardVariant).toBe(ErgoboardVariant.COMFY_WIDE);
         expect(appState.mapping.value).toBe(qwertzMapping);
 
         // when - switch subvariant explicitly to KATANA_60 which does not support qwertzMapping
-        appState.setLayout({ ergoboardMidshiftVariant: ErgoboardVariant.RIGHT_ENTER });
+        appState.setLayout({ ergoboardVariant: ErgoboardVariant.RIGHT_ENTER });
 
         // then - layout variant should be KATANA_60, and mapping should fallback
-        expect(appState.layout.value.plankVariant).toBe(PlankVariant.ERGOBOARD_MID_SHIFT);
-        expect(appState.layout.value.ergoboardMidshiftVariant).toBe(ErgoboardVariant.RIGHT_ENTER);
+        expect(appState.layout.value.plankVariant).toBe(PlankVariant.ERGOBOARD_LEGACY);
+        expect(appState.layout.value.ergoboardVariant).toBe(ErgoboardVariant.RIGHT_ENTER);
         expect(appState.mapping.value).not.toBe(qwertzMapping);
     });
 
@@ -211,8 +211,8 @@ describe("setLayout", () => {
         const appState = createAppState();
         appState.setLayout({
             type: LayoutType.Ergoplank,
-            plankVariant: PlankVariant.ERGOBOARD_MID_SHIFT,
-            ergoboardMidshiftVariant: ErgoboardVariant.RIGHT_ENTER,
+            plankVariant: PlankVariant.ERGOBOARD_LEGACY,
+            ergoboardVariant: ErgoboardVariant.RIGHT_ENTER,
         });
         // given: switch to qwertzMapping and Ergoplank (which matches)
         appState.setLayout({
@@ -224,12 +224,12 @@ describe("setLayout", () => {
 
         // when - switch variant explicitly to ERGOBOARD_MID_SHIFT (which has narrow variants that do not support qwertzMapping)
         // Since we explicitly request ERGOBOARD_MID_SHIFT, it must NOT fallback to ERGOSLAT or ERGOPLANK.
-        // But since we did not specify the subvariant (ergoboardMidshiftVariant), it can fallback *within* mid-shift variants to COMFY_WIDE (which supports qwertzMapping).
-        appState.setLayout({ plankVariant: PlankVariant.ERGOBOARD_MID_SHIFT });
+        // But since we did not specify the subvariant (ergoboardVariant), it can fallback *within* mid-shift variants to COMFY_WIDE (which supports qwertzMapping).
+        appState.setLayout({ plankVariant: PlankVariant.ERGOBOARD_LEGACY });
 
         // then - layout variant should be ERGOBOARD_MID_SHIFT, subvariant should be COMFY_WIDE, and mapping should be preserved
-        expect(appState.layout.value.plankVariant).toBe(PlankVariant.ERGOBOARD_MID_SHIFT);
-        expect(appState.layout.value.ergoboardMidshiftVariant).toBe(ErgoboardVariant.COMFY_WIDE);
+        expect(appState.layout.value.plankVariant).toBe(PlankVariant.ERGOBOARD_LEGACY);
+        expect(appState.layout.value.ergoboardVariant).toBe(ErgoboardVariant.COMFY_WIDE);
         expect(appState.mapping.value).toBe(qwertzMapping);
     });
 

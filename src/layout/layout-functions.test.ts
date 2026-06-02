@@ -16,8 +16,8 @@ import {cozyEnglish} from '../mapping/cozyMappings.ts';
 import {thumbyZero} from '../mapping/flipMappings.ts';
 import {topNine} from '../mapping/top9mappings.ts';
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
-import {ergoboardMidshiftComfyLayoutModel} from "./ergoboardMidshiftComfyLayoutModel.ts";
-import {ergoplank15LayoutModel} from "./ergoplank15LayoutModel.ts";
+import {ergoboardComfyLayoutModel} from "./ergoboardComfyLayoutModel.ts";
+import {ergoplankLayoutModel} from "./ergoplankLayoutModel.ts";
 import {harmonic12LayoutModel} from "./harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./harmonic13MidshiftLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./harmonic13WideLayoutModel.ts";
@@ -49,8 +49,8 @@ const allLayoutModels = [
     harmonic13MidshiftLayoutModel,
     harmonic12LayoutModel,
     katanaLayoutModel,
-    ergoplank15LayoutModel,
-    ergoboardMidshiftComfyLayoutModel,
+    ergoplankLayoutModel,
+    ergoboardComfyLayoutModel,
     splitOrthoLayoutModel(false),
 ];
 
@@ -465,10 +465,10 @@ describe('getKeyPositions hasAltFinger - matches layoutModel.hasAltFinger', () =
     });
 
     it('ErgoPlank (Low-shift)', () => {
-        checkHasAltFinger(ergoplank15LayoutModel, "zxcm,.");
+        checkHasAltFinger(ergoplankLayoutModel, "zxcm,.");
     });
 
     it('ErgoBoard MidShift Comfy', () => {
-        checkHasAltFinger(ergoboardMidshiftComfyLayoutModel, "");
+        checkHasAltFinger(ergoboardComfyLayoutModel, "");
     });
 });

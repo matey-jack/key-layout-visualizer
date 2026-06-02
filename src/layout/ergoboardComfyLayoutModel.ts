@@ -13,9 +13,9 @@ const singleKeyEffort = [
     [null, 2.0, 1.5, 1.5, 0.2, 1.0, 0.2, 1.0, null, 1.5, null, null, null, null],
 ];
 
-export const ergoboardMidshiftComfyLayoutModel: LayoutModel = {
+export const ergoboardComfyLayoutModel: LayoutModel = {
     ...ergoboardLowshiftLayoutModel,
-    name: "Ergoboard 65 MidShift Comfortably Wide",
+    name: "Ergoboard 16/5 Comfortably Wide",
 
     leftHomeIndex: 4,
     rightHomeIndex: 10,

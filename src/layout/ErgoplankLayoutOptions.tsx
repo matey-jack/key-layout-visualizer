@@ -42,7 +42,7 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
             </div>
         </LayoutVariantButton>
 
-        <LayoutVariantButton variant={PlankVariant.ERGOPLANK15}
+        <LayoutVariantButton variant={PlankVariant.ERGOPLANK}
                             currentVariant={variant} setVariant={setVariant}
                             name="❤️ Ergoplank 15/5"
         >
@@ -96,12 +96,12 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
         >
         </LayoutVariantButton>
 
-        <LayoutVariantButton variant={PlankVariant.ERGOBOARD_MID_SHIFT}
+        <LayoutVariantButton variant={PlankVariant.ERGOBOARD_LEGACY}
                             currentVariant={variant} setVariant={setVariant}
                             name="Ergoboard 16/x Legacy Ed">
             <div class="layout-option-row">
-                <ErgoboardLayoutOptions msVariant={options.ergoboardMidshiftVariant}
-                                        setMsVariant={(v) => setOption({ergoboardMidshiftVariant: v})}/>
+                <ErgoboardLayoutOptions msVariant={options.ergoboardVariant}
+                                        setMsVariant={(v) => setOption({ergoboardVariant: v})}/>
                 <div class="layout-option-column">
                     <FlipRetRubButton setOption={setOption} options={options}/>
                 </div>

@@ -8,26 +8,26 @@ import {
     createHHKB
 } from "./layout/ansiLayoutModel.ts";
 import {ergoboardCentralLayoutModel} from './layout/ergoboardCentralLayoutModel.ts';
+import {ergoboardComfyLayoutModel} from "./layout/ergoboardComfyLayoutModel.ts";
+import {ergoboardExtraWideLayoutModel} from "./layout/ergoboardExtraWideLayoutModel.ts";
 import {ergoboardBigEnterLayoutModel, ergoboardLowshiftLayoutModel} from "./layout/ergoboardLowshiftLayoutModel.ts";
 import {
     ergoboardLowshiftWideAngleModLayoutModel,
     ergoboardLowshiftWideLayoutModel,
 } from "./layout/ergoboardLowshiftWideLayoutModel.ts";
-import {ergoboardMidshiftComfyLayoutModel} from "./layout/ergoboardMidshiftComfyLayoutModel.ts";
-import {ergoboardMidshiftExtraWideLayoutModel} from "./layout/ergoboardMidshiftExtraWideLayoutModel.ts";
 import {
     ergoboardCentralEnterLayoutModel,
-    ergoboardMidshiftRightRetLayoutModel,
+    ergoboardRightRetLayoutModel,
     ergoboardVerticalEnterLayoutModel,
-} from "./layout/ergoboardMidshiftNarrowLayoutModels.ts";
-import {ergoboardMidshiftSemiWideLayoutModel} from "./layout/ergoboardMidshiftSemiWideLayoutModel.ts";
+} from "./layout/ergoboardNarrowLayoutModels.ts";
+import {ergoboardSemiWideLayoutModel} from "./layout/ergoboardSemiWideLayoutModel.ts";
 import {
     createErgoPlankCenterArrows,
     createErgoPlankInlineArrows,
     createErgoPlankMidShiftLowerCharacters,
     createErgoPlankMidShiftRightReturn,
-    ergoplank15LayoutModel
-} from "./layout/ergoplank15LayoutModel.ts";
+    ergoplankLayoutModel
+} from "./layout/ergoplankLayoutModel.ts";
 import {
     majorErgoslatLayoutModel,
     makeErgoslatNumberless,
@@ -68,26 +68,26 @@ const layoutModels: Array<LayoutModel> = [
     minorErgoslatLayoutModel(true),
     makeErgoslatNumberless(majorErgoslatLayoutModel(false)),
     makeErgoslatNumberless(minorErgoslatLayoutModel(false)),
-    ergoplank15LayoutModel,
-    createErgoPlankMidShiftLowerCharacters(ergoplank15LayoutModel),
-    createErgoPlankMidShiftRightReturn(ergoplank15LayoutModel),
-    createErgoPlankInlineArrows(ergoplank15LayoutModel),
-    createErgoPlankInlineArrows(createErgoPlankMidShiftLowerCharacters(ergoplank15LayoutModel)),
-    createErgoPlankInlineArrows(createErgoPlankMidShiftRightReturn(ergoplank15LayoutModel)),
-    createErgoPlankCenterArrows(ergoplank15LayoutModel),
-    createErgoPlankCenterArrows(createErgoPlankMidShiftLowerCharacters(ergoplank15LayoutModel)),
-    createErgoPlankCenterArrows(createErgoPlankMidShiftRightReturn(ergoplank15LayoutModel)),
+    ergoplankLayoutModel,
+    createErgoPlankMidShiftLowerCharacters(ergoplankLayoutModel),
+    createErgoPlankMidShiftRightReturn(ergoplankLayoutModel),
+    createErgoPlankInlineArrows(ergoplankLayoutModel),
+    createErgoPlankInlineArrows(createErgoPlankMidShiftLowerCharacters(ergoplankLayoutModel)),
+    createErgoPlankInlineArrows(createErgoPlankMidShiftRightReturn(ergoplankLayoutModel)),
+    createErgoPlankCenterArrows(ergoplankLayoutModel),
+    createErgoPlankCenterArrows(createErgoPlankMidShiftLowerCharacters(ergoplankLayoutModel)),
+    createErgoPlankCenterArrows(createErgoPlankMidShiftRightReturn(ergoplankLayoutModel)),
     ergoboardCentralLayoutModel,
     ergoboardLowshiftLayoutModel,
     ergoboardBigEnterLayoutModel,
     ergoboardLowshiftWideLayoutModel,
     ergoboardLowshiftWideAngleModLayoutModel,
-    ergoboardMidshiftComfyLayoutModel,
-    ergoboardMidshiftRightRetLayoutModel,
+    ergoboardComfyLayoutModel,
+    ergoboardRightRetLayoutModel,
     ergoboardCentralEnterLayoutModel,
     ergoboardVerticalEnterLayoutModel,
-    ergoboardMidshiftExtraWideLayoutModel,
-    ergoboardMidshiftSemiWideLayoutModel,
+    ergoboardExtraWideLayoutModel,
+    ergoboardSemiWideLayoutModel,
     // Ergosplits
     splitOrthoLayoutModel(false),
     splitOrthoLayoutModel(true),
@@ -106,9 +106,9 @@ const IGNORED_30_KEYS: Record<string, string[]> = {
     "Ergoboard 65 LowShift Big Enter": ["`~"],
     "Ergoboard 65 LowShift Wide": ["⎀"],
     "Ergoboard 65 LowShift Wide angle mod": ["⎀"],
-    "Ergoboard 65 MidShift Narrow, Right Return": ["⎀"],
-    "Ergoboard 65 MidShift Narrow, Vertical Return": ["⎀"],
-    "Ergoboard 65 MidShift Semi Wide": ["⎀"],
+    [ergoboardRightRetLayoutModel.name]: ["⎀"],
+    [ergoboardVerticalEnterLayoutModel.name]: ["⎀"],
+    [ergoboardSemiWideLayoutModel.name]: ["⎀"],
     // those are differences where I didn't want to settle on a single variant.
     "Harmonic 13 MidShift": ["\\", "`", "[", "]"],
     "Harmonic 14 Macro": ["", "☰"],
@@ -272,8 +272,8 @@ describe("midShift variants don't change the character set", () => {
         [ majorErgoslatLayoutModel(false), majorErgoslatLayoutModel(true) ],
         [ minorErgoslatLayoutModel(false), minorErgoslatLayoutModel(true) ],
         [ splitOrthoLayoutModel(false), splitOrthoLayoutModel(true) ],
-        [ ergoplank15LayoutModel, createErgoPlankMidShiftLowerCharacters(ergoplank15LayoutModel) ],
-        [ createErgoPlankCenterArrows(ergoplank15LayoutModel), createErgoPlankCenterArrows(createErgoPlankMidShiftLowerCharacters(ergoplank15LayoutModel)) ],
+        [ ergoplankLayoutModel, createErgoPlankMidShiftLowerCharacters(ergoplankLayoutModel) ],
+        [ createErgoPlankCenterArrows(ergoplankLayoutModel), createErgoPlankCenterArrows(createErgoPlankMidShiftLowerCharacters(ergoplankLayoutModel)) ],
     ]
      pairs.forEach(([lowShift, midShift]) => {
          (Object.keys(lowShift.frameMappings) as KeymapTypeId[]).forEach((keymapType) => {

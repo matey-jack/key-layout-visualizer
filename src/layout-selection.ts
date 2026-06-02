@@ -18,25 +18,25 @@ import {
     splitSpaceBar,
 } from "./layout/ansiLayoutModel.ts";
 import { ergoboardCentralLayoutModel } from "./layout/ergoboardCentralLayoutModel.ts";
+import {ergoboardComfyLayoutModel} from "./layout/ergoboardComfyLayoutModel.ts";
+import {ergoboardExtraWideLayoutModel} from "./layout/ergoboardExtraWideLayoutModel.ts";
 import {ergoboardBigEnterLayoutModel, ergoboardLowshiftLayoutModel} from "./layout/ergoboardLowshiftLayoutModel.ts";
 import {
     ergoboardLowshiftWideAngleModLayoutModel,
     ergoboardLowshiftWideLayoutModel,
 } from "./layout/ergoboardLowshiftWideLayoutModel.ts";
-import {ergoboardMidshiftComfyLayoutModel} from "./layout/ergoboardMidshiftComfyLayoutModel.ts";
-import {ergoboardMidshiftExtraWideLayoutModel} from "./layout/ergoboardMidshiftExtraWideLayoutModel.ts";
 import {
     ergoboardCentralEnterLayoutModel,
-    ergoboardMidshiftRightRetLayoutModel,
+    ergoboardRightRetLayoutModel,
     ergoboardVerticalEnterLayoutModel,
-} from "./layout/ergoboardMidshiftNarrowLayoutModels.ts";
-import {ergoboardMidshiftSemiWideLayoutModel} from './layout/ergoboardMidshiftSemiWideLayoutModel.ts';
+} from "./layout/ergoboardNarrowLayoutModels.ts";
+import {ergoboardSemiWideLayoutModel} from './layout/ergoboardSemiWideLayoutModel.ts';
 import {
     createErgoPlankCenterArrows,
     createErgoPlankInlineArrows,
     createErgoPlankMidShiftLowerCharacters, createErgoPlankMidShiftRightReturn,
-    ergoplank15LayoutModel
-} from "./layout/ergoplank15LayoutModel.ts";
+    ergoplankLayoutModel
+} from "./layout/ergoplankLayoutModel.ts";
 import {majorErgoslatLayoutModel, makeErgoslatNumberless, minorErgoslatLayoutModel } from './layout/ergoslatLayoutModel.ts';
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
@@ -82,28 +82,28 @@ export function getPlankVariant(opts: LayoutOptions): LayoutModel {
                 default:
                     return opts.angleMod ? ergoboardLowshiftWideAngleModLayoutModel : ergoboardLowshiftWideLayoutModel;
             }
-        case PlankVariant.ERGOBOARD_MID_SHIFT:
-            switch (opts.ergoboardMidshiftVariant) {
+        case PlankVariant.ERGOBOARD_LEGACY:
+            switch (opts.ergoboardVariant) {
                 case ErgoboardVariant.EXTRA_WIDE:
-                    return ergoboardMidshiftExtraWideLayoutModel;
+                    return ergoboardExtraWideLayoutModel;
                 case ErgoboardVariant.SEMI_WIDE:
-                    return ergoboardMidshiftSemiWideLayoutModel;
+                    return ergoboardSemiWideLayoutModel;
                 // next three are the "narrow hands" subvariants
                 case ErgoboardVariant.CENTRAL_ENTER:
                     return ergoboardCentralEnterLayoutModel;
                 case ErgoboardVariant.RIGHT_ENTER:
-                    return ergoboardMidshiftRightRetLayoutModel;
+                    return ergoboardRightRetLayoutModel;
                 case ErgoboardVariant.VERTICAL_ENTER:
                     return ergoboardVerticalEnterLayoutModel;
                 default: // default needed so Biome doesn't get scared by potential fall-through
-                    return ergoboardMidshiftComfyLayoutModel; // "comfy hands"
+                    return ergoboardComfyLayoutModel; // "comfy hands"
             }
         case PlankVariant.ERGOBOARD_CENTRAL:
             return ergoboardCentralLayoutModel;
         default: {
-            const base = !opts.midShift ? ergoplank15LayoutModel
-                : (opts.epRightReturn ? createErgoPlankMidShiftRightReturn(ergoplank15LayoutModel)
-                : createErgoPlankMidShiftLowerCharacters(ergoplank15LayoutModel));
+            const base = !opts.midShift ? ergoplankLayoutModel
+                : (opts.epRightReturn ? createErgoPlankMidShiftRightReturn(ergoplankLayoutModel)
+                : createErgoPlankMidShiftLowerCharacters(ergoplankLayoutModel));
             if (opts.epArrows === ErgoplankArrows.Inline) {
                 return createErgoPlankInlineArrows(base);
             } else if (opts.epArrows === ErgoplankArrows.Center) {

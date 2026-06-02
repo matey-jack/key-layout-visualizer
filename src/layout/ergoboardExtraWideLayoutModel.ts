@@ -5,8 +5,8 @@ import {keyColorHighlightsClass} from "./layout-functions.ts";
 // zeroIndent works, because the actually indented columns aren't symmetric and indented manually with gaps.
 const keyWidths = new SymmetricKeyWidth(16, zeroIndent, 7.75);
 
-export const ergoboardMidshiftExtraWideLayoutModel: LayoutModel = {
-    name: "Ergoboard 65 MidShift Max Wide",
+export const ergoboardExtraWideLayoutModel: LayoutModel = {
+    name: "Ergoboard 16/5.5 Extra Wide",
     description: ``,
 
     mainFingerAssignment: [
