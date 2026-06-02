@@ -13,7 +13,7 @@ const ansi30FrameMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, "-", null, "+", 5, 6, 7, 8, 9, "\\"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", 9, 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "⎀", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
+    ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "⎀", "⍽", "AltGr", "☰", "Cmd", "Ctrl"],
 ];
 
 const ansi32FrameMapping: LayoutMapping = [
@@ -21,7 +21,7 @@ const ansi32FrameMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, "'", null, "+", 5, 6, 7, 8, 9, 10],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, 10],
     ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", 9, 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "⎀", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
+    ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "⎀", "⍽", "AltGr", "☰", "Cmd", "Ctrl"],
 ];
 
 const thumb30FrameMapping: LayoutMapping = [
@@ -29,7 +29,7 @@ const thumb30FrameMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, "+", null, "\\", 5, 6, 7, 8, 9, "⏎"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", "/", 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Fn", "Alt", 0, "⎀", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
+    ["Ctrl", "Cmd", "Fn", "Alt", 0, "⎀", "⍽", "AltGr", "☰", "Cmd", "Ctrl"],
 ];
 
 const thumb32FrameMapping: LayoutMapping = [
@@ -37,7 +37,7 @@ const thumb32FrameMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, "'", null, "+", 5, 6, 7, 8, 9, "⏎"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, [1, 10]],
     ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", 9, 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Fn", "Alt", 0, "⎀", "⍽", "AltGr", "Menu", "Cmd", "Ctrl"],
+    ["Ctrl", "Cmd", "Fn", "Alt", 0, "⎀", "⍽", "AltGr", "☰", "Cmd", "Ctrl"],
 ];
 
 export const ergoplank15LayoutModel: LayoutModel = {

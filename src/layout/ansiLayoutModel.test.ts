@@ -42,7 +42,7 @@ describe('ansiWideLayoutModel', () => {
         ["↹", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "'", "\\"],
         ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
         ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-        ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
+        ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "☰", "Fn", "Ctrl"],
     ];
 
     const thirtyKeyMapping = ansiWideLayoutModel.frameMappings[KeymapTypeId.Ansi30]!;

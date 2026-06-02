@@ -131,7 +131,6 @@ const cycleAbbreviations: Record<string, string | string[]> = {
     "S": ["Shift", "⇧"],
     "F": "Fn",
     "P": "CAPS",
-    "M": "Menu",
 };
 
 function expandShortcut(shortcut: string): string[] {

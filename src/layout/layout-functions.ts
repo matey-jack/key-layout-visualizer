@@ -134,7 +134,6 @@ const keyLabelShortcuts: Record<string, string> = {
     "⎇": "Alt",
     "⌥": "AltGr", // this the symbol of the MacOS Opt key, which has a similar function.
     "⇪": "CAPS",
-    "≡": "Menu",
     "ƒ": "Fn",
 };
 

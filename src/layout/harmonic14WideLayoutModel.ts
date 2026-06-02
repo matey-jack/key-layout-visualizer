@@ -39,7 +39,7 @@ export const harmonic14WideLayoutModel: LayoutModel = {
             // The move of key 9 to the middle is a change required to keep the key-to-finger assignments
             // the same as on the ANSI layout. This is caused by moving the right home row to the right.
             ["⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧"], // 13 keys
-            ["Ctrl", "Cmd", "Alt", "⌦", "⍽", "⏎", "AltGr", "Menu", "Fn", "Ctrl"], // 10 keys
+            ["Ctrl", "Cmd", "Alt", "⌦", "⍽", "⏎", "AltGr", "☰", "Fn", "Ctrl"], // 10 keys
         ],
         [KeymapTypeId.Thumb30]: [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "+", "`", ""], // 14 keys

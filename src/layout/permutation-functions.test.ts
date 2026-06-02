@@ -111,11 +111,11 @@ describe("permute", () => {
 
     it("resolves easy-to-type abbreviations correctly", () => {
         const base: LayoutMapping = [
-            ["Ctrl", "Alt", "Cmd", "Shift", "Fn", "CAPS", "Menu"]
+            ["Ctrl", "Alt", "Cmd", "Shift", "Fn", "CAPS", "☰"]
         ];
         // ^ -> Ctrl, A -> Alt, C -> Cmd, S -> Shift, F -> Fn, P -> CAPS, M -> Menu
         expect(permute(base, "^A", "CS", "FP")).toEqual([
-            ["Alt", "Ctrl", "Shift", "Cmd", "CAPS", "Fn", "Menu"]
+            ["Alt", "Ctrl", "Shift", "Cmd", "CAPS", "Fn", "☰"]
         ]);
     });
 

@@ -98,8 +98,8 @@ const layoutModels: Array<LayoutModel> = [
 // Expected differences between ansi30 and thumb30
 // TODO: use the .name references throughout to avoid test failures when names change
 const IGNORED_30_KEYS: Record<string, string[]> = {
-    "ANSI/IBM with wide hand position": ["Esc", "Menu"],
-    "AN65 with wide hand position": ["Esc", "Menu"],
+    "ANSI/IBM with wide hand position": ["Esc", "☰"],
+    "AN65 with wide hand position": ["Esc", "☰"],
     "ANSI/Apple with wide hand position": ["Esc"], // replaces duplicate Ctrl key
     // The single difference here is due to removing the duplicate space key.
     // (Would disappear if we had thumb-return from the start.)
@@ -113,12 +113,12 @@ const IGNORED_30_KEYS: Record<string, string[]> = {
     "Ergoboard 65 MidShift Semi Wide": ["⎀"],
     // those are differences where I didn't want to settle on a single variant.
     "Harmonic 13 MidShift": ["\\", "`", "[", "]"],
-    "Harmonic 14 Macro": ["", "Menu"],
+    "Harmonic 14 Macro": ["", "☰"],
 };
 
 const IGNORED_32_KEYS: Record<string, string[]> = {
-    "ANSI/IBM with wide hand position": ["\\", "Menu"],
-    "AN65 with wide hand position": ["\\", "Menu"],
+    "ANSI/IBM with wide hand position": ["\\", "☰"],
+    "AN65 with wide hand position": ["\\", "☰"],
     "ANSI/Apple with wide hand position": ["\\"],
     [xhkb15LayoutModel.name]: ["⎀"],
     [xhkb16LayoutModel.name]: ["€"],

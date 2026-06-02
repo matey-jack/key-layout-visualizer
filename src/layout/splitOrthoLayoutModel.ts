@@ -24,7 +24,7 @@ const ansi30Base: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
     ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "Ctrl"],
-    ["Alt", "\\", "`", "⌦", "Cmd", "⏎", "⍽", "Fn", "AltGr", "+", "-", "Menu"],
+    ["Alt", "\\", "`", "⌦", "Cmd", "⏎", "⍽", "Fn", "AltGr", "+", "-", "☰"],
 ];
 
 const ansi32Base: LayoutMapping = [
@@ -40,7 +40,7 @@ const thumb30Base: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
     ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "Ctrl"],
-    ["Alt", "⌦", "+", "Cmd", 0, "⏎", "⍽", "Fn", "AltGr", "\\", "`", "Menu"],
+    ["Alt", "⌦", "+", "Cmd", 0, "⏎", "⍽", "Fn", "AltGr", "\\", "`", "☰"],
 ];
 
 const thumb32Base: LayoutMapping = [

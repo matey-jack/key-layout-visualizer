@@ -10,7 +10,7 @@ const thirtyKeyMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, "-", "+", 5, 6, 7, 8, 9, "⌫"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "CAPS", "Alt", "⏎ Enter", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
+    ["Ctrl", "Cmd", "CAPS", "Alt", "⏎ Enter", "⍽", "AltGr", "☰", "Fn", "Ctrl"],
 ];
 
 const thumb30KeyMapping: LayoutMapping = [
@@ -18,7 +18,7 @@ const thumb30KeyMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, "+", "`~", 5, 6, 7, 8, 9, "⌫"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Alt", 0, "⏎ Enter", "⍽", "AltGr", "Menu", "Fn", "Ctrl"],
+    ["Ctrl", "Cmd", "Alt", 0, "⏎ Enter", "⍽", "AltGr", "☰", "Fn", "Ctrl"],
 ];
 
 export const ahkbLayoutModel: LayoutModel = {

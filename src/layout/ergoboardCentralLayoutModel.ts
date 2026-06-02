@@ -17,7 +17,7 @@ const ansi30FrameMapping: LayoutMapping = [
     ["↹", 0, 1, 2, 3, 4, "-", null, "+", 5, 6, 7, 8, 9, "⌫"],
     ["⇧", 0, 1, 2, 3, 4, "\\", "⎀", "'", 5, 6, 7, 8, 9, "⇧"],
     ["Ctrl", 0, 1, 2, 3, 4, "⇤", null, "↑", null, "⇥", 5, 6, 7, 8, 9, "Fn"],
-    ["Cmd", "⌦", "Alt", "⏎", null, "←", "↓", "→", null, "⍽", "AltGr", "Menu", "Ctrl"],
+    ["Cmd", "⌦", "Alt", "⏎", null, "←", "↓", "→", null, "⍽", "AltGr", "☰", "Ctrl"],
 ];
 
 const ansi32FrameMapping: LayoutMapping = [
