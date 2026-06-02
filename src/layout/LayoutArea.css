@@ -51,10 +51,14 @@
 }
 
 .ansi-layout-options-container {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    align-items: flex-start;
+    /* Grid (not flex) so the variant-buttons track fills a container-determined
+       width — like the Harmonic/Ergoplank option bars — rather than sizing to its
+       content. A content-sized grid would grow when the selected button's label
+       goes bold, shifting every button when switching variants. */
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 2rem;
+    align-items: start;
 }
 
 .ansi-variant-buttons {
