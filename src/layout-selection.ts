@@ -8,7 +8,6 @@ import {
     PlankVariant,
 } from "./app-model.ts";
 import {type LayoutModel, LayoutType} from "./base-model.ts";
-import {ahkbAddAngleMod, ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
 import {
     ansiIBMLayoutModel,
     ansiWideLayoutModel,
@@ -138,8 +137,6 @@ export function getAnsiVariant(layoutOptions: LayoutOptions) {
         // no need to split the space bar, because it's already split
         case AnsiVariant.XHKB:
             return layoutOptions.thumbsUp16 ? xhkb16LayoutModel : xhkb15LayoutModel;
-        case AnsiVariant.AHKB:
-            return layoutOptions.angleMod ? ahkbAddAngleMod(ahkbLayoutModel) : ahkbLayoutModel;
     }
     return layoutOptions.ansiSplit ? splitSpaceBar(base) : base;
 }

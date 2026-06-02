@@ -15,7 +15,6 @@ import {colemakMapping, colemakThumbyDMapping, normanMapping} from '../mapping/c
 import {cozyEnglish} from '../mapping/cozyMappings.ts';
 import {thumbyZero} from '../mapping/flipMappings.ts';
 import {topNine} from '../mapping/top9mappings.ts';
-import {ahkbLayoutModel} from "./ahkbLayoutModel.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel, createHHKB} from "./ansiLayoutModel.ts";
 import {ergoboardMidshiftComfyLayoutModel} from "./ergoboardMidshiftComfyLayoutModel.ts";
 import {ergoplank15LayoutModel} from "./ergoplank15LayoutModel.ts";
@@ -43,7 +42,6 @@ import {xhkb15LayoutModel, xhkb16LayoutModel} from "./xhkbLayoutModel.ts";
 const allLayoutModels = [
     ansiIBMLayoutModel,
     createHHKB(ansiIBMLayoutModel),
-    ahkbLayoutModel,
     xhkb15LayoutModel,
     harmonic14WideLayoutModel,
     harmonic14TraditionalLayoutModel,

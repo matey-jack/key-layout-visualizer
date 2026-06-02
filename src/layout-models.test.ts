@@ -1,6 +1,5 @@
 import {describe, expect, it} from "vitest";
 import {KEYMAP_TYPES, KeyboardRows, KeymapTypeId, type LayoutModel} from "./base-model.ts";
-import {ahkbLayoutModel} from "./layout/ahkbLayoutModel.ts";
 import {
     ansiIBMLayoutModel,
     ansiWideLayoutModel,
@@ -55,7 +54,6 @@ const layoutModels: Array<LayoutModel> = [
     createAN65(ansiWideLayoutModel),
     xhkb15LayoutModel,
     xhkb16LayoutModel,
-    ahkbLayoutModel,
     // Harmonics
     harmonic12LayoutModel,
     harmonic13WideLayoutModel,
