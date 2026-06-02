@@ -131,7 +131,7 @@ export function ErgoboardLayoutOptions({msVariant, setMsVariant}: ErgoboardLayou
     return <div class="variant-option-column">
         <div class="ergoplank-button-group">
             {midshiftButton(ErgoboardVariant.EXTRA_WIDE, "16/5.5", msVariant === ErgoboardVariant.EXTRA_WIDE)}
-            {midshiftButton(ErgoboardVariant.COMFY_WIDE, "16/5", msVariant === ErgoboardVariant.COMFY_WIDE)}
+            {midshiftButton(ErgoboardVariant.COMFY_WIDE, "16/5 ❤️", msVariant === ErgoboardVariant.COMFY_WIDE)}
             {midshiftButton(ErgoboardVariant.SEMI_WIDE, "16/4.5", msVariant === ErgoboardVariant.SEMI_WIDE)}
             {midshiftButton(ErgoboardVariant.RIGHT_ENTER, "16/4", narrowSubvariant)}
         </div>
