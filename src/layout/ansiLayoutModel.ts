@@ -367,7 +367,7 @@ export function createAN65(lm: LayoutModel): LayoutModel {
         frameMappings: mapValues(lm.frameMappings, (_, mapping) => {
             return copyAndModifyKeymap(mapping, (matrix) => {
                 matrix[KeyboardRows.Number].push("⌦");
-                matrix[KeyboardRows.Upper].push("Ins");
+                matrix[KeyboardRows.Upper].push("⎀");
                 matrix[KeyboardRows.Home].push("⇞");
                 matrix[KeyboardRows.Lower].pop();
                 matrix[KeyboardRows.Lower].push("⇧", "↑", "⇟");

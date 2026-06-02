@@ -12,8 +12,9 @@
 
     Here are some useful Unicode characters that you can use in your mappings:
 
-    White space and other keyboard specials: ⍽ ↵ ↹ ⎋ ⇧ ⇪ ⌫ ⌦ 🖰
+    White space and other keyboard specials: ⍽ ↵ ↹ ⎋ ⇧ ⇪ ⌫ ⎀ ⌦ 🖰
     Navigation keys: ↑ ↓ ← → ⇤ ⇥ ⇞ ⇟ ↞ ↠ ⇱ ⇲
+    For the "Menu" key decide between ≣ (U+2263 "exactly equaly") and ☰ (U+2630 "trigram for heaven").
 
     Useful printable characters: € $ ¢ £ ¥ µ × – ¿ ¡ § % ‰
 

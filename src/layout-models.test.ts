@@ -103,14 +103,14 @@ const IGNORED_30_KEYS: Record<string, string[]> = {
     "ANSI/Apple with wide hand position": ["Esc"], // replaces duplicate Ctrl key
     // The single difference here is due to removing the duplicate space key.
     // (Would disappear if we had thumb-return from the start.)
-    [xhkb15LayoutModel.name]: ["Ins"],
+    [xhkb15LayoutModel.name]: ["⎀"],
     [xhkb16LayoutModel.name]: ["€"],
     "Ergoboard 65 LowShift Big Enter": ["`~"],
-    "Ergoboard 65 LowShift Wide": ["Ins"],
-    "Ergoboard 65 LowShift Wide angle mod": ["Ins"],
-    "Ergoboard 65 MidShift Narrow, Right Return": ["Ins"],
-    "Ergoboard 65 MidShift Narrow, Vertical Return": ["Ins"],
-    "Ergoboard 65 MidShift Semi Wide": ["Ins"],
+    "Ergoboard 65 LowShift Wide": ["⎀"],
+    "Ergoboard 65 LowShift Wide angle mod": ["⎀"],
+    "Ergoboard 65 MidShift Narrow, Right Return": ["⎀"],
+    "Ergoboard 65 MidShift Narrow, Vertical Return": ["⎀"],
+    "Ergoboard 65 MidShift Semi Wide": ["⎀"],
     // those are differences where I didn't want to settle on a single variant.
     "Harmonic 13 MidShift": ["\\", "`", "[", "]"],
     "Harmonic 14 Macro": ["", "Menu"],
@@ -120,7 +120,7 @@ const IGNORED_32_KEYS: Record<string, string[]> = {
     "ANSI/IBM with wide hand position": ["\\", "Menu"],
     "AN65 with wide hand position": ["\\", "Menu"],
     "ANSI/Apple with wide hand position": ["\\"],
-    [xhkb15LayoutModel.name]: ["Ins"],
+    [xhkb15LayoutModel.name]: ["⎀"],
     [xhkb16LayoutModel.name]: ["€"],
 };
 
