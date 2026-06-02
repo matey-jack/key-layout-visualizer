@@ -7,7 +7,7 @@ export interface SplitOrthoLayoutOptionsProps {
 }
 
 export function SplitOrthoLayoutOptions({options, setOption}: SplitOrthoLayoutOptionsProps) {
-    return <div class="split-ortho-layout-options-container">
+    return <div class="split-ortho-options">
         <CheckboxWithLabel label="Thumb Shift"
                            checked={options.soThumbShift}
                            onChange={(checked) => setOption({soThumbShift: checked})}/>

@@ -12,16 +12,16 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
     const variant = options.plankVariant;
     const setVariant = (plankVariant: PlankVariant) => setOption({plankVariant});
 
-    return <div class="plank-layout-options-container">
+    return <div class="layout-variant-grid layout-variant-grid--plank">
         <LayoutVariantButton variant={PlankVariant.KATANA_60} currentVariant={variant} setVariant={setVariant} name="Katana60"/>
 
         <LayoutVariantButton variant={PlankVariant.ERGOSLAT} currentVariant={variant} setVariant={setVariant} name="Ergoslat 13/3">
-            <div class="variant-options-row variant-options-row--center">
-                <div class="variant-option-column">
+            <div class="layout-option-row layout-option-row--center">
+                <div class="layout-option-column">
                     <MidShiftCheckbox options={options} setOption={setOption}/>
                 </div>
-                <div class="variant-option-column">
-                    <div class="ergoplank-button-group">
+                <div class="layout-option-column">
+                    <div class="layout-option-button-group">
                         <button type="button"
                                 class={"toggle-btn toggle-btn--sm" + (!options.esNumberless && !options.esSmallerThumbs ? " selected" : "")}
                                 onClick={() => setOption({esNumberless: false, esSmallerThumbs: false})}>
@@ -46,10 +46,10 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
                             currentVariant={variant} setVariant={setVariant}
                             name="❤️ Ergoplank 15/5"
         >
-            <div class="variant-options-row">
-                <div class="variant-option-column">
-                    <div class="ergoplank-group-label">Lower Row</div>
-                    <div class="ergoplank-button-group">
+            <div class="layout-option-row">
+                <div class="layout-option-column">
+                    <div class="layout-option-group-label">Lower Row</div>
+                    <div class="layout-option-button-group">
                         <button type="button"
                                 class={"toggle-btn toggle-btn--sm" + (!options.midShift ? " selected" : "")}
                                 onClick={() => setOption({midShift: false})}>
@@ -67,9 +67,9 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
                         </button>
                     </div>
                 </div>
-                <div class="variant-option-column">
-                    <div class="ergoplank-group-label">Arrows</div>
-                    <div class="ergoplank-button-group">
+                <div class="layout-option-column">
+                    <div class="layout-option-group-label">Arrows</div>
+                    <div class="layout-option-button-group">
                         <button type="button"
                                 class={"toggle-btn toggle-btn--sm" + (options.epArrows === ErgoplankArrows.None ? " selected" : "")}
                                 onClick={() => setOption({epArrows: ErgoplankArrows.None})}>
@@ -99,10 +99,10 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
         <LayoutVariantButton variant={PlankVariant.ERGOBOARD_MID_SHIFT}
                             currentVariant={variant} setVariant={setVariant}
                             name="Ergoboard 16/x Legacy Ed">
-            <div class="variant-options-row">
+            <div class="layout-option-row">
                 <ErgoboardLayoutOptions msVariant={options.ergoboardMidshiftVariant}
                                         setMsVariant={(v) => setOption({ergoboardMidshiftVariant: v})}/>
-                <div class="variant-option-column">
+                <div class="layout-option-column">
                     <FlipRetRubButton setOption={setOption} options={options}/>
                 </div>
             </div>
@@ -128,8 +128,8 @@ export function ErgoboardLayoutOptions({msVariant, setMsVariant}: ErgoboardLayou
 
     // The Enter-key sub-group stacks *below* the width buttons (same column):
     // with no group labels there's room, and stacking avoids overflowing the page.
-    return <div class="variant-option-column">
-        <div class="ergoplank-button-group">
+    return <div class="layout-option-column">
+        <div class="layout-option-button-group">
             {midshiftButton(ErgoboardVariant.EXTRA_WIDE, "16/5.5", msVariant === ErgoboardVariant.EXTRA_WIDE)}
             {midshiftButton(ErgoboardVariant.COMFY_WIDE, "16/5 ❤️", msVariant === ErgoboardVariant.COMFY_WIDE)}
             {midshiftButton(ErgoboardVariant.SEMI_WIDE, "16/4.5", msVariant === ErgoboardVariant.SEMI_WIDE)}
@@ -137,9 +137,9 @@ export function ErgoboardLayoutOptions({msVariant, setMsVariant}: ErgoboardLayou
         </div>
 
         {narrowSubvariant &&
-            <div class="ergoboard-inline-group">
-                <div class="ergoplank-group-label">Enter key:</div>
-                <div class="ergoplank-button-group">
+            <div class="layout-option-group--inline">
+                <div class="layout-option-group-label">Enter key:</div>
+                <div class="layout-option-button-group">
                     {midshiftButton(ErgoboardVariant.RIGHT_ENTER, "Right", msVariant === ErgoboardVariant.RIGHT_ENTER)}
                     {midshiftButton(ErgoboardVariant.CENTRAL_ENTER, "Central", msVariant === ErgoboardVariant.CENTRAL_ENTER)}
                     {midshiftButton(ErgoboardVariant.VERTICAL_ENTER, "Vertical", msVariant === ErgoboardVariant.VERTICAL_ENTER)}

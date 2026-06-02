@@ -3,7 +3,6 @@ import {AnsiVariant, type LayoutOptions} from "../app-model.ts";
 import type {FlexMapping} from "../base-model.ts";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {LayoutVariantButton} from "../components/LayoutVariantButton.tsx";
-import {FlipRetRubButton} from "./components/FlipRetRubButton.tsx";
 import {MidShiftCheckbox} from "./components/MidShiftCheckbox.tsx";
 import {onlySupportsWide} from "./layout-functions.ts";
 
@@ -13,7 +12,7 @@ export interface AnsiLayoutOptionsProps {
     mapping: Signal<FlexMapping>;
 }
 
-const naturallyWideVariants = [AnsiVariant.AHKB, AnsiVariant.XHKB];
+const naturallyWideVariants = [AnsiVariant.XHKB];
 
 function ansiVariantNote(variant: AnsiVariant, wide: boolean): string {
     const denom = wide ? "3" : "2";
@@ -28,7 +27,7 @@ function ansiVariantNote(variant: AnsiVariant, wide: boolean): string {
 }
 
 export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptionsProps) {
-    const {ansiWide, ansiVariant, ansiSplit, angleMod, thumbsUp16} = options;
+    const {ansiWide, ansiVariant, ansiSplit, thumbsUp16} = options;
     const wideDisabled = onlySupportsWide(mapping.value) || naturallyWideVariants.includes(ansiVariant);
     const splitDisabled = (ansiVariant === AnsiVariant.HHKB) ||
         ((ansiVariant === AnsiVariant.XHKB) && thumbsUp16);
@@ -39,11 +38,10 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
         {variant: AnsiVariant.HHKB, label: "HHKB"},
         {variant: AnsiVariant.AN65, label: "AN65"},
         {variant: AnsiVariant.XHKB, label: "Thumbs Up ❤️"},
-        // {variant: AnsiVariant.AHKB, label: "AHKB"},
     ];
 
-    return <div class="ansi-layout-options-container">
-            <div class="ansi-variant-buttons">
+    return <div class="ansi-options">
+            <div class="layout-variant-grid layout-variant-grid--ansi">
                 {variantOptions.map((option) => (
                     <LayoutVariantButton
                         key={option.variant}
@@ -55,16 +53,16 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
                         shareSpace={option.variant === AnsiVariant.XHKB}
                     >
                         {(option.variant === AnsiVariant.IBM || option.variant === AnsiVariant.APPLE) &&
-                            <div class="variant-options-row">
-                                <div class="variant-option-column">
+                            <div class="layout-option-row">
+                                <div class="layout-option-column">
                                     <MidShiftCheckbox options={options} setOption={setOption}/>
                                 </div>
                             </div>
                         }
                         {option.variant === AnsiVariant.XHKB &&
-                            <div class="variant-options-row">
-                                <div class="variant-option-column">
-                                    <div class="ergoplank-button-group">
+                            <div class="layout-option-row">
+                                <div class="layout-option-column">
+                                    <div class="layout-option-button-group">
                                         <button type="button"
                                                 class={"toggle-btn toggle-btn--sm" + (!thumbsUp16 ? " selected" : "")}
                                                 onClick={() => setOption({thumbsUp16: false})}>
@@ -79,20 +77,10 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
                                 </div>
                             </div>
                         }
-                        {option.variant === AnsiVariant.AHKB &&
-                            <div class="ansi-ahkb-options-container">
-                                <CheckboxWithLabel
-                                    label="angle mod"
-                                    checked={angleMod}
-                                    onChange={(angleMod) => setOption({angleMod})}
-                                />
-                                <FlipRetRubButton setOption={setOption} options={options}/>
-                            </div>
-                        }
                     </LayoutVariantButton>
                 ))}
             </div>
-            <div class="ansi-variant-checkboxes">
+            <div class="layout-option-checkboxes">
                 <CheckboxWithLabel label="split keyboard"
                                    checked={ansiSplit}
                                    onChange={(split) => setOption({ansiSplit: split})}

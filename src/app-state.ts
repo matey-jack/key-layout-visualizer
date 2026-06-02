@@ -23,8 +23,7 @@ import {allMappings} from "./mapping/mappings.ts";
 function modifyWide(mapping: FlexMapping, opts: LayoutOptions): boolean {
     switch (opts.ansiVariant) {
         case AnsiVariant.XHKB:
-        case AnsiVariant.AHKB:
-            // Those variants always use wide mode, because they were designed for it.
+            // This variant always uses wide mode, because it was designed for it.
             return true;
     }
     // No change to the flag when the FlexMapping has at least one keymap type that works both ways.
@@ -305,7 +304,7 @@ export function createAppState(): AppState {
         soThumbShift: s2b(params.get("soThumbShift")) ?? false,
         ansiVariant,
         ansiSplit: s2b(params.get("split")) ?? false,
-        ansiWide: ansiVariant === AnsiVariant.AHKB ? true : s2b(params.get("wide")) ?? false,
+        ansiWide: s2b(params.get("wide")) ?? false,
         thumbsUp16: s2b(params.get("thumbsUp16")) ?? (ansiVariant === AnsiVariant.XHKB && epArrows !== ErgoplankArrows.None) ?? false,
         angleMod: s2b(params.get("angle")) ?? false,
         harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,

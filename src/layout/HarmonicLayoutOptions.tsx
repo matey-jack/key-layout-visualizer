@@ -10,7 +10,7 @@ export function HarmonicLayoutOptions({options, setOption}: HarmonicLayoutOption
     const variant = options.harmonicVariant;
     const setVariant = (harmonicVariant: HarmonicVariant) => setOption({harmonicVariant});
 
-    return <div class="harmonic-layout-options-container">
+    return <div class="layout-variant-grid layout-variant-grid--harmonic">
         <LayoutVariantButton variant={HarmonicVariant.H12} currentVariant={variant} setVariant={setVariant} name="12/2 Mini"/>
         <LayoutVariantButton variant={HarmonicVariant.H13_Mid_shift} currentVariant={variant} setVariant={setVariant} name="13/2 Mid-shift"/>
         <LayoutVariantButton variant={HarmonicVariant.H13_Wide} currentVariant={variant} setVariant={setVariant} name="13/3 Balance"/>

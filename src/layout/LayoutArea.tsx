@@ -26,8 +26,6 @@ function layoutSupportsFlipRetRub(options: LayoutOptions) {
     switch (options.type) {
         case LayoutType.Ergoplank:
             return options.plankVariant >= PlankVariant.ERGOPLANK15;
-        case LayoutType.ANSI:
-            return options.ansiVariant === AnsiVariant.AHKB;
     }
     return false;
 }
@@ -126,10 +124,10 @@ interface TopBarProps {
 
 function TopBar({layout, setLayout}: TopBarProps) {
     const layoutOrder = [LayoutType.ANSI, LayoutType.Harmonic, LayoutType.Ergoplank, LayoutType.Ergosplit];
-    return <div className="layout-top-bar-container">
+    return <div className="layout-type-bar">
         <BlankGridElement/>
         {layoutOrder.map((layoutType) =>
-            <TopBarKeyboardTab
+            <LayoutTypeTab
                 layoutType={layoutType}
                 layoutName={LayoutTypeNames[layoutType]}
                 layoutNote={LayoutTypeNotes[layoutType]}
@@ -145,7 +143,7 @@ function TopBar({layout, setLayout}: TopBarProps) {
 const BlankGridElement = () =>
     <div class="blank"></div>
 
-interface TopBarKeyboardTabProps {
+interface LayoutTypeTabProps {
     layoutType: LayoutType;
     layoutName: string;
     layoutNote: string;
@@ -153,16 +151,16 @@ interface TopBarKeyboardTabProps {
     setLayout: (layout: Partial<LayoutOptions>) => void;
 }
 
-function TopBarKeyboardTab({layoutType, layoutName, layoutNote, currentLayout, setLayout}: TopBarKeyboardTabProps) {
+function LayoutTypeTab({layoutType, layoutName, layoutNote, currentLayout, setLayout}: LayoutTypeTabProps) {
     const selected = layoutType === currentLayout;
-    return <div class={"top-bar-keyboard-tab-label-and-note" + (selected ? " selected" : "")}>
+    return <div class={"layout-type-tab" + (selected ? " selected" : "")}>
         <button type="button"
                 onClick={() => setLayout({type: layoutType})}
-                class={"toggle-btn toggle-btn--lg top-bar-keyboard-tab-label" + (selected ? " selected" : "")}
+                class={"toggle-btn toggle-btn--lg layout-type-button" + (selected ? " selected" : "")}
         >
             {layoutName}
         </button>
-        <div class="top-bar-keyboard-tab-note">
+        <div class="layout-type-note">
             {layoutNote}
         </div>
     </div>

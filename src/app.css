@@ -88,6 +88,16 @@ h1 {
     --btn-sel-text: var(--ui-btn-sel-text);
 }
 
+/* Return/Enter (reddish-grey) scheme — used only by the flip-Enter/Backspace button,
+   echoing the Return/Enter key highlight (#cca096). No --btn-sel-* because that
+   button never has a selected state: it always flips, regardless of layout state. */
+.toggle-btn--ret {
+    --btn-bg: #f3e7e3;
+    --btn-border: #cca096;
+    --btn-hover-bg: #ecd6d0;
+    --btn-hover-border: #bd8d82;
+}
+
 /* size tiers — two font sizes only: top tabs (--lg) and the shared 0.9rem default.
    --sm keeps a tighter padding for dense option/filter groups but the same font size. */
 .toggle-btn--lg { padding: 0.7rem 1.25rem; font-size: 1.1rem; } /* top tabs */

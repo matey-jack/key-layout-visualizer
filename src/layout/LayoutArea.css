@@ -1,4 +1,4 @@
-.layout-top-bar-container {
+.layout-type-bar {
     display: grid;
     justify-items: stretch;
     grid-template-columns: 0.5fr minmax(0, 2fr) minmax(0, 2fr) minmax(0, 2fr) minmax(0, 2fr) 0.5fr;
@@ -8,23 +8,23 @@
     padding: 1rem 1rem 1.5rem 1rem;
 }
 
-.layout-top-bar-container > div {
+.layout-type-bar > div {
     text-align: center;
     width: 100%;
 }
 
 /* anchor for the absolutely-positioned note */
-.top-bar-keyboard-tab-label-and-note {
+.layout-type-tab {
     position: relative;
 }
 
-.top-bar-keyboard-tab-label {
+.layout-type-button {
     width: 100%;
     /* fill the grid cell so every button matches the tallest one */
     height: 100%;
 }
 
-.top-bar-keyboard-tab-note {
+.layout-type-note {
     /* lifted out of the column so it can stay on one line and grow past the
        column edges (centered under the button) instead of wrapping tall */
     position: absolute;
@@ -39,8 +39,8 @@
     visibility: hidden;
 }
 
-.top-bar-keyboard-tab-label-and-note.selected .top-bar-keyboard-tab-note,
-.top-bar-keyboard-tab-label-and-note:hover .top-bar-keyboard-tab-note {
+.layout-type-tab.selected .layout-type-note,
+.layout-type-tab:hover .layout-type-note {
     visibility: visible;
 }
 
@@ -50,81 +50,51 @@
     padding: 0.5rem 1rem 0 1rem;
 }
 
-.ansi-layout-options-container {
-    /* Grid (not flex) so the variant-buttons track fills a container-determined
-       width — like the Harmonic/Ergoplank option bars — rather than sizing to its
-       content. A content-sized grid would grow when the selected button's label
-       goes bold, shifting every button when switching variants. */
+/* ANSI's panel pairs the variant grid with its option checkboxes. */
+.ansi-options {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     column-gap: 2rem;
     align-items: start;
 }
 
-.ansi-variant-buttons {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    justify-items: stretch;
-    column-gap: 1.5rem;
-    text-align: center;
-    min-height: 80px;
-}
-
-.ansi-variant-checkboxes {
+.layout-option-checkboxes {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     min-width: 180px;
 }
 
-.split-ortho-layout-options-container {
+.split-ortho-options {
     display: flex;
     justify-content: flex-end;
     min-width: 180px;
 }
 
-.harmonic-layout-options-container {
+/* The 5-column variant-button grid, shared by every layout type. minmax(0, …) so
+   the broken-out (wide) option groups overflow visually instead of inflating the
+   column tracks. */
+.layout-variant-grid {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     justify-items: stretch;
-    column-gap: 2rem;
-}
-
-.plank-layout-options-container {
-    display: grid;
-    /* minmax(0, …) so the broken-out (wide) option groups overflow visually
-       instead of inflating the column tracks */
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    justify-items: stretch;
-    column-gap: 1rem;
+    text-align: center;
+    min-height: 80px;
 }
 
 /* fill the (equal) columns so every variant button is the same width */
-.plank-layout-options-container .layout-variant-button,
-.harmonic-layout-options-container .layout-variant-button,
-.ansi-variant-buttons .layout-variant-button {
+.layout-variant-grid .layout-variant-button {
     width: 100%;
     margin-left: 0;
     margin-right: 0;
 }
 
-.ergoplank-midshift-xl-bars-checkbox {
-    margin-top: 0.2rem;
-    margin-left: 1rem;
-    margin-bottom: 1rem;
-}
-.ergoplank-lowshift-variants-container {
-    margin-top: 0.35rem;
-}
-
-.ergoplank-angle-mod-checkbox {
-    margin-left: 1.25rem;
-    margin-top: 0.15rem;
-}
-
-.ergoplank-arrows-checkbox {
-    margin-top: 0.75rem;
-}
+/* small gap because of long labels */
+.layout-variant-grid--plank { column-gap: 1rem; }
+/* short labels, but more columns, so only slightly larger gap */
+.layout-variant-grid--ansi { column-gap: 1.5rem; }
+/* labels take up all the space, so largest gap to add some balance */
+.layout-variant-grid--harmonic { column-gap: 2rem; }
 
 .layout-variant-button {
     margin: 0.25rem 0.5rem;
@@ -163,9 +133,7 @@
 .layout-variant-details-wrapper.share-space {
     display: grid;
     grid-template-columns: 1fr;
-    /* When the shared content (e.g. Thumbs Up's option buttons) is wider than the
-       narrow variant column, anchor it to the column's right edge so it overflows
-       LEFT instead of spilling right into the neighbouring checkboxes. */
+    /* This is so that Thumbs Up's option buttons don't overflow into the checkboxes to the right. */
     justify-content: end;
 }
 
@@ -178,31 +146,11 @@
     visibility: hidden;
 }
 
-/* Styled like the compact .toggle-btn--sm option buttons it sits among, but in a
-   reddish-grey palette echoing the Return/Enter key highlight (#cca096). It has no
-   selected state on purpose — it always flips Enter/Backspace regardless of the
-   current layout state — so it only needs resting + hover. */
+/* Visuals come from .toggle-btn + .toggle-btn--sm + the reddish .toggle-btn--ret
+   colour scheme (echoing the Return/Enter key highlight). It has no selected state
+   on purpose — it always flips Enter/Backspace regardless of the layout state. */
 .flip-ret-rub-button {
-    background-color: #f3e7e3;
-    border: 1px solid #cca096;
-    color: var(--btn-text);
-    border-radius: var(--btn-radius);
-    padding: 0.35rem 0.65rem;
-    font-size: var(--btn-font);
-    font-family: var(--btn-font-family);
-    cursor: pointer;
-    transition: var(--btn-transition);
     margin-top: 0.5rem;
-}
-
-.flip-ret-rub-button:hover {
-    background-color: #ecd6d0;
-    border-color: #bd8d82;
-}
-
-.ansi-ahkb-options-container {
-    margin: 0.25rem 0.5rem;
-    text-align: left;
 }
 
 label.disabled {
@@ -340,9 +288,9 @@ label.disabled {
 
 /* Side-by-side option groups that break out of the narrow variant column,
    centered under the button — like the layout notes. Used by Ergoplank
-   (Lower Row + Arrows), Ergoslat (MidShift + key-count), and Ergoboard
-   Midshift (hand-width radios + flip). */
-.variant-options-row {
+   (Lower Row + Arrows), Ergoslat (Mid-shift + key-count), and Ergoboard
+   Legacy (hand-width + flip). */
+.layout-option-row {
     display: flex;
     gap: 2.5rem;
     justify-content: center;
@@ -357,11 +305,11 @@ label.disabled {
 
 /* Vertically centre the columns against each other (e.g. Ergoslat's lone
    Mid-shift checkbox aligned to the middle of the key-count buttons). */
-.variant-options-row--center {
+.layout-option-row--center {
     align-items: center;
 }
 
-.variant-option-column {
+.layout-option-column {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -369,11 +317,11 @@ label.disabled {
 
 /* Now that the groups have the full page width, let each labelled option stay
    on a single line and overflow the (defunct) column instead of wrapping tall. */
-.variant-option-column .checkboxLabel {
+.layout-option-column .checkboxLabel {
     white-space: nowrap;
 }
 
-.ergoplank-button-group {
+.layout-option-button-group {
     display: flex;
     gap: 0.35rem;
     margin-top: 0.35rem;
@@ -381,7 +329,7 @@ label.disabled {
     justify-content: flex-start;
 }
 
-.ergoplank-group-label {
+.layout-option-group-label {
     font-weight: bold;
     font-size: 0.85rem;
     color: #495057;
@@ -392,18 +340,18 @@ label.disabled {
 
 /* Variant of the labelled button group with the label to the LEFT of the
    buttons (instead of above). Used by the Ergoboard Legacy "Enter key:" group. */
-.ergoboard-inline-group {
+.layout-option-group--inline {
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
-.ergoboard-inline-group .ergoplank-group-label {
+.layout-option-group--inline .layout-option-group-label {
     margin-bottom: 0;
     white-space: nowrap;
 }
 
-.ergoboard-inline-group .ergoplank-button-group {
+.layout-option-group--inline .layout-option-button-group {
     margin-top: 0;
     margin-bottom: 0;
 }
