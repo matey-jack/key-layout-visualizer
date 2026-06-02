@@ -178,12 +178,26 @@
     visibility: hidden;
 }
 
+/* Styled like the compact .toggle-btn--sm option buttons it sits among, but in a
+   reddish-grey palette echoing the Return/Enter key highlight (#cca096). It has no
+   selected state on purpose — it always flips Enter/Backspace regardless of the
+   current layout state — so it only needs resting + hover. */
 .flip-ret-rub-button {
-    /*margin: 0.5rem;*/
+    background-color: #f3e7e3;
+    border: 1px solid #cca096;
+    color: var(--btn-text);
+    border-radius: var(--btn-radius);
+    padding: 0.35rem 0.65rem;
+    font-size: var(--btn-font);
+    font-family: var(--btn-font-family);
+    cursor: pointer;
+    transition: var(--btn-transition);
     margin-top: 0.5rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    border-radius: 4px;
+}
+
+.flip-ret-rub-button:hover {
+    background-color: #ecd6d0;
+    border-color: #bd8d82;
 }
 
 .ansi-ahkb-options-container {
