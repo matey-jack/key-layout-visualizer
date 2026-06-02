@@ -38,7 +38,7 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
         {variant: AnsiVariant.APPLE, label: "Apple"},
         {variant: AnsiVariant.HHKB, label: "HHKB"},
         {variant: AnsiVariant.AN65, label: "AN65"},
-        {variant: AnsiVariant.XHKB, label: "❤️ Thumbs Up"},
+        {variant: AnsiVariant.XHKB, label: "Thumbs Up ❤️"},
         // {variant: AnsiVariant.AHKB, label: "AHKB"},
     ];
 
@@ -58,21 +58,21 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
                             <MidShiftCheckbox options={options} setOption={setOption}/>
                         }
                         {option.variant === AnsiVariant.XHKB &&
-                            <div class="ansi-ahkb-options-container">
-                                <CheckboxWithLabel
-                                    label="15/4"
-                                    type="radio"
-                                    groupName="thumbs_up_variant"
-                                    checked={!thumbsUp16}
-                                    onChange={(checked) => checked && setOption({thumbsUp16: false})}
-                                />
-                                <CheckboxWithLabel
-                                    label="16/5"
-                                    type="radio"
-                                    groupName="thumbs_up_variant"
-                                    checked={thumbsUp16}
-                                    onChange={(checked) => checked && setOption({thumbsUp16: true})}
-                                />
+                            <div class="variant-options-row">
+                                <div class="variant-option-column">
+                                    <div class="ergoplank-button-group">
+                                        <button type="button"
+                                                class={"toggle-btn toggle-btn--sm" + (!thumbsUp16 ? " selected" : "")}
+                                                onClick={() => setOption({thumbsUp16: false})}>
+                                            15/4
+                                        </button>
+                                        <button type="button"
+                                                class={"toggle-btn toggle-btn--sm" + (thumbsUp16 ? " selected" : "")}
+                                                onClick={() => setOption({thumbsUp16: true})}>
+                                            16/5
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         }
                         {option.variant === AnsiVariant.AHKB &&

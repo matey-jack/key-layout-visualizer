@@ -109,9 +109,6 @@
     margin-left: 1rem;
     margin-bottom: 1rem;
 }
-.ergoplank-midshift-sub-variants-container {
-    margin-left: 1rem;
-}
 .ergoplank-lowshift-variants-container {
     margin-top: 0.35rem;
 }
@@ -162,6 +159,10 @@
 .layout-variant-details-wrapper.share-space {
     display: grid;
     grid-template-columns: 1fr;
+    /* When the shared content (e.g. Thumbs Up's option buttons) is wider than the
+       narrow variant column, anchor it to the column's right edge so it overflows
+       LEFT instead of spilling right into the neighbouring checkboxes. */
+    justify-content: end;
 }
 
 .layout-variant-details-wrapper.share-space > .layout-variant-note,
@@ -336,6 +337,12 @@ label.disabled {
     padding-top: 0.6rem;
 }
 
+/* Vertically centre the columns against each other (e.g. Ergoslat's lone
+   Mid-shift checkbox aligned to the middle of the key-count buttons). */
+.variant-options-row--center {
+    align-items: center;
+}
+
 .variant-option-column {
     display: flex;
     flex-direction: column;
@@ -363,5 +370,23 @@ label.disabled {
     text-align: left;
     margin-top: 0;
     margin-bottom: 0.25rem;
+}
+
+/* Variant of the labelled button group with the label to the LEFT of the
+   buttons (instead of above). Used by the Ergoboard Legacy "Enter key:" group. */
+.ergoboard-inline-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.ergoboard-inline-group .ergoplank-group-label {
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+.ergoboard-inline-group .ergoplank-button-group {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 

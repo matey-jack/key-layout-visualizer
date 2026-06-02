@@ -1,5 +1,4 @@
 import {ErgoboardMidshiftVariant, ErgoplankArrows, type LayoutOptions, PlankVariant} from "../app-model.ts";
-import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {LayoutVariantButton} from "../components/LayoutVariantButton.tsx";
 import {FlipRetRubButton} from "./components/FlipRetRubButton.tsx";
 import {MidShiftCheckbox} from "./components/MidShiftCheckbox.tsx";
@@ -17,26 +16,28 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
         <LayoutVariantButton variant={PlankVariant.KATANA_60} currentVariant={variant} setVariant={setVariant} name="Katana60"/>
 
         <LayoutVariantButton variant={PlankVariant.ERGOSLAT} currentVariant={variant} setVariant={setVariant} name="Ergoslat 13/3">
-            <div class="variant-options-row">
+            <div class="variant-options-row variant-options-row--center">
                 <div class="variant-option-column">
                     <MidShiftCheckbox options={options} setOption={setOption}/>
                 </div>
                 <div class="variant-option-column">
-                    <CheckboxWithLabel label="57 keys"
-                                       type="radio"
-                                       groupName="ergoslat_keys"
-                                       checked={!options.esNumberless && !options.esSmallerThumbs}
-                                       onChange={(checked) => checked && setOption({esNumberless: false, esSmallerThumbs: false})}/>
-                    <CheckboxWithLabel label="59 keys"
-                                       type="radio"
-                                       groupName="ergoslat_keys"
-                                       checked={!options.esNumberless && options.esSmallerThumbs}
-                                       onChange={(checked) => checked && setOption({esNumberless: false, esSmallerThumbs: true})}/>
-                    <CheckboxWithLabel label="47 keys"
-                                       type="radio"
-                                       groupName="ergoslat_keys"
-                                       checked={options.esNumberless}
-                                       onChange={(checked) => checked && setOption({esNumberless: true, esSmallerThumbs: true})}/>
+                    <div class="ergoplank-button-group">
+                        <button type="button"
+                                class={"toggle-btn toggle-btn--sm" + (!options.esNumberless && !options.esSmallerThumbs ? " selected" : "")}
+                                onClick={() => setOption({esNumberless: false, esSmallerThumbs: false})}>
+                            57 keys
+                        </button>
+                        <button type="button"
+                                class={"toggle-btn toggle-btn--sm" + (!options.esNumberless && options.esSmallerThumbs ? " selected" : "")}
+                                onClick={() => setOption({esNumberless: false, esSmallerThumbs: true})}>
+                            59 keys
+                        </button>
+                        <button type="button"
+                                class={"toggle-btn toggle-btn--sm" + (options.esNumberless ? " selected" : "")}
+                                onClick={() => setOption({esNumberless: true, esSmallerThumbs: true})}>
+                            47 keys
+                        </button>
+                    </div>
                 </div>
             </div>
         </LayoutVariantButton>
@@ -99,10 +100,8 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
                             currentVariant={variant} setVariant={setVariant}
                             name="Ergoboard 16/x Legacy Ed">
             <div class="variant-options-row">
-                <div class="variant-option-column">
-                    <ErgoboardMidshiftLayoutOptions msVariant={options.ergoboardMidshiftVariant}
-                                             setMsVariant={(v) => setOption({ergoboardMidshiftVariant: v})}/>
-                </div>
+                <ErgoboardMidshiftLayoutOptions msVariant={options.ergoboardMidshiftVariant}
+                                         setMsVariant={(v) => setOption({ergoboardMidshiftVariant: v})}/>
                 <div class="variant-option-column">
                     <FlipRetRubButton setOption={setOption} options={options}/>
                 </div>
@@ -117,32 +116,37 @@ type ErgoboardMidshiftLayoutOptions = {
 }
 
 export function ErgoboardMidshiftLayoutOptions({msVariant, setMsVariant}: ErgoboardMidshiftLayoutOptions) {
-    function midshiftVariant(msVar: ErgoboardMidshiftVariant, label: string, sub = false) {
-        return <CheckboxWithLabel label={label}
-                                  type="radio"
-                                  groupName={sub ? "midshift_subvariant" : "midshift_variant"}
-                                  checked={msVariant === msVar}
-                                  onChange={(checked) => checked && setMsVariant(msVar)}/>
+    const narrowSubvariant = msVariant > ErgoboardMidshiftVariant.SEMI_WIDE;
+
+    function midshiftButton(msVar: ErgoboardMidshiftVariant, label: string, selected: boolean) {
+        return <button type="button"
+                       class={"toggle-btn toggle-btn--sm" + (selected ? " selected" : "")}
+                       onClick={() => setMsVariant(msVar)}>
+            {label}
+        </button>
     }
 
-    const narrowSubvariant = msVariant > ErgoboardMidshiftVariant.SEMI_WIDE;
-    return <>
-        {midshiftVariant(ErgoboardMidshiftVariant.EXTRA_WIDE, "Extra Wide Hands 16/5.5")}
-        {midshiftVariant(ErgoboardMidshiftVariant.COMFY_WIDE, "❤️ Comfortably Wide 16/5")}
-        {midshiftVariant(ErgoboardMidshiftVariant.SEMI_WIDE, "Semi Wide 16/4.5")}
+    // The Enter-key sub-group stacks *below* the width buttons (same column):
+    // with no group labels there's room, and stacking avoids overflowing the page.
+    return <div class="variant-option-column">
+        <div class="ergoplank-button-group">
+            {midshiftButton(ErgoboardMidshiftVariant.EXTRA_WIDE, "16/5.5", msVariant === ErgoboardMidshiftVariant.EXTRA_WIDE)}
+            {midshiftButton(ErgoboardMidshiftVariant.COMFY_WIDE, "16/5", msVariant === ErgoboardMidshiftVariant.COMFY_WIDE)}
+            {midshiftButton(ErgoboardMidshiftVariant.SEMI_WIDE, "16/4.5", msVariant === ErgoboardMidshiftVariant.SEMI_WIDE)}
+            {midshiftButton(ErgoboardMidshiftVariant.RIGHT_ENTER, "16/4", narrowSubvariant)}
+        </div>
 
-        <CheckboxWithLabel label="Narrow Hands 16/4"
-                           type="radio"
-                           groupName={"midshift_variant"}
-                           checked={narrowSubvariant}
-                           onChange={(checked) =>  checked && setMsVariant(ErgoboardMidshiftVariant.RIGHT_ENTER)}/>
-
-        {narrowSubvariant && <div class="ergoplank-midshift-sub-variants-container">
-            {midshiftVariant(ErgoboardMidshiftVariant.RIGHT_ENTER, "Right-side Enter key", true)}
-            {midshiftVariant(ErgoboardMidshiftVariant.VERTICAL_ENTER, "Vertical Enter key", true)}
-            {midshiftVariant(ErgoboardMidshiftVariant.CENTRAL_ENTER, "Central Enter key", true)}
-        </div>}
-    </>
+        {narrowSubvariant &&
+            <div class="ergoboard-inline-group">
+                <div class="ergoplank-group-label">Enter key:</div>
+                <div class="ergoplank-button-group">
+                    {midshiftButton(ErgoboardMidshiftVariant.RIGHT_ENTER, "Right", msVariant === ErgoboardMidshiftVariant.RIGHT_ENTER)}
+                    {midshiftButton(ErgoboardMidshiftVariant.CENTRAL_ENTER, "Central", msVariant === ErgoboardMidshiftVariant.CENTRAL_ENTER)}
+                    {midshiftButton(ErgoboardMidshiftVariant.VERTICAL_ENTER, "Vertical", msVariant === ErgoboardMidshiftVariant.VERTICAL_ENTER)}
+                </div>
+            </div>
+        }
+    </div>
 }
 
 

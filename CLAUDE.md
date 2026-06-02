@@ -8,6 +8,11 @@ also [ReadMe.md](ReadMe.md) for general context.
 Some of this applies only when running on Windows. 
 If running on WSL or other environments it might be different.
 
+### Preview app
+
+`npm dev` (Vite) is usally already running. 
+Try connecting to localhost:3000 with the browser before starting the dev server on your own.
+
 ### `npx tsx -e` must be a SINGLE physical line — multiline silently fails
 On this setup, a multiline `-e` script (and any `-e` using a top-level static `import`)
 exits **0 with zero output** — no error, nothing. It's the shell/tool quoting mangling the
