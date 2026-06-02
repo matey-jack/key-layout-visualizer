@@ -286,10 +286,9 @@ label.disabled {
     stroke-width: 2.5;
 }
 
-/* Side-by-side option groups that break out of the narrow variant column,
-   centered under the button — like the layout notes. Used by Ergoplank
-   (Lower Row + Arrows), Ergoslat (Mid-shift + key-count), and Ergoboard
-   Legacy (hand-width + flip). */
+/* Option area that breaks out of the narrow variant column and centers under
+   the button — like the layout notes. Ergoboard Legacy uses two side-by-side
+   columns; Ergoplank and Ergoslat each use a single column. */
 .layout-option-row {
     display: flex;
     gap: 2.5rem;
@@ -313,6 +312,13 @@ label.disabled {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.6rem;
+}
+
+/* Direct button-group children: column gap owns the spacing, margins would double it. */
+.layout-option-column > .layout-option-button-group {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 /* Now that the groups have the full page width, let each labelled option stay

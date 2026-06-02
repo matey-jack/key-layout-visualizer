@@ -16,10 +16,7 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
         <LayoutVariantButton variant={PlankVariant.KATANA_60} currentVariant={variant} setVariant={setVariant} name="Katana60"/>
 
         <LayoutVariantButton variant={PlankVariant.ERGOSLAT} currentVariant={variant} setVariant={setVariant} name="Ergoslat 13/3">
-            <div class="layout-option-row layout-option-row--center">
-                <div class="layout-option-column">
-                    <MidShiftCheckbox options={options} setOption={setOption}/>
-                </div>
+            <div class="layout-option-row">
                 <div class="layout-option-column">
                     <div class="layout-option-button-group">
                         <button type="button"
@@ -38,6 +35,7 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
                             47 keys
                         </button>
                     </div>
+                    <MidShiftCheckbox options={options} setOption={setOption}/>
                 </div>
             </div>
         </LayoutVariantButton>
@@ -48,101 +46,105 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
         >
             <div class="layout-option-row">
                 <div class="layout-option-column">
-                    <div class="layout-option-group-label">Lower Row</div>
-                    <div class="layout-option-button-group">
-                        <button type="button"
-                                class={"toggle-btn toggle-btn--sm" + (!options.midShift ? " selected" : "")}
-                                onClick={() => setOption({midShift: false})}>
-                            Shift
-                        </button>
-                        <button type="button"
-                                class={"toggle-btn toggle-btn--sm" + (options.midShift && !options.epRightReturn ? " selected" : "")}
-                                onClick={() => setOption({midShift: true, epRightReturn: false})}>
-                            Characters
-                        </button>
-                        <button type="button"
-                                class={"toggle-btn toggle-btn--sm" + (options.midShift && options.epRightReturn ? " selected" : "")}
-                                onClick={() => setOption({midShift: true, epRightReturn: true})}>
-                            Enter
-                        </button>
+                    <div class="layout-option-group--inline">
+                        <div class="layout-option-group-label">Lower Row</div>
+                        <div class="layout-option-button-group">
+                            <button type="button"
+                                    class={"toggle-btn toggle-btn--sm" + (!options.midShift ? " selected" : "")}
+                                    onClick={() => setOption({midShift: false})}>
+                                Shift
+                            </button>
+                            <button type="button"
+                                    class={"toggle-btn toggle-btn--sm" + (options.midShift && !options.epRightReturn ? " selected" : "")}
+                                    onClick={() => setOption({midShift: true, epRightReturn: false})}>
+                                Characters
+                            </button>
+                            <button type="button"
+                                    class={"toggle-btn toggle-btn--sm" + (options.midShift && options.epRightReturn ? " selected" : "")}
+                                    onClick={() => setOption({midShift: true, epRightReturn: true})}>
+                                Enter
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="layout-option-column">
-                    <div class="layout-option-group-label">Arrows</div>
-                    <div class="layout-option-button-group">
-                        <button type="button"
-                                class={"toggle-btn toggle-btn--sm" + (options.epArrows === ErgoplankArrows.None ? " selected" : "")}
-                                onClick={() => setOption({epArrows: ErgoplankArrows.None})}>
-                            None
-                        </button>
-                        <button type="button"
-                                class={"toggle-btn toggle-btn--sm" + (options.epArrows === ErgoplankArrows.Inline ? " selected" : "")}
-                                onClick={() => setOption({epArrows: ErgoplankArrows.Inline})}>
-                            Inline
-                        </button>
-                        <button type="button"
-                                class={"toggle-btn toggle-btn--sm" + (options.epArrows === ErgoplankArrows.Center ? " selected" : "")}
-                                onClick={() => setOption({epArrows: ErgoplankArrows.Center})}>
-                            Center
-                        </button>
+                    <div class="layout-option-group--inline">
+                        <div class="layout-option-group-label">Arrows</div>
+                        <div class="layout-option-button-group">
+                            <button type="button"
+                                    class={"toggle-btn toggle-btn--sm" + (options.epArrows === ErgoplankArrows.None ? " selected" : "")}
+                                    onClick={() => setOption({epArrows: ErgoplankArrows.None})}>
+                                None
+                            </button>
+                            <button type="button"
+                                    class={"toggle-btn toggle-btn--sm" + (options.epArrows === ErgoplankArrows.Inline ? " selected" : "")}
+                                    onClick={() => setOption({epArrows: ErgoplankArrows.Inline})}>
+                                Inline
+                            </button>
+                            <button type="button"
+                                    class={"toggle-btn toggle-btn--sm" + (options.epArrows === ErgoplankArrows.Center ? " selected" : "")}
+                                    onClick={() => setOption({epArrows: ErgoplankArrows.Center})}>
+                                Center
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </LayoutVariantButton>
-
-        <LayoutVariantButton variant={PlankVariant.ERGOBOARD_CENTRAL}
-                            currentVariant={variant} setVariant={setVariant}
-                            name="❤️ Ergoboard 16/5 Central"
-        >
         </LayoutVariantButton>
 
         <LayoutVariantButton variant={PlankVariant.ERGOBOARD_LEGACY}
                             currentVariant={variant} setVariant={setVariant}
                             name="Ergoboard 16/x Legacy Ed">
             <div class="layout-option-row">
-                <ErgoboardLayoutOptions msVariant={options.ergoboardVariant}
-                                        setMsVariant={(v) => setOption({ergoboardVariant: v})}/>
+                <ErgoboardLayoutOptions ergoboardVariant={options.ergoboardVariant}
+                                        setErgoboardVariant={(v) => setOption({ergoboardVariant: v})}/>
                 <div class="layout-option-column">
                     <FlipRetRubButton setOption={setOption} options={options}/>
                 </div>
             </div>
         </LayoutVariantButton>
+
+        <LayoutVariantButton variant={PlankVariant.ERGOBOARD_CENTRAL}
+                             currentVariant={variant} setVariant={setVariant}
+                             name="❤️ Ergoboard 16/5 Central"
+        >
+        </LayoutVariantButton>
     </div>
 }
 
 type ErgoboardLayoutOptionsProps = {
-    msVariant: ErgoboardVariant;
-    setMsVariant: (v: ErgoboardVariant) => void;
+    ergoboardVariant: ErgoboardVariant;
+    setErgoboardVariant: (v: ErgoboardVariant) => void;
 }
 
-export function ErgoboardLayoutOptions({msVariant, setMsVariant}: ErgoboardLayoutOptionsProps) {
-    const narrowSubvariant = msVariant > ErgoboardVariant.SEMI_WIDE;
+export function ErgoboardLayoutOptions({ergoboardVariant, setErgoboardVariant}: ErgoboardLayoutOptionsProps) {
+    const narrowSubvariant = ergoboardVariant > ErgoboardVariant.SEMI_WIDE;
 
-    function midshiftButton(msVar: ErgoboardVariant, label: string, selected: boolean) {
+    function variantButton(variant: ErgoboardVariant, label: string, selected: boolean) {
         return <button type="button"
                        class={"toggle-btn toggle-btn--sm" + (selected ? " selected" : "")}
-                       onClick={() => setMsVariant(msVar)}>
+                       onClick={() => setErgoboardVariant(variant)}>
             {label}
         </button>
     }
 
-    // The Enter-key sub-group stacks *below* the width buttons (same column):
-    // with no group labels there's room, and stacking avoids overflowing the page.
+    // The Enter-key sub-group stacks below the hand-distance buttons in the same column.
     return <div class="layout-option-column">
-        <div class="layout-option-button-group">
-            {midshiftButton(ErgoboardVariant.EXTRA_WIDE, "16/5.5", msVariant === ErgoboardVariant.EXTRA_WIDE)}
-            {midshiftButton(ErgoboardVariant.COMFY_WIDE, "16/5 ❤️", msVariant === ErgoboardVariant.COMFY_WIDE)}
-            {midshiftButton(ErgoboardVariant.SEMI_WIDE, "16/4.5", msVariant === ErgoboardVariant.SEMI_WIDE)}
-            {midshiftButton(ErgoboardVariant.RIGHT_ENTER, "16/4", narrowSubvariant)}
+        <div class="layout-option-group--inline">
+            <div class="layout-option-group-label">Hand distance</div>
+            <div class="layout-option-button-group">
+                {variantButton(ErgoboardVariant.EXTRA_WIDE, "16/5.5", ergoboardVariant === ErgoboardVariant.EXTRA_WIDE)}
+                {variantButton(ErgoboardVariant.COMFY_WIDE, "16/5 ❤️", ergoboardVariant === ErgoboardVariant.COMFY_WIDE)}
+                {variantButton(ErgoboardVariant.SEMI_WIDE, "16/4.5", ergoboardVariant === ErgoboardVariant.SEMI_WIDE)}
+                {variantButton(ErgoboardVariant.RIGHT_ENTER, "16/4", narrowSubvariant)}
+            </div>
         </div>
 
         {narrowSubvariant &&
             <div class="layout-option-group--inline">
-                <div class="layout-option-group-label">Enter key:</div>
+                <div class="layout-option-group-label">Enter key</div>
                 <div class="layout-option-button-group">
-                    {midshiftButton(ErgoboardVariant.RIGHT_ENTER, "Right", msVariant === ErgoboardVariant.RIGHT_ENTER)}
-                    {midshiftButton(ErgoboardVariant.CENTRAL_ENTER, "Central", msVariant === ErgoboardVariant.CENTRAL_ENTER)}
-                    {midshiftButton(ErgoboardVariant.VERTICAL_ENTER, "Vertical", msVariant === ErgoboardVariant.VERTICAL_ENTER)}
+                    {variantButton(ErgoboardVariant.RIGHT_ENTER, "Right", ergoboardVariant === ErgoboardVariant.RIGHT_ENTER)}
+                    {variantButton(ErgoboardVariant.CENTRAL_ENTER, "Central", ergoboardVariant === ErgoboardVariant.CENTRAL_ENTER)}
+                    {variantButton(ErgoboardVariant.VERTICAL_ENTER, "Vertical", ergoboardVariant === ErgoboardVariant.VERTICAL_ENTER)}
                 </div>
             </div>
         }
