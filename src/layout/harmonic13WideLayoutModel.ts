@@ -1,6 +1,5 @@
 import {
     harmonicStaggerOffsets,
-    KeyboardRows,
     KeymapTypeId,
     type LayoutMapping,
     type LayoutModel,

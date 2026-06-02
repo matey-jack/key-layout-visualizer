@@ -3,7 +3,6 @@ import {type Signal, useSignal} from "@preact/signals";
 import type {AppState} from "../app-model.ts";
 import {BigramType, type FlexMapping, KeymapTypeId, type LayoutModel, type MappingChange,} from "../base-model.ts";
 import {getBigramMovements, weighBigramTypes} from "../bigrams.ts";
-import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {singleCharacterFrequencies as englishFreqs} from "../frequencies/english-single-character-frequencies.ts";
 import {singleCharacterFrequencies as germanFreqs} from "../frequencies/german-single-character-frequencies.ts";
 import {singleCharacterFrequencies as spanishFreqs} from "../frequencies/spanish-single-character-frequencies.ts";
