@@ -13,9 +13,15 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
     const setVariant = (plankVariant: PlankVariant) => setOption({plankVariant});
 
     return <div class="layout-variant-grid layout-variant-grid--plank">
-        <LayoutVariantButton variant={PlankVariant.KATANA_60} currentVariant={variant} setVariant={setVariant} name="Katana60"/>
+        <LayoutVariantButton variant={PlankVariant.KATANA_60}
+                             currentVariant={variant}
+                             setVariant={setVariant}
+                             name="Katana60"/>
 
-        <LayoutVariantButton variant={PlankVariant.ERGOSLAT} currentVariant={variant} setVariant={setVariant} name="Ergoslat 13/3">
+        <LayoutVariantButton variant={PlankVariant.ERGOSLAT}
+                             currentVariant={variant}
+                             setVariant={setVariant}
+                             name="Ergoslat 13/3">
             <div class="layout-option-row">
                 <div class="layout-option-column">
                     <div class="layout-option-button-group">
@@ -41,8 +47,9 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
         </LayoutVariantButton>
 
         <LayoutVariantButton variant={PlankVariant.ERGOPLANK}
-                            currentVariant={variant} setVariant={setVariant}
-                            name="❤️ Ergoplank 15/5"
+                             currentVariant={variant}
+                             setVariant={setVariant}
+                             name="❤️ Ergoplank 15/5"
         >
             <div class="layout-option-row">
                 <div class="layout-option-column">
@@ -91,8 +98,9 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
         </LayoutVariantButton>
 
         <LayoutVariantButton variant={PlankVariant.ERGOBOARD_LEGACY}
-                            currentVariant={variant} setVariant={setVariant}
-                            name="Ergoboard 16/x Legacy&nbsp;Ed">
+                             currentVariant={variant}
+                             setVariant={setVariant}
+                             name="Ergoboard 16/x Legacy&nbsp;Ed">
             <div class="layout-option-row">
                 <ErgoboardLayoutOptions ergoboardVariant={options.ergoboardVariant}
                                         setErgoboardVariant={(v) => setOption({ergoboardVariant: v})}/>
