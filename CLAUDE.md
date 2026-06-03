@@ -2,6 +2,7 @@
 
 see [AGENTS.md](AGENTS.md) for a general intro to the app and dev workflows.
 also [ReadMe.md](ReadMe.md) for general context.
+also [css-gotchas.md](css-gotchas.md) for CSS lessons learned (subgrid, min-height distribution, bold ghost pattern).
 
 ## Environment / tooling gotchas
 

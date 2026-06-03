@@ -31,6 +31,10 @@ The local app runs under http://localhost:3000 (or whichever port [vite.config.t
 
 The Playwright tests are in the `e2e/` directory. 
 
+# CSS notes
+
+See [css-gotchas.md](css-gotchas.md) for CSS lessons learned in this project (subgrid row sharing, `min-height` / `align-content` interaction, bold ghost `::after` pattern).
+
 # Code Style Guidelines
 
 Avoid optional parameters unless there's a good reason, like when there are several or most callers really use the same value.
