@@ -15,6 +15,7 @@ export function LayoutVariantButton<T>({variant, currentVariant, setVariant, nam
     return <div class={"layout-variant-button-and-children" + (selected ? " selected" : "")}>
         <button type="button"
             className={"toggle-btn layout-variant-button" + (selected ? " selected" : "")}
+            data-label={name}
             onClick={() => setVariant(variant)}
         >
             {name}

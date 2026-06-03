@@ -73,11 +73,16 @@
 
 /* The 5-column variant-button grid, shared by every layout type. minmax(0, …) so
    the broken-out (wide) option groups overflow visually instead of inflating the
-   column tracks. */
+   column tracks. Two explicit rows: row 1 for buttons (shared height across all
+   columns via subgrid), row 2 for details (notes + options). */
 .layout-variant-grid {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-rows: auto auto;
     justify-items: stretch;
+    /* align-content: start keeps rows at natural content height; min-height
+       still reserves space so the area doesn't collapse when options are hidden */
+    align-content: start;
     text-align: center;
     min-height: 80px;
 }
@@ -91,14 +96,26 @@
 
 .layout-variant-button {
     margin: 0.25rem 0.5rem;
-    /* fixed height (fits up to two lines) so every variant button is the same
-       height and switching variants / bold-on-select never shifts content */
-    height: 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    /* Grid with a single cell lets the text and the bold ghost (::after) share
+       the same area. The ghost pre-sizes the column width for bold so selection
+       never rewraps the label, while max-height: 0 keeps it out of row sizing. */
+    display: grid;
+    place-items: center;
     text-align: center;
     line-height: 1.15;
+}
+
+/* Bold ghost: sits in the same grid cell as the label text, invisible and 0px
+   tall, but participates in inline (width) sizing at bold weight. */
+.layout-variant-button::after {
+    content: attr(data-label);
+    font-weight: bold;
+    grid-area: 1 / 1;
+    visibility: hidden;
+    overflow: hidden;
+    max-height: 0;
+    width: 100%;
+    text-align: center;
 }
 
 /* fill the (equal) columns so every variant button is the same width */
@@ -114,6 +131,17 @@
     min-height: 1.5em;
     display: block;
     visibility: hidden;
+}
+
+/* Each cell spans both grid rows and uses subgrid so the button row and details
+   row are shared across all 5 columns — the tallest button drives row-1 height.
+   grid-template-columns: minmax(0,1fr) prevents the auto column from inflating
+   to the max-content of the hidden options content inside the cell. */
+.layout-variant-button-and-children {
+    display: grid;
+    grid-row: span 2;
+    grid-template-rows: subgrid;
+    grid-template-columns: minmax(0, 1fr);
 }
 
 .layout-variant-button-and-children.selected .layout-variant-note,

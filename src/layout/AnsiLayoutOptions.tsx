@@ -37,7 +37,8 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
         {variant: AnsiVariant.APPLE, label: "Apple"},
         {variant: AnsiVariant.HHKB, label: "HHKB"},
         {variant: AnsiVariant.AN65, label: "AN65"},
-        {variant: AnsiVariant.XHKB, label: "Thumbs Up ❤️"},
+        // &nbsp; in a string will be output literally, so use Unicode instead.
+        {variant: AnsiVariant.XHKB, label: "Thumbs Up\u00A0❤️"},
     ];
 
     return <div class="ansi-options">

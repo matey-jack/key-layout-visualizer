@@ -92,7 +92,7 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
 
         <LayoutVariantButton variant={PlankVariant.ERGOBOARD_LEGACY}
                             currentVariant={variant} setVariant={setVariant}
-                            name="Ergoboard 16/x Legacy Ed">
+                            name="Ergoboard 16/x Legacy&nbsp;Ed">
             <div class="layout-option-row">
                 <ErgoboardLayoutOptions ergoboardVariant={options.ergoboardVariant}
                                         setErgoboardVariant={(v) => setOption({ergoboardVariant: v})}/>
