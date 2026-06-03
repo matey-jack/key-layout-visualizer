@@ -4,6 +4,7 @@ import  {isSplit, type LayoutOptions} from './app-model.ts';
 import {fillMapping, getKeyPositions} from './layout/layout-functions.ts';
 import {ergoboardCentralLayoutModel} from './layout/ergoboardCentralLayoutModel.ts';
 import {colemakMapping} from './mapping/colemakMappings.ts';
+import { writeFileSync } from 'node:fs';
 
 const basicMetadata: KleKeyboardMetadata = {
     author: "Robert Jack Will",
@@ -20,19 +21,26 @@ const basicMetadata: KleKeyboardMetadata = {
 export function buildKle(layout: LayoutModel, mapping: FlexMapping, options: Partial<LayoutOptions>): KleKeyboard {
     const charMap = fillMapping(layout, mapping);
     const positions = getKeyPositions(layout, isSplit(options), charMap!);
+    const leftEdge = Math.min(...positions.map( p => p.colPos));
     const keys: KleKey[] = positions.map( (pos) => ({
+        x: pos.colPos - leftEdge,
+        y: pos.row,
+        width: pos.keyCapWidth,
+        // TODO: get height from wherever it's stored
+        height: 1,
+        labels: [
+            // it's a 3×3 matrix, but we fill only enough to reach the center
+            "", "", "",
+            "", pos.label
+        ],
+        // TODO: get from layout.keyColorClass plus the CSS
         color: "",
-        labels: [pos.label],
         textColor: [],
         textSize: [],
         default: {
             textColor: "",
             textSize: 0,
         },
-        x: pos.colPos,
-        y: pos.row,
-        width: pos.keyCapWidth,
-        height: 1,
         x2: 0,
         y2: 0,
         width2: 0,
@@ -59,7 +67,5 @@ export function buildKle(layout: LayoutModel, mapping: FlexMapping, options: Par
 
 const prepared = buildKle(ergoboardCentralLayoutModel, colemakMapping, {})
 const kleData = serialize(prepared);
-
-import { writeFileSync } from 'node:fs';
 
 writeFileSync('kle.json', JSON.stringify(kleData, null, 2), 'utf-8');
