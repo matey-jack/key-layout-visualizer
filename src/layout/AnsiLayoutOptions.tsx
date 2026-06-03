@@ -3,6 +3,7 @@ import {AnsiVariant, type LayoutOptions} from "../app-model.ts";
 import type {FlexMapping} from "../base-model.ts";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {LayoutVariantButton} from "../components/LayoutVariantButton.tsx";
+import {OptionButton} from "../components/OptionButton.tsx";
 import {MidShiftCheckbox} from "./components/MidShiftCheckbox.tsx";
 import {onlySupportsWide} from "./layout-functions.ts";
 
@@ -14,73 +15,74 @@ export interface AnsiLayoutOptionsProps {
 
 const naturallyWideVariants = [AnsiVariant.XHKB];
 
-function ansiVariantNote(variant: AnsiVariant, wide: boolean): string {
-    const handDist = wide ? "3" : "2";
-    switch (variant) {
-        case AnsiVariant.IBM:   return `15/${handDist}`;
-        case AnsiVariant.APPLE: return `14.5/${handDist}`;
-        case AnsiVariant.HHKB:  return `15/${handDist}`;
-        case AnsiVariant.AN65:  return `16/${handDist}`;
-        case AnsiVariant.XHKB:  return `15/4 or 16/5`;
-        default: return "";
-    }
-}
-
 export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptionsProps) {
     const {ansiWide, ansiVariant, ansiSplit, thumbsUp16} = options;
     const wideDisabled = onlySupportsWide(mapping.value) || naturallyWideVariants.includes(ansiVariant);
     const splitDisabled = (ansiVariant === AnsiVariant.HHKB) ||
         ((ansiVariant === AnsiVariant.XHKB) && thumbsUp16);
     const setVariant = (variant: AnsiVariant) => setOption({ansiVariant: variant});
-    const variantOptions = [
-        {variant: AnsiVariant.IBM, label: "IBM"},
-        {variant: AnsiVariant.APPLE, label: "Apple"},
-        {variant: AnsiVariant.HHKB, label: "HHKB"},
-        {variant: AnsiVariant.AN65, label: "AN65"},
-        // &nbsp; in a string will be output literally, so use Unicode instead.
-        // TODO: replace with actual &nbsp; after refactoring to have the string directly in JSX.
-        {variant: AnsiVariant.XHKB, label: "Thumbs Up\u00A0❤️"},
-    ];
+
+    const handDist = ansiWide ? "3" : "2";
 
     return <div class="ansi-options">
             <div class="layout-variant-grid layout-variant-grid--ansi">
-                {variantOptions.map((option) => (
-                    <LayoutVariantButton
-                        key={option.variant}
-                        variant={option.variant}
-                        currentVariant={ansiVariant}
-                        setVariant={setVariant}
-                        name={option.label}
-                        note={ansiVariantNote(option.variant, ansiWide)}
-                        shareSpace={option.variant === AnsiVariant.XHKB}
-                    >
-                        {(option.variant === AnsiVariant.IBM || option.variant === AnsiVariant.APPLE) &&
-                            <div class="layout-option-row">
-                                <div class="layout-option-column">
-                                    <MidShiftCheckbox options={options} setOption={setOption}/>
-                                </div>
+                <LayoutVariantButton variant={AnsiVariant.IBM}
+                                     currentVariant={ansiVariant}
+                                     setVariant={setVariant}
+                                     name="IBM"
+                                     note={`15/${handDist}`}>
+                    <div class="layout-option-row">
+                        <div class="layout-option-column">
+                            <MidShiftCheckbox options={options} setOption={setOption}/>
+                        </div>
+                    </div>
+                </LayoutVariantButton>
+
+                <LayoutVariantButton variant={AnsiVariant.APPLE}
+                                     currentVariant={ansiVariant}
+                                     setVariant={setVariant}
+                                     name="Apple"
+                                     note={`14.5/${handDist}`}>
+                    <div class="layout-option-row">
+                        <div class="layout-option-column">
+                            <MidShiftCheckbox options={options} setOption={setOption}/>
+                        </div>
+                    </div>
+                </LayoutVariantButton>
+
+                <LayoutVariantButton variant={AnsiVariant.HHKB}
+                                     currentVariant={ansiVariant}
+                                     setVariant={setVariant}
+                                     name="HHKB"
+                                     note={`15/${handDist}`} />
+
+                <LayoutVariantButton variant={AnsiVariant.AN65}
+                                     currentVariant={ansiVariant}
+                                     setVariant={setVariant}
+                                     name="AN65"
+                                     note={`16/${handDist}`} />
+
+                <LayoutVariantButton variant={AnsiVariant.XHKB}
+                                     currentVariant={ansiVariant}
+                                     setVariant={setVariant}
+                                     name={"Thumbs Up\u00A0❤️"}
+                                     note="15/4 or 16/5"
+                                     shareSpace>
+                    <div class="layout-option-row">
+                        <div class="layout-option-column">
+                            <div class="layout-option-button-group">
+                                <OptionButton selected={!thumbsUp16}
+                                              onClick={() => setOption({thumbsUp16: false})}>
+                                    15/4
+                                </OptionButton>
+                                <OptionButton selected={thumbsUp16}
+                                              onClick={() => setOption({thumbsUp16: true})}>
+                                    16/5
+                                </OptionButton>
                             </div>
-                        }
-                        {option.variant === AnsiVariant.XHKB &&
-                            <div class="layout-option-row">
-                                <div class="layout-option-column">
-                                    <div class="layout-option-button-group">
-                                        <button type="button"
-                                                class={"toggle-btn toggle-btn--sm" + (!thumbsUp16 ? " selected" : "")}
-                                                onClick={() => setOption({thumbsUp16: false})}>
-                                            15/4
-                                        </button>
-                                        <button type="button"
-                                                class={"toggle-btn toggle-btn--sm" + (thumbsUp16 ? " selected" : "")}
-                                                onClick={() => setOption({thumbsUp16: true})}>
-                                            16/5
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </LayoutVariantButton>
-                ))}
+                        </div>
+                    </div>
+                </LayoutVariantButton>
             </div>
             <div class="layout-option-checkboxes">
                 <CheckboxWithLabel label="split keyboard"
@@ -94,3 +96,4 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
             </div>
     </div>
 }
+
