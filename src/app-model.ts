@@ -100,7 +100,7 @@ export interface LayoutOptions {
     soThumbShift: boolean;
 }
 
-export function isSplit(opts: LayoutOptions) {
+export function isSplit(opts: Partial<LayoutOptions>) {
     return opts.ansiSplit || opts.type === LayoutType.Ergosplit;
 }
 

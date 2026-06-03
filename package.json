@@ -17,6 +17,7 @@
     "update-interactive": "npm-check-updates -i"
   },
   "dependencies": {
+    "@kcf-hub/kle-serial": "^0.17.0",
     "@preact/signals": "^2.9.0",
     "posthog-js": "^1.372.10",
     "preact": "^10.29.1"
