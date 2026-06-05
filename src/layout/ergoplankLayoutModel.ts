@@ -202,9 +202,11 @@ export function createErgoPlankCenterArrows(lm: LayoutModel): LayoutModel {
     // which the others don't support because lower left keys would move away from their fingers.
     // (The famous angle-mod problem.)
     const lowerEdgeWidth = lm.keyWidths[KeyboardRows.Lower][0];
+    const staggerOffsets = [0.5, 0.25, 0, -0.5];
     if (lowerEdgeWidth === 1) {
         upArrowGap = 0.25;
         rowIndent[KeyboardRows.Lower] = 0.75;
+        staggerOffsets[3] = -0.25;
     }
     const frameMappings = mapValues(lm.frameMappings, (_, mapping) => addCenterArrows(mapping));
     return {
@@ -231,6 +233,7 @@ export function createErgoPlankCenterArrows(lm: LayoutModel): LayoutModel {
         ],
         // pass the changed layout of the lower row.
         keyColorClass: ergoFamilyKeyColorClass(frameMappings[KeymapTypeId.Ansi30]),
+        staggerOffsets,
     }
 }
 
