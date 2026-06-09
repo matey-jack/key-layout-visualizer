@@ -1,12 +1,12 @@
 import {
     harmonicStaggerOffsets,
     KeymapTypeId,
-    type LayoutMapping,
+    type FrameMapping,
     type LayoutModel,
 } from "../base-model.ts";
 import {MonotonicKeyWidth, mirror } from "./keyWidth.ts";
 
-const fullMapping: LayoutMapping = [
+const fullMapping: FrameMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", 0, 1], // 13 keys
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"], // 12 keys
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], // 13 keys

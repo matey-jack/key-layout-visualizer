@@ -1,4 +1,4 @@
-import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
+import {KeyboardRows, KeymapTypeId, type FrameMapping, type LayoutModel} from "../base-model.ts";
 import {mapValues} from "../library/records.ts";
 import {mirror, SymmetricKeyWidth} from "./keyWidth.ts";
 import {copyKeymap, ergoFamilyKeyColorClass} from "./layout-functions.ts";
@@ -12,7 +12,7 @@ import {patchThumb30, patchThumb32, permute} from "./permutation-functions.ts";
      - the lower row has wide edge-keys in both Major and Minor for LowShift,
        and 1u keys for MidShift. (Consistent with the now permanent AngleMod on the other Ergoplank and Ergoboard variants.)
  */
-const ansi30FrameMapping: LayoutMapping = [
+const ansi30FrameMapping: FrameMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "-"],
     ["⌦", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, "'"],
@@ -20,7 +20,7 @@ const ansi30FrameMapping: LayoutMapping = [
     ["Ctrl", "Cmd", null, "Alt", "⏎", "⍽", "AltGr", null, "Fn", "Ctrl"],
 ];
 
-const ansi32FrameMapping: LayoutMapping = [
+const ansi32FrameMapping: FrameMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, 10],
     ["⌦", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, 10],
@@ -32,8 +32,8 @@ const ansi32FrameMapping: LayoutMapping = [
 // a letter moves onto the thumb (FlexMapping [4:0]), Return moves up off the bottom row, and the
 // thirty-key frames swap '-' out for an explicit '/'.
 // Read e.g. "[4:0]⏎-" as: the thumb letter takes ⏎'s place, ⏎ takes '-'s place, '-' leaves.
-const thumb30FrameMapping: LayoutMapping = patchThumb30(ansi30FrameMapping, "[4:0]⏎-", "/[3:9]");
-const thumb32FrameMapping: LayoutMapping = patchThumb32(ansi32FrameMapping, "[4:0]⏎[1:10][2:10]");
+const thumb30FrameMapping: FrameMapping = patchThumb30(ansi30FrameMapping, "[4:0]⏎-", "/[3:9]");
+const thumb32FrameMapping: FrameMapping = patchThumb32(ansi32FrameMapping, "[4:0]⏎[1:10][2:10]");
 
 /*
     The major/minor naming comes from musical intervals, since both Ergoslat variants have only two key sizes
@@ -135,7 +135,7 @@ export function minorErgoslatLayoutModel(midShift: boolean): LayoutModel {
             [2.0, 2.0, 1.5, 1.0, 0.2, 0.2, 1.0, 1.5, 2.0, 2.0],
         ],
         rowIndent: keyWidths.rowIndent,
-        frameMappings: mapValues(base.frameMappings, (_, mapping) => replaceBottomRowGaps(mapping)) as Partial<Record<KeymapTypeId, LayoutMapping>>,
+        frameMappings: mapValues(base.frameMappings, (_, mapping) => replaceBottomRowGaps(mapping)) as Partial<Record<KeymapTypeId, FrameMapping>>,
     };
 }
 
@@ -153,11 +153,11 @@ export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
         singleKeyEffort: [[null], ...lm.singleKeyEffort.slice(1, 5)],
         frameMappings: mapValues(lm.frameMappings, (_, mapping) =>
             numberlessKeymap(copyKeymap(mapping))
-        ) as Partial<Record<KeymapTypeId, LayoutMapping>>,
+        ) as Partial<Record<KeymapTypeId, FrameMapping>>,
     };
 }
 
-function numberlessKeymap(keymap: LayoutMapping): LayoutMapping {
+function numberlessKeymap(keymap: FrameMapping): FrameMapping {
     const overriddenUpper0 = keymap[KeyboardRows.Upper][0];
     const overriddenUpper12 = keymap[KeyboardRows.Upper][12];
 
@@ -183,7 +183,7 @@ function adjustPlaceholderRow(
     return v;
 }
 
-function replaceBottomRowGaps(mapping: LayoutMapping): LayoutMapping {
+function replaceBottomRowGaps(mapping: FrameMapping): FrameMapping {
     const newMapping = mapping.map((row) => [...row]);
     const bottomRow = newMapping[KeyboardRows.Bottom];
     bottomRow[2] = "⇤";

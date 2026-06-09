@@ -1,17 +1,17 @@
-import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
+import {KeyboardRows, KeymapTypeId, type FrameMapping, type LayoutModel} from "../base-model.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 
 const keyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
-const ansi30FrameMapping: LayoutMapping = [
+const ansi30FrameMapping: FrameMapping = [
     ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
     ["↹", 0, 1, 2, 3, 4, "+", null, 5, 6, 7, 8, 9, "-", "⌫"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
     ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "↑", null],
     [null, "Ctrl", "Cmd", "CAPS", "Alt", "⍽", "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
 ];
-const thumb30FrameMapping: LayoutMapping = [
+const thumb30FrameMapping: FrameMapping = [
     ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
     ["↹", 0, 1, 2, 3, 4, null, null, 5, 6, 7, 8, 9, "+", "⌫"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
@@ -94,7 +94,7 @@ export const ergoboardBigEnterLayoutModel: LayoutModel = {
     singleKeyEffort: copyAndModifyKeymap(ergoboardLowshiftLayoutModel.singleKeyEffort!, (m) => removeKey(m)),
 }
 
-function moveKeys(mapping: LayoutMapping, thumby: boolean): LayoutMapping {
+function moveKeys(mapping: FrameMapping, thumby: boolean): FrameMapping {
     mapping[KeyboardRows.Number][7] = "+";
     mapping[KeyboardRows.Upper][6] = thumby ? "`~" : "-";
     mapping[KeyboardRows.Upper].splice(-2, 2, "'", "⌫");

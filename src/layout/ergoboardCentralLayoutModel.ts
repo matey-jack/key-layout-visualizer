@@ -1,4 +1,4 @@
-import {KEY_COLOR, KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
+import {KEY_COLOR, KeyboardRows, KeymapTypeId, type FrameMapping, type LayoutModel} from "../base-model.ts";
 import {mirrorOdd, SymmetricKeyWidth} from './keyWidth.ts';
 import {patchThumb30, patchThumb32, permute} from './permutation-functions.ts';
 
@@ -12,7 +12,7 @@ const keyWidths: number[][] = [
     mirrorOdd(1.5, 1.25, 1.25, 1.75, 0.25, 1, 1),
 ];
 
-const ansi30FrameMapping: LayoutMapping = [
+const ansi30FrameMapping: FrameMapping = [
     ["Esc", "`~", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
     ["↹", 0, 1, 2, 3, 4, "-", null, "+", 5, 6, 7, 8, 9, "⌫"],
     ["⇧", 0, 1, 2, 3, 4, "\\", "⎀", "'", 5, 6, 7, 8, 9, "⇧"],
@@ -20,7 +20,7 @@ const ansi30FrameMapping: LayoutMapping = [
     ["Cmd", "⌦", "Alt", "⏎", null, "←", "↓", "→", null, "⍽", "AltGr", "☰", "Ctrl"],
 ];
 
-const ansi32FrameMapping: LayoutMapping = [
+const ansi32FrameMapping: FrameMapping = [
     ["Esc", "`~", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
     ["↹", 0, 1, 2, 3, 4, [2, 10], null, 10, 5, 6, 7, 8, 9, "⌫"],
     ["⇧", 0, 1, 2, 3, 4, "/", "+", "'", 5, 6, 7, 8, 9, "⇧"],

@@ -1,4 +1,4 @@
-import {KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
+import {KeymapTypeId, type FrameMapping, type LayoutModel} from "../base-model.ts";
 import {permute} from "./permutation-functions.ts";
 
 // I arbitrarily decide that the top (number) row shall not be changed by the flex mapping.
@@ -17,7 +17,7 @@ const fullMapping = [
   all the frame mappings should have the same keys.
   (This is different from ANSI, where I reflect more differences between standard ANSI and German keymaps.)
  */
-const ansi30Base: LayoutMapping = [
+const ansi30Base: FrameMapping = [
     // Mapping Enter as a thumb key allows `'` to stay in its Qwerty position.
     // We use the freed space to improve `-` position, since this is the third most frequently used punctuation character.
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
@@ -27,7 +27,7 @@ const ansi30Base: LayoutMapping = [
     ["Alt", "\\", "`", "⌦", "Cmd", "⏎", "⍽", "Fn", "AltGr", "+", "-", "☰"],
 ];
 
-const ansi32Base: LayoutMapping = [
+const ansi32Base: FrameMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
@@ -35,7 +35,7 @@ const ansi32Base: LayoutMapping = [
     ["Alt", "/", "`", "⌦", "Cmd", "⏎", "⍽", "Ctrl", "AltGr", "'", "+", "Fn"],
 ];
 
-const thumb30Base: LayoutMapping = [
+const thumb30Base: FrameMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
@@ -43,7 +43,7 @@ const thumb30Base: LayoutMapping = [
     ["Alt", "⌦", "+", "Cmd", 0, "⏎", "⍽", "Fn", "AltGr", "\\", "`", "☰"],
 ];
 
-const thumb32Base: LayoutMapping = [
+const thumb32Base: FrameMapping = [
     ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],

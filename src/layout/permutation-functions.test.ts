@@ -1,26 +1,26 @@
 import {describe, expect, it} from "vitest";
-import {KeymapTypeId, type LayoutMapping} from "../base-model.ts";
+import {KeymapTypeId, type FrameMapping} from "../base-model.ts";
 import {majorErgoslatLayoutModel} from "./ergoslatLayoutModel.ts";
 import {patchThumb30, patchThumb32, permute} from "./permutation-functions.ts";
 
 describe("permute", () => {
     it("swaps two labels (a 2-cycle)", () => {
-        const base: LayoutMapping = [["a", "b", "c"]];
+        const base: FrameMapping = [["a", "b", "c"]];
         expect(permute(base, "ab")).toEqual([["b", "a", "c"]]);
     });
 
     it("rotates a 3-cycle: 'abc' means a->b's place, b->c's place, c->a's place", () => {
-        const base: LayoutMapping = [["a", "b", "c"]];
+        const base: FrameMapping = [["a", "b", "c"]];
         expect(permute(base, "abc")).toEqual([["c", "a", "b"]]);
     });
 
     it("applies several cycles left to right", () => {
-        const base: LayoutMapping = [["a", "b", "c", "d"]];
+        const base: FrameMapping = [["a", "b", "c", "d"]];
         expect(permute(base, "ab", "cd")).toEqual([["b", "a", "d", "c"]]);
     });
 
     it("references placeholder cells by [flexRow:col]", () => {
-        const base: LayoutMapping = [
+        const base: FrameMapping = [
             ["A", 10],
             ["B", 20],
         ];
@@ -31,7 +31,7 @@ describe("permute", () => {
     });
 
     it("expands [flexRow:c1,c2,...] to one reference per column, in cycle order", () => {
-        const base: LayoutMapping = [[0, 1, 2, 3]];
+        const base: FrameMapping = [[0, 1, 2, 3]];
         // [0:0,1,2,3] is shorthand for [0:0][0:1][0:2][0:3]: each cell takes the next one's place,
         // and the last wraps into the first, so every value shifts one column to the right.
         expect(permute(base, "[0:0,1,2,3]")).toEqual([[3, 0, 1, 2]]);
@@ -40,30 +40,30 @@ describe("permute", () => {
 
     it("handles an entering key (first) and a leaving key (last) as an open chain", () => {
         // ⏎ moves onto -'s cell, the new letter [1:7] enters where ⏎ was, and - leaves.
-        const base: LayoutMapping = [["⏎", "-"]];
+        const base: FrameMapping = [["⏎", "-"]];
         expect(permute(base, "[1:7]⏎-")).toEqual([[[1, 7], "⏎"]]);
     });
 
     it("picks the right-most copy of a duplicated label with '>'", () => {
-        const base: LayoutMapping = [["⇧", "a", "⇧"]];
+        const base: FrameMapping = [["⇧", "a", "⇧"]];
         // >⇧ is the larger-column ⇧; swap it with a.
         expect(permute(base, ">⇧a")).toEqual([["⇧", "⇧", "a"]]);
     });
 
     it("picks the left-most copy of a duplicated label with '<'", () => {
-        const base: LayoutMapping = [["⇧", "a", "⇧"]];
+        const base: FrameMapping = [["⇧", "a", "⇧"]];
         // <⇧ is the smaller-column ⇧; swap it with a.
         expect(permute(base, "<⇧a")).toEqual([["a", "⇧", "⇧"]]);
     });
 
     it("compares column index across rows, ignoring row", () => {
-        const base: LayoutMapping = [["x", "⇧"], ["⇧", "y"]];
+        const base: FrameMapping = [["x", "⇧"], ["⇧", "y"]];
         // <⇧ is the column-0 copy (in row 1), not the column-1 copy in row 0; swap it with x.
         expect(permute(base, "<⇧x")).toEqual([["⇧", "⇧"], ["x", "y"]]);
     });
 
     it("throws when two copies tie for the selected extreme column", () => {
-        const base: LayoutMapping = [["⇧", "a"], ["⇧", "b"]];
+        const base: FrameMapping = [["⇧", "a"], ["⇧", "b"]];
         // both ⇧ are in column 0, so '<' can't choose.
         expect(() => permute(base, "<⇧a")).toThrow(/ambiguous|column/);
     });
@@ -73,35 +73,35 @@ describe("permute", () => {
     });
 
     it("does not mutate the base mapping", () => {
-        const base: LayoutMapping = [["a", "b"]];
+        const base: FrameMapping = [["a", "b"]];
         permute(base, "ab");
         expect(base).toEqual([["a", "b"]]);
     });
 
     it("throws when an entering key is not the first token", () => {
-        const base: LayoutMapping = [["a", "b"]];
+        const base: FrameMapping = [["a", "b"]];
         expect(() => permute(base, "a[9:9]")).toThrow(/must be the first token/);
     });
 
     it("lets a single-char token stand in for a 2-char label by its first character", () => {
-        const base: LayoutMapping = [["`~", "a"]];
+        const base: FrameMapping = [["`~", "a"]];
         // ` has no exact match but uniquely starts the 2-char label `~, so it resolves to it.
         expect(permute(base, "`a")).toEqual([["a", "`~"]]);
     });
 
     it("prefers an exact single-char match over a 2-char label resolution", () => {
-        const base: LayoutMapping = [["`", "`~", "a"]];
+        const base: FrameMapping = [["`", "`~", "a"]];
         // The literal ` exists, so the token binds to it, leaving `~ untouched.
         expect(permute(base, "`a")).toEqual([["a", "`~", "`"]]);
     });
 
     it("throws when a token matches more than one cell", () => {
-        const base: LayoutMapping = [["x", "x"]];
+        const base: FrameMapping = [["x", "x"]];
         expect(() => permute(base, "xy")).toThrow(/must be unique/);
     });
 
     it("throws on a malformed coordinate token", () => {
-        const base: LayoutMapping = [["a", 1]];
+        const base: FrameMapping = [["a", 1]];
         expect(() => permute(base, "[1:2")).toThrow(/Unclosed/);
         expect(() => permute(base, "[1]")).toThrow(/Bad coordinate/);       // missing ':col'
         expect(() => permute(base, "[1,2]")).toThrow(/Bad coordinate/);     // old comma form is rejected
@@ -110,7 +110,7 @@ describe("permute", () => {
     });
 
     it("resolves easy-to-type abbreviations correctly", () => {
-        const base: LayoutMapping = [
+        const base: FrameMapping = [
             ["Ctrl", "Alt", "Cmd", "Shift", "Fn", "CAPS", "☰"]
         ];
         // ^ -> Ctrl, A -> Alt, C -> Cmd, S -> Shift, F -> Fn, P -> CAPS, M -> Menu
@@ -120,7 +120,7 @@ describe("permute", () => {
     });
 
     it("resolves multi-target abbreviations like A and S based on presence", () => {
-        const base: LayoutMapping = [
+        const base: FrameMapping = [
             ["AltGr", "⇧"]
         ];
         // A should resolve to AltGr, S should resolve to ⇧
@@ -130,7 +130,7 @@ describe("permute", () => {
     });
 
     it("disambiguates multi-target abbreviations using edge indicators", () => {
-        const base: LayoutMapping = [
+        const base: FrameMapping = [
             ["Alt", "a", "AltGr"]
         ];
         // <A is Alt, >A is AltGr. Swap them.
@@ -140,7 +140,7 @@ describe("permute", () => {
     });
 
     it("falls back to the first candidate if none are present in base", () => {
-        const base: LayoutMapping = [
+        const base: FrameMapping = [
             ["a", "b"]
         ];
         // Since no Alt or AltGr exists, A resolves to Alt.
@@ -154,13 +154,13 @@ describe("permute", () => {
 describe("patchThumb30 / patchThumb32 invariant checks", () => {
     it("patchThumb30 throws when no letter lands on the thumb", () => {
         // a plain swap adds/removes nothing, so the thumb-letter invariant fails.
-        const base: LayoutMapping = [["-", "x"]];
+        const base: FrameMapping = [["-", "x"]];
         expect(() => patchThumb30(base, "x-")).toThrow(/patchThumb30/);
     });
 
     it("patchThumb32 throws when a frame key is added", () => {
         // [4:0] enters (thumb letter) but '-' also leaves -> a label change patchThumb32 forbids.
-        const base: LayoutMapping = [["-", 0]];
+        const base: FrameMapping = [["-", 0]];
         expect(() => patchThumb32(base, "[4:0]-")).toThrow(/patchThumb32/);
     });
 });

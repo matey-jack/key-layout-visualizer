@@ -291,7 +291,7 @@ export function RowBasedKeyboard({layoutModel, prevLayoutModel, keyMovements, ma
             const freq = Math.sqrt(singleCharacterFrequencies[label.toUpperCase()] / singleCharacterFrequencies['E']);
             frequencyCircleRadius = freq * keyUnit / 2;
         }
-        // this would be a generically better approach than the current left-aligning,
+        // This would be a generically better approach than the current left-aligning,
         // but for the Escape key on Ergoplank, left-align is actually better.
         // const capColPos = colPos + (slotWidth - capWidth)/2;
 

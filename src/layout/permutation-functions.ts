@@ -1,4 +1,4 @@
-import type {LayoutMapping, LayoutMappingEntry} from "../base-model.ts";
+import type {FrameMapping, FrameMappingEntry} from "../base-model.ts";
 import {copyKeymap} from "./layout-functions.ts";
 
 // --- Cyclic permutation of frame mappings ---
@@ -72,7 +72,7 @@ const tokenLabel = (t: CycleToken) =>
             : `${t.edge}'${t.key}'`;
 
 // The FlexMapping cell a grid cell pulls its letter from, or null for a literal label / gap.
-function cellFlexCoord(value: LayoutMappingEntry, gridRow: number): Coord | null {
+function cellFlexCoord(value: FrameMappingEntry, gridRow: number): Coord | null {
     if (typeof value === "number") return [gridRow, value];
     if (Array.isArray(value)) return [value[0], value[1]];
     return null;
@@ -80,13 +80,13 @@ function cellFlexCoord(value: LayoutMappingEntry, gridRow: number): Coord | null
 
 // Encodes a FlexMapping coordinate as the value stored on grid row destRow: a bare column number
 // when it lands on its own row, otherwise an absolute [flexRow, col] tuple.
-const encodeFlex = ([fr, col]: Coord, destRow: number): LayoutMappingEntry =>
+const encodeFlex = ([fr, col]: Coord, destRow: number): FrameMappingEntry =>
     fr === destRow ? col : [fr, col];
 
 // Every [row, col] whose cell value satisfies the predicate, scanned in row-major order.
 function cellsMatching(
-    mapping: LayoutMapping,
-    pred: (value: LayoutMappingEntry, r: number, c: number) => boolean
+    mapping: FrameMapping,
+    pred: (value: FrameMappingEntry, r: number, c: number) => boolean
 ): Coord[] {
     const matches: Coord[] = [];
     mapping.forEach((row, r) =>
@@ -99,7 +99,7 @@ function cellsMatching(
 
 // Picks the left-most ('<') or right-most ('>') cell holding key, comparing column index only.
 // Throws if the key is absent, or if two copies tie for that extreme column (which shouldn't happen).
-function findEdge(mapping: LayoutMapping, edge: "<" | ">", key: string): Coord {
+function findEdge(mapping: FrameMapping, edge: "<" | ">", key: string): Coord {
     const matches = cellsMatching(mapping, (value) => value === key);
     if (matches.length === 0) throw new Error(`Cycle token ${edge}'${key}' matches no cell.`);
     const targetCol = edge === "<"
@@ -112,7 +112,7 @@ function findEdge(mapping: LayoutMapping, edge: "<" | ">", key: string): Coord {
 
 // Finds the grid cell a token currently occupies, or null when its key isn't present (= entering).
 // Throws if a label/letter token is ambiguous, or an edge token's extreme column is tied.
-function findToken(mapping: LayoutMapping, token: CycleToken): Coord | null {
+function findToken(mapping: FrameMapping, token: CycleToken): Coord | null {
     if ("edge" in token) return findEdge(mapping, token.edge, token.key);
     const matches = "label" in token
         ? cellsMatching(mapping, (value) => value === token.label)
@@ -140,7 +140,7 @@ function expandShortcut(shortcut: string): string[] {
 }
 
 // Resolves a shortcut for a label token against the base mapping.
-function resolveAbbreviation(base: LayoutMapping, shortcut: string): string {
+function resolveAbbreviation(base: FrameMapping, shortcut: string): string {
     const candidates = expandShortcut(shortcut);
     if (candidates.length === 1) return candidates[0];
 
@@ -155,7 +155,7 @@ function resolveAbbreviation(base: LayoutMapping, shortcut: string): string {
 }
 
 // Resolves a shortcut for an edge token against the base mapping.
-function resolveAbbreviationForEdge(base: LayoutMapping, edge: "<" | ">", shortcut: string): string {
+function resolveAbbreviationForEdge(base: FrameMapping, edge: "<" | ">", shortcut: string): string {
     const candidates = expandShortcut(shortcut);
     if (candidates.length === 1) return candidates[0];
 
@@ -175,7 +175,7 @@ function resolveAbbreviationForEdge(base: LayoutMapping, edge: "<" | ">", shortc
 // Lets a single-character label stand in for a two-character one by its first character: with no exact
 // single-char match in the base but exactly one 2-char label starting with that character, the token is
 // rewritten to that full label. An exact match wins; an ambiguous first character is left as-is.
-function resolveLabel(base: LayoutMapping, label: string): string {
+function resolveLabel(base: FrameMapping, label: string): string {
     if (cellsMatching(base, (value) => value === label).length > 0) return label;
     const wider = cellsMatching(base, (value) => typeof value === "string" && value.length === 2 && value[0] === label);
     if (wider.length !== 1) return label;
@@ -184,7 +184,7 @@ function resolveLabel(base: LayoutMapping, label: string): string {
 }
 
 // Resolves single-char label tokens (and edge keys) against the base mapping (see resolveLabel).
-function resolveToken(base: LayoutMapping, token: CycleToken): CycleToken {
+function resolveToken(base: FrameMapping, token: CycleToken): CycleToken {
     if ("label" in token) {
         const expanded = resolveAbbreviation(base, token.label);
         return {label: resolveLabel(base, expanded)};
@@ -198,7 +198,7 @@ function resolveToken(base: LayoutMapping, token: CycleToken): CycleToken {
 
 // The value a token contributes when it lands on grid row destRow (a placeholder becomes a bare
 // column number on its own row, or keeps its absolute [flexRow, col] otherwise).
-function tokenValue(token: CycleToken, destRow: number): LayoutMappingEntry {
+function tokenValue(token: CycleToken, destRow: number): FrameMappingEntry {
     if ("label" in token) return token.label;
     if ("edge" in token) return token.key;
     return encodeFlex(token.coord, destRow);
@@ -206,7 +206,7 @@ function tokenValue(token: CycleToken, destRow: number): LayoutMappingEntry {
 
 // Returns a copy of a frame mapping with the given cyclic permutations applied (see the note above
 // for the cycle syntax). The base mapping is not modified.
-export function permute(base: LayoutMapping, ...cycles: string[]): LayoutMapping {
+export function permute(base: FrameMapping, ...cycles: string[]): FrameMapping {
     const result = copyKeymap(base);
     for (const spec of cycles) {
         const tokens = parseCycle(spec).map((t) => resolveToken(base, t));
@@ -229,7 +229,7 @@ export function permute(base: LayoutMapping, ...cycles: string[]): LayoutMapping
 }
 
 // Canonical key used to tell which keys/letters entered or left a mapping.
-function cellKey(value: LayoutMappingEntry, gridRow: number): string | null {
+function cellKey(value: FrameMappingEntry, gridRow: number): string | null {
     if (value === null || value === "") return null;
     if (typeof value === "string") return `L:${value}`;
     const [fr, c] = cellFlexCoord(value, gridRow)!;
@@ -238,8 +238,8 @@ function cellKey(value: LayoutMappingEntry, gridRow: number): string | null {
 
 // Compares two mappings and reports which keys/letters appear only in the result (entered)
 // and which appear only in the base (exited).
-function frameDiff(base: LayoutMapping, result: LayoutMapping): { entered: Set<string>; exited: Set<string> } {
-    const count = (mapping: LayoutMapping) => {
+function frameDiff(base: FrameMapping, result: FrameMapping): { entered: Set<string>; exited: Set<string> } {
+    const count = (mapping: FrameMapping) => {
         const m = new Map<string, number>();
         mapping.forEach((row, r) =>
             row.forEach((v) => {
@@ -272,7 +272,7 @@ const enterExit = (entered: Set<string>, exited: Set<string>) =>
 
 // Derives a Thumb30 frame from an Ansi30 frame via the given cycles, asserting that exactly
 // '/' + the thumb letter entered and '-' + one letter exited.
-export function patchThumb30(base: LayoutMapping, ...cycles: string[]): LayoutMapping {
+export function patchThumb30(base: FrameMapping, ...cycles: string[]): FrameMapping {
     const result = permute(base, ...cycles);
     const {entered, exited} = frameDiff(base, result);
     const ok =
@@ -288,7 +288,7 @@ export function patchThumb30(base: LayoutMapping, ...cycles: string[]): LayoutMa
 
 // Derives a Thumb32 frame from an Ansi32 frame via the given cycles, asserting that exactly the
 // thumb letter entered and one letter exited, with no frame-key labels added or removed.
-export function patchThumb32(base: LayoutMapping, ...cycles: string[]): LayoutMapping {
+export function patchThumb32(base: FrameMapping, ...cycles: string[]): FrameMapping {
     const result = permute(base, ...cycles);
     const {entered, exited} = frameDiff(base, result);
     const ok =

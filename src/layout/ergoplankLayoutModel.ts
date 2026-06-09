@@ -1,4 +1,4 @@
-import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
+import {KeyboardRows, KeymapTypeId, type FrameMapping, type LayoutModel} from "../base-model.ts";
 import {mapValues} from "../library/records.ts";
 import {mirrorOdd, SymmetricKeyWidth} from "./keyWidth.ts";
 import {ergoFamilyKeyColorClass} from "./layout-functions.ts";
@@ -8,7 +8,7 @@ import {permute} from "./permutation-functions.ts";
 //       Given that our arms come from that direction, moving the edge key toward the center, might make it harder to hit.
 const keyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0, 0.25]);
 
-const ansi30FrameMapping: LayoutMapping = [
+const ansi30FrameMapping: FrameMapping = [
     ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, "-", null, "+", 5, 6, 7, 8, 9, "\\"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "'"],
@@ -16,7 +16,7 @@ const ansi30FrameMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "⎀", "⍽", "AltGr", "☰", "Cmd", "Ctrl"],
 ];
 
-const ansi32FrameMapping: LayoutMapping = [
+const ansi32FrameMapping: FrameMapping = [
     ["Esc", "1", "2", "3", "4", "5", "\\", "/", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, "'", null, "+", 5, 6, 7, 8, 9, 10],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, 10],
@@ -24,7 +24,7 @@ const ansi32FrameMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "⎀", "⍽", "AltGr", "☰", "Cmd", "Ctrl"],
 ];
 
-const thumb30FrameMapping: LayoutMapping = [
+const thumb30FrameMapping: FrameMapping = [
     ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, "+", null, "\\", 5, 6, 7, 8, 9, "⏎"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "'"],
@@ -32,7 +32,7 @@ const thumb30FrameMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Fn", "Alt", 0, "⎀", "⍽", "AltGr", "☰", "Cmd", "Ctrl"],
 ];
 
-const thumb32FrameMapping: LayoutMapping = [
+const thumb32FrameMapping: FrameMapping = [
     ["Esc", "1", "2", "3", "4", "5", "\\", "/", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, "'", null, "+", 5, 6, 7, 8, 9, "⏎"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, [1, 10]],
@@ -185,7 +185,7 @@ function replaceLast<T>(list: T[], last: T) {
     return [...list.slice(0, -1), last];
 }
 
-function addInlineArrows(list: LayoutMapping):  LayoutMapping {
+function addInlineArrows(list: FrameMapping):  FrameMapping {
     const lastRow = list[list.length - 1];
     const left = lastRow.slice(0, 5);
     const leftMod = left.map(key => key === "Fn" ? "AltGr" : key);
@@ -237,7 +237,7 @@ export function createErgoPlankCenterArrows(lm: LayoutModel): LayoutModel {
     }
 }
 
-function addCenterArrows(list: LayoutMapping): LayoutMapping {
+function addCenterArrows(list: FrameMapping): FrameMapping {
     const lowerLeft = list[KeyboardRows.Lower].slice(0, 6);
     const lowerRight = list[KeyboardRows.Lower].slice(8);
     const lowerRow = [...lowerLeft, null, "↑", null, ...lowerRight];

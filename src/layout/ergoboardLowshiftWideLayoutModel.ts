@@ -1,11 +1,11 @@
-import {KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
+import {KeyboardRows, KeymapTypeId, type FrameMapping, type LayoutModel} from "../base-model.ts";
 import {mapValues} from "../library/records.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
 
 const keyWidths = new SymmetricKeyWidth(16, zeroIndent);
 
-const ansi30KeyMapping: LayoutMapping = [
+const ansi30KeyMapping: FrameMapping = [
     ["Esc", "1", "2", "3", "4", "5", "`~", null, "6", "7", "8", "9", "0", "+", "⇞", "⇟"],
     ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "-", "⌫"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
@@ -13,7 +13,7 @@ const ansi30KeyMapping: LayoutMapping = [
     [null, "Ctrl", "Cmd", "CAPS", "Alt", "⍽", "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
 ];
 
-const thumb30KeyMapping: LayoutMapping = [
+const thumb30KeyMapping: FrameMapping = [
     ["Esc", "1", "2", "3", "4", "5", "`~", null, "6", "7", "8", "9", "0", "⎀", "⇞", "⇟"],
     ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "+", "⌫"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
@@ -68,7 +68,7 @@ export const ergoboardLowshiftWideLayoutModel: LayoutModel = {
     keyColorClass: keyColorHighlightsClass,
 }
 
-function angleModKeymap(keymap: LayoutMapping): LayoutMapping {
+function angleModKeymap(keymap: FrameMapping): FrameMapping {
     keymap[KeyboardRows.Home][0] = [3, 0];  // qwerty Z (on the Lower row)
     const lowerRow = keymap[KeyboardRows.Lower];
     lowerRow.splice(2, 1); // remove Z

@@ -1,4 +1,4 @@
-import {Finger, KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel, SKE_AWAY,} from "../base-model.ts";
+import {Finger, KeyboardRows, KeymapTypeId, type FrameMapping, type LayoutModel, SKE_AWAY,} from "../base-model.ts";
 import {mapValues} from "../library/records.ts";
 import {SymmetricKeyWidth, zeroIndent} from "./keyWidth.ts";
 import {copyAndModifyKeymap, keyColorHighlightsClass} from "./layout-functions.ts";
@@ -91,7 +91,7 @@ export const ergoboardCentralEnterLayoutModel: LayoutModel = {
     }),
 }
 
-function moveEnterToCenter(mapping: LayoutMapping): LayoutMapping {
+function moveEnterToCenter(mapping: FrameMapping): FrameMapping {
     mapping[KeyboardRows.Number][14] = "\\";
     mapping[KeyboardRows.Number][15] = "⇞";
     mapping[KeyboardRows.Upper][6] = "⏎";

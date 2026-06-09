@@ -272,8 +272,8 @@ export enum MappingChange {
 
 // A frame-mapping cell: a literal key label (string), a gap (null), a FlexMapping column in this
 // same row (number), or an absolute [flexRow, col] reference to a letter from another row.
-export type LayoutMappingEntry = (string | number | null | [number, number]);
-export type LayoutMapping = LayoutMappingEntry[][];
+export type FrameMappingEntry = (string | number | null | [number, number]);
+export type FrameMapping = FrameMappingEntry[][];
 
 export const harmonicStaggerOffsets = [1, 0.5, 0, -0.5];
 
@@ -316,7 +316,7 @@ export interface LayoutModel {
     symmetricStagger: boolean;
 
     // Frame mappings for each supported keymap type, similar to FlexMapping structure.
-    frameMappings: Partial<Record<KeymapTypeId, LayoutMapping>>;
+    frameMappings: Partial<Record<KeymapTypeId, FrameMapping>>;
 
     // Finger assignment and key effort arrays have the same shape (number of entries in each row) as the LayoutMappings.
     // 'null' value used for gaps between keys and keys which require the hand off home position (such as the arrow cluster).

@@ -3,7 +3,7 @@ import {
     KEY_COLOR,
     KeyboardRows,
     KeymapTypeId,
-    type LayoutMapping,
+    type FrameMapping,
     type LayoutModel,
     SKE_AWAY,
     SKE_HOME,
@@ -233,11 +233,11 @@ function duplicateBottomMiddle<T>(mapping: T[][], bottomIdx: number, middleIdx: 
 }
 
 export function createApple(lm: LayoutModel): LayoutModel {
-    const addAppleBottom = (matrix: LayoutMapping) => {
+    const addAppleBottom = (matrix: FrameMapping) => {
         matrix[KeyboardRows.Bottom] = mirrorOdd("Ctrl", "Opt", "Cmd", "⍽");
         return matrix;
     };
-    const addAppleThumbyBottom = (matrix: LayoutMapping) => {
+    const addAppleThumbyBottom = (matrix: FrameMapping) => {
         matrix[KeyboardRows.Bottom] = ["Ctrl", "Opt", "Cmd", "⍽", 0, "Cmd", "Opt"];
         return matrix;
     };
@@ -311,7 +311,7 @@ export function createAnsiMidShift(lm: LayoutModel): LayoutModel {
     }
 }
 
-function rotateShiftKeys(mapping: LayoutMapping) {
+function rotateShiftKeys(mapping: FrameMapping) {
     // on the left side, we make a big rotation, on the right side, just a swap.
     mapping[KeyboardRows.Home][0] = "⇧";
     mapping[KeyboardRows.Lower][0] = "Ctrl";
@@ -327,7 +327,7 @@ function rotateShiftKeys(mapping: LayoutMapping) {
     return mapping;
 }
 
-function splitKeys(matrix: LayoutMapping): LayoutMapping {
+function splitKeys(matrix: FrameMapping): FrameMapping {
     matrix[KeyboardRows.Number][0] = "Esc";
     matrix[KeyboardRows.Number].pop();
     const bslKey = matrix[KeyboardRows.Upper].pop()!;

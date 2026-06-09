@@ -9,7 +9,7 @@ import {
     type KeyMovement,
     KeymapTypeId,
     type KeyPosition,
-    type LayoutMapping,
+    type FrameMapping,
     type LayoutModel,
     MappingChange,
 } from "../base-model.ts";
@@ -82,7 +82,7 @@ export function onlySupportsWide(mapping: FlexMapping) {
 export function findMatchingKeymapType(
     layout: LayoutModel,
     flexMapping: FlexMapping
-): { typeId: KeymapTypeId; frameMapping: LayoutMapping; flexData: string[] } | undefined {
+): { typeId: KeymapTypeId; frameMapping: FrameMapping; flexData: string[] } | undefined {
     if (!layout.frameMappings || !flexMapping.mappings) {
         return undefined;
     }
@@ -143,7 +143,7 @@ const useFallback = "?";
 const leaveEmpty = "_";
 
 export const mergeMapping = (
-    layoutMapping: LayoutMapping, flexMapping: string[], fallbackMapping?: LayoutMapping
+    layoutMapping: FrameMapping, flexMapping: string[], fallbackMapping?: FrameMapping
 ): string[][] =>
     layoutMapping.map((layoutRow, r) =>
         layoutRow.map((layoutValue, c) => {
@@ -234,7 +234,11 @@ export const totalWidth = 18;
 // in key units
 const horizontalPadding = 0.5;
 
-export function getKeyPositions(layoutModel: LayoutModel, split: boolean, fullMapping: string[][]): KeyPosition[] {
+export function getKeyPositions(
+    layoutModel: LayoutModel,
+    split: boolean,
+    fullMapping: (string | null | undefined)[][],
+): KeyPosition[] {
     const rowWidth = layoutModel.keyWidths.map((widthRow, r) =>
         2 * (horizontalPadding + layoutModel.rowIndent[r]) + sum(widthRow.map((w) => w ?? 1))
     );

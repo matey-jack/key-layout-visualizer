@@ -1,4 +1,4 @@
-import {KEY_COLOR, KeyboardRows, KeymapTypeId, type LayoutMapping, type LayoutModel} from "../base-model.ts";
+import {KEY_COLOR, KeyboardRows, KeymapTypeId, type FrameMapping, type LayoutModel} from "../base-model.ts";
 import {mirrorOdd, SymmetricKeyWidth} from './keyWidth.ts';
 import {patchThumb30, patchThumb32, permute} from './permutation-functions.ts';
 
@@ -36,7 +36,7 @@ const keyWidths: number[][] = [
 // This has one key less than the Central Ergoboard with 1.5u edges in the home row
 // Also, the lower row edge was a good place to place modifiers.
 // Missing that place now, we drop the menu key and place ⌦ in the center instead of the bottom.
-const ansi30FrameMapping: LayoutMapping = [
+const ansi30FrameMapping: FrameMapping = [
     ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⌫"],
     ["↹", 0, 1, 2, 3, 4, "-", "⌦", "+", 5, 6, 7, 8, 9, "⎀"],
     ["⇧", 0, 1, 2, 3, 4, "\\", "⇞", "⇟", "'", 5, 6, 7, 8, 9, "⇧"],
@@ -44,7 +44,7 @@ const ansi30FrameMapping: LayoutMapping = [
     ["Ctrl", "Cmd", "Alt", "⏎", null, "←", "↓", "→", null, "⍽", "AltGr", "Fn", "Ctrl"],
 ];
 
-const ansi32FrameMapping: LayoutMapping = [
+const ansi32FrameMapping: FrameMapping = [
     ["Esc", "`~", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
     ["↹", 0, 1, 2, 3, 4, [2, 10], null, 10, 5, 6, 7, 8, 9, "⌫"],
     ["⇧", 0, 1, 2, 3, 4, "/", "+", "'", 5, 6, 7, 8, 9, "⇧"],
