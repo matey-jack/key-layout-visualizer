@@ -12,3 +12,19 @@ missing core features:
   - add a ruler to the SVG so people can zoom to scale on their laptop or tablet
 - export to keyboard layout editor format, https://www.keyboard-layout-editor.com/, because that is used as a spec by hardward keyboard builders.
   (Having the export will help us to remove remaining ambiguities of how the SVG pics translate to actual hardware!)
+
+
+Think about this idea of a Semi-Ergo-Explorer:
+ - shows the keyboard layout with ansi30 and edge keys mapped only; everything else empty keys.
+ - allows to change the width of the keyboard and size of the home edge keys, separately for each side.
+ - allows to change the stagger for each row pair between 0.25 and 0.5. (and 0.333)
+ - allows to auto-set stagger to the named configurations (ANSI, Harmonic, Ergoplank, Katana, Ergoboard, but not the other three variants).
+ - allows to switch bottom arrows on or off.
+ - automatically adjusts thumb key size according to my rule.
+ - shows no bottom row keys except four thumb keys or arrows and two thumb keys.
+
+This is easy enough compared to configuring a proper keymap for each case.
+
+It would take me at least a day unless I let the AI also do the design.
+But if doing that I could run out of tokens really fast. So, hm.
+
