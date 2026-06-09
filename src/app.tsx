@@ -12,11 +12,13 @@ import {fillMapping} from "./layout/layout-functions.ts";
 import {MappingList} from "./mapping/MappingArea.tsx";
 import {getKlc} from "./mapping/msKlcTemplate.ts";
 import {extractSvgWithStyles} from "./utils/svg-export.ts";
+import {PageHeader} from "./components/PageHeader.tsx";
 
 const appState = createAppState();
 
 export function App() {
      return <>
+         <PageHeader title="Key Layout and Mapping Visualizer"/>
          <LayoutArea appState={appState}/>
          <hr/>
          <VisualizationSwitches vizType={appState.vizType} appState={appState}/>
