@@ -356,4 +356,4 @@ export function createAppState(): AppState {
         mappingDiff,
         bigramMovements
     };
-    }
+}

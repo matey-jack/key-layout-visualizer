@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitest/config';
 import preact from '@preact/preset-vite'
+import { resolve } from 'node:path'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -18,6 +19,12 @@ export default defineConfig(({ mode }) => {
             }
         ],
         build: {
+            rollupOptions: {
+                input: {
+                    main: resolve(__dirname, 'index.html'),
+                    other: resolve(__dirname, 'semi-ergo-gen.html'),
+                },
+            },
             outDir: 'dist',
         },
         server: {

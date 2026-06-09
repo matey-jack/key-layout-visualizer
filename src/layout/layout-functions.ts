@@ -257,7 +257,7 @@ export function getKeyPositions(
             //  We put ?? to alert developers to fix the keymap (instead of crashing here).
             const label = fullMapping[row]?.[col] !== undefined ? fullMapping[row][col] : "??";
             if (label != null) {
-                const finger = layoutModel.mainFingerAssignment[row][col] as Finger;
+                const finger = layoutModel.mainFingerAssignment && layoutModel.mainFingerAssignment[row][col] as Finger;
                 result.push({
                     label,
                     row,

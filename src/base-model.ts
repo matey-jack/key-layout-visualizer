@@ -176,6 +176,7 @@ export enum VisualizationType {
     MappingBigrams,
     MappingAltGr,
     MappingTradeoff,
+    SemiErgoGen,
 }
 
 export const isLayoutViz = (t: VisualizationType) =>
