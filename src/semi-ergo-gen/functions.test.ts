@@ -1,15 +1,28 @@
 import {describe, expect, it} from 'vitest';
 import {pairKeysByPosition} from './functions.ts';
-import {Finger, type KeyPosition} from '../base-model.ts';
+import {type LayoutModel} from '../base-model.ts';
+import {getKeyPositions} from '../layout/layout-functions.ts';
 
-function pos(row: number, col: number, label = ''): KeyPosition {
-    return {label, row, col, colPos: col, keyCapWidth: 1, finger: Finger.LPinky, hasAltFinger: false};
+function makeTestModel(keyWidths: number[][]): LayoutModel {
+    return {
+        name: '', description: '',
+        rowIndent: [0, 0, 0, 0, 0],
+        keyWidths,
+        leftHomeIndex: 0, rightHomeIndex: 0,
+        staggerOffsets: [],
+        symmetricStagger: false,
+        frameMappings: {},
+        mainFingerAssignment: keyWidths.map(row => row.map(() => null)),
+        singleKeyEffort: keyWidths.map(row => row.map(() => 0)),
+    };
 }
 
 describe('pairKeysByPosition', () => {
     it('pairs same-length row 1:1 from left to right', () => {
-        const prev = [pos(0, 0), pos(0, 1), pos(0, 2)];
-        const next = [pos(0, 0), pos(0, 1), pos(0, 2)];
+        const model = makeTestModel([[1, 1, 1]]);
+        const fullLayout = [['a', 'b', 'c']];
+        const prev = getKeyPositions(model, false, fullLayout);
+        const next = getKeyPositions(model, false, fullLayout);
         const movements = pairKeysByPosition(prev, next);
         expect(movements).toHaveLength(3);
         movements.forEach(m => {
@@ -24,8 +37,8 @@ describe('pairKeysByPosition', () => {
         // left pairs:  prev[0]↔next[0], prev[1]↔next[1]
         // entering:    next[2]
         // right pairs: prev[2]↔next[3], prev[3]↔next[4]
-        const prev = [pos(0, 0), pos(0, 1), pos(0, 2), pos(0, 3)];
-        const next = [pos(0, 0), pos(0, 1), pos(0, 2), pos(0, 3), pos(0, 4)];
+        const prev = getKeyPositions(makeTestModel([[1, 1, 1, 1]]), false, [['', '', '', '']]);
+        const next = getKeyPositions(makeTestModel([[1, 1, 1, 1, 1]]), false, [['', '', '', '', '']]);
         const movements = pairKeysByPosition(prev, next);
         expect(movements).toHaveLength(5);
         const entering = movements.filter(m => m.prev === undefined);
@@ -38,8 +51,8 @@ describe('pairKeysByPosition', () => {
         // left pairs:  prev[0]↔next[0], prev[1]↔next[1]
         // exiting:     prev[2]
         // right pairs: prev[3]↔next[2], prev[4]↔next[3]
-        const prev = [pos(0, 0), pos(0, 1), pos(0, 2), pos(0, 3), pos(0, 4)];
-        const next = [pos(0, 0), pos(0, 1), pos(0, 2), pos(0, 3)];
+        const prev = getKeyPositions(makeTestModel([[1, 1, 1, 1, 1]]), false, [['', '', '', '', '']]);
+        const next = getKeyPositions(makeTestModel([[1, 1, 1, 1]]), false, [['', '', '', '']]);
         const movements = pairKeysByPosition(prev, next);
         expect(movements).toHaveLength(5);
         const exiting = movements.filter(m => m.next === undefined);
@@ -52,7 +65,7 @@ describe('pairKeysByPosition', () => {
     });
 
     it('all keys exit when the row is absent in next', () => {
-        const prev = [pos(1, 0), pos(1, 1)];
+        const prev = getKeyPositions(makeTestModel([[1, 1]]), false, [['', '']]);
         const movements = pairKeysByPosition(prev, []);
         expect(movements).toHaveLength(2);
         movements.forEach(m => {
@@ -62,7 +75,7 @@ describe('pairKeysByPosition', () => {
     });
 
     it('all keys enter when the row is absent in prev', () => {
-        const next = [pos(2, 0), pos(2, 1)];
+        const next = getKeyPositions(makeTestModel([[1, 1]]), false, [['', '']]);
         const movements = pairKeysByPosition([], next);
         expect(movements).toHaveLength(2);
         movements.forEach(m => {
@@ -72,8 +85,10 @@ describe('pairKeysByPosition', () => {
     });
 
     it('handles multiple rows independently', () => {
-        const prev = [pos(0, 0), pos(0, 1), pos(1, 0), pos(1, 1)];
-        const next = [pos(0, 0), pos(0, 1), pos(1, 0), pos(1, 1)];
+        const model = makeTestModel([[1, 1], [1, 1]]);
+        const fullLayout = [['', ''], ['', '']];
+        const prev = getKeyPositions(model, false, fullLayout);
+        const next = getKeyPositions(model, false, fullLayout);
         const movements = pairKeysByPosition(prev, next);
         expect(movements).toHaveLength(4);
         movements.forEach(m => {
