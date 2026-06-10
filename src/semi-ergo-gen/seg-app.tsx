@@ -7,6 +7,7 @@ import {createSegState} from './seg-state.ts';
 import {NamedTypes, permittedHomeRowIndent, permittedKeyboardWidths} from './seg-model.ts';
 import type {Signal} from '@preact/signals';
 import {UpDownSelector} from '../components/UpDownSelector.tsx';
+import {SemiCirclePicker} from '../components/SemiCirclePicker.tsx';
 import {pairKeysByPosition} from './functions.ts';
 
 const appState = createSegState();
@@ -35,12 +36,21 @@ export function SegApp() {
                 <StaggerTypeButton myType={typ as NamedTypes} currentType={appState.staggerType} setType={appState.setStaggerType}/>
             )}
         </div>
-        <div>Total Keyboard Width:
-            <UpDownSelector
-                value={appState.keyboardWidth}
-                onChange={appState.setKeyboardWidth}
-                permittedValues={permittedKeyboardWidths(appState.staggerType.value)}
-            />
+        <div class="seg-width-picker">
+            <div class="seg-width-picker__label">Total Keyboard Width</div>
+            {(() => {
+                const widths = permittedKeyboardWidths(appState.staggerType.value);
+                const kMin = widths[0];
+                const kMax = widths[widths.length - 1];
+                const kStep = widths.length > 1 ? Math.round((widths[1] - widths[0]) * 1e6) / 1e6 : 1;
+                return <SemiCirclePicker
+                    min={kMin}
+                    max={kMax}
+                    current={appState.keyboardWidth.value}
+                    step={kStep}
+                    onChange={appState.setKeyboardWidth}
+                />;
+            })()}
         </div>
         <div>Home Row Indent:
             <UpDownSelector
