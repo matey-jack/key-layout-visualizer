@@ -26,18 +26,10 @@ function StaggerTypeButton({myType, currentType, setType}: StaggerTypeButtonProp
     </button>;
 }
 
-function deriveMinMaxStep(values: number[]): {min: number; max: number; step: number} {
-    return {
-        min: values[0],
-        max: values[values.length - 1],
-        step: values.length > 1 ? Math.round((values[1] - values[0]) * 1e6) / 1e6 : 1,
-    };
-}
-
 export function SegApp() {
     const movements = pairKeysByPosition(appState.previousModel.value.keyPositions, appState.layoutModel.value.keyPositions);
-    const kw = deriveMinMaxStep(permittedKeyboardWidths(appState.staggerType.value));
-    const hr = deriveMinMaxStep(permittedHomeRowIndent(appState.staggerType.value));
+    const kw = permittedKeyboardWidths(appState.staggerType.value);
+    const hr = permittedHomeRowIndent(appState.staggerType.value);
     return <>
         <PageHeader title="Semi-Ergo Keyboard Layout Generator"/>
         <div class={"seg-stagger-type-group"}>

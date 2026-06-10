@@ -54,11 +54,13 @@ export const defaultHomeRowIndent: Record<NamedTypes, number> = {
     [NamedTypes.Other]: 0,
 };
 
-export const permittedHomeRowIndent = (typ: NamedTypes) =>
-    typ === NamedTypes.Triplex ? [0, 0.33, 0.66] : [0, 0.25, 0.5, 0.75];
+export type MinMaxStep = { min: number; max: number; step: number };
 
-export const permittedKeyboardWidths = (typ: NamedTypes) =>
-    typ === NamedTypes.Triplex ? [14, 15, 16] : [13.5, 14, 14.5, 15, 15.5, 16];
+export const permittedHomeRowIndent = (typ: NamedTypes): MinMaxStep =>
+    typ === NamedTypes.Triplex ? {min: 0, max: 0.66, step: 0.33} : {min: 0, max: 0.75, step: 0.25};
+
+export const permittedKeyboardWidths = (typ: NamedTypes): MinMaxStep =>
+    typ === NamedTypes.Triplex ? {min: 14, max: 16, step: 1} : {min: 13.5, max: 16, step: 0.5};
 
 export function getStaggerType(set: StaggerSet): NamedTypes {
     let result = NamedTypes.Other;

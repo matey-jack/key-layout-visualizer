@@ -1,11 +1,13 @@
 import {computed, type ReadonlySignal, signal} from '@preact/signals';
 import {defaultHomeRowIndent, getStaggerType,
-    type MinimalLayoutModel, namedStaggerSets, NamedTypes, permittedHomeRowIndent,
+    type MinimalLayoutModel, type MinMaxStep, namedStaggerSets, NamedTypes, permittedHomeRowIndent,
     permittedKeyboardWidths, qwertyKeymap, type SegState, type StaggerSet} from './seg-model.ts';
 import {ergoMaker} from './dynamicLayoutModel.ts';
 
-function nearestPermitted(current: number, permitted: number[]): number {
-    return permitted.reduce((a, b) => Math.abs(b - current) < Math.abs(a - current) ? b : a);
+function nearestPermitted(current: number, {min, max, step}: MinMaxStep): number {
+    const totalSteps = Math.round((max - min) / step);
+    const clamped = Math.max(0, Math.min(totalSteps, Math.round((current - min) / step)));
+    return Math.round((min + clamped * step) * 1e6) / 1e6;
 }
 
 export function createSegState(): SegState {
