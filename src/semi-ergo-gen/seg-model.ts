@@ -65,8 +65,24 @@ export const permittedKeyboardWidths = (typ: NamedTypes): MinMaxStep =>
 export const permittedRowStagger = (typ: NamedTypes): StaggerDivisor[] =>
     typ === NamedTypes.Triplex ? [3] : [4, 2];
 
-export const minimalKeyboardWidth = (staggerSet: StaggerSet, homeRowIndent: number) =>
-    13
+/*
+    Due to the inward stagger, the top row has the most wasted space.
+    (Even if there is an extra 1u key next to the wider edge key, we don't want to use it,
+    because the finger movement will not be aligned with the general stagger direction).
+    The next two functions exist to make sure, we synchronize keyboardWidth and homeRowIndent so that
+    at least 10 characters fit into the top row. (This will mean they also fit in all other rows.)
+ */
+export function minimalKeyboardWidth(staggerSet: StaggerSet, homeRowIndent: number) {
+    const [a, b] = staggerSet;
+    const topIndent = homeRowIndent + 1/a + 1/b;
+    return 2*topIndent + 10;
+}
+
+export function maximalHomeRowIndent(staggerSet: StaggerSet, keyboardWidth: number) {
+    const [a, b] = staggerSet;
+    const topStagger = 1/a + 1/b;
+    return keyboardWidth - 10 - 2*topStagger;
+}
 
 export function formatStagger(amount: number): string {
     return parseFloat(amount.toFixed(2)).toString();
