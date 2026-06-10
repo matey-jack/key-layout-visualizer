@@ -1,23 +1,116 @@
-.seg-width-picker {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.5rem 1rem;
-}
-
-.seg-width-picker__label {
-    font-size: 0.85rem;
-    color: #555;
+.seg-section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #777;
     font-family: var(--btn-font-family);
 }
 
-.seg-stagger-type-group {
+.seg-category-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #999;
+    font-family: var(--btn-font-family);
+    white-space: nowrap;
+    padding-right: 0.25rem;
+}
+
+/* ── Top row: patterns card + keyboard width ── */
+
+.seg-top-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 0.5rem 1.5rem;
+}
+
+.seg-patterns-card {
+    background: #fff;
+    border: 1px solid #d0e8f0;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.seg-pattern-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.seg-pattern-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+}
+
+.seg-keyboard-width-section {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding-top: 0.75rem;
+}
+
+/* ── Keyboard row: indent | keyboard | row-stagger ── */
+
+.seg-keyboard-row {
     display: grid;
-    justify-items: stretch;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 1.5rem;
-    width: 98%;
-    /* extra bottom padding reserves room for the floating (absolute) note below the buttons */
-    padding: 1rem 1rem 1.5rem 1rem;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 1.5rem;
+}
+
+.seg-home-row-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.seg-row-stagger-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.seg-row-stagger-pickers {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.seg-row-stagger-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.seg-row-indicator {
+    color: #aac8d8;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    user-select: none;
+}
+
+/* ── Segmented divisor button group ── */
+
+.seg-divisor-btn-group {
+    display: flex;
+    border: 1px solid var(--btn-border);
+    border-radius: var(--btn-radius);
+    overflow: hidden;
+}
+
+.seg-divisor-btn-group .toggle-btn--seg:last-child {
+    border-right: none;
 }

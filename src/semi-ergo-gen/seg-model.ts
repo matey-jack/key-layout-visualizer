@@ -62,6 +62,16 @@ export const permittedHomeRowIndent = (typ: NamedTypes): MinMaxStep =>
 export const permittedKeyboardWidths = (typ: NamedTypes): MinMaxStep =>
     typ === NamedTypes.Triplex ? {min: 14, max: 16, step: 1} : {min: 13.5, max: 16, step: 0.5};
 
+export const permittedRowStagger = (typ: NamedTypes): StaggerDivisor[] =>
+    typ === NamedTypes.Triplex ? [3] : [4, 2];
+
+export const minimalKeyboardWidth = (staggerSet: StaggerSet, homeRowIndent: number) =>
+    13
+
+export function formatStagger(amount: number): string {
+    return parseFloat(amount.toFixed(2)).toString();
+}
+
 export function getStaggerType(set: StaggerSet): NamedTypes {
     let result = NamedTypes.Other;
     Object.entries(namedStaggerSets).forEach(

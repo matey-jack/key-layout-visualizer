@@ -14,21 +14,16 @@ missing core features:
   (Having the export will help us to remove remaining ambiguities of how the SVG pics translate to actual hardware!)
 
 
-Think about this idea of a Semi-Ergo-Explorer:
- - shows the keyboard layout with ansi30 and edge keys mapped only; everything else empty keys.
- - allows to change the width of the keyboard and size of the home edge keys, separately for each side.
- - allows to change the stagger for each row pair between 0.25 and 0.5. (and 0.333)
- - allows to auto-set stagger to the named configurations (ANSI, Harmonic, Ergoplank, Katana, Ergoboard, but not the other three variants).
- - allows to switch bottom arrows on or off.
- - automatically adjusts thumb key size according to my rule.
- - shows no bottom row keys except four thumb keys or arrows and two thumb keys.
- - minimum width is 13.5 in general: 10 for the characters, 2 for the edges, and 3/2 or 4/3 keys lost if one row has 3/4 or 2/3 edge indent.
-   exceptions:
-    * when the lower row has the large indent, since it will not have an edge key if that would be bigger than the one in the row above.
-    * Harmonic, Ergoplank, Katana, and probably some of the odd ones and spread the stagger to avoid any indent >1/2
-    * in those cases, width 13 will work.
-    * The Harmonic 12/2 is an exception that can't be modeled using the Plank-o-Gen model, because it keeps the ANSI-assignment of Q to the left of A.
-      (So that the pinky operates two character keys in the upper row; the W and P are shared with the ring finger via alt-fingering.)
+Semi-Ergo-Explorer must have for go-live:
+ - show key sizes when >1
+ - fix bug that not all letters are shown: when indent increases too much, increase width; and vice versa for decreasing.
+ - linking between KLV and SEG: discuss with Claude how best to do it
+ - solid blue background instead of gradient: make sure CSS is logical; move gradient to a class instead of the tag.
+ - ToolTip for Other: "Select a mixed pattern and change row stagger manually." and no hover-state.
+
+further additions:
+ - show thumb keys with size according to my rule.
+ - add switch for bottom arrows on or off.
 
 Stagger options:
  - uniform 1/4 (aka Ergoboard)
@@ -45,9 +40,3 @@ Stagger options:
 
 Optional: allow "low Shift" only when the lower row stagger is 1/2, but then, of course, no matter what the others are.
 If low Shift allows space for two keys in the lower row edge, then make the outer one 1u and the inner one take the remaining space: as on the old Ergoboard low-Shift.
-
-This is easy enough compared to configuring a proper keymap for each case.
-
-It would take me at least a day unless I let the AI also do the design.
-But if doing that I could run out of tokens really fast. So, hm.
-
