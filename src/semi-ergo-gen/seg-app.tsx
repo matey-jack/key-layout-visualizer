@@ -4,7 +4,7 @@ import {PageHeader} from '../components/PageHeader.tsx';
 import {KeyboardSvg, RowBasedKeyboard} from '../layout/KeyboardSvg.tsx';
 import {VisualizationType} from '../base-model.ts';
 import {createSegState} from './seg-state.ts';
-import {NamedTypes, permittedHomeRowIndent} from './seg-model.ts';
+import {NamedTypes, permittedHomeRowIndent, permittedKeyboardWidths} from './seg-model.ts';
 import type {Signal} from '@preact/signals';
 import {UpDownSelector} from '../components/UpDownSelector.tsx';
 import {pairKeysByPosition} from './functions.ts';
@@ -35,10 +35,18 @@ export function SegApp() {
                 <StaggerTypeButton myType={typ as NamedTypes} currentType={appState.staggerType} setType={appState.setStaggerType}/>
             )}
         </div>
-        <UpDownSelector
-            value={appState.homeRowIndent}
-            permittedValues={permittedHomeRowIndent(appState.staggerType.value)}
-        />
+        <div>Total Keyboard Width:
+            <UpDownSelector
+                value={appState.keyboardWidth}
+                permittedValues={permittedKeyboardWidths(appState.staggerType.value)}
+            />
+        </div>
+        <div>Home Row Indent:
+            <UpDownSelector
+                value={appState.homeRowIndent}
+                permittedValues={permittedHomeRowIndent(appState.staggerType.value)}
+            />
+        </div>
         <KeyboardSvg vizType={VisualizationType.SemiErgoGen} keyMovements={movements} showFrame={true}>
             <RowBasedKeyboard
                 layoutModel={appState.layoutModel.value}

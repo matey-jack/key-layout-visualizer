@@ -57,6 +57,9 @@ export const defaultHomeRowIndent: Record<NamedTypes, number> = {
 export const permittedHomeRowIndent = (typ: NamedTypes) =>
     typ === NamedTypes.Triplex ? [0, 0.33, 0.66] : [0, 0.25, 0.5, 0.75];
 
+export const permittedKeyboardWidths = (typ: NamedTypes) =>
+    typ === NamedTypes.Triplex ? [14, 15, 16] : [13.5, 14, 14.5, 15, 15.5, 16];
+
 export function getStaggerType(set: StaggerSet): NamedTypes {
     let result = NamedTypes.Other;
     Object.entries(namedStaggerSets).forEach(

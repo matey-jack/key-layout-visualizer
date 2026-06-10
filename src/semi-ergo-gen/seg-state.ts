@@ -1,13 +1,16 @@
-import {computed, signal} from '@preact/signals';
-import {defaultHomeRowIndent, getStaggerType, namedStaggerSets, NamedTypes, qwertyKeymap, type SegState, type StaggerSet} from './seg-model.ts';
+import {computed, type ReadonlySignal, signal} from '@preact/signals';
+import {defaultHomeRowIndent, getStaggerType,
+    type MinimalLayoutModel, namedStaggerSets, NamedTypes, qwertyKeymap, type SegState, type StaggerSet} from './seg-model.ts';
 import {ergoMaker} from './dynamicLayoutModel.ts';
 
 export function createSegState(): SegState {
-    const keyboardWidth = signal(15);
     const staggerSet = signal([4, 4, 2] as StaggerSet);
     // TODO: need to set previousModel when this changes
+    const keyboardWidth = signal(15);
     const homeRowIndent = signal(0);
-    const layoutModel = computed(() => ergoMaker(keyboardWidth.value, staggerSet.value, homeRowIndent.value, qwertyKeymap));
+
+    const layoutModel: ReadonlySignal<MinimalLayoutModel> = computed(() =>
+        ergoMaker(keyboardWidth.value, staggerSet.value, homeRowIndent.value, qwertyKeymap));
     const previousModel = signal(layoutModel.value);
 
     return {
@@ -19,6 +22,7 @@ export function createSegState(): SegState {
                 homeRowIndent.value = 0;
             }
             staggerSet.value = value;
+            // TODO: set home row indent and keyboard width to nearest permitted value.
         },
         staggerType: computed(() => getStaggerType(staggerSet.value)),
         setStaggerType: (value: NamedTypes) => {
@@ -29,6 +33,7 @@ export function createSegState(): SegState {
             previousModel.value = layoutModel.value;
             homeRowIndent.value = defaultHomeRowIndent[value];
             staggerSet.value = namedStaggerSets[value]!;
+            // TODO: set keyboard width to nearest permitted value.
         },
         homeRowIndent,
         layoutModel,
