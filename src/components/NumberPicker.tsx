@@ -7,6 +7,8 @@ interface NumberPickerProps {
     step: number;
     onChange: (value: number) => void;
     semicircular?: boolean;
+    /** Cyclic pattern: '.' → dot, any other char → label. E.g. "x." → label, dot, label, dot, … */
+    dotPattern?: string;
 }
 
 function generateOptions(min: number, max: number, step: number): number[] {
@@ -20,7 +22,10 @@ function isWhole(v: number): boolean {
     return Math.abs(v - Math.round(v)) < 0.001;
 }
 
-function getLabel(v: number, step: number, count: number, idx: number): string {
+function getLabel(v: number, step: number, count: number, idx: number, dotPattern?: string): string {
+    if (dotPattern) {
+        return dotPattern[idx % dotPattern.length] === '.' ? '·' : String(v);
+    }
     if (!isWhole(step) && count > 5) {
         return isWhole(v) ? String(v) : '·';
     }
@@ -36,12 +41,12 @@ const CY = 120;
 const ARC_W = 280;
 const ARC_H = 145;
 
-export function NumberPicker({min, max, current, step, onChange, semicircular}: NumberPickerProps) {
+export function NumberPicker({min, max, current, step, onChange, semicircular, dotPattern}: NumberPickerProps) {
     const options = generateOptions(min, max, step);
     const N = options.length;
 
     const renderButton = (v: number, i: number, arcStyle?: {left: string; top: string}) => {
-        const label = getLabel(v, step, N, i);
+        const label = getLabel(v, step, N, i, dotPattern);
         const isDot = label === '·';
         const isSelected = Math.abs(v - current) < 0.001;
         return (

@@ -68,6 +68,33 @@ describe('NumberPicker', () => {
         });
     });
 
+    describe('dotPattern', () => {
+        it('shows dots and labels according to the pattern', () => {
+            // [0, 0.25, 0.5, 0.75], pattern "x." → label, dot, label, dot
+            render(<NumberPicker min={0} max={0.75} current={0} step={0.25} onChange={() => {}} dotPattern="x." />);
+            expect(screen.getByRole('button', {name: '0'})).toHaveTextContent('0');
+            expect(screen.getByRole('button', {name: '0.25'})).toHaveTextContent('·');
+            expect(screen.getByRole('button', {name: '0.5'})).toHaveTextContent('0.5');
+            expect(screen.getByRole('button', {name: '0.75'})).toHaveTextContent('·');
+        });
+
+        it('repeats the pattern when shorter than option count', () => {
+            // [0, 1, 2, 3, 4, 5], pattern "x." (len 2) → label, dot, label, dot, label, dot
+            render(<NumberPicker min={0} max={5} current={0} step={1} onChange={() => {}} dotPattern="x." />);
+            expect(screen.getByRole('button', {name: '0'})).toHaveTextContent('0');
+            expect(screen.getByRole('button', {name: '1'})).toHaveTextContent('·');
+            expect(screen.getByRole('button', {name: '4'})).toHaveTextContent('4');
+            expect(screen.getByRole('button', {name: '5'})).toHaveTextContent('·');
+        });
+
+        it('overrides the automatic step-based dot logic', () => {
+            // step=0.5, 6 options — auto would dot fractions; pattern forces all labels
+            render(<NumberPicker min={13.5} max={16} current={14} step={0.5} onChange={() => {}} dotPattern="x" />);
+            expect(screen.getByRole('button', {name: '13.5'})).toHaveTextContent('13.5');
+            expect(screen.queryByText('·')).not.toBeInTheDocument();
+        });
+    });
+
     describe('semicircular mode', () => {
         it('renders the same options and selection as linear mode', () => {
             render(<NumberPicker min={14} max={16} current={15} step={1} onChange={() => {}} semicircular />);

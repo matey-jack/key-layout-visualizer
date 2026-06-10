@@ -46,18 +46,19 @@ export function SegApp() {
             )}
         </div>
         <div class="seg-width-picker">
-            <div class="seg-width-picker__label">Total Keyboard Width</div>
+            Total Keyboard Width
             <NumberPicker
                 min={kw.min} max={kw.max} step={kw.step}
                 current={appState.keyboardWidth.value}
                 onChange={appState.setKeyboardWidth}
             />
         </div>
-        <div>Home Row Indent:
+        <div class="seg-width-picker">Home Row Indent
             <NumberPicker
                 min={hr.min} max={hr.max} step={hr.step}
                 current={appState.homeRowIndent.value}
                 onChange={appState.setHomeRowIndent}
+                dotPattern="x."
             />
         </div>
         <KeyboardSvg vizType={VisualizationType.SemiErgoGen} keyMovements={movements} showFrame={true}>
