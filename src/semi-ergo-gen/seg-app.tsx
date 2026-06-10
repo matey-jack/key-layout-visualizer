@@ -1,18 +1,44 @@
+import '../app.css';
+import './seg.css';
 import {PageHeader} from '../components/PageHeader.tsx';
 import {KeyboardSvg, RowBasedKeyboard} from '../layout/KeyboardSvg.tsx';
 import {VisualizationType} from '../base-model.ts';
 import {createSegState} from './seg-state.ts';
 import {getKeyMovements} from '../layout/layout-functions.ts';
+import {NamedTypes, permittedHomeRowIndent} from './seg-model.ts';
+import type {Signal} from '@preact/signals';
+import {UpDownSelector} from '../components/UpDownSelector.tsx';
 
 const appState = createSegState();
+
+interface StaggerTypeButtonProps {
+    myType: NamedTypes;
+    currentType: Signal<NamedTypes>;
+    setType: (t: NamedTypes) => void;
+}
+
+function StaggerTypeButton({myType, currentType, setType}: StaggerTypeButtonProps) {
+    return <button type="button"
+            onClick={myType === NamedTypes.Other ? undefined : () => setType(myType)}
+            class={"toggle-btn toggle-btn--lg layout-type-button" + (myType === currentType.value ? " selected" : "")}
+    >
+        {myType}
+    </button>;
+}
 
 export function SegApp() {
     const movements = getKeyMovements(appState.previousModel.value.keyPositions, appState.layoutModel.value.keyPositions);
     return <>
         <PageHeader title="Semi-Ergo Keyboard Layout Generator"/>
         <div class={"seg-stagger-type-group"}>
-
+            {Object.keys(NamedTypes).map( (typ) =>
+                <StaggerTypeButton myType={typ as NamedTypes} currentType={appState.staggerType} setType={appState.setStaggerType}/>
+            )}
         </div>
+        <UpDownSelector
+            value={appState.homeRowIndent}
+            permittedValues={permittedHomeRowIndent(appState.staggerType.value)}
+        />
         <KeyboardSvg vizType={VisualizationType.SemiErgoGen} keyMovements={movements} showFrame={true}>
             <RowBasedKeyboard
                 layoutModel={appState.layoutModel.value}

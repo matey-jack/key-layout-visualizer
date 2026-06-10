@@ -16,6 +16,22 @@ export type StaggerDivisor = 4 | 3 | 2;
 export type MixableStaggerDivisor = 4 | 2;
 export type StaggerSet = [3, 3, 3] | [MixableStaggerDivisor, MixableStaggerDivisor, MixableStaggerDivisor];
 
+// TODO: probably not need it, but I wrote it...
+export function isMixedStaggerName(name: NamedTypes): boolean {
+    switch (name) {
+        case NamedTypes.Typewriter:
+        case NamedTypes.Katana:
+        case NamedTypes.Ergoplank:
+        case NamedTypes.Other:
+            return true;
+    }
+    return false;
+}
+
+export function isMixedStagger(stagger: StaggerSet): boolean {
+    return stagger[0] === stagger[1] && stagger[1] === stagger[2];
+}
+
 export const namedStaggerSets: Partial<Record<NamedTypes, StaggerSet>> = {
     [NamedTypes.Harmonic]: [2, 2, 2],
     [NamedTypes.Triplex]: [3, 3, 3],
@@ -38,6 +54,9 @@ export const defaultHomeRowIndent: Record<NamedTypes, number> = {
     [NamedTypes.Other]: 0,
 };
 
+export const permittedHomeRowIndent = (typ: NamedTypes) =>
+    typ === NamedTypes.Triplex ? [0, 0.33, 0.66] : [0, 0.25, 0.5, 0.75];
+
 export function getStaggerType(set: StaggerSet): NamedTypes {
     let result = NamedTypes.Other;
     Object.entries(namedStaggerSets).forEach(
@@ -55,6 +74,7 @@ export interface MinimalLayoutModel {
     // actually, only those are accessed by the RowBasedKeyboard SVG maker.
     leftHomeIndex: number;
     rightHomeIndex: number;
+
     keyColorClass: (label: string, row: KeyboardRows, col: number) => KeyColor;
     // extra field not used by SVG, but coming from the same source.
     keyPositions: KeyPosition[];

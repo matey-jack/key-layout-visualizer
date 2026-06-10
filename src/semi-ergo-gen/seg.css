@@ -1,0 +1,9 @@
+.seg-stagger-type-group {
+    display: grid;
+    justify-items: stretch;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1.5rem;
+    width: 98%;
+    /* extra bottom padding reserves room for the floating (absolute) note below the buttons */
+    padding: 1rem 1rem 1.5rem 1rem;
+}

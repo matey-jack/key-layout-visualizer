@@ -5,6 +5,11 @@ import type {MinimalLayoutModel, StaggerSet} from './seg-model.ts';
 
 const edgeKeyWidth = (width: number) => width + 1 - Math.floor(width)
 
+interface DebugInfo {
+    fullMapping: (string | null)[][];
+    keyWidths: number[][];
+}
+
 export function ergoMaker(
     // Has to be in steps of 1/2 (or a whole number in the trifecta case).
     width: number,
@@ -31,7 +36,7 @@ export function ergoMaker(
     key is a 1u PageDown.)
      */
     _longLowerEdge: boolean = false,
-): MinimalLayoutModel {
+): MinimalLayoutModel & DebugInfo {
     const keyWidthMaker = new SymmetricKeyWidth(width, zeroIndent);
     const edgeIndents = [
         homeRowIndent + 1/staggerSet[1] + 1/staggerSet[0],
@@ -42,8 +47,7 @@ export function ergoMaker(
     const keyWidths = edgeIndents.map((indent, rowNum) =>
         keyWidthMaker.row(rowNum, edgeKeyWidth(indent))
     );
-    const numEdgeKeys = edgeIndents.map((indent) => Math.floor(indent));
-    if (numEdgeKeys[KeyboardRows.Lower] === 0) {
+    if (edgeIndents[KeyboardRows.Lower] < 0) {
         const lowerRow = keyWidths[KeyboardRows.Lower];
         lowerRow[0] = 1;
         lowerRow[lowerRow.length - 1] = 1;
@@ -51,13 +55,12 @@ export function ergoMaker(
     const fullMapping = keyWidths.map((row, rowNum) => {
         const numEdgeKeys = Math.floor(edgeIndents[rowNum] + 1);
         const rowLength = keyWidths[rowNum].length;
-        const lastCharacter = rowLength - numEdgeKeys - 1;
+        const rightEdge = rowLength - numEdgeKeys;
         return row.map((width, colNum) => {
                 if (width < 1) return null;
-                if (colNum <= numEdgeKeys || colNum > lastCharacter) return "";
-                // TODO: fix
+                if (colNum < numEdgeKeys || colNum >= rightEdge) return "";
                 if (colNum < numEdgeKeys + 5) return coreCharacters[rowNum][colNum - numEdgeKeys];
-                if (colNum >= lastCharacter - 5) return coreCharacters[rowNum][colNum - (lastCharacter - 5)];
+                if (colNum >= rightEdge - 5) return coreCharacters[rowNum][5 + colNum - (rightEdge - 5)];
                 // Only the center part of the keyboard is left over.
                 return "";
         }
@@ -71,5 +74,8 @@ export function ergoMaker(
         rightHomeIndex: keyWidths[KeyboardRows.Home].length - 1 - 4,
         keyColorClass: (_label, _row, _col) => KEY_COLOR.BORING,
         keyPositions: getKeyPositions(fakeLayoutModel, false, fullMapping),
+        // values published only for testing:
+        fullMapping,
+        keyWidths,
     }
 }
