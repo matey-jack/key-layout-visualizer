@@ -2,7 +2,7 @@ import '../app.css';
 import './seg.css';
 import {PageHeader} from '../components/PageHeader.tsx';
 import {KeyboardSvg, RowBasedKeyboard} from '../layout/KeyboardSvg.tsx';
-import {VisualizationType} from '../base-model.ts';
+import {type LayoutModel, VisualizationType} from '../base-model.ts';
 import {createSegState} from './seg-state.ts';
 import {NamedTypes, permittedHomeRowIndent, permittedKeyboardWidths} from './seg-model.ts';
 import type {Signal} from '@preact/signals';
@@ -38,12 +38,14 @@ export function SegApp() {
         <div>Total Keyboard Width:
             <UpDownSelector
                 value={appState.keyboardWidth}
+                onChange={appState.setKeyboardWidth}
                 permittedValues={permittedKeyboardWidths(appState.staggerType.value)}
             />
         </div>
         <div>Home Row Indent:
             <UpDownSelector
                 value={appState.homeRowIndent}
+                onChange={appState.setHomeRowIndent}
                 permittedValues={permittedHomeRowIndent(appState.staggerType.value)}
             />
         </div>

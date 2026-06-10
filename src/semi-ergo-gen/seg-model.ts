@@ -85,7 +85,8 @@ export interface MinimalLayoutModel {
 
 export interface SegState {
     // From 13 to 16 in steps of 1/2 (or whole numbers for the Triplex).
-    keyboardWidth: Signal<number>;
+    keyboardWidth: ReadonlySignal<number>;
+    setKeyboardWidth: (value: number) => void;
     // The set is settable, so all variants of "Other" can be configured.
     // Explicit setter needed to fixup homeRowIndent when switching between Triplex and the others!
     staggerSet: ReadonlySignal<StaggerSet>;
@@ -94,7 +95,8 @@ export interface SegState {
     setStaggerType: (value: NamedTypes) => void;
     // Multiple of 1/3 for the Triplex and of 1/4 in all other cases. 0 <= x < 1.
     // It's called "indent", but in most cases it's added to the width of the edge key.
-    homeRowIndent: Signal<number>;
+    homeRowIndent: ReadonlySignal<number>;
+    setHomeRowIndent: (value: number) => void;
     layoutModel: ReadonlySignal<MinimalLayoutModel>;
     previousModel: ReadonlySignal<MinimalLayoutModel>;
 }
