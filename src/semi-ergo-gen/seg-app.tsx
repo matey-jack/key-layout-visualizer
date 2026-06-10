@@ -4,10 +4,10 @@ import {PageHeader} from '../components/PageHeader.tsx';
 import {KeyboardSvg, RowBasedKeyboard} from '../layout/KeyboardSvg.tsx';
 import {VisualizationType} from '../base-model.ts';
 import {createSegState} from './seg-state.ts';
-import {getKeyMovements} from '../layout/layout-functions.ts';
 import {NamedTypes, permittedHomeRowIndent} from './seg-model.ts';
 import type {Signal} from '@preact/signals';
 import {UpDownSelector} from '../components/UpDownSelector.tsx';
+import {pairKeysByPosition} from './functions.ts';
 
 const appState = createSegState();
 
@@ -27,7 +27,7 @@ function StaggerTypeButton({myType, currentType, setType}: StaggerTypeButtonProp
 }
 
 export function SegApp() {
-    const movements = getKeyMovements(appState.previousModel.value.keyPositions, appState.layoutModel.value.keyPositions);
+    const movements = pairKeysByPosition(appState.previousModel.value.keyPositions, appState.layoutModel.value.keyPositions);
     return <>
         <PageHeader title="Semi-Ergo Keyboard Layout Generator"/>
         <div class={"seg-stagger-type-group"}>
