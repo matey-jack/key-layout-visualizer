@@ -7,6 +7,9 @@ html {
 
 body {
     font-family: 'Nunito Sans', sans-serif;
+}
+
+.page-bg--gradient {
     background-color: #fff;                                   /* the white middle */
     background-image:
         linear-gradient(to bottom, #cfe8f5, #fff),            /* top fade */
@@ -14,6 +17,10 @@ body {
     background-repeat: no-repeat, no-repeat;
     background-size: 100% 360px, 100% 360px;                  /* tune these heights */
     background-position: top, bottom;
+}
+
+.page-bg--solid {
+    background-color: #cfe8f5;
 }
 
 :root {

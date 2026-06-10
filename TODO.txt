@@ -18,7 +18,6 @@ Semi-Ergo-Explorer must have for go-live:
  - show key sizes when >1
  - fix bug that not all letters are shown: when indent increases too much, increase width; and vice versa for decreasing.
  - linking between KLV and SEG: discuss with Claude how best to do it
- - solid blue background instead of gradient: make sure CSS is logical; move gradient to a class instead of the tag.
  - ToolTip for Other: "Select a mixed pattern and change row stagger manually." and no hover-state.
 
 further additions:
