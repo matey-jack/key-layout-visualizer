@@ -6,8 +6,7 @@ import {type LayoutModel, VisualizationType} from '../base-model.ts';
 import {createSegState} from './seg-state.ts';
 import {NamedTypes, permittedHomeRowIndent, permittedKeyboardWidths} from './seg-model.ts';
 import type {Signal} from '@preact/signals';
-import {UpDownSelector} from '../components/UpDownSelector.tsx';
-import {SemiCirclePicker} from '../components/SemiCirclePicker.tsx';
+import {NumberPicker} from '../components/NumberPicker.tsx';
 import {pairKeysByPosition} from './functions.ts';
 
 const appState = createSegState();
@@ -27,8 +26,18 @@ function StaggerTypeButton({myType, currentType, setType}: StaggerTypeButtonProp
     </button>;
 }
 
+function deriveMinMaxStep(values: number[]): {min: number; max: number; step: number} {
+    return {
+        min: values[0],
+        max: values[values.length - 1],
+        step: values.length > 1 ? Math.round((values[1] - values[0]) * 1e6) / 1e6 : 1,
+    };
+}
+
 export function SegApp() {
     const movements = pairKeysByPosition(appState.previousModel.value.keyPositions, appState.layoutModel.value.keyPositions);
+    const kw = deriveMinMaxStep(permittedKeyboardWidths(appState.staggerType.value));
+    const hr = deriveMinMaxStep(permittedHomeRowIndent(appState.staggerType.value));
     return <>
         <PageHeader title="Semi-Ergo Keyboard Layout Generator"/>
         <div class={"seg-stagger-type-group"}>
@@ -38,25 +47,17 @@ export function SegApp() {
         </div>
         <div class="seg-width-picker">
             <div class="seg-width-picker__label">Total Keyboard Width</div>
-            {(() => {
-                const widths = permittedKeyboardWidths(appState.staggerType.value);
-                const kMin = widths[0];
-                const kMax = widths[widths.length - 1];
-                const kStep = widths.length > 1 ? Math.round((widths[1] - widths[0]) * 1e6) / 1e6 : 1;
-                return <SemiCirclePicker
-                    min={kMin}
-                    max={kMax}
-                    current={appState.keyboardWidth.value}
-                    step={kStep}
-                    onChange={appState.setKeyboardWidth}
-                />;
-            })()}
+            <NumberPicker
+                min={kw.min} max={kw.max} step={kw.step}
+                current={appState.keyboardWidth.value}
+                onChange={appState.setKeyboardWidth}
+            />
         </div>
         <div>Home Row Indent:
-            <UpDownSelector
-                value={appState.homeRowIndent}
+            <NumberPicker
+                min={hr.min} max={hr.max} step={hr.step}
+                current={appState.homeRowIndent.value}
                 onChange={appState.setHomeRowIndent}
-                permittedValues={permittedHomeRowIndent(appState.staggerType.value)}
             />
         </div>
         <KeyboardSvg vizType={VisualizationType.SemiErgoGen} keyMovements={movements} showFrame={true}>
