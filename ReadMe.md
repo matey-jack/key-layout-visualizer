@@ -1,4 +1,16 @@
-# Casual Keyboard Layout and Mapping Visualizer
+# Keyboard layouts and mappings visualizers
+
+This app has two different sub-applications that share only a few helper functions (and UI components) and the KeyboardSvg visualization.
+
+* The main application has a fixed assortment of keyboard layouts with complete keymaps and a flexible choice of letter 
+  mappings for each layout. Its entry point is `index.html`. 
+* The Semi-Ergo-Gen dynamically generates keyboard layouts based on some parameters. 
+  It only shows a minimal letter map because the number and shape of edge and center keys has too many different combinations.  
+  Its entry point is `semi-ergo-gen.html` and its code is isolated in the `src/semi-ergo-gen/`.
+
+The RenderableLayoutModel is the key interface shared by both apps to provide data to the KeyboardSvg components.
+
+## Main application: Casual Keyboard Layout and Mapping Visualizer
 
 This visualizes and compares several "casual" (that is easy-to-learn instead of fully optimized) keyboard mappings on different layouts of keyboards.
 
@@ -18,6 +30,13 @@ While mostly "60% keyboards" are shown, all the letter mappings and many other c
 The Harmonic and Ergoplank family of keyboards manage to fit in some of the nav keys into the same space that an ANSI keyboard needs just for character keys and its oversized edge keys. 
 And my favorite of all boards is the Ergoboard 16/5 which is the same size as "65% keyboards" (one column of keys more than the 60%ers) and cleverly uses that width to improve hand distance by putting some of the nav keys in the center instead of the right edge.
 
+## Semi-Ergo Keybaord Layout Generator / Explorer
+
+Based on the idea of a vertically symmetric row stagger (that is, mirrored to be the same for both hands) 
+and key cap sizes between 1u and 1.75u, this allows to change a few other parameters and see the layout.
+
+A minimal width of the keyboard follows from the chosen staggering and the fact that the app always shows ten character 
+keys in each row. It would be smaller without the number row, since that has one less stagger offset bringing keys to collide in the center.
 
 ## Terminology and Background 
 
