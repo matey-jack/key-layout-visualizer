@@ -203,6 +203,12 @@
     font-weight: bold;
 }
 
+.key-label.italic {
+    font-style: italic;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 20px;
+}
+
 .key-label.keyboard-symbol {
     text-anchor: middle;
     dominant-baseline: central;

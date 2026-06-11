@@ -162,7 +162,9 @@ export function Key(props: KeyProps) {
         transformOrigin: "0 0"
     };
 
-    const boldClass = props.vizType === VisualizationType.MappingBigrams && /^[a-z]$/i.test(label) ? " bold" : "";
+    const labelTextClass = props.vizType === VisualizationType.SemiErgoGen && width > 1 ? " italic"
+        : props.vizType === VisualizationType.MappingBigrams && /^[a-z]$/i.test(label) ? " bold"
+        : "";
 
     const text = (labelClass) ?
         // center all the non-character key labels
@@ -171,7 +173,7 @@ export function Key(props: KeyProps) {
         </text>
         :
         // left align labels for character keys
-        <text x={0} y={60} className={"key-label animating" + boldClass}>
+        <text x={0} y={60} className={"key-label animating" + labelTextClass}>
             {label}
         </text>
 
@@ -332,8 +334,11 @@ function KeyboardLayer({layoutModel, prevLayoutModel, keyMovements, mappingDiff,
         // const capColPos = colPos + (slotWidth - capWidth)/2;
 
         let displayLabel = label;
-        if (vizType === VisualizationType.LayoutKeySize || vizType === VisualizationType.SemiErgoGen) {
+        if (vizType === VisualizationType.LayoutKeySize) {
             displayLabel = capSize > 1 ? `${formatStagger(capSize)}` : "";
+        }
+        if (vizType === VisualizationType.SemiErgoGen) {
+            displayLabel = capSize > 1 ? `${formatStagger(capSize)}` : label;
         }
 
         const newRow = movement.next?.row ?? getEntryOrExitRow(movement.prev!.row);
