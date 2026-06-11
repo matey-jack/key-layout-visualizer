@@ -145,17 +145,14 @@
         flex-basis: 100%;
     }
 
+    /* Span the full row and lay the two groups out in a wrapping row: they sit side
+       by side while there's room, and home-row-indent wraps below row-stagger once
+       there isn't — an implicit "extra small" stack, no fixed breakpoint needed. */
     .seg-keyboard-controls {
+        flex-basis: 100%;
         flex-direction: row;
+        flex-wrap: wrap;
         align-items: flex-start;
         justify-content: center;
-    }
-}
-
-/* Extra small: no longer room for two groups in a row, so stack them again. */
-@container (max-width: 448px) {
-    .seg-keyboard-controls {
-        flex-direction: column;
-        align-items: center;
     }
 }
