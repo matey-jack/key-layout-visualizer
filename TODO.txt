@@ -21,6 +21,8 @@ Semi-Ergo-Explorer must have for go-live:
  - ToolTip for Other: "Select a mixed pattern and change row stagger manually." and no hover-state.
 
 further additions:
+ - make KeyboardSvg only 16.x units wide to better distribute white space on the page.
+   Or maybe make it just as wide as needed by the layout model.
  - show thumb keys with size according to my rule.
  - add switch for bottom arrows on or off.
 
