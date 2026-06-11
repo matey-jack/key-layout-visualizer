@@ -46,11 +46,13 @@ export const defaultHomeRowIndent: Record<NamedTypes, number> = {
     [NamedTypes.Katana]: 0.25,
     [NamedTypes.Ergoplank]: 0,
     [NamedTypes.Ergoboard]: 0.5,
+    // Not exactly the brand, but at least correct for the home row left side.
+    // (And the entire right side when using Apple or Thumbs Up as the standard!)
+    [NamedTypes.Typewriter]: 0.75,
     // Those are just default values to make sure that the value is compatible with the stagger.
     // (Relevant when switching between Trifecta, Harmonic, and Others.)
     [NamedTypes.Harmonic]: 0,
     [NamedTypes.Triplex]: 1/3, // need at least 3 decimal digits for our rounding to work properly
-    [NamedTypes.Typewriter]: 0.5,
     [NamedTypes.Other]: 0,
 };
 
