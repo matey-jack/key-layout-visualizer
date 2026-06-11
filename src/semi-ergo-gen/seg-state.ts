@@ -1,14 +1,24 @@
-import {computed, type ReadonlySignal, signal} from '@preact/signals';
+import {computed, effect, type ReadonlySignal, signal} from '@preact/signals';
 import {defaultHomeRowIndent, getStaggerType, maximalHomeRowIndent, minimalKeyboardWidth,
     type MinMaxStep, namedStaggerSets, NamedTypes, permittedHomeRowIndent,
     permittedKeyboardWidths, qwertyKeymap, type SegState, type StaggerSet, type DynamicLayoutModel
 } from './seg-model.ts';
 import {ergoMaker} from './dynamicLayoutModel.ts';
+import {formatDecimal} from '../library/math.ts';
 
 function nearestPermitted(current: number, {min, max, step}: MinMaxStep): number {
     const totalSteps = Math.round((max - min) / step);
     const clamped = Math.max(0, Math.min(totalSteps, Math.round((current - min) / step)));
     return Math.round((min + clamped * step) * 1e6) / 1e6;
+}
+
+function updateUrlParams(keyboardWidth: number, stagger: StaggerSet, homeRowIndent: number) {
+    const params = new URLSearchParams();
+    params.set("w", keyboardWidth.toString());
+    // somehow on the Chrome browser ',' as a delimiter gets percent-encoded, thus we use '_'.
+    params.set("s", stagger.join("_"));
+    params.set("h", formatDecimal(homeRowIndent));
+    window.history.pushState(null, "", "#" + params.toString());
 }
 
 export function createSegState(): SegState {
@@ -22,6 +32,7 @@ export function createSegState(): SegState {
         ergoMaker(keyboardWidth.value, staggerSet.value, homeRowIndent.value, qwertyKeymap));
     const previousModel = signal(layoutModel.value);
 
+    effect(() => updateUrlParams(keyboardWidth.value, staggerSet.value, homeRowIndent.value));
     return {
         keyboardWidth,
         setKeyboardWidth: (value: number) => {
