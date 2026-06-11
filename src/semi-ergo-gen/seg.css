@@ -66,6 +66,10 @@
 /* ── Keyboard row: indent | keyboard | row-stagger ── */
 
 .seg-keyboard-row {
+    /* Query container so the keyboard's wrap (part B) and the controls' direction
+       flip can share one breakpoint and stay exactly in sync. Querying the row's
+       own width (not the viewport) keeps the breakpoint immune to page padding. */
+    container-type: inline-size;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -74,11 +78,11 @@
     padding: 0;
 }
 
-/* The keyboard claims the row's free space but, via its 720px flex-basis, forces
-   the controls to wrap below once the row can't give the keyboard that much (part B).
-   min-width:0 lets the SVG scale down further on very small screens after wrapping. */
+/* Wide: the keyboard grows from a 0 basis to fill whatever the controls leave,
+   so the controls always sit beside it. The @container rule below flips the basis
+   to 100% to push the controls onto their own line (part B). */
 .seg-keyboard {
-    flex: 1 1 720px;
+    flex: 1 1 0;
     min-width: 0;
 }
 
@@ -128,4 +132,30 @@
 
 .seg-divisor-btn-group .toggle-btn--seg:last-child {
     border-right: none;
+}
+
+/* ── Responsive: controls below the keyboard ── */
+
+/* One breakpoint drives both behaviours: the keyboard takes the full row (forcing
+   the controls to wrap below it) AND the two control groups lay out side by side.
+   856px container ≈ keyboard 720px + gap + controls, so above this the keyboard
+   beside the controls never drops under ~720px. */
+@container (max-width: 856px) {
+    .seg-keyboard {
+        flex-basis: 100%;
+    }
+
+    .seg-keyboard-controls {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+    }
+}
+
+/* Extra small: no longer room for two groups in a row, so stack them again. */
+@container (max-width: 448px) {
+    .seg-keyboard-controls {
+        flex-direction: column;
+        align-items: center;
+    }
 }
