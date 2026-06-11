@@ -286,7 +286,7 @@ export function RowBasedKeyboard({layoutModel, prevLayoutModel, keyMovements, ma
                         : isHomeKey(model, row, col) ? "home-key"
                             : keyColorFunction(label, row, col))
             || (!label ? "unlabeled" : "");
-        const ribbonClass = vizType === VisualizationType.MappingDiff && lettersAndVIP.test(label)
+        const ribbonClass = vizType === VisualizationType.MappingDiff && lettersAndVIP.test(label) && mappingDiff
             ? ribbonClassByDiff[mappingDiff[label]]
             : undefined;
         let frequencyCircleRadius: number | undefined;

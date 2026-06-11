@@ -289,16 +289,6 @@ export type KeyColor = (typeof KEY_COLOR)[keyof typeof KEY_COLOR];
 // Shared data model between the main app (with flex mapping support) and semi-ergo-gen.
 // Used mainly by KeyboardSvg.
 export interface RenderableLayoutModel {
-    leftHomeIndex: number;
-    rightHomeIndex: number;
-
-    keyColorClass?: (label: string, row: KeyboardRows, col: number) => KeyColor;
-}
-
-export interface LayoutModel extends RenderableLayoutModel {
-    name: string;
-    description: string;
-
     // 1 unit = width of the smallest key.
     // This defines symmetric indentation applied to both sides of the keyboard row.
     // For indentation on one side only, insert a gap ('null' in the keymap) instead.
@@ -320,13 +310,18 @@ export interface LayoutModel extends RenderableLayoutModel {
     // Column number counted from 0.
     leftHomeIndex: number;
     rightHomeIndex: number;
+}
+
+export interface LayoutModel extends RenderableLayoutModel {
+    name: string;
+    description: string;
+
+    // Frame mappings for each supported keymap type, similar to FlexMapping structure.
+    frameMappings: Partial<Record<KeymapTypeId, FrameMapping>>;
 
     // cumulative values relative to home row
     staggerOffsets: number[];
     symmetricStagger: boolean;
-
-    // Frame mappings for each supported keymap type, similar to FlexMapping structure.
-    frameMappings: Partial<Record<KeymapTypeId, FrameMapping>>;
 
     // Finger assignment and key effort arrays have the same shape (number of entries in each row) as the LayoutMappings.
     // 'null' value used for gaps between keys and keys which require the hand off home position (such as the arrow cluster).

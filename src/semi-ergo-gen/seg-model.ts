@@ -105,7 +105,6 @@ export interface DynamicLayoutModel {
     keyPositions: KeyPosition[];
     // values published only for testing:
     fullMapping: (string | null)[][];
-    keyWidths: number[][];
 }
 
 export interface SegState {

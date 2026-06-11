@@ -13,7 +13,7 @@ function compareMatrix<T>(actual: T[][], expected: T[][], description = "") {
 describe('dynamicLayoutModel', () => {
     it('Ergoplank keyWidths', () => {
         const result = ergoMaker(15, [4, 4, 2], 0, qwertyKeymap);
-        compareMatrix(result.keyWidths, [
+        compareMatrix(result.renderInfo.keyWidths, [
             [1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5],
             [1.25, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 1, 1.25],
             Array(15).fill(1),

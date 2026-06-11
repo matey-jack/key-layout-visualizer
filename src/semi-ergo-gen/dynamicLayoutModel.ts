@@ -1,4 +1,4 @@
-import {KEY_COLOR, KeyboardRows, type LayoutModel} from '../base-model.ts';
+import {KEY_COLOR, KeyboardRows, type LayoutModel, type RenderableLayoutModel} from '../base-model.ts';
 import {SymmetricKeyWidth, zeroIndent} from '../layout/keyWidth.ts';
 import {getKeyPositions} from '../layout/layout-functions.ts';
 import type {DynamicLayoutModel, StaggerSet} from './seg-model.ts';
@@ -65,18 +65,16 @@ export function ergoMaker(
                 return "";
         }
     )});
-    const fakeLayoutModel = {
+    const renderInfo: RenderableLayoutModel = {
         keyWidths,
         rowIndent: zeroIndent,
-    } as LayoutModel;
+        leftHomeIndex: 4,
+        rightHomeIndex: keyWidths[KeyboardRows.Home].length - 1 - 4,
+        keyColorClass: (_label, _row, _col) => KEY_COLOR.BORING,
+    };
     return {
-        renderInfo: {
-            leftHomeIndex: 4,
-            rightHomeIndex: keyWidths[KeyboardRows.Home].length - 1 - 4,
-            keyColorClass: (_label, _row, _col) => KEY_COLOR.BORING,
-        },
-        keyPositions: getKeyPositions(fakeLayoutModel, false, fullMapping),
+        renderInfo,
+        keyPositions: getKeyPositions(renderInfo, false, fullMapping),
         fullMapping,
-        keyWidths,
     }
 }

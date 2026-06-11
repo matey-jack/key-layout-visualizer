@@ -17,7 +17,7 @@ import {sum} from "../library/math.ts";
 import {qwertyMapping} from "../mapping/baseMappings.ts";
 import {isCommandKey} from "../mapping/mapping-functions.ts";
 
-export function isHomeKey(layoutModel: LayoutModel, row: number, col: number): boolean {
+export function isHomeKey(layoutModel: RenderableLayoutModel, row: number, col: number): boolean {
     if (row !== KeyboardRows.Home) return false;
     if (col <= layoutModel.leftHomeIndex && col > layoutModel.leftHomeIndex - 4) return true;
     if (col >= layoutModel.rightHomeIndex && col < layoutModel.rightHomeIndex + 4) return true;
@@ -235,7 +235,7 @@ export const totalWidth = 18;
 const horizontalPadding = 0.5;
 
 export function getKeyPositions(
-    layoutModel: LayoutModel,
+    layoutModel: RenderableLayoutModel,
     split: boolean,
     fullMapping: (string | null | undefined)[][],
 ): KeyPosition[] {
@@ -257,7 +257,8 @@ export function getKeyPositions(
             //  We put ?? to alert developers to fix the keymap (instead of crashing here).
             const label = fullMapping[row]?.[col] !== undefined ? fullMapping[row][col] : "??";
             if (label != null) {
-                const finger = layoutModel.mainFingerAssignment && layoutModel.mainFingerAssignment[row][col] as Finger;
+                const fingerAssignment = (layoutModel as LayoutModel).mainFingerAssignment;
+                const finger = fingerAssignment && fingerAssignment[row][col] as Finger;
                 result.push({
                     label,
                     row,
