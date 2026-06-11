@@ -1,4 +1,4 @@
-import {KEY_COLOR, KeyboardRows, type LayoutModel, type RenderableLayoutModel} from '../base-model.ts';
+import {KEY_COLOR, KeyboardRows, type RenderableLayoutModel} from '../base-model.ts';
 import {SymmetricKeyWidth, zeroIndent} from '../layout/keyWidth.ts';
 import {getKeyPositions} from '../layout/layout-functions.ts';
 import type {DynamicLayoutModel, StaggerSet} from './seg-model.ts';

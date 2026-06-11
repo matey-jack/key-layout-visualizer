@@ -1,5 +1,5 @@
 import type {ReadonlySignal} from '@preact/signals';
-import  type {KeyboardRows, KeyColor, KeyPosition, RenderableLayoutModel} from '../base-model.ts';
+import  type {KeyPosition, RenderableLayoutModel} from '../base-model.ts';
 
 export enum NamedTypes {
     Harmonic = "Harmonic",

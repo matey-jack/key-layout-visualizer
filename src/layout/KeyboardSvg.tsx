@@ -270,21 +270,38 @@ function getEntryOrExitRow(row: number): number {
     return row < 2 ? row - 3 : row + 4;
 }
 
+// The effort and fingering visualizations are only ever rendered for the main app, which always
+// passes a full LayoutModel; the seg generator only uses the SemiErgoGen viz, hence the casts.
+function keyBackgroundClass(
+    vizType: VisualizationType,
+    model: RenderableLayoutModel,
+    row: KeyboardRows,
+    col: number,
+    label: string,
+    capSize: number,
+): string {
+    switch (vizType) {
+        case VisualizationType.LayoutKeySize:
+            return getKeySizeClass(capSize) ?? "";
+        case VisualizationType.LayoutKeyEffort:
+            return getEffortClass((model as LayoutModel).singleKeyEffort[row][col]);
+        case VisualizationType.LayoutFingering:
+            return getFingeringClasses(model as LayoutModel, row, col, label);
+        default:
+            if (isHomeKey(model, row, col)) return "home-key";
+            return (model.keyColorClass ?? defaultKeyColor)(label, row, col);
+    }
+}
+
 export function RowBasedKeyboard({layoutModel, prevLayoutModel, keyMovements, mappingDiff, vizType, layer = 'base'}: KeyboardProps) {
     return keyMovements.map((movement) => {
         // key decorations always come from the next layout model, unless a key is exiting.
         const {label, row, col, keyCapWidth} = movement.next ?? movement.prev!;
         const model = movement.next ? layoutModel : prevLayoutModel;
 
-        const keyColorFunction = (model.keyColorClass) || defaultKeyColor;
         const capHeight = keyCapHeight(model, row, col);
         const capSize = Math.max(keyCapWidth, capHeight);
-        const bgClass = (vizType === VisualizationType.LayoutKeySize ? getKeySizeClass(capSize)
-                : vizType === VisualizationType.LayoutKeyEffort ? getEffortClass(model.singleKeyEffort[row][col])
-                    : vizType === VisualizationType.LayoutFingering // && (model.mainFingerAssignment[row][col] !== null)
-                        ? getFingeringClasses(model, row, col, label)
-                        : isHomeKey(model, row, col) ? "home-key"
-                            : keyColorFunction(label, row, col))
+        const bgClass = keyBackgroundClass(vizType, model, row, col, label, capSize)
             || (!label ? "unlabeled" : "");
         const ribbonClass = vizType === VisualizationType.MappingDiff && lettersAndVIP.test(label) && mappingDiff
             ? ribbonClassByDiff[mappingDiff[label]]
