@@ -21,7 +21,8 @@ missing core features:
 # Semi-Ergo-Generator / Explorer
 
 bugs to fix:
- - smallest width and .66 home row indent on the triplex switches to an invalid width! (And rounding problems create 2u keys!)
+ - Triplex: rounding problems create 2u keys!
+ - Triplex: smallest width and .66 home row indent switches to an invalid width!
    START WITH unit test of DynamicLayoutModel
 
 must-haves for go-live:
