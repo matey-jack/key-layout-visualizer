@@ -1,4 +1,4 @@
-import {KEY_COLOR, KeyboardRows, type KeyColor, type LayoutModel} from '../base-model.ts';
+import {KEY_COLOR, KeyboardRows, type LayoutModel} from '../base-model.ts';
 import {SymmetricKeyWidth, zeroIndent} from '../layout/keyWidth.ts';
 import {getKeyPositions} from '../layout/layout-functions.ts';
 import type {MinimalLayoutModel, StaggerSet} from './seg-model.ts';
@@ -8,6 +8,11 @@ const edgeKeyWidth = (width: number) => width + 1 - Math.floor(width)
 interface DebugInfo {
     fullMapping: (string | null)[][];
     keyWidths: number[][];
+}
+
+// Rounding to three significant digits should be enough to convert 0.9999 into 1.
+function round(x: number) {
+    return Math.round(x * 1000) / 1000;
 }
 
 export function ergoMaker(
@@ -43,7 +48,7 @@ export function ergoMaker(
         homeRowIndent + 1/staggerSet[1],
         homeRowIndent,
         homeRowIndent - 1/staggerSet[2],
-    ];
+    ].map(round);
     const keyWidths = edgeIndents.map((indent, rowNum) =>
         keyWidthMaker.row(rowNum, edgeKeyWidth(indent))
     );

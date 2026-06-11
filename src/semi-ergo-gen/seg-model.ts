@@ -1,4 +1,4 @@
-import type {ReadonlySignal, Signal} from '@preact/signals';
+import type {ReadonlySignal} from '@preact/signals';
 import  type {KeyboardRows, KeyColor, KeyPosition} from '../base-model.ts';
 
 export enum NamedTypes {
@@ -57,7 +57,7 @@ export const defaultHomeRowIndent: Record<NamedTypes, number> = {
 export type MinMaxStep = { min: number; max: number; step: number };
 
 export const permittedHomeRowIndent = (typ: NamedTypes): MinMaxStep =>
-    typ === NamedTypes.Triplex ? {min: 0, max: 0.66, step: 0.33} : {min: 0, max: 0.75, step: 0.25};
+    typ === NamedTypes.Triplex ? {min: 0, max: 0.67, step: 0.333} : {min: 0, max: 0.75, step: 0.25};
 
 export const permittedKeyboardWidths = (typ: NamedTypes): MinMaxStep =>
     typ === NamedTypes.Triplex ? {min: 14, max: 16, step: 1} : {min: 13.5, max: 16, step: 0.5};

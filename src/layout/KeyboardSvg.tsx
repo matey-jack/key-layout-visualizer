@@ -22,6 +22,7 @@ import {
     lettersAndVIP,
     totalWidth,
 } from "./layout-functions.ts";
+import {formatStagger} from '../semi-ergo-gen/seg-model.ts';
 
 interface KeyboardSvgProps {
     vizType: VisualizationType;
@@ -296,8 +297,8 @@ export function RowBasedKeyboard({layoutModel, prevLayoutModel, keyMovements, ma
         // const capColPos = colPos + (slotWidth - capWidth)/2;
 
         let displayLabel = label;
-        if (vizType === VisualizationType.LayoutKeySize) {
-            displayLabel = capSize > 1 ? `${capSize}` : "";
+        if (vizType === VisualizationType.LayoutKeySize || vizType === VisualizationType.SemiErgoGen) {
+            displayLabel = capSize > 1 ? `${formatStagger(capSize)}` : "";
         }
 
         const newRow = movement.next?.row ?? getEntryOrExitRow(movement.prev!.row);

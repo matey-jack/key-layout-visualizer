@@ -15,9 +15,9 @@ missing core features:
 
 
 Semi-Ergo-Explorer must have for go-live:
- - show key sizes when >1
  - linking between KLV and SEG: discuss with Claude how best to do it
  - ToolTip for Other: "Select a mixed pattern and change row stagger manually." and no hover-state.
+ - code clean up: redundant CSS; strategy for dealing with MinimalLayoutModel, ... more?
 
 further additions:
  - make KeyboardSvg only 16.x units wide to better distribute white space on the page.

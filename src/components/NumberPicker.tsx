@@ -1,4 +1,5 @@
 import './NumberPicker.css';
+import {formatStagger} from '../semi-ergo-gen/seg-model.ts';
 
 interface NumberPickerProps {
     min: number;
@@ -23,16 +24,17 @@ function isWhole(v: number): boolean {
 }
 
 function getLabel(v: number, step: number, count: number, idx: number, dotPattern?: string): string {
+    const val = formatStagger(v);
     if (dotPattern) {
-        return dotPattern[idx % dotPattern.length] === '.' ? '·' : String(v);
+        return dotPattern[idx % dotPattern.length] === '.' ? '·' : val;
     }
     if (!isWhole(step) && count > 5) {
-        return isWhole(v) ? String(v) : '·';
+        return isWhole(v) ? val : '·';
     }
     if (isWhole(step) && count > 9) {
-        return idx % 2 === 0 ? String(v) : '·';
+        return idx % 2 === 0 ? val : '·';
     }
-    return String(v);
+    return val;
 }
 
 const R = 100;
