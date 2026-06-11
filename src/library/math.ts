@@ -5,3 +5,7 @@ export function sum(numbers: number[]): number {
 export function frac(x: number): number {
     return x - Math.floor(x);
 }
+
+export function formatDecimal(amount: number): string {
+    return parseFloat(amount.toFixed(2)).toString();
+}

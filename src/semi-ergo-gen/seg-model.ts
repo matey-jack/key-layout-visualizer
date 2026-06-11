@@ -84,10 +84,6 @@ export function maximalHomeRowIndent(staggerSet: StaggerSet, keyboardWidth: numb
     return (keyboardWidth - 12)/2 - topStagger;
 }
 
-export function formatStagger(amount: number): string {
-    return parseFloat(amount.toFixed(2)).toString();
-}
-
 export function getStaggerType(set: StaggerSet): NamedTypes {
     let result = NamedTypes.Other;
     Object.entries(namedStaggerSets).forEach(

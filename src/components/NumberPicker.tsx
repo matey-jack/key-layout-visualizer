@@ -1,5 +1,5 @@
 import './NumberPicker.css';
-import {formatStagger} from '../semi-ergo-gen/seg-model.ts';
+import {formatDecimal} from '../library/math.ts';
 
 interface NumberPickerProps {
     min: number;
@@ -24,7 +24,7 @@ function isWhole(v: number): boolean {
 }
 
 function getLabel(v: number, step: number, count: number, idx: number, dotPattern?: string): string {
-    const val = formatStagger(v);
+    const val = formatDecimal(v);
     if (dotPattern) {
         return dotPattern[idx % dotPattern.length] === '.' ? '·' : val;
     }

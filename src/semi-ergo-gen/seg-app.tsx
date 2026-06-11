@@ -6,7 +6,8 @@ import {getMaxRowWidth} from '../layout/layout-functions.ts';
 import {VisualizationType} from '../base-model.ts';
 import {createSegState} from './seg-state.ts';
 import {NamedTypes, permittedHomeRowIndent, permittedKeyboardWidths, permittedRowStagger,
-    formatStagger, type StaggerSet} from './seg-model.ts';
+    type StaggerSet} from './seg-model.ts';
+import {formatDecimal} from '../library/math.ts';
 import type {Signal} from '@preact/signals';
 import {NumberPicker} from '../components/NumberPicker.tsx';
 import {pairKeysByPosition} from './functions.ts';
@@ -104,7 +105,7 @@ export function SegApp() {
                                                 appState.setStaggerSet(s as StaggerSet);
                                             }}
                                         >
-                                            {formatStagger(1 / d)}
+                                            {formatDecimal(1 / d)}
                                         </button>
                                     )}
                                 </div>

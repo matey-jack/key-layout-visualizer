@@ -21,7 +21,7 @@ import {
     keyCapHeight,
     lettersAndVIP,
 } from "./layout-functions.ts";
-import {formatStagger} from '../semi-ergo-gen/seg-model.ts';
+import {formatDecimal} from '../library/math.ts';
 
 interface KeyboardSvgProps {
     vizType: VisualizationType;
@@ -335,10 +335,10 @@ function KeyboardLayer({layoutModel, prevLayoutModel, keyMovements, mappingDiff,
 
         let displayLabel = label;
         if (vizType === VisualizationType.LayoutKeySize) {
-            displayLabel = capSize > 1 ? `${formatStagger(capSize)}` : "";
+            displayLabel = capSize > 1 ? `${formatDecimal(capSize)}` : "";
         }
         if (vizType === VisualizationType.SemiErgoGen) {
-            displayLabel = capSize > 1 ? `${formatStagger(capSize)}` : label;
+            displayLabel = capSize > 1 ? `${formatDecimal(capSize)}` : label;
         }
 
         const newRow = movement.next?.row ?? getEntryOrExitRow(movement.prev!.row);
