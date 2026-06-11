@@ -17,13 +17,11 @@ missing core features:
 Semi-Ergo-Explorer must have for go-live:
  - linking between KLV and SEG: discuss with Claude how best to do it
  - ToolTip for Other: "Select a mixed pattern and change row stagger manually." and no hover-state.
- - code clean up: redundant CSS; strategy for dealing with MinimalLayoutModel, ... more?
 
 further additions:
- - make KeyboardSvg only 16.x units wide to better distribute white space on the page.
-   Or maybe make it just as wide as needed by the layout model.
  - show thumb keys with size according to my rule.
  - add switch for bottom arrows on or off.
+ - code clean up: redundant CSS, maybe more?
 
 Stagger options:
  - uniform 1/4 (aka Ergoboard)

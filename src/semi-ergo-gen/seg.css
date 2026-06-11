@@ -95,13 +95,6 @@
     gap: 0.5rem;
 }
 
-.seg-row-indicator {
-    color: #aac8d8;
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    user-select: none;
-}
-
 /* ── Segmented divisor button group ── */
 
 .seg-divisor-btn-group {

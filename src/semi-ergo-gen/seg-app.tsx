@@ -94,7 +94,6 @@ export function SegApp() {
                 <div class="seg-row-stagger-pickers">
                     {([0, 1, 2] as const).map(i =>
                         <div class="seg-row-stagger-row">
-                            <span class="seg-row-indicator">· · ·</span>
                             <div class="seg-divisor-btn-group">
                                 {rsDivisors.map(d =>
                                     <button type="button"
