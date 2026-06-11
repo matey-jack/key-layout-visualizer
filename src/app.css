@@ -77,6 +77,16 @@ h1 {
     border-color: var(--btn-hover-border);
 }
 
+/* passive buttons aren't really clickable toggles, so suppress the hover feedback */
+.toggle-btn--passive {
+    cursor: default;
+}
+
+.toggle-btn--passive:hover:not(.selected) {
+    background-color: var(--btn-bg);
+    border-color: var(--btn-border);
+}
+
 .toggle-btn.selected {
     background-color: var(--btn-sel-bg);
     border-color: var(--btn-sel-border);

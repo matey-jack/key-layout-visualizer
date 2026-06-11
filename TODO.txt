@@ -16,25 +16,8 @@ missing core features:
 
 Semi-Ergo-Explorer must have for go-live:
  - linking between KLV and SEG: discuss with Claude how best to do it
- - ToolTip for Other: "Select a mixed pattern and change row stagger manually." and no hover-state.
+ - show thumb keys with size according to my rule.
 
 further additions:
- - show thumb keys with size according to my rule.
  - add switch for bottom arrows on or off.
  - code clean up: redundant CSS, maybe more?
-
-Stagger options:
- - uniform 1/4 (aka Ergoboard)
- - uniform 1/3 (aka Triplex)
- - uniform 1/2 (aka Harmonic)
- - mixed 1/4 and 1/2
-   * ANSI
-   * Katana
-   * Ergoplank
-   * others don't make sense, but let user change the values per row.
-     When those values match one of the five named options, highlight it accordingly
- - Unless the stagger is the Triplex, values should be shown on each pair of rows and changes can be made there or via
-   picking from the named variants. Same effect on keyboard and in UI.
-
-Optional: allow "low Shift" only when the lower row stagger is 1/2, but then, of course, no matter what the others are.
-If low Shift allows space for two keys in the lower row edge, then make the outer one 1u and the inner one take the remaining space: as on the old Ergoboard low-Shift.

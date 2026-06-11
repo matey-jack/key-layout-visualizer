@@ -17,12 +17,17 @@ interface StaggerTypeButtonProps {
     myType: NamedTypes;
     currentType: Signal<NamedTypes>;
     setType: (t: NamedTypes) => void;
+    passive?: boolean;
+    toolTip?: string;
 }
 
-function StaggerTypeButton({myType, currentType, setType}: StaggerTypeButtonProps) {
+function StaggerTypeButton({myType, currentType, setType, passive, toolTip}: StaggerTypeButtonProps) {
     return <button type="button"
-            onClick={myType === NamedTypes.Other ? undefined : () => setType(myType)}
-            class={"toggle-btn toggle-btn--lg layout-type-button" + (myType === currentType.value ? " selected" : "")}
+            onClick={passive ? undefined : () => setType(myType)}
+            title={toolTip}
+            class={"toggle-btn layout-type-button"
+                + (myType === currentType.value ? " selected" : "")
+                + (passive ? " toggle-btn--passive" : "")}
     >
         {myType}
     </button>;
@@ -54,7 +59,9 @@ export function SegApp() {
                         <StaggerTypeButton myType={NamedTypes.Typewriter} currentType={appState.staggerType} setType={appState.setStaggerType}/>
                         <StaggerTypeButton myType={NamedTypes.Katana}     currentType={appState.staggerType} setType={appState.setStaggerType}/>
                         <StaggerTypeButton myType={NamedTypes.Ergoplank}  currentType={appState.staggerType} setType={appState.setStaggerType}/>
-                        <StaggerTypeButton myType={NamedTypes.Other}      currentType={appState.staggerType} setType={appState.setStaggerType}/>
+                        <StaggerTypeButton myType={NamedTypes.Other}      passive
+                                           toolTip="Select a mixed pattern and change row stagger manually."
+                                           currentType={appState.staggerType} setType={appState.setStaggerType}/>
                     </div>
                 </div>
             </div>
