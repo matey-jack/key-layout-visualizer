@@ -74,14 +74,14 @@ export const permittedRowStagger = (typ: NamedTypes): StaggerDivisor[] =>
  */
 export function minimalKeyboardWidth(staggerSet: StaggerSet, homeRowIndent: number) {
     const [a, b] = staggerSet;
-    const topIndent = homeRowIndent + 1/a + 1/b;
+    const topIndent = 1 + homeRowIndent + 1/a + 1/b;
     return 2*topIndent + 10;
 }
 
 export function maximalHomeRowIndent(staggerSet: StaggerSet, keyboardWidth: number) {
     const [a, b] = staggerSet;
     const topStagger = 1/a + 1/b;
-    return keyboardWidth - 10 - 2*topStagger;
+    return (keyboardWidth - 12)/2 - topStagger;
 }
 
 export function formatStagger(amount: number): string {

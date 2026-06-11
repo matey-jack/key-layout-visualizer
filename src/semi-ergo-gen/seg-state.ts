@@ -1,5 +1,5 @@
 import {computed, type ReadonlySignal, signal} from '@preact/signals';
-import {defaultHomeRowIndent, getStaggerType,
+import {defaultHomeRowIndent, getStaggerType, maximalHomeRowIndent, minimalKeyboardWidth,
     type MinimalLayoutModel, type MinMaxStep, namedStaggerSets, NamedTypes, permittedHomeRowIndent,
     permittedKeyboardWidths, qwertyKeymap, type SegState, type StaggerSet} from './seg-model.ts';
 import {ergoMaker} from './dynamicLayoutModel.ts';
@@ -22,10 +22,21 @@ export function createSegState(): SegState {
     const previousModel = signal(layoutModel.value);
 
     return {
-        keyboardWidth: keyboardWidth,
+        keyboardWidth,
         setKeyboardWidth: (value: number) => {
             previousModel.value = layoutModel.value;
             keyboardWidth.value = nearestPermitted(value, permittedKeyboardWidths(staggerType.value));
+            if (homeRowIndent.value > maximalHomeRowIndent(staggerSet.value, value)) {
+                homeRowIndent.value = maximalHomeRowIndent(staggerSet.value, value);
+            }
+        },
+        homeRowIndent,
+        setHomeRowIndent: (value: number) => {
+            previousModel.value = layoutModel.value;
+            homeRowIndent.value = nearestPermitted(value, permittedHomeRowIndent(staggerType.value));
+            if (keyboardWidth.value < minimalKeyboardWidth(staggerSet.value, value)) {
+                keyboardWidth.value = minimalKeyboardWidth(staggerSet.value, value);
+            }
         },
         staggerSet: computed(() => staggerSet.value),
         setStaggerSet: (value: StaggerSet) => {
@@ -44,11 +55,6 @@ export function createSegState(): SegState {
             homeRowIndent.value = defaultHomeRowIndent[value];
             staggerSet.value = namedStaggerSets[value]!;
             keyboardWidth.value = nearestPermitted(keyboardWidth.value, permittedKeyboardWidths(value));
-        },
-        homeRowIndent,
-        setHomeRowIndent: (value: number) => {
-            previousModel.value = layoutModel.value;
-            homeRowIndent.value = nearestPermitted(value, permittedHomeRowIndent(staggerType.value));
         },
         layoutModel,
         previousModel: computed(() => previousModel.value),
