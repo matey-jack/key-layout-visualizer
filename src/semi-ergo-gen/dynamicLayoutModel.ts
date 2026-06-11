@@ -1,5 +1,5 @@
 import {KEY_COLOR, KeyboardRows, type RenderableLayoutModel} from '../base-model.ts';
-import {SymmetricKeyWidth, zeroIndent} from '../layout/keyWidth.ts';
+import {mirror, mirrorOdd, SymmetricKeyWidth, zeroIndent} from '../layout/keyWidth.ts';
 import {getKeyPositions, getMaxRowWidth} from '../layout/layout-functions.ts';
 import  {type DynamicLayoutModel, keyboardSvgWidth, type StaggerSet} from './seg-model.ts';
 
@@ -13,7 +13,7 @@ function round(x: number) {
 
 export function ergoMaker(
     // Has to be in steps of 1/2 (or a whole number in the trifecta case).
-    width: number,
+    keyboardWidth: number,
     staggerSet: StaggerSet,
     // Multiple of 1/4 or 1/3.
     homeRowIndent: number,
@@ -38,7 +38,7 @@ export function ergoMaker(
      */
     _longLowerEdge: boolean = false,
 ): DynamicLayoutModel {
-    const keyWidthMaker = new SymmetricKeyWidth(width, zeroIndent);
+    const keyWidthMaker = new SymmetricKeyWidth(keyboardWidth, zeroIndent);
     const edgeIndents = [
         homeRowIndent + 1/staggerSet[1] + 1/staggerSet[0],
         homeRowIndent + 1/staggerSet[1],
@@ -66,6 +66,32 @@ export function ergoMaker(
                 return "";
         }
     )});
+    /*
+    Goal: show two thumb keys with appropriate positions and size.
+    Constraint: thumb key size should be > 1u and like all keys < 2u.
+    Out of scope: how to practically use the central gap between thumb keys, if there is one. We just leave the gap.
+     */
+    if (staggerSet[0] !== 3) {
+        // ideally separate the thumb keys exactly 1u to the center from middle of index finger.
+        const spaceForCentralThumbKey = keyboardWidth/2 - homeRowIndent - 5.5
+        // This ranges from 6.5 - 5.5 = 1 to 8 - 5.5 = 2.5.
+        // Because the most narrow configuration doesn't allow any homeRowIndent.
+        const sizeOfCentralThumbKey = Math.min(1.75, Math.max(1.25, spaceForCentralThumbKey));
+        const sizeOfOtherThumbKey = Math.min(1.5, sizeOfCentralThumbKey);
+        const sizeOfCentralGap = 2 * Math.max(0, spaceForCentralThumbKey - sizeOfCentralThumbKey);
+        const bottomRowWidths = sizeOfCentralGap > 0
+            ? mirrorOdd(sizeOfOtherThumbKey, sizeOfCentralThumbKey, sizeOfCentralGap)
+            : mirror(sizeOfOtherThumbKey, sizeOfCentralThumbKey);
+        keyWidths.push(bottomRowWidths);
+        const bottomRowLabels  = sizeOfCentralGap > 0
+            ? mirrorOdd("", "", null)
+            : mirror("", "");
+        fullMapping.push(bottomRowLabels);
+    }
+    // Else part for Triplex to be done later.
+    // It's more complex, because width/2 can be a fraction and the indent another /3 fraction,
+    // thus the difference could be a /6 fraction. To avoid adding more key sizes, we stick to the three existing ones
+    // and stick the difference into the gaps.
     const renderInfo: RenderableLayoutModel = {
         keyWidths,
         rowIndent: zeroIndent,
