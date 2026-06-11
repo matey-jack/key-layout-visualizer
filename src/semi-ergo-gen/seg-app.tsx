@@ -1,7 +1,7 @@
 import '../app.css';
 import './seg.css';
 import {PageHeader} from '../components/PageHeader.tsx';
-import {KeyboardSvg, RowBasedKeyboard} from '../layout/KeyboardSvg.tsx';
+import {Keyboard, KeyboardSvg} from '../layout/KeyboardSvg.tsx';
 import {type LayoutModel, VisualizationType} from '../base-model.ts';
 import {createSegState} from './seg-state.ts';
 import {NamedTypes, permittedHomeRowIndent, permittedKeyboardWidths, permittedRowStagger,
@@ -79,19 +79,11 @@ export function SegApp() {
             </div>
 
             <KeyboardSvg vizType={VisualizationType.SemiErgoGen} keyMovements={movements} showFrame={true}>
-                <RowBasedKeyboard
+                <Keyboard
                     layoutModel={appState.layoutModel.value.renderInfo}
                     prevLayoutModel={appState.previousModel.value.renderInfo}
                     keyMovements={movements}
                     vizType={VisualizationType.SemiErgoGen}
-                    layer="base"
-                />
-                <RowBasedKeyboard
-                    layoutModel={appState.layoutModel.value.renderInfo}
-                    prevLayoutModel={appState.previousModel.value.renderInfo}
-                    keyMovements={movements}
-                    vizType={VisualizationType.SemiErgoGen}
-                    layer="label"
                 />
             </KeyboardSvg>
 

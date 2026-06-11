@@ -13,7 +13,7 @@ import {
 import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {ErgoplankLayoutOptions} from "./ErgoplankLayoutOptions.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
-import {BigramLines, KeyboardSvg, RowBasedKeyboard, StaggerLines} from "./KeyboardSvg.tsx";
+import {BigramLines, Keyboard, KeyboardSvg, StaggerLines} from "./KeyboardSvg.tsx";
 import {fillMapping, getKeyMovements, getKeyPositions} from "./layout-functions.ts";
 import {SplitOrthoLayoutOptions} from "./SplitOrthoLayoutOptions.tsx";
 import {TradeoffDiagram} from "./TradeoffDiagram.tsx";
@@ -55,30 +55,22 @@ export function LayoutArea({appState}: LayoutAreaProps) {
             <div class="layout-area-svg-container">
                 <div class={"layout-area-svg-fader " + (isTradeoff ? "hide" : "show")}>
                     <KeyboardSvg vizType={vizType.value} keyMovements={keyMovements} showFrame={showFrame}>
-                        <RowBasedKeyboard
+                        <Keyboard
                             layoutModel={layoutModel.value}
                             prevLayoutModel={prevLayoutModel.value}
                             keyMovements={keyMovements}
                             mappingDiff={mappingDiff.value}
                             vizType={vizType.value}
-                            layer="base"
-                        />
-                        {vizType.value === VisualizationType.LayoutAngle &&
-                            <StaggerLines layoutModel={layoutModel.value} previousLayoutModel={prevLayoutModel.value}
-                                          layoutSplit={isSplit(layout.value)}
-                                          keyMovements={keyMovements}/>
-                        }
-                        {vizType.value === VisualizationType.MappingBigrams &&
-                            <BigramLines bigrams={bigramMovements.value}/>
-                        }
-                        <RowBasedKeyboard
-                            layoutModel={layoutModel.value}
-                            prevLayoutModel={prevLayoutModel.value}
-                            keyMovements={keyMovements}
-                            mappingDiff={mappingDiff.value}
-                            vizType={vizType.value}
-                            layer="label"
-                        />
+                        >
+                            {vizType.value === VisualizationType.LayoutAngle &&
+                                <StaggerLines layoutModel={layoutModel.value} previousLayoutModel={prevLayoutModel.value}
+                                              layoutSplit={isSplit(layout.value)}
+                                              keyMovements={keyMovements}/>
+                            }
+                            {vizType.value === VisualizationType.MappingBigrams &&
+                                <BigramLines bigrams={bigramMovements.value}/>
+                            }
+                        </Keyboard>
                     </KeyboardSvg>
                 </div>
                 <div class={"layout-area-svg-fader " + (isTradeoff ? "show" : "hide")}>

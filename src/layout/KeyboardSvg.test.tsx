@@ -1,6 +1,6 @@
 import {render} from '@testing-library/preact';
 import {describe, expect, it} from 'vitest';
-import {RowBasedKeyboard} from './KeyboardSvg.tsx';
+import {Keyboard} from './KeyboardSvg.tsx';
 import {qwertyMapping} from "../mapping/baseMappings.ts";
 import {VisualizationType} from "../base-model.ts";
 import {ansiIBMLayoutModel} from "./ansiLayoutModel.ts";
@@ -12,7 +12,7 @@ describe('Key rendering', () => {
         const charMap = fillMapping(ansiIBMLayoutModel, qwertyMapping);
         const keyPositions = getKeyPositions(ansiIBMLayoutModel, true, charMap!)
         const keyMovements = getKeyMovements(keyPositions, keyPositions);
-        const {container} = render(<RowBasedKeyboard
+        const {container} = render(<Keyboard
             layoutModel={ansiIBMLayoutModel}
             prevLayoutModel={ansiIBMLayoutModel}
             keyMovements={keyMovements}

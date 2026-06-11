@@ -225,10 +225,23 @@ export interface KeyboardProps {
     prevLayoutModel: RenderableLayoutModel;
     keyMovements: KeyMovement[];
     vizType: VisualizationType;
-    // TODO: make `layer` mandatory and add a helper component which renders both layers with children in-between.
-    //       Then all callers (including tests!) can use that.
-    layer?: 'base' | 'label';
     mappingDiff?: Record<string, MappingChange>;
+    // Overlay rendered between the base and label layers (e.g. stagger or bigram lines).
+    children?: ComponentChildren;
+}
+
+interface KeyboardLayerProps extends Omit<KeyboardProps, 'children'> {
+    layer: 'base' | 'label';
+}
+
+// Renders a full keyboard: the base keycap layer, then the overlay children, then the label
+// layer on top. This base→children→label ordering is what every caller needs.
+export function Keyboard({children, ...rest}: KeyboardProps) {
+    return <>
+        <KeyboardLayer {...rest} layer="base"/>
+        {children}
+        <KeyboardLayer {...rest} layer="label"/>
+    </>;
 }
 
 export function getEffortClass(effort: number | null) {
@@ -293,7 +306,7 @@ function keyBackgroundClass(
     }
 }
 
-export function RowBasedKeyboard({layoutModel, prevLayoutModel, keyMovements, mappingDiff, vizType, layer = 'base'}: KeyboardProps) {
+function KeyboardLayer({layoutModel, prevLayoutModel, keyMovements, mappingDiff, vizType, layer}: KeyboardLayerProps) {
     return keyMovements.map((movement) => {
         // key decorations always come from the next layout model, unless a key is exiting.
         const {label, row, col, keyCapWidth} = movement.next ?? movement.prev!;

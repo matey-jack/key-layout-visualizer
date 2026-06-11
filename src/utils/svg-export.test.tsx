@@ -3,7 +3,7 @@ import {render} from '@testing-library/preact';
 import {afterAll, beforeAll, describe, expect, it} from 'vitest';
 import {VisualizationType} from '../base-model.ts';
 import {ansiIBMLayoutModel} from '../layout/ansiLayoutModel.ts';
-import {KeyboardSvg, RowBasedKeyboard} from '../layout/KeyboardSvg.tsx';
+import {Keyboard, KeyboardSvg} from '../layout/KeyboardSvg.tsx';
 import {fillMapping, getKeyMovements, getKeyPositions} from '../layout/layout-functions.ts';
 import {splitOrthoLayoutModel} from '../layout/splitOrthoLayoutModel.ts';
 import {qwertyMapping} from '../mapping/baseMappings.ts';
@@ -33,21 +33,12 @@ describe('SVG Export', () => {
         const vizType = VisualizationType.LayoutKeyEffort;
         const { container } = render(
             <KeyboardSvg vizType={vizType} showFrame={true} keyMovements={keyMovements}>
-                <RowBasedKeyboard
+                <Keyboard
                     layoutModel={layoutModel}
                     prevLayoutModel={ansiIBMLayoutModel}
                     keyMovements={keyMovements}
                     vizType={vizType}
                     mappingDiff={{}}
-                    layer="base"
-                />
-                <RowBasedKeyboard
-                    layoutModel={layoutModel}
-                    prevLayoutModel={ansiIBMLayoutModel}
-                    keyMovements={keyMovements}
-                    vizType={vizType}
-                    mappingDiff={{}}
-                    layer="label"
                 />
             </KeyboardSvg>
         );
@@ -74,7 +65,7 @@ describe('SVG Export', () => {
 
         const { container } = render(
             <KeyboardSvg vizType={vizType} showFrame={true} keyMovements={keyMovements}>
-                <RowBasedKeyboard
+                <Keyboard
                     layoutModel={ansiIBMLayoutModel}
                     prevLayoutModel={ansiIBMLayoutModel}
                     keyMovements={keyMovements}
@@ -104,7 +95,7 @@ describe('SVG Export', () => {
 
         const { container } = render(
             <KeyboardSvg vizType={vizType} showFrame={true} keyMovements={keyMovements}>
-                <RowBasedKeyboard
+                <Keyboard
                     layoutModel={ansiIBMLayoutModel}
                     prevLayoutModel={ansiIBMLayoutModel}
                     keyMovements={keyMovements}
@@ -131,7 +122,7 @@ describe('SVG Export', () => {
 
         const { container } = render(
             <KeyboardSvg vizType={vizType} showFrame={true} keyMovements={keyMovements}>
-                <RowBasedKeyboard
+                <Keyboard
                     layoutModel={ansiIBMLayoutModel}
                     prevLayoutModel={ansiIBMLayoutModel}
                     keyMovements={keyMovements}
@@ -161,7 +152,7 @@ describe('SVG Export', () => {
 
         const { container } = render(
             <KeyboardSvg vizType={vizType} showFrame={true} keyMovements={keyMovements}>
-                <RowBasedKeyboard
+                <Keyboard
                     layoutModel={ansiIBMLayoutModel}
                     prevLayoutModel={ansiIBMLayoutModel}
                     keyMovements={keyMovements}
@@ -193,7 +184,7 @@ describe('SVG Export', () => {
         vizTypes.forEach((vizType) => {
             const { container } = render(
                 <KeyboardSvg vizType={vizType} showFrame={true} keyMovements={keyMovements}>
-                    <RowBasedKeyboard
+                    <Keyboard
                         layoutModel={ansiIBMLayoutModel}
                         prevLayoutModel={ansiIBMLayoutModel}
                         keyMovements={keyMovements}
