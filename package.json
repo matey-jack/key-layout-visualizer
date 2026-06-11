@@ -18,9 +18,9 @@
   },
   "dependencies": {
     "@kcf-hub/kle-serial": "0.17.0",
-    "@preact/signals": "2.9.0",
+    "@preact/signals": "2.9.1",
     "posthog-js": "1.373.0",
-    "preact": "10.29.1"
+    "preact": "10.29.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.15",
