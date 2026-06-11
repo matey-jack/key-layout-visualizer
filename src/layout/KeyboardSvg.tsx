@@ -161,6 +161,8 @@ export function Key(props: KeyProps) {
         transformOrigin: "0 0"
     };
 
+    const boldClass = props.vizType === VisualizationType.MappingBigrams && /^[a-z]$/i.test(label) ? " bold" : "";
+
     const text = (labelClass) ?
         // center all the non-character key labels
         <text x={0} y={keyUnit * height / 2} className={"key-label animating " + labelClass}>
@@ -168,7 +170,7 @@ export function Key(props: KeyProps) {
         </text>
         :
         // left align labels for character keys
-        <text x={0} y={60} className="key-label animating">
+        <text x={0} y={60} className={"key-label animating" + boldClass}>
             {label}
         </text>
 
