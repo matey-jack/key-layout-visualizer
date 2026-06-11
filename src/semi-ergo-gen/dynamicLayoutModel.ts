@@ -6,8 +6,9 @@ import  {type DynamicLayoutModel, keyboardSvgWidth, type StaggerSet} from './seg
 const edgeKeyWidth = (width: number) => width + 1 - Math.floor(width)
 
 // Rounding to three significant digits should be enough to convert 0.9999 into 1.
+// Since the layout uses steps of 1/2, 1/3, and 1/4, we round to the nearest multiple of 1/12.
 function round(x: number) {
-    return Math.round(x * 1000) / 1000;
+    return Math.round(x * 12) / 12;
 }
 
 export function ergoMaker(
