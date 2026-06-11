@@ -71,27 +71,30 @@ export function ergoMaker(
     Constraint: thumb key size should be > 1u and like all keys < 2u.
     Out of scope: how to practically use the central gap between thumb keys, if there is one. We just leave the gap.
      */
-    if (staggerSet[0] !== 3) {
-        // ideally separate the thumb keys exactly 1u to the center from middle of index finger.
-        const spaceForCentralThumbKey = keyboardWidth/2 - homeRowIndent - 5.5
-        // This ranges from 6.5 - 5.5 = 1 to 8 - 5.5 = 2.5.
-        // Because the most narrow configuration doesn't allow any homeRowIndent.
-        const sizeOfCentralThumbKey = Math.min(1.75, Math.max(1.25, spaceForCentralThumbKey));
-        const sizeOfOtherThumbKey = Math.min(1.5, sizeOfCentralThumbKey);
-        const sizeOfCentralGap = 2 * Math.max(0, spaceForCentralThumbKey - sizeOfCentralThumbKey);
-        const bottomRowWidths = sizeOfCentralGap > 0
-            ? mirrorOdd(sizeOfOtherThumbKey, sizeOfCentralThumbKey, sizeOfCentralGap)
-            : mirror(sizeOfOtherThumbKey, sizeOfCentralThumbKey);
-        keyWidths.push(bottomRowWidths);
-        const bottomRowLabels  = sizeOfCentralGap > 0
-            ? mirrorOdd("", "", null)
-            : mirror("", "");
-        fullMapping.push(bottomRowLabels);
+    // ideally separate the thumb keys exactly 1u to the center from middle of index finger.
+    const spaceForCentralThumbKey = keyboardWidth/2 - homeRowIndent - 5.5
+    // For non-Triplex, available space ranges from 6.5 - 5.5 = 1 to 8 - 5.5 = 2.5.
+    // Because the most narrow configuration doesn't allow any homeRowIndent.
+    let sizeOfCentralThumbKey = Math.min(1.75, Math.max(1.25, spaceForCentralThumbKey));
+    let sizeOfOtherThumbKey = Math.min(1.5, sizeOfCentralThumbKey);
+    let sizeOfCentralGap = 2 * Math.max(0, spaceForCentralThumbKey - sizeOfCentralThumbKey);
+    if (staggerSet[0] === 3) {
+        // For Triplex, minimum space is 7 - 5.5 - 1/3 = 7/6, which we'll clamp to 8/6 = 1.33.
+        // Maximum is as above.
+        // But since the calculation can yield any /6 fractions, we need to explicitly set the key size.
+        sizeOfCentralThumbKey = spaceForCentralThumbKey >= 5/3 ? 5/3 : 4/3;
+        sizeOfOtherThumbKey = sizeOfCentralThumbKey;
+        // The gap can be a /6 fraction without problems.
+        sizeOfCentralGap = 2 * Math.max(0, spaceForCentralThumbKey - sizeOfCentralThumbKey);
     }
-    // Else part for Triplex to be done later.
-    // It's more complex, because width/2 can be a fraction and the indent another /3 fraction,
-    // thus the difference could be a /6 fraction. To avoid adding more key sizes, we stick to the three existing ones
-    // and stick the difference into the gaps.
+    const bottomRowWidths = sizeOfCentralGap > 0
+        ? mirrorOdd(sizeOfOtherThumbKey, sizeOfCentralThumbKey, sizeOfCentralGap)
+        : mirror(sizeOfOtherThumbKey, sizeOfCentralThumbKey);
+    keyWidths.push(bottomRowWidths);
+    const bottomRowLabels  = sizeOfCentralGap > 0
+        ? mirrorOdd("", "", null)
+        : mirror("", "");
+    fullMapping.push(bottomRowLabels);
     const renderInfo: RenderableLayoutModel = {
         keyWidths,
         rowIndent: zeroIndent,
