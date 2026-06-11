@@ -80,15 +80,15 @@ export function SegApp() {
 
             <KeyboardSvg vizType={VisualizationType.SemiErgoGen} keyMovements={movements} showFrame={true}>
                 <RowBasedKeyboard
-                    layoutModel={appState.layoutModel.value}
-                    prevLayoutModel={appState.previousModel.value}
+                    layoutModel={appState.layoutModel.value.renderInfo}
+                    prevLayoutModel={appState.previousModel.value.renderInfo}
                     keyMovements={movements}
                     vizType={VisualizationType.SemiErgoGen}
                     layer="base"
                 />
                 <RowBasedKeyboard
-                    layoutModel={appState.layoutModel.value}
-                    prevLayoutModel={appState.previousModel.value}
+                    layoutModel={appState.layoutModel.value.renderInfo}
+                    prevLayoutModel={appState.previousModel.value.renderInfo}
                     keyMovements={movements}
                     vizType={VisualizationType.SemiErgoGen}
                     layer="label"

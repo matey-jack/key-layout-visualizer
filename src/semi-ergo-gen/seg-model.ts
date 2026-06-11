@@ -1,5 +1,5 @@
 import type {ReadonlySignal} from '@preact/signals';
-import  type {KeyboardRows, KeyColor, KeyPosition} from '../base-model.ts';
+import  type {KeyboardRows, KeyColor, KeyPosition, RenderableLayoutModel} from '../base-model.ts';
 
 export enum NamedTypes {
     Harmonic = "Harmonic",
@@ -100,15 +100,12 @@ export function getStaggerType(set: StaggerSet): NamedTypes {
     return result;
 }
 
-// Reduced version of LayoutModel which can only be used for the key-size viz in KeyboardSvg and nothing else.
-export interface MinimalLayoutModel {
-    // actually, only those are accessed by the RowBasedKeyboard SVG maker.
-    leftHomeIndex: number;
-    rightHomeIndex: number;
-
-    keyColorClass: (label: string, row: KeyboardRows, col: number) => KeyColor;
-    // extra field not used by SVG, but coming from the same source.
+export interface DynamicLayoutModel {
+    renderInfo: RenderableLayoutModel;
     keyPositions: KeyPosition[];
+    // values published only for testing:
+    fullMapping: (string | null)[][];
+    keyWidths: number[][];
 }
 
 export interface SegState {
@@ -125,8 +122,8 @@ export interface SegState {
     // It's called "indent", but in most cases it's added to the width of the edge key.
     homeRowIndent: ReadonlySignal<number>;
     setHomeRowIndent: (value: number) => void;
-    layoutModel: ReadonlySignal<MinimalLayoutModel>;
-    previousModel: ReadonlySignal<MinimalLayoutModel>;
+    layoutModel: ReadonlySignal<DynamicLayoutModel>;
+    previousModel: ReadonlySignal<DynamicLayoutModel>;
 }
 
 export const qwertyKeymap = [

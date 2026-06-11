@@ -39,6 +39,15 @@ describe('SVG Export', () => {
                     keyMovements={keyMovements}
                     vizType={vizType}
                     mappingDiff={{}}
+                    layer="base"
+                />
+                <RowBasedKeyboard
+                    layoutModel={layoutModel}
+                    prevLayoutModel={ansiIBMLayoutModel}
+                    keyMovements={keyMovements}
+                    vizType={vizType}
+                    mappingDiff={{}}
+                    layer="label"
                 />
             </KeyboardSvg>
         );

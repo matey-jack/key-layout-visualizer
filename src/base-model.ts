@@ -286,7 +286,16 @@ export const KEY_COLOR = {
 
 export type KeyColor = (typeof KEY_COLOR)[keyof typeof KEY_COLOR];
 
-export interface LayoutModel {
+// Shared data model between the main app (with flex mapping support) and semi-ergo-gen.
+// Used mainly by KeyboardSvg.
+export interface RenderableLayoutModel {
+    leftHomeIndex: number;
+    rightHomeIndex: number;
+
+    keyColorClass?: (label: string, row: KeyboardRows, col: number) => KeyColor;
+}
+
+export interface LayoutModel extends RenderableLayoutModel {
     name: string;
     description: string;
 

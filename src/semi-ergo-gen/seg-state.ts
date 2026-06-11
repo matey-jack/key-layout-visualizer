@@ -1,7 +1,8 @@
 import {computed, type ReadonlySignal, signal} from '@preact/signals';
 import {defaultHomeRowIndent, getStaggerType, maximalHomeRowIndent, minimalKeyboardWidth,
-    type MinimalLayoutModel, type MinMaxStep, namedStaggerSets, NamedTypes, permittedHomeRowIndent,
-    permittedKeyboardWidths, qwertyKeymap, type SegState, type StaggerSet} from './seg-model.ts';
+    type MinMaxStep, namedStaggerSets, NamedTypes, permittedHomeRowIndent,
+    permittedKeyboardWidths, qwertyKeymap, type SegState, type StaggerSet, type DynamicLayoutModel
+} from './seg-model.ts';
 import {ergoMaker} from './dynamicLayoutModel.ts';
 
 function nearestPermitted(current: number, {min, max, step}: MinMaxStep): number {
@@ -17,7 +18,7 @@ export function createSegState(): SegState {
 
     const staggerType = computed(() => getStaggerType(staggerSet.value));
 
-    const layoutModel: ReadonlySignal<MinimalLayoutModel> = computed(() =>
+    const layoutModel: ReadonlySignal<DynamicLayoutModel> = computed(() =>
         ergoMaker(keyboardWidth.value, staggerSet.value, homeRowIndent.value, qwertyKeymap));
     const previousModel = signal(layoutModel.value);
 

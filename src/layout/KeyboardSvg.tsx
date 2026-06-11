@@ -9,7 +9,7 @@ import {
     type KeyMovement,
     type KeyPosition,
     type LayoutModel,
-    MappingChange,
+    MappingChange, type RenderableLayoutModel,
     VisualizationType,
 } from "../base-model.ts";
 import {singleCharacterFrequencies} from "../frequencies/english-single-character-frequencies.ts";
@@ -221,12 +221,14 @@ export function Key(props: KeyProps) {
 }
 
 export interface KeyboardProps {
-    layoutModel: LayoutModel;
-    prevLayoutModel: LayoutModel;
-    mappingDiff: Record<string, MappingChange>;
+    layoutModel: RenderableLayoutModel;
+    prevLayoutModel: RenderableLayoutModel;
     keyMovements: KeyMovement[];
     vizType: VisualizationType;
+    // TODO: make `layer` mandatory and add a helper component which renders both layers with children in-between.
+    //       Then all callers (including tests!) can use that.
     layer?: 'base' | 'label';
+    mappingDiff?: Record<string, MappingChange>;
 }
 
 export function getEffortClass(effort: number | null) {

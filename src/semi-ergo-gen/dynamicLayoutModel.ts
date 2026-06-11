@@ -1,14 +1,9 @@
 import {KEY_COLOR, KeyboardRows, type LayoutModel} from '../base-model.ts';
 import {SymmetricKeyWidth, zeroIndent} from '../layout/keyWidth.ts';
 import {getKeyPositions} from '../layout/layout-functions.ts';
-import type {MinimalLayoutModel, StaggerSet} from './seg-model.ts';
+import type {DynamicLayoutModel, StaggerSet} from './seg-model.ts';
 
 const edgeKeyWidth = (width: number) => width + 1 - Math.floor(width)
-
-interface DebugInfo {
-    fullMapping: (string | null)[][];
-    keyWidths: number[][];
-}
 
 // Rounding to three significant digits should be enough to convert 0.9999 into 1.
 function round(x: number) {
@@ -41,7 +36,7 @@ export function ergoMaker(
     key is a 1u PageDown.)
      */
     _longLowerEdge: boolean = false,
-): MinimalLayoutModel & DebugInfo {
+): DynamicLayoutModel {
     const keyWidthMaker = new SymmetricKeyWidth(width, zeroIndent);
     const edgeIndents = [
         homeRowIndent + 1/staggerSet[1] + 1/staggerSet[0],
@@ -75,11 +70,12 @@ export function ergoMaker(
         rowIndent: zeroIndent,
     } as LayoutModel;
     return {
-        leftHomeIndex: 4,
-        rightHomeIndex: keyWidths[KeyboardRows.Home].length - 1 - 4,
-        keyColorClass: (_label, _row, _col) => KEY_COLOR.BORING,
+        renderInfo: {
+            leftHomeIndex: 4,
+            rightHomeIndex: keyWidths[KeyboardRows.Home].length - 1 - 4,
+            keyColorClass: (_label, _row, _col) => KEY_COLOR.BORING,
+        },
         keyPositions: getKeyPositions(fakeLayoutModel, false, fullMapping),
-        // values published only for testing:
         fullMapping,
         keyWidths,
     }

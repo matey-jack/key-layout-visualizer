@@ -11,7 +11,7 @@ import {
     type KeyPosition,
     type FrameMapping,
     type LayoutModel,
-    MappingChange,
+    MappingChange, type RenderableLayoutModel,
 } from "../base-model.ts";
 import {sum} from "../library/math.ts";
 import {qwertyMapping} from "../mapping/baseMappings.ts";
@@ -49,10 +49,10 @@ export const ergoFamilyKeyColorClass = <T>(shape: T[][]) =>
     return KEY_COLOR.EDGE;
 };
 
-export const keyCapWidth = (lm: LayoutModel, r: KeyboardRows, c: number) =>
+export const keyCapWidth = (lm: RenderableLayoutModel, r: KeyboardRows, c: number) =>
     lm.keyCapWidth?.(r, c) ? lm.keyCapWidth(r, c)! : lm.keyWidths[r][c];
 
-export const keyCapHeight = (lm: LayoutModel, r: KeyboardRows, c: number) =>
+export const keyCapHeight = (lm: RenderableLayoutModel, r: KeyboardRows, c: number) =>
     lm.keyCapHeight ? lm.keyCapHeight(r, c) : 1;
 
 // This is needed in this form somewhere, and I don't want to refactor that 🤷‍♀️
