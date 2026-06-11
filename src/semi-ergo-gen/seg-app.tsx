@@ -43,8 +43,9 @@ export function SegApp() {
     const staggerSet = appState.staggerSet.value;
 
     return <>
-        <PageHeader title="Semi-Ergo Keyboard Layout Generator"/>
-
+        <span class="seg-title">
+            <PageHeader title="Semi-Ergo Keyboard Layout Generator"/>
+        </span>
         <div class="seg-top-row">
             <div class="seg-patterns-card">
                 <div class="seg-section-label">Named Stagger Patterns</div>
@@ -124,6 +125,23 @@ export function SegApp() {
                     />
                 </div>
             </div>
+        </div>
+        <hr/>
+        <div class={"footer"}>
+            <p>This app is part of the <a href={".."}>Keyboard Layout and Mapping Visualizer
+               </a>, which lets you see how different keymaps make use of all the keys on different traditional
+                and novel keyboard layouts, including some selected Semi-Ergo variants.</p>
+            <p>A <b>Semi-Ergo Keyboard Layout</b> is defined by the following axioms:
+                <ol>
+                    <li>The keys are arranged in rows inside a <b>regular box</b>. Just like a traditional standard keyboard.</li>
+                    <li>The <b>hand resting position</b> is as <b>far apart</b> as the keyboard size allows.</li>
+                    <li>The <b>row stagger goes inward</b> as fingers move up (to align with the natural hand and arm position) and does so for both hands.</li>
+                    <li>There are <b>two comfortable thumb keys</b> for each thumb.
+                        (Or at least one on narrow boards or those that place an arrow cluster in the bottom center.)</li>
+                </ol>
+                As you can see above, those constraints still leave a lot of freedom to design – and it's even more
+                when considering where to map standard key functions and what to map on any additional keys.
+            </p>
         </div>
     </>
 }

@@ -18,7 +18,9 @@ const appState = createAppState();
 
 export function App() {
      return <>
-         <PageHeader title="Key Layout and Mapping Visualizer"/>
+         <span class="klv-title">
+            <PageHeader title="Key Layout and Mapping Visualizer"/>
+         </span>
          <LayoutArea appState={appState}/>
          <hr/>
          <VisualizationSwitches vizType={appState.vizType} appState={appState}/>

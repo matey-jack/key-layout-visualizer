@@ -18,6 +18,10 @@
     padding-right: 0.25rem;
 }
 
+.seg-title h1 {
+    margin-left: 2rem;
+}
+
 /* ── Top row: patterns card + keyboard width ── */
 
 .seg-top-row {
@@ -155,4 +159,11 @@
         align-items: flex-start;
         justify-content: center;
     }
+}
+
+/* ── Footer ── */
+
+.footer {
+    margin-left: 2rem;
+    max-width: 60rem;
 }

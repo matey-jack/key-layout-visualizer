@@ -1,6 +1,6 @@
 html {
     /* Reserve scrollbar space, so the content doesn't wiggle.
-       Apparently not needed in Firefox because it uses a floating scrollbar, even on Windows.
+       Apparently not needed in Firefox because it uses a floating scrollbar, even on PCs.
     */
     scrollbar-gutter: stable;
 }
@@ -55,7 +55,7 @@ body {
     --ui-btn-sel-text: #594600;
 }
 
-h1 {
+.klv-title h1 {
     margin-left: 10%;
 }
 
