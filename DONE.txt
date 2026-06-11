@@ -88,6 +88,8 @@ bugs fixed:
 - reverse single-key-effort to be "lower is better" like the bigram effort: just count the usage of off-home keystrokes, instead of on-home.
 - diagram export of keymap metrics, so I can make a diagram of the diminishing returns and publish the long-planned post on "casual key maps".
 - PostHog metrics
+- Semi-Ergo: make keyboard SVG's size dynamic to avoid wasting the padding space and then make it static again,
+  so it doesn't have size jumps that destroy the animations.
 
 refactorings done (or decided against):
  - instead of the current keyboard-specific keymaps, keep only thirty and thumbThirty, and put all the rest into a list of pairs [keyboardLayout, specificMapping]. 

@@ -66,6 +66,10 @@ export const permittedHomeRowIndent = (typ: NamedTypes): MinMaxStep =>
 export const permittedKeyboardWidths = (typ: NamedTypes): MinMaxStep =>
     typ === NamedTypes.Triplex ? {min: 14, max: 16, step: 1} : {min: 13, max: 16, step: 0.5};
 
+// Largest possible keyboard width plus half a key of padding on each side.
+// This is constant so that our animations work smoothly.
+export const keyboardSvgWidth = 17;
+
 export const permittedRowStagger = (typ: NamedTypes): StaggerDivisor[] =>
     typ === NamedTypes.Triplex ? [3] : [4, 2];
 

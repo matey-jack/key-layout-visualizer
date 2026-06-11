@@ -5,7 +5,8 @@ import {Keyboard, KeyboardSvg} from '../layout/KeyboardSvg.tsx';
 import {getMaxRowWidth} from '../layout/layout-functions.ts';
 import {VisualizationType} from '../base-model.ts';
 import {createSegState} from './seg-state.ts';
-import {NamedTypes, permittedHomeRowIndent, permittedKeyboardWidths, permittedRowStagger,
+import {
+    keyboardSvgWidth, NamedTypes, permittedHomeRowIndent, permittedKeyboardWidths, permittedRowStagger,
     type StaggerSet} from './seg-model.ts';
 import {formatDecimal} from '../library/math.ts';
 import type {Signal} from '@preact/signals';
@@ -36,7 +37,6 @@ function StaggerTypeButton({myType, currentType, setType, passive, toolTip}: Sta
 
 export function SegApp() {
     const movements = pairKeysByPosition(appState.previousModel.value.keyPositions, appState.layoutModel.value.keyPositions);
-    const maxRowWidth = getMaxRowWidth(appState.layoutModel.value.renderInfo);
     const kw = permittedKeyboardWidths(appState.staggerType.value);
     const hr = permittedHomeRowIndent(appState.staggerType.value);
     const rsDivisors = permittedRowStagger(appState.staggerType.value);
@@ -44,7 +44,7 @@ export function SegApp() {
 
     return <>
         <span class="seg-title">
-            <PageHeader title="Semi-Ergo Keyboard Layout Generator"/>
+            <PageHeader title="Semi-Ergo Keyboard Layout Explorer"/>
         </span>
         <div class="seg-top-row">
             <div class="seg-patterns-card">
@@ -80,7 +80,7 @@ export function SegApp() {
 
         <div class="seg-keyboard-row">
             <div class="seg-keyboard">
-                <KeyboardSvg vizType={VisualizationType.SemiErgoGen} keyMovements={movements} showFrame={true} totalWidth={maxRowWidth}>
+                <KeyboardSvg vizType={VisualizationType.SemiErgoGen} keyMovements={movements} showFrame={true} totalWidth={keyboardSvgWidth}>
                     <Keyboard
                         layoutModel={appState.layoutModel.value.renderInfo}
                         prevLayoutModel={appState.previousModel.value.renderInfo}

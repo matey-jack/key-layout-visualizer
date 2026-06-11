@@ -1,7 +1,7 @@
 import {KEY_COLOR, KeyboardRows, type RenderableLayoutModel} from '../base-model.ts';
 import {SymmetricKeyWidth, zeroIndent} from '../layout/keyWidth.ts';
 import {getKeyPositions, getMaxRowWidth} from '../layout/layout-functions.ts';
-import type {DynamicLayoutModel, StaggerSet} from './seg-model.ts';
+import  {type DynamicLayoutModel, keyboardSvgWidth, type StaggerSet} from './seg-model.ts';
 
 const edgeKeyWidth = (width: number) => width + 1 - Math.floor(width)
 
@@ -74,7 +74,7 @@ export function ergoMaker(
     };
     return {
         renderInfo,
-        keyPositions: getKeyPositions(renderInfo, false, fullMapping, getMaxRowWidth(renderInfo)),
+        keyPositions: getKeyPositions(renderInfo, false, fullMapping, keyboardSvgWidth),
         fullMapping,
     }
 }
