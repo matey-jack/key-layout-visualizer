@@ -49,7 +49,7 @@ export const defaultHomeRowIndent: Record<NamedTypes, number> = {
     // Those are just default values to make sure that the value is compatible with the stagger.
     // (Relevant when switching between Trifecta, Harmonic, and Others.)
     [NamedTypes.Harmonic]: 0,
-    [NamedTypes.Triplex]: 0,
+    [NamedTypes.Triplex]: 1/3, // need at least 3 decimal digits for our rounding to work properly
     [NamedTypes.Typewriter]: 0.5,
     [NamedTypes.Other]: 0,
 };
@@ -60,7 +60,7 @@ export const permittedHomeRowIndent = (typ: NamedTypes): MinMaxStep =>
     typ === NamedTypes.Triplex ? {min: 0, max: 0.67, step: 0.333} : {min: 0, max: 0.75, step: 0.25};
 
 export const permittedKeyboardWidths = (typ: NamedTypes): MinMaxStep =>
-    typ === NamedTypes.Triplex ? {min: 14, max: 16, step: 1} : {min: 13.5, max: 16, step: 0.5};
+    typ === NamedTypes.Triplex ? {min: 14, max: 16, step: 1} : {min: 13, max: 16, step: 0.5};
 
 export const permittedRowStagger = (typ: NamedTypes): StaggerDivisor[] =>
     typ === NamedTypes.Triplex ? [3] : [4, 2];
