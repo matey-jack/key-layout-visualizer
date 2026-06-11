@@ -22,6 +22,7 @@
 
 .seg-top-row {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: flex-start;
     gap: 2rem;
@@ -57,16 +58,37 @@
     align-items: center;
     gap: 0.25rem;
     padding-top: 0.75rem;
+    /* Wrap below the patterns card as a whole, rather than shrinking and
+       triggering the card's own buttons to wrap first (part A). */
+    flex-shrink: 0;
 }
 
 /* ── Keyboard row: indent | keyboard | row-stagger ── */
 
 .seg-keyboard-row {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
     gap: 0.25rem;
     padding: 0;
+}
+
+/* The keyboard claims the row's free space but, via its 720px flex-basis, forces
+   the controls to wrap below once the row can't give the keyboard that much (part B).
+   min-width:0 lets the SVG scale down further on very small screens after wrapping. */
+.seg-keyboard {
+    flex: 1 1 720px;
+    min-width: 0;
+}
+
+/* Right-side controls: row stagger on top, home row indent below. */
+.seg-keyboard-controls {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
 }
 
 .seg-home-row-section {
@@ -79,7 +101,7 @@
 .seg-row-stagger-section {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
     gap: 0.5rem;
 }
 

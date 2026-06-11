@@ -70,46 +70,50 @@ export function SegApp() {
         </div>
 
         <div class="seg-keyboard-row">
-            <div class="seg-home-row-section">
-                <div class="seg-section-label">Home Row Indent</div>
-                <NumberPicker
-                    min={hr.min} max={hr.max} step={hr.step}
-                    current={appState.homeRowIndent.value}
-                    onChange={appState.setHomeRowIndent}
-                    dotPattern="x."
-                />
+            <div class="seg-keyboard">
+                <KeyboardSvg vizType={VisualizationType.SemiErgoGen} keyMovements={movements} showFrame={true} totalWidth={maxRowWidth}>
+                    <Keyboard
+                        layoutModel={appState.layoutModel.value.renderInfo}
+                        prevLayoutModel={appState.previousModel.value.renderInfo}
+                        keyMovements={movements}
+                        vizType={VisualizationType.SemiErgoGen}
+                    />
+                </KeyboardSvg>
             </div>
 
-            <KeyboardSvg vizType={VisualizationType.SemiErgoGen} keyMovements={movements} showFrame={true} totalWidth={maxRowWidth}>
-                <Keyboard
-                    layoutModel={appState.layoutModel.value.renderInfo}
-                    prevLayoutModel={appState.previousModel.value.renderInfo}
-                    keyMovements={movements}
-                    vizType={VisualizationType.SemiErgoGen}
-                />
-            </KeyboardSvg>
-
-            <div class="seg-row-stagger-section">
-                <div class="seg-section-label">Row Stagger</div>
-                <div class="seg-row-stagger-pickers">
-                    {([0, 1, 2] as const).map(i =>
-                        <div class="seg-row-stagger-row">
-                            <div class="seg-divisor-btn-group">
-                                {rsDivisors.map(d =>
-                                    <button type="button"
-                                        class={"toggle-btn toggle-btn--sm toggle-btn--seg" + (d === staggerSet[i] ? " selected" : "")}
-                                        onClick={() => {
-                                            const s = [...staggerSet] as [number, number, number];
-                                            s[i] = d;
-                                            appState.setStaggerSet(s as StaggerSet);
-                                        }}
-                                    >
-                                        {formatStagger(1 / d)}
-                                    </button>
-                                )}
+            <div class="seg-keyboard-controls">
+                <div class="seg-row-stagger-section">
+                    <div class="seg-section-label">Row Stagger</div>
+                    <div class="seg-row-stagger-pickers">
+                        {([0, 1, 2] as const).map(i =>
+                            <div class="seg-row-stagger-row">
+                                <div class="seg-divisor-btn-group">
+                                    {rsDivisors.map(d =>
+                                        <button type="button"
+                                            class={"toggle-btn toggle-btn--sm toggle-btn--seg" + (d === staggerSet[i] ? " selected" : "")}
+                                            onClick={() => {
+                                                const s = [...staggerSet] as [number, number, number];
+                                                s[i] = d;
+                                                appState.setStaggerSet(s as StaggerSet);
+                                            }}
+                                        >
+                                            {formatStagger(1 / d)}
+                                        </button>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
+                </div>
+
+                <div class="seg-home-row-section">
+                    <div class="seg-section-label">Home Row Indent</div>
+                    <NumberPicker
+                        min={hr.min} max={hr.max} step={hr.step}
+                        current={appState.homeRowIndent.value}
+                        onChange={appState.setHomeRowIndent}
+                        dotPattern="x."
+                    />
                 </div>
             </div>
         </div>
