@@ -2,7 +2,8 @@ import '../app.css';
 import './seg.css';
 import {PageHeader} from '../components/PageHeader.tsx';
 import {Keyboard, KeyboardSvg} from '../layout/KeyboardSvg.tsx';
-import {type LayoutModel, VisualizationType} from '../base-model.ts';
+import {getMaxRowWidth} from '../layout/layout-functions.ts';
+import {VisualizationType} from '../base-model.ts';
 import {createSegState} from './seg-state.ts';
 import {NamedTypes, permittedHomeRowIndent, permittedKeyboardWidths, permittedRowStagger,
     formatStagger, type StaggerSet} from './seg-model.ts';
@@ -29,6 +30,7 @@ function StaggerTypeButton({myType, currentType, setType}: StaggerTypeButtonProp
 
 export function SegApp() {
     const movements = pairKeysByPosition(appState.previousModel.value.keyPositions, appState.layoutModel.value.keyPositions);
+    const maxRowWidth = getMaxRowWidth(appState.layoutModel.value.renderInfo);
     const kw = permittedKeyboardWidths(appState.staggerType.value);
     const hr = permittedHomeRowIndent(appState.staggerType.value);
     const rsDivisors = permittedRowStagger(appState.staggerType.value);
@@ -78,7 +80,7 @@ export function SegApp() {
                 />
             </div>
 
-            <KeyboardSvg vizType={VisualizationType.SemiErgoGen} keyMovements={movements} showFrame={true}>
+            <KeyboardSvg vizType={VisualizationType.SemiErgoGen} keyMovements={movements} showFrame={true} totalWidth={maxRowWidth}>
                 <Keyboard
                     layoutModel={appState.layoutModel.value.renderInfo}
                     prevLayoutModel={appState.previousModel.value.renderInfo}

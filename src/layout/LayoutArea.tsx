@@ -14,7 +14,7 @@ import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {ErgoplankLayoutOptions} from "./ErgoplankLayoutOptions.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
 import {BigramLines, Keyboard, KeyboardSvg, StaggerLines} from "./KeyboardSvg.tsx";
-import {fillMapping, getKeyMovements, getKeyPositions} from "./layout-functions.ts";
+import {defaultTotalWidth, fillMapping, getKeyMovements, getKeyPositions} from "./layout-functions.ts";
 import {SplitOrthoLayoutOptions} from "./SplitOrthoLayoutOptions.tsx";
 import {TradeoffDiagram} from "./TradeoffDiagram.tsx";
 
@@ -35,7 +35,7 @@ function getKeyPositionsForModel(layoutModel: LayoutModel, mapping: FlexMapping,
     if (layoutSupportsFlipRetRub(layout) && layout.flipRetRub) {
         flipRetRub(charMap!);
     }
-    return getKeyPositions(layoutModel, isSplit(layout), charMap!);
+    return getKeyPositions(layoutModel, isSplit(layout), charMap!, defaultTotalWidth);
 }
 
 export function LayoutArea({appState}: LayoutAreaProps) {
@@ -54,7 +54,7 @@ export function LayoutArea({appState}: LayoutAreaProps) {
             <TopBar layout={layout.value} setLayout={setLayout}/>
             <div class="layout-area-svg-container">
                 <div class={"layout-area-svg-fader " + (isTradeoff ? "hide" : "show")}>
-                    <KeyboardSvg vizType={vizType.value} keyMovements={keyMovements} showFrame={showFrame}>
+                    <KeyboardSvg vizType={vizType.value} keyMovements={keyMovements} showFrame={showFrame} totalWidth={defaultTotalWidth}>
                         <Keyboard
                             layoutModel={layoutModel.value}
                             prevLayoutModel={prevLayoutModel.value}

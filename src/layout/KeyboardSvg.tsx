@@ -20,7 +20,6 @@ import {
     isHomeKey,
     keyCapHeight,
     lettersAndVIP,
-    totalWidth,
 } from "./layout-functions.ts";
 import {formatStagger} from '../semi-ergo-gen/seg-model.ts';
 
@@ -28,12 +27,14 @@ interface KeyboardSvgProps {
     vizType: VisualizationType;
     keyMovements: KeyMovement[];
     showFrame: boolean;
+    // Total width (in key units) of the SVG grid; the keyboard is laid out and centered within it.
+    totalWidth: number;
     children?: ComponentChildren;
 }
 
 // Our largest keyboards are 16u wide (Ergoboard), while all keyboards are 5u high.
 // Adding 1u of wiggle room all around suggests a ratio of 7:17 for the SVG grid.
-export const KeyboardSvg = ({vizType, keyMovements, showFrame, children}: KeyboardSvgProps) => {
+export const KeyboardSvg = ({vizType, keyMovements, showFrame, totalWidth, children}: KeyboardSvgProps) => {
     const clazz = vizType === VisualizationType.LayoutPlain ? "viz-plain" : "";
     const keyboardPadding = 20;
     const nextDims = getRectDimensions(keyMovements.map((m) => m.next));

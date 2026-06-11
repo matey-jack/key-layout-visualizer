@@ -230,18 +230,29 @@ export function compatibilityScore(diffSummy: Record<MappingChange, number>): nu
         diffSummy[MappingChange.SwapHands] * 2.0;
 }
 
-export const totalWidth = 18;
+// Default total width (in key units) of the fixed-frame keyboards in the main app.
+export const defaultTotalWidth = 18;
 // in key units
 const horizontalPadding = 0.5;
+
+// The rendered width (in key units, including horizontal padding and row indent) of each row.
+export function getRowWidths(layoutModel: RenderableLayoutModel): number[] {
+    return layoutModel.keyWidths.map((widthRow, r) =>
+        2 * (horizontalPadding + layoutModel.rowIndent[r]) + sum(widthRow.map((w) => w ?? 1))
+    );
+}
+
+export function getMaxRowWidth(layoutModel: RenderableLayoutModel): number {
+    return Math.max(...getRowWidths(layoutModel));
+}
 
 export function getKeyPositions(
     layoutModel: RenderableLayoutModel,
     split: boolean,
     fullMapping: (string | null | undefined)[][],
+    totalWidth: number = defaultTotalWidth,
 ): KeyPosition[] {
-    const rowWidth = layoutModel.keyWidths.map((widthRow, r) =>
-        2 * (horizontalPadding + layoutModel.rowIndent[r]) + sum(widthRow.map((w) => w ?? 1))
-    );
+    const rowWidth = getRowWidths(layoutModel);
 
     const result: KeyPosition[] = [];
     layoutModel.keyWidths.forEach((widthRow, row) => {
