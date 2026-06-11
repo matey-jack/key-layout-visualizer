@@ -68,16 +68,18 @@ export function createSegState(): SegState {
         setKeyboardWidth: (value: number) => {
             previousModel.value = layoutModel.value;
             keyboardWidth.value = nearestPermitted(value, permittedKeyboardWidths(staggerType.value));
-            if (homeRowIndent.value > maximalHomeRowIndent(staggerSet.value, value)) {
-                homeRowIndent.value = maximalHomeRowIndent(staggerSet.value, value);
+            const theoreticalMax = maximalHomeRowIndent(staggerSet.value, value);
+            if (homeRowIndent.value > theoreticalMax) {
+                homeRowIndent.value = nearestPermitted(theoreticalMax, permittedHomeRowIndent(staggerType.value));
             }
         },
         homeRowIndent,
         setHomeRowIndent: (value: number) => {
             previousModel.value = layoutModel.value;
             homeRowIndent.value = nearestPermitted(value, permittedHomeRowIndent(staggerType.value));
-            if (keyboardWidth.value < minimalKeyboardWidth(staggerSet.value, value)) {
-                keyboardWidth.value = minimalKeyboardWidth(staggerSet.value, value);
+            const theoreticalMin = minimalKeyboardWidth(staggerSet.value, value);
+            if (keyboardWidth.value < theoreticalMin) {
+                keyboardWidth.value = nearestPermitted(theoreticalMin, permittedKeyboardWidths(staggerType.value));
             }
         },
         staggerSet: computed(() => staggerSet.value),
