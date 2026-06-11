@@ -163,7 +163,11 @@
 
 /* ── Footer ── */
 
-.footer {
+.seg-footer-divider {
+    margin: 3rem 0 0 0;
+}
+
+.seg-footer {
     margin-left: 2rem;
     max-width: 60rem;
 }
