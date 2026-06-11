@@ -12,6 +12,24 @@ function nearestPermitted(current: number, {min, max, step}: MinMaxStep): number
     return Math.round((min + clamped * step) * 1e6) / 1e6;
 }
 
+function s2f(value: string | null): number | null {
+    if (!value) return null;
+    const n = Number(value);
+    if (!Number.isFinite(n)) return null;
+    return n;
+}
+
+function parseStaggerSet(value: string | null): StaggerSet | null {
+    if (!value) return null;
+    const parts = value.split("_").map(Number);
+    if (parts.length !== 3 || parts.some(p => !Number.isFinite(p))) return null;
+    if (parts[0] === 3 && parts[1] === 3 && parts[2] === 3) return [3, 3, 3];
+    if ((parts[0] === 4 || parts[0] === 2) && (parts[1] === 4 || parts[1] === 2) && (parts[2] === 4 || parts[2] === 2)) {
+        return parts as unknown as StaggerSet;
+    }
+    return null;
+}
+
 function updateUrlParams(keyboardWidth: number, stagger: StaggerSet, homeRowIndent: number) {
     const params = new URLSearchParams();
     params.set("w", keyboardWidth.toString());
@@ -22,9 +40,21 @@ function updateUrlParams(keyboardWidth: number, stagger: StaggerSet, homeRowInde
 }
 
 export function createSegState(): SegState {
-    const staggerSet = signal([4, 4, 2] as StaggerSet);
-    const keyboardWidth = signal(15);
-    const homeRowIndent = signal(0);
+    const params = new URLSearchParams(window.location.hash.slice(1));
+    const initialStaggerSet = parseStaggerSet(params.get("s")) ?? [4, 4, 2] as StaggerSet;
+    const initialStaggerType = getStaggerType(initialStaggerSet);
+    const initialKeyboardWidth = nearestPermitted(
+        s2f(params.get("w")) ?? 15,
+        permittedKeyboardWidths(initialStaggerType)
+    );
+    const initialHomeRowIndent = nearestPermitted(
+        s2f(params.get("h")) ?? 0,
+        permittedHomeRowIndent(initialStaggerType)
+    );
+
+    const staggerSet = signal(initialStaggerSet);
+    const keyboardWidth = signal(initialKeyboardWidth);
+    const homeRowIndent = signal(initialHomeRowIndent);
 
     const staggerType = computed(() => getStaggerType(staggerSet.value));
 

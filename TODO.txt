@@ -22,14 +22,14 @@ missing core features:
 
 bugs to fix:
  - smallest width and .66 home row indent on the triplex switches to an invalid width! (And rounding problems create 2u keys!)
+   START WITH unit test of DynamicLayoutModel
 
 must-haves for go-live:
  - linking between KLV and SEG: discuss with Claude how best to do it
-   - in KLV: a link "Custom Layout Designer ↗"
+   - in KLV: a link in the layout variants row for Harmonic and Ergoplanks: "Want more options? Go to the <a>Custom Layout Designer ↗</a>."
    - in SEG: DONE
  - show thumb keys with size according to my rule.
 
 further additions:
- - sharable URLs with parameters w (for width), s (comma-separated stagger divisors), h (for home row indent). The latter can be formatted with two decimal digits using formatDecimal(), because there is already code to make it snap to an allowed value. Only for `s` we need new input validation and snapping code.
  - add switch for bottom arrows on or off.
  - code clean up: redundant CSS, maybe more?
