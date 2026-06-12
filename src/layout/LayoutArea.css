@@ -336,6 +336,14 @@ label.disabled {
     align-items: center;
 }
 
+.layout-option-button-group {
+    display: flex;
+    gap: 0.35rem;
+    margin-top: 0.35rem;
+    margin-bottom: 0.75rem;
+    justify-content: flex-start;
+}
+
 .layout-option-column {
     display: flex;
     flex-direction: column;
@@ -353,14 +361,6 @@ label.disabled {
    on a single line and overflow the (defunct) column instead of wrapping tall. */
 .layout-option-column .checkboxLabel {
     white-space: nowrap;
-}
-
-.layout-option-button-group {
-    display: flex;
-    gap: 0.35rem;
-    margin-top: 0.35rem;
-    margin-bottom: 0.75rem;
-    justify-content: flex-start;
 }
 
 .layout-option-group-label {

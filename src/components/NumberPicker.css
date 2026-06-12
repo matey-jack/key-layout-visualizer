@@ -1,3 +1,9 @@
+
+.number-picker__option {
+    text-align: center;
+    white-space: nowrap;
+}
+
 /* Linear: segmented group — outer border, inner dividers only */
 .number-picker--linear {
     display: inline-flex;
@@ -43,11 +49,6 @@
     stroke: var(--btn-border);
     stroke-width: 1.5;
     stroke-linecap: round;
-}
-
-.number-picker__option {
-    text-align: center;
-    white-space: nowrap;
 }
 
 .number-picker--arc .number-picker__option {

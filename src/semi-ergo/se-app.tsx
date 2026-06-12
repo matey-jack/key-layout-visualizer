@@ -2,7 +2,6 @@ import '../app.css';
 import './semi-ergo.css';
 import {PageHeader} from '../components/PageHeader.tsx';
 import {Keyboard, KeyboardSvg} from '../layout/KeyboardSvg.tsx';
-import {getMaxRowWidth} from '../layout/layout-functions.ts';
 import {VisualizationType} from '../base-model.ts';
 import {createSegState} from './se-state.ts';
 import {

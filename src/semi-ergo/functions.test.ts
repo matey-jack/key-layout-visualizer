@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest';
 import {pairKeysByPosition} from './functions.ts';
-import {type LayoutModel} from '../base-model.ts';
+import type {LayoutModel} from '../base-model.ts';
 import {getKeyPositions} from '../layout/layout-functions.ts';
 
 function makeTestModel(keyWidths: number[][]): LayoutModel {
