@@ -1,6 +1,6 @@
 import {KEY_COLOR, KeyboardRows, type RenderableLayoutModel} from '../base-model.ts';
 import {mirror, mirrorOdd, SymmetricKeyWidth, zeroIndent} from '../layout/keyWidth.ts';
-import {getKeyPositions, getMaxRowWidth} from '../layout/layout-functions.ts';
+import {getKeyPositions} from '../layout/layout-functions.ts';
 import  {type DynamicLayoutModel, keyboardSvgWidth, type StaggerSet} from './seg-model.ts';
 
 const edgeKeyWidth = (width: number) => width + 1 - Math.floor(width)
@@ -84,8 +84,8 @@ export function ergoMaker(
         // But since the calculation can yield any /6 fractions, we need to explicitly set the key size.
         sizeOfCentralThumbKey = spaceForCentralThumbKey >= 5/3 ? 5/3 : 4/3;
         sizeOfOtherThumbKey = sizeOfCentralThumbKey;
-        // The gap can be a /6 fraction without problems.
-        sizeOfCentralGap = 2 * Math.max(0, spaceForCentralThumbKey - sizeOfCentralThumbKey);
+        // The gap can be a /6 fraction without problems. Need to round it, so tiny numbers become actual 0.
+        sizeOfCentralGap = round(2 * Math.max(0, spaceForCentralThumbKey - sizeOfCentralThumbKey));
     }
     const bottomRowWidths = sizeOfCentralGap > 0
         ? mirrorOdd(sizeOfOtherThumbKey, sizeOfCentralThumbKey, sizeOfCentralGap)

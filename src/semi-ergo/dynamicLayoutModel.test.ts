@@ -50,6 +50,7 @@ describe('dynamicLayoutModel', () => {
             [1.25, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 1, 1.25],
             Array(15).fill(1),
             Array(14).fill(1),
+            [1.5, 1.75, 0.5, 1.75, 1.5]
         ]);
     });
     it('Ergoplank fullMapping', () => {
@@ -59,15 +60,27 @@ describe('dynamicLayoutModel', () => {
             ['', 'q', 'w', 'e', 'r', 't', '', null, '', 'y', 'u', 'i', 'o', 'p', ''],
             ['', 'a', 's', 'd', 'f', 'g', '', '', '', 'h', 'j', 'k', 'l', ';', ''],
             ['z', 'x', 'c', 'v', 'b', '', '', '', '', 'n', 'm', ',', '.', '/'],
+            ['', '', null, '', '']
         ]);
     });
-    it('Triplex keyWidths', () => {
-        const result = ergoMaker(15, [3, 3, 3], 0.66, qwertyKeymap);
+    it('Triplex keyWidths 0.66', () => {
+        const result = ergoMaker(15, [3, 3, 3], 0.67, qwertyKeymap);
         compareFloatMatrix(result.renderInfo.keyWidths, [
             [1.33, 1, 1, 1, 1, 1, 1, 0.33, 1, 1, 1, 1, 1, 1, 1.33],
             Array(15).fill(1),
             [1.67, 1, 1, 1, 1, 1, 1.67, 1, 1, 1, 1, 1, 1.67],
             [1.33, 1, 1, 1, 1, 1, 1, 0.33, 1, 1, 1, 1, 1, 1, 1.33],
+            [1.33, 1.33, 1.33, 1.33]
+        ]);
+    });
+    it('Triplex keyWidths 0.33', () => {
+        const result = ergoMaker(15, [3, 3, 3], 0.33, qwertyKeymap);
+        compareFloatMatrix(result.renderInfo.keyWidths, [
+            Array(15).fill(1),
+            [1.67, 1, 1, 1, 1, 1, 1.67, 1, 1, 1, 1, 1, 1.67],
+            [1.33, 1, 1, 1, 1, 1, 1, 0.33, 1, 1, 1, 1, 1, 1, 1.33],
+            Array(15).fill(1),
+            [1.67, 1.67, 1.67, 1.67]
         ]);
     });
 });
