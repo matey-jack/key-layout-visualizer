@@ -2,7 +2,7 @@ import {computed, effect, type ReadonlySignal, signal} from '@preact/signals';
 import {defaultHomeRowIndent, getStaggerType, maximalHomeRowIndent, minimalKeyboardWidth,
     type MinMaxStep, namedStaggerSets, NamedTypes, permittedHomeRowIndent,
     permittedKeyboardWidths, qwertyKeymap, type SegState, type StaggerSet, type DynamicLayoutModel
-} from './seg-model.ts';
+} from './se-model.ts';
 import {ergoMaker} from './dynamicLayoutModel.ts';
 import {formatDecimal} from '../library/math.ts';
 

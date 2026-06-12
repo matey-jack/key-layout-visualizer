@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest';
 import {ergoMaker} from './dynamicLayoutModel.ts';
-import {qwertyKeymap} from './seg-model.ts';
+import {qwertyKeymap} from './se-model.ts';
 
 function compareMatrix<T>(actual: T[][], expected: T[][], description = "") {
     expect(actual.length, `${description}: number of rows`).toEqual(expected.length);

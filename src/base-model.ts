@@ -176,7 +176,7 @@ export enum VisualizationType {
     MappingBigrams,
     MappingAltGr,
     MappingTradeoff,
-    SemiErgoGen,
+    SemiErgoExplorer,
 }
 
 export const isLayoutViz = (t: VisualizationType) =>
@@ -286,7 +286,7 @@ export const KEY_COLOR = {
 
 export type KeyColor = (typeof KEY_COLOR)[keyof typeof KEY_COLOR];
 
-// Shared data model between the main app (with flex mapping support) and semi-ergo-gen.
+// Shared data model between the main app (with flex mapping support) and semi-ergo explorer.
 // Used mainly by KeyboardSvg.
 export interface RenderableLayoutModel {
     // 1 unit = width of the smallest key.

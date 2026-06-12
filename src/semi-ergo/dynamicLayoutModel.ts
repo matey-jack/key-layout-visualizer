@@ -1,7 +1,7 @@
 import {KEY_COLOR, KeyboardRows, type RenderableLayoutModel} from '../base-model.ts';
 import {mirror, mirrorOdd, SymmetricKeyWidth, zeroIndent} from '../layout/keyWidth.ts';
 import {getKeyPositions} from '../layout/layout-functions.ts';
-import  {type DynamicLayoutModel, keyboardSvgWidth, type StaggerSet} from './seg-model.ts';
+import  {type DynamicLayoutModel, keyboardSvgWidth, type StaggerSet} from './se-model.ts';
 
 const edgeKeyWidth = (width: number) => width + 1 - Math.floor(width)
 

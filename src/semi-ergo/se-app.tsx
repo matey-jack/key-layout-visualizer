@@ -1,13 +1,13 @@
 import '../app.css';
-import './seg.css';
+import './semi-ergo.css';
 import {PageHeader} from '../components/PageHeader.tsx';
 import {Keyboard, KeyboardSvg} from '../layout/KeyboardSvg.tsx';
 import {getMaxRowWidth} from '../layout/layout-functions.ts';
 import {VisualizationType} from '../base-model.ts';
-import {createSegState} from './seg-state.ts';
+import {createSegState} from './se-state.ts';
 import {
     keyboardSvgWidth, NamedTypes, permittedHomeRowIndent, permittedKeyboardWidths, permittedRowStagger,
-    type StaggerSet} from './seg-model.ts';
+    type StaggerSet} from './se-model.ts';
 import {formatDecimal} from '../library/math.ts';
 import type {Signal} from '@preact/signals';
 import {NumberPicker} from '../components/NumberPicker.tsx';
@@ -35,7 +35,7 @@ function StaggerTypeButton({myType, currentType, setType, passive, toolTip}: Sta
     </button>;
 }
 
-export function SegApp() {
+export function SemiErgoApp() {
     const movements = pairKeysByPosition(appState.previousModel.value.keyPositions, appState.layoutModel.value.keyPositions);
     const kw = permittedKeyboardWidths(appState.staggerType.value);
     const hr = permittedHomeRowIndent(appState.staggerType.value);
@@ -80,12 +80,12 @@ export function SegApp() {
 
         <div class="seg-keyboard-row">
             <div class="seg-keyboard">
-                <KeyboardSvg vizType={VisualizationType.SemiErgoGen} keyMovements={movements} showFrame={true} totalWidth={keyboardSvgWidth}>
+                <KeyboardSvg vizType={VisualizationType.SemiErgoExplorer} keyMovements={movements} showFrame={true} totalWidth={keyboardSvgWidth}>
                     <Keyboard
                         layoutModel={appState.layoutModel.value.renderInfo}
                         prevLayoutModel={appState.previousModel.value.renderInfo}
                         keyMovements={movements}
-                        vizType={VisualizationType.SemiErgoGen}
+                        vizType={VisualizationType.SemiErgoExplorer}
                     />
                 </KeyboardSvg>
             </div>

@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
             rollupOptions: {
                 input: {
                     main: resolve(__dirname, 'index.html'),
-                    other: resolve(__dirname, 'semi-ergo-gen.html'),
+                    other: resolve(__dirname, 'semi-ergo.html'),
                 },
             },
             outDir: 'dist',

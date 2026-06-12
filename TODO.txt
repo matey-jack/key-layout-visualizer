@@ -18,7 +18,7 @@ missing core features:
 - export to keyboard layout editor format, https://www.keyboard-layout-editor.com/, because that is used as a spec by hardward keyboard builders.
   (Having the export will help us to remove remaining ambiguities of how the SVG pics translate to actual hardware!)
 
-# Semi-Ergo-Generator / Explorer
+# Semi-Ergo Explorer
 
 bugs to fix:
 

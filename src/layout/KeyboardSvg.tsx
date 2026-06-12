@@ -162,7 +162,7 @@ export function Key(props: KeyProps) {
         transformOrigin: "0 0"
     };
 
-    const labelTextClass = props.vizType === VisualizationType.SemiErgoGen && width > 1 ? " italic"
+    const labelTextClass = props.vizType === VisualizationType.SemiErgoExplorer && width > 1 ? " italic"
         : props.vizType === VisualizationType.MappingBigrams && /^[a-z]$/i.test(label) ? " bold"
         : "";
 
@@ -288,10 +288,9 @@ function getEntryOrExitRow(row: number): number {
     return row < 2 ? row - 3 : row + 4;
 }
 
-// The effort and fingering visualizations are only ever rendered for the main app, which always
-// passes a full LayoutModel; the seg generator only uses the SemiErgoGen viz, hence the casts.
 function keyBackgroundClass(
     vizType: VisualizationType,
+    // model will be (full) LayoutModel when vizType !== SemiErgoExplorer.
     model: RenderableLayoutModel,
     row: KeyboardRows,
     col: number,
@@ -337,7 +336,7 @@ function KeyboardLayer({layoutModel, prevLayoutModel, keyMovements, mappingDiff,
         if (vizType === VisualizationType.LayoutKeySize) {
             displayLabel = capSize > 1 ? `${formatDecimal(capSize)}` : "";
         }
-        if (vizType === VisualizationType.SemiErgoGen) {
+        if (vizType === VisualizationType.SemiErgoExplorer) {
             displayLabel = capSize > 1 ? `${formatDecimal(capSize)}` : label;
         }
 

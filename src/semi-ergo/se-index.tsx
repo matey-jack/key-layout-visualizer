@@ -1,6 +1,6 @@
 import { render } from 'preact'
 import posthog from 'posthog-js'
-import { SegApp } from './seg-app.tsx'
+import { SemiErgoApp } from './se-app.tsx'
 
 if (import.meta.env.VITE_PUBLIC_POSTHOG_KEY) {
     posthog.init(import.meta.env.VITE_PUBLIC_POSTHOG_KEY, {
@@ -8,6 +8,6 @@ if (import.meta.env.VITE_PUBLIC_POSTHOG_KEY) {
     });
 }
 
-render(<SegApp />, document.getElementById('app')!);
+render(<SemiErgoApp />, document.getElementById('app')!);
 
 
