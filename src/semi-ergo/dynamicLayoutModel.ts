@@ -28,6 +28,64 @@ const bottomArrangements: Record<number, number[]> = {
     [27]: [6, 5, 5, 5, 6],
 }
 
+function createQuartersBasedBottomRow(keyboardWidth: number, homeRowIndent: number, bottomRowIndent: number): number[] {
+    // Ideally separate the thumb keys exactly 1u to the center from middle of index finger.
+    const spaceForCentralThumbKey = keyboardWidth/2 - homeRowIndent - 5.5;
+    // For non-Triplex, available space ranges from 6.5 - 5.5 = 1 to 8 - 5.5 = 2.5.
+    // Because the most narrow configuration doesn't allow any homeRowIndent.
+    const sizeOfCentralThumbKey = Math.min(1.75, Math.max(1.25, spaceForCentralThumbKey));
+    const sizeOfOtherThumbKey = Math.min(1.5, sizeOfCentralThumbKey);
+    const sizeOfCentralGap = Math.min(Math.max(0, 2 * (spaceForCentralThumbKey - sizeOfCentralThumbKey)), 1);
+    // For the lookup map, this is expressed in quarter units for each keyboard half.
+    const remainingSpace = Math.round((keyboardWidth - 2 * bottomRowIndent - 2 * sizeOfCentralThumbKey - sizeOfCentralGap) * 2);
+    // console.log(`remaining space: ${remainingSpace}`);
+    const otherBottomKeys = bottomArrangements[remainingSpace]
+        ? bottomArrangements[remainingSpace].map((x) => x/4)
+        : [sizeOfOtherThumbKey];
+    return sizeOfCentralGap > 0
+        ? mirrorOdd(...otherBottomKeys, sizeOfCentralThumbKey, sizeOfCentralGap)
+        : mirror(...otherBottomKeys, sizeOfCentralThumbKey);
+}
+
+// Expressed in thirds of one key unit.
+const triplexBottomArrangments: Record<number, number[]> = {
+    [16]: [4, 4, 4, 4],
+    [17]: [4, 4, 4, 5],
+    [18]: [5, 4, 4, 5],
+    [19]: [5, 5, 4, 5],
+}
+
+function createThirdsBasedBottomRow(keyboardWidth: number, homeRowIndent: number, bottomRowIndent: number): number[] {
+    // Same formula as for the other layouts, but rounded so that everything is in thirds.
+    const spaceForCentralThumbKey = keyboardWidth/2 - homeRowIndent - 5 - 2/3;
+    // The minimum space is 7 - 1/3 - 5 - 2/3 = 2. (Because the 14u keyboard has at most 1/3 home-row indent.)
+    // So 1.33 keys will go outside the range a bit, but anyway 1/3 within the G/H keys was the alternate rounding option.
+    // Since there are only two acceptable options for thumb key size, we choose one with a simple threshold instead of calculating:
+    const sizeOfCentralThumbKey = spaceForCentralThumbKey >= 5/3 ? 5/3 : 4/3;
+    const sizeOfCentralGap = round(2 * Math.max(0, spaceForCentralThumbKey - sizeOfCentralThumbKey));
+    // The 15u wide keyboard has 7.5u on each side, which can't be split nicely into thirds.
+    // With smaller home row indents, the offending 0.5u ends up in the central gap, and we can apply 1/3 logic to the remaining part
+    // of the bottom row. For the only case where that doesn't work, we just hard-code the following:
+    if (keyboardWidth === 15 && Math.round(homeRowIndent * 3) === 2) {
+        return mirror(...[5, 4, 0.5, 4, 5, 4].map((x) => x/3));
+    }
+
+    // Expressed in thirds of a key unit for the value lookup.
+    // (The central key always has a size multiple of 2/3, so halving it stays in the 1/3 universe, no 1/6 needed.)
+    // Minimal remaining space is 7 - 4/3 = 17/3 (smallest thumb key, no central gap).
+    // (Incidentally, keyboard width 16 and home-row indent yield a bottom row indent of 1/3 and thus also just 17/3 of remaining space.)
+    // Maximum is 8 - 5/3 = 19.
+    const remainingSpace = Math.floor((keyboardWidth - 2 * bottomRowIndent - 2 * sizeOfCentralThumbKey - sizeOfCentralGap) / 2 * 3);
+    console.log(`remaining space: ${remainingSpace}/3u.`)
+    const otherBottomKeys = triplexBottomArrangments[remainingSpace]
+        ? triplexBottomArrangments[remainingSpace].map((x) => x/3)
+        : [sizeOfCentralThumbKey];
+    // The gap can be a /6 fraction without problems. Need to round it, so tiny numbers become actual 0.
+    return sizeOfCentralGap > 0
+        ? mirrorOdd(...otherBottomKeys, sizeOfCentralThumbKey, sizeOfCentralGap)
+        : mirror(...otherBottomKeys, sizeOfCentralThumbKey);
+}
+
 export function ergoMaker(
     // Has to be in steps of 1/2 (or a whole number in the trifecta case).
     keyboardWidth: number,
@@ -56,7 +114,7 @@ export function ergoMaker(
     _longLowerEdge: boolean = false,
 ): DynamicLayoutModel {
     /* * *
-            First build the keyboard rows above the bottom.
+            First build the four keyboard rows above the bottom.
     * * */
     const edgeIndents = [
         homeRowIndent + 1/staggerSet[1] + 1/staggerSet[0],
@@ -69,7 +127,9 @@ export function ergoMaker(
     const lowerRowIndent = edgeIndents[KeyboardRows.Lower] < 0 ? 1 + edgeIndents[KeyboardRows.Lower]: 0;
     // An alternative to "one quarter less" would be to halve the indent (and round down).
     // This would only make a difference for 0.75 => 0.25.
-    const bottomRowIndent = Math.max(lowerRowIndent - 0.25, 0);
+    const bottomRowIndent = staggerSet[0] === 3
+        ? Math.max(lowerRowIndent - 1/3, 0)
+        : Math.max(lowerRowIndent - 0.25, 0);
     // console.log(`lower / bottom row indent: ${lowerRowIndent} / ${bottomRowIndent}`);
     const rowIndent: [number, number, number, number, number] = [0, 0, 0, lowerRowIndent, bottomRowIndent];
     const keyWidthMaker = new SymmetricKeyWidth(keyboardWidth, rowIndent);
@@ -81,7 +141,6 @@ export function ergoMaker(
         const rowLength = keyWidths[rowNum].length;
         const rightEdge = rowLength - numEdgeKeys;
         return row.map((width, colNum) => {
-
                 if (width < 1) return null;
                 if (colNum < numEdgeKeys || colNum >= rightEdge) return "";
                 if (colNum < numEdgeKeys + 5) return coreCharacters[rowNum][colNum - numEdgeKeys];
@@ -91,41 +150,10 @@ export function ergoMaker(
         }
     )});
 
-    /* * * Now the bottom row.
-    Goal: show two thumb keys with appropriate positions and size.
-    Constraint: thumb key size should be > 1u and like all keys < 2u.
-    Out of scope: how to practically use the central gap between thumb keys, if there is one. We just leave the gap.
-     */
-    // Ideally separate the thumb keys exactly 1u to the center from middle of index finger.
-    const spaceForCentralThumbKey = keyboardWidth/2 - homeRowIndent - 5.5
-    // For non-Triplex, available space ranges from 6.5 - 5.5 = 1 to 8 - 5.5 = 2.5.
-    // Because the most narrow configuration doesn't allow any homeRowIndent.
-    let sizeOfCentralThumbKey = Math.min(1.75, Math.max(1.25, spaceForCentralThumbKey));
-    const sizeOfOtherThumbKey = Math.min(1.5, sizeOfCentralThumbKey);
-    let sizeOfCentralGap = Math.min(Math.max(0, 2 * (spaceForCentralThumbKey - sizeOfCentralThumbKey)), 1);
-    let otherBottomKeys: number[] = bottomRowIndent > 0 ? [bottomRowIndent] : [];
-    // expressed in quarter units for each keyboard half.
-    const remainingSpace = Math.round((keyboardWidth - 2 * bottomRowIndent - 2 * sizeOfCentralThumbKey - sizeOfCentralGap) * 2);
-    // console.log(`remaining space: ${remainingSpace}`);
-    if (bottomArrangements[remainingSpace]) {
-        otherBottomKeys.push(...bottomArrangements[remainingSpace].map((x) => x/4));
-    } else {
-        otherBottomKeys.push(sizeOfOtherThumbKey);
-    }
-    if (staggerSet[0] === 3) {
-        // For Triplex,
-        // minimum space is 7 - 5.5 - 1/3 = 7/6, which we'll clamp to 8/6 = 1.33.
-        // Maximum is as above.
-        // But since the calculation can yield any /6 fractions, we need to explicitly set the key size.
-        sizeOfCentralThumbKey = spaceForCentralThumbKey >= 5/3 ? 5/3 : 4/3;
-        otherBottomKeys = [sizeOfCentralThumbKey];
-        // The gap can be a /6 fraction without problems. Need to round it, so tiny numbers become actual 0.
-        sizeOfCentralGap = round(2 * Math.max(0, spaceForCentralThumbKey - sizeOfCentralThumbKey));
-    }
-    const bottomRowWidths = sizeOfCentralGap > 0
-        ? mirrorOdd(...otherBottomKeys, sizeOfCentralThumbKey, sizeOfCentralGap)
-        : mirror(...otherBottomKeys, sizeOfCentralThumbKey);
-    // console.log(`bottomRowWidths: ${bottomRowWidths}`);
+    /* * * Now the bottom row. * * */
+    const bottomRowWidths = staggerSet[0] === 3
+        ? createThirdsBasedBottomRow(keyboardWidth, homeRowIndent, bottomRowIndent)
+        : createQuartersBasedBottomRow(keyboardWidth, homeRowIndent, bottomRowIndent);
     keyWidths.push(bottomRowWidths);
     const bottomRowLabels  = bottomRowWidths.map((w) => w < 1 ? null : "");
     fullMapping.push(bottomRowLabels);
