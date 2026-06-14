@@ -1,6 +1,7 @@
 import {describe, expect, it} from 'vitest';
 import {ergoMaker} from './dynamicLayoutModel.ts';
-import {qwertyKeymap} from './se-model.ts';
+import {type DynamicLayoutModel, qwertyKeymap} from './se-model.ts';
+import {sum} from '../library/math.ts';
 
 function compareMatrix<T>(actual: T[][], expected: T[][], description = "") {
     expect(actual.length, `${description}: number of rows`).toEqual(expected.length);
@@ -40,6 +41,17 @@ function compareFloatMatrix(actual: number[][], expected: number[][], descriptio
         console.error(message);
         expect.fail(message);
     }
+}
+
+function checkAllRowWidths(model: DynamicLayoutModel, width: number) {
+    const failures: string[] = [];
+    model.renderInfo.keyWidths.forEach((widths, rowId) => {
+        const actual = sum(widths) + 2*model.renderInfo.rowIndent[rowId];
+        if (actual !== width) {
+            failures.push(`Row ${rowId} adds to ${actual}u, but should be ${width}.`)
+        }
+    });
+    expect(failures.join('\n')).toEqual('');
 }
 
 describe('dynamicLayoutModel', () => {
@@ -82,5 +94,18 @@ describe('dynamicLayoutModel', () => {
             Array(15).fill(1),
             [1.67, 1.33, 1.33, 1.67, 1.33, 0.33, 1.33, 1.67, 1.33, 1.33, 1.67]
         ]);
+    });
+
+    it('Ergoboard 13/3', () => {
+        checkAllRowWidths(ergoMaker(13, [4, 4, 4], 0, qwertyKeymap), 13);
+    });
+    it('Ergoboard 14/4', () => {
+        checkAllRowWidths(ergoMaker(14, [4, 4, 4], 0, qwertyKeymap), 14);
+    });
+    it('Ergoboard 16/5', () => {
+        checkAllRowWidths(ergoMaker(16, [4, 4, 4], 0.5, qwertyKeymap), 16);
+    });
+    it('Harmonic', () => {
+        checkAllRowWidths(ergoMaker(15, [2, 2, 2], 0, qwertyKeymap), 15);
     });
 });

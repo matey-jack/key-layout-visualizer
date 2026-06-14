@@ -15,6 +15,7 @@ function round(x: number) {
 // For brevity, we express all widths in quarters of units. Thus, 5 means 1.25u.
 // Keys are the remaining width in the bottom row, values are the key widths from the edge to the center.
 const bottomArrangements: Record<number, number[]> = {
+    [19]: [5, 5, 4, 5],
     [20]: [5, 5, 5, 5],
     [21]: [5, 5, 5, 6],
     [22]: [6, 5, 5, 6],
