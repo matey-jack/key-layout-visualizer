@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/preact';
+import { fireEvent, render, screen } from '@testing-library/preact';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { TruncatedText } from './TruncatedText.tsx';
 
@@ -15,13 +15,13 @@ describe('TruncatedText', () => {
   });
 
   it('renders the full text when text is shorter than the word limit', () => {
-    render(<TruncatedText text={shortText} />);
+    render(<TruncatedText text={shortText} wordLimit={20} />);
     expect(screen.getByText(shortText)).toBeInTheDocument();
     expect(screen.queryByText('Show more')).not.toBeInTheDocument();
   });
 
   it('truncates text when it exceeds the word limit', () => {
-    render(<TruncatedText text={longText} />);
+    render(<TruncatedText text={longText} wordLimit={20} />);
 
     // Check that only the first 20 words are shown initially
     const firstTwentyWords = longText.split(' ').slice(0, 20).join(' ');
@@ -32,7 +32,7 @@ describe('TruncatedText', () => {
   });
 
   it('shows full text when "Show more" is clicked', () => {
-    render(<TruncatedText text={longText} />);
+    render(<TruncatedText text={longText} wordLimit={20} />);
 
     // Click the "Show more" button
     fireEvent.click(screen.getByText('Show more'));
@@ -45,7 +45,7 @@ describe('TruncatedText', () => {
   });
 
   it('truncates text again when "Show less" is clicked', () => {
-    render(<TruncatedText text={longText} />);
+    render(<TruncatedText text={longText} wordLimit={20} />);
 
     // Click "Show more" first
     fireEvent.click(screen.getByText('Show more'));
@@ -78,7 +78,8 @@ describe('TruncatedText', () => {
       <TruncatedText 
         text={longText} 
         showMoreText={customShowMoreText} 
-        showLessText={customShowLessText} 
+        showLessText={customShowLessText}
+        wordLimit={20}
       />
     );
 
@@ -90,81 +91,4 @@ describe('TruncatedText', () => {
     expect(screen.getByText(customShowLessText)).toBeInTheDocument();
   });
 
-  it('does not expand text on mouse enter', () => {
-    render(<TruncatedText text={longText} />);
-
-    // Initially text should be truncated
-    const firstTwentyWords = longText.split(' ').slice(0, 20).join(' ');
-    expect(screen.getByText(`${firstTwentyWords}...`)).toBeInTheDocument();
-
-    // Simulate mouse enter
-    const truncatedTextElement =
-        screen.getByText(`${firstTwentyWords}...`).closest('.truncated-text')!;
-    fireEvent.mouseEnter(truncatedTextElement);
-
-    // Text should still be truncated (not expanded)
-    expect(screen.getByText(`${firstTwentyWords}...`)).toBeInTheDocument();
-    expect(screen.queryByText(longText)).not.toBeInTheDocument();
-  });
-
-  it('truncates text after delay when mouse leaves', () => {
-    render(<TruncatedText text={longText} truncationDelay={500} />);
-
-    const firstTwentyWords = longText.split(' ').slice(0, 20).join(' ');
-
-    // Click "Show more" to expand text
-    fireEvent.click(screen.getByText('Show more'));
-
-    // Text should now be expanded
-    expect(screen.getByText(longText)).toBeInTheDocument();
-
-    // Get the expanded text element
-    const expandedTextElement = screen.getByText(longText).closest('.truncated-text')!;
-
-    // Simulate mouse leave
-    fireEvent.mouseLeave(expandedTextElement);
-
-    // Text should still be expanded before the delay
-    expect(screen.getByText(longText)).toBeInTheDocument();
-
-    // Advance timer by delay time
-    act(() => {
-      vi.advanceTimersByTime(500);
-    });
-
-    // Text should now be truncated again
-    expect(screen.getByText(`${firstTwentyWords}...`)).toBeInTheDocument();
-  });
-
-  it('cancels truncation if mouse re-enters before delay expires', () => {
-    render(<TruncatedText text={longText} truncationDelay={500} />);
-
-    // Click "Show more" to expand text
-    fireEvent.click(screen.getByText('Show more'));
-
-    // Text should now be expanded
-    expect(screen.getByText(longText)).toBeInTheDocument();
-
-    // Get the expanded text element
-    const expandedTextElement = screen.getByText(longText).closest('.truncated-text')!;
-
-    // Simulate mouse leave
-    fireEvent.mouseLeave(expandedTextElement);
-
-    // Advance timer by half the delay time
-    act(() => {
-      vi.advanceTimersByTime(250);
-    });
-
-    // Simulate mouse re-enter before delay expires
-    fireEvent.mouseEnter(screen.getByText(longText).closest('.truncated-text')!);
-
-    // Advance timer by the rest of the delay time
-    act(() => {
-      vi.advanceTimersByTime(250);
-    });
-
-    // Text should still be expanded because truncation was canceled
-    expect(screen.getByText(longText)).toBeInTheDocument();
-  });
 });

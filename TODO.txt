@@ -5,8 +5,6 @@ Feature ideas that I am not so sure about are in `ideas.txt`.
 
 small improvements:
  - make the back button actually pop the app state back to the previous one. ask Claude for the technological options here.
- - fix collapsing of layout / mapping descriptions on mouseOut: ideally "mouse far away" should trigger it.
-   if that's not possible, keep only the click on the "collapse" link. Also consider making the uncollapsed view a little longer.
 
 further refactorings:
  - check if some more thumbXX frame mappings can be generated with the patchThumb3x functions.
