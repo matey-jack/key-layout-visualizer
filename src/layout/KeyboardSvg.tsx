@@ -162,7 +162,7 @@ export function Key(props: KeyProps) {
         transformOrigin: "0 0"
     };
 
-    const labelTextClass = props.vizType === VisualizationType.SemiErgoExplorer && width > 1 ? " italic"
+    const labelTextClass = props.vizType === VisualizationType.SemiErgoExplorer && width > 1 ? " semi-ergo--key-size"
         : props.vizType === VisualizationType.MappingBigrams && /^[a-z]$/i.test(label) ? " bold"
         : "";
 

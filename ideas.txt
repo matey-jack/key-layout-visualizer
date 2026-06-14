@@ -7,7 +7,8 @@ nice to have features:
 - add some more explanations, especially for:
   + the "wide" mappings
   + Harmonic and Ortho general texts (maybe (i) icon in layout bar). But still repeat that text under the H and O variants.
-
+- community suggestion: make a variant of the "wide-mod" key maps and Thumbs Up layouts which preserves row-position of character keys.
+  Because there's simply a lot of people who care about those. (And I get it: the physical sensation is real, and it does create somewhat of an ergonomic key-well effect.)
 - check the consistency of all mappings:
    + variants for different layouts should be consistent (only have differences clearly attributed to the layout)
    + maybe check if some full-mappings can be omitted, because thumb30 and 3×10 do the job well enough?
