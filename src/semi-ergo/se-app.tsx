@@ -129,7 +129,7 @@ export function SemiErgoApp() {
         </div>
         <hr class="seg-footer-divider"/>
         <div class="seg-footer">
-            <p>This app is part of the <a href={".."}>Keyboard Layout and Mapping Visualizer
+            <p>This app is part of the <a href={"./"}>Keyboard Layout and Mapping Visualizer
                </a>, which lets you see how different keymaps make use of all the keys on different traditional
                 and novel keyboard layouts, including some selected Semi-Ergo variants.</p>
             <p>A <b>Semi-Ergo Keyboard Layout</b> is defined by the following axioms:
