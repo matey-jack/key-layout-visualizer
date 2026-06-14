@@ -14,7 +14,8 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
     const variant = options.plankVariant;
     const setVariant = (plankVariant: PlankVariant) => setOption({plankVariant});
 
-    return <div class="layout-variant-grid layout-variant-grid--plank">
+    return <div class="plank-options">
+    <div class="layout-variant-grid layout-variant-grid--plank">
         <LayoutVariantButton variant={PlankVariant.KATANA_60}
                              currentVariant={variant}
                              setVariant={setVariant}
@@ -96,6 +97,11 @@ export function ErgoplankLayoutOptions({options, setOption}: PlankLayoutOptionsP
                              name="❤️ Ergoboard 16/5 Central"
         >
         </LayoutVariantButton>
+    </div>
+        <p class="plank-options-note">
+            To create your own customized layout with symmetric stagger you can use
+            the <a href="semi-ergo.html">Semi-Ergo Explorer</a>.
+        </p>
     </div>
 }
 
