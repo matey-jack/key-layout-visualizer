@@ -11,6 +11,7 @@ import {formatDecimal} from '../library/math.ts';
 import type {Signal} from '@preact/signals';
 import {NumberPicker} from '../components/NumberPicker.tsx';
 import {pairKeysByPosition} from './functions.ts';
+import {Tooltip} from '../components/Tooltip.tsx';
 
 const appState = createSegState();
 
@@ -60,9 +61,10 @@ export function SemiErgoApp() {
                         <StaggerTypeButton myType={NamedTypes.Typewriter} currentType={appState.staggerType} setType={appState.setStaggerType}/>
                         <StaggerTypeButton myType={NamedTypes.Katana}     currentType={appState.staggerType} setType={appState.setStaggerType}/>
                         <StaggerTypeButton myType={NamedTypes.Ergoplank}  currentType={appState.staggerType} setType={appState.setStaggerType}/>
-                        <StaggerTypeButton myType={NamedTypes.Other}      passive
-                                           toolTip="Select a mixed pattern and change row stagger manually."
-                                           currentType={appState.staggerType} setType={appState.setStaggerType}/>
+                        <Tooltip text="Select a mixed pattern and change row stagger manually.">
+                            <StaggerTypeButton myType={NamedTypes.Other}      passive
+                                               currentType={appState.staggerType} setType={appState.setStaggerType}/>
+                        </Tooltip>
                     </div>
                 </div>
             </div>
