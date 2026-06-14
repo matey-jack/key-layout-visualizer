@@ -21,11 +21,10 @@ missing core features:
 bugs to fix:
 
 must-haves for go-live:
- - linking between KLV and SEG: discuss with Claude how best to do it
-   - in KLV: a link in the layout variants row for Harmonic and Ergoplanks: "Want more options? Go to the <a>Custom Layout Designer ↗</a>."
-   - in SEG: DONE
- - show thumb keys with size according to my rule.
 
 further additions:
  - add switch for bottom arrows on or off.
+ - show labels for Shift (redundant Mid-shift and Thumb-shift) and Enter keys.
+   Explain in footer that those are the only keys recommended to change and their placement is similar to split ergo boards.
+   Other keys have less ergonomic impact and can be placed like ANSI or in the center of the keyboard.
  - code clean up: redundant CSS, maybe more?
