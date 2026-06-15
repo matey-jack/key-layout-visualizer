@@ -347,7 +347,7 @@ label.disabled {
     padding-top: 0.6rem;
 }
 
-/* Vertically centre the columns against each other (e.g. Ergoslat's lone
+/* Vertically center the columns against each other (e.g. Ergoslat's lone
    Mid-shift checkbox aligned to the middle of the key-count buttons). */
 .layout-option-row--center {
     align-items: center;

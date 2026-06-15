@@ -129,18 +129,18 @@ const keyRibbonPaddingV = 1;
 const isometric3dOffset = 8;
 const keycapCornerRadius = 6;
 
-// Vertical centre-to-centre row spacing for hexagonal keys. With the 0.5u Harmonic column
+// Vertical center-to-center row spacing for hexagonal keys. With the 0.5u Harmonic column
 // stagger this turns the grid into a triangular lattice where every key is equidistant
 // (= keyUnit) from all six neighbours: sqrt((keyUnit/2)^2 + hexRowPitch^2) === keyUnit.
 const hexRowPitch = keyUnit * Math.sqrt(3) / 2;
 
-// Pointy-top regular hexagon centred at (cx, cy) with the given half-width (half the
+// Pointy-top regular hexagon centerd at (cx, cy) with the given half-width (half the
 // flat-to-flat distance). The points protrude vertically beyond the flats into the rows
 // above and below. Only valid for unit-square keys (width === height === 1), which the
 // caller guarantees; halfWidth carries the inter-key padding (= rectWidth/2).
 function hexagonPoints(cx: number, cy: number, halfWidth: number): string {
     const w = halfWidth;
-    const r = 2 * w / Math.sqrt(3); // circumradius (centre to a point)
+    const r = 2 * w / Math.sqrt(3); // circumradius (center to a point)
     const verts: [number, number][] = [
         [cx, cy - r], // top point
         [cx + w, cy - r / 2], // upper right
@@ -152,7 +152,7 @@ function hexagonPoints(cx: number, cy: number, halfWidth: number): string {
     return verts.map(([x, y]) => `${x},${y}`).join(' ');
 }
 
-// Vertical centre of a key in the given row, matching the position computed in Key: the
+// Vertical center of a key in the given row, matching the position computed in Key: the
 // inter-row gaps compress for hexagons, but the half-key offset (keyUnit/2) does not.
 function rowCenterY(row: number, hexagons?: boolean): number {
     return (hexagons ? hexRowPitch : keyUnit) * row + keyUnit / 2;
@@ -167,6 +167,7 @@ export function Key(props: KeyProps) {
     const fromY = prevRow * rowPitch + keyPadding;
     const rectWidth = keyUnit * width - 2 * keyPadding;
     const fromRectWidth = keyUnit * prevWidth - 2 * keyPadding;
+    const keyHeight = keyUnit * height - 2 * keyPadding;
 
     const labelClass =
         isKeyboardSymbol(label) ? "keyboard-symbol"
@@ -176,8 +177,8 @@ export function Key(props: KeyProps) {
     const ribbonWidth = rectWidth - 2 * keyRibbonPaddingV;
     const fromRibbonWidth = fromRectWidth - 2 * keyRibbonPaddingV;
 
-    const labelX = labelClass ? (keyUnit * width / 2) : 20;
-    const fromLabelX = labelClass ? (keyUnit * prevWidth / 2) : 20;
+    const labelX = labelClass ? (rectWidth / 2) : 20;
+    const fromLabelX = labelClass ? (fromRectWidth / 2) : 20;
 
     // Use CSS custom properties to set initial and final positions and widths
     const groupStyle = {
@@ -202,8 +203,8 @@ export function Key(props: KeyProps) {
         : "";
 
     const text = (labelClass) ?
-        // center all the non-character key labels
-        <text x={0} y={keyUnit * height / 2} className={"key-label animating " + labelClass}>
+        // center all the non-character key labels on the true key center
+        <text x={0} y={keyHeight / 2} className={"key-label animating " + labelClass}>
             {label}
         </text>
         :
@@ -225,7 +226,6 @@ export function Key(props: KeyProps) {
     const homeMarker = showHomeMarker &&
         <circle cx={keyUnit / 2} cy={keyUnit / 2} r={12} className="home-marker-circle"/>;
 
-    const keyHeight = keyUnit * height - 2 * keyPadding;
     return <g
         style={groupStyle}
         className={"key-group animating"}>

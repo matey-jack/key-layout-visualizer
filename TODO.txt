@@ -16,6 +16,14 @@ missing core features:
 - export to keyboard layout editor format, https://www.keyboard-layout-editor.com/, because that is used as a spec by hardward keyboard builders.
   (Having the export will help us to remove remaining ambiguities of how the SVG pics translate to actual hardware!)
 
+"Every wish, once fulfilled, begets a bunch of new ones."
+Now that we have hexagon-shaped keys for the Harmonic layouts, we notice that those layouts aren't following our new semi-ergo principles of having letter keys aligned along finger-axes, with the consequence that the left side should be angle-modded above and below, and Shift must be in the home row or on a thumb key, because it's traditional position is taken by 'Z' and '/'.
+Furthermore, the home-row indent should be 0, so that the edge keys below and above are still neighbors of the pinky key.
+I guess the reason for the current top-angle-mod (with q on the home row) is that 0.5 stagger moves the T terribly far away.
+But I guess the best fix for that is not in the keyboard layout, but in a better keymap which brings the T closer to the home keys and which puts little used letters onto the four central positions that are not directly neighboring home keys.
+(A col-stag layout has a core-field of 30 keys of which there are four in the center which are diagonal moves for the index finger.
+On Harmonic those are also the farthest away, even a bit farther than on other layouts.)
+
 # Semi-Ergo Explorer
 
 bugs to fix:
