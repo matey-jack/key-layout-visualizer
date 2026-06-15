@@ -265,7 +265,8 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
             break;
         case LayoutType.Harmonic:
             params.set("harmonic", layout.harmonicVariant.toString());
-            subLayout = HarmonicVariant[layout.harmonicVariant];
+            params.set("harmonicHexagons", layout.harmonicHexagons ? "1" : "0");
+            subLayout = HarmonicVariant[layout.harmonicVariant] + (layout.harmonicHexagons ? "+hexagons" : "");
             break;
         case LayoutType.Ergoplank:
             params.set("plank", layout.plankVariant.toString());
@@ -308,6 +309,7 @@ export function createAppState(): AppState {
         thumbsUp16: s2b(params.get("thumbsUp16")) ?? (ansiVariant === AnsiVariant.XHKB && epArrows !== ErgoplankArrows.None) ?? false,
         angleMod: s2b(params.get("angle")) ?? false,
         harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
+        harmonicHexagons: s2b(params.get("harmonicHexagons")) ?? false,
         plankVariant: s2i(params.get("plank")) ?? PlankVariant.ERGOPLANK,
         epArrows,
         epRightReturn: s2b(params.get("epRightRet")) ?? false,

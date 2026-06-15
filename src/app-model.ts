@@ -78,6 +78,7 @@ export interface LayoutOptions {
 
     // only one for the Harmonic family
     harmonicVariant: HarmonicVariant;
+    harmonicHexagons: boolean;
 
     // and a lot of options for the ErgoPlank family
     plankVariant: PlankVariant;

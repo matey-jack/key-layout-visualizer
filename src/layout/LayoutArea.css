@@ -49,19 +49,19 @@
     padding: 0.5rem 1rem 0 1rem;
 }
 
-/* ANSI's panel pairs the variant grid with its option checkboxes. */
-.ansi-options {
+.ansi-options,
+.plank-options {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     column-gap: 2rem;
     align-items: start;
 }
 
-.plank-options {
+.harmonic-options {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     column-gap: 2rem;
-    align-items: start;
+    align-items: center;
 }
 
 .plank-options-note {
@@ -106,7 +106,10 @@
 /* short labels, but more columns, so only slightly larger gap */
 .layout-variant-grid--ansi { column-gap: 1.5rem; }
 /* labels take up all the space, so largest gap to add some balance */
-.layout-variant-grid--harmonic { column-gap: 2rem; }
+.layout-variant-grid--harmonic {
+    column-gap: 2rem;
+    min-height: auto;
+}
 
 .layout-variant-button {
     margin: 0.25rem 0.5rem;
