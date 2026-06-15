@@ -17,6 +17,7 @@ import {BigramLines, Keyboard, KeyboardSvg, StaggerLines} from "./KeyboardSvg.ts
 import {defaultTotalWidth, fillMapping, getKeyMovements, getKeyPositions} from "./layout-functions.ts";
 import {SplitOrthoLayoutOptions} from "./SplitOrthoLayoutOptions.tsx";
 import {TradeoffDiagram} from "./TradeoffDiagram.tsx";
+import {alignForHex} from './harmonic-layout-functions.ts';
 
 interface LayoutAreaProps {
     appState: AppState;
@@ -35,7 +36,8 @@ function getKeyPositionsForModel(layoutModel: LayoutModel, mapping: FlexMapping,
     if (layoutSupportsFlipRetRub(layout) && layout.flipRetRub) {
         flipRetRub(charMap!);
     }
-    return getKeyPositions(layoutModel, isSplit(layout), charMap!, defaultTotalWidth);
+    const lm = layout.harmonicHexagons ? alignForHex(layoutModel) : layoutModel;
+    return getKeyPositions(lm, isSplit(layout), charMap!, defaultTotalWidth);
 }
 
 export function LayoutArea({appState}: LayoutAreaProps) {

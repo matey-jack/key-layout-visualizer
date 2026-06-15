@@ -242,10 +242,6 @@ export function getRowWidths(layoutModel: RenderableLayoutModel): number[] {
     );
 }
 
-export function getMaxRowWidth(layoutModel: RenderableLayoutModel): number {
-    return Math.max(...getRowWidths(layoutModel));
-}
-
 export function getKeyPositions(
     layoutModel: RenderableLayoutModel,
     split: boolean,
