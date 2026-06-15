@@ -92,7 +92,6 @@ export function SemiErgoApp() {
                         prevLayoutModel={appState.previousModel.value.renderInfo}
                         keyMovements={movements}
                         vizType={VisualizationType.SemiErgoExplorer}
-                        hexagons={appState.staggerType.value === NamedTypes.Harmonic}
                     />
                 </KeyboardSvg>
             </div>

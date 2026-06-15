@@ -152,6 +152,12 @@ function hexagonPoints(cx: number, cy: number, halfWidth: number): string {
     return verts.map(([x, y]) => `${x},${y}`).join(' ');
 }
 
+// Vertical centre of a key in the given row, matching the position computed in Key: the
+// inter-row gaps compress for hexagons, but the half-key offset (keyUnit/2) does not.
+function rowCenterY(row: number, hexagons?: boolean): number {
+    return (hexagons ? hexRowPitch : keyUnit) * row + keyUnit / 2;
+}
+
 export function Key(props: KeyProps) {
     const {row, col, prevRow, prevCol, width, prevWidth, label, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker, hexagons, layer = 'base'} = props;
     const rowPitch = hexagons ? hexRowPitch : keyUnit;
@@ -418,14 +424,15 @@ export const bigramClassByType: Record<BigramType, string> = {
 
 export interface BigramLinesProps {
     bigrams: BigramMovement[];
+    hexagons?: boolean;
 }
 
-export function BigramLines({bigrams}: BigramLinesProps) {
+export function BigramLines({bigrams, hexagons}: BigramLinesProps) {
     return bigrams.map((pair) => {
         const offset = Math.abs(pair.a.col - pair.b.col);
         return pair.draw && <line
-            x1={keyUnit * (pair.a.colPos + 0.5)} y1={keyUnit * (pair.a.row + 0.5 - offset / 10)}
-            x2={keyUnit * (pair.b.colPos + 0.5)} y2={keyUnit * (pair.b.row + 0.5)}
+            x1={keyUnit * (pair.a.colPos + 0.5)} y1={rowCenterY(pair.a.row, hexagons) - keyUnit * offset / 10}
+            x2={keyUnit * (pair.b.colPos + 0.5)} y2={rowCenterY(pair.b.row, hexagons)}
             className={`bigram-line bigram-rank-${pair.rank} ${bigramClassByType[pair.type]}`}/>
     });
 }
@@ -435,9 +442,10 @@ export interface StaggerLinesProps {
     previousLayoutModel: LayoutModel;
     layoutSplit: boolean;
     keyMovements: KeyMovement[];
+    hexagons?: boolean;
 }
 
-export function StaggerLines({layoutModel, previousLayoutModel, layoutSplit, keyMovements}: StaggerLinesProps) {
+export function StaggerLines({layoutModel, previousLayoutModel, layoutSplit, keyMovements, hexagons}: StaggerLinesProps) {
     // Extract current and previous positions from key movements
     const currentKeyPositions = keyMovements.map(m => m.next ?? m.prev!);
     const previousKeyPositions = keyMovements.map(m => m.prev ?? m.next!);
@@ -470,24 +478,28 @@ export function StaggerLines({layoutModel, previousLayoutModel, layoutSplit, key
             prevHomePositions={prevLeftHomePositions}
             staggerOffsets={leftHandOffsets}
             className="hand-stagger-line hand-stagger-line-left"
+            hexagons={hexagons}
         />
         <OneHandStaggerLines
             homePositions={rightHomePositions}
             prevHomePositions={prevRightHomePositions}
             staggerOffsets={rightHandOffsets}
             className="hand-stagger-line hand-stagger-line-right"
+            hexagons={hexagons}
         />
         <OneHandStaggerLines
             homePositions={leftHomePositions}
             prevHomePositions={prevLeftHomePositions}
             staggerOffsets={layoutModel.staggerOffsets}
             className="stagger-line stagger-line-left"
+            hexagons={hexagons}
         />
         <OneHandStaggerLines
             homePositions={rightHomePositions}
             prevHomePositions={prevRightHomePositions}
             staggerOffsets={rightKeyboardOffsets}
             className="stagger-line stagger-line-right"
+            hexagons={hexagons}
         />
     </>
 }
@@ -501,9 +513,10 @@ export interface OneHandStaggerLinesProps {
     // And for the home row it should be 0.)
     staggerOffsets: number[];
     className: string;
+    hexagons?: boolean;
 }
 
-export function OneHandStaggerLines({homePositions, prevHomePositions, staggerOffsets, className}: OneHandStaggerLinesProps) {
+export function OneHandStaggerLines({homePositions, prevHomePositions, staggerOffsets, className, hexagons}: OneHandStaggerLinesProps) {
     // it's simpler to draw this with separate lines instead of a nice continuous SVG path...
     // Set coordinates as if homePositions were [0, 1, 2, 3], then use CSS to offset to actual positions
     const results = [] as JSX.Element[];
@@ -516,9 +529,9 @@ export function OneHandStaggerLines({homePositions, prevHomePositions, staggerOf
         for (let row = 0; row < staggerOffsets.length - 1; row++) {
             // Coordinates relative to normalized position (as if home keys were at 0, 1, 2, 3)
             const x1Normalized = keyUnit * (index + 0.5 + staggerOffsets[row]);
-            const y1 = keyUnit * (row + 0.5);
+            const y1 = rowCenterY(row, hexagons);
             const x2Normalized = keyUnit * (index + 0.5 + staggerOffsets[row + 1]);
-            const y2 = keyUnit * (row + 1.5);
+            const y2 = rowCenterY(row + 1, hexagons);
             
             // CSS custom properties for animation: translate from previous offset to current offset
             const style = {
