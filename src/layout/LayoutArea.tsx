@@ -32,11 +32,11 @@ function layoutSupportsFlipRetRub(options: LayoutOptions) {
 }
 
 function getKeyPositionsForModel(layoutModel: LayoutModel, mapping: FlexMapping, layout: LayoutOptions): KeyPosition[] {
-    const charMap = fillMapping(layoutModel, mapping);
+    const lm = layout.harmonicHexagons ? alignForHex(layoutModel) : layoutModel;
+    const charMap = fillMapping(lm, mapping);
     if (layoutSupportsFlipRetRub(layout) && layout.flipRetRub) {
         flipRetRub(charMap!);
     }
-    const lm = layout.harmonicHexagons ? alignForHex(layoutModel) : layoutModel;
     return getKeyPositions(lm, isSplit(layout), charMap!, defaultTotalWidth);
 }
 

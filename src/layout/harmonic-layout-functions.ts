@@ -1,9 +1,11 @@
-import type {FrameMapping, LayoutModel} from '../base-model.ts';
+import {type FrameMapping, KeyboardRows, type LayoutModel} from '../base-model.ts';
 import {mapValues} from '../library/records.ts';
 
-function insertGaps(_id, mapping: FrameMapping): FrameMapping {
+function insertGaps(_id: string, mapping: FrameMapping): FrameMapping {
     const oldBottom = mapping[4];
-    const pattern = [0, 1, 2, null, 3, 4, 5, 6, null, 7, 8, 9];
+    const pattern = mapping[KeyboardRows.Home].length === 13
+        ? [0, 1, 2, null, 3, 4, null, 5, 6, null, 7, 8, 9]
+        : [0, 1, 2, null, 3, 4, 5, 6, null, 7, 8, 9];
     return [
         ...mapping.slice(0, 4),
         pattern.map(x => x === null ? null : oldBottom[x]),
