@@ -36,7 +36,7 @@ interface KeyboardSvgProps {
 // Our largest keyboards are 16u wide (Ergoboard), while all keyboards are 5u high.
 // Adding 1u of wiggle room all around suggests a ratio of 7:17 for the SVG grid.
 export const KeyboardSvg = ({vizType, keyMovements, showFrame, totalWidth, hexagons, children}: KeyboardSvgProps) => {
-    const clazz = vizType === VisualizationType.LayoutPlain ? "viz-plain" : "";
+    const clazz = vizType === VisualizationType.LayoutPlain || vizType === VisualizationType.LayoutAngle ? "viz-plain" : "";
     const keyboardPadding = 20;
     const nextDims = getRectDimensions(keyMovements.map((m) => m.next));
     const prevDims = getRectDimensions(keyMovements.map((m) => m.prev));
