@@ -22,6 +22,7 @@ export function HarmonicLayoutOptions({options, setOption}: HarmonicLayoutOption
         <div class="layout-option-checkboxes">
             <CheckboxWithLabel label="Hexagon keycaps"
                                checked={options.harmonicHexagons}
+                               disabled={options.harmonicVariant <= HarmonicVariant.H14_Traditional}
                                onChange={(hex) => setOption({harmonicHexagons: hex})}/>
         </div>
     </div>

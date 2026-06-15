@@ -1,6 +1,6 @@
 import './LayoutArea.css';
 import type {Signal} from "@preact/signals";
-import {type AppState, isSplit, type LayoutOptions, PlankVariant} from "../app-model.ts";
+import {type AppState, HarmonicVariant, isSplit, type LayoutOptions, PlankVariant} from "../app-model.ts";
 import {
     type FlexMapping,
     type KeyPosition,
@@ -49,6 +49,9 @@ export function LayoutArea({appState}: LayoutAreaProps) {
     const showFrame = layout.value.type !== LayoutType.Ergosplit &&
         !(layout.value.type !== LayoutType.ANSI && layout.value.ansiSplit);
     const isTradeoff = vizType.value === VisualizationType.MappingTradeoff;
+    const hexagons = layout.value.type === LayoutType.Harmonic &&
+        layout.value.harmonicVariant > HarmonicVariant.H14_Traditional &&
+        layout.value.harmonicHexagons;
     return (
         <div>
             <TopBar layout={layout.value} setLayout={setLayout}/>
@@ -59,6 +62,7 @@ export function LayoutArea({appState}: LayoutAreaProps) {
                             layoutModel={layoutModel.value}
                             prevLayoutModel={prevLayoutModel.value}
                             keyMovements={keyMovements}
+                            hexagons={hexagons}
                             mappingDiff={mappingDiff.value}
                             vizType={vizType.value}
                         >

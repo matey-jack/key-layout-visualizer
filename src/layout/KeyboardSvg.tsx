@@ -230,6 +230,8 @@ export interface KeyboardProps {
     prevLayoutModel: RenderableLayoutModel;
     keyMovements: KeyMovement[];
     vizType: VisualizationType;
+    // This only works in Harmonic staggering; otherwise keycaps overlap!
+    hexagons?: boolean;
     mappingDiff?: Record<string, MappingChange>;
     // Overlay rendered between the base and label layers (e.g. stagger or bigram lines).
     children?: ComponentChildren;

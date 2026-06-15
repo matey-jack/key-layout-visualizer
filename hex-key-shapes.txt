@@ -1,0 +1,45 @@
+There are two hexagonal rendering modes: extreme and hex-mex.
+
+In both cases:
+ * hexagonal keys have the distance between parallel sides is as long as the width/height of the square keys. Call this number L.
+ * one diagonal (between vertices) is aligned vertically (thus one vertex pointing straight down, one straight up).
+
+The side-length H of the hexagons should then be H = L * 2 / sqrt(3), right?
+
+# Extreme Hexagon Mode
+
+All keys change to a "width" of L.
+Previously wider keys on the left and right edge drop the part on the edge side, so they are at 1u distance to their horizontal neighbor.
+Previously wider keys on the bottom row align with their center between the two keys below or above.
+
+# Hex-mex
+
+All square keys that are not on any edge change to regular hexagons as above.
+
+For the remaining keys, there are several mixed types:
+
+A. pointer-type
+
+All keys on the top and bottom that are not on a corner, change their inward-facing half to a hexagon and keep their outward-facing half as a rectangle. They will have two corners with right angles and two corners with hex (120°) angles. The side between the right angles is the normal square key width/height and the two sides between the hex angles is the normal regular hexagon side length. The remaining two sides need to adapt in length so that the corners of the rect and hex parts of the key fall exactly where the square and hex shapes would have their respective corners.
+Note that both parts fit together because the distance between opposing sides of the hexagon is defined to be the rectangle width.
+
+Bottom-keys (not on a corner) also change their shape to regular hexagons and align between keys in the neighboring row (so that their hexagonal part fits between two neignboring keys).
+
+B. chamfered-type
+
+Keys on the left and right edge (except types C and B below) do not change in width to become squares (unless they were already).
+Their left and right vertical sides fall exactly where the rectangle-shaped key would have them. (Only that the inner side will be shorter now.)
+
+They have six corners:
+ - on the edge side two right angles with an L-length side between
+ - on the inner side, two hex angles, with an H-length side between
+ - the remaining corners are neither part of rect or hex, but rather where the sides of both figures intersect, so you have to calculate on what point exactly those fall.
+
+C. corner-type
+
+Keys in the corners (or when one of their neighbors above or below is wider than the present key), have three corners from a rectangle with two sides being the same length as the rectangle. The remaining corner is replaced by a line segment angled like on an overlaid hexagon whose vertical side aligns with the vertical side of the rectangle. The angle on this side is a hex-like 120°, but the remaining three sides and one angle are just what's left over and need to be calculated.
+
+D. surrounded-type
+
+Any key on the left or right edge which has both above and below neighbors be wider than itself (or having nothing on that side), simply keeps its rectangular shape.
+

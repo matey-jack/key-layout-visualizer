@@ -5,8 +5,13 @@ import {Keyboard, KeyboardSvg} from '../layout/KeyboardSvg.tsx';
 import {VisualizationType} from '../base-model.ts';
 import {createSegState} from './se-state.ts';
 import {
-    keyboardSvgWidth, NamedTypes, permittedHomeRowIndent, permittedKeyboardWidths, permittedRowStagger,
-    type StaggerSet} from './se-model.ts';
+    keyboardSvgWidth,
+    NamedTypes,
+    permittedHomeRowIndent,
+    permittedKeyboardWidths,
+    permittedRowStagger,
+    type StaggerSet
+} from './se-model.ts';
 import {formatDecimal} from '../library/math.ts';
 import type {Signal} from '@preact/signals';
 import {NumberPicker} from '../components/NumberPicker.tsx';
@@ -87,6 +92,7 @@ export function SemiErgoApp() {
                         prevLayoutModel={appState.previousModel.value.renderInfo}
                         keyMovements={movements}
                         vizType={VisualizationType.SemiErgoExplorer}
+                        hexagons={appState.staggerType.value === NamedTypes.Harmonic}
                     />
                 </KeyboardSvg>
             </div>
