@@ -31,8 +31,8 @@ function layoutSupportsFlipRetRub(options: LayoutOptions) {
     return false;
 }
 
-function getKeyPositionsForModel(layoutModel: LayoutModel, mapping: FlexMapping, layout: LayoutOptions): KeyPosition[] {
-    const lm = layout.harmonicHexagons ? alignForHex(layoutModel) : layoutModel;
+function getKeyPositionsForModel(layoutModel: LayoutModel, mapping: FlexMapping, layout: LayoutOptions, hexagons: boolean): KeyPosition[] {
+    const lm = hexagons ? alignForHex(layoutModel) : layoutModel;
     const charMap = fillMapping(lm, mapping);
     if (layoutSupportsFlipRetRub(layout) && layout.flipRetRub) {
         flipRetRub(charMap!);
@@ -43,23 +43,23 @@ function getKeyPositionsForModel(layoutModel: LayoutModel, mapping: FlexMapping,
 export function LayoutArea({appState}: LayoutAreaProps) {
     const {layout, layoutModel, prevLayoutModel, mapping, prevMapping} = appState;
 
-    const currentPositions = getKeyPositionsForModel(layoutModel.value, mapping.value, layout.value);
-    const previousPositions = getKeyPositionsForModel(prevLayoutModel.value, prevMapping.value, layout.value);
+    const hexagons = layout.value.type === LayoutType.Harmonic &&
+        layout.value.harmonicVariant > HarmonicVariant.H14_Traditional &&
+        layout.value.harmonicHexagons;
+    const currentPositions = getKeyPositionsForModel(layoutModel.value, mapping.value, layout.value, hexagons);
+    const previousPositions = getKeyPositionsForModel(prevLayoutModel.value, prevMapping.value, layout.value, hexagons);
     const keyMovements = getKeyMovements(previousPositions, currentPositions);
 
     const {setLayout, mappingDiff, bigramMovements, vizType, setMapping} = appState;
     const showFrame = layout.value.type !== LayoutType.Ergosplit &&
         !(layout.value.type !== LayoutType.ANSI && layout.value.ansiSplit);
     const isTradeoff = vizType.value === VisualizationType.MappingTradeoff;
-    const hexagons = layout.value.type === LayoutType.Harmonic &&
-        layout.value.harmonicVariant > HarmonicVariant.H14_Traditional &&
-        layout.value.harmonicHexagons;
     return (
         <div>
             <TopBar layout={layout.value} setLayout={setLayout}/>
             <div class="layout-area-svg-container">
                 <div class={"layout-area-svg-fader " + (isTradeoff ? "hide" : "show")}>
-                    <KeyboardSvg vizType={vizType.value} keyMovements={keyMovements} showFrame={showFrame} totalWidth={defaultTotalWidth}>
+                    <KeyboardSvg vizType={vizType.value} keyMovements={keyMovements} showFrame={showFrame} totalWidth={defaultTotalWidth} hexagons={hexagons}>
                         <Keyboard
                             layoutModel={layoutModel.value}
                             prevLayoutModel={prevLayoutModel.value}
@@ -183,7 +183,6 @@ interface LayoutOptionsProps {
 }
 
 function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions, mapping}: LayoutOptionsProps) {
-
     switch (layoutOptions.type) {
         case LayoutType.ANSI:
             return <AnsiLayoutOptions
@@ -207,5 +206,4 @@ function TypeSpecifcLayoutOptions({layoutOptions, setLayoutOptions, mapping}: La
                 setOption={setLayoutOptions}
             />
     }
-    return null;
 }

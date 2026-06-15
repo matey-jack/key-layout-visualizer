@@ -29,17 +29,21 @@ interface KeyboardSvgProps {
     showFrame: boolean;
     // Total width (in key units) of the SVG grid; the keyboard is laid out and centered within it.
     totalWidth: number;
+    hexagons?: boolean;
     children?: ComponentChildren;
 }
 
 // Our largest keyboards are 16u wide (Ergoboard), while all keyboards are 5u high.
 // Adding 1u of wiggle room all around suggests a ratio of 7:17 for the SVG grid.
-export const KeyboardSvg = ({vizType, keyMovements, showFrame, totalWidth, children}: KeyboardSvgProps) => {
+export const KeyboardSvg = ({vizType, keyMovements, showFrame, totalWidth, hexagons, children}: KeyboardSvgProps) => {
     const clazz = vizType === VisualizationType.LayoutPlain ? "viz-plain" : "";
     const keyboardPadding = 20;
     const nextDims = getRectDimensions(keyMovements.map((m) => m.next));
     const prevDims = getRectDimensions(keyMovements.map((m) => m.prev));
-    const frameHeight = 5 * keyUnit + 2 * keyboardPadding;
+    // 5 rows: the gaps between rows shrink with hexagons, but the top/bottom margins (one
+    // keyUnit total) stay the same, so a non-hex board keeps its original 5*keyUnit height.
+    const rowPitch = hexagons ? hexRowPitch : keyUnit;
+    const frameHeight = 4 * rowPitch + keyUnit + 2 * keyboardPadding;
     const prevFrameX = prevDims.x - keyboardPadding;
     const prevFrameWidth = prevDims.width + 2 * keyboardPadding;
     const nextFrameX = nextDims.x - keyboardPadding;
@@ -125,15 +129,18 @@ const keyRibbonPaddingV = 1;
 const isometric3dOffset = 8;
 const keycapCornerRadius = 6;
 
-// Pointy-top regular hexagon measuring one key unit between opposing (left/right) flats,
-// so its points protrude keyUnit*(1/√3 - 1/2) ≈ 7.7px into the rows above and below.
-// Only valid for unit-square keys (width === height === 1), which the caller guarantees.
-const hexHalfWidth = keyUnit / 2; // half the flat-to-flat distance (= keyUnit)
-const hexCircumradius = keyUnit / Math.sqrt(3); // centre to a point
+// Vertical centre-to-centre row spacing for hexagonal keys. With the 0.5u Harmonic column
+// stagger this turns the grid into a triangular lattice where every key is equidistant
+// (= keyUnit) from all six neighbours: sqrt((keyUnit/2)^2 + hexRowPitch^2) === keyUnit.
+const hexRowPitch = keyUnit * Math.sqrt(3) / 2;
 
-function hexagonPoints(cx: number, cy: number): string {
-    const r = hexCircumradius;
-    const w = hexHalfWidth;
+// Pointy-top regular hexagon centred at (cx, cy) with the given half-width (half the
+// flat-to-flat distance). The points protrude vertically beyond the flats into the rows
+// above and below. Only valid for unit-square keys (width === height === 1), which the
+// caller guarantees; halfWidth carries the inter-key padding (= rectWidth/2).
+function hexagonPoints(cx: number, cy: number, halfWidth: number): string {
+    const w = halfWidth;
+    const r = 2 * w / Math.sqrt(3); // circumradius (centre to a point)
     const verts: [number, number][] = [
         [cx, cy - r], // top point
         [cx + w, cy - r / 2], // upper right
@@ -147,10 +154,11 @@ function hexagonPoints(cx: number, cy: number): string {
 
 export function Key(props: KeyProps) {
     const {row, col, prevRow, prevCol, width, prevWidth, label, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker, hexagons, layer = 'base'} = props;
+    const rowPitch = hexagons ? hexRowPitch : keyUnit;
     const x = col * keyUnit + keyPadding;
-    const y = row * keyUnit + keyPadding;
+    const y = row * rowPitch + keyPadding;
     const fromX = prevCol * keyUnit + keyPadding;
-    const fromY = prevRow * keyUnit + keyPadding;
+    const fromY = prevRow * rowPitch + keyPadding;
     const rectWidth = keyUnit * width - 2 * keyPadding;
     const fromRectWidth = keyUnit * prevWidth - 2 * keyPadding;
 
@@ -218,9 +226,10 @@ export function Key(props: KeyProps) {
         {layer === 'base' && <>
             {hexagons
                 ? // Flat (non-isometric) regular hexagon; fixed at one unit, so it never resizes.
+                // halfWidth = rectWidth/2 leaves the same inter-key gap as rectangular keys.
                 <polygon
                     className={"key-outline " + backgroundClass}
-                    points={hexagonPoints(rectWidth / 2, keyHeight / 2)}/>
+                    points={hexagonPoints(rectWidth / 2, keyHeight / 2, rectWidth / 2)}/>
                 : <>
                     {isLayoutViz(props.vizType) && <>
                         {/* Left side of keycap (isometric) */}
