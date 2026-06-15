@@ -114,6 +114,7 @@ interface KeyProps {
     prevCol: number,
     prevWidth: number,
     vizType: VisualizationType,
+    hexagons?: boolean,
     layer?: 'base' | 'label',
 }
 
@@ -124,8 +125,28 @@ const keyRibbonPaddingV = 1;
 const isometric3dOffset = 8;
 const keycapCornerRadius = 6;
 
+// Pointy-top regular hexagon measuring one key unit between opposing (left/right) flats,
+// so its points protrude keyUnit*(1/√3 - 1/2) ≈ 7.7px into the rows above and below.
+// Only valid for unit-square keys (width === height === 1), which the caller guarantees.
+const hexHalfWidth = keyUnit / 2; // half the flat-to-flat distance (= keyUnit)
+const hexCircumradius = keyUnit / Math.sqrt(3); // centre to a point
+
+function hexagonPoints(cx: number, cy: number): string {
+    const r = hexCircumradius;
+    const w = hexHalfWidth;
+    const verts: [number, number][] = [
+        [cx, cy - r], // top point
+        [cx + w, cy - r / 2], // upper right
+        [cx + w, cy + r / 2], // lower right
+        [cx, cy + r], // bottom point
+        [cx - w, cy + r / 2], // lower left
+        [cx - w, cy - r / 2], // upper left
+    ];
+    return verts.map(([x, y]) => `${x},${y}`).join(' ');
+}
+
 export function Key(props: KeyProps) {
-    const {row, col, prevRow, prevCol, width, prevWidth, label, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker, layer = 'base'} = props;
+    const {row, col, prevRow, prevCol, width, prevWidth, label, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker, hexagons, layer = 'base'} = props;
     const x = col * keyUnit + keyPadding;
     const y = row * keyUnit + keyPadding;
     const fromX = prevCol * keyUnit + keyPadding;
@@ -195,30 +216,37 @@ export function Key(props: KeyProps) {
         style={groupStyle}
         className={"key-group animating"}>
         {layer === 'base' && <>
-            {isLayoutViz(props.vizType) && <>
-                {/* Left side of keycap (isometric) */}
-                <rect
-                    className={"key-outline key-side-left left-skew " + backgroundClass}
-                    x={-isometric3dOffset}
-                    y={keycapCornerRadius / 2}
-                    width={isometric3dOffset}
-                    height={keyHeight - keycapCornerRadius / 2}/>
-                {/* Bottom side of keycap (isometric) */}
-                <rect
-                    className={"key-outline key-side-bottom bottom-skew animating " + backgroundClass}
-                    x={0}
-                    y={keyHeight}
-                    height={isometric3dOffset}/>
-            </>}
-            {/* Top face of keycap (main) */}
-            <rect
-                className={"key-outline animating " + backgroundClass}
-                x={0}
-                y={0}
-                width={rectWidth}
-                height={keyHeight}
-                rx={keycapCornerRadius}
-                ry={keycapCornerRadius}/>
+            {hexagons
+                ? // Flat (non-isometric) regular hexagon; fixed at one unit, so it never resizes.
+                <polygon
+                    className={"key-outline " + backgroundClass}
+                    points={hexagonPoints(rectWidth / 2, keyHeight / 2)}/>
+                : <>
+                    {isLayoutViz(props.vizType) && <>
+                        {/* Left side of keycap (isometric) */}
+                        <rect
+                            className={"key-outline key-side-left left-skew " + backgroundClass}
+                            x={-isometric3dOffset}
+                            y={keycapCornerRadius / 2}
+                            width={isometric3dOffset}
+                            height={keyHeight - keycapCornerRadius / 2}/>
+                        {/* Bottom side of keycap (isometric) */}
+                        <rect
+                            className={"key-outline key-side-bottom bottom-skew animating " + backgroundClass}
+                            x={0}
+                            y={keyHeight}
+                            height={isometric3dOffset}/>
+                    </>}
+                    {/* Top face of keycap (main) */}
+                    <rect
+                        className={"key-outline animating " + backgroundClass}
+                        x={0}
+                        y={0}
+                        width={rectWidth}
+                        height={keyHeight}
+                        rx={keycapCornerRadius}
+                        ry={keycapCornerRadius}/>
+                </>}
             {keyRibbon || frequencyCircle || homeMarker}
         </>}
         {layer === 'label' && text}
@@ -312,7 +340,7 @@ function keyBackgroundClass(
     }
 }
 
-function KeyboardLayer({layoutModel, prevLayoutModel, keyMovements, mappingDiff, vizType, layer}: KeyboardLayerProps) {
+function KeyboardLayer({layoutModel, prevLayoutModel, keyMovements, mappingDiff, vizType, layer, hexagons}: KeyboardLayerProps) {
     return keyMovements.map((movement) => {
         // key decorations always come from the next layout model, unless a key is exiting.
         const {label, row, col, keyCapWidth} = movement.next ?? movement.prev!;
@@ -359,6 +387,7 @@ function KeyboardLayer({layoutModel, prevLayoutModel, keyMovements, mappingDiff,
             prevWidth={movement.prev?.keyCapWidth ?? keyCapWidth}
             vizType={vizType}
             layer={layer}
+            hexagons={hexagons}
             key={`${label}-${newRow}-${newCol}-${keyCapWidth}-${layer}`}
         />
     })
