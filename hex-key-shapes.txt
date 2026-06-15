@@ -1,3 +1,7 @@
+
+Hexagonal key mode only works for the "Harmonic" 0.5u stagger, because each key will be aligned with key gaps in the rows below and above. We'll never have it for any other mode.
+
+
 There are two hexagonal rendering modes: extreme and hex-mex.
 
 In both cases:
@@ -11,6 +15,9 @@ The side-length H of the hexagons should then be H = L * 2 / sqrt(3), right?
 All keys change to a "width" of L.
 Previously wider keys on the left and right edge drop the part on the edge side, so they are at 1u distance to their horizontal neighbor.
 Previously wider keys on the bottom row align with their center between the two keys below or above.
+
+Feature for the future: improve the gaps of the bottom row, so that thumb keys are clustered without gaps.
+Maybe just one big gap between the thumb keys and the others will be best, so that the bottom edge key is actually at the edge. (except for the 0.5u indent, when that is required by the stagger pattern.)
 
 # Hex-mex
 
