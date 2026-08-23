@@ -13,12 +13,11 @@ export enum AnsiVariant {
 /*
     The Thumbs Up variants, named (as everywhere else) by total width in key units
     and the number of keys between the two index-finger home keys.
-    Values are chosen so that the two older ones keep the meaning of the previous 'thumbsUp16' boolean URL param.
  */
 export enum ThumbsUpVariant {
+    TU13,  // 13/2, without any central keys.
     TU15,  // 15/4, the original.
     TU16,  // 16/5, with the central arrow cluster.
-    TU13,  // 13/2, without any central keys.
 }
 
 /*

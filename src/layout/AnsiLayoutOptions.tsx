@@ -17,8 +17,7 @@ const naturallyWideVariants = [AnsiVariant.XHKB];
 
 export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptionsProps) {
     const {ansiWide, ansiVariant, ansiSplit, thumbsUpVariant} = options;
-    const wideDisabled = onlySupportsWide(mapping.value) ||
-        (naturallyWideVariants.includes(ansiVariant) && thumbsUpVariant !== ThumbsUpVariant.TU13);
+    const wideDisabled = onlySupportsWide(mapping.value) || naturallyWideVariants.includes(ansiVariant);
     // The 16/5 has its arrow keys where the split would go.
     const splitDisabled = (ansiVariant === AnsiVariant.HHKB) ||
         ((ansiVariant === AnsiVariant.XHKB) && thumbsUpVariant === ThumbsUpVariant.TU16);

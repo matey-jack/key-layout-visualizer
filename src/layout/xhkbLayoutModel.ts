@@ -9,8 +9,8 @@ export const xhkb13LayoutModel: LayoutModel = {
     which takes two units off the width and brings the hands back to the classic ANSI distance of two keys
     between the index fingers. What remains is a compact 13u board which still has all 26 letters, all ten digits,
     a full-size Return, split Shifts, and – of course – the four thumb keys which give the family its name.
-    The bottom row is trimmed to match: Cmd moves over to the CapsLock spot (which gives each hand a Command key
-    next to its own space bar half) and the right-hand Ctrl is gone.
+    The bottom row is trimmed to match: CapsLock and the right-hand Ctrl are gone, and the width they free up
+    goes into two 1u keys next to AltGr which bring the slash and the plus key back onto the board.
     With just 13 keys in the home row this is the layout for people who want the Thumbs Up thumb cluster
     without the extra navigation column, be it as a 40%-style compact board or as the base for a keymap
     that leans on layers for everything else.`,
@@ -21,9 +21,9 @@ export const xhkb13LayoutModel: LayoutModel = {
         keyWidth13.row(2, 1.25),// 12 keys
         [1.75, ...Array(10).fill(1), 1.25], // 12 keys
         // Center of keyboard is at 6.25 / 6.75 (one unit less than on the 15/4 on either side).
-        // Removing the second Cmd and the right Ctrl leaves 0.5u to distribute on each side,
-        // which the four inner 1.5u keys pick up by growing to 1.75u – same width as the space bars.
-        [1.75, 1, 1.75, 1.75, 1.75, 1.75, 1.75, 1.5],
+        // The left half is exactly three 1.5u keys plus the space bar; on the right, dropping CapsLock
+        // and the right Ctrl leaves room for two 1u character keys between AltGr and Fn.
+        [1.5, 1.5, 1.5, 1.75, 1.75, 1.5, 1, 1, 1.5],
     ],
 
     mainFingerAssignment: [
@@ -31,7 +31,7 @@ export const xhkb13LayoutModel: LayoutModel = {
         [1, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9, 9],
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
         [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
-        [0, 1, 4, 4, 5, 5, 8, 9],
+        [0, 1, 4, 4, 5, 5, 8, 9, 9],
     ],
 
     singleKeyEffort: [
@@ -39,7 +39,7 @@ export const xhkb13LayoutModel: LayoutModel = {
         [3.0, 2.0, 1.0, 1.0, 1.5, 1.5, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0],
         [1.5, 0.2, 0.2, 0.2, 0.2, 1.5, 1.5, 0.2, 0.2, 0.2, 0.2, 1.5],
         [1.0, 2.0, 2.0, 1.5, 1.5, 3.0, 3.0, 1.5, 1.0, 1.5, 1.5, 1.0],
-        [2.0, 2.0, 1.0, 0.2, 0.2, 1.0, 2.0, 2.0],
+        [2.0, 2.0, 1.0, 0.2, 0.2, 1.0, 2.0, 2.0, 2.0],
     ],
 
     rowIndent: keyWidth13.rowIndent,
@@ -71,15 +71,16 @@ export const xhkb13LayoutModel: LayoutModel = {
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "-"],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-            ["Ctrl", "`~", "Alt", "⍽", "⍽", "AltGr", "Cmd", "Fn"],
+            ["Ctrl", "Cmd", "Alt", "⍽", "⍽", "AltGr", "\\", "+", "Fn"],
         ],
-        // The thumb maps don't need the hyphen in the frame, so that key becomes Page Up.
+        // The thumb maps don't need the hyphen in the frame, so that key becomes Page Up,
+        // and '/' takes the bottom row key which is the backslash on Ansi30.
         [KeymapTypeId.Thumb30]: [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⇞"],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
-            ["⇧", 0, 1, 2, 3, 4, "/", 5, 6, 7, 8, "⇧"],
-            ["Ctrl", "`~", "Alt", 0, "⍽", "AltGr", "Cmd", "Fn"],
+            ["⇧", 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, "⇧"],
+            ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "/", "+", "Fn"],
         ],
         // The eleventh key of the home row has no place in the home row anymore,
         // so it goes to the upper right corner, just like '[' sits above ';' on ANSI.
@@ -88,14 +89,14 @@ export const xhkb13LayoutModel: LayoutModel = {
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, [2, 10]],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-            ["Ctrl", "`~", "Alt", "⍽", "⍽", "AltGr", "Cmd", "Fn"],
+            ["Ctrl", "Cmd", "Alt", "⍽", "⍽", "AltGr", "/", "+", "Fn"],
         ],
         [KeymapTypeId.Thumb32]: [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⇞"],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-            ["Ctrl", "`~", "Alt", 0, "⍽", "AltGr", "Cmd", "Fn"],
+            ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "/", "+", "Fn"],
         ],
     },
 }
