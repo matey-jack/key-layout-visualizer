@@ -10,12 +10,8 @@ export const xhkb13LayoutModel: LayoutModel = {
     between the index fingers. What remains is a compact 13u board which still has all 26 letters, all ten digits,
     a full-size Return, split Shifts, Page Up and Down on the right edge, and – of course – the four thumb keys
     which give the family its name.
-    The bottom row is trimmed to match: CapsLock and the right-hand Ctrl are gone, and the width they free up
-    goes into two 1u keys next to AltGr. Those take the tenth character of the lower letter row (the slash on
-    most mappings, which is the only character key not in the 3×10 block) and the plus key.
-    With just 13 keys in the home row this is the layout for people who want the Thumbs Up thumb cluster
-    without the extra navigation column, be it as a 40%-style compact board or as the base for a keymap
-    that leans on layers for everything else.`,
+    This is meant as a layout for use with mobile devices such as phones and tablet, where you don't need complex 
+    punctuation or any navigation keys, because you write plain prose and navigate via the touch screen.`,
 
     keyWidths: [
         keyWidth13.row(0, 1.5), // 12 keys
@@ -66,23 +62,22 @@ export const xhkb13LayoutModel: LayoutModel = {
     symmetricStagger: false,
 
     frameMappings: {
-        // Page Up and Down keep their place at the right edge, so the lower letter row has only nine keys
-        // between the Shifts and its tenth character moves down to the inner of the two small bottom row keys.
-        // The apostrophe sits above the Return key, just like '[' does on ANSI.
+        // The lower letter row has only nine keys between the Shifts and its tenth character moves down to just below
+        // its normal pinky position.
         [KeymapTypeId.Ansi30]: [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⇞"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "-"],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
-            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "⇟"],
-            ["Ctrl", "Cmd", "Alt", "⍽", "⍽", "AltGr", [3, 9], "+", "Fn"],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "Fn"],
+            ["Ctrl", "Cmd", "Alt", "⍽", "⍽", "AltGr", "+", [3, 9], "Ctrl"],
         ],
         // Thumb30 has only nine keys in the lower row, so the same bottom row key is the frame's slash.
         [KeymapTypeId.Thumb30]: [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⇞"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "-"],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
-            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "⇟"],
-            ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "/", "+", "Fn"],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "Fn"],
+            ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "+", "/", "Ctrl"],
         ],
         // The 32-key maps need every spot for characters: the eleventh key of the home row takes the upper
         // right corner (where the thirty-key maps have Page Up) and the outer bottom row key is the slash.
@@ -90,15 +85,15 @@ export const xhkb13LayoutModel: LayoutModel = {
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, [2, 10]],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
-            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "⇟"],
-            ["Ctrl", "Cmd", "Alt", "⍽", "⍽", "AltGr", [3, 9], "/", "Fn"],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "Fn"],
+            ["Ctrl", "Cmd", "Alt", "/", "⍽", "AltGr", "+", [3, 9], "Ctrl"],
         ],
         [KeymapTypeId.Thumb32]: [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⇞"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "/"],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
-            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "⇟"],
-            ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", [3, 9], "/", "Fn"],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "Fn"],
+            ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "+", [3, 9], "Ctrl"],
         ],
     },
 }
