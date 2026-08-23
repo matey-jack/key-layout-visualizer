@@ -102,8 +102,6 @@ const IGNORED_30_KEYS: Record<string, string[]> = {
     "ANSI/Apple with wide hand position": ["Esc"], // replaces duplicate Ctrl key
     // The single difference here is due to removing the duplicate space key.
     // (Would disappear if we had thumb-return from the start.)
-    // The thumb maps free up the frame's hyphen key, which becomes Page Up here.
-    [xhkb13LayoutModel.name]: ["⇞"],
     [xhkb15LayoutModel.name]: ["⎀"],
     [xhkb16LayoutModel.name]: ["€"],
     "Ergoboard 65 LowShift Big Enter": ["`~"],
