@@ -11,6 +11,17 @@ export enum AnsiVariant {
 }
 
 /*
+    The Thumbs Up variants, named (as everywhere else) by total width in key units
+    and the number of keys between the two index-finger home keys.
+    Values are chosen so that the two older ones keep the meaning of the previous 'thumbsUp16' boolean URL param.
+ */
+export enum ThumbsUpVariant {
+    TU15,  // 15/4, the original.
+    TU16,  // 16/5, with the central arrow cluster.
+    TU13,  // 13/2, without any central keys.
+}
+
+/*
     Just for the sake of disambiguating, I classify all Harmonic variants by their total width in key units first,
     and then by the number of keys in the home row. A "wide Harmonic" has as many keys in the home row as the width of the board.
     A narrow variant has the home row staggered and thus one less key in it.
@@ -74,7 +85,7 @@ export interface LayoutOptions {
     // This is more of a mapping transformer than an actual layout,
     // but fits here, since the ansiWideLayout is an actual LayoutModel instance.
     ansiWide: boolean;
-    thumbsUp16: boolean;
+    thumbsUpVariant: ThumbsUpVariant;
 
     // only one for the Harmonic family
     harmonicVariant: HarmonicVariant;

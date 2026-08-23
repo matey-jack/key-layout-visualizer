@@ -40,7 +40,7 @@ import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLa
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
-import {xhkb15LayoutModel, xhkb16LayoutModel} from "./layout/xhkbLayoutModel.ts";
+import {xhkb13LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "./layout/xhkbLayoutModel.ts";
 import {sum} from "./library/math.ts";
 
 const layoutModels: Array<LayoutModel> = [
@@ -52,6 +52,7 @@ const layoutModels: Array<LayoutModel> = [
     createApple(ansiWideLayoutModel),
     createAN65(ansiIBMLayoutModel),
     createAN65(ansiWideLayoutModel),
+    xhkb13LayoutModel,
     xhkb15LayoutModel,
     xhkb16LayoutModel,
     // Harmonics
@@ -101,6 +102,8 @@ const IGNORED_30_KEYS: Record<string, string[]> = {
     "ANSI/Apple with wide hand position": ["Esc"], // replaces duplicate Ctrl key
     // The single difference here is due to removing the duplicate space key.
     // (Would disappear if we had thumb-return from the start.)
+    // The thumb maps free up the frame's hyphen key, which becomes Page Up here.
+    [xhkb13LayoutModel.name]: ["⇞"],
     [xhkb15LayoutModel.name]: ["⎀"],
     [xhkb16LayoutModel.name]: ["€"],
     "Ergoboard 65 LowShift Big Enter": ["`~"],
@@ -118,6 +121,8 @@ const IGNORED_32_KEYS: Record<string, string[]> = {
     "ANSI/IBM with wide hand position": ["\\", "☰"],
     "AN65 with wide hand position": ["\\", "☰"],
     "ANSI/Apple with wide hand position": ["\\"],
+    // Ansi32 needs the upper right corner key for the eleventh home row character; Thumb32 has Page Up there.
+    [xhkb13LayoutModel.name]: ["⇞"],
     [xhkb15LayoutModel.name]: ["⎀"],
     [xhkb16LayoutModel.name]: ["€"],
 };

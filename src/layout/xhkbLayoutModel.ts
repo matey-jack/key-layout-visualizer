@@ -1,6 +1,106 @@
 import {KEY_COLOR, KeyboardRows, KeymapTypeId, type LayoutModel} from "../base-model.ts";
 import {MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
 
+const keyWidth13 = new MonotonicKeyWidth(13, zeroIndent, "XHKB 13");
+
+export const xhkb13LayoutModel: LayoutModel = {
+    name: "Thumbs Up 13/2",
+    description: `The smallest member of the Thumbs Up family drops the central key columns entirely,
+    which takes two units off the width and brings the hands back to the classic ANSI distance of two keys
+    between the index fingers. What remains is a compact 13u board which still has all 26 letters, all ten digits,
+    a full-size Return, split Shifts, and – of course – the four thumb keys which give the family its name.
+    The bottom row is trimmed to match: Cmd moves over to the CapsLock spot (which gives each hand a Command key
+    next to its own space bar half) and the right-hand Ctrl is gone.
+    With just 13 keys in the home row this is the layout for people who want the Thumbs Up thumb cluster
+    without the extra navigation column, be it as a 40%-style compact board or as the base for a keymap
+    that leans on layers for everything else.`,
+
+    keyWidths: [
+        keyWidth13.row(0, 1.5), // 12 keys
+        keyWidth13.row(1, 1),   // 13 keys
+        keyWidth13.row(2, 1.25),// 12 keys
+        [1.75, ...Array(10).fill(1), 1.25], // 12 keys
+        // Center of keyboard is at 6.25 / 6.75 (one unit less than on the 15/4 on either side).
+        // Removing the second Cmd and the right Ctrl leaves 0.5u to distribute on each side,
+        // which the four inner 1.5u keys pick up by growing to 1.75u – same width as the space bars.
+        [1.75, 1, 1.75, 1.75, 1.75, 1.75, 1.75, 1.5],
+    ],
+
+    mainFingerAssignment: [
+        [1, 1, 1, 2, 2, 3, 6, 6, 7, 8, 9, 9],
+        [1, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9, 9],
+        [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
+        [0, 0, 1, 2, 3, 3, 6, 6, 7, 8, 9, 9],
+        [0, 1, 4, 4, 5, 5, 8, 9],
+    ],
+
+    singleKeyEffort: [
+        [3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0],
+        [3.0, 2.0, 1.0, 1.0, 1.5, 1.5, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0],
+        [1.5, 0.2, 0.2, 0.2, 0.2, 1.5, 1.5, 0.2, 0.2, 0.2, 0.2, 1.5],
+        [1.0, 2.0, 2.0, 1.5, 1.5, 3.0, 3.0, 1.5, 1.0, 1.5, 1.5, 1.0],
+        [2.0, 2.0, 1.0, 0.2, 0.2, 1.0, 2.0, 2.0],
+    ],
+
+    rowIndent: keyWidth13.rowIndent,
+
+    // Same idea as on the 15/4, only that there are no central keys to grey out anymore.
+    // Left side has 5 'boring' keys per row; right side has 5, 6, 5, 5.
+    keyColorClass(label: string, row: KeyboardRows, col: number) {
+        if (label && "⏎↑↓←→".includes(label) || label === "Esc") return KEY_COLOR.HIGHLIGHT;
+        if (row === KeyboardRows.Bottom) return KEY_COLOR.EDGE;
+        if (col === 0) return KEY_COLOR.EDGE;
+        const rightEdge = [10, 11, 10, 10]
+        if (col <= rightEdge[row]) return KEY_COLOR.BORING;
+        return KEY_COLOR.EDGE;
+    },
+
+    splitColumns: [6, 6, 6, 6, 4],
+
+    leftHomeIndex: 4,
+    rightHomeIndex: 7,
+
+    staggerOffsets: [-0.75, -0.25, 0, 0.5],
+    symmetricStagger: false,
+
+    frameMappings: {
+        // The two keys that the 15/4 has in the center of the upper row ('-' and '+' resp. '`~' and "'")
+        // don't fit anymore, so the hyphen and the apostrophe move to the right edge of that row.
+        [KeymapTypeId.Ansi30]: [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "-"],
+            ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
+            ["Ctrl", "`~", "Alt", "⍽", "⍽", "AltGr", "Cmd", "Fn"],
+        ],
+        // The thumb maps don't need the hyphen in the frame, so that key becomes Page Up.
+        [KeymapTypeId.Thumb30]: [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⇞"],
+            ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, "/", 5, 6, 7, 8, "⇧"],
+            ["Ctrl", "`~", "Alt", 0, "⍽", "AltGr", "Cmd", "Fn"],
+        ],
+        // The eleventh key of the home row has no place in the home row anymore,
+        // so it goes to the upper right corner, just like '[' sits above ';' on ANSI.
+        [KeymapTypeId.Ansi32]: [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, [2, 10]],
+            ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
+            ["Ctrl", "`~", "Alt", "⍽", "⍽", "AltGr", "Cmd", "Fn"],
+        ],
+        [KeymapTypeId.Thumb32]: [
+            ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⇞"],
+            ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
+            ["Ctrl", "`~", "Alt", 0, "⍽", "AltGr", "Cmd", "Fn"],
+        ],
+    },
+}
+
+
 const keyWidth15 = new MonotonicKeyWidth(15, zeroIndent, "XHKB 15");
 
 export const xhkb15LayoutModel: LayoutModel = {

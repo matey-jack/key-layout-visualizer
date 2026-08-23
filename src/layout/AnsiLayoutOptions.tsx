@@ -1,5 +1,5 @@
 import type {Signal} from "@preact/signals";
-import {AnsiVariant, type LayoutOptions} from "../app-model.ts";
+import {AnsiVariant, type LayoutOptions, ThumbsUpVariant} from "../app-model.ts";
 import type {FlexMapping} from "../base-model.ts";
 import {CheckboxWithLabel} from "../components/CheckboxWithLabel.tsx";
 import {LayoutVariantButton} from "../components/LayoutVariantButton.tsx";
@@ -16,10 +16,12 @@ export interface AnsiLayoutOptionsProps {
 const naturallyWideVariants = [AnsiVariant.XHKB];
 
 export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptionsProps) {
-    const {ansiWide, ansiVariant, ansiSplit, thumbsUp16} = options;
-    const wideDisabled = onlySupportsWide(mapping.value) || naturallyWideVariants.includes(ansiVariant);
+    const {ansiWide, ansiVariant, ansiSplit, thumbsUpVariant} = options;
+    const wideDisabled = onlySupportsWide(mapping.value) ||
+        (naturallyWideVariants.includes(ansiVariant) && thumbsUpVariant !== ThumbsUpVariant.TU13);
+    // The 16/5 has its arrow keys where the split would go.
     const splitDisabled = (ansiVariant === AnsiVariant.HHKB) ||
-        ((ansiVariant === AnsiVariant.XHKB) && thumbsUp16);
+        ((ansiVariant === AnsiVariant.XHKB) && thumbsUpVariant === ThumbsUpVariant.TU16);
     const setVariant = (variant: AnsiVariant) => setOption({ansiVariant: variant});
 
     const handDist = ansiWide ? "3" : "2";
@@ -66,17 +68,21 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
                                      currentVariant={ansiVariant}
                                      setVariant={setVariant}
                                      name={"Thumbs Up\u00A0❤️"}
-                                     note="15/4 or 16/5"
+                                     note="13/2 to 16/5"
                                      shareSpace>
                     <div class="layout-option-row">
                         <div class="layout-option-column">
                             <div class="layout-option-button-group">
-                                <OptionButton selected={!thumbsUp16}
-                                              onClick={() => setOption({thumbsUp16: false})}>
+                                <OptionButton selected={thumbsUpVariant === ThumbsUpVariant.TU13}
+                                              onClick={() => setOption({thumbsUpVariant: ThumbsUpVariant.TU13})}>
+                                    13/2
+                                </OptionButton>
+                                <OptionButton selected={thumbsUpVariant === ThumbsUpVariant.TU15}
+                                              onClick={() => setOption({thumbsUpVariant: ThumbsUpVariant.TU15})}>
                                     15/4
                                 </OptionButton>
-                                <OptionButton selected={thumbsUp16}
-                                              onClick={() => setOption({thumbsUp16: true})}>
+                                <OptionButton selected={thumbsUpVariant === ThumbsUpVariant.TU16}
+                                              onClick={() => setOption({thumbsUpVariant: ThumbsUpVariant.TU16})}>
                                     16/5
                                 </OptionButton>
                             </div>

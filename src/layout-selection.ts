@@ -6,6 +6,7 @@ import {
     HarmonicVariant,
     type LayoutOptions,
     PlankVariant,
+    ThumbsUpVariant,
 } from "./app-model.ts";
 import {type LayoutModel, LayoutType} from "./base-model.ts";
 import {
@@ -45,7 +46,7 @@ import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLa
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
-import {xhkb15LayoutModel, xhkb16LayoutModel} from "./layout/xhkbLayoutModel.ts";
+import {xhkb13LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "./layout/xhkbLayoutModel.ts";
 
 export function getHarmonicVariant(variant: HarmonicVariant): LayoutModel {
     switch (variant) {
@@ -136,7 +137,14 @@ export function getAnsiVariant(layoutOptions: LayoutOptions) {
             break;
         // no need to split the space bar, because it's already split
         case AnsiVariant.XHKB:
-            return layoutOptions.thumbsUp16 ? xhkb16LayoutModel : xhkb15LayoutModel;
+            switch (layoutOptions.thumbsUpVariant) {
+                case ThumbsUpVariant.TU13:
+                    return xhkb13LayoutModel;
+                case ThumbsUpVariant.TU16:
+                    return xhkb16LayoutModel;
+                default:
+                    return xhkb15LayoutModel;
+            }
     }
     return layoutOptions.ansiSplit ? splitSpaceBar(base) : base;
 }

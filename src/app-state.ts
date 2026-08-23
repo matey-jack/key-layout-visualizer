@@ -10,6 +10,7 @@ import {
     isSplit,
     type LayoutOptions,
     PlankVariant,
+    ThumbsUpVariant,
 } from "./app-model.ts";
 import {type FlexMapping, KeymapTypeId, type LayoutModel, LayoutType, VisualizationType} from "./base-model.ts";
 import {getBigramMovements} from "./bigrams.ts";
@@ -260,8 +261,8 @@ function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vi
             params.set("split", layout.ansiSplit ? "1" : "0");
             params.set("wide", layout.ansiWide ? "1" : "0");
             params.set("ansi", layout.ansiVariant.toString());
-            params.set("thumbsUp16", layout.thumbsUp16 ? "1" : "0");
-            subLayout = AnsiVariant[layout.ansiVariant] + (layout.ansiWide ? "+wide" : "") + (layout.ansiSplit ? "+split" : "") + (layout.ansiVariant === AnsiVariant.XHKB && layout.thumbsUp16 ? "+16" : "");
+            params.set("thumbsUp", layout.thumbsUpVariant.toString());
+            subLayout = AnsiVariant[layout.ansiVariant] + (layout.ansiWide ? "+wide" : "") + (layout.ansiSplit ? "+split" : "") + (layout.ansiVariant === AnsiVariant.XHKB ? "+" + ThumbsUpVariant[layout.thumbsUpVariant] : "");
             break;
         case LayoutType.Harmonic:
             params.set("harmonic", layout.harmonicVariant.toString());
@@ -306,7 +307,10 @@ export function createAppState(): AppState {
         ansiVariant,
         ansiSplit: s2b(params.get("split")) ?? false,
         ansiWide: s2b(params.get("wide")) ?? false,
-        thumbsUp16: s2b(params.get("thumbsUp16")) ?? (ansiVariant === AnsiVariant.XHKB && epArrows !== ErgoplankArrows.None) ?? false,
+        thumbsUpVariant: s2i(params.get("thumbsUp"))
+            // 'thumbsUp16' is the older, boolean version of this parameter.
+            ?? (s2b(params.get("thumbsUp16")) ? ThumbsUpVariant.TU16 : null)
+            ?? (ansiVariant === AnsiVariant.XHKB && epArrows !== ErgoplankArrows.None ? ThumbsUpVariant.TU16 : ThumbsUpVariant.TU15),
         angleMod: s2b(params.get("angle")) ?? false,
         harmonicVariant: s2i(params.get("harmonic")) ?? HarmonicVariant.H13_Wide,
         harmonicHexagons: s2b(params.get("harmonicHexagons")) ?? false,
