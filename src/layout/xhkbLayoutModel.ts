@@ -115,7 +115,7 @@ export const xhkb16LayoutModel: LayoutModel = {
         keyWidth16.row(0, 1.5), // 15 keys
         keyWidth16.row(1, 1),   // 16 keys
         keyWidth16.row(2, 1.25),// 15 keys
-        [1.75, 1, 1, 1, 1, 1, 0.5, 1, 0.5, 1, 1, 1, 1, 1, 1.25, 1], // 15 keys
+        [1.75, 1, 1, 1, 1, 1, 0.5, 1, 0.5, 1, 1, 1, 1, 1, 1.25, 1], // 14 keys (and two fractional gaps).
         // The center between hand positions is at 7.75 vs 8.25.
         // Net of the arrows, that yields 6.25 and 6.75u of space to use.
         // And net of the space bars it's 4.5 and 5u.
