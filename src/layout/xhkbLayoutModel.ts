@@ -74,10 +74,10 @@ export const xhkb13LayoutModel: LayoutModel = {
         // Thumb30 has only nine keys in the lower row, so the same bottom row key is the frame's slash.
         [KeymapTypeId.Thumb30]: [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "-"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⇤"],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
-            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "Fn"],
-            ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "+", "/", "Ctrl"],
+            ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "⇥"],
+            ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "+", "/", "Fn"],
         ],
         // The 32-key maps need every spot for characters: the eleventh key of the home row takes the upper
         // right corner (where the thirty-key maps have Page Up) and the outer bottom row key is the slash.
