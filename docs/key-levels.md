@@ -20,12 +20,18 @@ This can easily be compensated by mapping those characters on unused spots of th
 (The harder to access AltGr+Shift level doesn't even need to be used!)
 
 But to create a comfortable and effective key map, we should take into account that the Shift level is easier to access than the AltGr level – both physically because of the large and well-positioned Shift keys and mentally, because we are already used to using Shift for accessing punctuation during typing.
-Therefore we want prose punctuation characters – those that appear as part of text that users can type in a fast flow – to be mapped on the base and Shift levels.
+Therefore, we want prose punctuation characters – those that appear as part of text that users can type in a fast flow – to be mapped on the base and Shift levels.
 
 As in the other layout work in this app, we also consider easy learnability by minimizing the changes compared to the standard ANSI keymap. We also take some inspiration from European keymaps, especially regarding
-- the placement of `?` in the number row,
+- the placement of `?` in the right-side number row (symmetrically with `!` on the left),
 - `-` next to `,` and `.`,
-- breaking the `;:` character pair and using that home-finger position for a letter – or in the case of English, the apostrophe, which is used inside words like a letter.
+- breaking the `;:` character pair and using that home-finger position for a letter – or in the case of English, the apostrophe, which is used inside words like a letter. This change is actually also an improvement in finger movement for typing English texts. 
+  It extends to optimized letter-maps which can include the apostrophe and its most common bigrams `'s`, `'l`, `n'`, and `'t` into their optimization constraints.
+
+Even full-size keyboards can profit from our revamped Shift mappings:
+ - their keymap can be made compatible with that of a smaller keyboard, so that both can be used with fewer differences between them.
+ - keys used during the typing of text will be closer to the hand's home position – this is the "one unit from home" principle. 
+ - the keys that become freed from the move punctuation character can then be used for navigation functions (especially useful on laptops where nav keys are often too small or badly positioned for easy use) or others.
 
 
 ## Key Mapping Concept
@@ -84,6 +90,16 @@ We need to weigh the following trade-offs:
 
 [QMK's custom shift keys]: https://getreuer.info/posts/keyboards/custom-shift-keys/index.html
 
+#### Rejected Alternatives
+
+In a strict usage-based view, the characters `#` and `^` are more "technical" compared to the round parenthesis `()` which are more common in prose writing. 
+While this suggests that `#` and `^` should be moved to the AltGr layer instead of the parenthesis, I decided to move the parenthesis for several reasons:
+ - the collection of all four types of brackets on the same level (AltGr) already mentioned above.
+ - freeing the Shift+0 position for the question mark's European layouts position that is so nicely symmetrical with `!` on Shift+1.
+ - more generally, reassigning the Shift positions on `9` and `0` gives us two adjacent spots on the right side where most of the punctuation characters live, so that characters don't move very far and part of the muscle memory stays intact.
+ - and finally, placing the round parentheses in the middle of the AltGr home row actually make them more easily accessible than on the top right, especially when one wants to type both of them in sequence. Since the pinky finger is too short to comfortably reach the number row, their standard position up there makes the ring finger type both of them.
+
+
 ### AltGr Mapping
 
 Stack of parentheses on the ring and middle fingers, with 
@@ -109,6 +125,18 @@ Let's see how we solve this on the other boards.
 For the initial version of the feature, we'll start assuming the left-side AltGr key, 
 so that we can use the right-side characters with their mnemonics.
 (Because this is also what I personally use.)
+
+## Popular workarounds
+
+There are reasons why many keymaps, even on small keyboards where it's especially useful, are not modifying the Shift layer:
+ 1. Switching to a new (physical) keyboard layout already requires a lot of readjustment. Remembering new Shift pairings only adds to the adjustment effort.
+ 2. Most programmable keyboard firmware, even when it has a lot of advanced features, still sends simple keycodes to the computer and leaves the Shift and AltGr layer mapping (and indeed, all the actual character assignments to modifier+keycode pairs) to the computer software keymap. (As stated above, even QMK needs a custom user extension to change the Shift pairing which means that most GUI tools which are based on standard QMK or VIA or VIAL do not support that.) 
+
+For those reasons, keyboard designers often squeeze some extra punctuation keys into the bottom row where traditional keyboards only have the space bar and modifier keys. 
+This makes sense from a space-usage point of view, since the space bar and modifier keys are way oversized and keyboards that use unit-sized keys everywhere naturally have extra space in the bottom.
+On the other hand, typing characters in the bottom row is not as practical. 
+Once the characters move closer to the home row, the bottom spots can be assigned with navigation and other keys which are used outside a fast typing flow – "hands off" usage – which is more practical.
+
 
 ## App UX
 
