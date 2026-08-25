@@ -44,13 +44,22 @@ and 21 on the Shift level (the 11 partners of those keys plus the 10 shifted dig
 
 The default small keyboards (Split Ortho, Thumbs Up 13, Ergoslat) have 43 to 45 character keys instead of the 47 of US ANSI,
 and 7 to 9 of those are punctuation keys – see [the table below](#pre-existing-punctuation-maps-on-our-smallest-keyboards).
-This feature brings them down to 41 character keys:
+This feature brings them down to 41 character keys except for bottom row keys:
 26 letters + 10 digit keys (which each carry a punctuation character on the Shift level)
 + 5 punctuation keys.
-That gives them
-- 5 punctuation characters on the base level (the 5 punctuation keys),
+
+In terms of assignable punctuation characters, this yields:
+- 5 on the base level (the 5 "punctuation keys"),
 - 15 on the Shift level (10 shifted digits + the 5 shifted punctuation keys),
-- and thus 12 of the 32 have to move to the AltGr level.
+- and thus 12 of the 32 total punctuation characters have to move to the AltGr level.
+
+Leaving out the bottom keys matters, because our Split Ortho variant is generous with them:
+most real-life small split keyboards have significantly fewer.
+Bottom key counts of 4, 6, and 8 are all common 
+(often all assigned to the thumbs, which is why "thumb key" is sometimes used synonymous with "bottom row key").
+Among the popular models only the MoErgo Go60 actually has all 12 that our app shows.
+My personal Iris is a typical example: it has 8 thumb keys,
+but only 6 of them are usable without making a big hand movement.
 
 ### Which characters go where?
 
@@ -106,7 +115,7 @@ While this suggests that `#` and `^` should be moved to the AltGr layer instead 
 
 Our small keyboards have more punctuation keys than the five base-level slots of this concept –
 7 to 9 of them, see [the table below](#pre-existing-punctuation-maps-on-our-smallest-keyboards) –
-and some of those sit on thumb keys carrying technical characters like `` ` `` or `\`,
+and some of those sit in the bottom row carrying technical characters like `` ` `` or `\`,
 which contradicts the rule that technical characters live on the AltGr level.
 The feature therefore removes all punctuation keys except the five base ones
 and gives the freed positions to navigation and other keys. This happens in two steps.
@@ -200,21 +209,27 @@ More notes on the numbers:
    in the bottom row on `ansi30`, and 2 instead of 3 on `thumb30`.)
  - Major and Minor Ergoslat, low-shift and mid-shift, all have the same counts.
  - Split Ortho's own `splitOrtho` keymap type leaves all punctuation to the flex mapping and thus has no fixed count.
-   Colemak, for example, places 8 punctuation characters there (`;` `'` `,` `.` `/` `-` `=` `\`), 3 of them on thumb keys.
+   Colemak, for example, places 8 punctuation characters there (`;` `'` `,` `.` `/` `-` `=` `\`),
+   3 of them in the bottom row and only 2 of those (`=` and `\`) on an actual thumb key.
    The Harmonic 12's own `harmonic12` keymap type is currently not used by any flex mapping.
  - For comparison: the ANSI variants have all 11 punctuation keys in their `ansi30` frame
    (`` ` `` `-` `=` `[` `]` `\` `;` `'` `,` `.` `/`), none of them in the bottom row.
 
 ## App UX
 
-Design decision:
- - should there be a new layout visualization type named "Shift and AltGr levels" 
-   or rather a checkbox on one of the other visualizations?
-   (Note there already is an unused `VisualizationType.MappingAltGr` with a commented-out button in [app.tsx](../src/app.tsx) 
-   and an `AltGrLayerDetails` text in [DetailsArea.tsx](../src/details/DetailsArea.tsx) – 
-   this feature should either use or remove them.)
- ==> decision: use the viz type, because then the keyboard is clear of any unrelated visualization. 
-   Also using a mapping viz type shows the keyboard as 2D which distracts less from the key labels.
+Design decision: add a new layout visualization type named "Shift and AltGr levels" 
+   (It can use the `VisualizationType.MappingAltGr` and its commented-out button in [app.tsx](../src/app.tsx) 
+   and the `AltGrLayerDetails` text in [DetailsArea.tsx](../src/details/DetailsArea.tsx) – 
+   But maybe we should rename them.)
+
+Using a mapping viz type shows the keyboard as 2D which distracts less from the key labels.
+
+On all keyboard layout models, this will show the Shifted characters and the AltGr mappings as described below.
+
+On keyboard layout models, where the "compressed shift pairings" are implemented (see below), 
+it will offer a two-button switch group labeled "Shift pairings" with buttons "ANSI" and "Compressed".
+"ANSI" is just the normal state shown on all keyboard layouts by default (see `msKlcTemplate.ts`),
+"Compressed" is the reduction to 5 punctuation keys described in this file.
 
 How do we make it work for the flex layouts? Decision: we only configure the levels globally (for all layouts and mappings), but in two different ways:
  - for the Shift level, we define it via a list of pairings. This list can include more characters on the base level than are actually in the present layout; those will be ignored.
@@ -246,7 +261,7 @@ How it looks on the keyboard SVG:
    Home/End and PageUp/PageDown in pairwise spots, and finally `⌦` in the remaining spot.
 
 
-### Semi-related open questions
+## Semi-related open questions and discovered bugs
 
 1. The Ergoslat has 43 characters and as many 1u keys, but it maps `⌦` on a 1u key and `-` on a 1.25u key. 
    Should those be swapped? (Which means moving `-` further away from its standard right-pinky position...)
@@ -256,12 +271,13 @@ How it looks on the keyboard SVG:
 ## Postponed work items
 
 Tasks to do after the initial implementation:
- - enable and test the levels visualization also the ansi32 and thum32 keymap types that have at least 5 punctuation keys.
-   + the permutation formular will be simpler, because 
+ - enable and test the levels visualization also for the ansi32 and thumb32 keymap types that have at least 5 punctuation keys.
+   + the permutation formula will be simpler, because the `;:` is already missing there. 
 
  - possibly enable it also for the ansi32 and thumb32 keymap types on the Ergoslat which has only 4 punctuation keys. In this case, omit the `/=` key and map 
    + the number row Shift level as `6+ 7& 8* 9/ 0?`
    + `=` on the AltGr layer pinky position next to `<>`.
+   + `^` on AltGr+6 (such that the `6^` label serves as a correct reminder) 
 
  - update the KLC export which currently hardcodes the ANSI base/Shift pairs per key and declares only shift states 0, 1 and 2 (Ctrl) – no AltGr.
    (We might leave this TODO open until we work on KLC export again, since that export is currently not used much.) 
