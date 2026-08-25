@@ -42,9 +42,11 @@ US ANSI has 32 punctuation characters in total: 11 on the base level
 (`` ` ``, `-`, `=`, `[`, `]`, `\`, `;`, `'`, `,`, `.`, `/`)
 and 21 on the Shift level (the 11 partners of those keys plus the 10 shifted digits).
 
-The default small keyboards (Split Ortho, Thumbs Up 13, Ergoslat) have 41 character keys:
+The default small keyboards (Split Ortho, Thumbs Up 13, Ergoslat) have 43 to 45 character keys instead of the 47 of US ANSI,
+and 7 to 9 of those are punctuation keys – see [the table below](#pre-existing-punctuation-maps-on-our-smallest-keyboards).
+This feature brings them down to 41 character keys:
 26 letters + 10 digit keys (which each carry a punctuation character on the Shift level)
-+ 5 punctuation keys, instead of the 47 of US ANSI.
++ 5 punctuation keys.
 That gives them
 - 5 punctuation characters on the base level (the 5 punctuation keys),
 - 15 on the Shift level (10 shifted digits + the 5 shifted punctuation keys),
@@ -100,6 +102,37 @@ While this suggests that `#` and `^` should be moved to the AltGr layer instead 
  - and finally, placing the round parentheses in the middle of the AltGr home row actually make them more easily accessible than on the top right, especially when one wants to type both of them in sequence. Since the pinky finger is too short to comfortably reach the number row, their standard position up there makes the ring finger type both of them.
 
 
+### Freeing the extra punctuation keys
+
+Our small keyboards have more punctuation keys than the five base-level slots of this concept –
+7 to 9 of them, see [the table below](#pre-existing-punctuation-maps-on-our-smallest-keyboards) –
+and some of those sit on thumb keys carrying technical characters like `` ` `` or `\`,
+which contradicts the rule that technical characters live on the AltGr level.
+The feature therefore removes all punctuation keys except the five base ones
+and gives the freed positions to navigation and other keys. This happens in two steps.
+
+**1. Permutation.** The keys keep their positions, but their character pairs move along a cycle:
+`;:` is replaced by `'"`, which is in turn replaced by `/=`.
+This keeps `,` `.` `-` where they are and leaves the old `/` key unassigned.
+It also resolves the duplicate that the Shift pairing list would otherwise create:
+`Ansi30` and `Thumb30` map `;` on its own key, while the pairing list already produces `;` as Shift+`,`.
+After the permutation there is no `;` key left, so there is nothing to warn about.
+
+**2. Reassignment.** Every position that is now unassigned – the old `/` key plus the keys whose technical
+characters moved to the AltGr level – becomes a navigation or other "hands off" key.
+If a keyboard has N punctuation keys, this frees X = N − 5 of them:
+ - if X is odd, one of the freed keys becomes `⌦` (Delete), or `Insert` if the layout already has a Delete key;
+ - the next pair becomes Home/End;
+ - one more pair becomes PageUp/PageDown.
+
+On all four small boards X is 2 (Home/End) or 4 (Home/End plus PageUp/PageDown),
+so the odd case does not occur there.
+
+On keyboards which carry all 11 punctuation keys – the ANSI variants – six keys are freed at once,
+which is more than the generic rule can place sensibly.
+There we customize the full layout mapping instead, so that the additional nav keys end up in sensible pairs.
+In exchange, we only do this for the `ansi30` keymap type, which is enough to show what the key levels can do.
+
 ### AltGr Mapping
 
 Stack of parentheses on the ring and middle fingers, with 
@@ -121,10 +154,12 @@ This "mnemonic" mapping puts all AltGr characters on the **right** hand, which o
 With only the standard right-side AltGr, all AltGr characters have to move to the **left** hand instead:
 `<>` then keeps its row and fingers, but on the other hand, and we lose the `7&|` mnemonic.
 
-Let's see how we solve this on the other boards.
-For the initial version of the feature, we'll start assuming the left-side AltGr key, 
-so that we can use the right-side characters with their mnemonics.
-(Because this is also what I personally use.)
+All three default small boards currently place `AltGr` on the right half of the bottom row
+(`splitOrthoLayoutModel.ts`, `ergoslatLayoutModel.ts`, `xhkbLayoutModel.ts`),
+but the app simply ignores that question: instead of changing the frame mappings or adding a layout option,
+it offers two buttons to switch the AltGr-level character labels between the left and the right hand.
+The initial version defaults to the right-hand placement with its mnemonics,
+which assumes the left-side AltGr key. (Because this is also what I personally use.)
 
 ## Popular workarounds
 
@@ -139,13 +174,36 @@ Once the characters move closer to the home row, the bottom spots can be assigne
 
 ### Pre-existing punctuation maps on our smallest keyboards
 
-| Layout Model       | Total Punctuation Keys | Thereof in Bottom Row |
-|--------------------|------------------------|-----------------------|
-| Thumbs Up 13/2     |                        |                       |
-| Harmoni Mini 12/2  |                        |                       |
-| Ergoslat 13/3      |                        |                       |
-| Split Ortho (12/∞) |                        |                       |
+| Layout Model       | Keymap Type | Punctuation Keys                           | Total | Thereof in Bottom Row   |
+|--------------------|-------------|--------------------------------------------|-------|-------------------------|
+| Thumbs Up 13/2     | `ansi30`    | `,` `.` `;` `/` – `'` `-` `+`              | 7     | 1: `+`                  |
+|                    | `thumb30`   | `,` `.` `;` `-` – `'` `+` `/`              | 7     | 2: `+` `/`              |
+|                    | `ansi32`    | `,` `.` `-` – `/` `+`                      | 5     | 2: `/` `+`              |
+|                    | `thumb32`   | `,` `.` `-` – `/` `+`                      | 5     | 1: `+`                  |
+| Harmonic 12 Mini   | `ansi30`    | `,` `.` `;` `/` – `+` `'` `-`              | 7     | 1: `-`                  |
+|                    | `thumb30`   | `,` `.` `;` `-` – `+` `'` `/`              | 7     | 1: `/`                  |
+| Ergoslat 13/3      | `ansi30`    | `,` `.` `;` `/` – `-` `+` `'`              | 7     | 0                       |
+|                    | `thumb30`   | `,` `.` `;` `-` – `+` `'` `/`              | 7     | 0                       |
+|                    | `ansi32`    | `,` `.` `-` – `+`                          | 4     | 0                       |
+|                    | `thumb32`   | `,` `.` `-` – `+`                          | 4     | 0                       |
+| Split Ortho (12/∞) | `ansi30`    | `,` `.` `;` `/` – `'` `\` `` ` `` `+` `-`  | 9     | 4: `\` `` ` `` `+` `-`  |
+|                    | `thumb30`   | `,` `.` `;` `-` – `'` `/` `+` `\` `` ` ``  | 9     | 3: `+` `\` `` ` ``      |
+|                    | `ansi32`    | `,` `.` `-` – `/` `` ` `` `'` `+`          | 7     | 4: `/` `` ` `` `'` `+`  |
+|                    | `thumb32`   | `,` `.` `-` – `'` `` ` `` `/` `+`          | 7     | 3: `` ` `` `/` `+`      |
 
+The characters left of the dash come with the keymap type itself, those right of it from the layout's frame mapping.
+The 32-key keymaps contribute only `,` `.` `-`, because three of their character slots go to language-specific letters.
+
+More notes on the numbers:
+ - Neither the thumb-shift option of the Split Ortho nor the MidShift variants of the Ergoslat change any total;
+   they only move keys between rows. (Split Ortho with thumb shift has 3 instead of 4 punctuation keys
+   in the bottom row on `ansi30`, and 2 instead of 3 on `thumb30`.)
+ - Major and Minor Ergoslat, low-shift and mid-shift, all have the same counts.
+ - Split Ortho's own `splitOrtho` keymap type leaves all punctuation to the flex mapping and thus has no fixed count.
+   Colemak, for example, places 8 punctuation characters there (`;` `'` `,` `.` `/` `-` `=` `\`), 3 of them on thumb keys.
+   The Harmonic 12's own `harmonic12` keymap type is currently not used by any flex mapping.
+ - For comparison: the ANSI variants have all 11 punctuation keys in their `ansi30` frame
+   (`` ` `` `-` `=` `[` `]` `\` `;` `'` `,` `.` `/`), none of them in the bottom row.
 
 ## App UX
 
@@ -164,41 +222,28 @@ How do we make it work for the flex layouts? Decision: we only configure the lev
 
 How it looks on the keyboard SVG:
  - all digit and punctuation keys should show the base mapping below, Shift mapping above, in the same color.
+ - two buttons switch the AltGr characters between the left and the right hand (see [AltGr Mapping](#altgr-mapping)).
  - the AltGr mapping of the key should be in a different color (maybe start with blue); 
    the AltGr key should also be highlighted with a blue background to make the relationship clear. 
    This should only happen when the key levels mode is actually active.
 
-## Open questions
+## Scope of the first version
 
-These need a decision before (or while) implementing:
+1. A generic implementation of the layout changes described in
+   [Freeing the extra punctuation keys](#freeing-the-extra-punctuation-keys)
+   for the three small keyboard layouts: Split Ortho, Thumbs Up 13/2, and Ergoslat 13/3.
+   The Harmonic 12 Mini is included as well, if the generic code produces a good result there.
+   If this works, it is our first version, and that is what "done" means for it.
+   This should work on the `ansi30` and `thumb30` keymap types. 
+   + Activating the visualization should switch to a compatible flex mapping (similar logic as in switch layout models).
+   + Selecting a non-compatible flex mapping should switch to the "learning viz".
+   + The changes to the base layer key mappings specified above should only be visible in this visualization; 
+     Others continue to show the ANSI values as before.
+   + For keyboard layout models where the Shift-remapping doesn't apply, the keyboard visualization will show the normal ANSI pairings for the Shift level of digit and punctuation keys and no AltGr level labels.
 
-1. **Which board does the sample mapping describe?** The real frame mappings of the small boards put punctuation
-   on thumb keys as well (Split Ortho has `+`, `` ` ``, `\`, `/`, `'` in its bottom row; Thumbs Up 13 has `+` and `/`).
-   The sample above ignores the thumb row, and some of those thumb keys carry "technical" characters on the base level,
-   which contradicts the rule that technical characters live on AltGr. Does the feature move them, or leave them as an
-   extra (duplicate) base mapping?
-
-The feature removes all but five punctuation keys and replaces them with nav and other keys as described in the answer to 3.
-
-2. **Duplicate characters.** `Ansi30` and `Thumb30` still map `;` on its own key, while the Shift pairing list
-   would also produce `;` as Shift+`,`. Which one wins, and do we warn about the duplicate?
-
-Hypothetical solution:
- - Do an automatic permutation-style remapping: `;:` replaced by `'"` which is in turn replaced by `/=`. 
- - If a keyboard has N punctuation keys, this frees X = N-5 of them. If X is odd, one of those freed keys becomes Delete, or if Delete is already on the layout, it becomes Insert. The remaining pair becomes Home/End. If there is still one more pair of freed keys, those become PageUp/Dn.
- - On keyboards which carry all 11 punctuation keys, we probably want to customize the full layout mapping so that the additional nav keys can be placed in sensible pairs. In exchange, we'll only do this for the ansi30 keymap type, which is enough to show what the key levels can do.
-
-3. **Scope of the first version.** Which layouts and keymap types does it cover, and what does "done" look like?
-
- - First, make a concept how the necessary layout changes can be done generically (as per the previous point) on the three small keyboard layouts mentioned above. (We can also include the Harmonic 12/2, if the generic code produces a good result there.) If this works, it will be our first version.
-
- - Second, make a single ansi30 mapping for the wide and non-wide modes of the ANSI keyboard variants (except the larger XHKB variants which are too different) which puts `Escape` in place of `` `~ `` on the top left, Home/End and PageUp/Dn in pairwise spots, and finally `⌦` in the remaining spot.
-
-4. **Where does the left-side AltGr key come from?** All three default small boards currently place `AltGr` on the
-   right half of the bottom row (`splitOrthoLayoutModel.ts`, `ergoslatLayoutModel.ts`, `xhkbLayoutModel.ts`), so the
-   initial version needs the frame mappings changed – or a layout option, like the existing wide-mod checkbox.
-
-The app UI should simply ignore the AltGr question – instead offer two buttons to switch the AltGr characters between the left and right sides. 
+2. A single `ansi30` mapping for the wide and non-wide modes of the ANSI keyboard variants
+   (except the larger XHKB variants, which are too different), which puts `Escape` in place of `` `~ `` in the top left,
+   Home/End and PageUp/PageDown in pairwise spots, and finally `⌦` in the remaining spot.
 
 
 ### Semi-related open questions
@@ -206,11 +251,18 @@ The app UI should simply ignore the AltGr question – instead offer two buttons
 1. The Ergoslat has 43 characters and as many 1u keys, but it maps `⌦` on a 1u key and `-` on a 1.25u key. 
    Should those be swapped? (Which means moving `-` further away from its standard right-pinky position...)
 
-2. The Harmonic layouts don't show any thumb key layouts anymore. At least the thumb30 keymap type should probably be implemented on them. (Even though I otherwise consider them deprecated.)
+2. There's a bug in the current production app (4773011ba8c54c8873497c3d8d371cb296c540fc) that makes all thumb key mappings disappear. It was fixed by a reload.
 
 ## Postponed work items
 
 Tasks to do after the initial implementation:
+ - enable and test the levels visualization also the ansi32 and thum32 keymap types that have at least 5 punctuation keys.
+   + the permutation formular will be simpler, because 
+
+ - possibly enable it also for the ansi32 and thumb32 keymap types on the Ergoslat which has only 4 punctuation keys. In this case, omit the `/=` key and map 
+   + the number row Shift level as `6+ 7& 8* 9/ 0?`
+   + `=` on the AltGr layer pinky position next to `<>`.
+
  - update the KLC export which currently hardcodes the ANSI base/Shift pairs per key and declares only shift states 0, 1 and 2 (Ctrl) – no AltGr.
    (We might leave this TODO open until we work on KLC export again, since that export is currently not used much.) 
 
