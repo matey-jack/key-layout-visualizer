@@ -89,7 +89,7 @@ We need to weigh the following trade-offs:
 Stack of parentheses on the ring and middle fingers, with 
  - `()` in the home row,
  - `<>` on the same keys where ANSI maps them (the `,` and `.` positions in the lower row),
- - `[]` in the number row, matching exactly their German standard layout position, and
+ - `[]` in the number row, which (in the right-hand variant below) is exactly their German standard layout position, and
  - `{}` in the remaining (upper letter) row.
 
 The remaining characters
@@ -100,7 +100,6 @@ are mapped on the index finger with `|` on the same key as `&`, reflecting their
 
 This "mnemonic" mapping puts all AltGr characters on the **right** hand, which only works when there is an AltGr key for the **left** thumb:
  - On a German ISO keyboard we can use the extra ISO key (next to the left Shift) as a second AltGr.
-   This also conveniently maps `[]` in the same positions that they have in the default German layout.
  - On Split Ortho we can simply place AltGr on the left side from the start.
 
 With only the standard right-side AltGr, all AltGr characters have to move to the **left** hand instead:
@@ -141,10 +140,10 @@ These need a decision before (or while) implementing:
    extra (duplicate) base mapping?
 2. **Duplicate characters.** `Ansi30` and `Thumb30` still map `;` on its own key, while the Shift pairing list
    would also produce `;` as Shift+`,`. Which one wins, and do we warn about the duplicate?
-3. (solved already)
-4. **What exactly are the `/?` and `=+` alternatives?** The trade-off bullets say what we lose, but not where the
-   displaced characters end up. Two more sample diagrams would settle it. ==> please check above if this is clear now!
-5. **Scope of the first version.** Which layouts and keymap types does it cover, and what does "done" look like?
+3. **Scope of the first version.** Which layouts and keymap types does it cover, and what does "done" look like?
+4. **Where does the left-side AltGr key come from?** All three default small boards currently place `AltGr` on the
+   right half of the bottom row (`splitOrthoLayoutModel.ts`, `ergoslatLayoutModel.ts`, `xhkbLayoutModel.ts`), so the
+   initial version needs the frame mappings changed – or a layout option, like the existing wide-mod checkbox.
 
 ## Postponed work items
 
