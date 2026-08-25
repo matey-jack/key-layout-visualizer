@@ -137,6 +137,15 @@ This makes sense from a space-usage point of view, since the space bar and modif
 On the other hand, typing characters in the bottom row is not as practical. 
 Once the characters move closer to the home row, the bottom spots can be assigned with navigation and other keys which are used outside a fast typing flow – "hands off" usage – which is more practical.
 
+### Pre-existing punctuation maps on our smallest keyboards
+
+| Layout Model       | Total Punctuation Keys | Thereof in Bottom Row |
+|--------------------|------------------------|-----------------------|
+| Thumbs Up 13/2     |                        |                       |
+| Harmoni Mini 12/2  |                        |                       |
+| Ergoslat 13/3      |                        |                       |
+| Split Ortho (12/∞) |                        |                       |
+
 
 ## App UX
 
@@ -146,6 +155,8 @@ Design decision:
    (Note there already is an unused `VisualizationType.MappingAltGr` with a commented-out button in [app.tsx](../src/app.tsx) 
    and an `AltGrLayerDetails` text in [DetailsArea.tsx](../src/details/DetailsArea.tsx) – 
    this feature should either use or remove them.)
+ ==> decision: use the viz type, because then the keyboard is clear of any unrelated visualization. 
+   Also using a mapping viz type shows the keyboard as 2D which distracts less from the key labels.
 
 How do we make it work for the flex layouts? Decision: we only configure the levels globally (for all layouts and mappings), but in two different ways:
  - for the Shift level, we define it via a list of pairings. This list can include more characters on the base level than are actually in the present layout; those will be ignored.
@@ -166,12 +177,36 @@ These need a decision before (or while) implementing:
    The sample above ignores the thumb row, and some of those thumb keys carry "technical" characters on the base level,
    which contradicts the rule that technical characters live on AltGr. Does the feature move them, or leave them as an
    extra (duplicate) base mapping?
+
+The feature removes all but five punctuation keys and replaces them with nav and other keys as described in the answer to 3.
+
 2. **Duplicate characters.** `Ansi30` and `Thumb30` still map `;` on its own key, while the Shift pairing list
    would also produce `;` as Shift+`,`. Which one wins, and do we warn about the duplicate?
+
+Hypothetical solution:
+ - Do an automatic permutation-style remapping: `;:` replaced by `'"` which is in turn replaced by `/=`. 
+ - If a keyboard has N punctuation keys, this frees X = N-5 of them. If X is odd, one of those freed keys becomes Delete, or if Delete is already on the layout, it becomes Insert. The remaining pair becomes Home/End. If there is still one more pair of freed keys, those become PageUp/Dn.
+ - On keyboards which carry all 11 punctuation keys, we probably want to customize the full layout mapping so that the additional nav keys can be placed in sensible pairs. In exchange, we'll only do this for the ansi30 keymap type, which is enough to show what the key levels can do.
+
 3. **Scope of the first version.** Which layouts and keymap types does it cover, and what does "done" look like?
+
+ - First, make a concept how the necessary layout changes can be done generically (as per the previous point) on the three small keyboard layouts mentioned above. (We can also include the Harmonic 12/2, if the generic code produces a good result there.) If this works, it will be our first version.
+
+ - Second, make a single ansi30 mapping for the wide and non-wide modes of the ANSI keyboard variants (except the larger XHKB variants which are too different) which puts `Escape` in place of `` `~ `` on the top left, Home/End and PageUp/Dn in pairwise spots, and finally `⌦` in the remaining spot.
+
 4. **Where does the left-side AltGr key come from?** All three default small boards currently place `AltGr` on the
    right half of the bottom row (`splitOrthoLayoutModel.ts`, `ergoslatLayoutModel.ts`, `xhkbLayoutModel.ts`), so the
    initial version needs the frame mappings changed – or a layout option, like the existing wide-mod checkbox.
+
+The app UI should simply ignore the AltGr question – instead offer two buttons to switch the AltGr characters between the left and right sides. 
+
+
+### Semi-related open questions
+
+1. The Ergoslat has 43 characters and as many 1u keys, but it maps `⌦` on a 1u key and `-` on a 1.25u key. 
+   Should those be swapped? (Which means moving `-` further away from its standard right-pinky position...)
+
+2. The Harmonic layouts don't show any thumb key layouts anymore. At least the thumb30 keymap type should probably be implemented on them. (Even though I otherwise consider them deprecated.)
 
 ## Postponed work items
 
