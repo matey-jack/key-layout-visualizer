@@ -47,3 +47,11 @@ write a throwaway test file (handy in plan mode where you can't write test files
   width — **re-bind it in any factory that changes row widths** (center/inline arrows), or it
   uses stale geometry. `model.keyWidths[row].length` always equals the frame-mapping row
   length (both drive `getKeyPositions`) and is a safe live width source.
+
+## Documentation style
+
+Documentation describes the code as it is now, never as it was before.
+No "this replaces X", no "used to be Y", no "is being retired", no migration notes —
+not in `docs/`, not in code comments. Rationale for the current state is welcome
+("we picked ␣ over ␠ because …"); the history of how we got there belongs in commit
+messages and pull requests, where it stays attached to the change that made it true.
