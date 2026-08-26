@@ -192,10 +192,13 @@ which assumes the left-side AltGr key. (Because this is also what I personally u
 
 ### TODO: AltGr navigation keys on the other half of the keyboard
 
-Word backward	↞	U+219E leftwards two-headed arrow
-Word forward	↠	U+21A0 rightwards two-headed arrow
-Scroll up	↟	U+219F upwards two-headed arrow
-Scroll down	↡	U+21A1 downwards two-headed arrow
+Depending on the system used for actually implementing the key map, we can abuse the character levels to create a "hands down"  navigation layer (TODO: is there any established term for this?). 
+ - Windows national layouts don't allow that
+ - xkb config allows it (using the term "levels")
+ - programmable keyboard firmware such as QMK and ZMK allows it (but using the term "layer" which is a more general concept)
+
+
+    Navigation keys: ↑ ↓ ← → ↞ ↠ ↟ ↡ ⇤ ⇥ ⇱ ⇲ ⇞ ⇟
 
 
 ## Popular workarounds
