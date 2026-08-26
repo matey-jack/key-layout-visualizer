@@ -86,10 +86,10 @@ next to the 10 essential ones (5 + 15 = 20 slots for 20 characters – it fits e
 
 Here's a sample solution for a keyboard that has 1, 1, and 3 punctuation key positions in its upper, home, and lower row:
 
-    1! 2@ 3# 4$ 5% 6^ 7& 8* 9+ 0?
-                                  /=
-                               '"
-                         ,; .: -_
+    ⎋  1! 2@ 3# 4$ 5% 6^ 7& 8* 9+ 0?  ⌫
+                               o  p  /=
+                            k  l  '"  ↵  
+                      n  m  ,; .: -_  ⇧
 
 This creates one new character pairing (key label) with the `/=` key.
 We could instead reuse the existing `/?` or `=+` key label.
@@ -100,6 +100,24 @@ We need to weigh the following trade-offs:
    But in a firmware mapping (like with [QMK's custom shift keys]), this will work without disadvantages, which is why it's the mapping I personally use.
 
 [QMK's custom shift keys]: https://getreuer.info/posts/keyboards/custom-shift-keys/index.html
+
+### A compatible punctuation map for full-size keyboards
+
+On keyboard layouts with all 47 keys, compression punctuation from 11 down to 5 keys allows us to place 6 more non-character keys. 
+One of those is usually Escape in the top left corner; the others could be Home/End, PageUp/Down, and (forward) Delete. 
+But there is also the option of simply rearranging the punctuation characters, so that the "1 unit from home" keys are mapped exactly like on the smaller keyboards and the remaining 6 keys collect the remaining punctuation characters.
+This allows for a very logical character assignment, since the compressed punctuation dislodges both bracket pairs `()` and `<>`.
+We can nicely arrange them on the same pair of keys.
+The resulting punctuation keymap looks like this:
+
+    ⎋   1!  2@  3#  4$  5%  6^  7&  8*  9+  0?  (<  )>   ⌫⌫⌫
+                                          o   p   [{  ]}  \|
+                                       k   l   '"  /=   ↵↵↵↵  
+                                 n   m   ,;  .:  -_   ⇧⇧⇧⇧⇧⇧
+
+Given this keymap, we can simply replace the two pairs of brackets with two pairs of navigation keys, 
+while the larger `\|` key becomes (forward) Delete.
+
 
 #### Rejected Alternatives
 
@@ -171,6 +189,14 @@ but the app simply ignores that question: instead of changing the frame mappings
 it offers two buttons to switch the AltGr-level character labels between the left and the right hand.
 The initial version defaults to the right-hand placement with its mnemonics,
 which assumes the left-side AltGr key. (Because this is also what I personally use.)
+
+### TODO: AltGr navigation keys on the other half of the keyboard
+
+Word backward	↞	U+219E leftwards two-headed arrow
+Word forward	↠	U+21A0 rightwards two-headed arrow
+Scroll up	↟	U+219F upwards two-headed arrow
+Scroll down	↡	U+21A1 downwards two-headed arrow
+
 
 ## Popular workarounds
 
@@ -245,6 +271,11 @@ How it looks on the keyboard SVG:
  - the AltGr mapping of the key should be in a different color (maybe start with blue); 
    the AltGr key should also be highlighted with a blue background to make the relationship clear. 
    This should only happen when the key levels mode is actually active.
+
+TODO: 
+ - placement of the buttons
+ - buttons for switching the compressed full-size punctuation from punctuation to Nav-key mode
+
 
 ## Scope of the first version
 
