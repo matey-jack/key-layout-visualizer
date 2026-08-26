@@ -44,7 +44,7 @@ and 21 on the Shift level (the 11 partners of those keys plus the 10 shifted dig
 
 The default small keyboards (Split Ortho, Thumbs Up 13, Ergoslat) have 43 to 45 character keys instead of the 47 of US ANSI,
 and 7 to 9 of those are punctuation keys – see [the table below](#pre-existing-punctuation-maps-on-our-smallest-keyboards).
-This feature brings them down to 41 character keys except for bottom row keys:
+This feature brings them down to 41 character keys, not counting extra characters on bottom row keys:
 26 letters + 10 digit keys (which each carry a punctuation character on the Shift level)
 + 5 punctuation keys.
 
@@ -118,7 +118,9 @@ Our small keyboards have more punctuation keys than the five base-level slots of
 and some of those sit in the bottom row carrying technical characters like `` ` `` or `\`,
 which contradicts the rule that technical characters live on the AltGr level.
 The feature therefore removes all punctuation keys except the five base ones
-and gives the freed positions to navigation and other keys. This happens in two steps.
+and gives the freed positions to navigation and other keys.
+We call the result the **compressed Shift pairings**, as opposed to the ANSI pairings.
+It is produced in two steps.
 
 **1. Permutation.** The keys keep their positions, but their character pairs move along a cycle:
 `;:` is replaced by `'"`, which is in turn replaced by `/=`.
@@ -217,7 +219,7 @@ More notes on the numbers:
 
 ## App UX
 
-Design decision: add a new layout visualization type named "Shift and AltGr levels" 
+Design decision: add a new mapping visualization type named "Shift and AltGr levels" 
    (It can use the `VisualizationType.MappingAltGr` and its commented-out button in [app.tsx](../src/app.tsx) 
    and the `AltGrLayerDetails` text in [DetailsArea.tsx](../src/details/DetailsArea.tsx) – 
    But maybe we should rename them.)
@@ -226,7 +228,8 @@ Using a mapping viz type shows the keyboard as 2D which distracts less from the 
 
 On all keyboard layout models, this will show the Shifted characters and the AltGr mappings as described below.
 
-On keyboard layout models, where the "compressed shift pairings" are implemented (see below), 
+On keyboard layout models, where the [compressed Shift pairings](#freeing-the-extra-punctuation-keys)
+are implemented (see [Scope of the first version](#scope-of-the-first-version)), 
 it will offer a two-button switch group labeled "Shift pairings" with buttons "ANSI" and "Compressed".
 "ANSI" is just the normal state shown on all keyboard layouts by default (see `msKlcTemplate.ts`),
 "Compressed" is the reduction to 5 punctuation keys described in this file.
@@ -237,7 +240,8 @@ How do we make it work for the flex layouts? Decision: we only configure the lev
 
 How it looks on the keyboard SVG:
  - all digit and punctuation keys should show the base mapping below, Shift mapping above, in the same color.
- - two buttons switch the AltGr characters between the left and the right hand (see [AltGr Mapping](#altgr-mapping)).
+ - a two-button switch group labeled "AltGr side" with buttons "left" and "right"
+   switches the AltGr characters between the hands (see [AltGr Mapping](#altgr-mapping)).
  - the AltGr mapping of the key should be in a different color (maybe start with blue); 
    the AltGr key should also be highlighted with a blue background to make the relationship clear. 
    This should only happen when the key levels mode is actually active.
@@ -254,7 +258,6 @@ How it looks on the keyboard SVG:
    + Selecting a non-compatible flex mapping should switch to the "learning viz".
    + The changes to the base layer key mappings specified above should only be visible in this visualization; 
      Others continue to show the ANSI values as before.
-   + For keyboard layout models where the Shift-remapping doesn't apply, the keyboard visualization will show the normal ANSI pairings for the Shift level of digit and punctuation keys and no AltGr level labels.
 
 2. A single `ansi30` mapping for the wide and non-wide modes of the ANSI keyboard variants
    (except the larger XHKB variants, which are too different), which puts `Escape` in place of `` `~ `` in the top left,
@@ -278,6 +281,8 @@ Tasks to do after the initial implementation:
    + the number row Shift level as `6+ 7& 8* 9/ 0?`
    + `=` on the AltGr layer pinky position next to `<>`.
    + `^` on AltGr+6 (such that the `6^` label serves as a correct reminder) 
+   + This changes the punctuation character distribution to 4, 14, 14 on base, Shift, and AltGr levels. 
+     Different from the other layout models, simply because we only have 4 pure punctuation keys.
 
  - update the KLC export which currently hardcodes the ANSI base/Shift pairs per key and declares only shift states 0, 1 and 2 (Ctrl) – no AltGr.
    (We might leave this TODO open until we work on KLC export again, since that export is currently not used much.) 
