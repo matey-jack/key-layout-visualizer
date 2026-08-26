@@ -203,6 +203,7 @@ export const keyboardSymbols = "↹⌦⎀⌫⇧☰␣⏎¤⌥⇞⇟⇤⇥⇱⇲�
 
 // Characters (not symbols) beyond ASCII and beyond an alphabet's own letters, worth a key of their own.
 // ´ is the dead-key accent of the German and other European keyboards.
+// Related characters that are already in ASCII: $ %
 export const usefulNonAsciiCharacters = "€¢£¥µ×–¿¡§‰´";
 
 export interface FlexMapping {
