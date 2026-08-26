@@ -84,17 +84,11 @@ These appear inside flex mapping strings so that a mapping stays one readable st
 **Menu — ☰ (U+2630 trigram for heaven).**
 Rejected: ≣ (U+2263 strictly equivalent to) and ≡ (U+2261 identical to). Both are mathematical relation operators
 that happen to look like three lines; ☰ is the shape people now read as "menu" everywhere else.
-`≡` was in use in some flex mappings and is being retired — it was never in `keyboardSymbols`,
-so those keys silently rendered as ordinary character keys.
 
 **Escape — the text `Esc`, not a symbol.**
 Rejected: ⎋ (U+238B broken circle with northwest arrow) *on the key cap*. It is the correct Unicode
-escape-key symbol, and we decided against it anyway: almost nobody recognises it, and at key-cap size the broken
-circle turns to mush. Three letters are clearer than a glyph that has to be explained.
-In the *source* it earns its keep: ⎋ is the single-character shorthand for `Esc` in flex mappings and in
-cycle specs, expanded to the text `Esc` before anything is rendered. A three-letter label cannot appear in a
-mapping row written as one string per row, nor in a cycle token that is one character wide. It stays out of
-`keyboardSymbols`, so it can never reach a cap.
+escape-key symbol, but we use it only internally, because on a keycap, almost nobody recognises it.
+(Also at key-cap size the broken circle turns to mush.)
 
 **Space — ␣ (U+2423 open box).**
 Replaces ⍽ (U+237D shouldered open box), which is an APL character with thinner font coverage and no particular
@@ -109,10 +103,10 @@ Rejected alternatives:
   sizes, but "two arrows" suggests doubled speed, which collides with the page-wise jump. Keep as the fallback if
   the second arrowhead of ↞ ↠ ↟ ↡ does not survive rendering at key-cap size.
 - ⇐ ⇒ ⇑ ⇓ (double-line arrows) — read as logical implication.
-- ⇡ ⇣ (dashed arrows) — the dashes vanish at key-cap size.
+- ⇡ ⇣ (dashed arrows) — this would be a great contrast to show that scrolling does not move the caret, 
+  but the dashes vanish at key-cap size.
 - ⤒ ⤓ (U+2912/2913, arrow to bar) — these say "to the very top/bottom", so they belong to document start/end,
   not to a scroll step; and that job is already ⇱ ⇲.
-- ⌥← / ⌥→ style compound labels — two glyphs wide, and they describe a *shortcut* rather than a *function*.
 
 **Home/End — ⇤ ⇥ kept, despite the Tab clash.**
 ⇥ is the near-universal Tab glyph on other keyboards. We keep it for End anyway, because inside this app
@@ -147,17 +141,6 @@ and so nobody assumes they are already wired up — none of these are in `keyboa
 | ⌧ | U+2327 | "X in a rectangle box" — the Clear key on some keyboards. |
 | ⇭ | U+21ED | Num Lock. |
 | ⇬ | U+21EC | Caps Lock, but the locking variant. We use ⇪ / `CAPS`. |
-
-## Open questions
-
-1. **Are ↞ ↠ ↟ ↡ legible at key-cap size?** The second arrowhead is only a few pixels wide in the SVG
-   at the sizes we render. If it does not survive, swap the whole family to ⇇ ⇉ ⇈ ⇊ rather than mixing.
-2. **Should the scroll pair use a different shape after all?** ↟ ↡ move the view, while ↞ ↠ move the caret,
-   so the arrowhead-count rule is being read slightly differently on the two axes. It was decided that this is
-   acceptable, but a reviewer may disagree.
-3. **Does any layout model want ⇱ ⇲ yet?** They are defined and whitelisted, but no model maps them so far.
-4. **Should `Opt` stay in `keyboardNames`?** No mapping uses it, and ⌥ is documented as AltGr, which makes
-   the presence of a separate `Opt` name a small trap.
 
 ## Follow-up work
 
