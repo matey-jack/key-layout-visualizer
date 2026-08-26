@@ -107,21 +107,21 @@ export const ansiIBMLayoutModel: LayoutModel = {
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
             ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "☰", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "Alt", "␣", "AltGr", "☰", "Fn", "Ctrl"],
         ],
         [KeymapTypeId.Ansi30]: [
             ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "[", "]", "\\"],
             ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "☰", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "Alt", "␣", "AltGr", "☰", "Fn", "Ctrl"],
         ],
         [KeymapTypeId.Ansi32]: [
             ["`~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "=", "/", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "'", "⌦"],
             ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-            ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "☰", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "Alt", "␣", "AltGr", "☰", "Fn", "Ctrl"],
         ],
     },
 }
@@ -154,7 +154,7 @@ export const ansiWideLayoutModel: LayoutModel = {
                 ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                 ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"],
                 ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-                ["Ctrl", "Cmd", "Alt", "⍽", 0, 1, "Fn", "Ctrl"],
+                ["Ctrl", "Cmd", "Alt", "␣", 0, 1, "Fn", "Ctrl"],
             ],
             [KeymapTypeId.Ansi30]: [
                 // https://colemakmods.github.io/ergonomic-mods/wide.html
@@ -163,28 +163,28 @@ export const ansiWideLayoutModel: LayoutModel = {
                 ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
                 // note how 9 is flipped here, as well.
                 ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-                ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "☰", "Fn", "Ctrl"],
+                ["Ctrl", "Cmd", "Alt", "␣", "AltGr", "☰", "Fn", "Ctrl"],
             ],
             [KeymapTypeId.Ansi32]: [
                 ["`~", "1", "2", "3", "4", "5", "6", "=", "7", "8", "9", "0", "/", "⌫"],
                 ["↹", 0, 1, 2, 3, 4, [2, 10], 5, 6, 7, 8, 9, 10, "⌦"],
                 ["CAPS", 0, 1, 2, 3, 4, "'", 5, 6, 7, 8, 9, "⏎"],
                 ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-                ["Ctrl", "Cmd", "Alt", "⍽", "AltGr", "☰", "Fn", "Ctrl"],
+                ["Ctrl", "Cmd", "Alt", "␣", "AltGr", "☰", "Fn", "Ctrl"],
             ],
             [KeymapTypeId.Thumb30]: [
                 ["Esc", "1", "2", "3", "4", "5", "6", "`~", "7", "8", "9", "0", "=", "⌫"],
                 ["↹", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "'", "\\"],
                 ["CAPS", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, 9, "⏎"],
                 ["⇧", 0, 1, 2, 3, 4, '/', 5, 6, 7, 8, "⇧"],
-                ["Ctrl", "Cmd", "Alt", "⍽", 0, "AltGr", "Fn", "Ctrl"],
+                ["Ctrl", "Cmd", "Alt", "␣", 0, "AltGr", "Fn", "Ctrl"],
             ],
             [KeymapTypeId.Thumb32]: [
                 ["`~", "1", "2", "3", "4", "5", "6", "=", "7", "8", "9", "0", "/", "⌫"],
                 ["↹", 0, 1, 2, 3, 4, 5, "\\", 6, 7, 8, 9, 10, "⌦"],
                 ["CAPS", 0, 1, 2, 3, 4, "'", 5, 6, 7, 8, 9, "⏎"],
                 ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-                ["Ctrl", "Cmd", "Alt", "⍽", 0, "AltGr", "Fn", "Ctrl"],
+                ["Ctrl", "Cmd", "Alt", "␣", 0, "AltGr", "Fn", "Ctrl"],
             ],
         },
     }
@@ -234,11 +234,11 @@ function duplicateBottomMiddle<T>(mapping: T[][], bottomIdx: number, middleIdx: 
 
 export function createApple(lm: LayoutModel): LayoutModel {
     const addAppleBottom = (matrix: FrameMapping) => {
-        matrix[KeyboardRows.Bottom] = mirrorOdd("Ctrl", "Opt", "Cmd", "⍽");
+        matrix[KeyboardRows.Bottom] = mirrorOdd("Ctrl", "Opt", "Cmd", "␣");
         return matrix;
     };
     const addAppleThumbyBottom = (matrix: FrameMapping) => {
-        matrix[KeyboardRows.Bottom] = ["Ctrl", "Opt", "Cmd", "⍽", 0, "Cmd", "Opt"];
+        matrix[KeyboardRows.Bottom] = ["Ctrl", "Opt", "Cmd", "␣", 0, "Cmd", "Opt"];
         return matrix;
     };
     return {
@@ -339,7 +339,7 @@ function splitKeys(matrix: FrameMapping): FrameMapping {
     matrix[KeyboardRows.Lower].push("Fn");
     // Explicit gaps instead of "rowStart", because both sides are different.
     // (Which almost centers the spacebar between thumbs, btw.)
-    matrix[KeyboardRows.Bottom] = [null, "Alt", "Cmd", "⍽", "Cmd", "Alt", null];
+    matrix[KeyboardRows.Bottom] = [null, "Alt", "Cmd", "␣", "Cmd", "Alt", null];
     return matrix
 }
 

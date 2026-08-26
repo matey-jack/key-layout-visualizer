@@ -13,7 +13,7 @@ const ansi30FrameMapping: FrameMapping = [
     ["↹", 0, 1, 2, 3, 4, "-", null, "+", 5, 6, 7, 8, 9, "\\"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", 9, 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "⎀", "⍽", "AltGr", "☰", "Cmd", "Ctrl"],
+    ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "⎀", "␣", "AltGr", "☰", "Cmd", "Ctrl"],
 ];
 
 const ansi32FrameMapping: FrameMapping = [
@@ -21,7 +21,7 @@ const ansi32FrameMapping: FrameMapping = [
     ["↹", 0, 1, 2, 3, 4, "'", null, "+", 5, 6, 7, 8, 9, 10],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, 10],
     ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", 9, 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "⎀", "⍽", "AltGr", "☰", "Cmd", "Ctrl"],
+    ["Ctrl", "Cmd", "Fn", "Alt", "⏎", "⎀", "␣", "AltGr", "☰", "Cmd", "Ctrl"],
 ];
 
 const thumb30FrameMapping: FrameMapping = [
@@ -29,7 +29,7 @@ const thumb30FrameMapping: FrameMapping = [
     ["↹", 0, 1, 2, 3, 4, "+", null, "\\", 5, 6, 7, 8, 9, "⏎"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", "/", 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Fn", "Alt", 0, "⎀", "⍽", "AltGr", "☰", "Cmd", "Ctrl"],
+    ["Ctrl", "Cmd", "Fn", "Alt", 0, "⎀", "␣", "AltGr", "☰", "Cmd", "Ctrl"],
 ];
 
 const thumb32FrameMapping: FrameMapping = [
@@ -37,7 +37,7 @@ const thumb32FrameMapping: FrameMapping = [
     ["↹", 0, 1, 2, 3, 4, "'", null, "+", 5, 6, 7, 8, 9, "⏎"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "`~", "⇥", 5, 6, 7, 8, 9, [1, 10]],
     ["⇧", 0, 1, 2, 3, 4, "⇞", "⇟", 9, 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "Fn", "Alt", 0, "⎀", "⍽", "AltGr", "☰", "Cmd", "Ctrl"],
+    ["Ctrl", "Cmd", "Fn", "Alt", 0, "⎀", "␣", "AltGr", "☰", "Cmd", "Ctrl"],
 ];
 
 export const ergoplankLayoutModel: LayoutModel = {
@@ -189,7 +189,7 @@ function addInlineArrows(list: FrameMapping):  FrameMapping {
     const lastRow = list[list.length - 1];
     const left = lastRow.slice(0, 5);
     const leftMod = left.map(key => key === "Fn" ? "AltGr" : key);
-    const right = ["Fn", "⍽", "Ctrl", null, "←", "↑", "↓", "→"];
+    const right = ["Fn", "␣", "Ctrl", null, "←", "↑", "↓", "→"];
     const newBottomRow = [null, ...leftMod, ...right];
     return [...list.slice(0, -1), newBottomRow];
 }

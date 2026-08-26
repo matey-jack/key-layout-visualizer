@@ -37,7 +37,7 @@ export const qwertyWideMapping: FlexMapping = {
             "qwert" + "]" + "yuiop-\\",
             "asdfg" + ";" + "jnkl'",
             "zxcvb" + "/" + "hm,.",
-            "⌥≡",
+            "⌥☰",
         ],
     },
     fallback: qwertyMapping,
@@ -67,7 +67,7 @@ export const qwertzMapping: FlexMapping = {
             "qwert" + "+" + "zuiopüä",
             "asdfg" + "#hjklö",  // there is ä on the ISO key here
             "yxcvb" + "-nm,.",   // and <> on the ISO key here
-            "⌥≡"
+            "⌥☰"
         ],
         // We have one less key above the bottom on the Harmonic 14T than on ANSI, and one taken up by Escape,
         // but we have two character keys in the bottom, so it checks out to 100% coverage!
@@ -76,7 +76,7 @@ export const qwertzMapping: FlexMapping = {
             "qwert" + "+z" + "uiopüä",
             "asdfg" + "#" + "hjklö",
             "yxcvb" + "-" + "nm,.",
-            "^⌥´≡"
+            "^⌥´☰"
         ]
     }
 }

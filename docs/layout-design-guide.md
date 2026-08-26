@@ -4,7 +4,7 @@ Let's try to write down the design principles I used so that LLM-based agents ca
 # All keys are of size 1u, 1.25u, 1.5u, or 1.75u. 
 
 - Larger than 1u keys are only used at the edge or center; 
-- Ideally, those larger than 1u keys at the edge or center are used for non-character keys that are also larger than 1u on traditional keyboards: Space ⍽, Shift ⇧, Enter ⏎, Backspace ⌫, modifier keys, or non-character keys of similar function, like the (forward) delete key ⌦.
+- Ideally, those larger than 1u keys at the edge or center are used for non-character keys that are also larger than 1u on traditional keyboards: Space ␣, Shift ⇧, Enter ⏎, Backspace ⌫, modifier keys, or non-character keys of similar function, like the (forward) delete key ⌦.
 - Exceptionally, those special non-character functions can also be placed on larger than 1u keys not at the edge or center; or they can be placed on 1u keys.
 - Characters, except for the space character (and newline and tab, if you count those as characters), should be placed on 1u keys.
   This makes them easier to exchange for a user's preferences or languages and is also much prettier. 

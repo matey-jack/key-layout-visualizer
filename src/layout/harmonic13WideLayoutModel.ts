@@ -11,7 +11,7 @@ const fullMapping: FrameMapping = [
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"], // 12 keys
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], // 13 keys
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"], // 12 keys
-    ["Ctrl", "Cmd", "Alt", 0, "⍽", "⏎", 1, "AltGr", "Fn", "Ctrl"], // 10 keys
+    ["Ctrl", "Cmd", "Alt", 0, "␣", "⏎", 1, "AltGr", "Fn", "Ctrl"], // 10 keys
 ];
 
 const h13wKeyWidth = new MonotonicKeyWidth(13, [0, 0, 0, 0, 0.5], "H13T");
@@ -53,14 +53,14 @@ export const harmonic13WideLayoutModel: LayoutModel = {
             ["↹", 1, 2, 3, 4, "`", 5, 6, 7, 8, 9, "⌫"],
             [[1, 0], 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, 9, "'"],
             ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-            ["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "Alt", "[", "␣", "⏎", "]", "AltGr", "Fn", "Ctrl"],
         ],
         [KeymapTypeId.Thumb30]: [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "[", "]"],
             ["↹", 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, "⌫"],
             [[1, 0], 0, 1, 2, 3, 4, "`", 5, 6, 7, 8, 9, "'"],
             ["⇧", 0, 1, 2, 3, 4, "/", 5, 6, 7, 8, "⇧"],
-            ["Ctrl", "Cmd", "Alt", "\\", "⍽", "⏎", 0, "AltGr", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "Alt", "\\", "␣", "⏎", 0, "AltGr", "Fn", "Ctrl"],
         ],
     },
 
@@ -92,6 +92,6 @@ export const harmonicLayoutModelWithNavKeys = {
         ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫"],
         ["-", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, "'"],
         ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
-        ["Ctrl", "Cmd", "Alt", "PgUp", "⍽", "⏎", "PgDn", "AltGr", "Fn", "Ctrl"],
+        ["Ctrl", "Cmd", "Alt", "PgUp", "␣", "⏎", "PgDn", "AltGr", "Fn", "Ctrl"],
     ],
 }

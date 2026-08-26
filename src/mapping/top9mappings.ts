@@ -54,7 +54,7 @@ export const topNine: FlexMapping = {
             "qwdfb" + "-=" + "kulp'\\",
             "asrtg" + ";" + "jnioh",
             "zxcv" + "[]" + "ym,.",
-            "/e⌥≡",
+            "/e⌥☰",
         ],
     }
 }

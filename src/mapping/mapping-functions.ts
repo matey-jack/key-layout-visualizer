@@ -2,7 +2,9 @@ import {type LayoutModel, SKE_HOME} from "../base-model.ts";
 
 // We don't use Unicode ranges, because we might later map some other Unicode symbols, that are actually characters to insert.
 // Examples: × or ¢ or the "per mille" sign
-const keyboardSymbols = "↹⌦⎀⌫⇧☰⍽⏎¤⌥⇞⇟⇤⇥←↑↓→";
+// What each of these means, and why we picked it over the alternatives: ../../docs/key-symbols.md
+// A glyph missing from this string renders as an ordinary character key, so every new symbol has to be added here.
+const keyboardSymbols = "↹⌦⎀⌫⇧☰␣⏎¤⌥⇞⇟⇤⇥⇱⇲←↑↓→↞↠↟↡";
 
 export const isKeyboardSymbol = (label: string) => keyboardSymbols.includes(label);
 
@@ -14,7 +16,7 @@ const keyboardNames = [
 export const isKeyName = (label: string) => keyboardNames.includes(label);
 
 export const isCommandKey = (label: string) =>
-    (isKeyboardSymbol(label) || isKeyName(label)) && label !== "⍽" && label !== "⏎" && label !== "";
+    (isKeyboardSymbol(label) || isKeyName(label)) && label !== "␣" && label !== "⏎" && label !== "";
 
 export function weighSingleKeyEffort(layoutModel: LayoutModel, charMap: string[][], freqs: Record<string, number>): number {
     const efforts = getSingleKeyEffort(layoutModel, charMap, freqs);
