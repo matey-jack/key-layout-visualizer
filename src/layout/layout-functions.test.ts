@@ -71,7 +71,7 @@ describe('fillMapping', () => {
         expect(actual[1]).toStrictEqual(["↹", "w", "e", "r", "t", "`", "y", "u", "i", "o", "p", "⌫",]);
         expect(actual[2]).toStrictEqual(["q", "a", "s", "d", "f", "g", "\\", "h", "j", "k", "l", ";", "'"]);
         expect(actual[3]).toStrictEqual(["⇧", "z", "x", "c", "v", "b", "/", "n", "m", ",", ".", "⇧",]);
-        expect(actual[4]).toStrictEqual(["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl",]);
+        expect(actual[4]).toStrictEqual(["Ctrl", "Cmd", "Alt", "[", "␣", "⏎", "]", "AltGr", "Fn", "Ctrl",]);
     });
 
     allLayoutModels.forEach((model) => {

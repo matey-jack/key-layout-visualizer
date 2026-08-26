@@ -15,7 +15,7 @@ const fullMapping: FrameMapping = [
     // Let's put 3×1.5u keys per side; two in the middle to keep the staggering.
     // The outside 1.5u keys come free from the stagger.
     // Thus, we have 10 keys left.
-    ["Ctrl", "Cmd", "Alt", 0, "⍽", "⏎", 1, "AltGr", "Fn", "Ctrl"],
+    ["Ctrl", "Cmd", "Alt", 0, "␣", "⏎", 1, "AltGr", "Fn", "Ctrl"],
 ];
 
 const h13msKeyWidth = new MonotonicKeyWidth(13, zeroIndent, "H13MS");
@@ -57,14 +57,14 @@ export const harmonic13MidshiftLayoutModel: LayoutModel = {
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "+"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
             ["⇤", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "⇥"],
-            ["Ctrl", "Cmd", "Alt", "[", "⍽", "⏎", "]", "AltGr", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "Alt", "[", "␣", "⏎", "]", "AltGr", "Fn", "Ctrl"],
         ],
         [KeymapTypeId.Thumb30]: [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "+"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
             ["⇤", 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, "/", "⇥"],
-            ["Ctrl", "Cmd", "Alt", "`", "⍽", "⏎", 0, "AltGr", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "Alt", "`", "␣", "⏎", 0, "AltGr", "Fn", "Ctrl"],
         ],
     },
 

@@ -7,7 +7,7 @@ const fullMapping: FrameMapping = [
     ["¤", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"], // 13 keys
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"], // 12 keys, due to 2u Shift keys.
     // 1×3u space, 2×4×1u, 2×1.5u at the end (take up stagger), makes 1+10 keys.
-    ["Ctrl", "Cmd", "Alt", 0, "⌦", "⍽", 1, 2, 3, "Fn", "Ctrl"],
+    ["Ctrl", "Cmd", "Alt", 0, "⌦", "␣", 1, 2, 3, "Fn", "Ctrl"],
 ]; // total of 63 keys, compared to 62 in the Harmonic 13. (Another bottom bar config could yield one or two more ;-). )
 
 const h14tKeyWidth = new MonotonicKeyWidth(14, zeroIndent, "H14T");
@@ -49,14 +49,14 @@ export const harmonic14TraditionalLayoutModel: LayoutModel = {
             ["↹", 0, 1, 2, 3, 4, "`", 5, 6, 7, 8, 9, "'", "\\"], // 14 keys
             ["¤", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "⏎"], // 13 keys
             ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"], // 12 keys
-            ["Ctrl", "Cmd", "Alt", "[", "⌦", "⍽", "AltGr", "]", "☰", "Fn", "Ctrl"], // 11 keys
+            ["Ctrl", "Cmd", "Alt", "[", "⌦", "␣", "AltGr", "]", "☰", "Fn", "Ctrl"], // 11 keys
         ],
         [KeymapTypeId.Thumb30]: [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "`", "⌫"], // 13 keys
             ["↹", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, "'", "\\"], // 14 keys
             ["¤", 0, 1, 2, 3, 4, "[", 5, 6, 7, 8, 9, "⏎"], // 13 keys
             ["⇧", 0, 1, 2, 3, 4, "]", 5, 6, 7, 8, "⇧"], // 12 keys
-            ["Ctrl", "Cmd", "Alt", "/", "⌦", "⍽", 0, "AltGr", "☰", "Fn", "Ctrl"], // 11 keys
+            ["Ctrl", "Cmd", "Alt", "/", "⌦", "␣", 0, "AltGr", "☰", "Fn", "Ctrl"], // 11 keys
         ],
     },
 

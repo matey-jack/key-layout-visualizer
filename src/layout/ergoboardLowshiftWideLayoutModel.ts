@@ -10,7 +10,7 @@ const ansi30KeyMapping: FrameMapping = [
     ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "-", "⌫"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
     [null, "⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "↑", null],
-    [null, "Ctrl", "Cmd", "CAPS", "Alt", "⍽", "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
+    [null, "Ctrl", "Cmd", "CAPS", "Alt", "␣", "␣", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
 ];
 
 const thumb30KeyMapping: FrameMapping = [
@@ -18,7 +18,7 @@ const thumb30KeyMapping: FrameMapping = [
     ["↹", 0, 1, 2, 3, 4, "[", "]", 5, 6, 7, 8, 9, "+", "⌫"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", null, "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
     [null, "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
-    [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
+    [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "␣", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
 ];
 
 export const ergoboardLowshiftWideLayoutModel: LayoutModel = {

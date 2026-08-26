@@ -69,7 +69,7 @@ export const xhkb13LayoutModel: LayoutModel = {
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "-"],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "Fn"],
-            ["Ctrl", "Cmd", "Alt", "⍽", "⍽", "AltGr", "+", [3, 9], "Ctrl"],
+            ["Ctrl", "Cmd", "Alt", "␣", "␣", "AltGr", "+", [3, 9], "Ctrl"],
         ],
         // Thumb30 has only nine keys in the lower row, so the same bottom row key is the frame's slash.
         [KeymapTypeId.Thumb30]: [
@@ -77,7 +77,7 @@ export const xhkb13LayoutModel: LayoutModel = {
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⇤"],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "⇥"],
-            ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "+", "/", "Fn"],
+            ["Ctrl", "Cmd", "Alt", 0, "␣", "AltGr", "+", "/", "Fn"],
         ],
         // The 32-key maps need every spot for characters: the eleventh key of the home row takes the upper
         // right corner (where the thirty-key maps have Page Up) and the outer bottom row key is the slash.
@@ -86,14 +86,14 @@ export const xhkb13LayoutModel: LayoutModel = {
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, [2, 10]],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "Fn"],
-            ["Ctrl", "Cmd", "Alt", "/", "⍽", "AltGr", "+", [3, 9], "Ctrl"],
+            ["Ctrl", "Cmd", "Alt", "/", "␣", "AltGr", "+", [3, 9], "Ctrl"],
         ],
         [KeymapTypeId.Thumb32]: [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "/"],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "Fn"],
-            ["Ctrl", "Cmd", "Alt", 0, "⍽", "AltGr", "+", [3, 9], "Ctrl"],
+            ["Ctrl", "Cmd", "Alt", 0, "␣", "AltGr", "+", [3, 9], "Ctrl"],
         ],
     },
 }
@@ -168,7 +168,7 @@ export const xhkb15LayoutModel: LayoutModel = {
             ["↹", 0, 1, 2, 3, 4, "-", "+", 5, 6, 7, 8, 9, "'", "⇞"],
             ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "⇟"],
-            ["Ctrl", "Cmd", "`~", "Alt", "⍽", "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "`~", "Alt", "␣", "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
         ],
         // Note that / in the number row and - in the lower row is consistent with many European languages, such as German.
         // And that's what the 32-character set is about after all!
@@ -177,21 +177,21 @@ export const xhkb15LayoutModel: LayoutModel = {
             ["↹", 0, 1, 2, 3, 4, [2, 10], "'", 5, 6, 7, 8, 9, 10, "⇞"],
             ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, "+", 9, 5, 6, 7, 8, "⇧", "⇟"],
-            ["Ctrl", "Cmd", "`~", "Alt", "⍽", "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "`~", "Alt", "␣", "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
         ],
         [KeymapTypeId.Thumb30]: [
             ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, "+", "`~", 5, 6, 7, 8, 9, "'", "⇞"],
             ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "⇟"],
-            ["Ctrl", "Cmd", "⎀", "Alt", 0, "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "⎀", "Alt", 0, "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
         ],
         [KeymapTypeId.Thumb32]: [
             ["Esc", "1", "2", "3", "4", "5", "\\", "/", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, "`~", "'", 5, 6, 7, 8, 9, 10, "⇞"],
             ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, "+", 9, 5, 6, 7, 8, "⇧", "⇟"],
-            ["Ctrl", "Cmd", "⎀", "Alt", 0, "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "⎀", "Alt", 0, "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
         ],
     },
 }
@@ -241,28 +241,28 @@ export const xhkb16LayoutModel: LayoutModel = {
             ["↹", 0, 1, 2, 3, 4, "-", "\\", "+", 5, 6, 7, 8, 9, "'", "⇞"],
             ["⌦", 0, 1, 2, 3, 4, "⇤", "⎀", "⇥", 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, null, "↑", null, 9, 5, 6, 7, 8, "⇧", "⇟"],
-            ["Ctrl", "Cmd", "Alt", "⍽", "←", "↓", "→", "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "Alt", "␣", "←", "↓", "→", "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
         ],
         [KeymapTypeId.Thumb30]: [
             ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, "+", "€", "\\", 5, 6, 7, 8, 9, "'", "⇞"],
             ["⌦", 0, 1, 2, 3, 4, "⇤", "⎀", "⇥", 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, null, "↑", null, "/", 5, 6, 7, 8, "⇧", "⇟"],
-            ["Ctrl", "Cmd", "Alt", 0, "←", "↓", "→", "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "Alt", 0, "←", "↓", "→", "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
         ],
         [KeymapTypeId.Ansi32]: [
             ["Esc", "1", "2", "3", "4", "5", "\\", "`~", "/", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, [2, 10], "'", "+", 5, 6, 7, 8, 9, 10, "⇞"],
             ["⌦", 0, 1, 2, 3, 4, "⇤", "⎀", "⇥", 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, null, "↑", null, 9, 5, 6, 7, 8, "⇧", "⇟"],
-            ["Ctrl", "Cmd", "Alt", "⍽", "←", "↓", "→", "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "Alt", "␣", "←", "↓", "→", "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
         ],
         [KeymapTypeId.Thumb32]: [
             ["Esc", "1", "2", "3", "4", "5", "\\", "`~", "/", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, "'", "€", "+", 5, 6, 7, 8, 9, 10, "⇞"],
             ["⌦", 0, 1, 2, 3, 4, "⇤", "⎀", "⇥", 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, null, "↑", null, 9, 5, 6, 7, 8, "⇧", "⇟"],
-            ["Ctrl", "Cmd", "Alt", 0, "←", "↓", "→", "⍽", "AltGr", "CAPS", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "Alt", 0, "←", "↓", "→", "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
         ],
     },
 

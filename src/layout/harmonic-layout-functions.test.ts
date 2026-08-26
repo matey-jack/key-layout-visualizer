@@ -32,13 +32,13 @@ describe('alignForHex', () => {
         // Verify frameMappings bottom row gap insertion
         const originalHarmonic12Bottom = harmonic12LayoutModel.frameMappings[KeymapTypeId.Harmonic12]![4];
         const resultHarmonic12Bottom = result.frameMappings[KeymapTypeId.Harmonic12]![4];
-        expect(originalHarmonic12Bottom).toStrictEqual(["Ctrl", "Cmd", "Alt", 0, "⍽", "⏎", 1, "AltGr", "Fn", "Ctrl"]);
-        expect(resultHarmonic12Bottom).toStrictEqual(["Ctrl", "Cmd", "Alt", null, 0, "⍽", "⏎", 1, null, "AltGr", "Fn", "Ctrl"]);
+        expect(originalHarmonic12Bottom).toStrictEqual(["Ctrl", "Cmd", "Alt", 0, "␣", "⏎", 1, "AltGr", "Fn", "Ctrl"]);
+        expect(resultHarmonic12Bottom).toStrictEqual(["Ctrl", "Cmd", "Alt", null, 0, "␣", "⏎", 1, null, "AltGr", "Fn", "Ctrl"]);
 
         const originalAnsi30Bottom = harmonic12LayoutModel.frameMappings[KeymapTypeId.Ansi30]![4];
         const resultAnsi30Bottom = result.frameMappings[KeymapTypeId.Ansi30]![4];
-        expect(originalAnsi30Bottom).toStrictEqual(["Ctrl", "Cmd", "Alt", "-", "⍽", "⏎", [3, 9], "AltGr", "Fn", "Ctrl"]);
-        expect(resultAnsi30Bottom).toStrictEqual(["Ctrl", "Cmd", "Alt", null, "-", "⍽", "⏎", [3, 9], null, "AltGr", "Fn", "Ctrl"]);
+        expect(originalAnsi30Bottom).toStrictEqual(["Ctrl", "Cmd", "Alt", "-", "␣", "⏎", [3, 9], "AltGr", "Fn", "Ctrl"]);
+        expect(resultAnsi30Bottom).toStrictEqual(["Ctrl", "Cmd", "Alt", null, "-", "␣", "⏎", [3, 9], null, "AltGr", "Fn", "Ctrl"]);
     });
 
     it('alignForHex correctly transforms harmonic13MidshiftLayoutModel (H13 Midshift)', () => {
@@ -67,8 +67,8 @@ describe('alignForHex', () => {
         // Verify frameMappings bottom row gap insertion
         const originalHarmonic13MSBottom = harmonic13MidshiftLayoutModel.frameMappings[KeymapTypeId.Harmonic13MS]![4];
         const resultHarmonic13MSBottom = result.frameMappings[KeymapTypeId.Harmonic13MS]![4];
-        expect(originalHarmonic13MSBottom).toStrictEqual(["Ctrl", "Cmd", "Alt", 0, "⍽", "⏎", 1, "AltGr", "Fn", "Ctrl"]);
-        expect(resultHarmonic13MSBottom).toStrictEqual(["Ctrl", "Cmd", "Alt", null, 0, "⍽", "⏎", 1, null, "AltGr", "Fn", "Ctrl"]);
+        expect(originalHarmonic13MSBottom).toStrictEqual(["Ctrl", "Cmd", "Alt", 0, "␣", "⏎", 1, "AltGr", "Fn", "Ctrl"]);
+        expect(resultHarmonic13MSBottom).toStrictEqual(["Ctrl", "Cmd", "Alt", null, 0, "␣", "⏎", 1, null, "AltGr", "Fn", "Ctrl"]);
     });
 
     it('alignForHex correctly transforms harmonic13WideLayoutModel (H13 Wide)', () => {
@@ -97,7 +97,7 @@ describe('alignForHex', () => {
         // Verify frameMappings bottom row gap insertion
         const originalHarmonic13WideBottom = harmonic13WideLayoutModel.frameMappings[KeymapTypeId.Harmonic13Wide]![4];
         const resultHarmonic13WideBottom = result.frameMappings[KeymapTypeId.Harmonic13Wide]![4];
-        expect(originalHarmonic13WideBottom).toStrictEqual(["Ctrl", "Cmd", "Alt", 0, "⍽", "⏎", 1, "AltGr", "Fn", "Ctrl"]);
-        expect(resultHarmonic13WideBottom).toStrictEqual(["Ctrl", "Cmd", "Alt", null, 0, "⍽", null, "⏎", 1, null, "AltGr", "Fn", "Ctrl"]);
+        expect(originalHarmonic13WideBottom).toStrictEqual(["Ctrl", "Cmd", "Alt", 0, "␣", "⏎", 1, "AltGr", "Fn", "Ctrl"]);
+        expect(resultHarmonic13WideBottom).toStrictEqual(["Ctrl", "Cmd", "Alt", null, 0, "␣", null, "⏎", 1, null, "AltGr", "Fn", "Ctrl"]);
     });
 });

@@ -177,7 +177,7 @@ describe("Ergoslat thumb frames (derived by permutation)", () => {
             ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
             ["⌦", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, "'"],
             ["⇧", 0, 1, 2, 3, 4, "/", 5, 6, 7, 8, "⇧"],
-            ["Ctrl", "Cmd", null, "Alt", 0, "⍽", "AltGr", null, "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", null, "Alt", 0, "␣", "AltGr", null, "Fn", "Ctrl"],
         ]);
     });
 
@@ -187,7 +187,7 @@ describe("Ergoslat thumb frames (derived by permutation)", () => {
             ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
             ["⌦", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, [1, 10]],
             ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-            ["Ctrl", "Cmd", null, "Alt", 0, "⍽", "AltGr", null, "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", null, "Alt", 0, "␣", "AltGr", null, "Fn", "Ctrl"],
         ]);
     });
 });
@@ -203,7 +203,7 @@ describe("Ergoslat MidShift frames (derived by permutation)", () => {
             ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "'"],
             ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
             [0, 1, 2, 3, 4, "+", "-", 5, 6, 7, 8, 9],
-            ["Ctrl", "Cmd", null, "Alt", "⏎", "⍽", "AltGr", null, "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", null, "Alt", "⏎", "␣", "AltGr", null, "Fn", "Ctrl"],
         ]);
     });
 
@@ -213,7 +213,7 @@ describe("Ergoslat MidShift frames (derived by permutation)", () => {
             ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, 10],
             ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
             [0, 1, 2, 3, 4, "+", 9, 5, 6, 7, 8, [2, 10]],
-            ["Ctrl", "Cmd", null, "Alt", "⏎", "⍽", "AltGr", null, "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", null, "Alt", "⏎", "␣", "AltGr", null, "Fn", "Ctrl"],
         ]);
     });
 
@@ -223,7 +223,7 @@ describe("Ergoslat MidShift frames (derived by permutation)", () => {
             ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
             [0, 1, 2, 3, 4, "+", "'", 5, 6, 7, 8, "/"],
-            ["Ctrl", "Cmd", null, "Alt", 0, "⍽", "AltGr", null, "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", null, "Alt", 0, "␣", "AltGr", null, "Fn", "Ctrl"],
         ]);
     });
 
@@ -233,7 +233,7 @@ describe("Ergoslat MidShift frames (derived by permutation)", () => {
             ["↹", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, "⌦", 5, 6, 7, 8, 9, "⇧"],
             [0, 1, 2, 3, 4, "+", 9, 5, 6, 7, 8, [1, 10]],
-            ["Ctrl", "Cmd", null, "Alt", 0, "⍽", "AltGr", null, "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", null, "Alt", 0, "␣", "AltGr", null, "Fn", "Ctrl"],
         ]);
     });
 

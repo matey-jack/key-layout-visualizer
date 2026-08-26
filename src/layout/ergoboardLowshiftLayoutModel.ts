@@ -9,14 +9,14 @@ const ansi30FrameMapping: FrameMapping = [
     ["↹", 0, 1, 2, 3, 4, "+", null, 5, 6, 7, 8, 9, "-", "⌫"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
     ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", 9, 5, 6, 7, 8, "⇧", "↑", null],
-    [null, "Ctrl", "Cmd", "CAPS", "Alt", "⍽", "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
+    [null, "Ctrl", "Cmd", "CAPS", "Alt", "␣", "␣", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
 ];
 const thumb30FrameMapping: FrameMapping = [
     ["Esc", "1", "2", "3", "4", "5", "[", "`~", "]", "6", "7", "8", "9", "0", "⇞", "⇟"],
     ["↹", 0, 1, 2, 3, 4, null, null, 5, 6, 7, 8, 9, "+", "⌫"],
     ["⌦", 0, 1, 2, 3, 4, "⇤", "⇥", 5, 6, 7, 8, 9, "'", "⏎"],
     ["Fn", "⇧", 0, 1, 2, 3, 4, "\\", "/", 5, 6, 7, 8, "⇧", "↑", null],
-    [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "⍽", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
+    [null, "Ctrl", "Cmd", "CAPS", "Alt", 0, "␣", "AltGr", "Fn", "Ctrl", null, "←", "↓", "→"],
 ];
 
 export const ergoboardLowshiftLayoutModel: LayoutModel = {

@@ -8,7 +8,7 @@ const fullMapping = [
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
     ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "Ctrl"],
-    ["Alt", 0, 1, "Cmd", 2, "⏎", "⍽", 3, "AltGr", 4, "Fn", "Cmd"],
+    ["Alt", 0, 1, "Cmd", 2, "⏎", "␣", 3, "AltGr", 4, "Fn", "Cmd"],
 ];
 
 /*
@@ -24,7 +24,7 @@ const ansi30Base: FrameMapping = [
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
     ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "Ctrl"],
-    ["Alt", "\\", "`", "⌦", "Cmd", "⏎", "⍽", "Fn", "AltGr", "+", "-", "☰"],
+    ["Alt", "\\", "`", "⌦", "Cmd", "⏎", "␣", "Fn", "AltGr", "+", "-", "☰"],
 ];
 
 const ansi32Base: FrameMapping = [
@@ -32,7 +32,7 @@ const ansi32Base: FrameMapping = [
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
     ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, [2, 10]],
-    ["Alt", "/", "`", "⌦", "Cmd", "⏎", "⍽", "Ctrl", "AltGr", "'", "+", "Fn"],
+    ["Alt", "/", "`", "⌦", "Cmd", "⏎", "␣", "Ctrl", "AltGr", "'", "+", "Fn"],
 ];
 
 const thumb30Base: FrameMapping = [
@@ -40,7 +40,7 @@ const thumb30Base: FrameMapping = [
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
     ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, "/", "Ctrl"],
-    ["Alt", "⌦", "+", "Cmd", 0, "⏎", "⍽", "Fn", "AltGr", "\\", "`", "☰"],
+    ["Alt", "⌦", "+", "Cmd", 0, "⏎", "␣", "Fn", "AltGr", "\\", "`", "☰"],
 ];
 
 const thumb32Base: FrameMapping = [
@@ -49,7 +49,7 @@ const thumb32Base: FrameMapping = [
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
     ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
     // now = is right again, where German and other key maps have the -_
-    ["Alt", "⌦", "`", "Cmd", 0, "⏎", "⍽", "Ctrl", "AltGr", "/", "+", "Fn"],
+    ["Alt", "⌦", "`", "Cmd", 0, "⏎", "␣", "Ctrl", "AltGr", "/", "+", "Fn"],
 ];
 
 // thumbShift cycles: ⇧ moves to the second thumb key from center on each side.

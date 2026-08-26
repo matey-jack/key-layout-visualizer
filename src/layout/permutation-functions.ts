@@ -126,6 +126,7 @@ function findToken(mapping: FrameMapping, token: CycleToken): Coord | null {
 
 const cycleAbbreviations: Record<string, string | string[]> = {
     "^": "Ctrl",
+    "⎋": "Esc",
     "A": ["Alt", "AltGr"],
     "C": "Cmd",
     "S": ["Shift", "⇧"],
