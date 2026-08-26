@@ -174,7 +174,7 @@ export enum VisualizationType {
     MappingDiff,
     MappingFrequeny,
     MappingBigrams,
-    MappingAltGr,
+    MappingShiftLevels,
     MappingTradeoff,
     SemiErgoExplorer,
 }

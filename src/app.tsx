@@ -52,7 +52,7 @@ interface VisualizationSwitchesProps {
              <VizTypeButton vizType={VisualizationType.MappingFrequeny} signal={vizType}>Letter Frequency</VizTypeButton>
              <VizTypeButton vizType={VisualizationType.MappingBigrams} signal={vizType}>Bigram Effort</VizTypeButton>
              <VizTypeButton vizType={VisualizationType.MappingTradeoff} signal={vizType}>Learning Effort Trade-off</VizTypeButton>
-             {/*<VizTypeButton vizType={VisualizationType.MappingAltGr} signal={vizType}>AltGr</VizTypeButton>*/}
+             {/*<VizTypeButton vizType={VisualizationType.MappingShiftLevels} signal={vizType}>AltGr</VizTypeButton>*/}
              {appState && isKlcCompatible(appState) && <DownloadKlcLink appState={appState}/>}
          </div>
      </div>

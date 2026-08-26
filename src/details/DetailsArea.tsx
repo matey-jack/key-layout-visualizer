@@ -91,7 +91,7 @@ export function getVizDetails(vizType: VisualizationType, layout: LayoutModel, m
             </p>;
         case VisualizationType.MappingBigrams:
             return <BigramEffortDetails layout={layout} mapping={mapping}/>;
-        case VisualizationType.MappingAltGr:
+        case VisualizationType.MappingShiftLevels:
             return <AltGrLayerDetails></AltGrLayerDetails>
         case VisualizationType.MappingTradeoff:
             return <TradeoffDetails/>;
