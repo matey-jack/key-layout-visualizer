@@ -210,6 +210,14 @@ label.disabled {
     margin: 0.3rem;
 }
 
+/* Options belonging to one visualization sit in the same row as the viz type buttons,
+   so the labelled group has to be inline there. */
+.visualization-switches .layout-option-group--inline {
+    display: inline-flex;
+    vertical-align: middle;
+    margin-left: 1rem;
+}
+
 .download-klc-link {
     margin-left: 1rem;
     color: #003fae;

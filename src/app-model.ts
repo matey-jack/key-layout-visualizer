@@ -1,5 +1,5 @@
 import type {ReadonlySignal, Signal} from "@preact/signals";
-import type {BigramMovement, FlexMapping, LayoutModel, MappingChange} from "./base-model.ts";
+import type {BigramMovement, FlexMapping, Hand, LayoutModel, MappingChange} from "./base-model.ts";
 import {LayoutType, type VisualizationType} from "./base-model.ts";
 
 export enum AnsiVariant {
@@ -129,4 +129,7 @@ export interface AppState {
     bigramMovements: ReadonlySignal<BigramMovement[]>;
 
     vizType: Signal<VisualizationType>;
+    // Which hand carries the "hands down" navigation block in the key levels visualization.
+    // The AltGr characters go to the other hand.
+    navSide: Signal<Hand>;
 }

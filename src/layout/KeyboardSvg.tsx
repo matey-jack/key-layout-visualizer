@@ -21,6 +21,7 @@ import {
     keyCapHeight,
     lettersAndVIP,
 } from "./layout-functions.ts";
+import type {KeyLevels} from "../mapping/key-levels.ts";
 import {formatDecimal} from '../library/math.ts';
 
 interface KeyboardSvgProps {
@@ -120,10 +121,17 @@ interface KeyProps {
     vizType: VisualizationType,
     hexagons?: boolean,
     layer?: 'base' | 'label',
+    // Second and third character level, shown by the key levels visualization.
+    shiftLabel?: string,
+    thirdLabel?: string,
 }
 
 const keyUnit = 100;
 const keyPadding = 8;
+// How far a character key's label sits from the left edge of the keycap.
+const keyLabelInset = 20;
+// The AltGr label is smaller and keeps only half that distance from its corner.
+const thirdLabelInset = keyLabelInset / 2;
 const keyRibbonPaddingH = 17;
 const keyRibbonPaddingV = 1;
 const isometric3dOffset = 8;
@@ -159,7 +167,7 @@ function rowCenterY(row: number, hexagons?: boolean): number {
 }
 
 export function Key(props: KeyProps) {
-    const {row, col, prevRow, prevCol, width, prevWidth, label, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker, hexagons, layer = 'base'} = props;
+    const {row, col, prevRow, prevCol, width, prevWidth, label, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker, hexagons, layer = 'base', shiftLabel, thirdLabel} = props;
     const rowPitch = hexagons ? hexRowPitch : keyUnit;
     const x = col * keyUnit + keyPadding;
     const y = row * rowPitch + keyPadding;
@@ -177,8 +185,8 @@ export function Key(props: KeyProps) {
     const ribbonWidth = rectWidth - 2 * keyRibbonPaddingV;
     const fromRibbonWidth = fromRectWidth - 2 * keyRibbonPaddingV;
 
-    const labelX = labelClass ? (rectWidth / 2) : 20;
-    const fromLabelX = labelClass ? (fromRectWidth / 2) : 20;
+    const labelX = labelClass ? (rectWidth / 2) : keyLabelInset;
+    const fromLabelX = labelClass ? (fromRectWidth / 2) : keyLabelInset;
 
     // Use CSS custom properties to set initial and final positions and widths
     const groupStyle = {
@@ -212,6 +220,15 @@ export function Key(props: KeyProps) {
         <text x={0} y={60} className={"key-label animating" + labelTextClass}>
             {label}
         </text>
+
+    // The Shift character sits above the base one, the AltGr character in the bottom right
+    // corner – the same three places an ISO keycap prints them.
+    const shiftText = shiftLabel &&
+        <text x={0} y={30} className="key-label key-label--shift animating">{shiftLabel}</text>
+
+    const thirdText = thirdLabel &&
+        <text x={rectWidth - thirdLabelInset} y={keyHeight - thirdLabelInset}
+              className="key-label--third">{thirdLabel}</text>
 
     const keyRibbon = ribbonClass &&
         <rect class={"key-ribbon animating " + ribbonClass}
@@ -264,7 +281,7 @@ export function Key(props: KeyProps) {
                 </>}
             {keyRibbon || frequencyCircle || homeMarker}
         </>}
-        {layer === 'label' && text}
+        {layer === 'label' && <>{text}{shiftText}{thirdText}</>}
     </g>
 }
 
@@ -276,6 +293,8 @@ export interface KeyboardProps {
     // This only works in Harmonic staggering; otherwise keycaps overlap!
     hexagons?: boolean;
     mappingDiff?: Record<string, MappingChange>;
+    // Second and third character level for the key levels visualization; parallel to keyWidths.
+    keyLevels?: KeyLevels;
     // Overlay rendered between the base and label layers (e.g. stagger or bigram lines).
     children?: ComponentChildren;
 }
@@ -343,19 +362,22 @@ function keyBackgroundClass(
     capSize: number,
 ): string {
     switch (vizType) {
+        case VisualizationType.MappingShiftLevels:
+            // Highlight the modifier that the third level belongs to.
+            if (label === "AltGr") return "altgr-key";
+            break;
         case VisualizationType.LayoutKeySize:
             return getKeySizeClass(capSize) ?? "";
         case VisualizationType.LayoutKeyEffort:
             return getEffortClass((model as LayoutModel).singleKeyEffort[row][col]);
         case VisualizationType.LayoutFingering:
             return getFingeringClasses(model as LayoutModel, row, col, label);
-        default:
-            if (isHomeKey(model, row, col)) return "home-key";
-            return (model.keyColorClass ?? defaultKeyColor)(label, row, col);
     }
+    if (isHomeKey(model, row, col)) return "home-key";
+    return (model.keyColorClass ?? defaultKeyColor)(label, row, col);
 }
 
-function KeyboardLayer({layoutModel, prevLayoutModel, keyMovements, mappingDiff, vizType, layer, hexagons}: KeyboardLayerProps) {
+function KeyboardLayer({layoutModel, prevLayoutModel, keyMovements, mappingDiff, keyLevels, vizType, layer, hexagons}: KeyboardLayerProps) {
     return keyMovements.map((movement) => {
         // key decorations always come from the next layout model, unless a key is exiting.
         const {label, row, col, keyCapWidth} = movement.next ?? movement.prev!;
@@ -377,7 +399,9 @@ function KeyboardLayer({layoutModel, prevLayoutModel, keyMovements, mappingDiff,
         // but for the Escape key on Ergoplank, left-align is actually better.
         // const capColPos = colPos + (slotWidth - capWidth)/2;
 
-        let displayLabel = label;
+        // Levels only apply to keys of the current layout, not to ones that are exiting.
+        const levels = movement.next && keyLevels;
+        let displayLabel = levels?.base[row]?.[col] ?? label;
         if (vizType === VisualizationType.LayoutKeySize) {
             displayLabel = capSize > 1 ? `${formatDecimal(capSize)}` : "";
         }
@@ -403,6 +427,8 @@ function KeyboardLayer({layoutModel, prevLayoutModel, keyMovements, mappingDiff,
             vizType={vizType}
             layer={layer}
             hexagons={hexagons}
+            shiftLabel={levels?.shift[row]?.[col] ?? undefined}
+            thirdLabel={levels?.third[row]?.[col] ?? undefined}
             key={`${label}-${newRow}-${newCol}-${keyCapWidth}-${layer}`}
         />
     })

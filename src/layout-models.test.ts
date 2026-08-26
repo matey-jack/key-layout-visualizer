@@ -7,100 +7,20 @@ import {
     type LayoutModel,
     usefulNonAsciiCharacters
 } from "./base-model.ts";
-import {
-    ansiIBMLayoutModel,
-    ansiWideLayoutModel,
-    createAN65,
-    createApple,
-    createHHKB
-} from "./layout/ansiLayoutModel.ts";
-import {ergoboardCentralLayoutModel} from './layout/ergoboardCentralLayoutModel.ts';
-import {ergoboardComfyLayoutModel} from "./layout/ergoboardComfyLayoutModel.ts";
-import {ergoboardExtraWideLayoutModel} from "./layout/ergoboardExtraWideLayoutModel.ts";
-import {ergoboardBigEnterLayoutModel, ergoboardLowshiftLayoutModel} from "./layout/ergoboardLowshiftLayoutModel.ts";
-import {
-    ergoboardLowshiftWideAngleModLayoutModel,
-    ergoboardLowshiftWideLayoutModel,
-} from "./layout/ergoboardLowshiftWideLayoutModel.ts";
-import {
-    ergoboardCentralEnterLayoutModel,
-    ergoboardRightRetLayoutModel,
-    ergoboardVerticalEnterLayoutModel,
-} from "./layout/ergoboardNarrowLayoutModels.ts";
+import {ergoboardRightRetLayoutModel, ergoboardVerticalEnterLayoutModel} from "./layout/ergoboardNarrowLayoutModels.ts";
 import {ergoboardSemiWideLayoutModel} from "./layout/ergoboardSemiWideLayoutModel.ts";
-import {
-    createErgoPlankCenterArrows,
-    createErgoPlankInlineArrows,
-    createErgoPlankMidShiftLowerCharacters,
-    createErgoPlankMidShiftRightReturn,
-    ergoplankLayoutModel
-} from "./layout/ergoplankLayoutModel.ts";
+import {createErgoPlankCenterArrows, createErgoPlankMidShiftLowerCharacters, ergoplankLayoutModel} from "./layout/ergoplankLayoutModel.ts";
 import {
     majorErgoslatLayoutModel,
     makeErgoslatNumberless,
     minorErgoslatLayoutModel
 } from './layout/ergoslatLayoutModel.ts';
-import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
-import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
-import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
-import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLayoutModel.ts";
-import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
-import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 import {xhkb13LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "./layout/xhkbLayoutModel.ts";
 import {sum} from "./library/math.ts";
+import {allLayoutModels} from "./all-layout-models.ts";
 import {allMappings} from "./mapping/mappings.ts";
 
-const layoutModels: Array<LayoutModel> = [
-    ansiIBMLayoutModel,
-    ansiWideLayoutModel,
-    createHHKB(ansiIBMLayoutModel),
-    createApple(ansiIBMLayoutModel),
-    createHHKB(ansiWideLayoutModel),
-    createApple(ansiWideLayoutModel),
-    createAN65(ansiIBMLayoutModel),
-    createAN65(ansiWideLayoutModel),
-    xhkb13LayoutModel,
-    xhkb15LayoutModel,
-    xhkb16LayoutModel,
-    // Harmonics
-    harmonic12LayoutModel,
-    harmonic13WideLayoutModel,
-    harmonic13MidshiftLayoutModel,
-    harmonic14WideLayoutModel,
-    harmonic14TraditionalLayoutModel,
-    // Ergoplanks
-    katanaLayoutModel,
-    majorErgoslatLayoutModel(false),
-    majorErgoslatLayoutModel(true),
-    minorErgoslatLayoutModel(false),
-    minorErgoslatLayoutModel(true),
-    makeErgoslatNumberless(majorErgoslatLayoutModel(false)),
-    makeErgoslatNumberless(minorErgoslatLayoutModel(false)),
-    ergoplankLayoutModel,
-    createErgoPlankMidShiftLowerCharacters(ergoplankLayoutModel),
-    createErgoPlankMidShiftRightReturn(ergoplankLayoutModel),
-    createErgoPlankInlineArrows(ergoplankLayoutModel),
-    createErgoPlankInlineArrows(createErgoPlankMidShiftLowerCharacters(ergoplankLayoutModel)),
-    createErgoPlankInlineArrows(createErgoPlankMidShiftRightReturn(ergoplankLayoutModel)),
-    createErgoPlankCenterArrows(ergoplankLayoutModel),
-    createErgoPlankCenterArrows(createErgoPlankMidShiftLowerCharacters(ergoplankLayoutModel)),
-    createErgoPlankCenterArrows(createErgoPlankMidShiftRightReturn(ergoplankLayoutModel)),
-    ergoboardCentralLayoutModel,
-    ergoboardLowshiftLayoutModel,
-    ergoboardBigEnterLayoutModel,
-    ergoboardLowshiftWideLayoutModel,
-    ergoboardLowshiftWideAngleModLayoutModel,
-    ergoboardComfyLayoutModel,
-    ergoboardRightRetLayoutModel,
-    ergoboardCentralEnterLayoutModel,
-    ergoboardVerticalEnterLayoutModel,
-    ergoboardExtraWideLayoutModel,
-    ergoboardSemiWideLayoutModel,
-    // Ergosplits
-    splitOrthoLayoutModel(false),
-    splitOrthoLayoutModel(true),
-];
 
 // Expected differences between ansi30 and thumb30
 // TODO: use the .name references throughout to avoid test failures when names change
@@ -164,7 +84,7 @@ function rowWidth(model: LayoutModel, row: KeyboardRows) {
 }
 
 describe('RowBasedLayoutModel matrix shapes', () => {
-    layoutModels.forEach((model) => {
+    allLayoutModels.forEach((model) => {
         describe(model.name, () => {
             const rowLengths = getExpectedRowLengths(model);
 
@@ -220,7 +140,7 @@ function collectPlaceholdersByFlexRow(frameMapping: unknown[][]): Map<number, nu
 }
 
 describe('frameMappings frame mapping validation', () => {
-     layoutModels.forEach((model) => {
+     allLayoutModels.forEach((model) => {
          describe(model.name, () => {
              Object.entries(model.frameMappings).forEach(([typeId, frameMapping]) => {
                  const keymapType = KEYMAP_TYPES[typeId as KeymapTypeId];
@@ -336,7 +256,7 @@ describe("key labels", () => {
             c.charCodeAt(0) > 127 && !knownNonAscii.includes(c) && !/\p{L}/u.test(c)
         );
 
-    layoutModels.forEach((model) => {
+    allLayoutModels.forEach((model) => {
         it(`frame mappings of ${model.name} use only known symbols and characters`, () => {
             Object.entries(model.frameMappings).forEach(([keymapType, frameMapping]) =>
                 frameMapping.forEach((row, r) =>

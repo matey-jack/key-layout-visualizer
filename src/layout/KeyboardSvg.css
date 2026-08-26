@@ -1,3 +1,10 @@
+/* The AltGr level: its characters and the AltGr key that reaches them share this colour.
+   Declared here (and not in app.css) so that the SVG export, which copies this stylesheet
+   into the exported file, resolves it too. */
+:root {
+    --altgr-level-color: #1f6fb2;
+}
+
 .keyboard-frame {
     fill: #fff4e6;
     stroke: black;
@@ -89,6 +96,12 @@
 
 .key-outline.home-key {
     fill: #c3f3ac;
+}
+
+/* The third character level and the AltGr key that reaches it share one colour. */
+.key-outline.altgr-key {
+    fill: var(--altgr-level-color);
+    fill-opacity: 0.35;
 }
 
 .viz-plain {
@@ -201,6 +214,17 @@
 
 .key-label.bold {
     font-weight: bold;
+}
+
+.key-label--shift {
+    font-size: 21px;
+}
+
+.key-label--third {
+    font-family: Verdana, sans-serif;
+    font-size: 20px;
+    text-anchor: end;
+    fill: var(--altgr-level-color);
 }
 
 .key-label.semi-ergo--key-size {

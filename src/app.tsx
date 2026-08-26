@@ -5,7 +5,9 @@ import type {ComponentChildren} from "preact";
 import type {AppState} from "./app-model.ts";
 import {AnsiVariant} from "./app-model.ts";
 import {createAppState} from "./app-state.ts";
-import {LayoutType, LayoutTypeNames, VisualizationType} from "./base-model.ts";
+import {Hand, LayoutType, LayoutTypeNames, VisualizationType} from "./base-model.ts";
+import {OptionButton} from "./components/OptionButton.tsx";
+import {OptionGroup} from "./components/OptionGroup.tsx";
 import {DetailsArea} from "./details/DetailsArea.tsx";
 import {LayoutArea} from "./layout/LayoutArea.tsx";
 import {fillMapping} from "./layout/layout-functions.ts";
@@ -52,11 +54,31 @@ interface VisualizationSwitchesProps {
              <VizTypeButton vizType={VisualizationType.MappingFrequeny} signal={vizType}>Letter Frequency</VizTypeButton>
              <VizTypeButton vizType={VisualizationType.MappingBigrams} signal={vizType}>Bigram Effort</VizTypeButton>
              <VizTypeButton vizType={VisualizationType.MappingTradeoff} signal={vizType}>Learning Effort Trade-off</VizTypeButton>
-             {/*<VizTypeButton vizType={VisualizationType.MappingShiftLevels} signal={vizType}>AltGr</VizTypeButton>*/}
+             <VizTypeButton vizType={VisualizationType.MappingShiftLevels} signal={vizType}>Shift and AltGr
+                 Levels</VizTypeButton>
+             {appState && vizType.value === VisualizationType.MappingShiftLevels &&
+                 <NavSideOptions navSide={appState.navSide}/>}
              {appState && isKlcCompatible(appState) && <DownloadKlcLink appState={appState}/>}
          </div>
      </div>
  }
+
+interface NavSideOptionsProps {
+    navSide: Signal<Hand>;
+}
+
+// The navigation block is the easiest part of the AltGr level to recognize, so it names the
+// switch; the AltGr characters always sit on the other hand and move along with it.
+function NavSideOptions({navSide}: NavSideOptionsProps) {
+    return <OptionGroup label="Nav keys">
+        <OptionButton selected={navSide.value === Hand.Left} onClick={() => {navSide.value = Hand.Left;}}>
+            left
+        </OptionButton>
+        <OptionButton selected={navSide.value === Hand.Right} onClick={() => {navSide.value = Hand.Right;}}>
+            right
+        </OptionButton>
+    </OptionGroup>
+}
 
 interface VizTypeButtonProps {
     vizType: VisualizationType;

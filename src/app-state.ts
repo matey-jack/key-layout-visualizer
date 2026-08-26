@@ -12,7 +12,7 @@ import {
     PlankVariant,
     ThumbsUpVariant,
 } from "./app-model.ts";
-import {type FlexMapping, KeymapTypeId, type LayoutModel, LayoutType, VisualizationType} from "./base-model.ts";
+import {type FlexMapping, Hand, KeymapTypeId, type LayoutModel, LayoutType, VisualizationType} from "./base-model.ts";
 import {getBigramMovements} from "./bigrams.ts";
 import {diffToBase, fillMapping, getKeyPositions, hasMatchingMapping} from "./layout/layout-functions.ts";
 import {getLayoutModel} from "./layout-selection.ts";
@@ -248,12 +248,15 @@ function getMappingByName(name: string | null): FlexMapping {
 }
 
 // Some of the state could be local the Layout or Mapping areas, but unless this global thing gets too big,
-function updateUrlParams(layout: LayoutOptions, mapping: Signal<FlexMapping>, vizType: Signal<VisualizationType>) {
+function updateUrlParams(
+    layout: LayoutOptions, mapping: Signal<FlexMapping>, vizType: Signal<VisualizationType>, navSide: Signal<Hand>
+) {
     const params = new URLSearchParams();
     params.set("layout", layout.type.toString());
     params.set("midShift", layout.midShift ? "1" : "0");
     params.set("mapping", mapping.value.techName || mapping.value.name);
     params.set("viz", vizType.value.toString());
+    params.set("nav", navSide.value.toString());
     let subLayout = "";
 
     switch (layout.type) {
@@ -331,6 +334,9 @@ export function createAppState(): AppState {
     // Initialize previousMappingState with the current mapping to avoid null handling
     const previousMappingState = signal(mappingState.value);
     const vizType = signal(s2i(params.get("viz")) ?? VisualizationType.LayoutPlain)
+    // Default: navigation on the left hand, which puts the AltGr characters on the right one –
+    // the mnemonic variant of docs/key-levels.md.
+    const navSide = signal<Hand>(s2i(params.get("nav")) ?? Hand.Left)
 
     const mappingDiff = computed(() =>
         diffToBase(layoutModel.value, mappingState.value)
@@ -341,7 +347,7 @@ export function createAppState(): AppState {
             getKeyPositions(layoutModel.value, isSplit(layoutOptionsState.value), charMap!),
             `get bigrams for visualization of ${mappingState.value.name} on ${layoutModel.value.name}`);
     });
-    effect(() => updateUrlParams(layoutOptionsState.value, mappingState, vizType));
+    effect(() => updateUrlParams(layoutOptionsState.value, mappingState, vizType, navSide));
     return {
         layout: computed(() => layoutOptionsState.value),
         setLayout: (layoutOptions: Partial<LayoutOptions>) => {
@@ -359,6 +365,7 @@ export function createAppState(): AppState {
         },
         prevMapping: computed(() => previousMappingState.value),
         vizType,
+        navSide,
         mappingDiff,
         bigramMovements
     };

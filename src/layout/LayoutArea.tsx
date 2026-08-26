@@ -18,6 +18,7 @@ import {defaultTotalWidth, fillMapping, getKeyMovements, getKeyPositions} from "
 import {SplitOrthoLayoutOptions} from "./SplitOrthoLayoutOptions.tsx";
 import {TradeoffDiagram} from "./TradeoffDiagram.tsx";
 import {alignForHex} from './harmonic-layout-functions.ts';
+import {getKeyLevels} from "../mapping/key-levels.ts";
 
 interface LayoutAreaProps {
     appState: AppState;
@@ -31,13 +32,25 @@ function layoutSupportsFlipRetRub(options: LayoutOptions) {
     return false;
 }
 
-function getKeyPositionsForModel(layoutModel: LayoutModel, mapping: FlexMapping, layout: LayoutOptions, hexagons: boolean): KeyPosition[] {
+// The rendered model and char map: hexagon alignment and the flipped Return/Rubout option both
+// change what is actually drawn, so anything derived from the keyboard has to use these.
+interface RenderedKeyboard {
+    layoutModel: LayoutModel;
+    charMap: string[][];
+    positions: KeyPosition[];
+}
+
+function renderKeyboard(layoutModel: LayoutModel, mapping: FlexMapping, layout: LayoutOptions, hexagons: boolean): RenderedKeyboard {
     const lm = hexagons ? alignForHex(layoutModel) : layoutModel;
     const charMap = fillMapping(lm, mapping);
     if (layoutSupportsFlipRetRub(layout) && layout.flipRetRub) {
         flipRetRub(charMap!);
     }
-    return getKeyPositions(lm, isSplit(layout), charMap!, defaultTotalWidth);
+    return {
+        layoutModel: lm,
+        charMap: charMap!,
+        positions: getKeyPositions(lm, isSplit(layout), charMap!, defaultTotalWidth),
+    };
 }
 
 export function LayoutArea({appState}: LayoutAreaProps) {
@@ -46,11 +59,14 @@ export function LayoutArea({appState}: LayoutAreaProps) {
     const hexagons = layout.value.type === LayoutType.Harmonic &&
         layout.value.harmonicVariant > HarmonicVariant.H14_Traditional &&
         layout.value.harmonicHexagons;
-    const currentPositions = getKeyPositionsForModel(layoutModel.value, mapping.value, layout.value, hexagons);
-    const previousPositions = getKeyPositionsForModel(prevLayoutModel.value, prevMapping.value, layout.value, hexagons);
-    const keyMovements = getKeyMovements(previousPositions, currentPositions);
+    const current = renderKeyboard(layoutModel.value, mapping.value, layout.value, hexagons);
+    const previousPositions = renderKeyboard(prevLayoutModel.value, prevMapping.value, layout.value, hexagons).positions;
+    const keyMovements = getKeyMovements(previousPositions, current.positions);
 
-    const {setLayout, mappingDiff, bigramMovements, vizType, setMapping} = appState;
+    const {setLayout, mappingDiff, bigramMovements, vizType, setMapping, navSide} = appState;
+    const keyLevels = vizType.value === VisualizationType.MappingShiftLevels
+        ? getKeyLevels(current.layoutModel, current.positions, current.charMap, navSide.value)
+        : undefined;
     const showFrame = layout.value.type !== LayoutType.Ergosplit &&
         !(layout.value.type !== LayoutType.ANSI && layout.value.ansiSplit);
     const isTradeoff = vizType.value === VisualizationType.MappingTradeoff;
@@ -66,6 +82,7 @@ export function LayoutArea({appState}: LayoutAreaProps) {
                             keyMovements={keyMovements}
                             hexagons={hexagons}
                             mappingDiff={mappingDiff.value}
+                            keyLevels={keyLevels}
                             vizType={vizType.value}
                         >
                             {vizType.value === VisualizationType.LayoutAngle &&

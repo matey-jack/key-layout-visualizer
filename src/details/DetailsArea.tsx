@@ -92,7 +92,7 @@ export function getVizDetails(vizType: VisualizationType, layout: LayoutModel, m
         case VisualizationType.MappingBigrams:
             return <BigramEffortDetails layout={layout} mapping={mapping}/>;
         case VisualizationType.MappingShiftLevels:
-            return <AltGrLayerDetails></AltGrLayerDetails>
+            return <ShiftLevelsDetails/>;
         case VisualizationType.MappingTradeoff:
             return <TradeoffDetails/>;
     }
@@ -416,18 +416,32 @@ export function BigramDetailsLegendItem({bigramType, frequency, children}: Bigra
 
 }
 
-export function AltGrLayerDetails() {
+export function ShiftLevelsDetails() {
     return <>
         <p>
-            The US American keyboard mapping might be the only one that doesn't come with an AltGr layer.
-            Even the UK English keyboards have it! This layer basically allows us to type a lot more characters.
-            We can use it for characters that are on the traditional keyboards, but we rarely type them.
-            And we can add some extra useful characters like ¢ or ‰ or the m-dash – I really use that one a lot.
+            Each character key can carry three levels: the character it inserts on its own, the one it inserts
+            with Shift, and the one it inserts with AltGr. The Shift characters are shown above the base ones,
+            the AltGr level in <span class="altgr-level-legend">blue</span> in the bottom right corner –
+            the same three places an ISO keycap prints them.
         </p>
         <p>
-            I think that all punctuation characters used in daily writing should be accessible via a direct key or
-            Shift, while more rare characters can easily be moved to the AltGr layer. <br/>
-            TODO: actually show an example mapping of the keys that some of the letter mappings omit.
+            The Shift level here is the US ANSI one: <code>1!</code> <code>2@</code> … <code>,&lt;</code>{" "}
+            <code>.&gt;</code> <code>/?</code>. It follows the key map, so a mapping that moves its punctuation
+            around takes its Shift characters along.
+        </p>
+        <p>
+            The AltGr level is fixed by finger position instead, so it stays the same on every keyboard.
+            One hand gets the characters: all four kinds of brackets stacked on middle and ring finger, with
+            <code>{"()"}</code> on the home row and <code>{"<>"}</code> where ANSI has them, and{" "}
+            <code>{"| \\ ` ~ ="}</code> on the index finger – <code>|</code> shares its key with{" "}
+            <code>&amp;</code>, and <code>=</code> sits right next to <code>{"<>"}</code> for bigrams
+            like <code>{"<="}</code>.
+        </p>
+        <p>
+            The other hand gets "hands down" navigation: the four cursor keys in their familiar inverted-T
+            shape, but on the home row, with Home/End beside them and PageUp/PageDown below. Use the "Nav
+            keys" buttons to swap which hand gets which. The mnemonic character placement needs an AltGr key
+            for the opposite thumb – on an ISO board the extra key next to the left Shift can serve as one.
         </p>
     </>
 }
