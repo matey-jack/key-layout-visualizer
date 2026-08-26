@@ -176,6 +176,9 @@ The remaining characters
 
 are mapped on the index finger with `|` on the same key as `&`, reflecting their relationship in programming languages, and the other characters in sequence below.
 
+As an extra to make bigrams like `<=` and `==>` easier to type, 
+we also map `=` redundantly to its Shift level position to the AltGr to the right side of the `<>` keys.
+
 This "mnemonic" mapping puts all AltGr characters on the **right** hand, which only works when there is an AltGr key for the **left** thumb:
  - On a German ISO keyboard we can use the extra ISO key (next to the left Shift) as a second AltGr.
  - On Split Ortho we can simply place AltGr on the left side from the start.
@@ -190,15 +193,25 @@ it offers two buttons to switch the AltGr-level character labels between the lef
 The initial version defaults to the right-hand placement with its mnemonics,
 which assumes the left-side AltGr key. (Because this is also what I personally use.)
 
-### TODO: AltGr navigation keys on the other half of the keyboard
+TODO: diagram of the AltGr level, also include the ^ key mentioned for the special Ergoslat keymap, so we can check that its position is consistent.
 
-Depending on the system used for actually implementing the key map, we can abuse the character levels to create a "hands down"  navigation layer (TODO: is there any established term for this?). 
+### AltGr navigation keys on the other half of the keyboard
+
+Depending on the system used for actually implementing the key map, we can abuse the character levels to create a "hands down"  navigation layer (TODO: is there any other established term for this?). 
  - Windows national layouts don't allow that
  - xkb config allows it (using the term "levels")
  - programmable keyboard firmware such as QMK and ZMK allows it (but using the term "layer" which is a more general concept)
 
+Just like the AltGr character block above, the nav block is fixed by the physical position, 
+not by pairing with specific base layer keys.
+It is aligned with the longest row ... on the home row and the ↑↓ keys on the middle finger (which is the longest).
 
-    Navigation keys: ↑ ↓ ← → ↞ ↠ ↟ ↡ ⇤ ⇥ ⇱ ⇲ ⇞ ⇟
+        ↞   ↑   ↠
+     ⇤   ←   ↓   →   ⇥
+       ⇞   ↟   ↡   ⇟
+
+Note that the ↟ ↡ denote mouse scrolls which can be mapped using keyboard firmware and possibly some third-party tools, 
+but probably not using xkb.
 
 
 ## Popular workarounds
@@ -325,6 +338,21 @@ Tasks to do after the initial implementation:
 ## Out of scope
 
 Keyboards without a number row have much more limited space that I don't want to solve for completely.
+When implementing the intial version of the feature, the AltGr characters on the Ergoslat will not be shown (but nav keys will).
+
+As a follow-up, we'll change the Shift pairings for the ErgoSlat without number row to the following. 
+Use the same "compressed" button to switch between this set and the ANSI pairings.
+
 In that case, we'll only define the Shift level and not AltGr. It's also a separate work item.
-Possible Shift pairings: `,;`  `.:`  `-!`  `/?`  `'"`
-(Probably one would also need more than three levels – and that's definitely out of scope!)
+Possible Shift pairings: `,;`  `.:`  `-!`  `/?`  `'"`  `$%`  `&+`
+
+As per definition of the ansi30/thumb30 character set, `,./` are placed using the flex mapping, 
+and only get their Shift character changed. 
+`;` from the flex mapping is replaced by `'`, which in turn is replaced by `-`, which is replaced by `$`.
+And `+` in the non-compressed keymap becomes `&+`.
+
+Rationale: `-` and `+` should be separate keys because of Ctrl +/- zoom.
+`+` stays on the Shift level, because some apps expect it there when reading the `Ctrl +` shortcut.
+
+I don't want to go deeper than that, because a keyboard that small can't be practical anyway.
+
