@@ -10,11 +10,13 @@
     thumb30 core, or any of the two when we want to put [] in adjacent center columns, where belongs to the flex mapping and
     the other doesn't.
 
-    Here are some useful Unicode characters that you can use in your mappings:
+    The Unicode characters you can use for non-character keys, what each of them means, and which alternatives
+    were considered and rejected, are all documented in docs/key-symbols.md. Read that before inventing a new one:
+    a glyph that is not whitelisted in `keyboardSymbols` (mapping-functions.ts) silently renders as an ordinary
+    character key.
 
-    White space and other keyboard specials: ⍽ ↵ ↹ ⎋ ⇧ ⇪ ⌫ ⎀ ⌦ 🖰
-    Navigation keys: ↑ ↓ ← → ⇤ ⇥ ⇞ ⇟ ↞ ↠ ⇱ ⇲
-    For the "Menu" key decide between ≣ (U+2263 "exactly equaly") and ☰ (U+2630 "trigram for heaven").
+    The short version — white space and other keyboard specials: ␣ ↹ ⏎ ⇧ ⌫ ⎀ ⌦ ☰ ¤
+    Navigation keys: ↑ ↓ ← → ↞ ↠ ↟ ↡ ⇤ ⇥ ⇱ ⇲ ⇞ ⇟
 
     Useful printable characters: € $ ¢ £ ¥ µ × – ¿ ¡ § % ‰
 
