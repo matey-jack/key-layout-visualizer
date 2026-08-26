@@ -174,21 +174,22 @@ The remaining characters
 
     |\`~
 
-are mapped on the index finger with `|` on the same key as `&`, reflecting their relationship in programming languages, and the other characters in sequence below.
-
-As an extra to make bigrams like `<=` and `==>` easier to type, 
-we also map `=` redundantly to its Shift level position to the AltGr to the right side of the `<>` keys.
+are mapped on the index finger with `|` on the same key as `&`, reflecting their relationship in programming languages.
+`\` is below that, while `` `~ `` go to the home row (see below), so that we can place `=` on the lower row.
+This latter placement helps typing bigrams like `<=` and `==>` because it places `=` right next to the `<>` keys.
+(`=` is mapped redundantly to its placement on the Shift layer.)
 
 The whole block, in its default right-hand variant, looks like this
 (columns are the hand's two index columns, then middle, ring, and pinky):
 
     ^   |   [   ]
           \   {   }
-           `   (   )
-             ~   <   >   =
+       ~   `   (   )
+             =   <   >
 
 The diagram follows the ANSI row stagger: 1/4 key width between home row and the one above; 
 1/2 between the other rows. We use four characters (including spacing) per key to make this exact.
+On the left side, everything is mirrored, so that the index finger (not the pinky) carries the six characters.
 
 The `^` in the number row is not part of the general block: only the Ergoslat's 32-key keymaps need it,
 because there the number row Shift level reads `6+ 7& 8* 9/ 0?`
@@ -231,9 +232,9 @@ which leaves the four cursor keys in the familiar inverted-T shape, just moved o
 Four characters per key and the ANSI row stagger, same as the AltGr diagram above:
 the block sits on the `wer`, `asdfg`, and `zxcv` keys of an ANSI keyboard.
 
-Note that the ↟ ↡ denote mouse scrolls which can be mapped using keyboard firmware and possibly some third-party tools, 
+Note that the `↟ ↡` denote mouse scrolls which can be mapped using keyboard firmware and possibly some third-party tools, 
 but probably not using xkb.
-
+In the case that `⇟` would fall on the right pinky and clash with the Shift key, we omit `↟ ↡` and put `⇞ ⇟` in their place.
 
 ## Popular workarounds
 
