@@ -22,8 +22,6 @@ A *symbol* is the glyph for a non-character key; a *character* key inserts exact
 that is in neither one fails the build — with one exception: any Unicode *letter* is allowed on a key, because
 which letters an alphabet needs is the language's business, not ours.
 
-Whenever this document and those tables disagree, they are right and this document needs fixing.
-
 ## Symbols rendered on key caps
 
 | Symbol | Codepoint | Unicode name | Key |
