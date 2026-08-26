@@ -11,10 +11,10 @@ Done parts:
 Next parts:
  - Number row AltGr mappings
  - Compressed Shift level for ansi30/thumb30 on small keyboards (see below) -- includes introduction of the "compression buttons"!
+ - Compressed Shift level for ansi32/thumb32 on small keyboards, including the 4-punctuation-key version for the Ergoslat.
+ - Ergoslat numberless modified Shift pairings (no AltGr characters, no switching button)
  - Compressed Shift level for ansi30/thumb30 on ANSI keyboards
    (with an option to remap the remaining punctuation characters or place nav keys)
- - Compressed Shift level for ansi32/thumb32 on small keyboards, including the 4-punctuation-key version for the Ergoslat. 
- - Ergoslat numberless modified Shift pairings (no AltGr characters, now switching button)
 
 ## Background and Motivation
 
