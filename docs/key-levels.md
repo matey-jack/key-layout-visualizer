@@ -179,12 +179,27 @@ are mapped on the index finger with `|` on the same key as `&`, reflecting their
 As an extra to make bigrams like `<=` and `==>` easier to type, 
 we also map `=` redundantly to its Shift level position to the AltGr to the right side of the `<>` keys.
 
+The whole block, in its default right-hand variant, looks like this
+(columns are the hand's two index columns, then middle, ring, and pinky):
+
+    ^   |   [   ]
+          \   {   }
+           `   (   )
+             ~   <   >   =
+
+The diagram follows the ANSI row stagger: 1/4 key width between home row and the one above; 
+1/2 between the other rows. We use four characters (including spacing) per key to make this exact.
+
+The `^` in the number row is not part of the general block: only the Ergoslat's 32-key keymaps need it,
+because there the number row Shift level reads `6+ 7& 8* 9/ 0?`
+(see [Postponed work items](#postponed-work-items)).
+
 This "mnemonic" mapping puts all AltGr characters on the **right** hand, which only works when there is an AltGr key for the **left** thumb:
  - On a German ISO keyboard we can use the extra ISO key (next to the left Shift) as a second AltGr.
  - On Split Ortho we can simply place AltGr on the left side from the start.
 
 With only the standard right-side AltGr, all AltGr characters have to move to the **left** hand instead:
-`<>` then keeps its row and fingers, but on the other hand, and we lose the `7&|` mnemonic.
+`<>` then keeps its row and fingers, but with mirrored characters, and we lose the `7&|` mnemonic.
 
 All three default small boards currently place `AltGr` on the right half of the bottom row
 (`splitOrthoLayoutModel.ts`, `ergoslatLayoutModel.ts`, `xhkbLayoutModel.ts`),
@@ -193,22 +208,28 @@ it offers two buttons to switch the AltGr-level character labels between the lef
 The initial version defaults to the right-hand placement with its mnemonics,
 which assumes the left-side AltGr key. (Because this is also what I personally use.)
 
-TODO: diagram of the AltGr level, also include the ^ key mentioned for the special Ergoslat keymap, so we can check that its position is consistent.
-
 ### AltGr navigation keys on the other half of the keyboard
 
-Depending on the system used for actually implementing the key map, we can abuse the character levels to create a "hands down"  navigation layer (TODO: is there any other established term for this?). 
+Depending on the system used for actually implementing the key map, we can abuse the character levels to create a **navigation layer** that keeps the hands in their typing position.  
  - Windows national layouts don't allow that
  - xkb config allows it (using the term "levels")
  - programmable keyboard firmware such as QMK and ZMK allows it (but using the term "layer" which is a more general concept)
 
+I call it "hands down" navigation, because the hands don't leave the home row.
+In other places of this repository we use "hands off" keys for those keys so far away from the home row that they require taking the hands off.
+(But "hands off" navigation needs no layer/level key pressed, so it's great for when the hands are already off the keyboard.)
+
 Just like the AltGr character block above, the nav block is fixed by the physical position, 
 not by pairing with specific base layer keys.
-It is aligned with the longest row ... on the home row and the ↑↓ keys on the middle finger (which is the longest).
+Its longest row is on the home row and the ↑↓ keys are on the middle finger (which is the longest),
+which leaves the four cursor keys in the familiar inverted-T shape, just moved onto the home row.
 
         ↞   ↑   ↠
      ⇤   ←   ↓   →   ⇥
        ⇞   ↟   ↡   ⇟
+
+Four characters per key and the ANSI row stagger, same as the AltGr diagram above:
+the block sits on the `wer`, `asdfg`, and `zxcv` keys of an ANSI keyboard.
 
 Note that the ↟ ↡ denote mouse scrolls which can be mapped using keyboard firmware and possibly some third-party tools, 
 but probably not using xkb.
@@ -262,9 +283,9 @@ More notes on the numbers:
 ## App UX
 
 Design decision: add a new mapping visualization type named "Shift and AltGr levels" 
-   (It can use the `VisualizationType.MappingAltGr` and its commented-out button in [app.tsx](../src/app.tsx) 
-   and the `AltGrLayerDetails` text in [DetailsArea.tsx](../src/details/DetailsArea.tsx) – 
-   But maybe we should rename them.)
+   (It can use the `VisualizationType.MappingShiftLevels` and its commented-out button in [app.tsx](../src/app.tsx) 
+   and the `AltGrLayerDetails` text in [DetailsArea.tsx](../src/details/DetailsArea.tsx),
+   which should be renamed to match the enum.)
 
 Using a mapping viz type shows the keyboard as 2D which distracts less from the key labels.
 
@@ -338,18 +359,22 @@ Tasks to do after the initial implementation:
 ## Out of scope
 
 Keyboards without a number row have much more limited space that I don't want to solve for completely.
-When implementing the intial version of the feature, the AltGr characters on the Ergoslat will not be shown (but nav keys will).
+When implementing the initial version of the feature, the AltGr characters on the numberless Ergoslat will not be shown (but nav keys will).
 
-As a follow-up, we'll change the Shift pairings for the ErgoSlat without number row to the following. 
+As a follow-up – a separate work item – we'll change the Shift pairings for the ErgoSlat without number row
+to the following, and define only the Shift level there, no AltGr.
 Use the same "compressed" button to switch between this set and the ANSI pairings.
 
-In that case, we'll only define the Shift level and not AltGr. It's also a separate work item.
 Possible Shift pairings: `,;`  `.:`  `-!`  `/?`  `'"`  `$%`  `&+`
 
-As per definition of the ansi30/thumb30 character set, `,./` are placed using the flex mapping, 
-and only get their Shift character changed. 
-`;` from the flex mapping is replaced by `'`, which in turn is replaced by `-`, which is replaced by `$`.
+The seven pairs match the seven punctuation keys that both keymap types have there:
+`,` `.` `;` and `/` (or in thumb30 `-`) from the keymap type, plus `+`, `'`, and the remaining one of `-`/`/`
+from the frame mapping.
+`,` `.` and `/` keep their positions and only get their Shift character changed. 
+`;` from the keymap type is replaced by `'`, which in turn is replaced by `-`, which is replaced by `$`.
 And `+` in the non-compressed keymap becomes `&+`.
+The permutation is the same for both keymap types, since they place the same seven characters –
+only `/` and `-` come from the other source.
 
 Rationale: `-` and `+` should be separate keys because of Ctrl +/- zoom.
 `+` stays on the Shift level, because some apps expect it there when reading the `Ctrl +` shortcut.
