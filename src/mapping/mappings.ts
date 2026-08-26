@@ -10,15 +10,8 @@
     thumb30 core, or any of the two when we want to put [] in adjacent center columns, where belongs to the flex mapping and
     the other doesn't.
 
-    The Unicode characters you can use for non-character keys, what each of them means, and which alternatives
-    were considered and rejected, are all documented in docs/key-symbols.md. Read that before inventing a new one:
-    a glyph that is not whitelisted in `keyboardSymbols` (mapping-functions.ts) silently renders as an ordinary
-    character key.
-
-    The short version — white space and other keyboard specials: ␣ ↹ ⏎ ⇧ ⌫ ⎀ ⌦ ☰ ¤
-    Navigation keys: ↑ ↓ ← → ↞ ↠ ↟ ↡ ⇤ ⇥ ⇱ ⇲ ⇞ ⇟
-
-    Useful printable characters: € $ ¢ £ ¥ µ × – ¿ ¡ § % ‰
+    Copy the glyphs for non-character keys from `keyboardSymbols` in base-model.ts, and non-ASCII characters
+    to insert from `usefulNonAsciiCharacters` next to it. What each symbol means: docs/key-symbols.md.
 
     Some characters are treated specially, see mergeMapping() for details!
 

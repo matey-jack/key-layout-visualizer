@@ -1,20 +1,28 @@
 # Key symbols
 
-Which Unicode character we use for which non-character key, and why that one and not another.
+Which symbol we use for which non-character key, and why that one and not another.
+A *symbol* is the glyph for a non-character key; a *character* key inserts exactly the character it shows.
 
 ## Source of truth in the code
 
-- `keyboardSymbols` in [../src/mapping/mapping-functions.ts](../src/mapping/mapping-functions.ts) is the operative whitelist.
+- `keyboardSymbols` in [../src/base-model.ts](../src/base-model.ts) is the operative whitelist.
   A glyph that is not in it renders as an ordinary character key: no `keyboard-symbol` CSS class,
   no `command-key-border`, and not the grey `KEY_COLOR.EDGE`. **Adding a symbol here is not optional.**
-- `keyboardNames` in the same file lists the labels we spell out as text instead of a symbol.
+- `usefulNonAsciiCharacters` next to it collects the characters worth a key of their own that an alphabet
+  does not already provide. Those are characters, so they get no symbol treatment.
+- `keyboardNames` in [../src/mapping/mapping-functions.ts](../src/mapping/mapping-functions.ts) lists the labels
+  we spell out as text instead of a symbol.
 - `keyLabelShortcuts` in [../src/layout/layout-functions.ts](../src/layout/layout-functions.ts) holds glyphs that exist
   only to keep flex mappings writable as plain strings; `mergeMapping` expands them to a text name before rendering.
   These never reach a key cap as a symbol.
 - `cycleAbbreviations` in [../src/layout/permutation-functions.ts](../src/layout/permutation-functions.ts) does the same
   for cycle specs, where a token is a single character and a multi-character label would otherwise be unaddressable.
 
-Whenever this document and those four tables disagree, they are right and this document needs fixing.
+`layout-models.test.ts` checks every frame mapping and flex mapping against the first two, so a non-ASCII glyph
+that is in neither one fails the build — with one exception: any Unicode *letter* is allowed on a key, because
+which letters an alphabet needs is the language's business, not ours.
+
+Whenever this document and those tables disagree, they are right and this document needs fixing.
 
 ## Symbols rendered on key caps
 
@@ -91,9 +99,9 @@ escape-key symbol, but we use it only internally, because on a keycap, almost no
 (Also at key-cap size the broken circle turns to mush.)
 
 **Space — ␣ (U+2423 open box).**
-Replaces ⍽ (U+237D shouldered open box), which is an APL character with thinner font coverage and no particular
-claim to meaning "space". Also rejected: ␠ (U+2420 symbol for space), which is the control-picture for the
-character, not the key, and is rendered as a tiny "SP" in many fonts.
+Rejected: ⍽ (U+237D shouldered open box), which is an APL character with thinner font coverage and no particular
+claim to meaning "space"; and ␠ (U+2420 symbol for space), which is the control-picture for the character,
+not the key, and is rendered as a tiny "SP" in many fonts.
 
 **Word backward / forward — ↞ ↠. Scroll up / down — ↟ ↡.**
 Chosen for the arrowhead-count logic described above: one complete four-direction family, in one Unicode run,
@@ -123,16 +131,16 @@ committing to one — so it reads as "the magic command key of this board, whate
 Rejected: `CAPS` / ⇪, which would name a function the key does not have on the boards modelled here;
 and ⌘ (U+2318), which is already the source-only shorthand for Cmd and would claim the macOS meaning specifically.
 
-## Related characters that might be useful later
+## Related symbols that might be useful later
 
 Mentioned in the code or in discussion, currently unused. Listed so we do not re-litigate them from scratch,
 and so nobody assumes they are already wired up — none of these are in `keyboardSymbols`.
 
-| Character | Codepoint | Possible use |
+| Symbol | Codepoint | Possible use |
 |---|---|---|
 | ↵ | U+21B5 | An alternative Enter glyph. ⏎ is the purpose-built one, so this stays spare. |
 | ≣ ≡ | U+2263, U+2261 | The rejected Menu candidates. |
-| ⍽ | U+237D | The former Space glyph. |
+| ⍽ | U+237D | Space, as APL writes it. |
 | ␠ | U+2420 | Space, as a control picture. |
 | 🖰 | U+1F5B0 | A mouse key or a pointer-related function. Note it is outside the BMP; check font coverage before use. |
 | ⇇ ⇉ ⇈ ⇊ | U+21C7/21C9/21C8/21CA | The fallback family for word motion and scrolling. |
@@ -141,9 +149,3 @@ and so nobody assumes they are already wired up — none of these are in `keyboa
 | ⌧ | U+2327 | "X in a rectangle box" — the Clear key on some keyboards. |
 | ⇭ | U+21ED | Num Lock. |
 | ⇬ | U+21EC | Caps Lock, but the locking variant. We use ⇪ / `CAPS`. |
-
-## Follow-up work
-
-1. A test asserting that every non-ASCII glyph appearing in any frame mapping or flex mapping is covered by
-   `keyboardSymbols`, `keyLabelShortcuts`, or `keyboardNames` would have caught the ≡ divergence, and will catch
-   the next one.

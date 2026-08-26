@@ -21,7 +21,7 @@ export const colemakMapping: FlexMapping = {
             "zxcvb" + "km,./",
         ],
         // This is the first published version of any wide mapping that I know of.
-        // It originated the idea of flipping the right-hand column of symbols to the center.
+        // It originated the idea of flipping the right-hand column of punctuation characters to the center.
         [KeymapTypeId.AnsiWide]: [
             "=-",
             "qwfpg" + "[" + "jluy;'\\",

@@ -1,5 +1,12 @@
 import {describe, expect, it} from "vitest";
-import {KEYMAP_TYPES, KeyboardRows, KeymapTypeId, type LayoutModel} from "./base-model.ts";
+import {
+    KEYMAP_TYPES,
+    keyboardSymbols,
+    KeyboardRows,
+    KeymapTypeId,
+    type LayoutModel,
+    usefulNonAsciiCharacters
+} from "./base-model.ts";
 import {
     ansiIBMLayoutModel,
     ansiWideLayoutModel,
@@ -42,6 +49,7 @@ import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 import {xhkb13LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "./layout/xhkbLayoutModel.ts";
 import {sum} from "./library/math.ts";
+import {allMappings} from "./mapping/mappings.ts";
 
 const layoutModels: Array<LayoutModel> = [
     ansiIBMLayoutModel,
@@ -315,5 +323,39 @@ describe('Ergoslat numberless key placements', () => {
         expect(numThumb30[KeyboardRows.Upper][12]).toBe("⌫");
         expect(numThumb30[KeyboardRows.Bottom][2]).toBe(expectedThumbBottom2);
         expect(numThumb30[KeyboardRows.Bottom][7]).toBe(expectedThumbBottom7);
+    });
+});
+
+describe("key labels", () => {
+    // Every non-ASCII glyph on a key has to be a letter of some alphabet, a known symbol, or a character
+    // we chose to offer. Anything else is a typo or a symbol someone forgot to add to keyboardSymbols,
+    // where it would render as an ordinary character key instead of a command key.
+    const knownNonAscii = keyboardSymbols + usefulNonAsciiCharacters;
+    const unknownGlyphs = (label: string) =>
+        [...label].filter((c) =>
+            c.charCodeAt(0) > 127 && !knownNonAscii.includes(c) && !/\p{L}/u.test(c)
+        );
+
+    layoutModels.forEach((model) => {
+        it(`frame mappings of ${model.name} use only known symbols and characters`, () => {
+            Object.entries(model.frameMappings).forEach(([keymapType, frameMapping]) =>
+                frameMapping.forEach((row, r) =>
+                    row.forEach((entry, c) => {
+                        if (typeof entry !== "string") return;
+                        expect(unknownGlyphs(entry), `${keymapType} [${r},${c}] = "${entry}"`).toEqual([]);
+                    })
+                )
+            );
+        });
+    });
+
+    allMappings.forEach((mapping) => {
+        it(`flex mapping ${mapping.name} uses only known symbols and characters`, () => {
+            Object.entries(mapping.mappings).forEach(([keymapType, rows]) =>
+                rows.forEach((row, r) =>
+                    expect(unknownGlyphs(row), `${keymapType} row ${r} = "${row}"`).toEqual([])
+                )
+            );
+        });
     });
 });

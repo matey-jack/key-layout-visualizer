@@ -1,10 +1,4 @@
-import {type LayoutModel, SKE_HOME} from "../base-model.ts";
-
-// We don't use Unicode ranges, because we might later map some other Unicode symbols, that are actually characters to insert.
-// Examples: × or ¢ or the "per mille" sign
-// What each of these means, and why we picked it over the alternatives: ../../docs/key-symbols.md
-// A glyph missing from this string renders as an ordinary character key, so every new symbol has to be added here.
-const keyboardSymbols = "↹⌦⎀⌫⇧☰␣⏎¤⌥⇞⇟⇤⇥⇱⇲←↑↓→↞↠↟↡";
+import {keyboardSymbols, type LayoutModel, SKE_HOME} from "../base-model.ts";
 
 export const isKeyboardSymbol = (label: string) => keyboardSymbols.includes(label);
 

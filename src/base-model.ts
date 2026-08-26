@@ -185,6 +185,26 @@ export const isLayoutViz = (t: VisualizationType) =>
         VisualizationType.LayoutFingering, VisualizationType.LayoutAngle
     ].includes(t)
 
+// --- Key labels ---
+//
+// A symbol is the glyph for a non-character key (it commands something: ⏎, ⇤, ☰);
+// a character is a key that inserts exactly the character it shows (a, ;, €).
+//
+// Which symbol stands for which key, and why that one and not another: docs/key-symbols.md.
+// Both constants below are the list to copy a glyph from when writing a frame mapping or a flex
+// mapping, and the whitelist that layout-models.test.ts checks every mapping against.
+// An alphabet's own letters need no list: any Unicode letter may go on a key.
+// The non-ASCII ones currently mapped, to copy from: ä ö ü ß
+
+// A symbol missing from here renders as an ordinary character key: no `keyboard-symbol` class,
+// no command border and no edge colour. So every symbol in use has to be listed.
+// This is a list and not a Unicode range, because characters to insert can be non-ASCII too.
+export const keyboardSymbols = "↹⌦⎀⌫⇧☰␣⏎¤⌥⇞⇟⇤⇥⇱⇲←↑↓→↞↠↟↡";
+
+// Characters (not symbols) beyond ASCII and beyond an alphabet's own letters, worth a key of their own.
+// ´ is the dead-key accent of the German and other European keyboards.
+export const usefulNonAsciiCharacters = "€¢£¥µ×–¿¡§‰´";
+
 export interface FlexMapping {
     name: string;
     techName?: string;

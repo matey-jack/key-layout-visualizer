@@ -28,7 +28,7 @@ By saving a key on the main rows, `thumb32` makes it easier to fit onto compact 
 ### 2. Symmetric Metric Comparisons
 Using the exact same 32-character set as `ansi32` ensures a level playing field when comparing keymap performance:
 * We can directly compare typing effort scores, same-finger bigram conflicts, and learning diffs between a layout's standard representation (`ansi32`) and its thumb-letter alternative (`thumb32`).
-* If we introduced a 33rd character in `thumb33` (e.g., `ß` or another punctuation symbol), any direct comparison with `ansi32` would be skewed because the character frequencies and bigram statistics of the two layouts would evaluate different datasets.
+* If we introduced a 33rd character in `thumb33` (e.g., `ß` or another punctuation character), any direct comparison with `ansi32` would be skewed because the character frequencies and bigram statistics of the two layouts would evaluate different datasets.
 
 ### 3. Symmetry with the 30-Key Precedent
 Our existing 30-key keymap types follow a clear mapping pattern where the thumb layout is derived by reducing the lower row by one key and moving it to the thumb:
