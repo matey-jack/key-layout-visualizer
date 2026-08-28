@@ -340,13 +340,9 @@ And we can do this using a lot of mnemonic pairings for the Shift and AltGr char
       1! 2@ 3# 4$ 5% 6^ 7& 8* 9/ 0?
 
 Note that this can shift around on larger keyboards that have extra keys in the center of the number row.
-To keep the mnemonics, we'll omit `[]` from the AltGr mapping when it is already defined on the base level.
 
 (Sadly, one mnemonic gets lost on the young generation which reads `#` as "hash", 
 while older people still remember it as the "pound" character, making it perfect for the British Pounds currency sign.)
-
-When the user sets the ["Nav keys" switch](#button-groups) to the right side of the keyboard, `[]` will move to a mirrored position along with the other brackets and two characters from the other side take their places. 
-That kills two mnemonic positions (along with the standard German `[]` position), thus it's not my favorite.
 
 [32-key only]: the flex map position [Upper, 0] (Q in qwertz) has the AltGr assignment `@`.
 We don't show the remaining standard German AltGr, because the above one already covers most of the relevant keys.

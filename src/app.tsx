@@ -56,9 +56,11 @@ interface VisualizationSwitchesProps {
              <VizTypeButton vizType={VisualizationType.MappingTradeoff} signal={vizType}>Learning Effort Trade-off</VizTypeButton>
              <VizTypeButton vizType={VisualizationType.MappingShiftLevels} signal={vizType}>Shift and AltGr
                  Levels</VizTypeButton>
-             {appState && vizType.value === VisualizationType.MappingShiftLevels &&
-                 <NavSideOptions navSide={appState.navSide}/>}
-             {appState && isKlcCompatible(appState) && <DownloadKlcLink appState={appState}/>}
+             {/* The levels view puts its own switches here, and the KLC export knows only the
+                 ANSI base/Shift pairs, so it has nothing to offer while the levels are shown. */}
+             {appState && (vizType.value === VisualizationType.MappingShiftLevels
+                 ? <NavSideOptions navSide={appState.navSide}/>
+                 : isKlcCompatible(appState) && <DownloadKlcLink appState={appState}/>)}
          </div>
      </div>
  }

@@ -442,8 +442,7 @@ export function ShiftLevelsDetails() {
             <code>!</code>, <code>£</code> with <code>#</code> (the "pound" key), <code>€</code> with{" "}
             <code>$</code>, <code>‰</code> with <code>%</code>, and <code>|</code> with <code>&amp;</code>,
             reflecting their relationship in programming languages. <code>{"[ ]"}</code> complete the
-            bracket stack on <code>8</code> and <code>9</code>, unless the board already carries them as
-            keys of their own.
+            bracket stack on <code>8</code> and <code>9</code>.
         </p>
         <p>
             The other hand gets "hands down" navigation: the four cursor keys in their familiar inverted-T

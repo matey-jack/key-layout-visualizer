@@ -12,11 +12,11 @@ import {xhkb13LayoutModel, xhkb16LayoutModel} from "../layout/xhkbLayoutModel.ts
 import {allMappings} from "./mappings.ts";
 import {allLayoutModels} from "../all-layout-models.ts";
 import {
-    altGrDigitsLeft,
-    altGrDigitsRight,
+    altGrDigits,
     altGrLeft,
     altGrRight,
     getBaseLevel,
+    getKeyLevels,
     getShiftLevel,
     getThirdLevel,
     navLeft,
@@ -133,18 +133,14 @@ describe("AltGr number row", () => {
         expect(level["0"]).toBe("¿");
     });
 
-    it("moves only the brackets when the characters change hands", () => {
-        const level = thirdLevelByLabel(ansiIBMLayoutModel, Hand.Right);
-        expect(level["2"]).toBe("[");
-        expect(level["3"]).toBe("]");
-        // the two they displace take the places the brackets vacated
-        expect(level["8"]).toBe("¢");
-        expect(level["9"]).toBe("£");
-        // ^ and | keep their digits, and so do the outer two
-        expect(level["6"]).toBe("^");
-        expect(level["7"]).toBe("|");
-        expect(level["1"]).toBe("¡");
-        expect(level["0"]).toBe("¿");
+    it("stays put when the characters change hands", () => {
+        const digitsOf = (navSide: Hand) => {
+            const level = thirdLevelByLabel(ansiIBMLayoutModel, navSide);
+            // spelled out because an object's integer-like keys come back in numeric order
+            return "1234567890".split("").map((digit) => level[digit]).join(" ");
+        };
+        expect(digitsOf(Hand.Right)).toBe(digitsOf(Hand.Left));
+        expect(digitsOf(Hand.Left)).toBe("¡ ¢ £ € ‰ ^ | [ ] ¿");
     });
 
     it("follows the digits, not the fingers, when the number row is shifted", () => {
@@ -156,22 +152,31 @@ describe("AltGr number row", () => {
         expect(level["9"]).toBe("]");
     });
 
-    it("leaves out a bracket the number row already carries on its base level", () => {
-        // The 16/5 has `[` and `]` keys in the centre of its number row.
+    it("repeats a bracket the number row already carries on its base level", () => {
+        // The 16/5 has `[` and `]` keys in the centre of its number row, which does not stop
+        // the digits from carrying them too.
         const level = thirdLevelByLabel(xhkb16LayoutModel, Hand.Left);
-        expect(level["8"]).toBeUndefined();
-        expect(level["9"]).toBeUndefined();
-        // everything else survives
-        expect(level["1"]).toBe("¡");
-        expect(level["5"]).toBe("‰");
-        expect(level["6"]).toBe("^");
-        expect(level["7"]).toBe("|");
-        expect(level["0"]).toBe("¿");
+        expect(level["8"]).toBe("[");
+        expect(level["9"]).toBe("]");
     });
 });
 
 describe("the 32-key `@`", () => {
     const german = "Qwertz – German Standard";
+
+    it("comes with no Shift level, since we have no German pairings yet", () => {
+        const model = majorErgoslatLayoutModel(false);
+        const mapping = mappingFor(model, german);
+        const charMap = fillMapping(model, mapping)!;
+        const positions = getKeyPositions(model, false, charMap);
+        const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
+        const levels = getKeyLevels(model, positions, charMap, Hand.Left, keymapType);
+        expect(levels.shift.flat().filter((c) => c)).toEqual([]);
+        // and no base override either: the ANSI pairs are what would drive it
+        expect(levels.base.flat().filter((c) => c)).toEqual([]);
+        // the AltGr level is unaffected
+        expect(levels.third.flat()).toContain("@");
+    });
 
     it("sits on the flex map's first upper row key", () => {
         const level = thirdLevelByLabel(majorErgoslatLayoutModel(false), Hand.Left, german);
@@ -278,8 +283,7 @@ describe("every block entry is placed on every layout model", () => {
 
 /*
     The number row is placed by digit, so the guard is a different one: every digit the layout
-    carries has to receive its character, except a bracket left out because the number row
-    already has it on the base level.
+    carries has to receive its character.
  */
 describe("every digit gets its AltGr character on every layout model", () => {
     const withNumberRow = allLayoutModels
@@ -290,12 +294,9 @@ describe("every digit gets its AltGr character on every layout model", () => {
         const positions = positionsOf(model);
         const baseLabels = new Set(positions.filter((p) => p.row === KeyboardRows.Number).map((p) => p.label));
         [Hand.Left, Hand.Right].forEach((navSide) => {
-            const digits = navSide === Hand.Left ? altGrDigitsRight : altGrDigitsLeft;
             const level = thirdLevelByLabel(model, navSide);
-            const missing = Object.entries(digits)
-                // a bracket the number row already carries is the one documented omission
-                .filter(([digit, char]) => baseLabels.has(digit) && !baseLabels.has(char))
-                .filter(([digit, char]) => level[digit] !== char)
+            const missing = Object.entries(altGrDigits)
+                .filter(([digit, char]) => baseLabels.has(digit) && level[digit] !== char)
                 .map(([digit, char]) => `${digit} -> ${char}`);
             expect(missing, `nav on the ${Hand[navSide]} hand`).toEqual([]);
         });

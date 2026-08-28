@@ -15,6 +15,14 @@ import {isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
 // Level arrays are parallel to the merged char map (and thus to the model's keyWidths).
 export type LevelMap = (string | null)[][];
 
+/*
+    The 32-key flex maps follow the German keymap, whose Shift pairings we do not have yet
+    (see the "Next parts" list in docs/key-levels.md). Until then they show no Shift level at
+    all rather than the ANSI one, which would be wrong on most of their keys.
+ */
+export const is32KeyMap = (keymapType?: KeymapTypeId): boolean =>
+    keymapType === KeymapTypeId.Ansi32 || keymapType === KeymapTypeId.Thumb32;
+
 // The US ANSI Shift pairings, one entry per key: base character first, shifted character second.
 export const ansiShiftPairs = [
     "1!", "2@", "3#", "4$", "5%", "6^", "7&", "8*", "9(", "0)",
@@ -73,20 +81,13 @@ export const altGrLeft: Block = [
 ];
 
 /*
-    The AltGr number row, keyed by the digit the key carries rather than by finger, so the
-    mnemonic pairings survive on the boards that shift their number row around.
-    Only `[]` follow the bracket stack to the other hand; `¢ £` then take the places they vacate.
+    The AltGr number row, keyed by the digit the key carries rather than by finger, so that the
+    mnemonic pairings survive on the boards that shift their number row around. It is the same
+    row on both hands, and thus the one part of the AltGr level that the "Nav keys" switch
+    leaves alone.
  */
-type DigitRow = Record<string, string>;
-
-export const altGrDigitsRight: DigitRow =
+export const altGrDigits: Record<string, string> =
     {"1": "¡", "2": "¢", "3": "£", "4": "€", "5": "‰", "6": "^", "7": "|", "8": "[", "9": "]", "0": "¿"};
-
-export const altGrDigitsLeft: DigitRow =
-    {"1": "¡", "2": "[", "3": "]", "4": "€", "5": "‰", "6": "^", "7": "|", "8": "¢", "9": "£", "0": "¿"};
-
-// The AltGr assignment of the flex map position [Upper, 0] – `q` in qwertz – on 32-key maps only.
-const atSignKeymapTypes: KeymapTypeId[] = [KeymapTypeId.Ansi32, KeymapTypeId.Thumb32];
 
 export const navLeft: Block = [
     [_, _, _, _, _],
@@ -158,17 +159,12 @@ function placeBlock(
     });
 }
 
-/**
- * The number row, placed by digit. A bracket the number row already carries on its base level
- * is left out: repeating it one level up would only cost us a mnemonic position.
- */
-function placeDigits(result: LevelMap, positions: KeyPosition[], charSide: Hand) {
-    const digits = charSide === Hand.Right ? altGrDigitsRight : altGrDigitsLeft;
-    const numberRow = positions.filter((p) => p.row === KeyboardRows.Number);
-    const baseLabels = new Set(numberRow.map((p) => p.label));
-    numberRow.forEach((p) => {
-        const char = digits[p.label];
-        if (char && !baseLabels.has(char)) result[p.row][p.col] = char;
+// The number row, placed by digit.
+function placeDigits(result: LevelMap, positions: KeyPosition[]) {
+    positions.forEach((p) => {
+        if (p.row !== KeyboardRows.Number) return;
+        const char = altGrDigits[p.label];
+        if (char) result[p.row][p.col] = char;
     });
 }
 
@@ -191,9 +187,10 @@ export function getThirdLevel(
 
     if (positions.some((p) => p.row === KeyboardRows.Number)) {
         placeBlock(result, model, positions, charSide, charSide === Hand.Right ? altGrRight : altGrLeft);
-        placeDigits(result, positions, charSide);
+        placeDigits(result, positions);
     }
-    if (keymapType && atSignKeymapTypes.includes(keymapType)) {
+    if (is32KeyMap(keymapType)) {
+        // The AltGr assignment of the flex map position [Upper, 0] - `q` in qwertz.
         const key = resolveSlot(model, positions, Hand.Left, KeyboardRows.Upper, 4);
         if (key) result[key.row][key.col] = "@";
     }
@@ -206,11 +203,13 @@ export interface KeyLevels {
     third: LevelMap;
 }
 
+const noLevel = (charMap: string[][]): LevelMap => charMap.map((row) => row.map(() => null));
+
 export const getKeyLevels = (
     model: LayoutModel, positions: KeyPosition[], charMap: string[][], navSide: Hand,
     keymapType?: KeymapTypeId
 ): KeyLevels => ({
-    base: getBaseLevel(charMap),
-    shift: getShiftLevel(charMap),
+    base: is32KeyMap(keymapType) ? noLevel(charMap) : getBaseLevel(charMap),
+    shift: is32KeyMap(keymapType) ? noLevel(charMap) : getShiftLevel(charMap),
     third: getThirdLevel(model, positions, navSide, keymapType),
 });
