@@ -3,18 +3,19 @@
 Status: in progress
 
 Done parts:
- - New "MappingShiftLevels" viz type can be selected
- - ANSI Shift level characters are displayed
+ - New "MappingShiftLevels" viz type can be selected 
+   + but TODO: on 32-key flex maps show no Shift and AltGr characters, only the AltGr Nav layer.
+ - ANSI Shift level characters are displayed (see `key-levels.ts`)
  - AltGr level characters and navigation keys are displayed
  - AltGr level can be mirrored between hands using a new button pair
 
 Next parts:
- - Number row AltGr mappings
+ - Update Number row AltGr mappings
+ - Ergoslat numberless modified Shift pairings (no switching button)
  - Compressed Shift level for ansi30/thumb30 on small keyboards (see below) -- includes introduction of the "compression buttons"!
- - Compressed Shift level for ansi32/thumb32 on small keyboards, including the 4-punctuation-key version for the Ergoslat.
- - Ergoslat numberless modified Shift pairings (no AltGr characters, no switching button)
+ - [NOT_READY] Compressed Shift level for ansi32/thumb32 on small keyboards, including the 4-punctuation-key version for the Ergoslat.
  - Compressed Shift level for ansi30/thumb30 on ANSI keyboards
-   (with an option to remap the remaining punctuation characters or place nav keys)
+   (with a new button group option to remap the remaining punctuation characters or place nav keys)
 
 ## Background and Motivation
 
@@ -77,8 +78,17 @@ In terms of assignable punctuation characters, this yields:
 My personal Iris CE keyboard (with which I created most of this app) is a typical example: 
 it has 8 thumb keys, but only 6 of them are usable without making a big hand movement.
 
+When using this 41 character map on a keyboard with more than 52 keys, 
+we'll make sure that all the characters are mapped on the number and letter rows.
+Most keyboards will have the additional keys in the bottom row, where they can't easily be reached during a typing flow.
+On the other hand those key positions are very practical to use for additional navigation keys, 
+because they can be found "by feel" when the hands are not locked in typing position on the keyboard. 
+I call that "Hands off navigation mode".
 
-### Which characters go where?
+### 30-key flex maps: Which characters go where?
+
+Let's first consider the case of the 30-key flex maps (ansi30 and thumb30), which are based on the ANSI English keymap.
+I'll label this case as [ANSI], which includes the thumb-letter variant based on the same character set.
 
 We consider the following 10 punctuation characters as essential for writing prose:
 
@@ -99,37 +109,69 @@ we'll also move the pair `()` to the AltGr level – thus the 12 characters on t
 That leaves `=`, `_`, `+`, `@`, `#`, `$`, `%`, `^`, `&`, `*` to fill up the base and Shift levels
 next to the 10 essential ones (5 + 15 = 20 slots for 20 characters – it fits exactly).
 
-### Sample Shift mapping
+### [ANSI] Sample Shift mapping – the compressed Shift level
 
-Here's a sample solution for a keyboard that has 1, 1, and 3 punctuation key positions in its upper, home, and lower row:
+Here's a sample solution for a keyboard that has 1, 1, and 3 punctuation key positions in its upper, home, and lower row
+(which is a very common arrangement on Split Orthogonal keyboards!):
 
-    ⎋  1! 2@ 3# 4$ 5% 6^ 7& 8* 9+ 0?  ⌫
-                               o  p  /=
+    ⎋  1! 2@ 3# 4$ 5% 6^ 7& 8* 9/ 0?  ⌫
+                               o  p  =+
                             k  l  '"  ↵  
                       n  m  ,; .: -_  ⇧
 
-This creates one new character pairing (key label) with the `/=` key.
-We could instead reuse the existing `/?` or `=+` key label.
-We need to weigh the following trade-offs:
- - keeping the `/?` pair, we lose the symmetry of the `1!` and `0?` keys, because this pairs `=` onto the `0` key;
- - keeping the `=+` pair, we would need to pair `/` onto the `9` key and thus lose the base mapping for the `/` key, 
-   which breaks keyboard shortcuts in some applications when the keymap is defined using a national layout mechanism. 
-   But in a firmware mapping (like with [QMK's custom shift keys]), this will work without disadvantages, which is why it's the mapping I personally use.
+It corresponds exactly to the character split from the previous sections: 
+5 punctuation keys on the base level and 15 on the Shift level, leaving 12 for the AltGr level discussed below.
 
-(There is also the option of pairing `9=` and `/+`, but it doesn't have any advantages or disadvantages compared to the one shown.
-A slight pro would be that it's closer to the standard German mapping of `=` in the number row.)
+This Shift-pairing has the advantage of keeping 11 of the 15 punctuation-containing keycaps the same as US ANSI.
+Digits 1 to 8 as well as `'"`, `=+`, and `-_` exactly representing the base and Shift level characters on the keycap.
+Of the remaining 4 "new pairings" two ANSI keycaps (`,<` and `,>`) can be reused and represent the base and AltGr level characters (as we'll see below), while their Shift level characters are easy mnemonics. 
+Only the pairings `9/` and `0?` are completely new. I personally used the numpad keys `9` and `0` on my keyboard, so at least it doesn't show the wrong Shift-level character.
+Finally, this pairing also offers a boon to software developers who often type the `/*` and `*/` bigrams, 
+which are now neighboring characters on the same level. 
 
+(There is just one small drawback when configuring this Shift level mapping using Windows or Linux national layouts: 
+`/` being placed on Shift level breaks keyboard shortcuts such as Alt+/ and Ctrl+/. 
+But in a firmware mapping (like with [QMK's custom shift keys]), this will work without disadvantages, which is why it's the mapping I personally use.)
 
 [QMK's custom shift keys]: https://getreuer.info/posts/keyboards/custom-shift-keys/index.html
 
-### A compatible punctuation map for full-size keyboards
+#### Rejected Alternatives
+
+In a strict usage-based view, the characters `#` and `^` are more "technical" compared to the round parenthesis `()` which are more common in prose writing.
+While this suggests that `#` and `^` should be moved to the AltGr layer instead of the parenthesis, I decided to move the parenthesis for several reasons:
+- the collection of all four types of brackets on the same level (AltGr) already mentioned above.
+- freeing the Shift+0 position for the question mark's European layouts position that is so nicely symmetrical with `!` on Shift+1.
+- more generally, reassigning the Shift positions on `9` and `0` gives us two adjacent spots on the right side where most of the punctuation characters live, so that characters don't move very far and part of the muscle memory stays intact.
+- and finally, placing the round parentheses in the middle of the AltGr home row actually make them more easily accessible than on the top right, especially when one wants to type both of them in sequence. Since the pinky finger is too short to comfortably reach the number row, their standard position up there makes the ring finger type both of them.
+
+Since we have one keyboard layout model with only 4 pure punctuation keys, we do also map `^` and `=` to the AltGr layer (using Shift+6 for the `+` character).
+Those mappings are practical and memorable (`=` near `<>` and `+` near `*/`), but since most small keyboards actually have at least 5 keys for pure punctuation,
+we opt for preserving muscle memory and reducing the need to use the AltGr layer. ==> The AltGr mappings are redundant and the 5 punctuation keys are preserved.
+
+#### Special case compression to only 4 punctuation keys for the Ergoslat on 32-key flex maps
+
+TODO: this doesn't make sense, since the punctuation keys for the 30-key flex maps are based on the standard German keymap.
+We first need to define the entire Shifted punctuation for this keymap and then base the Ergoslat special-case on that.
+
+The Ergoslat has only 7 punctuation keys when using the English 30-key flex maps, 
+which leaves only 4 punctuation keys for the international 32-key flex maps.
+Luckily, most of the above concept with small modifications:
+   + omit the `=+` key
+   + map the number row Shift level as `6+ 7& 8* 9/ 0?` – that's only one more keycap (the `6`) that needs to be replaced.
+   + map `=` and `^` on the AltGr level. As we'll see, there are great mnemonic and practical positions for them.
+     So good, in fact, that we'll always map them there redundantly, even if the keyboard has a physical `=+` key.
+
+This changes the punctuation character distribution to 4, 14, 14 on base, Shift, and AltGr levels,
+but thanks to the redundant AltGr mappings, doesn't add that much complexity.
+
+### [ANSI] A compatible punctuation map for full-size keyboards
 
 On keyboard layouts with all 47 keys, compression punctuation from 11 down to 5 keys allows us to place 6 more non-character keys. 
 One of those is usually Escape in the top left corner; the others could be Home/End, PageUp/Down, and (forward) Delete. 
 But there is also the option of simply rearranging the punctuation characters, 
 so that the "1 unit from home" keys are mapped exactly like on the smaller keyboards and the remaining 6 keys collect the remaining punctuation characters.
-This allows for a very logical character assignment, since the compressed punctuation dislodges both bracket pairs `()` and `<>`.
-We can nicely arrange them on the same pair of keys.
+This allows for a very logical character assignment: since the compressed punctuation dislodges both bracket pairs `()` and `<>`, we can nicely arrange them on the same pair of keys.
+
 The resulting punctuation keymap looks like this:
 
     ⎋   1!  2@  3#  4$  5%  6^  7&  8*  9+  0?  (<  )>   ⌫⌫⌫
@@ -140,46 +182,43 @@ The resulting punctuation keymap looks like this:
 Given this keymap, we can simply replace the two pairs of brackets with two pairs of navigation keys, 
 while the larger `\|` key becomes (forward) Delete.
 
+The same Shift pairings could also be applied to our larger fictional keyboards (Thumbs Up, Harmonic and the Ergoplank family).
+Those often already have additional navigation keys assigned, so that the option of replacing rarely-used punctuation 
+with Nav keys doesn't make sense – but using the same punctuation map as their smaller family members does!
 
-#### Rejected Alternatives
+### [ANSI] Applying the compressed Shift pairings to all layout models (and all 30-key maps)
 
-In a strict usage-based view, the characters `#` and `^` are more "technical" compared to the round parenthesis `()` which are more common in prose writing. 
-While this suggests that `#` and `^` should be moved to the AltGr layer instead of the parenthesis, I decided to move the parenthesis for several reasons:
- - the collection of all four types of brackets on the same level (AltGr) already mentioned above.
- - freeing the Shift+0 position for the question mark's European layouts position that is so nicely symmetrical with `!` on Shift+1.
- - more generally, reassigning the Shift positions on `9` and `0` gives us two adjacent spots on the right side where most of the punctuation characters live, so that characters don't move very far and part of the muscle memory stays intact.
- - and finally, placing the round parentheses in the middle of the AltGr home row actually make them more easily accessible than on the top right, especially when one wants to type both of them in sequence. Since the pinky finger is too short to comfortably reach the number row, their standard position up there makes the ring finger type both of them.
+To avoid defining the Shift and AltGr level characters on each of our many keyboard layout models (and variants thereof)
+we instead define them mostly as pairings. 
+That is, the base-level character no matter where it's placed determines the Shift level character. 
+The descriptions above already describe those pairs exact enough for implementation.
 
-Since we have one keyboard layout model with only 4 pure punctuation keys, we do also map `^` and `=` to the AltGr layer (using Shift+6 for the `+` character).
-Those mappings are practical and memorable (`=` near `<>` and `+` near `*/`), but since most small keyboards actually have at least 5 keys for pure punctuation, 
-we opt for preserving muscle memory and reducing the need to use the AltGr layer. ==> The AltGr mappings are redundant and the 5 punctuation keys are preserved.
+We also want to make sure that the five compressed punctuation keys actually end up in good positions.
+To this end, we use the fact that the `;:` and `/?` keys deleted by compression are usually mapped in very central positions.
+We only need to take heed of the fact that only ansi30 flex map has `/` in a central (flex map area) position, 
+while all the other flex maps include `-` in the flex map sets instead.
+(And my personal ideosyncracy of labeling the `=+` key on some keyboards as `+`, 
+which needs to change the base level back to `=` to create a correct base/Shift pair.)
 
-### Freeing the extra punctuation keys
+Our rules for key replacement are as follows:
+ - `;:` is replaced by `'"`, because this is the most central spot and `'` is used inside words and thus practical to place among the letters.
+ - `,` and `.` keep their position and receive their Shift level character as defined above.
+ - Only on ansi30, `/?` is replaced by `-_`.
+ - `=+` moves to the spot freed by `'"` (which always moves, so that is always free).
 
-Our small keyboards have more punctuation keys than the five base-level slots of this concept –
-7 to 9 of them, see [the table below](#pre-existing-punctuation-maps-on-our-smallest-keyboards) –
-and some of those sit in the bottom row carrying technical characters like `` ` `` or `\`,
-which contradicts the rule that technical characters live on the AltGr level.
-The feature therefore removes all punctuation keys except the five base ones
-and gives the freed positions to navigation and other keys.
-We call the result the **compressed Shift pairings**, as opposed to the ANSI pairings.
-It is produced in two steps.
+All the remaining base-level punctuation keys can now be removed and be replaced with additional navigation keys. 
 
-**1. Permutation.** The keys keep their positions, but their character pairs move along a cycle:
-`;:` is replaced by `'"`, which is in turn replaced by `/=`.
-This keeps `,` `.` `-` where they are and leaves the old `/` key unassigned.
-It also resolves the duplicate that the Shift pairing list would otherwise create:
-`Ansi30` and `Thumb30` map `;` on its own key, while the pairing list already produces `;` as Shift+`,`.
-After the permutation there is no `;` key left, so there is nothing to warn about.
+### Replacing freed punctuation keys with extra nav keys
 
-**2. Reassignment.** Every position that is now unassigned – the old `/` key plus the keys whose technical
-characters moved to the AltGr level – becomes a navigation or other "hands off" key.
-If a keyboard has N punctuation keys, this frees X = N − 5 of them:
- - if X is odd, one of the freed keys becomes `⌦` (Delete), or `Insert` if the layout already has a Delete key;
- - the next pair becomes Home/End;
+First of all, if the key map before Shift compression had a `` `~ `` key, but no Escape key, 
+we place Escape in that freed position. (This might not ) 
+Let N be the number of keys freed by the Shift-level compression.
+
+ - if N is odd, one of the freed keys becomes `⌦` (Delete), or `Insert` if the layout already has a Delete key;
+ - the next pair becomes Home/End (unless already present on the key map);
  - one more pair becomes PageUp/PageDown.
 
-On all four small boards X is 2 (Home/End) or 4 (Home/End plus PageUp/PageDown),
+On all four small boards N is 2 (Home/End) or 4 (Home/End plus PageUp/PageDown),
 so the odd case does not occur there.
 
 On keyboards which carry all 11 punctuation keys – the ANSI variants – six keys are freed at once,
@@ -261,63 +300,6 @@ Note that the `↟ ↡` denote mouse scrolls which can be mapped using keyboard 
 but probably not using xkb.
 In the case that `⇟` would fall on the right pinky and clash with the Shift key, we omit `↟ ↡` and put `⇞ ⇟` in their place.
 
-## Popular workarounds
-
-There are reasons why many keymaps, even on small keyboards where it's especially useful, are not modifying the Shift layer:
- 1. Switching to a new (physical) keyboard layout already requires a lot of readjustment. Remembering new Shift pairings only adds to the adjustment effort.
- 2. Most programmable keyboard firmware, even when it has a lot of advanced features, still sends simple keycodes to the computer and leaves the Shift and AltGr layer mapping (and indeed, all the actual character assignments to modifier+keycode pairs) to the computer software keymap. (As stated above, even QMK needs a custom user extension to change the Shift pairing which means that most GUI tools which are based on standard QMK or VIA or VIAL do not support that.) 
-
-For those reasons, keyboard designers often squeeze some extra punctuation keys into the bottom row where traditional keyboards only have the space bar and modifier keys. 
-This makes sense from a space-usage point of view, since the space bar and modifier keys are way oversized and keyboards that use unit-sized keys everywhere naturally have extra space in the bottom.
-On the other hand, typing characters in the bottom row is not as practical. 
-Once the characters move closer to the home row, the bottom spots can be assigned with navigation and other keys which are used outside a fast typing flow – "hands off" usage – which is more practical.
-
-As an upside of this key-squeezing, we can introduce `()` and `<>` redundantly on the AltGr level 
-and use the same AltGr mapping with the standard ANSI punctuation Shift level mappings, 
-as long as we have at least 7 ANSI punctuation keys mapped: `,./'-=;`
-This way, the same AltGr layer works with those 7 ANSI mappings (plus the 10 ANSI mappings in the number row)
-and it also works with the 5 modified mappings defined above, which remove the `;:` key and either the `/?` or `=+` key.
-(Or both, if we introduce a `/=` or `/+` key.)
-
-In any case, since both the ANSI and compressed keymaps lead to practical and complete character maps,
-we want a button group in the app that switches between both. 
-See #App UX; group label "Shift pairings"-.
-
-
-### Pre-existing punctuation maps on our smallest keyboards
-
-| Layout Model       | Keymap Type | Punctuation Keys                           | Total | Thereof in Bottom Row   |
-|--------------------|-------------|--------------------------------------------|-------|-------------------------|
-| Thumbs Up 13/2     | `ansi30`    | `,` `.` `;` `/` – `'` `-` `+`              | 7     | 1: `+`                  |
-|                    | `thumb30`   | `,` `.` `;` `-` – `'` `+` `/`              | 7     | 2: `+` `/`              |
-|                    | `ansi32`    | `,` `.` `-` – `/` `+`                      | 5     | 2: `/` `+`              |
-|                    | `thumb32`   | `,` `.` `-` – `/` `+`                      | 5     | 1: `+`                  |
-| Harmonic 12 Mini   | `ansi30`    | `,` `.` `;` `/` – `+` `'` `-`              | 7     | 1: `-`                  |
-|                    | `thumb30`   | `,` `.` `;` `-` – `+` `'` `/`              | 7     | 1: `/`                  |
-| Ergoslat 13/3      | `ansi30`    | `,` `.` `;` `/` – `-` `+` `'`              | 7     | 0                       |
-|                    | `thumb30`   | `,` `.` `;` `-` – `+` `'` `/`              | 7     | 0                       |
-|                    | `ansi32`    | `,` `.` `-` – `+`                          | 4     | 0                       |
-|                    | `thumb32`   | `,` `.` `-` – `+`                          | 4     | 0                       |
-| Split Ortho (12/∞) | `ansi30`    | `,` `.` `;` `/` – `'` `\` `` ` `` `+` `-`  | 9     | 4: `\` `` ` `` `+` `-`  |
-|                    | `thumb30`   | `,` `.` `;` `-` – `'` `/` `+` `\` `` ` ``  | 9     | 3: `+` `\` `` ` ``      |
-|                    | `ansi32`    | `,` `.` `-` – `/` `` ` `` `'` `+`          | 7     | 4: `/` `` ` `` `'` `+`  |
-|                    | `thumb32`   | `,` `.` `-` – `'` `` ` `` `/` `+`          | 7     | 3: `` ` `` `/` `+`      |
-
-The characters left of the dash come with the keymap type itself, those right of it from the layout's frame mapping.
-The 32-key keymaps contribute only `,` `.` `-`, because three of their character slots go to language-specific letters.
-
-More notes on the numbers:
- - Neither the thumb-shift option of the Split Ortho nor the MidShift variants of the Ergoslat change any total;
-   they only move keys between rows. (Split Ortho with thumb shift has 3 instead of 4 punctuation keys
-   in the bottom row on `ansi30`, and 2 instead of 3 on `thumb30`.)
- - Major and Minor Ergoslat, low-shift and mid-shift, all have the same counts.
- - Split Ortho's own `splitOrtho` keymap type leaves all punctuation to the flex mapping and thus has no fixed count.
-   Colemak, for example, places 8 punctuation characters there (`;` `'` `,` `.` `/` `-` `=` `\`),
-   3 of them in the bottom row and only 2 of those (`=` and `\`) on an actual thumb key.
-   The Harmonic 12's own `harmonic12` keymap type is currently not used by any flex mapping.
- - For comparison: the ANSI variants have all 11 punctuation keys in their `ansi30` frame
-   (`` ` `` `-` `=` `[` `]` `\` `;` `'` `,` `.` `/`), none of them in the bottom row.
-
 ## App UX
 
 Design decision: the mapping visualization type "Shift and AltGr Levels"
@@ -364,31 +346,6 @@ TODO:
  - buttons for switching the compressed full-size punctuation on the large ANSI layouts from punctuation to Nav-key mode
 
 
-## Scope of the first version
-
-0. DONE: the visualization itself. It shows the ANSI Shift pairings on every layout model and every
-   mapping, plus the two finger-placed blocks of the AltGr level – characters on one hand, navigation
-   on the other – with the "Nav keys" switch flipping both. The tables and the placement live in
-   [key-levels.ts](../src/mapping/key-levels.ts); a test over every layout model guards that no block
-   entry silently falls off a board. What follows below changes base mappings and is still open.
-
-1. A generic implementation of the layout changes described in
-   [Freeing the extra punctuation keys](#freeing-the-extra-punctuation-keys)
-   for the three small keyboard layouts: Split Ortho, Thumbs Up 13/2, and Ergoslat 13/3.
-   The Harmonic 12 Mini is included as well, if the generic code produces a good result there.
-   If this works, it is our first version, and that is what "done" means for it.
-   This should work on the `ansi30` and `thumb30` keymap types. 
-   + Activating the visualization should switch to a compatible flex mapping (similar logic as in switch layout models).
-   + Selecting a non-compatible flex mapping should switch to the "learning viz".
-   + The changes to the base layer key mappings specified above should only be visible in this visualization; 
-     Others continue to show the ANSI values as before.
-
-2. A single `ansi30` mapping for the wide and non-wide modes of the ANSI keyboard variants
-   (except the larger XHKB variants, which are too different), which puts `Escape` in place of `` `~ `` in the top left,
-   Home/End and PageUp/PageDown in pairwise spots, and finally `⌦` in the remaining spot.
-   This should be done together with the "compatible punctuation map for full-size keyboards" above 
-   and be switchable with the button mentioned in "App UX".
-
 ## Semi-related open questions and discovered bugs
 
 1. The Ergoslat has 43 characters and as many 1u keys, but it maps `⌦` on a 1u key and `-` on a 1.25u key. 
@@ -400,23 +357,13 @@ TODO:
 
 Tasks to do after the initial implementation:
 
+TODO: incorporate this above and generalize to both sides 
  - when the AltGr characters are on the right side (= Nav layer left side), we can make a complete logical mapping for the number row:
 
         ¡  ¢  £  €  ‰  ^  |  [  ]  ¿
        1! 2@ 3# 4$ 5% 6^ 7& 8* 9+ 0?
 
    we don't do this on the mirrored AltGr level, because the mnemonics get lost, and it becomes more confusing than helpful.
-
- - enable and test the levels visualization also for the ansi32 and thumb32 keymap types that have at least 5 punctuation keys.
-   + the permutation formula will be simpler, because the `;:` is already missing there. 
-
- - special rules for the ansi32 and thumb32 keymap types on the Ergoslat which has only 4 punctuation keys:
-   + omit the `/=` key 
-   + map the number row Shift level as `6+ 7& 8* 9/ 0?`
-   + map `=` on the AltGr layer pinky position next to `<>`.
-   + map `^` on AltGr+6 (such that the `6^` label serves as a correct reminder) 
-   + This changes the punctuation character distribution to 4, 14, 14 on base, Shift, and AltGr levels. 
-     We can do it so easily, because the generic AltGr level definition already included the necessary characters.
 
  - update the KLC export which currently hardcodes the ANSI base/Shift pairs per key and declares only shift states 0, 1 and 2 (Ctrl) – no AltGr.
    (We might leave this TODO open until we work on KLC export again, since that export is currently not used much.) 
@@ -446,6 +393,11 @@ only `/` and `-` come from the other source.
 
 Rationale: `-` and `+` should be separate keys because of Ctrl +/- zoom.
 `+` stays on the Shift level, because some apps expect it there when reading the `Ctrl +` shortcut.
+
+Ironically, this generalizes to the 32-key international flex maps more easily than on keyboards with a number row:
+we simply use the first four keys from the list above. 
+Since there's no number row, those four are the only keys where a Shift label is shown. 
+No more work needed!
 
 I don't want to go deeper than that, because a keyboard that small can't be practical anyway.
 
