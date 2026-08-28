@@ -8,6 +8,7 @@ import {
     getKeyPositions,
     hasMatchingMapping,
 } from "../layout/layout-functions.ts";
+import {harmonic12LayoutModel} from "../layout/harmonic12LayoutModel.ts";
 import {xhkb13LayoutModel, xhkb16LayoutModel} from "../layout/xhkbLayoutModel.ts";
 import {allMappings} from "./mappings.ts";
 import {allLayoutModels} from "../all-layout-models.ts";
@@ -15,10 +16,14 @@ import {
     altGrDigits,
     altGrLeft,
     altGrRight,
+    compressedAnsi30ShiftPairs,
+    compressedThumb30ShiftPairs,
     getBaseLevel,
     getKeyLevels,
     getShiftLevel,
     getThirdLevel,
+    hasCompressedLevel,
+    hasNumberRow,
     navLeft,
     navRight,
     numberless32ShiftPairs,
@@ -43,6 +48,21 @@ function shiftLevelByLabel(model: LayoutModel, mappingName?: string): Record<str
     const positions = getKeyPositions(model, false, charMap);
     const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
     const levels = getKeyLevels(model, positions, charMap, Hand.Left, keymapType);
+    const result: Record<string, string> = {};
+    positions.forEach((p) => {
+        const shift = levels.shift[p.row][p.col];
+        if (shift) result[p.label] = (levels.base[p.row][p.col] ?? p.label) + shift;
+    });
+    return result;
+}
+
+// The same, with the compressed Shift pairings selected.
+function compressedLevelByLabel(model: LayoutModel, mappingName?: string): Record<string, string> {
+    const mapping = mappingFor(model, mappingName);
+    const charMap = fillMapping(model, mapping)!;
+    const positions = getKeyPositions(model, false, charMap);
+    const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
+    const levels = getKeyLevels(model, positions, charMap, Hand.Left, keymapType, true);
     const result: Record<string, string> = {};
     positions.forEach((p) => {
         const shift = levels.shift[p.row][p.col];
@@ -92,6 +112,88 @@ describe("shift pairings", () => {
 
     it("only overrides the base label where the key map draws something else", () => {
         expect(getBaseLevel([["a", "1", "+", "⌫", "`~"]])).toEqual([[null, null, "=", null, "`"]]);
+    });
+});
+
+describe("compressed Shift pairings", () => {
+    const digits = {
+        "1": "1!", "2": "2@", "3": "3#", "4": "4$", "5": "5%",
+        "6": "6^", "7": "7&", "8": "8*", "9": "9/", "0": "0?",
+    };
+
+    it("moves `/` off the base level and `;` out of the way of `'`", () => {
+        expect(shiftPairFor(";", compressedAnsi30ShiftPairs)).toBe("'\"");
+        expect(shiftPairFor("'", compressedAnsi30ShiftPairs)).toBe("=+");
+        expect(shiftPairFor("9", compressedAnsi30ShiftPairs)).toBe("9/");
+        expect(shiftPairFor("0", compressedAnsi30ShiftPairs)).toBe("0?");
+        // the shifted characters are no longer lookup keys of their own
+        expect(shiftPairFor(":", compressedAnsi30ShiftPairs)).toBeUndefined();
+    });
+
+    it("takes `-_` from `/` on ansi30 and from `-` on thumb30", () => {
+        expect(shiftPairFor("/", compressedAnsi30ShiftPairs)).toBe("-_");
+        expect(shiftPairFor("-", compressedAnsi30ShiftPairs)).toBeUndefined();
+        expect(shiftPairFor("-", compressedThumb30ShiftPairs)).toBe("-_");
+        expect(shiftPairFor("/", compressedThumb30ShiftPairs)).toBeUndefined();
+    });
+
+    it("reproduces the full-size punctuation map on ANSI", () => {
+        expect(compressedLevelByLabel(ansiIBMLayoutModel)).toEqual({
+            ...digits,
+            "`~": "`~", "[": "[{", "]": "]}", "\\": "\\|",
+            ";": "'\"", "'": "=+", ",": ",;", ".": ".:", "/": "-_",
+            // the two freed keys
+            "-": "(<", "=": ")>",
+        });
+    });
+
+    it("keeps five base punctuation keys on a thumb board", () => {
+        expect(compressedLevelByLabel(xhkb13LayoutModel, "Quipper with Thumb-T")).toEqual({
+            ...digits,
+            ";": "'\"", "'": "=+", "-": "-_", ",": ",;", ".": ".:",
+            // the two freed keys, in the order the key map draws them
+            "+": "(<", "/": ")>",
+        });
+    });
+
+    it("orders `(` and `)` by the key map, not by which character was there before", () => {
+        // The Mini draws `+` in the number row and `-` in the bottom row, so a fixed assignment
+        // of `(` to the old `-` key would read backwards.
+        const level = compressedLevelByLabel(harmonic12LayoutModel);
+        expect(level["+"]).toBe("(<");
+        expect(level["-"]).toBe(")>");
+    });
+
+    it("leaves the standard pairings alone", () => {
+        const level = shiftLevelByLabel(ansiIBMLayoutModel);
+        expect(level[";"]).toBe(";:");
+        expect(level["9"]).toBe("9(");
+        expect(level["-"]).toBe("-_");
+    });
+});
+
+/*
+    The compression is a permutation over the punctuation keys every 30-key board carries, so it
+    has to come out complete on all of them: five base punctuation characters plus the redundant
+    `(<` and `)>`, and those two in reading order.
+ */
+describe("the compressed level comes out complete on every 30-key board", () => {
+    const combos = allLayoutModels.flatMap((model) =>
+        allMappings
+            .filter((m) => hasMatchingMapping(model, m))
+            .filter((m) => hasCompressedLevel(findMatchingKeymapType(model, m)!.typeId, hasNumberRow(model)))
+            .map((m) => [`${model.name} / ${m.name}`, model, m.name] as const));
+
+    it("covers the 30-key flex maps", () => {
+        expect(combos.length).toBeGreaterThan(1500);
+    });
+
+    it.each(combos)("%s", (_name, model, mappingName) => {
+        const level = compressedLevelByLabel(model, mappingName);
+        const bases = Object.values(level).map((pair) => pair[0]);
+        expect(bases.filter((c) => "'=,.-".includes(c)).sort()).toEqual(["'", ",", "-", ".", "="]);
+        expect(bases.filter((c) => c === "(")).toHaveLength(1);
+        expect(bases.filter((c) => c === ")")).toHaveLength(1);
     });
 });
 
@@ -168,7 +270,15 @@ describe("numberless Shift pairings", () => {
     });
 
     it("keeps only four of the pairs on the 32-key maps", () => {
-        expect(shiftLevelByLabel(numberless, german)).toEqual(numberless32ShiftPairs);
+        // `/?` goes on the `+` key here, since that is the one of `+` and `/` this board draws.
+        expect(shiftLevelByLabel(numberless, german)).toEqual({
+            ",": ",;", ".": ".:", "-": "-!", "+": "/?",
+        });
+    });
+
+    it("would put `/?` on a `/` key just as readily", () => {
+        expect(shiftPairFor("/", numberless32ShiftPairs)).toBe("/?");
+        expect(shiftPairFor("+", numberless32ShiftPairs)).toBe("/?");
     });
 
     it("leaves the ANSI pairings alone on the same board with a number row", () => {

@@ -10,7 +10,8 @@ import {OptionButton} from "./components/OptionButton.tsx";
 import {OptionGroup} from "./components/OptionGroup.tsx";
 import {DetailsArea} from "./details/DetailsArea.tsx";
 import {LayoutArea} from "./layout/LayoutArea.tsx";
-import {fillMapping} from "./layout/layout-functions.ts";
+import {fillMapping, findMatchingKeymapType} from "./layout/layout-functions.ts";
+import {hasCompressedLevel, hasNumberRow} from "./mapping/key-levels.ts";
 import {MappingList} from "./mapping/MappingArea.tsx";
 import {getKlc} from "./mapping/msKlcTemplate.ts";
 import {extractSvgWithStyles} from "./utils/svg-export.ts";
@@ -38,6 +39,7 @@ interface VisualizationSwitchesProps {
  
  export function VisualizationSwitches({vizType, appState}: VisualizationSwitchesProps) {
      return <div class="visualization-switches">
+         <div class="viz-type-groups">
          <div>
              Layout Visualizations:
              <VizTypeButton vizType={VisualizationType.LayoutPlain} signal={vizType}>Plain</VizTypeButton>
@@ -56,14 +58,38 @@ interface VisualizationSwitchesProps {
              <VizTypeButton vizType={VisualizationType.MappingTradeoff} signal={vizType}>Learning Effort Trade-off</VizTypeButton>
              <VizTypeButton vizType={VisualizationType.MappingShiftLevels} signal={vizType}>Shift and AltGr
                  Levels</VizTypeButton>
-             {/* The levels view puts its own switches here, and the KLC export knows only the
-                 ANSI base/Shift pairs, so it has nothing to offer while the levels are shown. */}
-             {appState && (vizType.value === VisualizationType.MappingShiftLevels
-                 ? <NavSideOptions navSide={appState.navSide}/>
-                 : isKlcCompatible(appState) && <DownloadKlcLink appState={appState}/>)}
+             {/* The KLC export knows only the ANSI base/Shift pairs, so it has nothing to offer
+                 while the levels view is showing something else. */}
+             {appState && vizType.value !== VisualizationType.MappingShiftLevels
+                 && isKlcCompatible(appState) && <DownloadKlcLink appState={appState}/>}
          </div>
+         </div>
+         {appState && vizType.value === VisualizationType.MappingShiftLevels &&
+             <LevelSwitches appState={appState}/>}
      </div>
  }
+
+// The switches that configure the key levels visualization, in their own container right of the
+// viz type buttons. A group whose choice does not exist on the current key map is left out.
+function LevelSwitches({appState}: { appState: AppState }) {
+    const keymapType = findMatchingKeymapType(appState.layoutModel.value, appState.mapping.value)?.typeId;
+    const compressible = hasCompressedLevel(keymapType, hasNumberRow(appState.layoutModel.value));
+    return <div class="level-switches">
+        <NavSideOptions navSide={appState.navSide}/>
+        {compressible && <ShiftLevelOptions shiftCompressed={appState.shiftCompressed}/>}
+    </div>
+}
+
+function ShiftLevelOptions({shiftCompressed}: { shiftCompressed: Signal<boolean> }) {
+    return <OptionGroup label="Shift level">
+        <OptionButton selected={!shiftCompressed.value} onClick={() => {shiftCompressed.value = false;}}>
+            standard
+        </OptionButton>
+        <OptionButton selected={shiftCompressed.value} onClick={() => {shiftCompressed.value = true;}}>
+            compressed
+        </OptionButton>
+    </OptionGroup>
+}
 
 interface NavSideOptionsProps {
     navSide: Signal<Hand>;

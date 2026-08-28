@@ -69,10 +69,10 @@ export function LayoutArea({appState}: LayoutAreaProps) {
     const previousPositions = renderKeyboard(prevLayoutModel.value, prevMapping.value, layout.value, hexagons).positions;
     const keyMovements = getKeyMovements(previousPositions, current.positions);
 
-    const {setLayout, mappingDiff, bigramMovements, vizType, setMapping, navSide} = appState;
+    const {setLayout, mappingDiff, bigramMovements, vizType, setMapping, navSide, shiftCompressed} = appState;
     const keyLevels = vizType.value === VisualizationType.MappingShiftLevels
         ? getKeyLevels(current.layoutModel, current.positions, current.charMap, navSide.value,
-            findMatchingKeymapType(current.layoutModel, mapping.value)?.typeId)
+            findMatchingKeymapType(current.layoutModel, mapping.value)?.typeId, shiftCompressed.value)
         : undefined;
     const showFrame = layout.value.type !== LayoutType.Ergosplit &&
         !(layout.value.type !== LayoutType.ANSI && layout.value.ansiSplit);

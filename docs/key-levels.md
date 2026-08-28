@@ -9,10 +9,9 @@ Done parts:
  - AltGr level can be mirrored between hands using the "Nav keys" [button group](#button-groups)
  - Number row AltGr mappings, including the `@` character for 32-key flex maps
  - [30-key and 32-key] Ergoslat numberless modified Shift pairings (no switching button)
+ - [30-key] Compressed Shift level and the "Shift level" [button group](#button-groups)
 
 Next parts:
- - [30-key] Compressed Shift level: replace base and Shift level characters only, no nav key additions.
-   + includes introduction of the "Shift level" [button group](#button-groups)!
  - [30-key] Replace redundant Shift keys with Nav keys.
    + includes introduction of the  [button group](#button-groups)
    + this might need an explicit override mechanism per layout model to make sure that the nav key arrangement actually makes sense
@@ -250,7 +249,9 @@ Our rules for key replacement are as follows:
 
 Since we explicitly removed `;:` and `/?` which are present on all layout model's key sets, we have freed a minimum of two keys;
 and since we keep 5 out of a total of 11 ANSI punctuation keys, this might free a maximum of six keys.
-(The difference is in four keys whose characters are already redundantly present on our AltGr level.)
+(The difference is in four keys whose characters are already redundantly present on our AltGr level.
+Those four – `` `~ ``, `[{`, `]}`, `\|` – keep their ANSI pairing here and are only freed by the
+["Extra keys" switch](#button-groups), so the rules above always free exactly two keys.)
 Note that the two definitely freed position are the old position of `+=` 
 and the old position of  `/?` (on thumb30 flex maps) or `-_` (ansi30), respectively. 
 

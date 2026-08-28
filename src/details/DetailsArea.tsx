@@ -36,7 +36,7 @@ import {
     TRADEOFF_SAME_FINGER_COLOR
 } from "../layout/TradeoffDiagram.tsx";
 import {sum} from "../library/math.ts";
-import {hasNumberRow} from "../mapping/key-levels.ts";
+import {hasCompressedLevel, hasNumberRow} from "../mapping/key-levels.ts";
 import {qwertyMapping} from "../mapping/baseMappings.ts";
 import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
 
@@ -57,12 +57,14 @@ export function DetailsArea({appState}: DetailsAreaProps) {
         }
         <hr/>
         <div class="visualization-details">
-            {getVizDetails(vizType, layout, mapping)}
+            {getVizDetails(vizType, layout, mapping, appState.shiftCompressed.value)}
         </div>
     </div>;
 }
 
-export function getVizDetails(vizType: VisualizationType, layout: LayoutModel, mapping: FlexMapping) {
+export function getVizDetails(
+    vizType: VisualizationType, layout: LayoutModel, mapping: FlexMapping, shiftCompressed = false
+) {
     switch (vizType) {
         case VisualizationType.LayoutKeySize:
             return <KeySizeDetails layout={layout}/>;
@@ -93,7 +95,7 @@ export function getVizDetails(vizType: VisualizationType, layout: LayoutModel, m
         case VisualizationType.MappingBigrams:
             return <BigramEffortDetails layout={layout} mapping={mapping}/>;
         case VisualizationType.MappingShiftLevels:
-            return <ShiftLevelsDetails layout={layout}/>;
+            return <ShiftLevelsDetails layout={layout} mapping={mapping} compressed={shiftCompressed}/>;
         case VisualizationType.MappingTradeoff:
             return <TradeoffDetails/>;
     }
@@ -417,7 +419,15 @@ export function BigramDetailsLegendItem({bigramType, frequency, children}: Bigra
 
 }
 
-export function ShiftLevelsDetails({layout}: { layout: LayoutModel }) {
+interface ShiftLevelsDetailsProps {
+    layout: LayoutModel;
+    mapping: FlexMapping;
+    compressed: boolean;
+}
+
+export function ShiftLevelsDetails({layout, mapping, compressed}: ShiftLevelsDetailsProps) {
+    const keymapType = findMatchingKeymapType(layout, mapping)?.typeId;
+    const showsCompressed = compressed && hasCompressedLevel(keymapType, hasNumberRow(layout));
     return <>
         <p>
             Each character key can carry three levels: the character it inserts on its own, the one it inserts
@@ -425,12 +435,21 @@ export function ShiftLevelsDetails({layout}: { layout: LayoutModel }) {
             the AltGr level in <span class="altgr-level-legend">blue</span> in the bottom right corner –
             the same three places an ISO keycap prints them.
         </p>
-        <p>
-            On the 30-key mappings the Shift level is the US ANSI one: <code>1!</code> <code>2@</code> …{" "}
-            <code>,&lt;</code> <code>.&gt;</code> <code>/?</code>. It follows the key map rather than the
-            board, so a mapping that moves its punctuation around takes its Shift characters along.
-            The 32-key mappings follow the German keymap, whose pairings are not in yet.
-        </p>
+        {showsCompressed
+            ? <p>
+                <b>Compressed</b> cuts the punctuation down to the five keys a small board can spare –{" "}
+                <code>'"</code> <code>=+</code> <code>,;</code> <code>.:</code> <code>-_</code> – by moving{" "}
+                <code>;</code> off the home row and <code>/?</code> into the number row, where{" "}
+                <code>9/</code> and <code>0?</code> replace the parentheses. The two keys this frees get{" "}
+                <code>(&lt;</code> and <code>)&gt;</code>, whose characters the AltGr level carries anyway.
+            </p>
+            : <p>
+                <b>Standard</b> on the 30-key mappings means the US ANSI Shift level: <code>1!</code>{" "}
+                <code>2@</code> … <code>,&lt;</code> <code>.&gt;</code> <code>/?</code>. It follows the key map
+                rather than the board, so a mapping that moves its punctuation around takes its Shift
+                characters along. The 32-key mappings follow the German keymap, whose pairings are not in yet.
+            </p>
+        }
         {!hasNumberRow(layout) && <p>
             This board has no number row, so it gets seven pairs of its own – <code>,;</code>{" "}
             <code>.:</code> <code>-!</code> <code>/?</code> <code>'"</code> <code>$%</code>{" "}

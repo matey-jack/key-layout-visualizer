@@ -132,4 +132,6 @@ export interface AppState {
     // Which hand carries the "hands down" navigation block in the key levels visualization.
     // The AltGr characters go to the other hand.
     navSide: Signal<Hand>;
+    // Whether the key levels visualization shows the compressed Shift pairings.
+    shiftCompressed: Signal<boolean>;
 }

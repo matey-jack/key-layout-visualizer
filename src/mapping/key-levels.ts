@@ -44,10 +44,28 @@ export const numberlessShiftPairs: ShiftPairs = {
     ";": "'\"", "'": "-!", "-": "$%", "+": "&+",
 };
 
-// The 32-key flex maps place only four of those characters.
+// The 32-key flex maps place only four of those characters, and `/?` lands on whichever of
+// `+` and `/` the key map happens to draw.
 export const numberless32ShiftPairs: ShiftPairs = {
-    ",": ",;", ".": ".:", "-": "-!", "+": "+?",
+    ",": ",;", ".": ".:", "-": "-!", "+": "/?", "/": "/?",
 };
+
+/*
+    The compressed 30-key pairings: five punctuation keys on the base level, the rest of the
+    punctuation on the AltGr level. Keyed by the drawn label like the numberless tables, since
+    after the permutation a shifted character is no longer a usable lookup key – `,;` would
+    otherwise claim the `;` key, which becomes `'"`.
+ */
+const compressedCommon: ShiftPairs = {
+    "1": "1!", "2": "2@", "3": "3#", "4": "4$", "5": "5%",
+    "6": "6^", "7": "7&", "8": "8*", "9": "9/", "0": "0?",
+    ",": ",;", ".": ".:", ";": "'\"", "'": "=+",
+    // The keys whose characters the AltGr level carries anyway keep their ANSI pairing.
+    "`": "`~", "`~": "`~", "[": "[{", "]": "]}", "\\": "\\|",
+};
+
+export const compressedAnsi30ShiftPairs: ShiftPairs = {...compressedCommon, "/": "-_"};
+export const compressedThumb30ShiftPairs: ShiftPairs = {...compressedCommon, "-": "-_"};
 
 /*
     The 32-key flex maps with a number row follow the German keymap, whose Shift pairings we do
@@ -56,9 +74,48 @@ export const numberless32ShiftPairs: ShiftPairs = {
  */
 const noShiftPairs: ShiftPairs = {};
 
-export const shiftPairsFor = (keymapType: KeymapTypeId | undefined, hasNumberRow: boolean): ShiftPairs =>
-    !hasNumberRow ? (is32KeyMap(keymapType) ? numberless32ShiftPairs : numberlessShiftPairs)
+// The compressed Shift level is defined for the 30-key flex maps only.
+export const hasCompressedLevel = (keymapType: KeymapTypeId | undefined, hasNumberRow: boolean): boolean =>
+    hasNumberRow && (keymapType === KeymapTypeId.Ansi30 || keymapType === KeymapTypeId.Thumb30);
+
+export const shiftPairsFor = (
+    keymapType: KeymapTypeId | undefined, hasNumberRow: boolean, compressed = false
+): ShiftPairs => {
+    if (compressed && hasCompressedLevel(keymapType, hasNumberRow)) {
+        return keymapType === KeymapTypeId.Ansi30 ? compressedAnsi30ShiftPairs : compressedThumb30ShiftPairs;
+    }
+    return !hasNumberRow ? (is32KeyMap(keymapType) ? numberless32ShiftPairs : numberlessShiftPairs)
         : is32KeyMap(keymapType) ? noShiftPairs : ansiShiftPairs;
+};
+
+/*
+    The two keys the compression frees: the old `=`/`+` key, and the one that gave its place to
+    `-_` – `-` on ansi30, `/` on thumb30. They carry the redundant `(<` and `)>` until the
+    "Extra keys" switch turns them into nav keys.
+ */
+const freedLabels: Partial<Record<KeymapTypeId, string[]>> = {
+    [KeymapTypeId.Ansi30]: ["-", "=", "+"],
+    [KeymapTypeId.Thumb30]: ["/", "=", "+"],
+};
+
+// Assigned in the order the key map draws them, so the pair always reads left to right.
+const freedPairs = ["(<", ")>"];
+
+function placeFreedKeys(
+    base: LevelMap, shift: LevelMap, charMap: string[][], keymapType?: KeymapTypeId
+) {
+    const freed = keymapType && freedLabels[keymapType];
+    if (!freed) return;
+    let next = 0;
+    charMap.forEach((row, r) => {
+        row.forEach((label, c) => {
+            if (next >= freedPairs.length || !freed.includes(label)) return;
+            const pair = freedPairs[next++];
+            base[r][c] = pair[0];
+            shift[r][c] = pair[1];
+        });
+    });
+}
 
 // The pairing a key label belongs to, or undefined for letters and non-character keys.
 export const shiftPairFor = (label: string, pairs: ShiftPairs = ansiShiftPairs): string | undefined =>
@@ -233,12 +290,15 @@ export interface KeyLevels {
 
 export const getKeyLevels = (
     model: LayoutModel, positions: KeyPosition[], charMap: string[][], navSide: Hand,
-    keymapType?: KeymapTypeId
+    keymapType?: KeymapTypeId, compressed = false
 ): KeyLevels => {
-    const pairs = shiftPairsFor(keymapType, hasNumberRow(model));
-    return {
+    const compressing = compressed && hasCompressedLevel(keymapType, hasNumberRow(model));
+    const pairs = shiftPairsFor(keymapType, hasNumberRow(model), compressed);
+    const levels = {
         base: getBaseLevel(charMap, pairs),
         shift: getShiftLevel(charMap, pairs),
         third: getThirdLevel(model, positions, navSide, keymapType),
     };
+    if (compressing) placeFreedKeys(levels.base, levels.shift, charMap, keymapType);
+    return levels;
 };

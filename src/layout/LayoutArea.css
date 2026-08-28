@@ -204,6 +204,20 @@ label.disabled {
 
 .visualization-switches {
     margin-left: 10%;
+    display: flex;
+    align-items: stretch;
+    gap: 1rem;
+}
+
+/* The key level switches get their own column right of the two viz type rows, so that they can
+   grow past a single row without pushing the viz type buttons around. */
+.level-switches {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.3rem;
+    padding-left: 1rem;
+    border-left: 1px solid #ccc;
 }
 
 .viz-type-button {
