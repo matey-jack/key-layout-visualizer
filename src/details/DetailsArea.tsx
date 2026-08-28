@@ -430,12 +430,20 @@ export function ShiftLevelsDetails() {
             around takes its Shift characters along.
         </p>
         <p>
-            The AltGr level is fixed by finger position instead, so it stays the same on every keyboard.
-            One hand gets the characters: all four kinds of brackets stacked on middle and ring finger, with
-            <code>{"()"}</code> on the home row and <code>{"<>"}</code> where ANSI has them, and{" "}
-            <code>{"| \\ ` ~ ="}</code> on the index finger – <code>|</code> shares its key with{" "}
-            <code>&amp;</code>, and <code>=</code> sits right next to <code>{"<>"}</code> for bigrams
-            like <code>{"<="}</code>.
+            On the letter rows the AltGr level is fixed by finger position instead, so it stays the same
+            on every keyboard. One hand gets the characters: three kinds of brackets stacked on middle and
+            ring finger, with <code>{"()"}</code> on the home row and <code>{"<>"}</code> where ANSI has
+            them, and <code>{"\\ ` ~ ="}</code> on the index finger – <code>=</code> sits right next to{" "}
+            <code>{"<>"}</code> for bigrams like <code>{"<="}</code>.
+        </p>
+        <p>
+            The number row goes by digit, so that its mnemonics survive on the boards that shift the row
+            around. Most of its characters pair with the Shift character above them: <code>¡</code> with{" "}
+            <code>!</code>, <code>£</code> with <code>#</code> (the "pound" key), <code>€</code> with{" "}
+            <code>$</code>, <code>‰</code> with <code>%</code>, and <code>|</code> with <code>&amp;</code>,
+            reflecting their relationship in programming languages. <code>{"[ ]"}</code> complete the
+            bracket stack on <code>8</code> and <code>9</code>, unless the board already carries them as
+            keys of their own.
         </p>
         <p>
             The other hand gets "hands down" navigation: the four cursor keys in their familiar inverted-T

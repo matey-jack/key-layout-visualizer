@@ -2,10 +2,18 @@ import {describe, expect, it} from "vitest";
 import {Hand, KeyboardRows, type KeyPosition, type LayoutModel} from "../base-model.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel} from "../layout/ansiLayoutModel.ts";
 import {makeErgoslatNumberless, majorErgoslatLayoutModel} from "../layout/ergoslatLayoutModel.ts";
-import {fillMapping, getKeyPositions, hasMatchingMapping} from "../layout/layout-functions.ts";
+import {
+    fillMapping,
+    findMatchingKeymapType,
+    getKeyPositions,
+    hasMatchingMapping,
+} from "../layout/layout-functions.ts";
+import {xhkb13LayoutModel, xhkb16LayoutModel} from "../layout/xhkbLayoutModel.ts";
 import {allMappings} from "./mappings.ts";
 import {allLayoutModels} from "../all-layout-models.ts";
 import {
+    altGrDigitsLeft,
+    altGrDigitsRight,
     altGrLeft,
     altGrRight,
     getBaseLevel,
@@ -17,15 +25,20 @@ import {
     shiftPairFor,
 } from "./key-levels.ts";
 
-function positionsOf(model: LayoutModel): KeyPosition[] {
-    const mapping = allMappings.find((m) => hasMatchingMapping(model, m))!;
-    return getKeyPositions(model, false, fillMapping(model, mapping)!);
+// Without a name, the first mapping the model accepts – which is a 30-key one everywhere.
+const mappingFor = (model: LayoutModel, name?: string) =>
+    allMappings.find((m) => hasMatchingMapping(model, m) && (!name || m.name === name))!;
+
+function positionsOf(model: LayoutModel, mappingName?: string): KeyPosition[] {
+    return getKeyPositions(model, false, fillMapping(model, mappingFor(model, mappingName))!);
 }
 
 // The third level as a plain label -> character map, which is how the diagrams read.
-function thirdLevelByLabel(model: LayoutModel, navSide: Hand): Record<string, string> {
-    const positions = positionsOf(model);
-    const level = getThirdLevel(model, positions, navSide);
+function thirdLevelByLabel(model: LayoutModel, navSide: Hand, mappingName?: string): Record<string, string> {
+    const mapping = mappingFor(model, mappingName);
+    const positions = getKeyPositions(model, false, fillMapping(model, mapping)!);
+    const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
+    const level = getThirdLevel(model, positions, navSide, keymapType);
     const result: Record<string, string> = {};
     positions.forEach((p) => {
         const char = level[p.row][p.col];
@@ -67,9 +80,6 @@ describe("shift pairings", () => {
 describe("AltGr character block", () => {
     it("sits on the right hand's finger columns", () => {
         const level = thirdLevelByLabel(ansiIBMLayoutModel, Hand.Left);
-        expect(level["7"]).toBe("|");
-        expect(level["8"]).toBe("[");
-        expect(level["9"]).toBe("]");
         expect(level["u"]).toBe("\\");
         expect(level["i"]).toBe("{");
         expect(level["o"]).toBe("}");
@@ -84,9 +94,6 @@ describe("AltGr character block", () => {
 
     it("mirrors onto the left hand, keeping the fingers and swapping the bracket pairs", () => {
         const level = thirdLevelByLabel(ansiIBMLayoutModel, Hand.Right);
-        expect(level["4"]).toBe("|");
-        expect(level["3"]).toBe("]");
-        expect(level["2"]).toBe("[");
         expect(level["r"]).toBe("\\");
         expect(level["e"]).toBe("}");
         expect(level["w"]).toBe("{");
@@ -108,6 +115,77 @@ describe("AltGr character block", () => {
         // but the navigation block is still there.
         expect(chars).toContain("↓");
         expect(chars).toContain("⇤");
+    });
+});
+
+describe("AltGr number row", () => {
+    it("pairs with the digits, brackets on 8 and 9", () => {
+        const level = thirdLevelByLabel(ansiIBMLayoutModel, Hand.Left);
+        expect(level["1"]).toBe("¡");
+        expect(level["2"]).toBe("¢");
+        expect(level["3"]).toBe("£");
+        expect(level["4"]).toBe("€");
+        expect(level["5"]).toBe("‰");
+        expect(level["6"]).toBe("^");
+        expect(level["7"]).toBe("|");
+        expect(level["8"]).toBe("[");
+        expect(level["9"]).toBe("]");
+        expect(level["0"]).toBe("¿");
+    });
+
+    it("moves only the brackets when the characters change hands", () => {
+        const level = thirdLevelByLabel(ansiIBMLayoutModel, Hand.Right);
+        expect(level["2"]).toBe("[");
+        expect(level["3"]).toBe("]");
+        // the two they displace take the places the brackets vacated
+        expect(level["8"]).toBe("¢");
+        expect(level["9"]).toBe("£");
+        // ^ and | keep their digits, and so do the outer two
+        expect(level["6"]).toBe("^");
+        expect(level["7"]).toBe("|");
+        expect(level["1"]).toBe("¡");
+        expect(level["0"]).toBe("¿");
+    });
+
+    it("follows the digits, not the fingers, when the number row is shifted", () => {
+        // On the 13/2 the index finger's number row key is `6`, not `7`.
+        const level = thirdLevelByLabel(xhkb13LayoutModel, Hand.Left);
+        expect(level["6"]).toBe("^");
+        expect(level["7"]).toBe("|");
+        expect(level["8"]).toBe("[");
+        expect(level["9"]).toBe("]");
+    });
+
+    it("leaves out a bracket the number row already carries on its base level", () => {
+        // The 16/5 has `[` and `]` keys in the centre of its number row.
+        const level = thirdLevelByLabel(xhkb16LayoutModel, Hand.Left);
+        expect(level["8"]).toBeUndefined();
+        expect(level["9"]).toBeUndefined();
+        // everything else survives
+        expect(level["1"]).toBe("¡");
+        expect(level["5"]).toBe("‰");
+        expect(level["6"]).toBe("^");
+        expect(level["7"]).toBe("|");
+        expect(level["0"]).toBe("¿");
+    });
+});
+
+describe("the 32-key `@`", () => {
+    const german = "Qwertz – German Standard";
+
+    it("sits on the flex map's first upper row key", () => {
+        const level = thirdLevelByLabel(majorErgoslatLayoutModel(false), Hand.Left, german);
+        expect(level["q"]).toBe("@");
+    });
+
+    it("stays there when the nav keys change hands", () => {
+        const level = thirdLevelByLabel(majorErgoslatLayoutModel(false), Hand.Right, german);
+        expect(level["q"]).toBe("@");
+    });
+
+    it("is not on the 30-key maps", () => {
+        const level = thirdLevelByLabel(majorErgoslatLayoutModel(false), Hand.Left);
+        expect(Object.values(level)).not.toContain("@");
     });
 });
 
@@ -173,13 +251,11 @@ describe("every block entry is placed on every layout model", () => {
 
     it.each(allLayoutModels.map((m) => [m.name, m] as const))("%s", (_name, model) => {
         const positions = positionsOf(model);
-        const hasNumberRow = positions.some((p) => p.row === KeyboardRows.Number);
         const missing: string[] = [];
         blocks.forEach(([blockName, hand, block]) => {
             block.forEach((blockRow, row) => {
                 blockRow.forEach((char, slot) => {
                     if (!char) return;
-                    if (row === KeyboardRows.Number && !hasNumberRow) return;
                     if (row === KeyboardRows.Lower && lowerRowFallbackChars.includes(char)) return;
                     if (!resolveSlot(model, positions, hand, row, slot)) {
                         missing.push(`${blockName} on the ${Hand[hand]} hand: '${char}' (row ${row}, slot ${slot})`);
@@ -196,6 +272,32 @@ describe("every block entry is placed on every layout model", () => {
             const chars = Object.values(getThirdLevel(model, positions, navSide).flat().filter((c) => c));
             expect(chars, `nav on the ${Hand[navSide]} hand`).toContain("⇞");
             expect(chars, `nav on the ${Hand[navSide]} hand`).toContain("⇟");
+        });
+    });
+});
+
+/*
+    The number row is placed by digit, so the guard is a different one: every digit the layout
+    carries has to receive its character, except a bracket left out because the number row
+    already has it on the base level.
+ */
+describe("every digit gets its AltGr character on every layout model", () => {
+    const withNumberRow = allLayoutModels
+        .filter((m) => positionsOf(m).some((p) => p.row === KeyboardRows.Number))
+        .map((m) => [m.name, m] as const);
+
+    it.each(withNumberRow)("%s", (_name, model) => {
+        const positions = positionsOf(model);
+        const baseLabels = new Set(positions.filter((p) => p.row === KeyboardRows.Number).map((p) => p.label));
+        [Hand.Left, Hand.Right].forEach((navSide) => {
+            const digits = navSide === Hand.Left ? altGrDigitsRight : altGrDigitsLeft;
+            const level = thirdLevelByLabel(model, navSide);
+            const missing = Object.entries(digits)
+                // a bracket the number row already carries is the one documented omission
+                .filter(([digit, char]) => baseLabels.has(digit) && !baseLabels.has(char))
+                .filter(([digit, char]) => level[digit] !== char)
+                .map(([digit, char]) => `${digit} -> ${char}`);
+            expect(missing, `nav on the ${Hand[navSide]} hand`).toEqual([]);
         });
     });
 });

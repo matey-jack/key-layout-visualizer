@@ -14,7 +14,13 @@ import {AnsiLayoutOptions} from "./AnsiLayoutOptions.tsx";
 import {ErgoplankLayoutOptions} from "./ErgoplankLayoutOptions.tsx";
 import {HarmonicLayoutOptions} from "./HarmonicLayoutOptions.tsx";
 import {BigramLines, Keyboard, KeyboardSvg, StaggerLines} from "./KeyboardSvg.tsx";
-import {defaultTotalWidth, fillMapping, getKeyMovements, getKeyPositions} from "./layout-functions.ts";
+import {
+    defaultTotalWidth,
+    fillMapping,
+    findMatchingKeymapType,
+    getKeyMovements,
+    getKeyPositions,
+} from "./layout-functions.ts";
 import {SplitOrthoLayoutOptions} from "./SplitOrthoLayoutOptions.tsx";
 import {TradeoffDiagram} from "./TradeoffDiagram.tsx";
 import {alignForHex} from './harmonic-layout-functions.ts';
@@ -65,7 +71,8 @@ export function LayoutArea({appState}: LayoutAreaProps) {
 
     const {setLayout, mappingDiff, bigramMovements, vizType, setMapping, navSide} = appState;
     const keyLevels = vizType.value === VisualizationType.MappingShiftLevels
-        ? getKeyLevels(current.layoutModel, current.positions, current.charMap, navSide.value)
+        ? getKeyLevels(current.layoutModel, current.positions, current.charMap, navSide.value,
+            findMatchingKeymapType(current.layoutModel, mapping.value)?.typeId)
         : undefined;
     const showFrame = layout.value.type !== LayoutType.Ergosplit &&
         !(layout.value.type !== LayoutType.ANSI && layout.value.ansiSplit);

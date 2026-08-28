@@ -7,9 +7,9 @@ Done parts:
  - ANSI Shift level characters are displayed (see `key-levels.ts`)
  - AltGr level characters and navigation keys are displayed
  - AltGr level can be mirrored between hands using the "Nav keys" [button group](#button-groups)
+ - Number row AltGr mappings, including the `@` character for 32-key flex maps
 
 Next parts:
- - Update Number row AltGr mappings (including the `@` character for 32-key flex maps)
  - [30-key and 32-key] Ergoslat numberless modified Shift pairings (no switching button)
  - [30-key] Compressed Shift level for ansi30/thumb30 on small keyboards (see below)
    + includes introduction of the "Shift level" [button group](#button-groups)!

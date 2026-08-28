@@ -2,6 +2,7 @@ import {
     Hand,
     KeyboardRows,
     type KeyPosition,
+    KeymapTypeId,
     type LayoutModel,
 } from "../base-model.ts";
 import {isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
@@ -54,8 +55,9 @@ type Block = BlockRow[];
 
 const _ = null;
 
+// The number row is not part of the blocks: it pairs with the digits instead, see below.
 export const altGrRight: Block = [
-    [_, "|", "[", "]", _],
+    [_, _, _, _, _],
     [_, "\\", "{", "}", _],
     ["~", "`", "(", ")", _],
     [_, "=", "<", ">", _],
@@ -63,12 +65,28 @@ export const altGrRight: Block = [
 ];
 
 export const altGrLeft: Block = [
-    [_, "|", "]", "[", _],
+    [_, _, _, _, _],
     [_, "\\", "}", "{", _],
     ["~", "`", ")", "(", _],
     [_, "=", ">", "<", _],
     [_, _, _, _, _],
 ];
+
+/*
+    The AltGr number row, keyed by the digit the key carries rather than by finger, so the
+    mnemonic pairings survive on the boards that shift their number row around.
+    Only `[]` follow the bracket stack to the other hand; `¢ £` then take the places they vacate.
+ */
+type DigitRow = Record<string, string>;
+
+export const altGrDigitsRight: DigitRow =
+    {"1": "¡", "2": "¢", "3": "£", "4": "€", "5": "‰", "6": "^", "7": "|", "8": "[", "9": "]", "0": "¿"};
+
+export const altGrDigitsLeft: DigitRow =
+    {"1": "¡", "2": "[", "3": "]", "4": "€", "5": "‰", "6": "^", "7": "|", "8": "¢", "9": "£", "0": "¿"};
+
+// The AltGr assignment of the flex map position [Upper, 0] – `q` in qwertz – on 32-key maps only.
+const atSignKeymapTypes: KeymapTypeId[] = [KeymapTypeId.Ansi32, KeymapTypeId.Thumb32];
 
 export const navLeft: Block = [
     [_, _, _, _, _],
@@ -140,9 +158,25 @@ function placeBlock(
     });
 }
 
+/**
+ * The number row, placed by digit. A bracket the number row already carries on its base level
+ * is left out: repeating it one level up would only cost us a mnemonic position.
+ */
+function placeDigits(result: LevelMap, positions: KeyPosition[], charSide: Hand) {
+    const digits = charSide === Hand.Right ? altGrDigitsRight : altGrDigitsLeft;
+    const numberRow = positions.filter((p) => p.row === KeyboardRows.Number);
+    const baseLabels = new Set(numberRow.map((p) => p.label));
+    numberRow.forEach((p) => {
+        const char = digits[p.label];
+        if (char && !baseLabels.has(char)) result[p.row][p.col] = char;
+    });
+}
+
 // The AltGr level: navigation on `navSide` and the AltGr characters on the other hand,
 // which a layout without a number row does not get at all.
-export function getThirdLevel(model: LayoutModel, positions: KeyPosition[], navSide: Hand): LevelMap {
+export function getThirdLevel(
+    model: LayoutModel, positions: KeyPosition[], navSide: Hand, keymapType?: KeymapTypeId
+): LevelMap {
     const result = emptyLevelMap(model);
     const charSide = navSide === Hand.Left ? Hand.Right : Hand.Left;
 
@@ -157,6 +191,11 @@ export function getThirdLevel(model: LayoutModel, positions: KeyPosition[], navS
 
     if (positions.some((p) => p.row === KeyboardRows.Number)) {
         placeBlock(result, model, positions, charSide, charSide === Hand.Right ? altGrRight : altGrLeft);
+        placeDigits(result, positions, charSide);
+    }
+    if (keymapType && atSignKeymapTypes.includes(keymapType)) {
+        const key = resolveSlot(model, positions, Hand.Left, KeyboardRows.Upper, 4);
+        if (key) result[key.row][key.col] = "@";
     }
     return result;
 }
@@ -168,9 +207,10 @@ export interface KeyLevels {
 }
 
 export const getKeyLevels = (
-    model: LayoutModel, positions: KeyPosition[], charMap: string[][], navSide: Hand
+    model: LayoutModel, positions: KeyPosition[], charMap: string[][], navSide: Hand,
+    keymapType?: KeymapTypeId
 ): KeyLevels => ({
     base: getBaseLevel(charMap),
     shift: getShiftLevel(charMap),
-    third: getThirdLevel(model, positions, navSide),
+    third: getThirdLevel(model, positions, navSide, keymapType),
 });
