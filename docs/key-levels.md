@@ -21,7 +21,7 @@ Next parts:
  - [32-key] Fix basic Shift level
  - NOT_READY: [32-key] Compressed Shift level for ansi32/thumb32 on small keyboards, including the 4-punctuation-key version for the Ergoslat.
 
-## Background and Motivation
+# Background and Motivation
 
 The US ANSI keyboard layout has 47 character keys, each assigned two different characters:
 one when pressing the key without holding Shift and the other while holding Shift.
@@ -53,9 +53,9 @@ Even full-size keyboards can profit from our revamped Shift mappings:
  - the keys that become freed from the move punctuation character can then be used for navigation functions (especially useful on laptops where nav keys are often too small or badly positioned for easy use) or others.
 
 
-## Key Mapping Concept
+# Key Mapping Concept
 
-### Prerequisites
+## Prerequisites
 
 While the ANSI English character map is the model for our 30-key flex maps and 
 the Standard German (qwertz) is the model for the 32-key flex maps, 
@@ -70,7 +70,7 @@ the "base level only" keymaps take some liberties with both:
 German makes it worse, because my optimized German Shift pairing actually swap `'` back to the base layer.
 But at least that is done by the explicit ["Shift level" button group](#button-groups). 
 
-### How many punctuation slots are there?
+## How many punctuation slots are there?
 
 US ANSI has 32 punctuation characters in total: 11 on the base level
 (`` ` ``, `-`, `=`, `[`, `]`, `\`, `;`, `'`, `,`, `.`, `/`)
@@ -104,7 +104,7 @@ On the other hand those key positions are very practical to use for additional n
 because they can be found "by feel" when the hands are not locked in typing position on the keyboard. 
 I call that "Hands off navigation mode".
 
-### 30-key flex maps: Which characters go where?
+## 30-key flex maps: Which characters go where?
 
 Let's first consider the case of the 30-key flex maps (ansi30 and thumb30), which are based on the ANSI English keymap.
 I'll label this case as [30-key], which includes the thumb-letter variant based on the same character set.
@@ -128,7 +128,7 @@ we'll also move the pair `()` to the AltGr level – thus the 12 characters on t
 That leaves `=`, `_`, `+`, `@`, `#`, `$`, `%`, `^`, `&`, `*` to fill up the base and Shift levels
 next to the 10 essential ones (5 + 15 = 20 slots for 20 characters – it fits exactly).
 
-### [30-key] Sample Shift mapping – the compressed Shift level
+## [30-key] Sample Shift mapping – the compressed Shift level
 
 Here's a sample solution for a keyboard that has 1, 1, and 3 punctuation key positions in its upper, home, and lower row
 (which is a very common arrangement on Split Orthogonal keyboards!):
@@ -154,7 +154,7 @@ But in a firmware mapping (like with [QMK's custom shift keys]), this will work 
 
 [QMK's custom shift keys]: https://getreuer.info/posts/keyboards/custom-shift-keys/index.html
 
-#### Rejected Alternatives
+### Rejected Alternatives
 
 In a strict usage-based view, the characters `#` and `^` are more "technical" compared to the round parenthesis `()` which are more common in prose writing.
 While this suggests that `#` and `^` should be moved to the AltGr layer instead of the parenthesis, I decided to move the parenthesis for several reasons:
@@ -167,7 +167,7 @@ Since we have one keyboard layout model with only 4 pure punctuation keys, we do
 Those mappings are practical and memorable (`=` near `<>` and `+` near `*/`), but since most small keyboards actually have at least 5 keys for pure punctuation,
 we opt for preserving muscle memory and reducing the need to use the AltGr layer. ==> The AltGr mappings are redundant and the 5 punctuation keys are preserved.
 
-#### Special Case: Ergoslat numberless
+### Special Case: Ergoslat numberless
 
 Keyboards without a number row have much more limited space that I don't want to solve for completely.
 When implementing the initial version of the feature, the AltGr characters on the numberless Ergoslat will not be shown (but nav keys will). ==> DONE
@@ -199,7 +199,7 @@ No more work needed!
 
 I don't want to go deeper than that, because a keyboard that small can't be practical anyway.
 
-#### Special case compression to only 4 punctuation keys for the Ergoslat on 32-key flex maps
+### Special case compression to only 4 punctuation keys for the Ergoslat on 32-key flex maps
 
 TODO: this doesn't make sense, since the punctuation keys for the 32-key flex maps are based on the standard German keymap.
 We first need to define the entire Shifted punctuation for this keymap and then base the Ergoslat special-case on that.
@@ -214,7 +214,7 @@ Luckily, most of the above concept with small modifications:
 This changes the punctuation character distribution to 4, 14, 14 on base, Shift, and AltGr levels,
 but thanks to the redundant AltGr mappings, doesn't add that much complexity.
 
-### [30-key] A compatible punctuation map for full-size keyboards
+## [30-key] A compatible punctuation map for full-size keyboards
 
 On keyboard layouts with all 47 keys, compression punctuation from 11 down to 5 keys allows us to place 6 more non-character keys. 
 One of those is usually Escape in the top left corner; the others could be Home/End, PageUp/Down, and (forward) Delete. 
@@ -237,7 +237,7 @@ The same Shift pairings could also be applied to our larger fictional keyboards 
 Those often already have additional navigation keys assigned, so that the option of replacing rarely-used punctuation 
 with Nav keys doesn't make sense – but using the same punctuation map as their smaller family members does!
 
-### [30-key] Applying the compressed Shift pairings to all layout models (and all 30-key maps)
+## [30-key] Applying the compressed Shift pairings to all layout models (and all 30-key maps)
 
 To avoid defining the Shift and AltGr level characters on each of our many keyboard layout models (and variants thereof)
 we instead define them mostly as pairings. 
@@ -259,7 +259,7 @@ Our rules for key replacement are as follows:
 
 All the remaining base-level punctuation keys can now be removed and be replaced with additional navigation keys. 
 
-### [32-key] Standard and Compressed Shift levels
+## [32-key] Standard and Compressed Shift levels
 
 None of our keyboard layout model is an actual ISO keyboard that accurately reflects the standard German keymap,
 but our frame mappings in the layout models already did the hard part of the translation and our "international"
@@ -274,7 +274,7 @@ And some more changes TBD.
 On the smallest keyboards I can only think of workable solutions using thumb-letter layouts, since without using the bottom row, only two keys would be left for punctuation!
 
 
-### Replacing freed punctuation keys with extra nav keys
+## Replacing freed punctuation keys with extra nav keys
 
 First of all, if the key map before Shift compression had a `` `~ `` key, but no Escape key, 
 we place Escape in that freed position. 
@@ -295,7 +295,7 @@ There we customize the full layout mapping instead, so that the additional nav k
 and offer the alternative as the ["Extra keys" switch](#button-groups).
 In exchange, we only do this for the `ansi30` keymap type, which is enough to show what the key levels can do.
 
-### AltGr Mapping
+## AltGr Mapping
 
 Much of the value of our AltGr level keymap comes from the logical arrangement of the various parenthesis and bracket characters.
 And that's even more important for the navigation keys!
@@ -349,7 +349,7 @@ We don't show the remaining standard German AltGr, because the above one already
 We also override the standard German positions of `\` and `€` for the Nav layer and bracket stack and it's not worth it to rework that.
 It's actually quite nice to see that our compressed Shift level sends a lot of those characters to the AltGr level that standard German has there alreay!
 
-### AltGr navigation keys on the other half of the keyboard
+## AltGr navigation keys on the other half of the keyboard
 
 Depending on the system used for actually implementing the key map, we can abuse the character levels to create a **navigation layer** that keeps the hands in their typing position.  
  - Windows national layouts don't allow that
@@ -376,7 +376,7 @@ Note that the `↟ ↡` denote mouse scrolls which can be mapped using keyboard 
 but probably not using xkb.
 In the case that `⇟` would fall on the pinky and clash with the Shift key, we omit `↟ ↡` and put `⇞ ⇟` in their place.
 
-## App UX
+# App UX
 
 Design decision: the mapping visualization type "Shift and AltGr Levels"
 (`VisualizationType.MappingShiftLevels`, with `ShiftLevelsDetails` in
@@ -390,7 +390,7 @@ How do we make it work for the flex layouts? Decision: we only configure the lev
  - for the Shift level, we define it via a list of pairings. This list can include more characters on the base level than are actually in the present layout; those will be ignored.
  - for the AltGr level we define it via the fingers and map it onto the physical layout independent of what the keys show on the other levels.
 
-### Button groups
+## Button groups
 
 Three two-button switch groups configure what the levels view shows.
 They appear only while this visualization type is selected, and sit in a new container to the
@@ -421,7 +421,7 @@ than disabled.
    is selected. Everywhere else the freed keys always become nav keys and there is nothing to
    choose.
 
-### How it looks on the keyboard SVG
+## How it looks on the keyboard SVG
 
  - all digit and punctuation keys show the base mapping below, Shift mapping above, in the same color.
  - the AltGr mapping of the key is in blue, and the AltGr key is highlighted with the same blue as a
@@ -431,24 +431,23 @@ A layout without a number row (the numberless Ergoslat) shows the navigation blo
 characters: with the number row's Shift characters missing, a third level on the remaining rows only
 looks broken.
 
-### <<Needs Design>> Offering a left-hand AltGr key
+## <<Needs Design>> Offering a left-hand AltGr key
 
 This is a bigger question: 
  - on ANSI boards, CAPS is the best option;
  - on ISO boards, the ISO key is the best option... which means I would have to add ISO after all!
  - on the fictional layouts and the Split Ortho, one of the thumb keys would be right... but that requires redesigning each bottom row and modifier concept separately. outch! 
 
-## Semi-related open questions and discovered bugs
-
-1. The 59 and 47 key Ergoslat `⌦` on a 1u key and `-` on a 1.25u key. 
-   Should those be swapped? (Which means moving `-` further away from its standard right-pinky position...)
-
-2. There's a bug in the current production app (4773011ba8c54c8873497c3d8d371cb296c540fc) that makes all thumb key mappings disappear. It was fixed by a reload.
-
-## Postponed work items
+# Postponed work items
 
 not currently in scope at all:
 
  - update the KLC export which currently hardcodes the ANSI base/Shift pairs per key and declares only shift states 0, 1 and 2 (Ctrl) – no AltGr.
    (We might leave this TODO open until we work on KLC export again, since that export is currently not used much.) 
 
+## Semi-related open questions and discovered bugs
+
+1. The 59 and 47 key Ergoslat `⌦` on a 1u key and `-` on a 1.25u key.
+   Should those be swapped? (Which means moving `-` further away from its standard right-pinky position...)
+
+2. There's a bug in the current production app (4773011ba8c54c8873497c3d8d371cb296c540fc) that makes all thumb key mappings disappear. It was fixed by a reload.
