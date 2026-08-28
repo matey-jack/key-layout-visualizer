@@ -11,12 +11,17 @@ Done parts:
  - [30-key and 32-key] Ergoslat numberless modified Shift pairings (no switching button)
 
 Next parts:
- - [30-key] Compressed Shift level for ansi30/thumb30 on small keyboards (see below)
+ - [30-key] Compressed Shift level: replace base and Shift level characters only, no nav key additions.
    + includes introduction of the "Shift level" [button group](#button-groups)!
- - [30-key] Compressed Shift level for ansi30/thumb30 on the ANSI keyboard layout model and variants
-  (with the "Extra keys" [button group](#button-groups))
+ - [30-key] Replace redundant Shift keys with Nav keys.
+   + includes introduction of the  [button group](#button-groups)
+   + this might need an explicit override mechanism per layout model to make sure that the nav key arrangement actually makes sense
+   + maybe it should actually be driven 100% by the layout model: if the current one has no config for it, don't even show the buttons.
 
-
+needs more planning:
+ - we have only considered 30-key and 32-key flex maps, but not the layout model specific maps yet.
+   maybe those latter need an explicit flag in their keymap to select a Shift pairing character set:
+   ANSI, German, or None.
  - <<needs details>> [32-key] Fix base key maps (except the `'` key on smaller keyboards)
  - [32-key] Fix basic Shift level
  - NOT_READY: [32-key] Compressed Shift level for ansi32/thumb32 on small keyboards, including the 4-punctuation-key version for the Ergoslat.
@@ -199,21 +204,6 @@ No more work needed!
 
 I don't want to go deeper than that, because a keyboard that small can't be practical anyway.
 
-### Special case compression to only 4 punctuation keys for the Ergoslat on 32-key flex maps
-
-TODO: this doesn't make sense, since the punctuation keys for the 32-key flex maps are based on the standard German keymap.
-We first need to define the entire Shifted punctuation for this keymap and then base the Ergoslat special-case on that.
-
-The Ergoslat has only 7 punctuation keys when using the English 30-key flex maps, 
-which leaves only 4 punctuation keys for the international 32-key flex maps.
-Luckily, most of the above concept with small modifications:
-   + omit the `=+` key
-   + map the number row Shift level as `6+ 7& 8* 9/ 0?` – that's only one more keycap (the `6`) that needs to be replaced.
-   + map `=` and `^` on the AltGr level, as already explained elsewhere in this doc.
-
-This changes the punctuation character distribution to 4, 14, 14 on base, Shift, and AltGr levels,
-but thanks to the redundant AltGr mappings, doesn't add that much complexity.
-
 ## [30-key] A compatible punctuation map for full-size keyboards
 
 On keyboard layouts with all 47 keys, compression punctuation from 11 down to 5 keys allows us to place 6 more non-character keys. 
@@ -257,7 +247,16 @@ Our rules for key replacement are as follows:
  - Only on ansi30, `/?` is replaced by `-_`.
  - `=+` moves to the spot freed by `'"` (which always moves, so that is always free).
 
-All the remaining base-level punctuation keys can now be removed and be replaced with additional navigation keys. 
+Since we explicitly removed `;:` and `/?` which are present on all layout model's key sets, we have freed a minimum of two keys;
+and since we keep 5 out of a total of 11 ANSI punctuation keys, this might free a maximum of six keys.
+(The difference is in four keys whose characters are already redundantly present on our AltGr level.)
+Note that the two definitely freed position are the old position of `+=` 
+and the old position of  `/?` (on thumb30 flex maps) or `-_` (ansi30), respectively. 
+
+We could now replace those freed keys with navigation keys, but to cleanly separate features, 
+we'll instead replace them with `(<` and `)>` at first. 
+The user can then use the ["Extra keys" buttons](#button-groups) to use replace those redundant character keys with 
+navigation keys instead.
 
 ## [32-key] Standard and Compressed Shift levels
 
@@ -272,6 +271,22 @@ TODO: the compressed punctuation will be quite different, since the base-layer p
 What we need to do instead is to make better use of the Shift level number row by placing `@` instead of `§`.
 And some more changes TBD.
 On the smallest keyboards I can only think of workable solutions using thumb-letter layouts, since without using the bottom row, only two keys would be left for punctuation!
+
+### [32-key] Special case compression to only 4 punctuation keys for the Ergoslat
+
+TODO: this doesn't make sense, since the punctuation keys for the 32-key flex maps are based on the standard German keymap.
+We first need to define the entire Shifted punctuation for this keymap and then base the Ergoslat special-case on that.
+
+The Ergoslat has only 7 punctuation keys when using the English 30-key flex maps,
+which leaves only 4 punctuation keys for the international 32-key flex maps.
+Luckily, most of the above concept with small modifications:
++ omit the `=+` key
++ map the number row Shift level as `6+ 7& 8* 9/ 0?` – that's only one more keycap (the `6`) that needs to be replaced.
++ map `=` and `^` on the AltGr level, as already explained elsewhere in this doc.
+
+This changes the punctuation character distribution to 4, 14, 14 on base, Shift, and AltGr levels,
+but thanks to the redundant AltGr mappings, doesn't add that much complexity.
+
 
 
 ## Replacing freed punctuation keys with extra nav keys
