@@ -15,35 +15,63 @@ import {isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
 // Level arrays are parallel to the merged char map (and thus to the model's keyWidths).
 export type LevelMap = (string | null)[][];
 
-/*
-    The 32-key flex maps follow the German keymap, whose Shift pairings we do not have yet
-    (see the "Next parts" list in docs/key-levels.md). Until then they show no Shift level at
-    all rather than the ANSI one, which would be wrong on most of their keys.
- */
 export const is32KeyMap = (keymapType?: KeymapTypeId): boolean =>
     keymapType === KeymapTypeId.Ansi32 || keymapType === KeymapTypeId.Thumb32;
 
-// The US ANSI Shift pairings, one entry per key: base character first, shifted character second.
-export const ansiShiftPairs = [
+// A board without a number row gets its own Shift pairings and no AltGr characters at all.
+export const hasNumberRow = (model: LayoutModel): boolean =>
+    model.mainFingerAssignment[KeyboardRows.Number].some((finger) => finger !== null);
+
+/*
+    A pairing table maps the label a key map draws onto the two characters to show on that key:
+    base character first, shifted character second. Where the two differ, the base level
+    overrides the drawn label – which is how the numberless tables below relabel a key entirely.
+ */
+export type ShiftPairs = Record<string, string>;
+
+// A key map may draw the base character, the shifted one, or the combined label.
+const byAnyMember = (pairs: string[]): ShiftPairs =>
+    Object.fromEntries(pairs.flatMap((pair) => [[pair, pair], [pair[0], pair], [pair[1], pair]]));
+
+export const ansiShiftPairs: ShiftPairs = byAnyMember([
     "1!", "2@", "3#", "4$", "5%", "6^", "7&", "8*", "9(", "0)",
     "`~", "-_", "=+", "[{", "]}", "\\|", ";:", "'\"", ",<", ".>", "/?",
-];
+]);
 
-/**
- * The pairing a key label belongs to, or undefined for letters and non-character keys.
- * A label matches its base character, its shifted character, or the whole pair.
+// Without a number row the ANSI pairings make no sense, so these seven replace them.
+export const numberlessShiftPairs: ShiftPairs = {
+    ",": ",;", ".": ".:", "/": "/?",
+    ";": "'\"", "'": "-!", "-": "$%", "+": "&+",
+};
+
+// The 32-key flex maps place only four of those characters.
+export const numberless32ShiftPairs: ShiftPairs = {
+    ",": ",;", ".": ".:", "-": "-!", "+": "+?",
+};
+
+/*
+    The 32-key flex maps with a number row follow the German keymap, whose Shift pairings we do
+    not have yet (see the "Next parts" list in docs/key-levels.md). Until then they show no Shift
+    level at all rather than the ANSI one, which would be wrong on most of their keys.
  */
-export const shiftPairFor = (label: string): string | undefined =>
-    ansiShiftPairs.find((pair) => label === pair || label === pair[0] || label === pair[1]);
+const noShiftPairs: ShiftPairs = {};
 
-export const getShiftLevel = (charMap: string[][]): LevelMap =>
-    charMap.map((row) => row.map((label) => shiftPairFor(label)?.[1] ?? null));
+export const shiftPairsFor = (keymapType: KeymapTypeId | undefined, hasNumberRow: boolean): ShiftPairs =>
+    !hasNumberRow ? (is32KeyMap(keymapType) ? numberless32ShiftPairs : numberlessShiftPairs)
+        : is32KeyMap(keymapType) ? noShiftPairs : ansiShiftPairs;
+
+// The pairing a key label belongs to, or undefined for letters and non-character keys.
+export const shiftPairFor = (label: string, pairs: ShiftPairs = ansiShiftPairs): string | undefined =>
+    pairs[label];
+
+export const getShiftLevel = (charMap: string[][], pairs: ShiftPairs = ansiShiftPairs): LevelMap =>
+    charMap.map((row) => row.map((label) => pairs[label]?.[1] ?? null));
 
 // The base level, but only where it differs from the label the key map draws
 // (see the Prerequisites section of docs/key-levels.md).
-export const getBaseLevel = (charMap: string[][]): LevelMap =>
+export const getBaseLevel = (charMap: string[][], pairs: ShiftPairs = ansiShiftPairs): LevelMap =>
     charMap.map((row) => row.map((label) => {
-        const pair = shiftPairFor(label);
+        const pair = pairs[label];
         return pair && label !== pair[0] ? pair[0] : null;
     }));
 
@@ -185,14 +213,14 @@ export function getThirdLevel(
     ];
     placeBlock(result, model, positions, navSide, nav);
 
-    if (positions.some((p) => p.row === KeyboardRows.Number)) {
+    if (hasNumberRow(model)) {
         placeBlock(result, model, positions, charSide, charSide === Hand.Right ? altGrRight : altGrLeft);
         placeDigits(result, positions);
-    }
-    if (is32KeyMap(keymapType)) {
-        // The AltGr assignment of the flex map position [Upper, 0] - `q` in qwertz.
-        const key = resolveSlot(model, positions, Hand.Left, KeyboardRows.Upper, 4);
-        if (key) result[key.row][key.col] = "@";
+        if (is32KeyMap(keymapType)) {
+            // The AltGr assignment of the flex map position [Upper, 0] – `q` in qwertz.
+            const key = resolveSlot(model, positions, Hand.Left, KeyboardRows.Upper, 4);
+            if (key) result[key.row][key.col] = "@";
+        }
     }
     return result;
 }
@@ -203,13 +231,14 @@ export interface KeyLevels {
     third: LevelMap;
 }
 
-const noLevel = (charMap: string[][]): LevelMap => charMap.map((row) => row.map(() => null));
-
 export const getKeyLevels = (
     model: LayoutModel, positions: KeyPosition[], charMap: string[][], navSide: Hand,
     keymapType?: KeymapTypeId
-): KeyLevels => ({
-    base: is32KeyMap(keymapType) ? noLevel(charMap) : getBaseLevel(charMap),
-    shift: is32KeyMap(keymapType) ? noLevel(charMap) : getShiftLevel(charMap),
-    third: getThirdLevel(model, positions, navSide, keymapType),
-});
+): KeyLevels => {
+    const pairs = shiftPairsFor(keymapType, hasNumberRow(model));
+    return {
+        base: getBaseLevel(charMap, pairs),
+        shift: getShiftLevel(charMap, pairs),
+        third: getThirdLevel(model, positions, navSide, keymapType),
+    };
+};

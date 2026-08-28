@@ -14,6 +14,19 @@ If running on WSL or other environments it might be different.
 `npm dev` (Vite) is usally already running. 
 Try connecting to localhost:3000 with the browser before starting the dev server on your own.
 
+#### Outgoing keys stay in the SVG — don't read the DOM right after a switch
+
+After a layout or mapping switch, the keys of the *previous* board are still rendered next to the
+new ones, so that they can animate out. `getKeyMovements` matches keys by label, so a key whose
+label changed counts as one leaving and one arriving, and both are in the DOM at once.
+Outgoing keys carry no Shift/AltGr levels (`KeyboardLayer` only passes levels to `movement.next`),
+so they show a bare base label.
+
+When reading the DOM to check a change, this looks exactly like a bug: a number row that is
+supposed to be gone, punctuation whose Shift character vanished, two different sets of centre keys.
+Switch to another mapping and back, or reload, and read again — or better, check the real thing
+with a `tsx` probe (below) and use the browser only to confirm.
+
 ### `npx tsx -e` must be a SINGLE physical line — multiline silently fails
 On this setup, a multiline `-e` script (and any `-e` using a top-level static `import`)
 exits **0 with zero output** — no error, nothing. It's the shell/tool quoting mangling the

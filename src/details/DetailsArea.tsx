@@ -36,6 +36,7 @@ import {
     TRADEOFF_SAME_FINGER_COLOR
 } from "../layout/TradeoffDiagram.tsx";
 import {sum} from "../library/math.ts";
+import {hasNumberRow} from "../mapping/key-levels.ts";
 import {qwertyMapping} from "../mapping/baseMappings.ts";
 import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
 
@@ -92,7 +93,7 @@ export function getVizDetails(vizType: VisualizationType, layout: LayoutModel, m
         case VisualizationType.MappingBigrams:
             return <BigramEffortDetails layout={layout} mapping={mapping}/>;
         case VisualizationType.MappingShiftLevels:
-            return <ShiftLevelsDetails/>;
+            return <ShiftLevelsDetails layout={layout}/>;
         case VisualizationType.MappingTradeoff:
             return <TradeoffDetails/>;
     }
@@ -416,7 +417,7 @@ export function BigramDetailsLegendItem({bigramType, frequency, children}: Bigra
 
 }
 
-export function ShiftLevelsDetails() {
+export function ShiftLevelsDetails({layout}: { layout: LayoutModel }) {
     return <>
         <p>
             Each character key can carry three levels: the character it inserts on its own, the one it inserts
@@ -425,10 +426,17 @@ export function ShiftLevelsDetails() {
             the same three places an ISO keycap prints them.
         </p>
         <p>
-            The Shift level here is the US ANSI one: <code>1!</code> <code>2@</code> … <code>,&lt;</code>{" "}
-            <code>.&gt;</code> <code>/?</code>. It follows the key map, so a mapping that moves its punctuation
-            around takes its Shift characters along.
+            On the 30-key mappings the Shift level is the US ANSI one: <code>1!</code> <code>2@</code> …{" "}
+            <code>,&lt;</code> <code>.&gt;</code> <code>/?</code>. It follows the key map rather than the
+            board, so a mapping that moves its punctuation around takes its Shift characters along.
+            The 32-key mappings follow the German keymap, whose pairings are not in yet.
         </p>
+        {!hasNumberRow(layout) && <p>
+            This board has no number row, so it gets seven pairs of its own – <code>,;</code>{" "}
+            <code>.:</code> <code>-!</code> <code>/?</code> <code>'"</code> <code>$%</code>{" "}
+            <code>&amp;+</code> – because half of the ANSI ones live on digits it does not have.
+            They relabel the base level too, so the <code>;</code> key becomes the <code>'"</code> key.
+        </p>}
         <p>
             On the letter rows the AltGr level is fixed by finger position instead, so it stays the same
             on every keyboard. One hand gets the characters: three kinds of brackets stacked on middle and

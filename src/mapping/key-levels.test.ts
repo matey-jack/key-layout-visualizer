@@ -21,9 +21,12 @@ import {
     getThirdLevel,
     navLeft,
     navRight,
+    numberless32ShiftPairs,
+    numberlessShiftPairs,
     resolveSlot,
     shiftPairFor,
 } from "./key-levels.ts";
+import {isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
 
 // Without a name, the first mapping the model accepts – which is a 30-key one everywhere.
 const mappingFor = (model: LayoutModel, name?: string) =>
@@ -31,6 +34,21 @@ const mappingFor = (model: LayoutModel, name?: string) =>
 
 function positionsOf(model: LayoutModel, mappingName?: string): KeyPosition[] {
     return getKeyPositions(model, false, fillMapping(model, mappingFor(model, mappingName))!);
+}
+
+// The base and Shift levels as a label -> "base+Shift" map, which is how the pairings read.
+function shiftLevelByLabel(model: LayoutModel, mappingName?: string): Record<string, string> {
+    const mapping = mappingFor(model, mappingName);
+    const charMap = fillMapping(model, mapping)!;
+    const positions = getKeyPositions(model, false, charMap);
+    const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
+    const levels = getKeyLevels(model, positions, charMap, Hand.Left, keymapType);
+    const result: Record<string, string> = {};
+    positions.forEach((p) => {
+        const shift = levels.shift[p.row][p.col];
+        if (shift) result[p.label] = (levels.base[p.row][p.col] ?? p.label) + shift;
+    });
+    return result;
 }
 
 // The third level as a plain label -> character map, which is how the diagrams read.
@@ -115,6 +133,73 @@ describe("AltGr character block", () => {
         // but the navigation block is still there.
         expect(chars).toContain("↓");
         expect(chars).toContain("⇤");
+    });
+
+    it("leaves out the 32-key `@` there as well, so no AltGr character is left", () => {
+        const numberless = makeErgoslatNumberless(majorErgoslatLayoutModel(false));
+        const chars = Object.values(thirdLevelByLabel(numberless, Hand.Left, "Qwertz – German Standard"));
+        expect(chars).not.toContain("@");
+        expect(chars).toContain("↓");
+    });
+});
+
+describe("numberless Shift pairings", () => {
+    const numberless = makeErgoslatNumberless(majorErgoslatLayoutModel(false));
+    const german = "Qwertz – German Standard";
+
+    it("finds a pairing by the label the key map draws, which the base level then replaces", () => {
+        expect(shiftPairFor(";", numberlessShiftPairs)).toBe("'\"");
+        expect(shiftPairFor("+", numberlessShiftPairs)).toBe("&+");
+        // and the ANSI meaning of that label no longer applies
+        expect(shiftPairFor(":", numberlessShiftPairs)).toBeUndefined();
+        expect(shiftPairFor("=", numberlessShiftPairs)).toBeUndefined();
+    });
+
+    it("replaces the ANSI set on the 30-key maps", () => {
+        expect(shiftLevelByLabel(numberless)).toEqual({
+            ",": ",;", ".": ".:", "/": "/?",
+            ";": "'\"", "'": "-!", "-": "$%", "+": "&+",
+        });
+    });
+
+    it("is the same permutation on a thumb map, which takes `-` from the other source", () => {
+        expect(shiftLevelByLabel(numberless, "Quipper with Thumb-T"))
+            .toEqual(shiftLevelByLabel(numberless));
+    });
+
+    it("keeps only four of the pairs on the 32-key maps", () => {
+        expect(shiftLevelByLabel(numberless, german)).toEqual(numberless32ShiftPairs);
+    });
+
+    it("leaves the ANSI pairings alone on the same board with a number row", () => {
+        const numbered = shiftLevelByLabel(majorErgoslatLayoutModel(false));
+        expect(numbered[";"]).toBe(";:");
+        expect(numbered[","]).toBe(",<");
+        expect(numbered["+"]).toBe("=+");
+    });
+});
+
+/*
+    The pairings are keyed by the label the key map draws, so a frame or flex mapping that moves a
+    punctuation character in or out of a numberless board would silently leave a key unpaired.
+ */
+describe("every punctuation key on a numberless board is paired", () => {
+    const numberlessModels = allLayoutModels
+        .filter((m) => !positionsOf(m).some((p) => p.row === KeyboardRows.Number));
+
+    it("is a set of two models", () => {
+        expect(numberlessModels.map((m) => m.name)).toHaveLength(2);
+    });
+
+    it.each(numberlessModels.map((m) => [m.name, m] as const))("%s", (_name, model) => {
+        allMappings.filter((m) => hasMatchingMapping(model, m)).forEach((mapping) => {
+            const paired = shiftLevelByLabel(model, mapping.name);
+            const unpaired = fillMapping(model, mapping)!.flat()
+                .filter((label) => label && !isKeyName(label) && !isKeyboardSymbol(label)
+                    && !/^[\p{L}0-9]$/u.test(label))
+                .filter((label) => !paired[label]);
+            expect(unpaired, mapping.name).toEqual([]);
+        });
     });
 });
 

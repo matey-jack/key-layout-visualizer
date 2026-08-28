@@ -8,9 +8,9 @@ Done parts:
  - AltGr level characters and navigation keys are displayed
  - AltGr level can be mirrored between hands using the "Nav keys" [button group](#button-groups)
  - Number row AltGr mappings, including the `@` character for 32-key flex maps
+ - [30-key and 32-key] Ergoslat numberless modified Shift pairings (no switching button)
 
 Next parts:
- - [30-key and 32-key] Ergoslat numberless modified Shift pairings (no switching button)
  - [30-key] Compressed Shift level for ansi30/thumb30 on small keyboards (see below)
    + includes introduction of the "Shift level" [button group](#button-groups)!
  - [30-key] Compressed Shift level for ansi30/thumb30 on the ANSI keyboard layout model and variants
@@ -285,6 +285,7 @@ Let N be the number of remaining keys freed by the Shift-level compression.
  - if N is odd, one of the freed keys becomes `⌦` (Delete), or `Insert` if the layout already has a Delete key;
  - the next pair becomes Home/End (unless already present on the key map);
  - one more pair becomes PageUp/PageDown.
+ - if the keymap already has all of the above navigation keys and we still have free space, we can re-add
 
 On all four small boards N is 2 (Home/End) or 4 (Home/End plus PageUp/PageDown),
 so the odd case does not occur there.
