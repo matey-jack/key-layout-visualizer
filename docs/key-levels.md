@@ -74,8 +74,8 @@ US ANSI has 32 punctuation characters in total: 11 on the base level
 (`` ` ``, `-`, `=`, `[`, `]`, `\`, `;`, `'`, `,`, `.`, `/`)
 and 21 on the Shift level (the 11 partners of those keys plus the 10 shifted digits).
 
-The default small keyboards in this app (Split Ortho, Thumbs Up 13, Ergoslat, and Harmonic Mini) have 43 to 45 character keys instead of the 47 of US ANSI,
-and 7 to 9 of those are punctuation keys – see [the table below](#pre-existing-punctuation-maps-on-our-smallest-keyboards).
+The default small keyboards in this app (Split Ortho, Thumbs Up 13, Ergoslat, and Harmonic Mini) 
+have 43 to 45 character keys instead of the 47 of US ANSI, and 7 to 9 of those are punctuation keys.
 In the case of the international 32-key flexmaps, this goes down to only 4 to 7 punctuation keys left.
 While our Thumbs Up 13/2 and the Ergoslat are fictional keyboard layouts, the Split Ortho category has a lot of actual physical products used by actual people and those often even more constrained. 
 See the description in `splitOrthoLayoutModel.ts`.
@@ -207,8 +207,7 @@ which leaves only 4 punctuation keys for the international 32-key flex maps.
 Luckily, most of the above concept with small modifications:
    + omit the `=+` key
    + map the number row Shift level as `6+ 7& 8* 9/ 0?` – that's only one more keycap (the `6`) that needs to be replaced.
-   + map `=` and `^` on the AltGr level. As we'll see, there are great mnemonic and practical positions for them.
-     So good, in fact, that we'll always map them there redundantly, even if the keyboard has a physical `=+` key.
+   + map `=` and `^` on the AltGr level, as already explained elsewhere in this doc.
 
 This changes the punctuation character distribution to 4, 14, 14 on base, Shift, and AltGr levels,
 but thanks to the redundant AltGr mappings, doesn't add that much complexity.
@@ -297,7 +296,9 @@ In exchange, we only do this for the `ansi30` keymap type, which is enough to sh
 ### AltGr Mapping
 
 Much of the value of our AltGr level keymap comes from the logical arrangement of the various parenthesis and bracket characters.
-To keep this independent of the letter keymap which can change underneath 
+And that's even more important for the navigation keys!
+To keep this independent of the letter keymap which can change underneath, 
+all AltGr mappings on the letter area are defined via finger position, not as a pairing with the base key.
 
 Stack of parentheses on the ring and middle fingers, with 
  - `()` in the home row,
@@ -326,12 +327,21 @@ The diagram follows the ANSI row stagger: 1/4 key width between home row and the
 1/2 between the other rows. We use four characters (including spacing) per key to make this exact.
 On the left side, everything is mirrored, so that the index finger (not the pinky) carries the six characters.
 
-Since we already place a lot of AltGr level characters in the number row, we can as well make it complete by filling the entire row. And we can do this using a lot of mnemonic pairings for the Shift and AltGr characters:
+Since we already place a lot of AltGr level characters in the number row, 
+we can as well make it complete by filling the entire row. 
+And this follows a character-pairing mechanism again, independent of fingering.
+(Which means that the characters `^   |   [   ]` in the diagram above will be positioned as shown on many layout models,
+but not on those which shift the number row around.)
+And we can do this using a lot of mnemonic pairings for the Shift and AltGr characters:
 
        ¡  ¢  £  €  ‰  ^  |  [  ]  ¿
-      1! 2@ 3# 4$ 5% 6^ 7& 8* 9+ 0?
+      1! 2@ 3# 4$ 5% 6^ 7& 8* 9/ 0?
 
-Sadly, one mnemonic gets lost on the young generation which reads `#` as "hash", while older people still remember it as the "pound" character, making it perfect for the British Pounds currency sign.
+Note that this can shift around on larger keyboards that have extra keys in the center of the number row.
+To keep the mnemonics, we'll omit `[]` from the AltGr mapping when it is already defined on the base level.
+
+(Sadly, one mnemonic gets lost on the young generation which reads `#` as "hash", 
+while older people still remember it as the "pound" character, making it perfect for the British Pounds currency sign.)
 
 When the user sets the ["Nav keys" switch](#button-groups) to the right side of the keyboard, `[]` will move to a mirrored position along with the other brackets and two characters from the other side take their places. 
 That kills two mnemonic positions (along with the standard German `[]` position), thus it's not my favorite.
