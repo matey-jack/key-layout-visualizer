@@ -55,3 +55,12 @@ No "this replaces X", no "used to be Y", no "is being retired", no migration not
 not in `docs/`, not in code comments. Rationale for the current state is welcome
 ("we picked ␣ over ␠ because …"); the history of how we got there belongs in commit
 messages and pull requests, where it stays attached to the change that made it true.
+
+There should also be no redundancy in the documentation, which includes the user-facing docs 
+(like keymap and layout descriptions), any .md files and comments in the code. 
+Each fact should only be given or explained in the appropriate one of those places. 
+If needed, other places can refer to the canonical place, 
+but don't even need to do that if the relation to find the relevant doc is sufficiently obvious.
+
+(If you see this redundantly in `~/.claude/CLAUDE.md` it's not the user violating their own rule, 
+but it's because that local file will not be present in Claude Cloud Code.)
