@@ -10,14 +10,16 @@ Done parts:
 
 Next parts:
  - Update Number row AltGr mappings (including the `@` character for 32-key flex maps)
- - Fix 32-key base key maps (except the `'` key on smaller keyboards)
- - Fix 32-key basic Shift level
  - [30-key and 32-key] Ergoslat numberless modified Shift pairings (no switching button)
- - [30-key] Compressed Shift level for ansi30/thumb30 on small keyboards (see below) 
+ - [30-key] Compressed Shift level for ansi30/thumb30 on small keyboards (see below)
    + includes introduction of the "Shift level" [button group](#button-groups)!
- - NOT_READY: [32-key] Compressed Shift level for ansi32/thumb32 on small keyboards, including the 4-punctuation-key version for the Ergoslat.
  - [30-key] Compressed Shift level for ansi30/thumb30 on the ANSI keyboard layout model and variants
-   (with the "Extra keys" [button group](#button-groups))
+  (with the "Extra keys" [button group](#button-groups))
+
+
+ - <<needs details>> [32-key] Fix base key maps (except the `'` key on smaller keyboards)
+ - [32-key] Fix basic Shift level
+ - NOT_READY: [32-key] Compressed Shift level for ansi32/thumb32 on small keyboards, including the 4-punctuation-key version for the Ergoslat.
 
 ## Background and Motivation
 
