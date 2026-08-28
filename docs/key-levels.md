@@ -6,16 +6,18 @@ Done parts:
  - New "MappingShiftLevels" viz type can be selected 
  - ANSI Shift level characters are displayed (see `key-levels.ts`)
  - AltGr level characters and navigation keys are displayed
- - AltGr level can be mirrored between hands using a new button pair
+ - AltGr level can be mirrored between hands using the "Nav keys" [button group](#button-groups)
 
 Next parts:
  - Update Number row AltGr mappings (including the `@` character for 32-key flex maps)
+ - Fix 32-key base key maps (except the `'` key on smaller keyboards)
  - Fix 32-key basic Shift level
  - [30-key and 32-key] Ergoslat numberless modified Shift pairings (no switching button)
- - [30-key] Compressed Shift level for ansi30/thumb30 on small keyboards (see below) -- includes introduction of the "compression buttons"!
+ - [30-key] Compressed Shift level for ansi30/thumb30 on small keyboards (see below) 
+   + includes introduction of the "Shift level" [button group](#button-groups)!
  - NOT_READY: [32-key] Compressed Shift level for ansi32/thumb32 on small keyboards, including the 4-punctuation-key version for the Ergoslat.
  - [30-key] Compressed Shift level for ansi30/thumb30 on the ANSI keyboard layout model and variants
-   (with a new button group option to remap the remaining punctuation characters or place nav keys)
+   (with the "Extra keys" [button group](#button-groups))
 
 ## Background and Motivation
 
@@ -64,7 +66,7 @@ the "base level only" keymaps take some liberties with both:
    This lands some characters which don't have a standard Shift pairing.
 
 German makes it worse, because my optimized German Shift pairing actually swap `'` back to the base layer.
-But at least that is done by the explict button group option to switch between "standard" and "compressed". 
+But at least that is done by the explicit ["Shift level" button group](#button-groups). 
 
 ### How many punctuation slots are there?
 
@@ -170,8 +172,8 @@ When implementing the initial version of the feature, the AltGr characters on th
 
 As a follow-up – a separate work item – we'll change the Shift pairings for the ErgoSlat without number row
 to the following, and define only the Shift level there, no AltGr.
-This modified set will always be shown in the Shift Levels viz -- no "compressed" button to switch between this set and the ANSI pairings,
-because the ANSI pairings simply don't make sense without a number row.
+This modified set will always be shown in the Shift Levels viz -- this is the one layout model
+without a ["Shift level" switch](#button-groups), because the ANSI pairings simply don't make sense without a number row.
 (Having `?` but not `!` is crazy, also having `_<>`, but not `$%&` is sad.)
 
 Decided Shift pairings: `,;`  `.:`  `-!`  `/?`  `'"`  `$%`  `&+`
@@ -228,6 +230,7 @@ The resulting punctuation keymap looks like this:
 
 Given this keymap, we can simply replace the two pairs of brackets with two pairs of navigation keys, 
 while the larger `\|` key becomes (forward) Delete.
+That replacement is what the ["Extra keys" switch](#button-groups) selects.
 
 The same Shift pairings could also be applied to our larger fictional keyboards (Thumbs Up, Harmonic and the Ergoplank family).
 Those often already have additional navigation keys assigned, so that the option of replacing rarely-used punctuation 
@@ -287,7 +290,8 @@ so the odd case does not occur there.
 
 On keyboards which carry all 11 punctuation keys – the ANSI variants – six keys are freed at once,
 which is more than the generic rule can place sensibly.
-There we customize the full layout mapping instead, so that the additional nav keys end up in sensible pairs.
+There we customize the full layout mapping instead, so that the additional nav keys end up in sensible pairs,
+and offer the alternative as the ["Extra keys" switch](#button-groups).
 In exchange, we only do this for the `ansi30` keymap type, which is enough to show what the key levels can do.
 
 ### AltGr Mapping
@@ -329,7 +333,7 @@ Since we already place a lot of AltGr level characters in the number row, we can
 
 Sadly, one mnemonic gets lost on the young generation which reads `#` as "hash", while older people still remember it as the "pound" character, making it perfect for the British Pounds currency sign.
 
-When the user opts to map nav keys to the right side of the keyboard, `[]` will move to a mirrored position along with the other brackets and two characters from the other side take their places. 
+When the user sets the ["Nav keys" switch](#button-groups) to the right side of the keyboard, `[]` will move to a mirrored position along with the other brackets and two characters from the other side take their places. 
 That kills two mnemonic positions (along with the standard German `[]` position), thus it's not my favorite.
 
 [32-key only]: the flex map position [Upper, 0] (Q in qwertz) has the AltGr assignment `@`.
@@ -374,34 +378,50 @@ Using a mapping viz type shows the keyboard as 2D which distracts less from the 
 
 On all keyboard layout models, this will show the Shifted characters and the AltGr mappings as described below.
 
-On keyboard layout models, where the compressed Shift pairings are implemented, 
-it will offer a two-button switch group labeled "Shift pairings" with buttons "ANSI" and "Compressed".
-"ANSI" is just the normal state shown on all keyboard layouts by default,
-"Compressed" is the reduction to 5 punctuation keys described in this file.
-The button group is located below the "Nav keys" one.
-Both groups need to take the entire space of the two viz type button groups. 
-With a vertical separator between the viz types and the buttons for the Shift/AltGr levels.
-
 How do we make it work for the flex layouts? Decision: we only configure the levels globally (for all layouts and mappings), but in two different ways:
  - for the Shift level, we define it via a list of pairings. This list can include more characters on the base level than are actually in the present layout; those will be ignored.
  - for the AltGr level we define it via the fingers and map it onto the physical layout independent of what the keys show on the other levels.
 
-How it looks on the keyboard SVG:
+### Button groups
+
+Three two-button switch groups configure what the levels view shows.
+They appear only while this visualization type is selected, and sit in a new container to the
+right of the two rows of visualization type buttons, separated from the viz types by a
+vertical rule. Together they can use the entire height of the two viz type button groups
+(or more, if needed).
+
+Each group appears only where its choice exists; a group with nothing to switch is hidden rather
+than disabled.
+
+ - **Nav keys**: "left" / "right" – which hand carries the
+   [navigation block](#altgr-navigation-keys-on-the-other-half-of-the-keyboard).
+   The navigation block is the easiest part of the AltGr level to recognize, which is why it names
+   the switch; the AltGr characters always sit on the other hand and move along with it.
+   (Characters appear on all three levels and thus make a poorer landmark.)
+   Available on every layout model.
+ - **Shift level**: "standard" / "compressed" – "standard" is the pairing of the keymap type the
+   current mapping uses: US ANSI for the 30-key flex maps, standard German for the 32-key ones.
+   "compressed" is the reduction to 5 punctuation keys, described for
+   [30-key](#30-key-sample-shift-mapping--the-compressed-shift-level) and for
+   [32-key](#32-key-standard-and-compressed-shift-levels) maps.
+   Hidden on the [numberless Ergoslat](#special-case-ergoslat-numberless), which has only its own
+   set and no standard pairing worth switching to.
+ - **Extra keys**: "punctuation" / "navigation" – what becomes of the keys that the compression
+   frees: the [remaining punctuation characters](#30-key-a-compatible-punctuation-map-for-full-size-keyboards)
+   or [extra nav keys](#replacing-freed-punctuation-keys-with-extra-nav-keys).
+   Only on the big ANSI layout models, where six keys are freed at once, and only while "compressed"
+   is selected. Everywhere else the freed keys always become nav keys and there is nothing to
+   choose.
+
+### How it looks on the keyboard SVG
+
  - all digit and punctuation keys show the base mapping below, Shift mapping above, in the same color.
- - a two-button switch group labeled "Nav keys" with buttons "left" and "right" sits in the row of
-   mapping visualization buttons, right of the one that selects this visualization. The navigation
-   block is the easiest part of the AltGr level to recognize, which is why it names the switch; the
-   AltGr characters always sit on the other hand and move along with it. (Characters appear on all
-   three levels and thus make a poorer landmark.)
  - the AltGr mapping of the key is in blue, and the AltGr key is highlighted with the same blue as a
    background, to make the relationship clear. This only happens when the key levels mode is active.
 
 A layout without a number row (the numberless Ergoslat) shows the navigation block but no AltGr
 characters: with the number row's Shift characters missing, a third level on the remaining rows only
 looks broken.
-
-TODO: 
- - buttons for switching the compressed full-size punctuation on the large ANSI layouts from punctuation to Nav-key mode
 
 ### <<Needs Design>> Offering a left-hand AltGr key
 
