@@ -59,10 +59,15 @@ const SO_LEFT_TS_ANSI = "<SC⌦";    // for Ansi30 and Ansi32
 
 export const splitOrthoLayoutModel = (soThumbShift: boolean) : LayoutModel => ({
     name: "Split Ergonomic",
-    description: "The Ortholinear key layout is especially popular with two-piece keyboards. " +
-        "This allows to position and rotate the two keyboard halves to make columns line up exactly with your finger's natural extension movement. " +
-        "Most split models include at least two thumb keys on each side that users can map to any function they want. " +
-        "The layout shown here is not too different to the Iris CE, a 56-key split keyboard which is incidentally the one that I used for coding this app. ",
+    description: `The Ortholinear key layout is especially popular with two-piece keyboards. 
+    This allows to position and rotate the two keyboard halves to make columns line up exactly with your finger's natural extension movement. 
+    Most split models include between two and four thumb keys on each side that users can map to any function they want. 
+    Examples: The ZSA Voyager has two per side; 
+    the Corne has three; the Iris has four; the Sofle and Lily58 have four thumb keys and one extra bottom key, 
+    and finally the MoErgo Go60 has four thumb keys and two further bottom-row keys per side, which corresponds to the picture shown here. (Don't confuse the Go60 with the Glove80, which is a much bigger keyboard. 
+    Similarly large is the Ergodox with 76 keys; too complicated to show here and not an interesting challenge in creating a compact key map!)
+    We thus need to keep in mind that a keymap which works on all of those keyboards, 
+    the characters in the bottom row need to be mapped redundantly on the AltGr level.`,
     // more splitties here: https://jhelvy.shinyapps.io/splitkbcompare/
     // if it's down, you can run it locally: https://github.com/jhelvy/splitKbCompare
 

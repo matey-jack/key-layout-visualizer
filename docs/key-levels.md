@@ -56,24 +56,27 @@ US ANSI has 32 punctuation characters in total: 11 on the base level
 (`` ` ``, `-`, `=`, `[`, `]`, `\`, `;`, `'`, `,`, `.`, `/`)
 and 21 on the Shift level (the 11 partners of those keys plus the 10 shifted digits).
 
-The default small keyboards (Split Ortho, Thumbs Up 13, Ergoslat) have 43 to 45 character keys instead of the 47 of US ANSI,
+The default small keyboards in this app (Split Ortho, Thumbs Up 13, Ergoslat) have 43 to 45 character keys instead of the 47 of US ANSI,
 and 7 to 9 of those are punctuation keys – see [the table below](#pre-existing-punctuation-maps-on-our-smallest-keyboards).
-This feature brings them down to 41 character keys, not counting extra characters on bottom row keys:
-26 letters + 10 digit keys (which each carry a punctuation character on the Shift level)
-+ 5 punctuation keys.
+In the case of the international 32-key flexmaps, this goes down to only 4 to 6 punctuation keys left.
+While our Thumbs Up 13/2 and the Ergoslat are fictional keyboard layouts, the Split Ortho category has a lot of actual physical products used by actual people and those often even more constrained. 
+See the description in `splitOrthoLayoutModel.ts`.
+Those real-life keyboards often map no characters to the thumb keys and bottom row and thus end up with only 5 punctuation keys, so this is the number that we are aiming for here.
+
+        26 letters 
+      + 10 digit keys (which each carry a punctuation character on the Shift level)
+      +  5 punctuation keys.
+       ---
+      = 41 character keys (out of between in most models 52 to 58 keys in total)
 
 In terms of assignable punctuation characters, this yields:
 - 5 on the base level (the 5 "punctuation keys"),
 - 15 on the Shift level (10 shifted digits + the 5 shifted punctuation keys),
 - and thus 12 of the 32 total punctuation characters have to move to the AltGr level.
 
-Leaving out the bottom keys matters, because our Split Ortho variant is generous with them:
-most real-life small split keyboards have significantly fewer.
-Bottom key counts of 4, 6, and 8 are all common 
-(often all assigned to the thumbs, which is why "thumb key" is sometimes used synonymous with "bottom row key").
-Among the popular models only the MoErgo Go60 actually has all 12 that our app shows.
-My personal Iris is a typical example: it has 8 thumb keys,
-but only 6 of them are usable without making a big hand movement.
+My personal Iris CE keyboard (with which I created most of this app) is a typical example: 
+it has 8 thumb keys, but only 6 of them are usable without making a big hand movement.
+
 
 ### Which characters go where?
 
