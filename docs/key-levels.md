@@ -198,7 +198,8 @@ Rationale: `-` and `+` should be separate keys because of Ctrl +/- zoom.
 `+` stays on the Shift level, because some apps expect it there when reading the `Ctrl +` shortcut.
 
 Ironically, this generalizes to the 32-key international flex maps more easily than on keyboards with a number row:
-we simply use the first three keys from the list above and pair `?` onto `+`.
+we simply use the first three keys from the list above and place `/?` in place of the original `+` 
+or `/` whichever of the two happens to be in the keymap. (To allow for changes on the side of the layout model maps.)
 Since there's no number row, those four are the only keys where a Shift label is shown.
 No more work needed!
 
