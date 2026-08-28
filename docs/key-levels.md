@@ -11,9 +11,9 @@ Done parts:
 
 Next parts:
  - Update Number row AltGr mappings
- - Ergoslat numberless modified Shift pairings (no switching button)
- - Compressed Shift level for ansi30/thumb30 on small keyboards (see below) -- includes introduction of the "compression buttons"!
- - [NOT_READY] Compressed Shift level for ansi32/thumb32 on small keyboards, including the 4-punctuation-key version for the Ergoslat.
+ - [ANSI] Ergoslat numberless modified Shift pairings (no switching button)
+ - [ANSI] Compressed Shift level for ansi30/thumb30 on small keyboards (see below) -- includes introduction of the "compression buttons"!
+ - NOT_READY: Compressed Shift level for ansi32/thumb32 on small keyboards, including the 4-punctuation-key version for the Ergoslat.
  - Compressed Shift level for ansi30/thumb30 on ANSI keyboards
    (with a new button group option to remap the remaining punctuation characters or place nav keys)
 
@@ -228,6 +228,9 @@ In exchange, we only do this for the `ansi30` keymap type, which is enough to sh
 
 ### AltGr Mapping
 
+Much of the value of our AltGr level keymap comes from the logical arrangement of the various parenthesis and bracket characters.
+To keep this independent of the letter keymap which can change underneath 
+
 Stack of parentheses on the ring and middle fingers, with 
  - `()` in the home row,
  - `<>` on the same keys where ANSI maps them (the `,` and `.` positions in the lower row),
@@ -255,23 +258,16 @@ The diagram follows the ANSI row stagger: 1/4 key width between home row and the
 1/2 between the other rows. We use four characters (including spacing) per key to make this exact.
 On the left side, everything is mirrored, so that the index finger (not the pinky) carries the six characters.
 
-The `^` in the number row is not part of the general block: only the Ergoslat's 32-key keymaps need it,
-because there the number row Shift level reads `6+ 7& 8* 9/ 0?`
-(see [Postponed work items](#postponed-work-items)).
+Since we already place a lot of AltGr level characters in the number row, we can as well make it complete by filling the entire row. And we can do this using a lot of mnemonic pairings for the Shift and AltGr characters:
 
-This "mnemonic" mapping puts all AltGr characters on the **right** hand, which only works when there is an AltGr key for the **left** thumb:
- - On a German ISO keyboard we can use the extra ISO key (next to the left Shift) as a second AltGr.
- - On Split Ortho we can simply place AltGr on the left side from the start.
+       ¡  ¢  £  €  ‰  ^  |  [  ]  ¿
+      1! 2@ 3# 4$ 5% 6^ 7& 8* 9+ 0?
 
-With only the standard right-side AltGr, all AltGr characters have to move to the **left** hand instead:
-`<>` then keeps its row and fingers, but with mirrored characters, and we lose the `7&|` mnemonic.
+Sadly, one mnemonic gets lost on the young generation which reads `#` as "hash", while older people still remember it as the "pound" character, making it perfect for the British Pounds currency sign.
 
-All three default small boards currently place `AltGr` on the right half of the bottom row
-(`splitOrthoLayoutModel.ts`, `ergoslatLayoutModel.ts`, `xhkbLayoutModel.ts`),
-but the app simply ignores that question: instead of changing the frame mappings or adding a layout option,
-it offers two buttons to switch the AltGr-level character labels between the left and the right hand.
-The initial version defaults to the right-hand placement with its mnemonics,
-which assumes the left-side AltGr key. (Because this is also what I personally use.)
+When the user opts to map nav keys to the right side of the keyboard, `[]` will move to a mirrored position along with the other brackets and two characters from the other side take their places. 
+That kills two mnemonic positions (along with the standard German `[]` position), thus it's not my favorite.
+
 
 ### AltGr navigation keys on the other half of the keyboard
 
@@ -348,22 +344,14 @@ TODO:
 
 ## Semi-related open questions and discovered bugs
 
-1. The Ergoslat has 43 characters and as many 1u keys, but it maps `⌦` on a 1u key and `-` on a 1.25u key. 
+1. The 59 and 47 key Ergoslat `⌦` on a 1u key and `-` on a 1.25u key. 
    Should those be swapped? (Which means moving `-` further away from its standard right-pinky position...)
 
 2. There's a bug in the current production app (4773011ba8c54c8873497c3d8d371cb296c540fc) that makes all thumb key mappings disappear. It was fixed by a reload.
 
 ## Postponed work items
 
-Tasks to do after the initial implementation:
-
-TODO: incorporate this above and generalize to both sides 
- - when the AltGr characters are on the right side (= Nav layer left side), we can make a complete logical mapping for the number row:
-
-        ¡  ¢  £  €  ‰  ^  |  [  ]  ¿
-       1! 2@ 3# 4$ 5% 6^ 7& 8* 9+ 0?
-
-   we don't do this on the mirrored AltGr level, because the mnemonics get lost, and it becomes more confusing than helpful.
+not currently in scope at all:
 
  - update the KLC export which currently hardcodes the ANSI base/Shift pairs per key and declares only shift states 0, 1 and 2 (Ctrl) – no AltGr.
    (We might leave this TODO open until we work on KLC export again, since that export is currently not used much.) 
