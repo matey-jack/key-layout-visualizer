@@ -357,10 +357,9 @@ Using a mapping viz type shows the keyboard as 2D which distracts less from the 
 
 On all keyboard layout models, this will show the Shifted characters and the AltGr mappings as described below.
 
-On keyboard layout models, where the [compressed Shift pairings](#freeing-the-extra-punctuation-keys)
-are implemented (see [Scope of the first version](#scope-of-the-first-version)), 
+On keyboard layout models, where the compressed Shift pairings are implemented, 
 it will offer a two-button switch group labeled "Shift pairings" with buttons "ANSI" and "Compressed".
-"ANSI" is just the normal state shown on all keyboard layouts by default (see `msKlcTemplate.ts`),
+"ANSI" is just the normal state shown on all keyboard layouts by default,
 "Compressed" is the reduction to 5 punctuation keys described in this file.
 The button group is located below the "Nav keys" one.
 Both groups need to take the entire space of the two viz type button groups. 
@@ -392,6 +391,12 @@ looks broken.
 TODO: 
  - buttons for switching the compressed full-size punctuation on the large ANSI layouts from punctuation to Nav-key mode
 
+### <<Needs Design>> Offering a left-hand AltGr key
+
+This is a bigger question: 
+ - on ANSI boards, CAPS is the best option;
+ - on ISO boards, the ISO key is the best option... which means I would have to add ISO after all!
+ - on the fictional layouts and the Split Ortho, one of the thumb keys would be right... but that requires redesigning each bottom row and modifier concept separately. outch! 
 
 ## Semi-related open questions and discovered bugs
 
