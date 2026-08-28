@@ -51,15 +51,30 @@ Even full-size keyboards can profit from our revamped Shift mappings:
 
 ## Key Mapping Concept
 
+### Prerequisites
+
+While the ANSI English character map is the model for our 30-key flex maps and 
+the Standard German (qwertz) is the model for the 32-key flex maps, 
+the "base level only" keymaps take some liberties with both:
+ - I sometimes use a Shifted character (such as `+` in ANSI and `'` in German) as base label for a key.
+   When the app actually shows both base and Shift layers, those should be corrected.
+   (But note how those two swaps make the German and ANSI base character sets more similar.)
+ - Similarly, the `` `~ `` key already shows its Shifted label in plain mode, because the plain accent is hard to read.
+ - Finally, on some of the larger keyboards for 32-key flex maps I map more characters than an ANSI keyboard has. 
+   This lands some characters which don't have a standard Shift pairing.
+
+German makes it worse, because my optimized German Shift pairing actually swap `'` back to the base layer.
+But at least that is done by the explict button group option to switch between "standard" and "compressed". 
+
 ### How many punctuation slots are there?
 
 US ANSI has 32 punctuation characters in total: 11 on the base level
 (`` ` ``, `-`, `=`, `[`, `]`, `\`, `;`, `'`, `,`, `.`, `/`)
 and 21 on the Shift level (the 11 partners of those keys plus the 10 shifted digits).
 
-The default small keyboards in this app (Split Ortho, Thumbs Up 13, Ergoslat) have 43 to 45 character keys instead of the 47 of US ANSI,
+The default small keyboards in this app (Split Ortho, Thumbs Up 13, Ergoslat, and Harmonic Mini) have 43 to 45 character keys instead of the 47 of US ANSI,
 and 7 to 9 of those are punctuation keys – see [the table below](#pre-existing-punctuation-maps-on-our-smallest-keyboards).
-In the case of the international 32-key flexmaps, this goes down to only 4 to 6 punctuation keys left.
+In the case of the international 32-key flexmaps, this goes down to only 4 to 7 punctuation keys left.
 While our Thumbs Up 13/2 and the Ergoslat are fictional keyboard layouts, the Split Ortho category has a lot of actual physical products used by actual people and those often even more constrained. 
 See the description in `splitOrthoLayoutModel.ts`.
 Those real-life keyboards often map no characters to the thumb keys and bottom row and thus end up with only 5 punctuation keys, so this is the number that we are aiming for here.
@@ -124,7 +139,7 @@ It corresponds exactly to the character split from the previous sections:
 
 This Shift-pairing has the advantage of keeping 11 of the 15 punctuation-containing keycaps the same as US ANSI.
 Digits 1 to 8 as well as `'"`, `=+`, and `-_` exactly representing the base and Shift level characters on the keycap.
-Of the remaining 4 "new pairings" two ANSI keycaps (`,<` and `,>`) can be reused and represent the base and AltGr level characters (as we'll see below), while their Shift level characters are easy mnemonics. 
+Of the remaining 4 "new pairings" two ANSI keycaps (`,<` and `.>`) can be reused and represent the base and AltGr level characters (as we'll see below), while their Shift level characters are easy mnemonics. 
 Only the pairings `9/` and `0?` are completely new. I personally used the numpad keys `9` and `0` on my keyboard, so at least it doesn't show the wrong Shift-level character.
 Finally, this pairing also offers a boon to software developers who often type the `/*` and `*/` bigrams, 
 which are now neighboring characters on the same level. 
@@ -174,7 +189,7 @@ Rationale: `-` and `+` should be separate keys because of Ctrl +/- zoom.
 `+` stays on the Shift level, because some apps expect it there when reading the `Ctrl +` shortcut.
 
 Ironically, this generalizes to the 32-key international flex maps more easily than on keyboards with a number row:
-we simply use the first four keys from the list above.
+we simply use the first three keys from the list above and pair `?` onto `+`.
 Since there's no number row, those four are the only keys where a Shift label is shown.
 No more work needed!
 
@@ -182,7 +197,7 @@ I don't want to go deeper than that, because a keyboard that small can't be prac
 
 #### Special case compression to only 4 punctuation keys for the Ergoslat on 32-key flex maps
 
-TODO: this doesn't make sense, since the punctuation keys for the 30-key flex maps are based on the standard German keymap.
+TODO: this doesn't make sense, since the punctuation keys for the 32-key flex maps are based on the standard German keymap.
 We first need to define the entire Shifted punctuation for this keymap and then base the Ergoslat special-case on that.
 
 The Ergoslat has only 7 punctuation keys when using the English 30-key flex maps, 
@@ -206,9 +221,9 @@ This allows for a very logical character assignment: since the compressed punctu
 
 The resulting punctuation keymap looks like this:
 
-    ⎋   1!  2@  3#  4$  5%  6^  7&  8*  9+  0?  (<  )>   ⌫⌫⌫
+    ⎋   1!  2@  3#  4$  5%  6^  7&  8*  9/  0?  (<  )>   ⌫⌫⌫
                                           o   p   [{  ]}  \|
-                                       k   l   '"  /=   ↵↵↵↵  
+                                       k   l   '"  =+   ↵↵↵↵  
                                  n   m   ,;  .:  -_   ⇧⇧⇧⇧⇧⇧
 
 Given this keymap, we can simply replace the two pairs of brackets with two pairs of navigation keys, 
@@ -258,8 +273,10 @@ On the smallest keyboards I can only think of workable solutions using thumb-let
 ### Replacing freed punctuation keys with extra nav keys
 
 First of all, if the key map before Shift compression had a `` `~ `` key, but no Escape key, 
-we place Escape in that freed position. (This might not ) 
-Let N be the number of keys freed by the Shift-level compression.
+we place Escape in that freed position. 
+(This might not actually apply anywhere by the big ANSI layout models.) 
+
+Let N be the number of remaining keys freed by the Shift-level compression.
 
  - if N is odd, one of the freed keys becomes `⌦` (Delete), or `Insert` if the layout already has a Delete key;
  - the next pair becomes Home/End (unless already present on the key map);
@@ -345,7 +362,7 @@ the block sits on the `wer`, `asdfg`, and `zxcv` keys of an ANSI keyboard.
 
 Note that the `↟ ↡` denote mouse scrolls which can be mapped using keyboard firmware and possibly some third-party tools, 
 but probably not using xkb.
-In the case that `⇟` would fall on the right pinky and clash with the Shift key, we omit `↟ ↡` and put `⇞ ⇟` in their place.
+In the case that `⇟` would fall on the pinky and clash with the Shift key, we omit `↟ ↡` and put `⇞ ⇟` in their place.
 
 ## App UX
 
@@ -378,11 +395,6 @@ How it looks on the keyboard SVG:
    three levels and thus make a poorer landmark.)
  - the AltGr mapping of the key is in blue, and the AltGr key is highlighted with the same blue as a
    background, to make the relationship clear. This only happens when the key levels mode is active.
-
-A key that the frame mapping labels with a *shifted* character – in practice only `+`, which four of our
-small boards carry – is shown as its ANSI pair, so `+` reads as base `=` and Shift `+`. This is the one
-place where the levels view overrides the base label, and it is what the MS KLC export means by
-`OEM_PLUS` as well. The same splits the combined `` `~ `` label of the frame mappings into its two levels.
 
 A layout without a number row (the numberless Ergoslat) shows the navigation block but no AltGr
 characters: with the number row's Shift characters missing, a third level on the remaining rows only
