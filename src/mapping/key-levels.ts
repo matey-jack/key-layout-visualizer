@@ -8,12 +8,7 @@ import {isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
 
 /*
     The three character levels of a key: base, Shift (second level), and AltGr (third level).
-    See docs/key-levels.md for the concept behind the two tables in this file.
-
-    The Shift level is defined by a list of pairings and matched against whatever the merged
-    key map puts on a key, so it also works for the flex mappings which place punctuation
-    themselves. The third level is defined by finger position and mapped onto the physical
-    layout independent of what the key shows on the other two levels.
+    docs/key-levels.md is the canonical description of what the tables below contain and why.
  */
 
 // Level arrays are parallel to the merged char map (and thus to the model's keyWidths).
@@ -27,8 +22,7 @@ export const ansiShiftPairs = [
 
 /**
  * The pairing a key label belongs to, or undefined for letters and non-character keys.
- * A label matches its base character, its shifted character, or the whole pair – the frame
- * mappings write the leftmost key of the number row as the single label "`~".
+ * A label matches its base character, its shifted character, or the whole pair.
  */
 export const shiftPairFor = (label: string): string | undefined =>
     ansiShiftPairs.find((pair) => label === pair || label === pair[0] || label === pair[1]);
@@ -36,11 +30,8 @@ export const shiftPairFor = (label: string): string | undefined =>
 export const getShiftLevel = (charMap: string[][]): LevelMap =>
     charMap.map((row) => row.map((label) => shiftPairFor(label)?.[1] ?? null));
 
-/**
- * The base level, but only where it differs from the label the key map draws.
- * A key labelled `+` is the ANSI `=+` key, so the levels view shows `=` below and `+` above;
- * the same splits the combined "`~" label into its two levels.
- */
+// The base level, but only where it differs from the label the key map draws
+// (see the Prerequisites section of docs/key-levels.md).
 export const getBaseLevel = (charMap: string[][]): LevelMap =>
     charMap.map((row) => row.map((label) => {
         const pair = shiftPairFor(label);
@@ -54,8 +45,8 @@ export const getBaseLevel = (charMap: string[][]): LevelMap =>
         [centre, index, middle, ring, pinky]
 
     "centre" is the index finger's second column (`g` on the left hand, `h` on the right one).
-    Switching hands keeps the finger and exchanges the two members of each mirror pair
-    ([] {} () <> ←→ ↞↠ ⇤⇥ ⇞⇟ ↟↡), which is why both variants are spelled out here.
+    Mirroring keeps the finger and exchanges the two members of each pair, which is short enough
+    to spell out per hand rather than compute.
  */
 type BlockRow = (string | null)[];
 // Indexed by KeyboardRows; the bottom row carries no block.
@@ -63,9 +54,6 @@ type Block = BlockRow[];
 
 const _ = null;
 
-// Stack of brackets on middle and ring finger, the remaining characters on the index finger.
-// `^` (number row, centre column) is not part of the general block – only the Ergoslat's
-// 32-key keymaps need it.
 export const altGrRight: Block = [
     [_, "|", "[", "]", _],
     [_, "\\", "{", "}", _],
@@ -82,8 +70,6 @@ export const altGrLeft: Block = [
     [_, _, _, _, _],
 ];
 
-// "Hands down" navigation: the cursor keys keep their inverted-T shape on the home row,
-// with ↑↓ on the middle finger. ↟ ↡ are mouse scrolls.
 export const navLeft: Block = [
     [_, _, _, _, _],
     [_, "↠", "↑", "↞", _],
@@ -100,8 +86,7 @@ export const navRight: Block = [
     [_, _, _, _, _],
 ];
 
-// On most of our boards the lower row's pinky column is the Shift key. Then the mouse scrolls
-// give way and PageUp/PageDown move inward onto the middle and ring finger.
+// Used on the boards where the lower row's pinky column is the Shift key.
 const navLowerFallbackLeft: BlockRow = [_, _, "⇟", "⇞", _];
 const navLowerFallbackRight: BlockRow = [_, _, "⇞", "⇟", _];
 
@@ -155,11 +140,8 @@ function placeBlock(
     });
 }
 
-/**
- * The AltGr level: navigation on `navSide` and the AltGr characters on the other hand.
- * A layout without a number row gets no AltGr characters – with the number row's Shift
- * characters missing, a third level on the remaining rows only looks broken.
- */
+// The AltGr level: navigation on `navSide` and the AltGr characters on the other hand,
+// which a layout without a number row does not get at all.
 export function getThirdLevel(model: LayoutModel, positions: KeyPosition[], navSide: Hand): LevelMap {
     const result = emptyLevelMap(model);
     const charSide = navSide === Hand.Left ? Hand.Right : Hand.Left;

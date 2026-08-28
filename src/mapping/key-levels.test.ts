@@ -167,8 +167,8 @@ describe("every block entry is placed on every layout model", () => {
         ["navigation", Hand.Right, navRight],
         ["navigation", Hand.Left, navLeft],
     ];
-    // The one documented exception: on most boards the lower row's pinky column is the Shift
-    // key, and then PageUp/PageDown move inward and the mouse scrolls give way.
+    // The one documented exception is the lower row's pinky column; the separate PageUp/PageDown
+    // test below covers what survives it.
     const lowerRowFallbackChars = ["⇞", "⇟", "↟", "↡"];
 
     it.each(allLayoutModels.map((m) => [m.name, m] as const))("%s", (_name, model) => {
