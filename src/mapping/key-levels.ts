@@ -5,6 +5,7 @@ import {
     KeymapTypeId,
     type LayoutModel,
 } from "../base-model.ts";
+import {permute} from "../layout/permutation-functions.ts";
 import {isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
 
 /*
@@ -51,16 +52,16 @@ export const numberless32ShiftPairs: ShiftPairs = {
 };
 
 /*
-    The compressed 30-key pairings: five punctuation keys on the base level, the rest of the
-    punctuation on the AltGr level. Keyed by the drawn label like the numberless tables, since
-    after the permutation a shifted character is no longer a usable lookup key – `,;` would
-    otherwise claim the `;` key, which becomes `'"`.
+    The compressed 30-key pairings, keyed by the label the compressed frame mapping draws. The
+    rearrangement below has already moved the five kept punctuation characters onto their keys,
+    so here every label simply pairs with its own Shift character.
  */
 export const compressedShiftPairs: ShiftPairs = {
     "1": "1!", "2": "2@", "3": "3#", "4": "4$", "5": "5%",
     "6": "6^", "7": "7&", "8": "8*", "9": "9/", "0": "0?",
-    ",": ",;", ".": ".:", ";": "'\"", "'": "=+", "/": "-_",
-    // The keys whose characters the AltGr level carries anyway keep their ANSI pairing.
+    ",": ",;", ".": ".:", "'": "'\"", "=": "=+", "-": "-_",
+    // The two redundant keys the compression frees, and the ones the AltGr level covers anyway.
+    "(": "(<", ")": ")>",
     "`": "`~", "`~": "`~", "[": "[{", "]": "]}", "\\": "\\|",
 };
 
@@ -83,25 +84,31 @@ export const shiftPairsFor = (
             : is32KeyMap(keymapType) ? noShiftPairs : ansiShiftPairs;
 
 /*
-    The two keys the compression frees: the old `=`/`+` key and the old `-` one, which gave its
-    place to `/`. They carry the redundant `(<` and `)>` until the "Extra keys" switch turns them
-    into nav keys.
+    Some layout models label the `=+` key with its shifted character (see the Prerequisites
+    section of docs/key-levels.md), and the cycles below name `=`. Normalise that away first, so
+    that every board takes the same path through them.
  */
-const freedLabels = ["-", "=", "+"];
+const normaliseEqualsKey = (charMap: string[][]): string[][] =>
+    charMap.map((row) => row.map((label) => (label === "+" ? "=" : label)));
 
-// Assigned in the order the key map draws them, so the pair always reads left to right.
-const freedPairs = ["(<", ")>"];
+// The compressed Shift level introduces `(` and `)`, removes `;` and `/`,
+// and moves three other keys to better positions. (Rationale in the doc.)
+const compressionCycles = [")=';", "(-/"];
 
-function placeFreedKeys(base: LevelMap, shift: LevelMap, charMap: string[][], freed: string[]) {
-    let next = 0;
-    charMap.forEach((row, r) => {
-        row.forEach((label, c) => {
-            if (next >= freedPairs.length || !freed.includes(label)) return;
-            const pair = freedPairs[next++];
-            base[r][c] = pair[0];
-            shift[r][c] = pair[1];
-        });
-    });
+/**
+ * The board as the compressed Shift level shows it: the generic rearrangement above, followed by
+ * the layout model's own cycles where it defines any. Returns the char map unchanged when the
+ * model has no compressed level at all.
+ */
+export function compressCharMap(
+    charMap: string[][], model: LayoutModel, keymapType?: KeymapTypeId
+): string[][] {
+    if (!keymapType || !hasCompressedLevel(keymapType, hasNumberRow(model))) return charMap;
+    const generic = permute(normaliseEqualsKey(charMap), ...compressionCycles) as string[][];
+    const cycles = model.compressedCycles?.[keymapType] ?? [];
+    // A separate pass: permute resolves every cycle against the map it is given, so the layout
+    // model's own cycles can only name `(` and `)` once the generic ones have placed them.
+    return permute(generic, ...cycles) as string[][];
 }
 
 // The pairing a key label belongs to, or undefined for letters and non-character keys.
@@ -279,13 +286,10 @@ export const getKeyLevels = (
     model: LayoutModel, positions: KeyPosition[], charMap: string[][], navSide: Hand,
     keymapType?: KeymapTypeId, compressed = false
 ): KeyLevels => {
-    const compressing = compressed && hasCompressedLevel(keymapType, hasNumberRow(model));
     const pairs = shiftPairsFor(keymapType, hasNumberRow(model), compressed);
-    const levels = {
+    return {
         base: getBaseLevel(charMap, pairs),
         shift: getShiftLevel(charMap, pairs),
         third: getThirdLevel(model, positions, navSide, keymapType),
     };
-    if (compressing) placeFreedKeys(levels.base, levels.shift, charMap, freedLabels);
-    return levels;
 };

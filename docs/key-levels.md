@@ -260,74 +260,10 @@ we'll instead replace them with `(<` and `)>` at first.
 The user can then use the ["Extra keys" buttons](#button-groups) to use replace those redundant character keys with 
 navigation keys instead.
 
-### <<needs design>> how to arrange the new pair of parenthesis keys symmetrically on all layout models?
-
-Given the above replacement rules, on the plain ANSI non-wide layout model, 
-the new `(<` key and it's mirror end up in perfectly neighbored positions, 
-but on other boards, this is not the case. 
-On ANSI wide-mod, the best position would be to arrange this pair vertically, one in the number row, one below, 
-similar to how the other bracket pair is arranged in the center of this layout.
-On the Ergoplank/Harmonic/Thumbs Up layout models (let's summarily call them "fictional semi-ergo" layouts), 
-there is enough space in the center for both pairs of bracket keys.
-In some of the layout models, the `+` and `-` keys already have a symmetric position 
-and since they get replaced by the parens, it works out well.
-That is why the `-` to `/` move is not conditional on the keymap type – see the decision below.
-
-We do not try to solve this for every layout model. The focus set is the boards marked with a ❤️
-in the layout options – the Thumbs Up family, the Ergoplank 15/5, and the two Ergoboard 16/5 – plus
-the ANSI wide mod and the Split Ortho, with plain ANSI for reference. Where the two bracket keys
-land on those, as reported by `scripts/bracket-key-positions.ts`:
-
-| layout model              | ansi30                 | thumb30               | `[]` keys    |
-|---------------------------|------------------------|-----------------------|--------------|
-| ANSI                      | pair (num)             | –                     | off centre   |
-| ANSI wide                 | apart (num)            | apart (num, lower)    | off centre   |
-| Thumbs Up 13/2            | apart (upper, bottom)  | apart (lower, bottom) | no `[]` keys |
-| Thumbs Up 15/4            | pair (upper)           | apart (upper, lower)  | centred      |
-| Thumbs Up 16/5            | apart (upper)          | apart (upper, lower)  | centred      |
-| Ergoplank 15/5            | apart (upper), centred | apart (upper, lower)  | centred      |
-| Ergoboard 16/5 Central    | apart (upper), centred | apart (upper, lower)  | centred      |
-| Ergoboard 16/5 Comfy Wide | stack (home, lower)    | pair (lower)          | centred      |
-| Split Ortho               | pair (bottom)          | apart (lower, bottom) | no `[]` keys |
-| Split Ortho, Thumb Shift  | apart (upper, bottom)  | apart (lower, bottom) | no `[]` keys |
-
-The row names say where the two keys sit, so "apart (upper)" means both are in the upper row but
-not next to each other, while "apart (upper, lower)" means they are in different rows entirely.
-ANSI non-wide has no thumb30 column because a thumb mapping falls back to its non-thumb variant there.
-
-"centred" means the midpoint of the two keys sits on the middle line of the board – for a pair that
-is mirror symmetry, for a stack it means the column itself is the central one. The last column says
-the same about the `[]` keys that the compression leaves alone, and is independent of the keymap type.
-
-Two things stand out. On the Ergoplank and the Ergoboard Central the parens already are the two
-central columns of the upper row, mirror symmetric about the middle and separated only by the
-board's central gap – "apart" undersells those, they are arguably the arrangement we want. And on
-both ANSI boards the `[]` keys are off centre: on the wide mod they are the centre column of the
-upper and home rows, which the row stagger puts a quarter to a half unit left of the middle.
-
-Note that thumb30 is the worse half of the table everywhere: it puts `-` in the flex map area, so
-the key it frees is the frame mapping's `/`, which sits wherever that board happens to keep it.
-
-Analysis 1: on how many layout model / keymap-type combinations (test each keymap type with Qwerty and Quipper Thumby) are the new bracket keys currently a pair (neighbors on same row) or a stack (neighboring rows, overlapping columns)? And then how do the numbers change when doing the `-/` move unconditionally?
-
-Answered by `scripts/bracket-key-positions.ts`, over the 80 combinations that have a compressed
-level. The `-`-to-`/` move was conditional on ansi30 when the question was asked:
-
-| rule for the `-` to `/` move | pair | stack | apart |
-|------------------------------|------|-------|-------|
-| ansi30 only (original idea)  | 15   | 7     | 58    |
-| unconditional (chosen)       | 21   | 7     | 52    |
-| when it makes a pair         | 22   | 7     | 51    |
-
-Going unconditional gains six thumb30 boards – the MidShift ones and the wide Ergoboards – and
-loses the Thumbs Up 13/2, whose `+` and `/` are already neighbours. Deciding the move per board by
-whether it produces a pair would keep that one too.
-
-Decision: we do the move unconditionally. The conditional rule buys exactly one more pair, and it
-costs a replacement rule that depends on where the keys physically sit – which is a lot of
-machinery for one board, and it makes the compressed pairings something you can no longer read off
-a single table. Either way 52 of 80 combinations still have the two brackets scattered, so the
-remaining cases need per-layout arrangement rather than a cleverer global rule.
+To place those new parenthesis-keys in a nice symmetrical way (as most keyboards already do with the `[]` pair of keys),
+we add an optional fine-tuning permutation map `compressedCycles` to the layout models.
+The script `npx tsx scripts/bracket-key-positions.ts` checks all the layout model / keymap type combinations 
+and groups them by how the pairs of parentheses land.
 
 
 

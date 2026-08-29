@@ -148,6 +148,12 @@ export const ansiWideLayoutModel: LayoutModel = {
                 [2, 2, null, 0.2, 0.2, null, 2, 2]
             ],
 
+        // Put the () in the center and [] to the top right, both in a stack.
+        compressedCycles: {
+            [KeymapTypeId.Ansi30]: ["=)](["],
+            [KeymapTypeId.Thumb30]: ["([)]="],
+        },
+
         frameMappings: {
             [KeymapTypeId.AnsiWide]: [
                 ["`~", "1", "2", "3", "4", "5", "6", 0, "7", "8", "9", "0", 1, "⌫"],

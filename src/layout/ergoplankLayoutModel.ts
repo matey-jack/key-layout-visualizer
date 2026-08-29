@@ -99,7 +99,7 @@ export const ergoplankLayoutModel: LayoutModel = {
 const lowerCharactersKeyWidths = new SymmetricKeyWidth(15, [0, 0, 0, 0.5, 0.5]);
 
 // Shared left-side "angle-mod" rotation used by the MidShift lower-row-characters frames.
-const ANGLE_MOD_LEFT = "<⇧⌦`[3:4,3,2,1,0]";
+const ANGLE_MOD_LEFT = "<⇧⌦`{3:4,3,2,1,0}";
 
 export function createErgoPlankMidShiftLowerCharacters(lm: LayoutModel): LayoutModel {
     return {
@@ -127,10 +127,10 @@ export function createErgoPlankMidShiftLowerCharacters(lm: LayoutModel): LayoutM
         // Thumb30 needs its own left cycle because + (not `~) ends up on its home row,
         // so the cycle threads + in before the letter block.
         frameMappings:  {
-            [KeymapTypeId.Ansi30]: permute(lm.frameMappings[KeymapTypeId.Ansi30]!, ANGLE_MOD_LEFT, ">⇧'\\[3:9]"),
-            [KeymapTypeId.Thumb30]: permute(lm.frameMappings[KeymapTypeId.Thumb30]!, "<⇧⌦`+[3:4,3,2,1,0]", ">⇧'\\/"),
-            [KeymapTypeId.Ansi32]: permute(lm.frameMappings[KeymapTypeId.Ansi32]!, ANGLE_MOD_LEFT, ">⇧[2:10]+[3:9]"),
-            [KeymapTypeId.Thumb32]: permute(lm.frameMappings[KeymapTypeId.Thumb32]!, ANGLE_MOD_LEFT, ">⇧[1:10]+[3:9]"),
+            [KeymapTypeId.Ansi30]: permute(lm.frameMappings[KeymapTypeId.Ansi30]!, ANGLE_MOD_LEFT, ">⇧'\\{3:9}"),
+            [KeymapTypeId.Thumb30]: permute(lm.frameMappings[KeymapTypeId.Thumb30]!, "<⇧⌦`+{3:4,3,2,1,0}", ">⇧'\\/"),
+            [KeymapTypeId.Ansi32]: permute(lm.frameMappings[KeymapTypeId.Ansi32]!, ANGLE_MOD_LEFT, ">⇧{2:10}+{3:9}"),
+            [KeymapTypeId.Thumb32]: permute(lm.frameMappings[KeymapTypeId.Thumb32]!, ANGLE_MOD_LEFT, ">⇧{1:10}+{3:9}"),
         },
     }
 }
@@ -153,9 +153,9 @@ export function createErgoPlankMidShiftRightReturn(lm: LayoutModel): LayoutModel
 
         frameMappings:  {
             [KeymapTypeId.Ansi30]: permute(lm.frameMappings[KeymapTypeId.Ansi30]!, "`F<C<^<S⌦⏎>S'\\"),
-            [KeymapTypeId.Ansi32]: permute(lm.frameMappings[KeymapTypeId.Ansi32]!, "[2:10]+`F<C<^<S⌦⏎>S"),
+            [KeymapTypeId.Ansi32]: permute(lm.frameMappings[KeymapTypeId.Ansi32]!, "{2:10}+`F<C<^<S⌦⏎>S"),
             [KeymapTypeId.Thumb30]: permute(lm.frameMappings[KeymapTypeId.Thumb30]!, "<S⌦F<C<^", "⏎>S'"),
-            [KeymapTypeId.Thumb32]: permute(lm.frameMappings[KeymapTypeId.Thumb32]!, "<S⌦F<C<^", "⏎>S[1:10]"),
+            [KeymapTypeId.Thumb32]: permute(lm.frameMappings[KeymapTypeId.Thumb32]!, "<S⌦F<C<^", "⏎>S{1:10}"),
         },
     }
 }

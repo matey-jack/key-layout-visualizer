@@ -8,7 +8,6 @@ import {
     getKeyPositions,
     hasMatchingMapping,
 } from "../layout/layout-functions.ts";
-import {harmonic12LayoutModel} from "../layout/harmonic12LayoutModel.ts";
 import {xhkb13LayoutModel, xhkb16LayoutModel} from "../layout/xhkbLayoutModel.ts";
 import {allMappings} from "./mappings.ts";
 import {allLayoutModels} from "../all-layout-models.ts";
@@ -16,6 +15,7 @@ import {
     altGrDigits,
     altGrLeft,
     altGrRight,
+    compressCharMap,
     compressedShiftPairs,
     getBaseLevel,
     getKeyLevels,
@@ -55,17 +55,29 @@ function shiftLevelByLabel(model: LayoutModel, mappingName?: string): Record<str
     return result;
 }
 
-// The same, with the compressed Shift pairings selected.
-function compressedLevelByLabel(model: LayoutModel, mappingName?: string): Record<string, string> {
+/*
+    The same for the compressed level, which rearranges the keys themselves – so the char map
+    goes through compressCharMap before the positions are computed, exactly as the app does it.
+    The keys of the result are the labels the compressed board draws.
+ */
+function compressedKeys(model: LayoutModel, mappingName?: string) {
     const mapping = mappingFor(model, mappingName);
-    const charMap = fillMapping(model, mapping)!;
-    const positions = getKeyPositions(model, false, charMap);
     const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
+    const charMap = compressCharMap(fillMapping(model, mapping)!, model, keymapType);
+    const positions = getKeyPositions(model, false, charMap);
     const levels = getKeyLevels(model, positions, charMap, Hand.Left, keymapType, true);
+    return positions
+        .filter((p) => levels.shift[p.row][p.col])
+        .map((p) => ({
+            position: p,
+            pair: (levels.base[p.row][p.col] ?? p.label) + levels.shift[p.row][p.col],
+        }));
+}
+
+function compressedLevelByLabel(model: LayoutModel, mappingName?: string): Record<string, string> {
     const result: Record<string, string> = {};
-    positions.forEach((p) => {
-        const shift = levels.shift[p.row][p.col];
-        if (shift) result[p.label] = (levels.base[p.row][p.col] ?? p.label) + shift;
+    compressedKeys(model, mappingName).forEach(({position, pair}) => {
+        result[position.label] = pair;
     });
     return result;
 }
@@ -119,46 +131,69 @@ describe("compressed Shift pairings", () => {
         "1": "1!", "2": "2@", "3": "3#", "4": "4$", "5": "5%",
         "6": "6^", "7": "7&", "8": "8*", "9": "9/", "0": "0?",
     };
+    // Every kept punctuation key now pairs with its own Shift character.
+    const punctuation = {
+        ",": ",;", ".": ".:", "'": "'\"", "=": "=+", "-": "-_", "(": "(<", ")": ")>",
+    };
 
-    it("moves `/` off the base level and `;` out of the way of `'`", () => {
-        expect(shiftPairFor(";", compressedShiftPairs)).toBe("'\"");
-        expect(shiftPairFor("'", compressedShiftPairs)).toBe("=+");
+    it("pairs each compressed label with its own Shift character", () => {
+        expect(shiftPairFor("'", compressedShiftPairs)).toBe("'\"");
+        expect(shiftPairFor("-", compressedShiftPairs)).toBe("-_");
         expect(shiftPairFor("9", compressedShiftPairs)).toBe("9/");
-        expect(shiftPairFor("0", compressedShiftPairs)).toBe("0?");
-        // the shifted characters are no longer lookup keys of their own
-        expect(shiftPairFor(":", compressedShiftPairs)).toBeUndefined();
+        expect(shiftPairFor("(", compressedShiftPairs)).toBe("(<");
+        // the keys the rearrangement removes are gone from the table
+        expect(shiftPairFor(";", compressedShiftPairs)).toBeUndefined();
+        expect(shiftPairFor("/", compressedShiftPairs)).toBeUndefined();
     });
 
-    it("takes `-_` from the `/` key on both 30-key keymap types", () => {
-        expect(shiftPairFor("/", compressedShiftPairs)).toBe("-_");
-        expect(shiftPairFor("-", compressedShiftPairs)).toBeUndefined();
+    it("hands `;` to `'`, `'` to `=` and `-` to `/`, and fixes `(` on `-` and `)` on `=`/`+`", () => {
+        // whichever of `=` and `+` the board draws ends up carrying `)`
+        expect(compressedLevelByLabel(ansiIBMLayoutModel)["("]).toBe("(<");
+        expect(compressedLevelByLabel(ansiIBMLayoutModel)[")"]).toBe(")>");
+        const onEquals = compressedKeys(ansiIBMLayoutModel);
+        const onPlus = compressedKeys(xhkb13LayoutModel, "Quipper with Thumb-T");
+        for (const keys of [onEquals, onPlus]) {
+            const labels = keys.map(({position}) => position.label);
+            expect(labels).toContain("(");
+            expect(labels).toContain(")");
+            expect(labels).toContain("=");
+            // the keys the rearrangement consumes are gone
+            expect(labels).not.toContain(";");
+            expect(labels).not.toContain("/");
+            expect(labels).not.toContain("+");
+        }
     });
 
     it("reproduces the full-size punctuation map on ANSI", () => {
         expect(compressedLevelByLabel(ansiIBMLayoutModel)).toEqual({
-            ...digits,
+            ...digits, ...punctuation,
             "`~": "`~", "[": "[{", "]": "]}", "\\": "\\|",
-            ";": "'\"", "'": "=+", ",": ",;", ".": ".:", "/": "-_",
-            // the two freed keys
-            "-": "(<", "=": ")>",
         });
     });
 
     it("keeps five base punctuation keys on a thumb board", () => {
-        expect(compressedLevelByLabel(xhkb13LayoutModel, "Quipper with Thumb-T")).toEqual({
-            ...digits,
-            ";": "'\"", "'": "=+", "/": "-_", ",": ",;", ".": ".:",
-            // the two freed keys, in the order the key map draws them
-            "-": "(<", "+": ")>",
-        });
+        expect(compressedLevelByLabel(xhkb13LayoutModel, "Quipper with Thumb-T"))
+            .toEqual({...digits, ...punctuation});
     });
 
-    it("orders `(` and `)` by the key map, not by which character was there before", () => {
-        // The Mini draws `+` in the number row and `-` in the bottom row, so a fixed assignment
-        // of `(` to the old `-` key would read backwards.
-        const level = compressedLevelByLabel(harmonic12LayoutModel);
-        expect(level["+"]).toBe("(<");
-        expect(level["-"]).toBe(")>");
+    it("applies the layout model's own cycles on top, where it has any", () => {
+        // The wide mod swaps its two freed keys onto the centre columns that `[` and `]` hold.
+        // the brackets are not removed, they swap out to the number-row edges
+        const level = compressedLevelByLabel(ansiWideLayoutModel);
+        expect(level).toEqual({
+            ...digits, ...punctuation, "`~": "`~", "[": "[{", "]": "]}", "\\": "\\|",
+        });
+        const keys = compressedKeys(ansiWideLayoutModel);
+        const at = (label: string) => keys.find(({position}) => position.label === label)!.position;
+        expect(at("(").row).toBe(KeyboardRows.Upper);
+        expect(at(")").row).toBe(KeyboardRows.Home);
+    });
+
+    it("leaves them where the generic rearrangement put them without cycles", () => {
+        const keys = compressedKeys(ansiIBMLayoutModel);
+        const at = (label: string) => keys.find(({position}) => position.label === label)!.position;
+        expect(at("(").row).toBe(KeyboardRows.Number);
+        expect(at(")").row).toBe(KeyboardRows.Number);
     });
 
     it("leaves the standard pairings alone", () => {
@@ -172,7 +207,7 @@ describe("compressed Shift pairings", () => {
 /*
     The compression is a permutation over the punctuation keys every 30-key board carries, so it
     has to come out complete on all of them: five base punctuation characters plus the redundant
-    `(<` and `)>`, and those two in reading order.
+    `(` and `)`.
  */
 describe("the compressed level comes out complete on every 30-key board", () => {
     const combos = allLayoutModels.flatMap((model) =>
@@ -186,11 +221,11 @@ describe("the compressed level comes out complete on every 30-key board", () => 
     });
 
     it.each(combos)("%s", (_name, model, mappingName) => {
-        const level = compressedLevelByLabel(model, mappingName);
-        const bases = Object.values(level).map((pair) => pair[0]);
+        const keys = compressedKeys(model, mappingName);
+        const bases = keys.map(({pair}) => pair[0]);
         expect(bases.filter((c) => "'=,.-".includes(c)).sort()).toEqual(["'", ",", "-", ".", "="]);
-        expect(bases.filter((c) => c === "(")).toHaveLength(1);
-        expect(bases.filter((c) => c === ")")).toHaveLength(1);
+        expect(keys.filter(({pair}) => pair[0] === "(")).toHaveLength(1);
+        expect(keys.filter(({pair}) => pair[0] === ")")).toHaveLength(1);
     });
 });
 

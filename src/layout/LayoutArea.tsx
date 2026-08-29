@@ -24,7 +24,7 @@ import {
 import {SplitOrthoLayoutOptions} from "./SplitOrthoLayoutOptions.tsx";
 import {TradeoffDiagram} from "./TradeoffDiagram.tsx";
 import {alignForHex} from './harmonic-layout-functions.ts';
-import {getKeyLevels} from "../mapping/key-levels.ts";
+import {compressCharMap, getKeyLevels} from "../mapping/key-levels.ts";
 
 interface LayoutAreaProps {
     appState: AppState;
@@ -46,16 +46,22 @@ interface RenderedKeyboard {
     positions: KeyPosition[];
 }
 
-function renderKeyboard(layoutModel: LayoutModel, mapping: FlexMapping, layout: LayoutOptions, hexagons: boolean): RenderedKeyboard {
+function renderKeyboard(
+    layoutModel: LayoutModel, mapping: FlexMapping, layout: LayoutOptions, hexagons: boolean,
+    compressed: boolean
+): RenderedKeyboard {
     const lm = hexagons ? alignForHex(layoutModel) : layoutModel;
-    const charMap = fillMapping(lm, mapping);
+    let charMap = fillMapping(lm, mapping)!;
     if (layoutSupportsFlipRetRub(layout) && layout.flipRetRub) {
-        flipRetRub(charMap!);
+        flipRetRub(charMap);
     }
+    // The compressed Shift level rearranges the keys themselves, so it happens here rather than
+    // in getKeyLevels - the positions have to be computed from the rearranged map.
+    if (compressed) charMap = compressCharMap(charMap, lm, findMatchingKeymapType(lm, mapping)?.typeId);
     return {
         layoutModel: lm,
-        charMap: charMap!,
-        positions: getKeyPositions(lm, isSplit(layout), charMap!, defaultTotalWidth),
+        charMap,
+        positions: getKeyPositions(lm, isSplit(layout), charMap, defaultTotalWidth),
     };
 }
 
@@ -65,14 +71,18 @@ export function LayoutArea({appState}: LayoutAreaProps) {
     const hexagons = layout.value.type === LayoutType.Harmonic &&
         layout.value.harmonicVariant > HarmonicVariant.H14_Traditional &&
         layout.value.harmonicHexagons;
-    const current = renderKeyboard(layoutModel.value, mapping.value, layout.value, hexagons);
-    const previousPositions = renderKeyboard(prevLayoutModel.value, prevMapping.value, layout.value, hexagons).positions;
+    // The outgoing board is compressed too, so that toggling the switch does not animate.
+    const compressed = appState.vizType.value === VisualizationType.MappingShiftLevels
+        && appState.shiftCompressed.value;
+    const current = renderKeyboard(layoutModel.value, mapping.value, layout.value, hexagons, compressed);
+    const previousPositions = renderKeyboard(
+        prevLayoutModel.value, prevMapping.value, layout.value, hexagons, compressed).positions;
     const keyMovements = getKeyMovements(previousPositions, current.positions);
 
-    const {setLayout, mappingDiff, bigramMovements, vizType, setMapping, navSide, shiftCompressed} = appState;
+    const {setLayout, mappingDiff, bigramMovements, vizType, setMapping, navSide} = appState;
     const keyLevels = vizType.value === VisualizationType.MappingShiftLevels
         ? getKeyLevels(current.layoutModel, current.positions, current.charMap, navSide.value,
-            findMatchingKeymapType(current.layoutModel, mapping.value)?.typeId, shiftCompressed.value)
+            findMatchingKeymapType(current.layoutModel, mapping.value)?.typeId, compressed)
         : undefined;
     const showFrame = layout.value.type !== LayoutType.Ergosplit &&
         !(layout.value.type !== LayoutType.ANSI && layout.value.ansiSplit);

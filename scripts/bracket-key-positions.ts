@@ -7,7 +7,7 @@
         npx tsx scripts/bracket-key-positions.ts
  */
 import {allLayoutModels} from "../src/all-layout-models.ts";
-import {Hand, KeyboardRows, type KeyPosition, type LayoutModel} from "../src/base-model.ts";
+import {KeyboardRows, type KeyPosition, type LayoutModel} from "../src/base-model.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel} from "../src/layout/ansiLayoutModel.ts";
 import {ergoboardCentralLayoutModel} from "../src/layout/ergoboardCentralLayoutModel.ts";
 import {ergoboardComfyLayoutModel} from "../src/layout/ergoboardComfyLayoutModel.ts";
@@ -21,7 +21,7 @@ import {
     getKeyPositions,
     hasMatchingMapping,
 } from "../src/layout/layout-functions.ts";
-import {getKeyLevels, hasCompressedLevel, hasNumberRow} from "../src/mapping/key-levels.ts";
+import {compressCharMap, hasCompressedLevel, hasNumberRow} from "../src/mapping/key-levels.ts";
 import {allMappings} from "../src/mapping/mappings.ts";
 
 // One 30-key mapping per keymap type, as the analysis question asks for.
@@ -101,12 +101,12 @@ function bracketKeys(
     const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
     if (expectedType && keymapType !== expectedType) return undefined;
     if (!hasCompressedLevel(keymapType, hasNumberRow(model))) return undefined;
-    const charMap = fillMapping(model, mapping);
-    if (!charMap) return undefined;
+    const filled = fillMapping(model, mapping);
+    if (!filled) return undefined;
+    const charMap = compressCharMap(filled, model, keymapType);
     const positions = getKeyPositions(model, false, charMap, defaultTotalWidth);
-    const levels = getKeyLevels(model, positions, charMap, Hand.Left, keymapType, true);
-    const open = positions.find((p) => levels.base[p.row][p.col] === "(");
-    const close = positions.find((p) => levels.base[p.row][p.col] === ")");
+    const open = positions.find((p) => p.label === "(");
+    const close = positions.find((p) => p.label === ")");
     return open && close ? [open, close] : undefined;
 }
 

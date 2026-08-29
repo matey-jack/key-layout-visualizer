@@ -339,6 +339,12 @@ export interface LayoutModel extends RenderableLayoutModel {
 
     // Frame mappings for each supported keymap type, similar to FlexMapping structure.
     frameMappings: Partial<Record<KeymapTypeId, FrameMapping>>;
+    /*
+        Optional per-layout cycles applied on top of the generic Shift-level compression, to put
+        the two redundant `(` and `)` keys it frees somewhere the board can use. See
+        `compressCharMap` in mapping/key-levels.ts and docs/key-levels.md.
+     */
+    compressedCycles?: Partial<Record<KeymapTypeId, string[]>>;
 
     // cumulative values relative to home row
     staggerOffsets: number[];

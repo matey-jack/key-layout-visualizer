@@ -34,6 +34,7 @@
     "npm-check-updates": "23.0.0",
     "typescript": "7.0.2",
     "vite": "8.2.0",
-    "vitest": "4.1.10"
+    "vitest": "4.1.10",
+    "tsx": "^4.23.12"
   }
 }

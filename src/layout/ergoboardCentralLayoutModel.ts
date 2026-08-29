@@ -55,10 +55,10 @@ export const ergoboardCentralLayoutModel: LayoutModel = {
 
     frameMappings: {
         [KeymapTypeId.Ansi30]: ansi30FrameMapping,
-        [KeymapTypeId.Thumb30]: patchThumb30(ansi30FrameMapping, "[4:0]⏎F+-", "/[3:9]"),
+        [KeymapTypeId.Thumb30]: patchThumb30(ansi30FrameMapping, "{4:0}⏎F+-", "/{3:9}"),
         [KeymapTypeId.Ansi32]: ansi32FrameMapping,
         [KeymapTypeId.Thumb32]: permute(
-            patchThumb32(ansi32FrameMapping, "[4:0]⏎F⎀+[2:10]"),
+            patchThumb32(ansi32FrameMapping, "{4:0}⏎F⎀+{2:10}"),
         ),
     },
 
