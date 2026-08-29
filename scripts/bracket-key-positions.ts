@@ -148,3 +148,5 @@ for (const [name, model] of focusModels) {
         name, cell("Qwerty", "ansi30"), cell("Quipper Thumby", "thumb30"), otherPair(model, "Qwerty"),
     ]));
 }
+console.log("\nNote that 'apart (...), centered' is also a pair, just with one key in-between, which happens on larger boards.")
+console.log("And the Thumbs Up 16/5 is included in this, too, only that the keyboard is not 100% symmetric, which is why it doesn't show as centered.")
