@@ -1,6 +1,7 @@
 import './app.css';
 import './app-model.ts';
-import type {Signal} from "@preact/signals";
+import {type Signal, useSignal} from "@preact/signals";
+import {useEffect} from "preact/hooks";
 import type {ComponentChildren} from "preact";
 import type {AppState} from "./app-model.ts";
 import {AnsiVariant} from "./app-model.ts";
@@ -138,37 +139,64 @@ interface DownloadKlcLinkProps {
     appState: AppState;
 }
 
-function DownloadKlcLink({appState}: DownloadKlcLinkProps) {
-    const handleDownload = () => {
-        const layout = appState.layoutModel.value;
-        const keyMap = appState.mapping.value;
-        const layoutOptions = appState.layout.value;
-        const mergedMapping = fillMapping(layout, keyMap);
+interface DownloadFile {
+    content: string;
+    type: string;
+    fileName: string;
+}
 
-        if (!mergedMapping) {
-            alert("Unable to generate KLC file for this mapping");
-            return;
-        }
+/**
+ * Holds a file behind an object URL so a plain download anchor can point at it.
+ * Returns the current file plus a `prepare` for the events that precede activating
+ * a link (pointer down, focus): the SVG export reads the live DOM, which right after
+ * a layout switch still holds the outgoing board, so the file built when the state
+ * changed can be out of date by the time it is clicked.
+ */
+function useDownloadFile(buildFile: () => DownloadFile | null, deps: unknown[]) {
+    const prepared = useSignal<{url: string; fileName: string} | null>(null);
 
-        const klcContent = getKlc(mergedMapping, keyMap, layoutOptions.ansiWide);
-        const baseName = keyMap.techName || keyMap.name;
-        const fileName = layoutOptions.ansiWide ? `${baseName}-wide` : baseName;
-        const blob = new Blob([klcContent], {type: "text/plain"});
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = `${fileName}.klc`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+    const prepare = () => {
+        const file = buildFile();
+        if (prepared.value) URL.revokeObjectURL(prepared.value.url);
+        prepared.value = file && {
+            url: URL.createObjectURL(new Blob([file.content], {type: file.type})),
+            fileName: file.fileName,
+        };
     };
 
-    return <a href="#" class="download-klc-link"
-              onClick={(e) => {
-                  e.preventDefault();
-                  handleDownload();
-              }}>
+    useEffect(prepare, deps);
+    useEffect(() => () => {
+        if (prepared.value) URL.revokeObjectURL(prepared.value.url);
+    }, [prepared]);
+
+    return {file: prepared.value, prepare};
+}
+
+function DownloadKlcLink({appState}: DownloadKlcLinkProps) {
+    const layout = appState.layoutModel.value;
+    const keyMap = appState.mapping.value;
+    const layoutOptions = appState.layout.value;
+
+    const {file, prepare} = useDownloadFile(() => {
+        const mergedMapping = fillMapping(layout, keyMap);
+        if (!mergedMapping) {
+            console.warn("Unable to generate KLC file for this mapping");
+            return null;
+        }
+        const baseName = keyMap.techName || keyMap.name;
+        const fileName = layoutOptions.ansiWide ? `${baseName}-wide` : baseName;
+        return {
+            content: getKlc(mergedMapping, keyMap, layoutOptions.ansiWide),
+            type: "text/plain",
+            fileName: `${fileName}.klc`,
+        };
+    }, [layout, keyMap, layoutOptions]);
+
+    if (!file) {
+        return null;
+    }
+    return <a href={file.url} download={file.fileName} class="download-klc-link"
+              onPointerDown={prepare} onFocus={prepare}>
         Download as .klc
     </a>;
 }
@@ -178,43 +206,36 @@ interface DownloadSvgLinkProps {
 }
 
 function DownloadSvgLink({appState}: DownloadSvgLinkProps) {
-    const handleDownload = () => {
+    const layoutOptions = appState.layout.value;
+    const keyMap = appState.mapping.value;
+
+    const {file, prepare} = useDownloadFile(() => {
         // Find the keyboard SVG container - look for the parent div or the svg itself
         const svgContainer = document.querySelector('.keyboard-svg') || document.querySelector('svg.keyboard-svg');
-        
         if (!svgContainer) {
-            alert("Keyboard visualization not found");
-            return;
+            console.warn("Keyboard visualization not found");
+            return null;
         }
 
         const svgString = extractSvgWithStyles(svgContainer as Element);
-        
         if (!svgString) {
-            alert("Unable to extract SVG from visualization");
-            return;
+            console.warn("Unable to extract SVG from visualization");
+            return null;
         }
 
-        // Generate filename
-        const layoutName = LayoutTypeNames[appState.layout.value.type];
-        const keymapName = appState.mapping.value.name;
-        const fileName = sanitizeFileName(`${keymapName}-${layoutName}.svg`);
+        const layoutName = LayoutTypeNames[layoutOptions.type];
+        return {
+            content: svgString,
+            type: "image/svg+xml",
+            fileName: sanitizeFileName(`${keyMap.name}-${layoutName}.svg`),
+        };
+    }, [layoutOptions, keyMap]);
 
-        const blob = new Blob([svgString], {type: "image/svg+xml"});
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-    };
-
-    return <a href="#" class="download-svg-link"
-              onClick={(e) => {
-                  e.preventDefault();
-                  handleDownload();
-              }}>
+    if (!file) {
+        return null;
+    }
+    return <a href={file.url} download={file.fileName} class="download-svg-link"
+              onPointerDown={prepare} onFocus={prepare}>
         Download SVG
     </a>;
 }
