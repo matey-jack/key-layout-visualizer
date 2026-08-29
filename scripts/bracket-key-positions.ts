@@ -27,7 +27,15 @@ import {allMappings} from "../src/mapping/mappings.ts";
 // One 30-key mapping per keymap type, as the analysis question asks for.
 const mappingNames = ["Qwerty", "Quipper Thumby"];
 
-type Verdict = "pair" | "stack" | "apart";
+// The two parenthesis keys, together with the lines they may sit on to count as centred.
+interface Brackets {
+    open: KeyPosition;
+    close: KeyPosition;
+    centres: number[];
+}
+
+type Relation = "pair" | "stack" | "apart";
+type Verdict = "centred" | Relation;
 
 /**
  * How the two keys sit relative to each other:
@@ -35,7 +43,7 @@ type Verdict = "pair" | "stack" | "apart";
  *  - "stack" – neighbouring rows with overlapping columns;
  *  - "apart" – anything else.
  */
-function classify(a: KeyPosition, b: KeyPosition): Verdict {
+function relation(a: KeyPosition, b: KeyPosition): Relation {
     const [first, second] = a.colPos <= b.colPos ? [a, b] : [b, a];
     const gap = second.colPos - (first.colPos + first.keyCapWidth);
     if (a.row === b.row) return gap < 0.01 ? "pair" : "apart";
@@ -64,20 +72,38 @@ const rowNames = {
     [KeyboardRows.Lower]: "lower", [KeyboardRows.Bottom]: "bottom",
 };
 
-/*
-    Every row is centred in the same total width, so the middle of the board is always the same
-    line. Two keys are centred on it when their midpoint sits on that line – which for a pair
-    means the two mirror each other, and for a stack means the column itself is the centre one.
- */
 const keyMiddle = (k: KeyPosition) => k.colPos + k.keyCapWidth / 2;
 
-const isCentred = (a: KeyPosition, b: KeyPosition) =>
-    Math.abs((keyMiddle(a) + keyMiddle(b)) / 2 - defaultTotalWidth / 2) < 0.13;
+/*
+    Every row is centred in the same total width, so the middle of the board is one line a pair can
+    sit on. The other is the middle between the two home index keys: where the halves of a board
+    are not mirror images of each other, it is the hands and not the frame that decide what reads
+    as the middle. Both lines are measured in rendered units, so the widths of the keys left of the
+    index keys are already part of the answer.
+ */
+function centreLines(model: LayoutModel, positions: KeyPosition[]): number[] {
+    const homeKey = (col: number) => positions.find((p) => p.row === KeyboardRows.Home && p.col === col);
+    const [left, right] = [homeKey(model.leftHomeIndex), homeKey(model.rightHomeIndex)];
+    return left && right
+        ? [defaultTotalWidth / 2, (keyMiddle(left) + keyMiddle(right)) / 2]
+        : [defaultTotalWidth / 2];
+}
 
-// "pair (num)" when both keys share a row, "apart (upper, bottom)" when they do not.
-function describe(a: KeyPosition, b: KeyPosition): string {
-    const where = a.row === b.row ? rowNames[a.row] : `${rowNames[a.row]}, ${rowNames[b.row]}`;
-    return `${classify(a, b)} (${where})` + (isCentred(a, b) ? ", centred" : "");
+// Half a key of slack: any closer to a centre line and the pair still reads as symmetric.
+const isCentred = (a: KeyPosition, b: KeyPosition, centres: number[]) =>
+    centres.some((c) => Math.abs((keyMiddle(a) + keyMiddle(b)) / 2 - c) < 0.5);
+
+// Centred outranks the three shapes: a symmetric pair reads as one unit even with a key in between.
+const classify = ({open, close, centres}: Brackets): Verdict =>
+    isCentred(open, close, centres) ? "centred" : relation(open, close);
+
+// "centred pair (num)" when both keys share a row, "apart (upper, bottom)" when they do not.
+function describe(brackets: Brackets): string {
+    const {open, close} = brackets;
+    const where = open.row === close.row
+        ? rowNames[open.row] : `${rowNames[open.row]}, ${rowNames[close.row]}`;
+    const verdict = classify(brackets);
+    return `${verdict}${verdict === "centred" ? ` ${relation(open, close)}` : ""} (${where})`;
 }
 
 // The bracket keys the compression leaves alone, which we would like to stay centred.
@@ -90,12 +116,10 @@ function otherPair(model: LayoutModel, mappingName: string): string {
     const open = positions.find((p) => p.label === "[");
     const close = positions.find((p) => p.label === "]");
     if (!open || !close) return "no `[]` keys";
-    return isCentred(open, close) ? "centred" : "off centre";
+    return isCentred(open, close, centreLines(model, positions)) ? "centred" : "off centre";
 }
 
-function bracketKeys(
-    model: LayoutModel, mappingName: string, expectedType?: string
-): [KeyPosition, KeyPosition] | undefined {
+function bracketKeys(model: LayoutModel, mappingName: string, expectedType?: string): Brackets | undefined {
     const mapping = allMappings.find((m) => m.name === mappingName);
     if (!mapping || !hasMatchingMapping(model, mapping)) return undefined;
     const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
@@ -107,29 +131,30 @@ function bracketKeys(
     const positions = getKeyPositions(model, false, charMap, defaultTotalWidth);
     const open = positions.find((p) => p.label === "(");
     const close = positions.find((p) => p.label === ")");
-    return open && close ? [open, close] : undefined;
+    return open && close ? {open, close, centres: centreLines(model, positions)} : undefined;
 }
 
-const counts: Record<Verdict, string[]> = {pair: [], stack: [], apart: []};
+const verdicts = ["centred", "pair", "stack", "apart"] as const;
+const counts: Record<Verdict, string[]> = {centred: [], pair: [], stack: [], apart: []};
 let skipped = 0;
 for (const model of allLayoutModels) {
     for (const mappingName of mappingNames) {
-        const keys = bracketKeys(model, mappingName);
-        if (!keys) {
+        const brackets = bracketKeys(model, mappingName);
+        if (!brackets) {
             skipped++;
             continue;
         }
         const keymapType = findMatchingKeymapType(model, allMappings.find((m) => m.name === mappingName)!)!.typeId;
-        counts[classify(...keys)].push(`${model.name} / ${keymapType}`);
+        counts[classify(brackets)].push(`${model.name} / ${keymapType}`);
     }
 }
 
-const total = counts.pair.length + counts.stack.length + counts.apart.length;
+const total = verdicts.reduce((n, verdict) => n + counts[verdict].length, 0);
 console.log(`${total} layout model / keymap type combinations (${skipped} without a compressed level)\n`);
-for (const verdict of ["pair", "stack", "apart"] as const) {
+for (const verdict of verdicts) {
     const n = counts[verdict].length;
-    console.log(`${verdict.padEnd(6)} ${String(n).padStart(3)}  ${Math.round((100 * n) / total)}%`);
-    for (const name of counts[verdict]) console.log(`          ${name}`);
+    console.log(`${verdict.padEnd(7)} ${String(n).padStart(3)}  ${Math.round((100 * n) / total)}%`);
+    for (const name of counts[verdict]) console.log(`           ${name}`);
     console.log();
 }
 
@@ -141,12 +166,12 @@ console.log(line(head));
 console.log("|" + widths.map((w) => "-".repeat(w + 2)).join("|") + "|");
 for (const [name, model] of focusModels) {
     const cell = (mappingName: string, expected: string) => {
-        const keys = bracketKeys(model, mappingName, expected);
-        return keys ? describe(...keys) : "–";
+        const brackets = bracketKeys(model, mappingName, expected);
+        return brackets ? describe(brackets) : "–";
     };
     console.log(line([
         name, cell("Qwerty", "ansi30"), cell("Quipper Thumby", "thumb30"), otherPair(model, "Qwerty"),
     ]));
 }
-console.log("\nNote that 'apart (...), centered' is also a pair, just with one key in-between, which happens on larger boards.")
-console.log("And the Thumbs Up 16/5 is included in this, too, only that the keyboard is not 100% symmetric, which is why it doesn't show as centered.")
+console.log("\nA pair counts as centred when its middle is less than half a key away from the middle of the");
+console.log("board or from the middle between the two home index keys, whichever of the two it is nearer to.");

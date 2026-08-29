@@ -57,8 +57,8 @@ const thumb32Base: FrameMapping = [
 const SO_LEFT_TS_ANSI = "<SC⌦";    // for Ansi30 and Ansi32
  // for Thumb30 and Thumb32
 
-export const splitOrthoLayoutModel = (soThumbShift: boolean) : LayoutModel => ({
-    name: "Split Ergonomic",
+export const splitOrthoLayoutModel = (thumbShift: boolean) : LayoutModel => ({
+    name: "Split Ergonomic" + (thumbShift ? " Thumb-Shift" : ""),
     description: `The Ortholinear key layout is especially popular with two-piece keyboards. 
     This allows to position and rotate the two keyboard halves to make columns line up exactly with your finger's natural extension movement. 
     Most split models include between two and four thumb keys on each side that users can map to any function they want. 
@@ -107,7 +107,7 @@ export const splitOrthoLayoutModel = (soThumbShift: boolean) : LayoutModel => ({
     //   Ansi30/Thumb30: Fn → ' spot, ' → >⇧ spot, >⇧ → Fn spot
     //   Ansi32:         >⇧ → >Ctrl spot, >Ctrl → {2:10} spot, {2:10} → >⇧ spot (becomes flex key 10 on row 2)
     //   Thumb32:        >Ctrl → ' spot, ' → >⇧ spot, >⇧ → >Ctrl spot
-    frameMappings: soThumbShift ? {
+    frameMappings: thumbShift ? {
         [KeymapTypeId.SplitOrtho]: permute(fullMapping, "<S{4:2}⏎>^F{4:1}", ">S{4:3}"),
         [KeymapTypeId.Ansi30]:     permute(ansi30Base,  SO_LEFT_TS_ANSI,  "F+-'>S"),
         [KeymapTypeId.Thumb30]:    permute(thumb30Base, "<S{4:0}⏎>^\\⌦", ">SF`'"),
