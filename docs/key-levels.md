@@ -34,6 +34,8 @@ Done parts:
 Next parts:
  - fix some of the German keymaps: those whose frame mapping keeps punctuation keys that standard
    German does not have (`/`, `=`, `[`, `]`, `\`), which therefore stay unpaired.
+   `npx tsx scripts/german-frame-keys.ts` lists, per layout model, how the character keys of the
+   32-key frame mappings differ from the base-level keys the German pairings name.
 
  - various rewordings: especially frame the entire feature as the progressive omission of keys:
    + first add redundant AltGr level
@@ -301,7 +303,8 @@ we add an optional fine-tuning permutation map `compressedCycles` to the layout 
 The script `npx tsx scripts/bracket-key-positions.ts` checks all the layout model / keymap type combinations 
 and groups them by how the pairs of parentheses land.
 
-
+Side note: the fine-tuning needs some characters to be defined in the frame mapping to be able to create 
+a stable position for the new parenthesis keys. That's why we can't do it for the model-specific keymap types. 
 
 ## [German] Standard and Compressed Shift levels
 
