@@ -16,8 +16,7 @@ import {
     altGrDigits,
     altGrLeft,
     altGrRight,
-    compressedAnsi30ShiftPairs,
-    compressedThumb30ShiftPairs,
+    compressedShiftPairs,
     getBaseLevel,
     getKeyLevels,
     getShiftLevel,
@@ -122,19 +121,17 @@ describe("compressed Shift pairings", () => {
     };
 
     it("moves `/` off the base level and `;` out of the way of `'`", () => {
-        expect(shiftPairFor(";", compressedAnsi30ShiftPairs)).toBe("'\"");
-        expect(shiftPairFor("'", compressedAnsi30ShiftPairs)).toBe("=+");
-        expect(shiftPairFor("9", compressedAnsi30ShiftPairs)).toBe("9/");
-        expect(shiftPairFor("0", compressedAnsi30ShiftPairs)).toBe("0?");
+        expect(shiftPairFor(";", compressedShiftPairs)).toBe("'\"");
+        expect(shiftPairFor("'", compressedShiftPairs)).toBe("=+");
+        expect(shiftPairFor("9", compressedShiftPairs)).toBe("9/");
+        expect(shiftPairFor("0", compressedShiftPairs)).toBe("0?");
         // the shifted characters are no longer lookup keys of their own
-        expect(shiftPairFor(":", compressedAnsi30ShiftPairs)).toBeUndefined();
+        expect(shiftPairFor(":", compressedShiftPairs)).toBeUndefined();
     });
 
-    it("takes `-_` from `/` on ansi30 and from `-` on thumb30", () => {
-        expect(shiftPairFor("/", compressedAnsi30ShiftPairs)).toBe("-_");
-        expect(shiftPairFor("-", compressedAnsi30ShiftPairs)).toBeUndefined();
-        expect(shiftPairFor("-", compressedThumb30ShiftPairs)).toBe("-_");
-        expect(shiftPairFor("/", compressedThumb30ShiftPairs)).toBeUndefined();
+    it("takes `-_` from the `/` key on both 30-key keymap types", () => {
+        expect(shiftPairFor("/", compressedShiftPairs)).toBe("-_");
+        expect(shiftPairFor("-", compressedShiftPairs)).toBeUndefined();
     });
 
     it("reproduces the full-size punctuation map on ANSI", () => {
@@ -150,9 +147,9 @@ describe("compressed Shift pairings", () => {
     it("keeps five base punctuation keys on a thumb board", () => {
         expect(compressedLevelByLabel(xhkb13LayoutModel, "Quipper with Thumb-T")).toEqual({
             ...digits,
-            ";": "'\"", "'": "=+", "-": "-_", ",": ",;", ".": ".:",
+            ";": "'\"", "'": "=+", "/": "-_", ",": ",;", ".": ".:",
             // the two freed keys, in the order the key map draws them
-            "+": "(<", "/": ")>",
+            "-": "(<", "+": ")>",
         });
     });
 

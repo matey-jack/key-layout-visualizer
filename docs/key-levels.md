@@ -244,7 +244,7 @@ which needs to change the base level back to `=` to create a correct base/Shift 
 Our rules for key replacement are as follows:
  - `;:` is replaced by `'"`, because this is the most central spot and `'` is used inside words and thus practical to place among the letters.
  - `,` and `.` keep their position and receive their Shift level character as defined above.
- - Only on ansi30, `/?` is replaced by `-_`.
+ - `/?` is replaced by `-_`, on both 30-key keymap types.
  - `=+` moves to the spot freed by `'"` (which always moves, so that is always free).
 
 Since we explicitly removed `;:` and `/?` which are present on all layout model's key sets, we have freed a minimum of two keys;
@@ -259,6 +259,66 @@ We could now replace those freed keys with navigation keys, but to cleanly separ
 we'll instead replace them with `(<` and `)>` at first. 
 The user can then use the ["Extra keys" buttons](#button-groups) to use replace those redundant character keys with 
 navigation keys instead.
+
+### <<needs design>> how to arrange the new pair of parenthesis keys symmetrically on all layout models?
+
+Given the above replacement rules, on the plain ANSI non-wide layout model, 
+the new `(<` key and it's mirror end up in perfectly neighbored positions, 
+but on other boards, this is not the case. 
+On ANSI wide-mod, the best position would be to arrange this pair vertically, one in the number row, one below, 
+similar to how the other bracket pair is arranged in the center of this layout.
+On the Ergoplank/Harmonic/Thumbs Up layout models (let's summarily call them "fictional semi-ergo" layouts), 
+there is enough space in the center for both pairs of bracket keys.
+In some of the layout models, the `+` and `-` keys already have a symmetric position 
+and since they get replaced by the parens, it works out well.
+That is why the `-` to `/` move is not conditional on the keymap type – see the decision below.
+
+We do not try to solve this for every layout model. The focus set is the boards marked with a ❤️
+in the layout options – the Thumbs Up family, the Ergoplank 15/5, and the two Ergoboard 16/5 – plus
+the ANSI wide mod and the Split Ortho. Where the two bracket keys land on those, as reported by
+`scripts/bracket-key-positions.ts`:
+
+| layout model               | ansi30                | thumb30               |
+|---------------------------|-----------------------|-----------------------|
+| ANSI wide                 | apart (num)           | apart (num, lower)    |
+| Thumbs Up 13/2            | apart (upper, bottom) | apart (lower, bottom) |
+| Thumbs Up 15/4            | pair (upper)          | apart (upper, lower)  |
+| Thumbs Up 16/5            | apart (upper)         | apart (upper, lower)  |
+| Ergoplank 15/5            | apart (upper)         | apart (upper, lower)  |
+| Ergoboard 16/5 Central    | apart (upper)         | apart (upper, lower)  |
+| Ergoboard 16/5 Comfy Wide | stack (home, lower)   | pair (lower)          |
+| Split Ortho               | pair (bottom)         | apart (lower, bottom) |
+| Split Ortho, Thumb Shift  | apart (upper, bottom) | apart (lower, bottom) |
+
+The row names say where the two keys sit, so "apart (upper)" means both are in the upper row but
+not next to each other, while "apart (upper, lower)" means they are in different rows entirely.
+Only three of these eighteen combinations are a pair today, and one more is a stack.
+
+Note that thumb30 is the worse half of the table everywhere: it puts `-` in the flex map area, so
+the key it frees is the frame mapping's `/`, which sits wherever that board happens to keep it.
+
+Analysis 1: on how many layout model / keymap-type combinations (test each keymap type with Qwerty and Quipper Thumby) are the new bracket keys currently a pair (neighbors on same row) or a stack (neighboring rows, overlapping columns)? And then how do the numbers change when doing the `-/` move unconditionally?
+
+Answered by `scripts/bracket-key-positions.ts`, over the 80 combinations that have a compressed
+level. The `-`-to-`/` move was conditional on ansi30 when the question was asked:
+
+| rule for the `-` to `/` move | pair | stack | apart |
+|------------------------------|------|-------|-------|
+| ansi30 only (original idea)  | 15   | 7     | 58    |
+| unconditional (chosen)       | 21   | 7     | 52    |
+| when it makes a pair         | 22   | 7     | 51    |
+
+Going unconditional gains six thumb30 boards – the MidShift ones and the wide Ergoboards – and
+loses the Thumbs Up 13/2, whose `+` and `/` are already neighbours. Deciding the move per board by
+whether it produces a pair would keep that one too.
+
+Decision: we do the move unconditionally. The conditional rule buys exactly one more pair, and it
+costs a replacement rule that depends on where the keys physically sit – which is a lot of
+machinery for one board, and it makes the compressed pairings something you can no longer read off
+a single table. Either way 52 of 80 combinations still have the two brackets scattered, so the
+remaining cases need per-layout arrangement rather than a cleverer global rule.
+
+
 
 ## [32-key] Standard and Compressed Shift levels
 
