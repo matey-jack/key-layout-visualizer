@@ -61,6 +61,11 @@ export const xhkb13LayoutModel: LayoutModel = {
     staggerOffsets: [-0.75, -0.25, 0, 0.5],
     symmetricStagger: false,
 
+    compressedCycles: {
+        [KeymapTypeId.Ansi30]: ["-=()"],
+        [KeymapTypeId.Thumb30]: ["-()"],
+    },
+
     frameMappings: {
         // The lower letter row has only nine keys between the Shifts and its tenth character moves down to just below
         // its normal pinky position.
@@ -162,6 +167,10 @@ export const xhkb15LayoutModel: LayoutModel = {
     staggerOffsets: [-0.75, -0.25, 0, 0.5],
     symmetricStagger: false,
 
+    compressedCycles: {
+        [KeymapTypeId.Thumb30]: ["`()"],
+    },
+
     frameMappings: {
         [KeymapTypeId.Ansi30]: [
             ["Esc", "1", "2", "3", "4", "5", "[", "]", "6", "7", "8", "9", "0", "⌫"],
@@ -234,6 +243,10 @@ export const xhkb16LayoutModel: LayoutModel = {
         [1.0, 2.0, 2.0, 1.5, 1.5, 3.0, null, null, null, 3.0, 1.5, 1.0, 1.5, 1.5, 1.0, null],
         [2.0, 2.0, 2.0, 0.2, null, null, null, 0.2, 2.0, 2.0, 2.0, 2.0],
     ],
+
+    compressedCycles: {
+        [KeymapTypeId.Thumb30]: ["\\()"],
+    },
 
     frameMappings: {
         [KeymapTypeId.Ansi30]: [

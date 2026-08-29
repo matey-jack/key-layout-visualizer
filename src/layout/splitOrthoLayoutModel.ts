@@ -99,7 +99,7 @@ export const splitOrthoLayoutModel = (soThumbShift: boolean) : LayoutModel => ({
 
     compressedCycles: {
         [KeymapTypeId.Ansi30]: [")("],
-        [KeymapTypeId.Thumb30]: [""],
+        [KeymapTypeId.Thumb30]: ["\\(", "`)"],
     },
 
     // thumbShift right cycles:
