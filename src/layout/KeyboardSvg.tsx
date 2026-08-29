@@ -228,7 +228,8 @@ export function Key(props: KeyProps) {
 
     const thirdText = thirdLabel &&
         <text x={rectWidth - thirdLabelInset} y={keyHeight - thirdLabelInset}
-              className="key-label--third">{thirdLabel}</text>
+              className={"key-label--third" + (isKeyboardSymbol(thirdLabel) ? " key-label--third-symbol" : "")}
+        >{thirdLabel}</text>
 
     const keyRibbon = ribbonClass &&
         <rect class={"key-ribbon animating " + ribbonClass}

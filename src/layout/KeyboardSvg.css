@@ -227,6 +227,12 @@
     fill: var(--altgr-level-color);
 }
 
+/* The nav symbols draw much smaller than letters at the same size, so they get a size up –
+   the same bump that `keyboard-symbol` gives the base label. */
+.key-label--third-symbol {
+    font-size: 28px;
+}
+
 .key-label.semi-ergo--key-size {
     font-style: italic;
     font-family: 'Nunito Sans', sans-serif;
