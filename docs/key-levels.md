@@ -2,6 +2,12 @@
 
 Status: in progress
 
+Larger Scope:
+ - Show shift pairings on the keyboard: works for English, TODO for German
+ - Show an AltGr layer that is the same no matter the language of the base character set: works for all.
+ - Optionally show a modified ("compressed") Shift pairing (differing only in a few punctuation keys) which helps typing on smaller keyboards (and reduces finger movement on larger ones). This is only planned for English and it's done. (A German version is described here only as a dry exercise.)
+ - Finally, when using a compressed keymap on a keyboard that fits more than the minimal number of keys, some redundant character keys can be changed into Nav and Delete/Insert keys.
+
 Done parts:
  - New "MappingShiftLevels" viz type can be selected 
  - ANSI Shift level characters are displayed (see `key-levels.ts`)
@@ -16,7 +22,7 @@ Done parts:
 Next parts:
  - Fix some of the German keymaps; then introduce Standard German Shift pairings.
 
- - Change 30 vs 32 to German vs English; this enables all of the model-specific keymaps to receive Shift pairings.
+ - Change 30 vs 32 to German vs English; this enables all the model-specific keymaps to receive Shift pairings.
    (And all the English one to receive compression; although not fine-tuned.)
 
  - various rewordings: especially frame the entire feature as the progressive omission of keys:
