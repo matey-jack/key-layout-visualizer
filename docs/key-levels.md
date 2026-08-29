@@ -11,7 +11,6 @@ Done parts:
  - [30-key and 32-key] Ergoslat numberless modified Shift pairings (no switching button)
  - [30-key] Compressed Shift level and the "Shift level" [button group](#button-groups)
  - Fine-tune the compressed keymaps to have the parentheses pairs
-   - TODO: bug fix for Split Ortho Thumb Shift!
  - Nav layer fix: when it collides with the Shift key, move it over by one key, instead of removing the scrolling keys.
 
 Next parts:
