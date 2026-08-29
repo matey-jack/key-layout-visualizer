@@ -5,8 +5,16 @@ Status: in progress
 Larger Scope:
  - Show shift pairings on the keyboard: works for English, TODO for German
  - Show an AltGr layer that is the same no matter the language of the base character set: works for all.
- - Optionally show a modified ("compressed") Shift pairing (differing only in a few punctuation keys) which helps typing on smaller keyboards (and reduces finger movement on larger ones). This is only planned for English and it's done. (A German version is described here only as a dry exercise.)
- - Finally, when using a compressed keymap on a keyboard that fits more than the minimal number of keys, some redundant character keys can be changed into Nav and Delete/Insert keys.
+ - Optionally show a modified ("compressed") Shift pairing (differing only in a few punctuation keys) 
+   which helps typing on smaller keyboards (and reduces finger movement on larger ones). 
+   This is only planned for English and it's done. (A German version is described here only as a dry exercise.)
+ - Finally, when using a compressed keymap on a keyboard that fits more than the minimal number of keys, 
+   some redundant character keys can be changed into Nav and Delete/Insert keys.
+
+Note that character sets of the layout model frame maps and letter flex maps can vary 
+and don't need to follow any standard set. 
+To choose the appropriate Shift layer, we simply check if the keymap has an `ä` key. 
+if yes, it's German, otherwise English.
 
 Done parts:
  - New "MappingShiftLevels" viz type can be selected 
@@ -20,10 +28,12 @@ Done parts:
  - Nav layer fix: when it collides with the Shift key, move it over by one key, instead of removing the scrolling keys.
 
 Next parts:
- - Fix some of the German keymaps; then introduce Standard German Shift pairings.
+- Change 30 vs 32 to German vs English; this enables all the model-specific keymaps to receive Shift pairings.
+  (And all the English one to receive compression; although not fine-tuned.)
 
- - Change 30 vs 32 to German vs English; this enables all the model-specific keymaps to receive Shift pairings.
-   (And all the English one to receive compression; although not fine-tuned.)
+ - introduce Standard German Shift pairings.
+
+ - fix some of the German keymaps.
 
  - various rewordings: especially frame the entire feature as the progressive omission of keys:
    + first add redundant AltGr level
