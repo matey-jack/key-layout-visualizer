@@ -161,12 +161,12 @@ test.describe('SVG Download', () => {
       expect(styleContent).not.toContain('layout-top-bar');
       expect(styleContent).not.toContain('visualization-switches');
       
-      // Verify HTML-specific properties are minimal/not present
-      // (some might be okay if they're in the KeyboardSvg.css, but there shouldn't be many)
-      const backgroundColorCount = (styleContent.match(/background-color/g) || []).length;
-      const paddingCount = (styleContent.match(/\bpadding\b/g) || []).length;
-      expect(backgroundColorCount).toBeLessThan(5);
-      expect(paddingCount).toBeLessThan(5);
+      expect(styleContent).not.toContain('layout-option-group');
+      expect(styleContent).not.toContain('mapping-list');
+
+      // An export is a still, so the keyboard's own animation rules are left out too.
+      expect(styleContent).not.toContain('@keyframes');
+      expect(styleContent).not.toContain('animation:');
       
     } finally {
       if (fs.existsSync(tempPath)) {
@@ -212,6 +212,34 @@ test.describe('SVG Download', () => {
         if (fs.existsSync(tempPath)) {
           fs.unlinkSync(tempPath);
         }
+      }
+    }
+  });
+
+  test('should place key labels inside their keys', async ({ page, context }) => {
+    await page.waitForSelector('svg.keyboard-svg', { timeout: 5000 });
+
+    const downloadPromise = page.waitForEvent('download');
+    await page.locator('a.download-svg-link').click();
+    const download = await downloadPromise;
+
+    const tempPath = 'temp-download-6.svg';
+    await download.saveAs(tempPath);
+
+    try {
+      const content = fs.readFileSync(tempPath, 'utf-8');
+
+      // On the page the labels are moved into their key by a CSS transform. That does not
+      // survive the export, so the offset has to be in the `x` of the label itself - without
+      // it every label collapses onto the left edge of its key.
+      const labelXs = [...content.matchAll(/<text[^>]*x="([-\d.]+)"[^>]*class="key-label[ "]/g)]
+        .map((match) => Number(match[1]));
+      expect(labelXs.length).toBeGreaterThan(10);
+      expect(labelXs.filter((x) => x === 0)).toHaveLength(0);
+
+    } finally {
+      if (fs.existsSync(tempPath)) {
+        fs.unlinkSync(tempPath);
       }
     }
   });
