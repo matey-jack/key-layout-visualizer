@@ -10,13 +10,10 @@ Done parts:
  - Number row AltGr mappings, including the `@` character for 32-key flex maps
  - [30-key and 32-key] Ergoslat numberless modified Shift pairings (no switching button)
  - [30-key] Compressed Shift level and the "Shift level" [button group](#button-groups)
-
-In progress:
- - Fine-tune the compressed keymaps to have the para
-
-Next parts:
+ - Fine-tune the compressed keymaps to have the parentheses pairs
  - Nav layer fix: when it collides with the Shift key, move it over by one key, instead of removing the scrolling keys.
 
+Next parts:
  - Fix some of the German keymaps; then introduce Standard German Shift pairings.
 
  - Change 30 vs 32 to German vs English; this enables all of the model-specific keymaps to receive Shift pairings.
@@ -419,7 +416,8 @@ the block sits on the `wer`, `asdfg`, and `zxcv` keys of an ANSI keyboard.
 
 Note that the `↟ ↡` denote mouse scrolls which can be mapped using keyboard firmware and possibly some third-party tools, 
 but probably not using xkb.
-In the case that `⇟` would fall on the pinky and clash with the Shift key, we omit `↟ ↡` and put `⇞ ⇟` in their place.
+In the case that `⇟` or `⇞` would fall on the pinky and clash with the Shift key, 
+we move the lower row of the Nav block by one key towards the center.
 
 # App UX
 

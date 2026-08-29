@@ -454,13 +454,12 @@ describe("navigation block", () => {
         expect(level["/"]).toBe("⇟");
     });
 
-    it("drops the mouse scrolls when the lower row's pinky column is taken", () => {
+    it("moves the lower row towards the centre when its pinky column is taken", () => {
         // The wide hand position has no `/` key: its lower row ends in the right Shift.
         const level = thirdLevelByLabel(ansiWideLayoutModel, Hand.Right);
-        const chars = Object.values(level);
-        expect(chars).not.toContain("↟");
-        expect(chars).not.toContain("↡");
-        expect(level[","]).toBe("⇞");
+        expect(level["n"]).toBe("⇞");
+        expect(level["m"]).toBe("↟");
+        expect(level[","]).toBe("↡");
         expect(level["."]).toBe("⇟");
     });
 });
@@ -477,8 +476,8 @@ describe("every block entry is placed on every layout model", () => {
         ["navigation", Hand.Right, navRight],
         ["navigation", Hand.Left, navLeft],
     ];
-    // The one documented exception is the lower row's pinky column; the separate PageUp/PageDown
-    // test below covers what survives it.
+    // The lower row's pinky column is the one slot a layout may take; the row then moves one key
+    // towards the centre, which the separate lower-row test below covers.
     const lowerRowFallbackChars = ["⇞", "⇟", "↟", "↡"];
 
     it.each(allLayoutModels.map((m) => [m.name, m] as const))("%s", (_name, model) => {
@@ -498,12 +497,12 @@ describe("every block entry is placed on every layout model", () => {
         expect(missing).toEqual([]);
     });
 
-    it.each(allLayoutModels.map((m) => [m.name, m] as const))("%s places PageUp/PageDown", (_name, model) => {
+    it.each(allLayoutModels.map((m) => [m.name, m] as const))("%s places the whole lower row", (_name, model) => {
         const positions = positionsOf(model);
         [Hand.Left, Hand.Right].forEach((navSide) => {
             const chars = Object.values(getThirdLevel(model, positions, navSide).flat().filter((c) => c));
-            expect(chars, `nav on the ${Hand[navSide]} hand`).toContain("⇞");
-            expect(chars, `nav on the ${Hand[navSide]} hand`).toContain("⇟");
+            lowerRowFallbackChars.forEach((char) =>
+                expect(chars, `nav on the ${Hand[navSide]} hand`).toContain(char));
         });
     });
 });

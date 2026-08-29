@@ -184,9 +184,9 @@ export const navRight: Block = [
     [_, _, _, _, _],
 ];
 
-// Used on the boards where the lower row's pinky column is the Shift key.
-const navLowerFallbackLeft: BlockRow = [_, _, "⇟", "⇞", _];
-const navLowerFallbackRight: BlockRow = [_, _, "⇞", "⇟", _];
+// Used on the boards where the lower row's pinky column is the Shift key: the row keeps all
+// four of its characters and moves one key towards the centre, whose column is free there.
+const movedTowardsCentre = (row: BlockRow): BlockRow => [...row.slice(1), _];
 
 // A block column may sit a quarter unit off its home key (rounding in the row indents),
 // but not half a unit – that would be the neighbouring column.
@@ -257,11 +257,8 @@ export function getThirdLevel(
 
     const navBlock = navSide === Hand.Left ? navLeft : navRight;
     const hasLowerPinky = !!resolveSlot(model, positions, navSide, KeyboardRows.Lower, 4);
-    const nav = hasLowerPinky ? navBlock : [
-        ...navBlock.slice(0, KeyboardRows.Lower),
-        navSide === Hand.Left ? navLowerFallbackLeft : navLowerFallbackRight,
-        navBlock[KeyboardRows.Bottom],
-    ];
+    const nav = hasLowerPinky ? navBlock
+        : navBlock.map((row, i) => i === KeyboardRows.Lower ? movedTowardsCentre(row) : row);
     placeBlock(result, model, positions, navSide, nav);
 
     if (hasNumberRow(model)) {
