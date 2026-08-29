@@ -2,7 +2,7 @@ import {
     Hand,
     KeyboardRows,
     type KeyPosition,
-    KeymapTypeId,
+    type KeymapTypeId,
     type LayoutModel,
 } from "../base-model.ts";
 import {permute} from "../layout/permutation-functions.ts";
@@ -16,8 +16,9 @@ import {isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
 // Level arrays are parallel to the merged char map (and thus to the model's keyWidths).
 export type LevelMap = (string | null)[][];
 
-export const is32KeyMap = (keymapType?: KeymapTypeId): boolean =>
-    keymapType === KeymapTypeId.Ansi32 || keymapType === KeymapTypeId.Thumb32;
+// The character set a key map draws decides its Shift pairings: only German has an `ä` key.
+export const isGermanCharMap = (charMap: string[][]): boolean =>
+    charMap.some((row) => row.includes("ä"));
 
 // A board without a number row gets its own Shift pairings and no AltGr characters at all.
 export const hasNumberRow = (model: LayoutModel): boolean =>
@@ -39,15 +40,29 @@ export const ansiShiftPairs: ShiftPairs = byAnyMember([
     "`~", "-_", "=+", "[{", "]}", "\\|", ";:", "'\"", ",<", ".>", "/?",
 ]);
 
+/*
+    The standard German pairings, for the keys an ANSI-shaped board has – the ISO `<>|` key is on
+    none of our boards. Two of these keys are drawn by another character than their base one:
+    `'` for the `#` key and the frame mapping's `` `~ `` for the `^°` key (see the Prerequisites
+    section of the doc), so those labels pair to the same key.
+ */
+export const germanShiftPairs: ShiftPairs = {
+    "1": "1!", "2": "2\"", "3": "3§", "4": "4$", "5": "5%",
+    "6": "6&", "7": "7/", "8": "8(", "9": "9)", "0": "0=",
+    "^": "^°", "`~": "^°", "`": "^°", "~": "^°",
+    "ß": "ß?", "´": "´`", "+": "+*", "#": "#'", "'": "#'",
+    ",": ",;", ".": ".:", "-": "-_",
+};
+
 // Without a number row the ANSI pairings make no sense, so these seven replace them.
-export const numberlessShiftPairs: ShiftPairs = {
+export const numberlessEnglishShiftPairs: ShiftPairs = {
     ",": ",;", ".": ".:", "/": "/?",
     ";": "'\"", "'": "-!", "-": "$%", "+": "&+",
 };
 
-// The 32-key flex maps place only four of those characters, and `/?` lands on whichever of
-// `+` and `/` the key map happens to draw.
-export const numberless32ShiftPairs: ShiftPairs = {
+// A German key map places only four of those characters, and `/?` lands on whichever of
+// `+` and `/` it happens to draw.
+export const numberlessGermanShiftPairs: ShiftPairs = {
     ",": ",;", ".": ".:", "-": "-!", "+": "/?", "/": "/?",
 };
 
@@ -65,23 +80,16 @@ export const compressedShiftPairs: ShiftPairs = {
     "`": "`~", "`~": "`~", "[": "[{", "]": "]}", "\\": "\\|",
 };
 
-/*
-    The 32-key flex maps with a number row follow the German keymap, whose Shift pairings we do
-    not have yet (see the "Next parts" list in docs/key-levels.md). Until then they show no Shift
-    level at all rather than the ANSI one, which would be wrong on most of their keys.
- */
-const noShiftPairs: ShiftPairs = {};
-
-// The compressed Shift level is defined for the 30-key flex maps only.
-export const hasCompressedLevel = (keymapType: KeymapTypeId | undefined, hasNumberRow: boolean): boolean =>
-    hasNumberRow && (keymapType === KeymapTypeId.Ansi30 || keymapType === KeymapTypeId.Thumb30);
+// The compressed Shift level is defined for the English character set only.
+export const hasCompressedLevel = (charMap: string[][], hasNumberRow: boolean): boolean =>
+    hasNumberRow && !isGermanCharMap(charMap);
 
 export const shiftPairsFor = (
-    keymapType: KeymapTypeId | undefined, hasNumberRow: boolean, compressed = false
+    charMap: string[][], hasNumberRow: boolean, compressed = false
 ): ShiftPairs =>
-    compressed && hasCompressedLevel(keymapType, hasNumberRow) ? compressedShiftPairs
-        : !hasNumberRow ? (is32KeyMap(keymapType) ? numberless32ShiftPairs : numberlessShiftPairs)
-            : is32KeyMap(keymapType) ? noShiftPairs : ansiShiftPairs;
+    compressed && hasCompressedLevel(charMap, hasNumberRow) ? compressedShiftPairs
+        : !hasNumberRow ? (isGermanCharMap(charMap) ? numberlessGermanShiftPairs : numberlessEnglishShiftPairs)
+            : isGermanCharMap(charMap) ? germanShiftPairs : ansiShiftPairs;
 
 /*
     Some layout models label the `=+` key with its shifted character (see the Prerequisites
@@ -103,7 +111,7 @@ const compressionCycles = [")=';", "(-/"];
 export function compressCharMap(
     charMap: string[][], model: LayoutModel, keymapType?: KeymapTypeId
 ): string[][] {
-    if (!keymapType || !hasCompressedLevel(keymapType, hasNumberRow(model))) return charMap;
+    if (!keymapType || !hasCompressedLevel(charMap, hasNumberRow(model))) return charMap;
     const generic = permute(normaliseEqualsKey(charMap), ...compressionCycles) as string[][];
     const cycles = model.compressedCycles?.[keymapType] ?? [];
     // A separate pass: permute resolves every cycle against the map it is given, so the layout
@@ -250,7 +258,7 @@ function placeDigits(result: LevelMap, positions: KeyPosition[]) {
 // The AltGr level: navigation on `navSide` and the AltGr characters on the other hand,
 // which a layout without a number row does not get at all.
 export function getThirdLevel(
-    model: LayoutModel, positions: KeyPosition[], navSide: Hand, keymapType?: KeymapTypeId
+    model: LayoutModel, positions: KeyPosition[], charMap: string[][], navSide: Hand
 ): LevelMap {
     const result = emptyLevelMap(model);
     const charSide = navSide === Hand.Left ? Hand.Right : Hand.Left;
@@ -264,8 +272,8 @@ export function getThirdLevel(
     if (hasNumberRow(model)) {
         placeBlock(result, model, positions, charSide, charSide === Hand.Right ? altGrRight : altGrLeft);
         placeDigits(result, positions);
-        if (is32KeyMap(keymapType)) {
-            // The AltGr assignment of the flex map position [Upper, 0] – `q` in qwertz.
+        if (isGermanCharMap(charMap)) {
+            // The AltGr assignment of the key map position [Upper, 0] – `q` in qwertz.
             const key = resolveSlot(model, positions, Hand.Left, KeyboardRows.Upper, 4);
             if (key) result[key.row][key.col] = "@";
         }
@@ -281,12 +289,12 @@ export interface KeyLevels {
 
 export const getKeyLevels = (
     model: LayoutModel, positions: KeyPosition[], charMap: string[][], navSide: Hand,
-    keymapType?: KeymapTypeId, compressed = false
+    compressed = false
 ): KeyLevels => {
-    const pairs = shiftPairsFor(keymapType, hasNumberRow(model), compressed);
+    const pairs = shiftPairsFor(charMap, hasNumberRow(model), compressed);
     return {
         base: getBaseLevel(charMap, pairs),
         shift: getShiftLevel(charMap, pairs),
-        third: getThirdLevel(model, positions, navSide, keymapType),
+        third: getThirdLevel(model, positions, charMap, navSide),
     };
 };

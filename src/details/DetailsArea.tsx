@@ -36,7 +36,7 @@ import {
     TRADEOFF_SAME_FINGER_COLOR
 } from "../layout/TradeoffDiagram.tsx";
 import {sum} from "../library/math.ts";
-import {hasCompressedLevel, hasNumberRow} from "../mapping/key-levels.ts";
+import {hasCompressedLevel, hasNumberRow, isGermanCharMap} from "../mapping/key-levels.ts";
 import {qwertyMapping} from "../mapping/baseMappings.ts";
 import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
 
@@ -426,8 +426,8 @@ interface ShiftLevelsDetailsProps {
 }
 
 export function ShiftLevelsDetails({layout, mapping, compressed}: ShiftLevelsDetailsProps) {
-    const keymapType = findMatchingKeymapType(layout, mapping)?.typeId;
-    const showsCompressed = compressed && hasCompressedLevel(keymapType, hasNumberRow(layout));
+    const charMap = fillMapping(layout, mapping)!;
+    const showsCompressed = compressed && hasCompressedLevel(charMap, hasNumberRow(layout));
     return <>
         <p>
             Each character key can carry three levels: the character it inserts on its own, the one it inserts
@@ -443,12 +443,20 @@ export function ShiftLevelsDetails({layout, mapping, compressed}: ShiftLevelsDet
                 <code>9/</code> and <code>0?</code> replace the parentheses. The two keys this frees get{" "}
                 <code>(&lt;</code> and <code>)&gt;</code>, whose characters the AltGr level carries anyway.
             </p>
-            : <p>
-                <b>Standard</b> on the 30-key mappings means the US ANSI Shift level: <code>1!</code>{" "}
-                <code>2@</code> … <code>,&lt;</code> <code>.&gt;</code> <code>/?</code>. It follows the key map
-                rather than the board, so a mapping that moves its punctuation around takes its Shift
-                characters along. The 32-key mappings follow the German keymap, whose pairings are not in yet.
-            </p>
+            : isGermanCharMap(charMap)
+                ? <p>
+                    <b>Standard</b> on a German key map means the standard German Shift level:{" "}
+                    <code>1!</code> <code>2"</code> … <code>ß?</code> <code>,;</code> <code>.:</code>{" "}
+                    <code>-_</code>. It follows the key map rather than the board, so a mapping that moves
+                    its punctuation around takes its Shift characters along. The characters of the ISO{" "}
+                    <code>&lt;&gt;</code> key, which none of these boards has, live on the AltGr level.
+                </p>
+                : <p>
+                    <b>Standard</b> on an English key map means the US ANSI Shift level: <code>1!</code>{" "}
+                    <code>2@</code> … <code>,&lt;</code> <code>.&gt;</code> <code>/?</code>. It follows the key
+                    map rather than the board, so a mapping that moves its punctuation around takes its Shift
+                    characters along.
+                </p>
         }
         {!hasNumberRow(layout) && <p>
             This board has no number row, so it gets seven pairs of its own – <code>,;</code>{" "}

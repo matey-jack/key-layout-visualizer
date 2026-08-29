@@ -17,6 +17,7 @@ import {
     altGrRight,
     compressCharMap,
     compressedShiftPairs,
+    germanShiftPairs,
     getBaseLevel,
     getKeyLevels,
     getShiftLevel,
@@ -25,8 +26,8 @@ import {
     hasNumberRow,
     navLeft,
     navRight,
-    numberless32ShiftPairs,
-    numberlessShiftPairs,
+    numberlessEnglishShiftPairs,
+    numberlessGermanShiftPairs,
     resolveSlot,
     shiftPairFor,
 } from "./key-levels.ts";
@@ -45,8 +46,7 @@ function shiftLevelByLabel(model: LayoutModel, mappingName?: string): Record<str
     const mapping = mappingFor(model, mappingName);
     const charMap = fillMapping(model, mapping)!;
     const positions = getKeyPositions(model, false, charMap);
-    const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
-    const levels = getKeyLevels(model, positions, charMap, Hand.Left, keymapType);
+    const levels = getKeyLevels(model, positions, charMap, Hand.Left);
     const result: Record<string, string> = {};
     positions.forEach((p) => {
         const shift = levels.shift[p.row][p.col];
@@ -65,7 +65,7 @@ function compressedKeys(model: LayoutModel, mappingName?: string) {
     const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
     const charMap = compressCharMap(fillMapping(model, mapping)!, model, keymapType);
     const positions = getKeyPositions(model, false, charMap);
-    const levels = getKeyLevels(model, positions, charMap, Hand.Left, keymapType, true);
+    const levels = getKeyLevels(model, positions, charMap, Hand.Left, true);
     return positions
         .filter((p) => levels.shift[p.row][p.col])
         .map((p) => ({
@@ -85,9 +85,9 @@ function compressedLevelByLabel(model: LayoutModel, mappingName?: string): Recor
 // The third level as a plain label -> character map, which is how the diagrams read.
 function thirdLevelByLabel(model: LayoutModel, navSide: Hand, mappingName?: string): Record<string, string> {
     const mapping = mappingFor(model, mappingName);
-    const positions = getKeyPositions(model, false, fillMapping(model, mapping)!);
-    const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
-    const level = getThirdLevel(model, positions, navSide, keymapType);
+    const charMap = fillMapping(model, mapping)!;
+    const positions = getKeyPositions(model, false, charMap);
+    const level = getThirdLevel(model, positions, charMap, navSide);
     const result: Record<string, string> = {};
     positions.forEach((p) => {
         const char = level[p.row][p.col];
@@ -205,18 +205,18 @@ describe("compressed Shift pairings", () => {
 });
 
 /*
-    The compression is a permutation over the punctuation keys every 30-key board carries, so it
+    The compression is a permutation over the punctuation keys every English board carries, so it
     has to come out complete on all of them: five base punctuation characters plus the redundant
     `(` and `)`.
  */
-describe("the compressed level comes out complete on every 30-key board", () => {
+describe("the compressed level comes out complete on every English board", () => {
     const combos = allLayoutModels.flatMap((model) =>
         allMappings
             .filter((m) => hasMatchingMapping(model, m))
-            .filter((m) => hasCompressedLevel(findMatchingKeymapType(model, m)!.typeId, hasNumberRow(model)))
+            .filter((m) => hasCompressedLevel(fillMapping(model, m)!, hasNumberRow(model)))
             .map((m) => [`${model.name} / ${m.name}`, model, m.name] as const));
 
-    it("covers the 30-key flex maps", () => {
+    it("covers every English key map with a number row", () => {
         expect(combos.length).toBeGreaterThan(1500);
     });
 
@@ -282,14 +282,14 @@ describe("numberless Shift pairings", () => {
     const german = "Qwertz – German Standard";
 
     it("finds a pairing by the label the key map draws, which the base level then replaces", () => {
-        expect(shiftPairFor(";", numberlessShiftPairs)).toBe("'\"");
-        expect(shiftPairFor("+", numberlessShiftPairs)).toBe("&+");
+        expect(shiftPairFor(";", numberlessEnglishShiftPairs)).toBe("'\"");
+        expect(shiftPairFor("+", numberlessEnglishShiftPairs)).toBe("&+");
         // and the ANSI meaning of that label no longer applies
-        expect(shiftPairFor(":", numberlessShiftPairs)).toBeUndefined();
-        expect(shiftPairFor("=", numberlessShiftPairs)).toBeUndefined();
+        expect(shiftPairFor(":", numberlessEnglishShiftPairs)).toBeUndefined();
+        expect(shiftPairFor("=", numberlessEnglishShiftPairs)).toBeUndefined();
     });
 
-    it("replaces the ANSI set on the 30-key maps", () => {
+    it("replaces the ANSI set on the English maps", () => {
         expect(shiftLevelByLabel(numberless)).toEqual({
             ",": ",;", ".": ".:", "/": "/?",
             ";": "'\"", "'": "-!", "-": "$%", "+": "&+",
@@ -301,7 +301,7 @@ describe("numberless Shift pairings", () => {
             .toEqual(shiftLevelByLabel(numberless));
     });
 
-    it("keeps only four of the pairs on the 32-key maps", () => {
+    it("keeps only four of the pairs on the German maps", () => {
         // `/?` goes on the `+` key here, since that is the one of `+` and `/` this board draws.
         expect(shiftLevelByLabel(numberless, german)).toEqual({
             ",": ",;", ".": ".:", "-": "-!", "+": "/?",
@@ -309,8 +309,8 @@ describe("numberless Shift pairings", () => {
     });
 
     it("would put `/?` on a `/` key just as readily", () => {
-        expect(shiftPairFor("/", numberless32ShiftPairs)).toBe("/?");
-        expect(shiftPairFor("+", numberless32ShiftPairs)).toBe("/?");
+        expect(shiftPairFor("/", numberlessGermanShiftPairs)).toBe("/?");
+        expect(shiftPairFor("+", numberlessGermanShiftPairs)).toBe("/?");
     });
 
     it("leaves the ANSI pairings alone on the same board with a number row", () => {
@@ -388,24 +388,10 @@ describe("AltGr number row", () => {
     });
 });
 
-describe("the 32-key `@`", () => {
+describe("the German `@`", () => {
     const german = "Qwertz – German Standard";
 
-    it("comes with no Shift level, since we have no German pairings yet", () => {
-        const model = majorErgoslatLayoutModel(false);
-        const mapping = mappingFor(model, german);
-        const charMap = fillMapping(model, mapping)!;
-        const positions = getKeyPositions(model, false, charMap);
-        const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
-        const levels = getKeyLevels(model, positions, charMap, Hand.Left, keymapType);
-        expect(levels.shift.flat().filter((c) => c)).toEqual([]);
-        // and no base override either: the ANSI pairs are what would drive it
-        expect(levels.base.flat().filter((c) => c)).toEqual([]);
-        // the AltGr level is unaffected
-        expect(levels.third.flat()).toContain("@");
-    });
-
-    it("sits on the flex map's first upper row key", () => {
+    it("sits on the key map's first upper row key", () => {
         const level = thirdLevelByLabel(majorErgoslatLayoutModel(false), Hand.Left, german);
         expect(level["q"]).toBe("@");
     });
@@ -415,9 +401,47 @@ describe("the 32-key `@`", () => {
         expect(level["q"]).toBe("@");
     });
 
-    it("is not on the 30-key maps", () => {
+    it("is not on the English maps", () => {
         const level = thirdLevelByLabel(majorErgoslatLayoutModel(false), Hand.Left);
         expect(Object.values(level)).not.toContain("@");
+    });
+});
+
+describe("standard German Shift pairings", () => {
+    const german = "Qwertz – German Standard";
+
+    /*
+        The ANSI board with the qwertz map is the combination that really is a German keyboard:
+        the other boards keep frame punctuation keys that standard German does not have, and those
+        stay unpaired until the German maps are reworked.
+     */
+    it("cover every punctuation key of the German ANSI board", () => {
+        expect(shiftLevelByLabel(ansiIBMLayoutModel, german)).toEqual({
+            "1": "1!", "2": "2\"", "3": "3§", "4": "4$", "5": "5%",
+            "6": "6&", "7": "7/", "8": "8(", "9": "9)", "0": "0=",
+            "`~": "^°", "ß": "ß?", "´": "´`", "+": "+*", "#": "#'",
+            ",": ",;", ".": ".:", "-": "-_",
+        });
+    });
+
+    it("replace the base label where the key map draws another character of the key", () => {
+        // the frame mapping's `` `~ `` key is the German `^°` key
+        expect(shiftPairFor("`~", germanShiftPairs)).toBe("^°");
+        // and a German map that draws `'` means the `#` key
+        expect(shiftPairFor("'", germanShiftPairs)).toBe("#'");
+    });
+
+    it("leave the English maps on the same board with the ANSI pairings", () => {
+        const level = shiftLevelByLabel(ansiIBMLayoutModel);
+        expect(level["2"]).toBe("2@");
+        expect(level["9"]).toBe("9(");
+        expect(level["'"]).toBe("'\"");
+    });
+
+    it("come with no compressed level, which is defined for English only", () => {
+        const model = ansiIBMLayoutModel;
+        expect(hasCompressedLevel(fillMapping(model, mappingFor(model, german))!, true)).toBe(false);
+        expect(hasCompressedLevel(fillMapping(model, mappingFor(model))!, true)).toBe(true);
     });
 });
 
@@ -500,7 +524,8 @@ describe("every block entry is placed on every layout model", () => {
     it.each(allLayoutModels.map((m) => [m.name, m] as const))("%s places the whole lower row", (_name, model) => {
         const positions = positionsOf(model);
         for (const navSide of [Hand.Left, Hand.Right]) {
-            const chars = Object.values(getThirdLevel(model, positions, navSide).flat().filter((c) => c));
+            const charMap = fillMapping(model, mappingFor(model))!;
+            const chars = Object.values(getThirdLevel(model, positions, charMap, navSide).flat().filter((c) => c));
             for (const char of lowerRowFallbackChars) {
                 expect(chars, `nav on the ${Hand[navSide]} hand`).toContain(char);
             }

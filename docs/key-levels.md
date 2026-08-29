@@ -3,7 +3,7 @@
 Status: in progress
 
 Larger Scope:
- - Show shift pairings on the keyboard: works for English, TODO for German
+ - Show shift pairings on the keyboard: the ANSI ones for English, the standard German ones for German.
  - Show an AltGr layer that is the same no matter the language of the base character set: works for all.
  - Optionally show a modified ("compressed") Shift pairing (differing only in a few punctuation keys) 
    which helps typing on smaller keyboards (and reduces finger movement on larger ones). 
@@ -26,16 +26,14 @@ Done parts:
  - Number row AltGr mappings, including the `@` character for German keymaps
  - [English and German] Ergoslat numberless modified Shift pairings (no switching button)
  - [English] Compressed Shift level and the "Shift level" [button group](#button-groups)
+ - The character set picks the pairings, so every keymap of a layout model gets a Shift level
+ - [German] Standard German Shift pairings
  - Fine-tune the compressed keymaps to have the parentheses pairs
  - Nav layer fix: when it collides with the Shift key, move it over by one key, instead of removing the scrolling keys.
 
 Next parts:
-- Apply the character-set rule above in the code; this enables all the model-specific keymaps
-  to receive Shift pairings. (And all the English ones to receive compression; although not fine-tuned.)
-
- - introduce Standard German Shift pairings.
-
- - fix some of the German keymaps.
+ - fix some of the German keymaps: those whose frame mapping keeps punctuation keys that standard
+   German does not have (`/`, `=`, `[`, `]`, `\`), which therefore stay unpaired.
 
  - various rewordings: especially frame the entire feature as the progressive omission of keys:
    + first add redundant AltGr level
@@ -312,7 +310,10 @@ but our frame mappings in the layout models already did the hard part of the tra
 AltGr key map also does its part by including not only all characters from the standard German AltGr level, 
 but also the three characters from the missing `<>|` ISO key.
 
-So all we need to do to get a relatively accurate (on the base and Shift levels) and working (on the AltGr level) key map is to add the standard German Shift pairings for the digits and base-level punctuation.
+So the standard German Shift pairings for the digits and base-level punctuation are all it takes to get a key map
+that is relatively accurate on the base and Shift levels and working on the AltGr level.
+They cover the keys an ANSI-shaped board has; a board that keeps a frame punctuation key standard German does not
+have (`/`, `=`, `[`, `]`, `\`) leaves that key unpaired, which is what the "fix the German keymaps" work item is about.
 
 TODO: the compressed punctuation will be quite different, since the base-layer punctuation in Standard German is already compressed because there are no `;:` and `/?` keys. 
 What we need to do instead is to make better use of the Shift level number row by placing `@` instead of `§`.
@@ -473,11 +474,10 @@ than disabled.
    Available on every layout model.
  - **Shift level**: "standard" / "compressed" – "standard" is the pairing of the character set the
    current mapping uses: US ANSI for English keymaps, standard German for German ones.
-   "compressed" is the reduction to 5 punctuation keys, described for
-   [English](#english-sample-shift-mapping--the-compressed-shift-level) and for
-   [German](#german-standard-and-compressed-shift-levels) maps.
-   Hidden on the [numberless Ergoslat](#special-case-ergoslat-numberless), which has only its own
-   set and no standard pairing worth switching to.
+   "compressed" is the [reduction to 5 punctuation keys](#english-sample-shift-mapping--the-compressed-shift-level).
+   Hidden where there is nothing to switch to: on German keymaps, whose compressed level is still
+   [to be defined](#german-standard-and-compressed-shift-levels), and on the
+   [numberless Ergoslat](#special-case-ergoslat-numberless), which has only its own set.
  - **Extra keys**: "punctuation" / "navigation" – what becomes of the keys that the compression
    frees: the [remaining punctuation characters](#english-a-compatible-punctuation-map-for-full-size-keyboards)
    or [extra nav keys](#replacing-freed-punctuation-keys-with-extra-nav-keys).

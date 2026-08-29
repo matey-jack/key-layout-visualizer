@@ -124,9 +124,9 @@ function bracketKeys(model: LayoutModel, mappingName: string, expectedType?: str
     if (!mapping || !hasMatchingMapping(model, mapping)) return undefined;
     const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
     if (expectedType && keymapType !== expectedType) return undefined;
-    if (!hasCompressedLevel(keymapType, hasNumberRow(model))) return undefined;
     const filled = fillMapping(model, mapping);
     if (!filled) return undefined;
+    if (!hasCompressedLevel(filled, hasNumberRow(model))) return undefined;
     const charMap = compressCharMap(filled, model, keymapType);
     const positions = getKeyPositions(model, false, charMap, defaultTotalWidth);
     const open = positions.find((p) => p.label === "(");

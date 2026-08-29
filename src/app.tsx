@@ -11,7 +11,7 @@ import {OptionButton} from "./components/OptionButton.tsx";
 import {OptionGroup} from "./components/OptionGroup.tsx";
 import {DetailsArea} from "./details/DetailsArea.tsx";
 import {LayoutArea} from "./layout/LayoutArea.tsx";
-import {fillMapping, findMatchingKeymapType} from "./layout/layout-functions.ts";
+import {fillMapping} from "./layout/layout-functions.ts";
 import {hasCompressedLevel, hasNumberRow} from "./mapping/key-levels.ts";
 import {MappingList} from "./mapping/MappingArea.tsx";
 import {getKlc} from "./mapping/msKlcTemplate.ts";
@@ -73,8 +73,8 @@ interface VisualizationSwitchesProps {
 // The switches that configure the key levels visualization, in their own container right of the
 // viz type buttons. A group whose choice does not exist on the current key map is left out.
 function LevelSwitches({appState}: { appState: AppState }) {
-    const keymapType = findMatchingKeymapType(appState.layoutModel.value, appState.mapping.value)?.typeId;
-    const compressible = hasCompressedLevel(keymapType, hasNumberRow(appState.layoutModel.value));
+    const charMap = fillMapping(appState.layoutModel.value, appState.mapping.value);
+    const compressible = !!charMap && hasCompressedLevel(charMap, hasNumberRow(appState.layoutModel.value));
     return <div class="level-switches">
         <NavSideOptions navSide={appState.navSide}/>
         {compressible && <ShiftLevelOptions shiftCompressed={appState.shiftCompressed}/>}
