@@ -499,11 +499,12 @@ describe("every block entry is placed on every layout model", () => {
 
     it.each(allLayoutModels.map((m) => [m.name, m] as const))("%s places the whole lower row", (_name, model) => {
         const positions = positionsOf(model);
-        [Hand.Left, Hand.Right].forEach((navSide) => {
+        for (const navSide of [Hand.Left, Hand.Right]) {
             const chars = Object.values(getThirdLevel(model, positions, navSide).flat().filter((c) => c));
-            lowerRowFallbackChars.forEach((char) =>
-                expect(chars, `nav on the ${Hand[navSide]} hand`).toContain(char));
-        });
+            for (const char of lowerRowFallbackChars) {
+                expect(chars, `nav on the ${Hand[navSide]} hand`).toContain(char);
+            }
+        }
     });
 });
 

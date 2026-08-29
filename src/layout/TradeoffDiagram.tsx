@@ -207,9 +207,17 @@ export function TradeoffDiagram({layout, selectedMapping, onSelectMapping}: Trad
                 const labelY = PLOT_BOTTOM + 38 + stackRow * lineHeight;
                 const showNumber = stackRow === 0;
                 return (
+                    // biome-ignore lint/a11y/useSemanticElements: an SVG <g> cannot be a <button>
                     <g key={d.mapping.techName ?? d.mapping.name}
                        class={"tradeoff-point-group" + (isSelected ? " selected" : "")}
-                       onClick={() => onSelectMapping(d.mapping)}>
+                       role="button" tabindex={0} aria-label={d.mapping.name}
+                       onClick={() => onSelectMapping(d.mapping)}
+                       onKeyDown={(e) => {
+                           if (e.key === "Enter" || e.key === " ") {
+                               e.preventDefault();
+                               onSelectMapping(d.mapping);
+                           }
+                       }}>
                         {/* connector line from x-axis to highest point */}
                         <line x1={x} x2={x} y1={PLOT_BOTTOM} y2={topY} class="tradeoff-connector"/>
                         {/* x-axis tick mark */}

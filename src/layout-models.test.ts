@@ -258,24 +258,24 @@ describe("key labels", () => {
 
     allLayoutModels.forEach((model) => {
         it(`frame mappings of ${model.name} use only known symbols and characters`, () => {
-            Object.entries(model.frameMappings).forEach(([keymapType, frameMapping]) =>
-                frameMapping.forEach((row, r) =>
-                    row.forEach((entry, c) => {
-                        if (typeof entry !== "string") return;
+            for (const [keymapType, frameMapping] of Object.entries(model.frameMappings)) {
+                for (const [r, row] of frameMapping.entries()) {
+                    for (const [c, entry] of row.entries()) {
+                        if (typeof entry !== "string") continue;
                         expect(unknownGlyphs(entry), `${keymapType} [${r},${c}] = "${entry}"`).toEqual([]);
-                    })
-                )
-            );
+                    }
+                }
+            }
         });
     });
 
     allMappings.forEach((mapping) => {
         it(`flex mapping ${mapping.name} uses only known symbols and characters`, () => {
-            Object.entries(mapping.mappings).forEach(([keymapType, rows]) =>
-                rows.forEach((row, r) =>
-                    expect(unknownGlyphs(row), `${keymapType} row ${r} = "${row}"`).toEqual([])
-                )
-            );
+            for (const [keymapType, rows] of Object.entries(mapping.mappings)) {
+                for (const [r, row] of rows.entries()) {
+                    expect(unknownGlyphs(row), `${keymapType} row ${r} = "${row}"`).toEqual([]);
+                }
+            }
         });
     });
 });

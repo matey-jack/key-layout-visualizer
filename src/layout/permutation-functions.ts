@@ -90,11 +90,11 @@ function cellsMatching(
     pred: (value: FrameMappingEntry, r: number, c: number) => boolean
 ): Coord[] {
     const matches: Coord[] = [];
-    mapping.forEach((row, r) =>
-        row.forEach((value, c) => {
+    for (const [r, row] of mapping.entries()) {
+        for (const [c, value] of row.entries()) {
             if (pred(value, r, c)) matches.push([r, c]);
-        })
-    );
+        }
+    }
     return matches;
 }
 
@@ -243,12 +243,12 @@ function cellKey(value: FrameMappingEntry, gridRow: number): string | null {
 function frameDiff(base: FrameMapping, result: FrameMapping): { entered: Set<string>; exited: Set<string> } {
     const count = (mapping: FrameMapping) => {
         const m = new Map<string, number>();
-        mapping.forEach((row, r) =>
-            row.forEach((v) => {
+        for (const [r, row] of mapping.entries()) {
+            for (const v of row) {
                 const key = cellKey(v, r);
                 if (key) m.set(key, (m.get(key) ?? 0) + 1);
-            })
-        );
+            }
+        }
         return m;
     };
     const b = count(base);

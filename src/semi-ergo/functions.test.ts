@@ -129,7 +129,7 @@ describe('pairKeysByPosition', () => {
         // all labeled keys pair with their label match
         const labeled = movements.filter(m => m.prev?.label && m.next?.label);
         expect(labeled).toHaveLength(6);
-        labeled.forEach(m => expect(m.prev!.label).toEqual(m.next!.label));
+        for (const m of labeled) expect(m.prev!.label).toEqual(m.next!.label);
         // edge unlabeled keys exit
         const exiting = movements.filter(m => m.next === undefined);
         expect(exiting).toHaveLength(2);
