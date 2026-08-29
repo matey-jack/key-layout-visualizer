@@ -25,6 +25,11 @@ needs more planning:
  - [32-key] Fix basic Shift level
  - NOT_READY: [32-key] Compressed Shift level for ansi32/thumb32 on small keyboards, including the 4-punctuation-key version for the Ergoslat.
 
+TODO: rewrite the document to introduce the AltGr level first. 
+Because (at least in the ANSI English keymap) this allows to remove four punctuation keys without changing and Shift-pairings.
+It's only on keyboards that remove all six punctuation keys that we want to modify Shift pairings to keep prose punctuation in easy reach.
+
+
 # Background and Motivation
 
 The US ANSI keyboard layout has 47 character keys, each assigned two different characters:
@@ -74,6 +79,14 @@ the "base level only" keymaps take some liberties with both:
 German makes it worse, because my optimized German Shift pairing actually swap `'` back to the base layer.
 But at least that is done by the explicit ["Shift level" button group](#button-groups). 
 
+Keymap types: how to know when to apply German or English Shift pairings? 
+Throughout this document I use 30-key (English) vs 32-key (German) as the distinction and that's always correct for those keymap types,
+but it leaves out the layout model specific keymap types.
+Probably a better distinction would be to simply check each total keymap (after merging frame and flex parts) for a German character like `ä`.
+We will need to test this rule and if it works, change the wording everywhere in this doc.
+And since we are still fixing the German frame mapping punctuation for a lot of layout models, 
+we should recognize when no set Shift pairing fits and in this case, rather display none instead of a partial one. 
+
 ## How many punctuation slots are there?
 
 US ANSI has 32 punctuation characters in total: 11 on the base level
@@ -89,17 +102,27 @@ Those real-life keyboards often map no characters to the thumb keys and bottom r
 
         26 letters 
       + 10 digit keys (which each carry a punctuation character on the Shift level)
-      +  5 punctuation keys.
+      +  5 pure punctuation keys.
        ---
       = 41 character keys (out of between in most models 52 to 58 keys in total)
 
 In terms of assignable punctuation characters, this yields:
-- 5 on the base level (the 5 "punctuation keys"),
+- 5 on the base level (the 5 "(pure) punctuation keys"),
 - 15 on the Shift level (10 shifted digits + the 5 shifted punctuation keys),
 - and thus 12 of the 32 total punctuation characters have to move to the AltGr level.
 
+I use the term "pure punctuation key" to emphasize that those keys have punctuation characters on the base level 
+(and usually also the other levels). 
+Knowing that in the keymap shown here, the digit keys have digits only on the base level, 
+while the other two levels have punctuation, which one could read as them also being "majority punctuation keys".
+But for our own sanity's good, let's keep calling them digit keys.
+
 My personal Iris CE keyboard (with which I created most of this app) is a typical example: 
 it has 8 thumb keys, but only 6 of them are usable without making a big hand movement.
+There are no bottom row keys practical for adding punctuation, so the total usable key space is 41.
+It only grows to 42, if we map a letter to a thumb key.
+(Although there are many thumb keys and the index fingers handle up to six keys each, 
+my experience showed that only a single thumb letter is possible on one thumb, while the other thumb handles the space key.)
 
 When using this 41 character map on a keyboard with more than 52 keys, 
 we'll make sure that all the characters are mapped on the number and letter rows.
@@ -167,9 +190,9 @@ While this suggests that `#` and `^` should be moved to the AltGr layer instead 
 - more generally, reassigning the Shift positions on `9` and `0` gives us two adjacent spots on the right side where most of the punctuation characters live, so that characters don't move very far and part of the muscle memory stays intact.
 - and finally, placing the round parentheses in the middle of the AltGr home row actually make them more easily accessible than on the top right, especially when one wants to type both of them in sequence. Since the pinky finger is too short to comfortably reach the number row, their standard position up there makes the ring finger type both of them.
 
-Since we have one keyboard layout model with only 4 pure punctuation keys, we do also map `^` and `=` to the AltGr layer (using Shift+6 for the `+` character).
-Those mappings are practical and memorable (`=` near `<>` and `+` near `*/`), but since most small keyboards actually have at least 5 keys for pure punctuation,
-we opt for preserving muscle memory and reducing the need to use the AltGr layer. ==> The AltGr mappings are redundant and the 5 punctuation keys are preserved.
+When we extend the compressed punctuation to other languages, the `^` character will indeed have to move, 
+but we are not there yet.
+
 
 ### Special Case: Ergoslat numberless
 
@@ -269,25 +292,77 @@ but also the three characters from the missing `<>|` ISO key.
 
 So all we need to do to get a relatively accurate (on the base and Shift levels) and working (on the AltGr level) key map is to add the standard German Shift pairings for the digits and base-level punctuation.
 
-TODO: the compressed punctuation will be quite different, since the base-layer punctuation in Standard German is already compressed because there are no `;:` and `/?` keys. 
-What we need to do instead is to make better use of the Shift level number row by placing `@` instead of `§`.
-And some more changes TBD.
-On the smallest keyboards I can only think of workable solutions using thumb-letter layouts, since without using the bottom row, only two keys would be left for punctuation!
+### Fixing Standard German punctuation keys
 
-### [32-key] Special case compression to only 4 punctuation keys for the Ergoslat
+A lot of thumb32 frame maps have simply copied the English punctuation key labels. 
+We need to change them all to German and do some of this manually to create a well-balanced key map for the specific layout models.
+We also need to check if any of the frame mappings has some intentional diversion from German or English punctuation
+(like using `+` for `=` or using `'` for the German `#` key) and probably keep those diversions.
 
-TODO: this doesn't make sense, since the punctuation keys for the 32-key flex maps are based on the standard German keymap.
-We first need to define the entire Shifted punctuation for this keymap and then base the Ergoslat special-case on that.
+TODO: start to do this manually for the Split Ortho and all the Thumbs Up models, which are my current focus.
+From the learnings there, we can expand to the other layouts.
 
-The Ergoslat has only 7 punctuation keys when using the English 30-key flex maps,
-which leaves only 4 punctuation keys for the international 32-key flex maps.
-Luckily, most of the above concept with small modifications:
-+ omit the `=+` key
-+ map the number row Shift level as `6+ 7& 8* 9/ 0?` – that's only one more keycap (the `6`) that needs to be replaced.
-+ map `=` and `^` on the AltGr level, as already explained elsewhere in this doc.
+### <<not for implementation, planning only>> Compressed German Shift punctuation
 
-This changes the punctuation character distribution to 4, 14, 14 on base, Shift, and AltGr levels,
-but thanks to the redundant AltGr mappings, doesn't add that much complexity.
+If we used the same constraint of only 41 character keys that we have for the English alphabet and used one of those keys for each German letter, including `äöüß`, there would be exactly one single key for pure punctuation left.
+Therefore, we start be tweaking the rules a bit:
+ - first, move `ß` to the Shift level. This works nicely, because the letter is rare enough and has no majuscule.
+   (Also it's standard position is in the number row and reaching up there during typing of text already has a muscle-memory association with holding the Shift key.)
+ - second, assume a total of 42 character keys on the board. I personally get to this number by typing the letter `e` with my thumb and highly recommend this. 
+
+Given those assumptions, we can now keep 3 punctuation keys and my choice easily falls on `,;`, `.:`, and `-_`.
+Rationale:
+ - Those are in flex map positions, which means usually mapped close to home positions. (Although low-Shift and row-stagger usually move `-_` to the center.)
+ - Those are also the first three punctuation keys from our English set.
+ - Of the remaining English pure punctuation keys, the apostrophe is super-important in English, but not so in German, and the `=+` key (or it's German `+*` equivalent can easily be counted as technical punctuation, not essential for writing prose).
+
+We are thus left with two tasks:
+ - Revise the Shift level of the digit row to replace some of the rarer used punctuation with prose punctuation characters that we want to have more accessible.
+ - Revise our existing English AltGr layer to include any remaining punctuation characters that the German set includes on top of English. (We might also omit some if they are so rarely used that nobody would remember their position anyway.)
+
+Note that the idea is to design the German Shift-digit row so that it reuses German keycaps where possible. 
+(For example, German `6&` instead of the English `7&`.)
+But for the AltGr layer, we want to keep German and English aligned as much as possible, because it doesn't follow conventional key labels anyway. (Except that `|` will still pair with `&`, because German's `^` is already mapped elsewhere.)
+
+Standard German Shift digits:
+
+       1! 2" 3§ 4$ 5% 6& 7/ 8 9 0=
+
+Now let's look at all the characters that compression removes from the base and Shift levels and that are not already covered by our ANSI base AltGr layer:
+
+      ß ? + * # ' ´ ° ^
+
+I had already promised to put `ß` on the Shift level and also `?` should go there, because it's among the prose punctuation keys.
+And how much space do we have? Two parens and `=` are already on the base English AltGr layer; 
+the `§` sign is so rarely used by any non-lawyer, that we can move it as well.
+Now, if we place `?` as in the English compressed model (which is also close to its standard German position one key over) 
+and `ß` also close to its standard place, we arrive at this:
+
+       1! 2" 3' 4$ 5% 6& 7/ 8 9ß 0?
+
+Here I also placed `'`, because the position seemed logical. 
+And we are left with placing the following keys on the AltGr level:
+
+      + * # ^      § ´ °
+
+Note that I grouped this list: the former four are also part of the ANSI set and indispensable for computer operation.
+The latter three are German additions that even many Germans don't use, so I decide to leave them out unless a natural spot for them appears.
+
+Remaining questions:
+ - which of the four keys gets to use the Shift+8 spot? Candidates are `+` because it's used in shortcut and pairs with `-`, but also `*` because that would make the English `8*` keycap usable.
+ - where do we place the other keys on the AltGr level?
+ - should be possible dispense with some rarely used keys like `¡  ¢      ¿` that we added to the English AltGr level more for fun than good cause? Indeed, all of those could be placed on the Shift+AltGr level which is less convenient to access, but provides great mnemonics, `¢` pairing with `$` and `€` on the same key, and `¡ ¿` with their conventional counterparts.
+ - In total, this allows us to place `* # ^` on AltGr and `§ ´ °` on ShAltGr.
+
+Observation: The extended AltGr level alone keymap allows removing three punctuation keys from the board without messing with the Shift level: `°^`, `` ´` ``, and the ISO key `<>|`.  
+To remove the three remaining keys `ß?`, `+*`, and `#'` we need to change the Shift level, because each of those keys has at least one character moving there. (We could alternatively map both characters of one of `+*` or `#'` to Shift and the other to AltGr, but I think the above solution is worth it.)
+In any case, this gives us the flexibility to create keymaps with a size from 45 to 47 keys without changing the layers.
+For the sizes 43 and 44, we can decide what to map redundantly on the extra keys (compared to the 42-key map). 
+Something will be redundant on the Shift and base layer, but there's worse things to happen. 
+After all, this app is just showing inspirations and anyone creating their personal 43 or 44 key map could tweak the Shift layer a little more. For 43, I would suggest to simply keep the `+*` key and pair `8#` (or keep the US `3#` and pair `8'`); or keep the `ß?` key if it fits in the digit row (in case you don't have Backspace there!). And for 44, simply keep both!
+
+AltGr and ShAltGr: `3'#£` fits like a glove!
+
 
 
 
@@ -333,12 +408,14 @@ The remaining characters
 are mapped on the index finger with `|` on the same key as `&`, reflecting their relationship in programming languages.
 `\` is below that, while `` `~ `` go to the home row (see below), so that we can place `=` on the lower row.
 This latter placement helps typing bigrams like `<=` and `==>` because it places `=` right next to the `<>` keys.
-(`=` is mapped redundantly to its placement on the Shift layer.)
+(`=` is mapped redundantly to its placement on the Shift layer. 
+So the AltGr placement is pure convenience for the English character set, but it will be needed for other languages,
+where `=` cannot keep its base or Shift level position.)
 
 The whole block, in its default right-hand variant, looks like this
 (columns are the hand's two index columns, then middle, ring, and pinky):
 
-    ^   |   [   ]
+        |   [   ]
           \   {   }
        ~   `   (   )
              =   <   >
@@ -350,11 +427,11 @@ On the left side, everything is mirrored, so that the index finger (not the pink
 Since we already place a lot of AltGr level characters in the number row, 
 we can as well make it complete by filling the entire row. 
 And this follows a character-pairing mechanism again, independent of fingering.
-(Which means that the characters `^   |   [   ]` in the diagram above will be positioned as shown on many layout models,
+(Which means that the characters `|   [   ]` in the diagram above will be positioned as shown on many layout models,
 but not on those which shift the number row around.)
 And we can do this using a lot of mnemonic pairings for the Shift and AltGr characters:
 
-       ¡  ¢  £  €  ‰  ^  |  [  ]  ¿
+       ¡  ¢  £  €  ‰     |  [  ]  ¿
       1! 2@ 3# 4$ 5% 6^ 7& 8* 9/ 0?
 
 Note that this can shift around on larger keyboards that have extra keys in the center of the number row.
