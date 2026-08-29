@@ -11,19 +11,39 @@ Done parts:
  - [30-key and 32-key] Ergoslat numberless modified Shift pairings (no switching button)
  - [30-key] Compressed Shift level and the "Shift level" [button group](#button-groups)
 
+In progress:
+ - Fine-tune the compressed keymaps to have the para
+
 Next parts:
+ - Nav layer fix: when it collides with the Shift key, move it over by one key, instead of removing the scrolling keys.
+
+ - Fix some of the German keymaps; then introduce Standard German Shift pairings.
+
+ - Change 30 vs 32 to German vs English; this enables all of the model-specific keymaps to receive Shift pairings.
+   (And all the English one to receive compression; although not fine-tuned.)
+
+ - various rewordings: especially frame the entire feature as the progressive omission of keys:
+   + first add redundant AltGr level
+   + then remove at will any keys whose characters are fully covered on the AltGr level
+   + for the final two keys to remove, their characters fit better on the Shift level, so we do the "compression".
+   + And the Shift-level characters who get moved by that are already redundant on the AltGr level. tada!
+   + And best of all: since we created two key pairs with brackets, those can nicely be reused as Home/End or PageUp/Down pairs.
+
  - [30-key] Replace redundant Shift keys with Nav keys.
    + includes introduction of the  [button group](#button-groups)
-   + this might need an explicit override mechanism per layout model to make sure that the nav key arrangement actually makes sense
-   + maybe it should actually be driven 100% by the layout model: if the current one has no config for it, don't even show the buttons.
+   + replace `[]` pair first, since it's the rarest used and furthest from the typing area
+   + replace `()` next
+   + possibly replace `\` with Delete or Insert
+   + Maybe even make it independent toggles for each pair of nav keys and each of Insert and Delete.
+   + (Only show each option if it isn't on the board already and enough bracket pairs are on the board.)
 
-needs more planning:
- - we have only considered 30-key and 32-key flex maps, but not the layout model specific maps yet.
-   maybe those latter need an explicit flag in their keymap to select a Shift pairing character set:
-   ANSI, German, or None.
- - <<needs details>> [32-key] Fix base key maps (except the `'` key on smaller keyboards)
- - [32-key] Fix basic Shift level
- - NOT_READY: [32-key] Compressed Shift level for ansi32/thumb32 on small keyboards, including the 4-punctuation-key version for the Ergoslat.
+ - At the end clean up the doc and the texts inside the app. 
+   Probably we can remove the entire UX description, since it is obvious from the code.
+ - Then do a thorough review of the code again. Also check that comments aren't longer than necessary.
+
+out of scope:
+ - Compressed Shift level for German has little value compared to the cost of creating a complex AltGr map.
+   But I want to at least clean up its description!
 
 # Background and Motivation
 

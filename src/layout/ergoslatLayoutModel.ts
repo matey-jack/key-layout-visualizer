@@ -90,6 +90,11 @@ export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
         staggerOffsets: [0.5, 0.25, 0, -0.5],
         symmetricStagger: true,
 
+        compressedCycles: {
+            [KeymapTypeId.Ansi30]: ["()-="],
+            [KeymapTypeId.Thumb30]: ["-)"],
+        },
+
         frameMappings: midShift ?{
             [KeymapTypeId.Ansi30]: permute(ansi30FrameMapping, ANGLE_MOD_LEFT, "-{3:9}>⇧'"),
             [KeymapTypeId.Ansi32]: permute(ansi32FrameMapping, ANGLE_MOD_LEFT, ">⇧{2:10}"),

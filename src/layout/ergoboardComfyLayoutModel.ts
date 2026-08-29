@@ -30,6 +30,11 @@ export const ergoboardComfyLayoutModel: LayoutModel = {
     ],
     singleKeyEffort,
 
+    compressedCycles: {
+        [KeymapTypeId.Ansi30]: ["()-"],
+        [KeymapTypeId.Thumb30]: ["()\\"],
+    },
+
     frameMappings: {
         // The keymap has a bunch of small differences to the low-shift; enough to make copy-paste-adapt easier than anything more clever.
         // left-side numbers move to center to make their relative position (from hand home) symmetric to the right side.

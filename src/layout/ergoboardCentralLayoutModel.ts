@@ -53,6 +53,11 @@ export const ergoboardCentralLayoutModel: LayoutModel = {
     staggerOffsets: [0.5, 0.25, 0, -0.25],
     symmetricStagger: true,
 
+    compressedCycles: {
+        // Ansi30 is fine
+        [KeymapTypeId.Thumb30]: ["\\(", "=)"],
+    },
+
     frameMappings: {
         [KeymapTypeId.Ansi30]: ansi30FrameMapping,
         [KeymapTypeId.Thumb30]: patchThumb30(ansi30FrameMapping, "{4:0}⏎F+-", "/{3:9}"),
