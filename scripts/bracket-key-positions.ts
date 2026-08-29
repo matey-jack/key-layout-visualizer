@@ -8,7 +8,7 @@
  */
 import {allLayoutModels} from "../src/all-layout-models.ts";
 import {Hand, KeyboardRows, type KeyPosition, type LayoutModel} from "../src/base-model.ts";
-import {ansiWideLayoutModel} from "../src/layout/ansiLayoutModel.ts";
+import {ansiIBMLayoutModel, ansiWideLayoutModel} from "../src/layout/ansiLayoutModel.ts";
 import {ergoboardCentralLayoutModel} from "../src/layout/ergoboardCentralLayoutModel.ts";
 import {ergoboardComfyLayoutModel} from "../src/layout/ergoboardComfyLayoutModel.ts";
 import {ergoplankLayoutModel} from "../src/layout/ergoplankLayoutModel.ts";
@@ -17,6 +17,7 @@ import {xhkb13LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "../src/la
 import {
     fillMapping,
     findMatchingKeymapType,
+    defaultTotalWidth,
     getKeyPositions,
     hasMatchingMapping,
 } from "../src/layout/layout-functions.ts";
@@ -46,6 +47,7 @@ function classify(a: KeyPosition, b: KeyPosition): Verdict {
     plus the ANSI wide mod and the Split Ortho.
  */
 const focusModels: [string, LayoutModel][] = [
+    ["ANSI", ansiIBMLayoutModel],
     ["ANSI wide", ansiWideLayoutModel],
     ["Thumbs Up 13/2", xhkb13LayoutModel],
     ["Thumbs Up 15/4", xhkb15LayoutModel],
@@ -62,20 +64,46 @@ const rowNames = {
     [KeyboardRows.Lower]: "lower", [KeyboardRows.Bottom]: "bottom",
 };
 
+/*
+    Every row is centred in the same total width, so the middle of the board is always the same
+    line. Two keys are centred on it when their midpoint sits on that line – which for a pair
+    means the two mirror each other, and for a stack means the column itself is the centre one.
+ */
+const keyMiddle = (k: KeyPosition) => k.colPos + k.keyCapWidth / 2;
+
+const isCentred = (a: KeyPosition, b: KeyPosition) =>
+    Math.abs((keyMiddle(a) + keyMiddle(b)) / 2 - defaultTotalWidth / 2) < 0.13;
+
 // "pair (num)" when both keys share a row, "apart (upper, bottom)" when they do not.
 function describe(a: KeyPosition, b: KeyPosition): string {
     const where = a.row === b.row ? rowNames[a.row] : `${rowNames[a.row]}, ${rowNames[b.row]}`;
-    return `${classify(a, b)} (${where})`;
+    return `${classify(a, b)} (${where})` + (isCentred(a, b) ? ", centred" : "");
 }
 
-function bracketKeys(model: LayoutModel, mappingName: string): [KeyPosition, KeyPosition] | undefined {
+// The bracket keys the compression leaves alone, which we would like to stay centred.
+function otherPair(model: LayoutModel, mappingName: string): string {
+    const mapping = allMappings.find((m) => m.name === mappingName);
+    if (!mapping || !hasMatchingMapping(model, mapping)) return "n/a";
+    const charMap = fillMapping(model, mapping);
+    if (!charMap) return "n/a";
+    const positions = getKeyPositions(model, false, charMap, defaultTotalWidth);
+    const open = positions.find((p) => p.label === "[");
+    const close = positions.find((p) => p.label === "]");
+    if (!open || !close) return "no `[]` keys";
+    return isCentred(open, close) ? "centred" : "off centre";
+}
+
+function bracketKeys(
+    model: LayoutModel, mappingName: string, expectedType?: string
+): [KeyPosition, KeyPosition] | undefined {
     const mapping = allMappings.find((m) => m.name === mappingName);
     if (!mapping || !hasMatchingMapping(model, mapping)) return undefined;
     const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
+    if (expectedType && keymapType !== expectedType) return undefined;
     if (!hasCompressedLevel(keymapType, hasNumberRow(model))) return undefined;
     const charMap = fillMapping(model, mapping);
     if (!charMap) return undefined;
-    const positions = getKeyPositions(model, false, charMap);
+    const positions = getKeyPositions(model, false, charMap, defaultTotalWidth);
     const levels = getKeyLevels(model, positions, charMap, Hand.Left, keymapType, true);
     const open = positions.find((p) => levels.base[p.row][p.col] === "(");
     const close = positions.find((p) => levels.base[p.row][p.col] === ")");
@@ -106,12 +134,17 @@ for (const verdict of ["pair", "stack", "apart"] as const) {
 }
 
 console.log("The boards the design question focuses on:\n");
-console.log("| layout model               | ansi30                | thumb30               |");
-console.log("|---------------------------|-----------------------|-----------------------|");
+const head = ["layout model", "ansi30", "thumb30", "`[]` keys"];
+const widths = [25, 31, 31, 12];
+const line = (cells: string[]) => "| " + cells.map((c, i) => c.padEnd(widths[i])).join(" | ") + " |";
+console.log(line(head));
+console.log("|" + widths.map((w) => "-".repeat(w + 2)).join("|") + "|");
 for (const [name, model] of focusModels) {
-    const cell = (mappingName: string) => {
-        const keys = bracketKeys(model, mappingName);
-        return keys ? describe(...keys) : "n/a";
+    const cell = (mappingName: string, expected: string) => {
+        const keys = bracketKeys(model, mappingName, expected);
+        return keys ? describe(...keys) : "–";
     };
-    console.log(`| ${name.padEnd(25)} | ${cell("Qwerty").padEnd(21)} | ${cell("Quipper Thumby").padEnd(21)} |`);
+    console.log(line([
+        name, cell("Qwerty", "ansi30"), cell("Quipper Thumby", "thumb30"), otherPair(model, "Qwerty"),
+    ]));
 }

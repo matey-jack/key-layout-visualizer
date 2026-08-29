@@ -275,24 +275,35 @@ That is why the `-` to `/` move is not conditional on the keymap type – see th
 
 We do not try to solve this for every layout model. The focus set is the boards marked with a ❤️
 in the layout options – the Thumbs Up family, the Ergoplank 15/5, and the two Ergoboard 16/5 – plus
-the ANSI wide mod and the Split Ortho. Where the two bracket keys land on those, as reported by
-`scripts/bracket-key-positions.ts`:
+the ANSI wide mod and the Split Ortho, with plain ANSI for reference. Where the two bracket keys
+land on those, as reported by `scripts/bracket-key-positions.ts`:
 
-| layout model               | ansi30                | thumb30               |
-|---------------------------|-----------------------|-----------------------|
-| ANSI wide                 | apart (num)           | apart (num, lower)    |
-| Thumbs Up 13/2            | apart (upper, bottom) | apart (lower, bottom) |
-| Thumbs Up 15/4            | pair (upper)          | apart (upper, lower)  |
-| Thumbs Up 16/5            | apart (upper)         | apart (upper, lower)  |
-| Ergoplank 15/5            | apart (upper)         | apart (upper, lower)  |
-| Ergoboard 16/5 Central    | apart (upper)         | apart (upper, lower)  |
-| Ergoboard 16/5 Comfy Wide | stack (home, lower)   | pair (lower)          |
-| Split Ortho               | pair (bottom)         | apart (lower, bottom) |
-| Split Ortho, Thumb Shift  | apart (upper, bottom) | apart (lower, bottom) |
+| layout model              | ansi30                 | thumb30               | `[]` keys    |
+|---------------------------|------------------------|-----------------------|--------------|
+| ANSI                      | pair (num)             | –                     | off centre   |
+| ANSI wide                 | apart (num)            | apart (num, lower)    | off centre   |
+| Thumbs Up 13/2            | apart (upper, bottom)  | apart (lower, bottom) | no `[]` keys |
+| Thumbs Up 15/4            | pair (upper)           | apart (upper, lower)  | centred      |
+| Thumbs Up 16/5            | apart (upper)          | apart (upper, lower)  | centred      |
+| Ergoplank 15/5            | apart (upper), centred | apart (upper, lower)  | centred      |
+| Ergoboard 16/5 Central    | apart (upper), centred | apart (upper, lower)  | centred      |
+| Ergoboard 16/5 Comfy Wide | stack (home, lower)    | pair (lower)          | centred      |
+| Split Ortho               | pair (bottom)          | apart (lower, bottom) | no `[]` keys |
+| Split Ortho, Thumb Shift  | apart (upper, bottom)  | apart (lower, bottom) | no `[]` keys |
 
 The row names say where the two keys sit, so "apart (upper)" means both are in the upper row but
 not next to each other, while "apart (upper, lower)" means they are in different rows entirely.
-Only three of these eighteen combinations are a pair today, and one more is a stack.
+ANSI non-wide has no thumb30 column because a thumb mapping falls back to its non-thumb variant there.
+
+"centred" means the midpoint of the two keys sits on the middle line of the board – for a pair that
+is mirror symmetry, for a stack it means the column itself is the central one. The last column says
+the same about the `[]` keys that the compression leaves alone, and is independent of the keymap type.
+
+Two things stand out. On the Ergoplank and the Ergoboard Central the parens already are the two
+central columns of the upper row, mirror symmetric about the middle and separated only by the
+board's central gap – "apart" undersells those, they are arguably the arrangement we want. And on
+both ANSI boards the `[]` keys are off centre: on the wide mod they are the centre column of the
+upper and home rows, which the row stagger puts a quarter to a half unit left of the middle.
 
 Note that thumb30 is the worse half of the table everywhere: it puts `-` in the flex map area, so
 the key it frees is the frame mapping's `/`, which sits wherever that board happens to keep it.
