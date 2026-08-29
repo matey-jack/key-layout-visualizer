@@ -31,6 +31,11 @@ export const harmonic14WideLayoutModel: LayoutModel = {
     staggerOffsets: harmonicStaggerOffsets,
     symmetricStagger: true,
 
+    compressedCycles: {
+        [KeymapTypeId.Ansi30]: ["([", ")]"],
+        [KeymapTypeId.Thumb30]: ["([", ")]\\`"],
+    },
+
     frameMappings: {
         [KeymapTypeId.Ansi30]: [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "+", "`"], // 14 keys

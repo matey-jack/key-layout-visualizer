@@ -43,6 +43,11 @@ export const harmonic13WideLayoutModel: LayoutModel = {
     staggerOffsets: harmonicStaggerOffsets,
     symmetricStagger: true,
 
+    compressedCycles: {
+        // Ansi30 is fine by default and the bespoke is out of scope
+        [KeymapTypeId.Thumb30]: ["-=)"],
+    },
+
     frameMappings: {
         [KeymapTypeId.Harmonic13Wide]: fullMapping,
         [KeymapTypeId.Ansi30]: [

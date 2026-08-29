@@ -42,6 +42,13 @@ export const harmonic14TraditionalLayoutModel: LayoutModel = {
     staggerOffsets: harmonicStaggerOffsets,
     symmetricStagger: true,
 
+    compressedCycles: {
+        [KeymapTypeId.Ansi30]: ["`)("],
+        // The standard placement has `/` in the bottom row and thus the compressed `-` lands there, too.
+        // We do a second permutation to rescue it to a better position.
+        [KeymapTypeId.Thumb30]: ["([", "`-=\\"],
+    },
+    
     frameMappings: {
         [KeymapTypeId.Harmonic14T]: fullMapping,
         [KeymapTypeId.Ansi30]: [

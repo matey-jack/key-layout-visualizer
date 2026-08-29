@@ -45,6 +45,11 @@ export const harmonic12LayoutModel: LayoutModel = {
     staggerOffsets: harmonicStaggerOffsets,
     symmetricStagger: true,
 
+    compressedCycles: {
+        [KeymapTypeId.Ansi30]: ["-=)"],
+        // can't think of a good solution for the Thumb30; and the bespoke is out of scope.
+    },
+
     frameMappings: {
         [KeymapTypeId.Harmonic12]: fullMapping,
         [KeymapTypeId.Ansi30]: [
