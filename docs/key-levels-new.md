@@ -293,33 +293,34 @@ area!
 
 ## Excursion: what a colloquial German keymap would look like
 
-Some numerics in advance: there are 29 letters in the German alphabet which have both miniscule and
-capital form and there is `ß` which exists only in miniscule. Since we are really tight on space and
-the standard keymap already has `ß` in the number row, we'll move it to one of the freed Shift level
-spots in the number row. The standard German keymap also has the three keys `,;`, `.
-:`, and `-_` in the same lower row spots of the main letter area as our colloquial English keymap.
-Those 3 plus 29 letter keys and 10 digits are already 42 keys, which I think is the minimum set
-needed for a modified keymap to still ressemble the original one enough to be easily learnable.
-Thus, we only need to think about optimizing the number row.
+Some numbers in advance: there are 29 letters in the German alphabet which have both minuscule and
+capital form, and there is `ß`, which exists only in minuscule. Since we are really tight on space
+and the standard keymap already has `ß` in the number row, we'll move it to one of the freed Shift
+level spots in the number row. The standard German keymap also has the three keys `,;`, `.:`, and
+`-_` in the same lower row spots of the main letter area as our colloquial English keymap. Those 3
+plus 29 letter keys and 10 digits are already 42 keys, which I think is the minimum set needed for a
+modified keymap to still resemble the original one enough to be easily learnable. Thus, we only need
+to think about optimizing the number row.
 
-As a baseline look at the standard German Shift level, and also keep our English AltGr level in
-mind, because we'll try to make the German one not too different.
+As a baseline look at the standard German Shift level. Since the standard German AltGr level is
+already superseded ergonomically by the English one we designed above, I am already using that as a
+start.
 
        ¡  ¢  £  €  ‰     |  [  ]  ¿
-       1! 2" 3§ 4$ 5% 6& 7/ 8( 9( 0= ß?
+       1! 2" 3§ 4$ 5% 6& 7/ 8( 9) 0= ß?
 
 The last key of this block is already outside the 42 key count and its two characters need to move.
 
 Let's take stock:
 
 - characters that are colloquial enough to stay on a Shift+digit position: `! " % & /` (5)
-- characters that will definitely move out: `(`, `)`, `=`, and likely move out `§` (4)
+- characters that will definitely move out: `(`, `)`, `=` – and probably `§` as well (4)
 - (Only `$` hasn't been committed to one of the above groups.)
 - characters that need to be added: `?` and `ß` and maybe `'` (3)
 
-Two reasons why I suggest removing `=` from the Shift level: first is that it's AltGr position on
-our English AltGr map is really great; second is that both `ß` and `?` via for those spots on the
-right side. Applying what we found so far gives:
+Two reasons why I suggest removing `=` from the Shift level: first, its AltGr position on our
+English AltGr map is really great; second, both `ß` and `?` vie for those spots on the right side.
+Applying what we found so far gives:
 
        ¡  ¢  £  €  ‰     |  [  ]  ¿
        1! 2" 3' 4$ 5% 6& 7/ 8  9ß 0?
@@ -342,7 +343,7 @@ This is not super-well thought out, but here are the good parts from left to rig
 - `°` moves by one key (and changes level)
 - `@` is already an AltGr level key in the German standard, but sits in the letter area that we
   better keep clear for navigation keys. Thus, we move it to the key that has it in English, which
-  happens to be typed by the same finger.
+  is just one key away from the old position.
 - We prefer the English pound/Pound mnemonic, with the additional benefit of `'` and `#`
   landing on the same key, just as in the German standard. Thus, `§` has to move one to the left.
   (No problem, it's a character that I might otherwise even just drop from the keymap entirely.)
@@ -351,9 +352,12 @@ This is not super-well thought out, but here are the good parts from left to rig
   pairing.
 - `\` pairs with the standard `/`.
 - `´` is the acute accent that is placed on the right of the number row originally, so this position
-  is a short move. Originally it pairs with the backtick (grave accent), but we keep that latter in
+  is a short move. Originally it pairs with the backtick (grave accent), but we keep the latter in
   the English inherited position on the letter-area AltGr level, because it's actually used often in
   Markdown and TypeScript and other technical languages.
+- Claude insists on mentioning that there is a majuscule `ß` – but it doesn't have a practical use,
+  so our mapping on the Shift level stands. (Also, feel free to add it on Shift+AltGr of that key
+  which is still free!)
 
 The German standard already has characters in the AltGr+digits, but those are already all placed
 better in our technical base AltGr block, so we override them here. For the better!
