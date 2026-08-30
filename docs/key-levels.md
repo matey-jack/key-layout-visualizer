@@ -198,16 +198,27 @@ But in a firmware mapping (like with [QMK's custom shift keys]), this will work 
 
 ### Rejected Alternatives
 
-In a strict usage-based view, the characters `#` and `^` are more "technical" compared to the round parenthesis `()` which are more common in prose writing.
-While this suggests that `#` and `^` should be moved to the AltGr layer instead of the parenthesis, I decided to move the parenthesis for several reasons:
-- the collection of all four types of brackets on the same level (AltGr) already mentioned above.
-- freeing the Shift+0 position for the question mark's European layouts position that is so nicely symmetrical with `!` on Shift+1.
-- more generally, reassigning the Shift positions on `9` and `0` gives us two adjacent spots on the right side where most of the punctuation characters live, so that characters don't move very far and part of the muscle memory stays intact.
-- and finally, placing the round parentheses in the middle of the AltGr home row actually make them more easily accessible than on the top right, especially when one wants to type both of them in sequence. Since the pinky finger is too short to comfortably reach the number row, their standard position up there makes the ring finger type both of them.
+In a strict usage-based view, the characters `#` and `^` are more "technical" compared to the round
+parenthesis `()` which are more common in prose writing. While this suggests that `#` and `^` should
+be moved to the AltGr layer instead of the parenthesis, I decided to move the parenthesis for
+several reasons:
 
-Since we have one keyboard layout model with only 4 pure punctuation keys, we do also map `^` and `=` to the AltGr layer (using Shift+6 for the `+` character).
-Those mappings are practical and memorable (`=` near `<>` and `+` near `*/`), but since most small keyboards actually have at least 5 keys for pure punctuation,
-we opt for preserving muscle memory and reducing the need to use the AltGr layer. ==> The AltGr mappings are redundant and the 5 punctuation keys are preserved.
+- the collection of all four types of brackets on the same level (AltGr) already mentioned above.
+- freeing the Shift+0 position for the question mark's European layouts position that is so nicely
+  symmetrical with `!` on Shift+1.
+- more generally, reassigning the Shift positions on `9` and `0` gives us two adjacent spots on the
+  right side where most of the punctuation characters live, so that characters don't move very far
+  and part of the muscle memory stays intact.
+- and finally, placing the round parentheses in the middle of the AltGr home row actually make them
+  more easily accessible than on the top right, especially when one wants to type both of them in
+  sequence. Since the pinky finger is too short to comfortably reach the number row, their standard
+  position up there makes the ring finger type both of them.
+
+Since we have one keyboard layout model with only 4 pure punctuation keys, we do also map `^` and
+`=` to the AltGr layer (using Shift+6 for the `+` character). Those mappings are practical and
+memorable (`=` near `<>` and `+` near `*/`), but since most small keyboards actually have at least 5
+keys for pure punctuation, we opt for preserving muscle memory and reducing the need to use the
+AltGr layer. ==> The AltGr mappings are redundant and the 5 punctuation keys are preserved.
 
 ### Special Case: Ergoslat numberless
 
@@ -272,26 +283,27 @@ we instead define them mostly as pairings.
 That is, the base-level character no matter where it's placed determines the Shift level character. 
 The descriptions above already describe those pairs exact enough for implementation.
 
-We also want to make sure that the five compressed punctuation keys actually end up in good positions.
-To this end, we use the fact that the `;:` and `/?` keys deleted by compression are usually mapped in very central positions.
-We only need to take heed of the fact that some keymaps place `/` in that central (flex map area) position,
-while others place `-` there and leave `/` to the frame mapping.
-(And my personal ideosyncracy of labeling the `=+` key on some keyboards as `+`, 
-which needs to change the base level back to `=` to create a correct base/Shift pair.)
+We also want to make sure that the five compressed punctuation keys actually end up in good positions. To this end, we
+use the fact that the `;:` and `/?` keys deleted by compression are usually mapped in very central positions. We only
+need to take heed of the fact that some keymaps place `/` in that central (flex map area) position, while others place
+`-` there and leave `/` to the frame mapping. (And my personal ideosyncracy of labeling the `=+` key on some keyboards
+as `+`, which needs to change the base level back to `=` to create a correct base/Shift pair.)
 
 Our rules for key replacement are as follows:
- - `;:` is replaced by `'"`, because this is the most central spot and `'` is used inside words and thus practical to place among the letters.
- - `,` and `.` keep their position and receive their Shift level character as defined above.
- - `/?` is replaced by `-_`, wherever the `/` key sits.
- - `=+` moves to the spot freed by `'"` (which always moves, so that is always free).
 
-Since we explicitly removed `;:` and `/?` which are present on all layout model's key sets, we have freed a minimum of two keys;
-and since we keep 5 out of a total of 11 ANSI punctuation keys, this might free a maximum of six keys.
-(The difference is in four keys whose characters are already redundantly present on our AltGr level.
-Those four – `` `~ ``, `[{`, `]}`, `\|` – keep their ANSI pairing here and are only freed by the
+- `;:` is replaced by `'"`, because this is the most central spot and `'` is used inside words and thus practical to
+  place among the letters.
+- `,` and `.` keep their position and receive their Shift level character as defined above.
+- `/?` is replaced by `-_`, wherever the `/` key sits.
+- `=+` moves to the spot freed by `'"` (which always moves, so that is always free).
+
+Since we explicitly removed `;:` and `/?` which are present on all layout model's key sets, we have freed a minimum of
+two keys; and since we keep 5 out of a total of 11 ANSI punctuation keys, this might free a maximum of six keys. (The
+difference is in four keys whose characters are already redundantly present on our AltGr level. Those four – `` `~ ``,
+`[{`, `]}`, `\|` – keep their ANSI pairing here and are only freed by the
 ["Extra keys" switch](#button-groups), so the rules above always free exactly two keys.)
 Note that the two definitely freed positions are the old position of `+=`
-and the outer position of whichever of `/` and `-` did not stay in the central spot. 
+and the outer position of whichever of `/` and `-` did not stay in the central spot.
 
 We could now replace those freed keys with navigation keys, but to cleanly separate features, 
 we'll instead replace them with `(<` and `)>` at first. 
