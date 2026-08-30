@@ -11,6 +11,22 @@ app). I try to keep the two separate, but since each informs the other, the boun
 blur. For sections that are mostly about one or the other I use the tags [domain] and [app], so
 readers can orient themselves.
 
+# Task items
+
+Done:
+ - I wrote this spec; yay!
+
+Todo in code:
+ - change the `ä` check for German to `;` for English
+ - rename "compressed" Shift pairings to "centralized" (both in UI and code)
+   + or maybe there's an even better term? 
+ - implement the Nav key replacements 
+ - fix some of the German keymaps to better match the Shift pairings (possibly add some more 
+   exceptions/alternative characters to the pairings)
+ - check some of my favorite English model-specific flex-maps: how do they look with centralized 
+   Shift pairings? do I want to fix anything?
+
+
 # [App] Showing the Shift and AltGr level characters (and functions)
 
 Shift-level characters are defined purely as pairings with base characters, so they automatically
@@ -23,9 +39,9 @@ many variations in modifier and other key counts that various keyboards have.)
 The only slightly complicated part here is telling the difference between English and German (or
 another language with a similar punctuation mapping, even if the extra letters are different). To be
 independent of the German alphabet, we'll use the ANSI `;:` as a marker, because most European
-keyboards do not have `;` as a base label. ((TODO: this needs to be changed in the source code.))
-(An even better way to recognize a non-ANSI keymap is to look for the `?` on the Shift level of the
-number row, but our base key maps don't have Shift levels to look at.)
+keyboards do not have `;` as a base label. (An even better way to recognize a non-ANSI keymap is to
+look for the `?` on the Shift level of the number row, but our base key maps don't have Shift levels
+to look at.)
 
 There is just one more little snag. To make keymaps and keycaps look prettier, I sometimes labeled a
 key with its Shift-level character instead of its base character — for example, the key whose base
@@ -293,8 +309,6 @@ some third-party tools, but probably not using xkb. In case `⇟` or `⇞` would
 clash with the Shift key, we move the lower row of the nav block one key towards the center.
 
 ## [App] How all of this looks in the app
-
-TODO: in the UI and in the code, rename the "compressed" Shift pairings to "centralized".
 
 To make the pair of new bracket keys co-located on all keyboard layout models, we need to add some
 layout-model-specific tweaking code. Fortunately, the positions where those keys are added lie
