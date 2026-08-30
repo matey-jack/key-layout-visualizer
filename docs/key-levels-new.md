@@ -47,7 +47,7 @@ letters "below". (This "below" refers to base being level 1, Shift level 2, and 
 stacked above each other.) The positional approach is especially sensible for the navigation keys,
 which are highly mnemonic in their positions, as we will see.
 
-<<TODO>> One important point, not yet designed, is that the keyboard should have an AltGr modifier
+((TODO)) One important point, not yet designed, is that the keyboard should have an AltGr modifier
 key on each side, the same as the two Shift keys. We might later add some visuals and options for
 that in the app. For now we just highlight the AltGr key in the "Shift levels" view, so that people
 who have never used one can relate it to the AltGr-level key labels shown in the same color.
@@ -56,9 +56,11 @@ who have never used one can relate it to the AltGr-level key labels shown in the
 
 Although I personally consider keyboards without a number row impractical – there are just too many
 new mappings on too many new layers to learn – there is one such keyboard in the app, and given that
-it already exists, I decided to add a very special Shift-level mapping to it. It has five keys
-carrying the VIP set defined below, and since there are two more keys available on the board, I
-added four useful characters that every other keyboard maps to the number row.
+it already exists, I decided to add a very special Shift-level mapping. The most important
+difference is that some characters from the Shift+digit row are now included on the punctuation
+keys; `!` in particular is essential here. I designed the set to reuse the existing Shift pairings
+where possible, but for the characters coming from the digit row that wasn't possible, so those are
+paired semi-randomly. (But hey, both `+` and `&` mean 'and' in some way!)
 
 The set is: `,;`  `.:`  `-!`  `/?`  `'"`  `$%`  `&+`
 
