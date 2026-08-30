@@ -8,8 +8,8 @@ what is already there.
 This document contains both purely domain descriptions (that is, implementation-independent design
 and rationale of keymaps) and app-specific descriptions (that is, what is shown where and how in the
 app). I try to keep the two separate, but since each informs the other, the boundaries sometimes
-blur. For sections that are mostly about one or the other I use the tags [domain] and [app], so
-readers can orient themselves.
+blur. For sections or chapters that are mostly about one or the other I use the tags [domain]
+and [app], so readers can orient themselves.
 
 # Task items
 
@@ -357,9 +357,8 @@ plus 29 letter keys and 10 digits are already 42 keys, which I think is the mini
 modified keymap to still resemble the original one enough to be easily learnable. Thus, we only need
 to think about optimizing the number row.
 
-As a baseline look at the standard German Shift level. Since the standard German AltGr level is
-already superseded ergonomically by the English one we designed above, I am already using that as a
-start.
+As a baseline, look at the standard German Shift level. Since the standard German AltGr level is
+ergonomically superseded by the English one we designed above, I am already using that as a start.
 
        ¡  ¢  £  €  ‰     |  [  ]  ¿
        1! 2" 3§ 4$ 5% 6& 7/ 8( 9) 0= ß?
@@ -406,21 +405,22 @@ This is not super-well thought out, but here are the good parts from left to rig
   latter is suboptimal, if you need that often, but also a great mnemonic, because of ANSI's `6^`
   pairing.
 - `\` pairs with the standard `/`.
+- Claude insists on mentioning that there is a majuscule `ß` – but it doesn't have a practical use,
+  so our mapping on the Shift level stands. (Also, feel free to add it on Shift+AltGr of that key
+  which is still free!)
 - `´` is the acute accent that is placed on the right of the number row originally, so this position
   is a short move. Originally it pairs with the backtick (grave accent), but we keep the latter in
   the English inherited position on the letter-area AltGr level, because it's actually used often in
   Markdown and TypeScript and other technical languages.
-- Claude insists on mentioning that there is a majuscule `ß` – but it doesn't have a practical use,
-  so our mapping on the Shift level stands. (Also, feel free to add it on Shift+AltGr of that key
-  which is still free!)
 
 The German standard already has characters in the AltGr+digits, but those are already all placed
 better in our technical base AltGr block, so we override them here. For the better!
 
-The one thing this keymap glosses over is that the German standard has the accents `´^~` and grave
-as combining accent keys, while the technical use of three of them is non-combining. So you'll have
-to decide which one you want or whether to map both in different positions. (I did it on one of my
-personal keymaps, but that's too messy to reproduce here.)
+The one thing this keymap glosses over is that the German standard has the accents `´^` and grave as
+combining accent keys, while the technical use of two of them is non-combining. So you'll have to
+decide which one you want or whether to map both in different positions. (I did it on one of my
+personal keymaps, but that's too messy to reproduce here. I even added a combining tilde, just
+because I can.)
 
 So that's my proposal for a colloquial German Shift and AltGr level map, not fully mature, but a few
 things really stand out:
