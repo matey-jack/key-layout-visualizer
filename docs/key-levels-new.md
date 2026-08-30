@@ -418,11 +418,11 @@ things really stand out:
 Although I personally consider keyboards without a number row impractical – there are just too many
 new mappings on too many new layers to learn – there is one such keyboard in the app, and given that
 it already exists, I decided to add a very special Shift-level mapping to it. With the number row
-gone, we have to bring its characters down to the punctuation keys on the remaining rows – the
-opposite of what the colloquial mapping does on every other keyboard, where `/?` moves up into the
-number row. Instead, `!` and others move down. I designed the set to reuse the colloquial pairings
-where possible, but for the characters arriving from the digit row that wasn't possible, so those
-are paired semi-randomly. (But hey, both `+` and `&` mean 'and' in some way!)
+gone, we have to bring its characters down to the remaining rows – the opposite of what the
+colloquial mapping does on every other keyboard. They move `/?` up into the number row; we move `!`
+down to the punctuation keys. I designed the set to reuse the colloquial pairings where possible,
+but for the characters arriving from the digit row that wasn't possible, so those are paired
+semi-randomly. (But hey, both `+` and `&` mean 'and' in some way!)
 
 The set is: `,;`  `.:`  `-!`  `/?`  `'"`  `$%`  `&+`
 
