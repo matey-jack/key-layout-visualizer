@@ -14,17 +14,18 @@ readers can orient themselves.
 # Task items
 
 Done:
- - I wrote this spec; yay!
+
+- I wrote this spec; yay!
 
 Todo in code:
- - change the `ä` check for German to `;` for English
- - rename "compressed" Shift pairings to "colloquial" (both in UI and code)
- - implement the Nav key replacements 
- - fix some of the German keymaps to better match the Shift pairings (possibly add some more 
-   exceptions/alternative characters to the pairings)
- - check some of my favorite English model-specific flex-maps: how do they look with colloquial 
-   Shift pairings? do I want to fix anything?
 
+- change the `ä` check for German to `;` for English
+- rename "compressed" Shift pairings to "colloquial" (both in UI and code)
+- implement the Nav key replacements
+- fix some of the German keymaps to better match the Shift pairings (possibly add some more
+  exceptions/alternative characters to the pairings)
+- check some of my favorite English model-specific flex-maps: how do they look with colloquial Shift
+  pairings? do I want to fix anything?
 
 # [App] Showing the Shift and AltGr level characters (and functions)
 
@@ -81,9 +82,9 @@ The set is: `,;`  `.:`  `-!`  `/?`  `'"`  `$%`  `&+`
 
 The arrangement can be seen in the app. How it maps to the flex map's punctuation is a hard-coded
 heuristic, easy enough since most keys have a natural pairing with the flex map character set. (As a
-fun fact, this is the only layout model that has a modified, colloquial Shift pairing independent
-of the base mapping's language. It is also not configurable, since the default punctuation keys
-don't make sense without the number-row characters.)
+fun fact, this is the only layout model that has a modified, colloquial Shift pairing independent of
+the base mapping's language. It is also not configurable, since the default punctuation keys don't
+make sense without the number-row characters.)
 
 # [Domain] Options for ergonomic keyboard layout models
 
@@ -187,14 +188,16 @@ key optional. We have thus made five ANSI punctuation keys optional, getting dow
 ## AltGr bonus characters for the number row
 
 Since the above bracket block already places three AltGr characters in the number row, we may as
-well fill the entire row. For mnemonic reasons we do this by character pairing and independent of 
+well fill the entire row. For mnemonic reasons we do this by character pairing and independent of
 fingering:
 
-       ¡  ¢  £  €  ‰  ^  |  [  ]  ¿
+       ¡  ¢  £  €  ‰     |  [  ]  ¿
       1! 2@ 3# 4$ 5% 6^ 7& 8* 9/ 0?
 
 (Sadly, one mnemonic is lost on the generation that reads `#` as "hash", while older people still
 remember it as the "pound" character, which makes it perfect for the British pound sign.)
+
+((TODO: find a cool character for the AltGr+6 spot!))
 
 The `|`, `[`, and `]` here are the same keys that head the letter-area block shown below. The row
 can shift around on layout models that rearrange the number row, and on larger keyboards that have
@@ -229,7 +232,7 @@ spot. There are again mnemonic, international, and practical advantages:
 - And yes, the `-_` key is placed in that exact spot in the German and some other keymaps.
 
 And thus we have reduced our keymap to 40 keys (including 4 punctuation keys) without moving any
-prosaic punctuation key to the AltGr layer. The minimal set now looks like this:
+prosaic punctuation key to the AltGr level. The minimal set now looks like this:
 
     1!  2@  3#  4$  5%  6^  7&  8*  9/  0?
     '"  ,;  .:  -_
@@ -244,22 +247,21 @@ redundant keys you want to keep; the keymap works regardless.
 
 ### How to actually place the keys on an arbitrary flex map
 
-We express this as permutations, including entering and exiting keys, as is already done 
-elsewhere in the app. And if a key with a very good position moves (on standard ANSI this affects 
-`'`, on many of our fictional layout models, also `-`), then some other follows into that spot. 
-The actual implementation reads a permutation from behind: first a new key that enters 
-(represented by its base level character, in our case `(` and `)`), then the key where it is to 
-be placed, then where the replaced key goes, and so on; the last key in the cycle is then removed.
-And if the first key in the cycle was already on the map, then the last key closes the cycle and 
-moves into that old position.
+We express this as permutations, including entering and exiting keys, as is already done elsewhere
+in the app. And if a key with a very good position moves (on standard ANSI this affects
+`'`, on many of our fictional layout models, also `-`), then some other follows into that spot. The
+actual implementation reads a permutation from behind: first a new key that enters (represented by
+its base level character, in our case `(` and `)`), then the key where it is to be placed, then
+where the replaced key goes, and so on; the last key in the cycle is then removed. And if the first
+key in the cycle was already on the map, then the last key closes the cycle and moves into that old
+position.
 
-The permutations for the above key replacements are `)=';` and `(-/`, which means all of `=`, 
-`'`, and `-` are moving towards the center, leaving their more outward position to the new pair 
-of brackets. If you make a custom set which, for example keeps `/?` as a character key, but does 
-not have space for the `[]\` keys and wants to place Delete on `=+`, then you would replace the 
-above permutations with `⌦-';` which lets the `-_` key advance at least a bit towards the center,
-where `=` is in our colloquial mapping, or `'` in the original ANSI.
-
+The permutations for the above key replacements are `)=';` and `(-/`, which means all of `=`,
+`'`, and `-` are moving towards the center, leaving their more outward position to the new pair of
+brackets. If you make a custom set which, for example keeps `/?` as a character key, but does not
+have space for the `[]\` keys and wants to place Delete on `=+`, then you would replace the above
+permutations with `⌦-';` which lets the `-_` key advance at least a bit towards the center, where
+`=` is in our colloquial mapping, or `'` in the original ANSI.
 
 ## Using the optimized Shift level without removing any keys
 
@@ -289,10 +291,91 @@ redundant AltGr map shown above) we can successively remove keys to create small
 having to adjust any mapping or key position at all: the keys we'll keep are already in the letter
 area!
 
+## Excursion: what a colloquial German keymap would look like
+
+Some numerics in advance: there are 29 letters in the German alphabet which have both miniscule and
+capital form and there is `ß` which exists only in miniscule. Since we are really tight on space and
+the standard keymap already has `ß` in the number row, we'll move it to one of the freed Shift level
+spots in the number row. The standard German keymap also has the three keys `,;`, `.
+:`, and `-_` in the same lower row spots of the main letter area as our colloquial English keymap.
+Those 3 plus 29 letter keys and 10 digits are already 42 keys, which I think is the minimum set
+needed for a modified keymap to still ressemble the original one enough to be easily learnable.
+Thus, we only need to think about optimizing the number row.
+
+As a baseline look at the standard German Shift level, and also keep our English AltGr level in
+mind, because we'll try to make the German one not too different.
+
+       ¡  ¢  £  €  ‰     |  [  ]  ¿
+       1! 2" 3§ 4$ 5% 6& 7/ 8( 9( 0= ß?
+
+The last key of this block is already outside the 42 key count and its two characters need to move.
+
+Let's take stock:
+
+- characters that are colloquial enough to stay on a Shift+digit position: `! " % & /` (5)
+- characters that will definitely move out: `(`, `)`, `=`, and likely move out `§` (4)
+- (Only `$` hasn't been committed to one of the above groups.)
+- characters that need to be added: `?` and `ß` and maybe `'` (3)
+
+Two reasons why I suggest removing `=` from the Shift level: first is that it's AltGr position on
+our English AltGr map is really great; second is that both `ß` and `?` via for those spots on the
+right side. Applying what we found so far gives:
+
+       ¡  ¢  £  €  ‰     |  [  ]  ¿
+       1! 2" 3' 4$ 5% 6& 7/ 8  9ß 0?
+
+Note that I already placed `'`, because the free spot next to `"` was just too good to miss.
+Candidates for the Shift+8 position are `+` and `*` and the latter clearly wins for two reasons:
+first, because it's a Shift-level character in the standard German keymap, needing less relearning;
+and second, because `8*` is a keycap in ANSI English – that's reuse and a mnemonic in one. Besides,
+we already placed `+` in the English AltGr level and can reuse that.
+
+Next, let's place the remaining keys on the AltGr level. I also included a Shift+AltGr level,
+because we have a few rarely used characters where the mnemonic is more important than the ease of
+typing them.
+
+       °¡  @§  #£  €¢  ‰   |^  \   [   ]   ´¿
+       1!  2"  3'  4$  5%  6&  7/  8*  9ß  0?
+
+This is not super-well thought out, but here are the good parts from left to right:
+
+- `°` moves by one key (and changes level)
+- `@` is already an AltGr level key in the German standard, but sits in the letter area that we
+  better keep clear for navigation keys. Thus, we move it to the key that has it in English, which
+  happens to be typed by the same finger.
+- We prefer the English pound/Pound mnemonic, with the additional benefit of `'` and `#`
+  landing on the same key, just as in the German standard. Thus, `§` has to move one to the left.
+  (No problem, it's a character that I might otherwise even just drop from the keymap entirely.)
+- We move `|` from the English position to keep its mnemonic, and also add `^` on the same key. The
+  latter is suboptimal, if you need that often, but also a great mnemonic, because of ANSI's `6^`
+  pairing.
+- `\` pairs with the standard `/`.
+- `´` is the acute accent that is placed on the right of the number row originally, so this position
+  is a short move. Originally it pairs with the backtick (grave accent), but we keep that latter in
+  the English inherited position on the letter-area AltGr level, because it's actually used often in
+  Markdown and TypeScript and other technical languages.
+
+The German standard already has characters in the AltGr+digits, but those are already all placed
+better in our technical base AltGr block, so we override them here. For the better!
+
+The one thing this keymap glosses over is that the German standard has the accents `´^~` and grave
+as combining accent keys, while the technical use of three of them is non-combining. So you'll have
+to decide which one you want or whether to map both in different positions. (I did it on one of my
+personal keymaps, but that's too messy to reproduce here.)
+
+So that's my proposal for a colloquial German Shift and AltGr level map, not fully mature, but a few
+things really stand out:
+
+- the Shift+digits make a well-rounded set: keeping six standard pairings and adding four really
+  frequently used characters: `'`, `*`, `ß`, and `?`. All in mnemonic and practical positions.
+- compatibility with the ANSI AltGr mapping shown above for English is very high: only `|` and
+  `\` of the main block change position to keep their mnemonic. And changes in the "bonus"
+  AltGr+digit characters of the ANSI keymap aren't a problem, given their low usage.
+
 ## Using the redundant keys as navigation keys instead
 
 Now here's where the advantages double up! Once you have got used to typing your technical
-punctuation using the AltGr layer only, why not repurpose the unused keys right next to your
+punctuation using the AltGr level only, why not repurpose the unused keys right next to your
 keyboard's letter area? Those keys are easier to reach than the explicit navigation keys further to
 the right, and much easier than the often tiny and cramped nav keys on laptops! And obviously, once
 you have nav keys this close, you may as well get a more compact keyboard that doesn't have any of
@@ -358,9 +441,9 @@ flex-map specific. Out of scope for now.
 
 ## UX for the nav key replacements
 
-The [Domain] sections describe mostly already implemented functionality and serve as a manual 
-and rationale. For the UX, the manual is the visible behavior of the app itself. Therefore, this 
-section only describes the new behavior that still needs to be implemented.
+The [Domain] sections describe mostly already implemented functionality and serve as a manual and
+rationale. For the UX, the manual is the visible behavior of the app itself. Therefore, this section
+only describes the new behavior that still needs to be implemented.
 
 - There will be specific buttons for each nav pair and separately for the Delete and Insert keys.
   (Three buttons in total.)
