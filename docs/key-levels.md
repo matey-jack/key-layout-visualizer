@@ -5,10 +5,10 @@ Status: in progress
 Larger Scope:
  - Show shift pairings on the keyboard: the ANSI ones for English, the standard German ones for German.
  - Show an AltGr layer that is the same no matter the language of the base character set: works for all.
- - Optionally show a modified ("compressed") Shift pairing (differing only in a few punctuation keys) 
+ - Optionally show a modified ("colloquial") Shift pairing (differing only in a few punctuation keys) 
    which helps typing on smaller keyboards (and reduces finger movement on larger ones). 
    This is only planned for English and it's done. (A German version is described here only as a dry exercise.)
- - Finally, when using a compressed keymap on a keyboard that fits more than the minimal number of keys, 
+ - Finally, when using a colloquial keymap on a keyboard that fits more than the minimal number of keys, 
    some redundant character keys can be changed into Nav and Delete/Insert keys.
 
 Note that character sets of the layout model frame maps and letter flex maps can vary
@@ -25,10 +25,10 @@ Done parts:
  - AltGr level can be mirrored between hands using the "Nav keys" [button group](#button-groups)
  - Number row AltGr mappings, including the `@` character for German keymaps
  - [English and German] Ergoslat numberless modified Shift pairings (no switching button)
- - [English] Compressed Shift level and the "Shift level" [button group](#button-groups)
+ - [English] Colloquial Shift level and the "Shift level" [button group](#button-groups)
  - The character set picks the pairings, so every keymap of a layout model gets a Shift level
  - [German] Standard German Shift pairings
- - Fine-tune the compressed keymaps to have the parentheses pairs
+ - Fine-tune the colloquial keymaps to have the parentheses pairs
  - Nav layer fix: when it collides with the Shift key, move it over by one key, instead of removing the scrolling keys.
 
 Next parts:
@@ -40,7 +40,7 @@ Next parts:
  - various rewordings: especially frame the entire feature as the progressive omission of keys:
    + first add redundant AltGr level
    + then remove at will any keys whose characters are fully covered on the AltGr level
-   + for the final two keys to remove, their characters fit better on the Shift level, so we do the "compression".
+   + for the final two keys to remove, their characters fit better on the Shift level, so we make the mapping "colloquial".
    + And the Shift-level characters who get moved by that are already redundant on the AltGr level. tada!
    + And best of all: since we created two key pairs with brackets, those can nicely be reused as Home/End or PageUp/Down pairs.
 
@@ -57,7 +57,7 @@ Next parts:
  - Then do a thorough review of the code again. Also check that comments aren't longer than necessary.
 
 out of scope:
- - Compressed Shift level for German has little value compared to the cost of creating a complex AltGr map.
+ - Colloquial Shift level for German has little value compared to the cost of creating a complex AltGr map.
    But I want to at least clean up its description!
 
 # Background and Motivation
@@ -170,7 +170,7 @@ we'll also move the pair `()` to the AltGr level – thus the 12 characters on t
 That leaves `=`, `_`, `+`, `@`, `#`, `$`, `%`, `^`, `&`, `*` to fill up the base and Shift levels
 next to the 10 essential ones (5 + 15 = 20 slots for 20 characters – it fits exactly).
 
-## [English] Sample Shift mapping – the compressed Shift level
+## [English] Sample Shift mapping – the colloquial Shift level
 
 Here's a sample solution for a keyboard that has 1, 1, and 3 punctuation key positions in its upper, home, and lower row
 (which is a very common arrangement on Split Orthogonal keyboards!):
@@ -238,7 +238,7 @@ The seven pairs match the seven punctuation keys an English keymap has there:
 from the frame mapping.
 `,` `.` and `/` keep their positions and only get their Shift character changed.
 `;` is replaced by `'`, which in turn is replaced by `-`, which is replaced by `$`.
-And `+` in the non-compressed keymap becomes `&+`.
+And `+` in the standard keymap becomes `&+`.
 The permutation is the same for every keymap, since they all place the same seven characters –
 only `/` and `-` may come from the other source.
 
@@ -255,11 +255,11 @@ I don't want to go deeper than that, because a keyboard that small can't be prac
 
 ## [English] A compatible punctuation map for full-size keyboards
 
-On keyboard layouts with all 47 keys, compression punctuation from 11 down to 5 keys allows us to place 6 more non-character keys. 
+On keyboard layouts with all 47 keys, reducing the punctuation from 11 down to 5 keys allows us to place 6 more non-character keys. 
 One of those is usually Escape in the top left corner; the others could be Home/End, PageUp/Down, and (forward) Delete. 
 But there is also the option of simply rearranging the punctuation characters, 
 so that the "1 unit from home" keys are mapped exactly like on the smaller keyboards and the remaining 6 keys collect the remaining punctuation characters.
-This allows for a very logical character assignment: since the compressed punctuation dislodges both bracket pairs `()` and `<>`, we can nicely arrange them on the same pair of keys.
+This allows for a very logical character assignment: since the colloquial punctuation dislodges both bracket pairs `()` and `<>`, we can nicely arrange them on the same pair of keys.
 
 The resulting punctuation keymap looks like this:
 
@@ -276,15 +276,15 @@ The same Shift pairings could also be applied to our larger fictional keyboards 
 Those often already have additional navigation keys assigned, so that the option of replacing rarely-used punctuation 
 with Nav keys doesn't make sense – but using the same punctuation map as their smaller family members does!
 
-## [English] Applying the compressed Shift pairings to all layout models and keymaps
+## [English] Applying the colloquial Shift pairings to all layout models and keymaps
 
 To avoid defining the Shift and AltGr level characters on each of our many keyboard layout models (and variants thereof)
 we instead define them mostly as pairings. 
 That is, the base-level character no matter where it's placed determines the Shift level character. 
 The descriptions above already describe those pairs exact enough for implementation.
 
-We also want to make sure that the five compressed punctuation keys actually end up in good positions. To this end, we
-use the fact that the `;:` and `/?` keys deleted by compression are usually mapped in very central positions. We only
+We also want to make sure that the five colloquial punctuation keys actually end up in good positions. To this end, we
+use the fact that the `;:` and `/?` keys deleted by the colloquial mapping are usually mapped in very central positions. We only
 need to take heed of the fact that some keymaps place `/` in that central (flex map area) position, while others place
 `-` there and leave `/` to the frame mapping. (And my personal ideosyncracy of labeling the `=+` key on some keyboards
 as `+`, which needs to change the base level back to `=` to create a correct base/Shift pair.)
@@ -311,14 +311,14 @@ The user can then use the ["Extra keys" buttons](#button-groups) to use replace 
 navigation keys instead.
 
 To place those new parenthesis-keys in a nice symmetrical way (as most keyboards already do with the `[]` pair of keys),
-we add an optional fine-tuning permutation map `compressedCycles` to the layout models.
+we add an optional fine-tuning permutation map `colloquialCycles` to the layout models.
 The script `npx tsx scripts/bracket-key-positions.ts` checks all the layout model / keymap type combinations 
 and groups them by how the pairs of parentheses land.
 
 Side note: the fine-tuning needs some characters to be defined in the frame mapping to be able to create 
 a stable position for the new parenthesis keys. That's why we can't do it for the model-specific keymap types. 
 
-## [German] Standard and Compressed Shift levels
+## [German] Standard and Colloquial Shift levels
 
 None of our keyboard layout model is an actual ISO keyboard that accurately reflects the standard German keymap,
 but our frame mappings in the layout models already did the hard part of the translation and our "international"
@@ -330,12 +330,12 @@ that is relatively accurate on the base and Shift levels and working on the AltG
 They cover the keys an ANSI-shaped board has; a board that keeps a frame punctuation key standard German does not
 have (`/`, `=`, `[`, `]`, `\`) leaves that key unpaired, which is what the "fix the German keymaps" work item is about.
 
-TODO: the compressed punctuation will be quite different, since the base-layer punctuation in Standard German is already compressed because there are no `;:` and `/?` keys. 
+TODO: the colloquial punctuation will be quite different, since the base-layer punctuation in Standard German is already reduced because there are no `;:` and `/?` keys. 
 What we need to do instead is to make better use of the Shift level number row by placing `@` instead of `§`.
 And some more changes TBD.
 On the smallest keyboards I can only think of workable solutions using thumb-letter layouts, since without using the bottom row, only two keys would be left for punctuation!
 
-### [German] Special case compression to only 4 punctuation keys for the Ergoslat
+### [German] Special case: only 4 punctuation keys for the Ergoslat
 
 TODO: this doesn't make sense, since the punctuation keys of a German keymap are based on the standard German keymap.
 We first need to define the entire Shifted punctuation for that character set and then base the Ergoslat special-case on that.
@@ -354,11 +354,11 @@ but thanks to the redundant AltGr mappings, doesn't add that much complexity.
 
 ## Replacing freed punctuation keys with extra nav keys
 
-First of all, if the key map before Shift compression had a `` `~ `` key, but no Escape key, 
+First of all, if the key map before the colloquial Shift mapping had a `` `~ `` key, but no Escape key, 
 we place Escape in that freed position. 
 (This might not actually apply anywhere by the big ANSI layout models.) 
 
-Let N be the number of remaining keys freed by the Shift-level compression.
+Let N be the number of remaining keys freed by the colloquial Shift level.
 
  - if N is odd, one of the freed keys becomes `⌦` (Delete), or `Insert` if the layout already has a Delete key;
  - the next pair becomes Home/End (unless already present on the key map);
@@ -426,7 +426,7 @@ while older people still remember it as the "pound" character, making it perfect
 [German only]: the keymap position [Upper, 0] (Q in qwertz) has the AltGr assignment `@`.
 We don't show the remaining standard German AltGr, because the above one already covers most of the relevant keys.
 We also override the standard German positions of `\` and `€` for the Nav layer and bracket stack and it's not worth it to rework that.
-It's actually quite nice to see that our compressed Shift level sends a lot of those characters to the AltGr level that standard German has there alreay!
+It's actually quite nice to see that our colloquial Shift level sends a lot of those characters to the AltGr level that standard German has there alreay!
 
 ## AltGr navigation keys on the other half of the keyboard
 
@@ -487,16 +487,16 @@ than disabled.
    the switch; the AltGr characters always sit on the other hand and move along with it.
    (Characters appear on all three levels and thus make a poorer landmark.)
    Available on every layout model.
- - **Shift level**: "standard" / "compressed" – "standard" is the pairing of the character set the
+ - **Shift level**: "standard" / "colloquial" – "standard" is the pairing of the character set the
    current mapping uses: US ANSI for English keymaps, standard German for German ones.
-   "compressed" is the [reduction to 5 punctuation keys](#english-sample-shift-mapping--the-compressed-shift-level).
-   Hidden where there is nothing to switch to: on German keymaps, whose compressed level is still
-   [to be defined](#german-standard-and-compressed-shift-levels), and on the
+   "colloquial" is the [reduction to 5 punctuation keys](#english-sample-shift-mapping--the-colloquial-shift-level).
+   Hidden where there is nothing to switch to: on German keymaps, whose colloquial level is still
+   [to be defined](#german-standard-and-colloquial-shift-levels), and on the
    [numberless Ergoslat](#special-case-ergoslat-numberless), which has only its own set.
- - **Extra keys**: "punctuation" / "navigation" – what becomes of the keys that the compression
-   frees: the [remaining punctuation characters](#english-a-compatible-punctuation-map-for-full-size-keyboards)
+ - **Extra keys**: "punctuation" / "navigation" – what becomes of the keys that the colloquial
+   mapping frees: the [remaining punctuation characters](#english-a-compatible-punctuation-map-for-full-size-keyboards)
    or [extra nav keys](#replacing-freed-punctuation-keys-with-extra-nav-keys).
-   Only on the big ANSI layout models, where six keys are freed at once, and only while "compressed"
+   Only on the big ANSI layout models, where six keys are freed at once, and only while "colloquial"
    is selected. Everywhere else the freed keys always become nav keys and there is nothing to
    choose.
 

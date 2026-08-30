@@ -18,12 +18,11 @@ Done:
 
 Todo in code:
  - change the `ä` check for German to `;` for English
- - rename "compressed" Shift pairings to "centralized" (both in UI and code)
-   + or maybe there's an even better term? 
+ - rename "compressed" Shift pairings to "colloquial" (both in UI and code)
  - implement the Nav key replacements 
  - fix some of the German keymaps to better match the Shift pairings (possibly add some more 
    exceptions/alternative characters to the pairings)
- - check some of my favorite English model-specific flex-maps: how do they look with centralized 
+ - check some of my favorite English model-specific flex-maps: how do they look with colloquial 
    Shift pairings? do I want to fix anything?
 
 
@@ -82,7 +81,7 @@ The set is: `,;`  `.:`  `-!`  `/?`  `'"`  `$%`  `&+`
 
 The arrangement can be seen in the app. How it maps to the flex map's punctuation is a hard-coded
 heuristic, easy enough since most keys have a natural pairing with the flex map character set. (As a
-fun fact, this is the only layout model that has a modified, centralized Shift pairing independent
+fun fact, this is the only layout model that has a modified, colloquial Shift pairing independent
 of the base mapping's language. It is also not configurable, since the default punctuation keys
 don't make sense without the number-row characters.)
 
@@ -225,6 +224,25 @@ key on my 41-key board. It's more logical that way, too, because `/?` is represe
 level and thus more dispensable. But the nice thing is that you are free to choose which of the 7
 redundant keys you want to keep; the keymap works regardless.
 
+#### How to actually place the keys on an arbitrary flex map
+
+We express this as permutations, including entering and exiting keys, as is already done 
+elsewhere in the app. And if a key with a very good position moves (on standard ANSI this affects 
+`'`, on many of our fictional layout models, also `-`), then some other follows into that spot. 
+The actual implementation reads a permutation from behind: first a new key that enters 
+(represented by its base level character, in our case `(` and `)`), then the key where it is to 
+be placed, then where the replaced key goes, and so on; the last key in the cycle is then removed.
+And if the first key in the cycle was already on the map, then the last key closes the cycle and 
+moves into that old position.
+
+The permutations for the above key replacements are `)=';` and `(-/`, which means all of `=`, 
+`'`, and `-` are moving towards the center, leaving their more outward position to the new pair 
+of brackets. If you make a custom set which, for example keeps `/?` as a character key, but does 
+not have space for the `[]\` keys and wants to place Delete on `=+`, then you would replace the 
+above permutations with `⌦-';` which lets the `-_` key advance at least a bit towards the center,
+where `=` is in our colloquial mapping, or `'` in the original ANSI.
+
+
 ### Using the optimized Shift level without removing any keys
 
 If you type on a full-size keyboard with a redundant AltGr mapping for the far-away keys, you can
@@ -333,3 +351,4 @@ New UX for the nav key replacements:
     + for pairs, first `[]`, then `()`;
     + for singles, first `\|`, then backtick-tilde, then `=+`, and lastly `/?`; after the last one,
       use a key from a pair.
+
