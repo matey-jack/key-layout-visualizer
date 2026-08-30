@@ -68,24 +68,6 @@ key on each side, the same as the two Shift keys. We might later add some visual
 that in the app. For now we just highlight the AltGr key in the "Shift levels" view, so that people
 who have never used one can relate it to the AltGr-level key labels shown in the same color.
 
-## [Domain] Ergoslat numberless
-
-Although I personally consider keyboards without a number row impractical – there are just too many
-new mappings on too many new layers to learn – there is one such keyboard in the app, and given that
-it already exists, I decided to add a very special Shift-level mapping. The most important
-difference is that some characters from the Shift+digit row are now included on the punctuation
-keys; `!` in particular is essential here. I designed the set to reuse the existing Shift pairings
-where possible, but for the characters coming from the digit row that wasn't possible, so those are
-paired semi-randomly. (But hey, both `+` and `&` mean 'and' in some way!)
-
-The set is: `,;`  `.:`  `-!`  `/?`  `'"`  `$%`  `&+`
-
-The arrangement can be seen in the app. How it maps to the flex map's punctuation is a hard-coded
-heuristic, easy enough since most keys have a natural pairing with the flex map character set. (As a
-fun fact, this is the only layout model that has a modified, colloquial Shift pairing independent of
-the base mapping's language. It is also not configurable, since the default punctuation keys don't
-make sense without the number-row characters.)
-
 # [Domain] Options for ergonomic keyboard layout models
 
 What follows in this section applies to the English keymaps only, because it goes into quite some
@@ -199,9 +181,9 @@ remember it as the "pound" character, which makes it perfect for the British pou
 
 ((TODO: find a cool character for the AltGr+6 spot!))
 
-The `|`, `[`, and `]` here are the same keys that head the letter-area block shown below. The row
-can shift around on layout models that rearrange the number row, and on larger keyboards that have
-extra keys in its center.
+The `|`, `[`, and `]` here are the same keys that head the letter-area block above. The row can
+shift around on layout models that rearrange the number row, and on larger keyboards that have extra
+keys in its center.
 
 ## Removing non-technical punctuation keys aka keeping the colloquial punctuation on base and Shift levels
 
@@ -430,6 +412,25 @@ things really stand out:
 - compatibility with the ANSI AltGr mapping shown above for English is very high: only `|` and
   `\` of the main block change position to keep their mnemonic. And changes in the "bonus"
   AltGr+digit characters of the ANSI keymap aren't a problem, given their low usage.
+
+## Excursion: the numberless Ergoslat
+
+Although I personally consider keyboards without a number row impractical – there are just too many
+new mappings on too many new layers to learn – there is one such keyboard in the app, and given that
+it already exists, I decided to add a very special Shift-level mapping to it. With the number row
+gone, we have to bring its characters down to the punctuation keys on the remaining rows – the
+opposite of what the colloquial mapping does on every other keyboard, where `/?` moves up into the
+number row. Instead, `!` and others move down. I designed the set to reuse the colloquial pairings
+where possible, but for the characters arriving from the digit row that wasn't possible, so those
+are paired semi-randomly. (But hey, both `+` and `&` mean 'and' in some way!)
+
+The set is: `,;`  `.:`  `-!`  `/?`  `'"`  `$%`  `&+`
+
+The arrangement can be seen in the app. How it maps to the flex map's punctuation is a hard-coded
+heuristic, easy enough since most keys have a natural pairing with the flex map character set. (As a
+fun fact, this is the only layout model whose colloquial Shift pairing is independent of the base
+mapping's language. It is also not configurable, since the standard pairings don't make sense
+without the number-row characters.)
 
 # [App] Implementation design and UX
 
