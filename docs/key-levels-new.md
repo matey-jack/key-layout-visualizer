@@ -291,6 +291,61 @@ redundant AltGr map shown above) we can successively remove keys to create small
 having to adjust any mapping or key position at all: the keys we'll keep are already in the letter
 area!
 
+## Using the redundant keys as navigation keys instead
+
+Now here's where the advantages double up! Once you have got used to typing your technical
+punctuation using the AltGr level only, why not repurpose the unused keys right next to your
+keyboard's letter area? Those keys are easier to reach than the explicit navigation keys further to
+the right, and much easier than the often tiny and cramped nav keys on laptops! And obviously, once
+you have nav keys this close, you may as well get a more compact keyboard that doesn't have any of
+those far-away nav keys at all!
+
+The replacement is obvious:
+
+- one pair of brackets takes Home/End,
+- the other takes PageUp/PageDown,
+- the oversized `\|` key becomes Delete (or Insert, or Fn, or whatever you like),
+- optionally, if strongly desired, the `=+` key could also become Delete or Insert (especially on
+  smaller boards, where `\|` has already dropped off),
+- and the same holds for the backtick-tilde key, in case it hasn't become Escape.
+
+You might ask: don't cool keyboards have a nav layer in their letter area? (Yes, see below.) Why,
+then, have separate nav keys? The answer is that one often uses nav (and other) keys while not
+typing, with the hands off the keyboard. For example, PageUp/PageDown get used while reading, with
+your hands wherever is comfortable. Or you might select something with the mouse and then press
+Delete.
+
+## The nav layer
+
+Depending on the system used for actually implementing the key map, we can abuse the character
+levels to create a **navigation layer** that keeps the hands in their typing position.
+
+- Windows national layouts don't allow it.
+- xkb config allows it (using the term "levels").
+- Programmable keyboard firmware such as QMK and ZMK allows it (but using the term "layer", which is
+  a more general concept).
+
+I call it "hands down" navigation, because the hands don't leave the home row. Elsewhere in this
+repository we use "hands off" for those keys that are so far away from the home row that they
+require taking the hands off. (But "hands off" navigation needs no layer or level key pressed, so
+it's great for when the hands are already off the keyboard.)
+
+Just like the letter-area AltGr character block above, the nav block is fixed by physical position,
+not by pairing with specific base-layer keys. Its longest row is on the home row, and the ↑↓ keys
+are on the middle finger (the longest one), leaving the four cursor keys in the familiar inverted-T
+shape, just moved onto the home row.
+
+        ↞   ↑   ↠
+     ⇤   ←   ↓   →   ⇥
+       ⇞   ↟   ↡   ⇟
+
+Four characters per key and the ANSI row stagger, same as in the AltGr diagram above: the block sits
+on the `wer`, `asdfg`, and `zxcv` keys of an ANSI keyboard.
+
+Note that `↟` and `↡` denote mouse scrolls, which can be mapped using keyboard firmware and possibly
+some third-party tools, but probably not using xkb. In case `⇟` or `⇞` would fall on the pinky and
+clash with the Shift key, we move the lower row of the nav block one key towards the center.
+
 ## Excursion: what a colloquial German keymap would look like
 
 Some numbers in advance: there are 29 letters in the German alphabet which have both minuscule and
@@ -375,61 +430,6 @@ things really stand out:
 - compatibility with the ANSI AltGr mapping shown above for English is very high: only `|` and
   `\` of the main block change position to keep their mnemonic. And changes in the "bonus"
   AltGr+digit characters of the ANSI keymap aren't a problem, given their low usage.
-
-## Using the redundant keys as navigation keys instead
-
-Now here's where the advantages double up! Once you have got used to typing your technical
-punctuation using the AltGr level only, why not repurpose the unused keys right next to your
-keyboard's letter area? Those keys are easier to reach than the explicit navigation keys further to
-the right, and much easier than the often tiny and cramped nav keys on laptops! And obviously, once
-you have nav keys this close, you may as well get a more compact keyboard that doesn't have any of
-those far-away nav keys at all!
-
-The replacement is obvious:
-
-- one pair of brackets takes Home/End,
-- the other takes PageUp/PageDown,
-- the oversized `\|` key becomes Delete (or Insert, or Fn, or whatever you like),
-- optionally, if strongly desired, the `=+` key could also become Delete or Insert (especially on
-  smaller boards, where `\|` has already dropped off),
-- and the same holds for the backtick-tilde key, in case it hasn't become Escape.
-
-You might ask: don't cool keyboards have a nav layer in their letter area? (Yes, see below.) Why,
-then, have separate nav keys? The answer is that one often uses nav (and other) keys while not
-typing, with the hands off the keyboard. For example, PageUp/PageDown get used while reading, with
-your hands wherever is comfortable. Or you might select something with the mouse and then press
-Delete.
-
-## The nav layer
-
-Depending on the system used for actually implementing the key map, we can abuse the character
-levels to create a **navigation layer** that keeps the hands in their typing position.
-
-- Windows national layouts don't allow it.
-- xkb config allows it (using the term "levels").
-- Programmable keyboard firmware such as QMK and ZMK allows it (but using the term "layer", which is
-  a more general concept).
-
-I call it "hands down" navigation, because the hands don't leave the home row. Elsewhere in this
-repository we use "hands off" for those keys that are so far away from the home row that they
-require taking the hands off. (But "hands off" navigation needs no layer or level key pressed, so
-it's great for when the hands are already off the keyboard.)
-
-Just like the letter-area AltGr character block above, the nav block is fixed by physical position,
-not by pairing with specific base-layer keys. Its longest row is on the home row, and the ↑↓ keys
-are on the middle finger (the longest one), leaving the four cursor keys in the familiar inverted-T
-shape, just moved onto the home row.
-
-        ↞   ↑   ↠
-     ⇤   ←   ↓   →   ⇥
-       ⇞   ↟   ↡   ⇟
-
-Four characters per key and the ANSI row stagger, same as in the AltGr diagram above: the block sits
-on the `wer`, `asdfg`, and `zxcv` keys of an ANSI keyboard.
-
-Note that `↟` and `↡` denote mouse scrolls, which can be mapped using keyboard firmware and possibly
-some third-party tools, but probably not using xkb. In case `⇟` or `⇞` would fall on the pinky and
-clash with the Shift key, we move the lower row of the nav block one key towards the center.
 
 # [App] Implementation design and UX
 
