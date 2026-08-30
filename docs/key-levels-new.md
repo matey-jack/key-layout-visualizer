@@ -85,12 +85,12 @@ fun fact, this is the only layout model that has a modified, colloquial Shift pa
 of the base mapping's language. It is also not configurable, since the default punctuation keys
 don't make sense without the number-row characters.)
 
-# Options for ergonomic keyboard layout models
+# [Domain] Options for ergonomic keyboard layout models
 
 What follows in this section applies to the English keymaps only, because it goes into quite some
 detail and the German/international punctuation isn't strictly defined in the app.
 
-## [Domain] Motivation and background
+## Motivation and background
 
 There's a "one key from home" movement among keyboard nerds that has leaked into the industry, and
 it applies both to small keyboards and to larger ones. The smallest keyboards literally remove every
@@ -127,7 +127,7 @@ existing keymaps in this app to keyboards with anything from a tiny 4 to a full 
 (Those numbers follow from the 40 and 47 total character keys, and from the fact that we are not
 removing any letter or digit keys.)
 
-## [Domain] How to remove punctuation keys
+## Removing the obviously technical punctuation keys
 
 US ANSI has 32 punctuation characters in total: 11 on the base level and 21 on the Shift level (the
 11 partners of those keys plus the 10 shifted digits). I don't want to list all of them, so let me
@@ -144,7 +144,7 @@ confuses text rendering. Those four keys are easy to handle, for two reasons:
 And as a sweet extra, the backtick-tilde key sits exactly where keyboards without a function row
 like to put their Escape key.
 
-### The core of the AltGr level key map
+## The core of the AltGr level key map
 
 Starting from those 8 characters, 4 of which are brackets, it seems reasonable to collect all of
 ANSI's brackets on the AltGr level. Indeed, you might say "the plain parentheses `()` are actually
@@ -184,7 +184,7 @@ advantages:
 Now that both `=` and `+` have found a place on our AltGr keymap, we can already consider the `=+`
 key optional. We have thus made five ANSI punctuation keys optional, getting down from 11 to 6.
 
-### AltGr bonus characters for the number row
+## AltGr bonus characters for the number row
 
 Since the above bracket block already places three AltGr characters in the number row, we may as
 well fill the entire row. For mnemonic reasons we do this by character pairing and independent of 
@@ -200,7 +200,7 @@ The `|`, `[`, and `]` here are the same keys that head the letter-area block sho
 can shift around on layout models that rearrange the number row, and on larger keyboards that have
 extra keys in its center.
 
-### Removing non-technical punctuation keys
+## Removing non-technical punctuation keys aka keeping the colloquial punctuation on base and Shift levels
 
 Moving `<>` to the AltGr level also prepares for a power move that makes our punctuation map both
 prettier and more practical, and that brings the ANSI keymap closer to international ones. I call it
@@ -242,7 +242,7 @@ key on my 41-key board. It's more logical that way, too, because `/?` is represe
 level and thus more dispensable. But the nice thing is that you are free to choose which of the 7
 redundant keys you want to keep; the keymap works regardless.
 
-#### How to actually place the keys on an arbitrary flex map
+### How to actually place the keys on an arbitrary flex map
 
 We express this as permutations, including entering and exiting keys, as is already done 
 elsewhere in the app. And if a key with a very good position moves (on standard ANSI this affects 
@@ -261,7 +261,7 @@ above permutations with `⌦-';` which lets the `-_` key advance at least a bit 
 where `=` is in our colloquial mapping, or `'` in the original ANSI.
 
 
-### Using the optimized Shift level without removing any keys
+## Using the optimized Shift level without removing any keys
 
 If you type on a full-size keyboard with a redundant AltGr mapping for the far-away keys, you can
 get used to the comfort of having two different ways to type a character. When you are in typing
@@ -289,7 +289,7 @@ redundant AltGr map shown above) we can successively remove keys to create small
 having to adjust any mapping or key position at all: the keys we'll keep are already in the letter
 area!
 
-### Using the redundant keys as navigation keys instead
+## Using the redundant keys as navigation keys instead
 
 Now here's where the advantages double up! Once you have got used to typing your technical
 punctuation using the AltGr layer only, why not repurpose the unused keys right next to your
@@ -313,7 +313,7 @@ typing, with the hands off the keyboard. For example, PageUp/PageDown get used w
 your hands wherever is comfortable. Or you might select something with the mouse and then press
 Delete.
 
-### The nav layer
+## The nav layer
 
 Depending on the system used for actually implementing the key map, we can abuse the character
 levels to create a **navigation layer** that keeps the hands in their typing position.
@@ -344,7 +344,9 @@ Note that `↟` and `↡` denote mouse scrolls, which can be mapped using keyboa
 some third-party tools, but probably not using xkb. In case `⇟` or `⇞` would fall on the pinky and
 clash with the Shift key, we move the lower row of the nav block one key towards the center.
 
-## [App] How all of this looks in the app
+# [App] Implementation design and UX
+
+## Making the bracket pairs appear together in keymaps
 
 To make the pair of new bracket keys co-located on all keyboard layout models, we need to add some
 layout-model-specific tweaking code. Fortunately, the positions where those keys are added lie
@@ -354,7 +356,11 @@ pretty relation between `+` and `-` can get lost.) On the big model-specific key
 can't use the same layout-model-based tweaking code. If I ever want that, I'll design something
 flex-map specific. Out of scope for now.
 
-New UX for the nav key replacements:
+## UX for the nav key replacements
+
+The [Domain] sections describe mostly already implemented functionality and serve as a manual 
+and rationale. For the UX, the manual is the visible behavior of the app itself. Therefore, this 
+section only describes the new behavior that still needs to be implemented.
 
 - There will be specific buttons for each nav pair and separately for the Delete and Insert keys.
   (Three buttons in total.)
