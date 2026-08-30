@@ -161,8 +161,10 @@ fingers: the middle and ring finger. Let's see the mapping:
            +   (   )   `
              =   <   >
 
-The diagram represents the staggered rows of the right-hand side of an ANSI/ISO keyboard. This
-mapping has numerous mnemonic advantages:
+The diagram represents the staggered rows of the right-hand side of an ANSI/ISO keyboard: ¼ key
+width of stagger between the home row and the row above it, ½ between the other rows, and four
+characters (including spacing) per key to make that exact. This mapping has numerous mnemonic
+advantages:
 
 - All brackets are typed with the middle finger (opening) and the ring finger (closing).
 - `<>` sit on the same keys as in standard ANSI – so the keycaps are still valid.
@@ -181,6 +183,22 @@ mapping has numerous mnemonic advantages:
 
 Now that both `=` and `+` have found a place on our AltGr keymap, we can already consider the `=+`
 key optional. We have thus made five ANSI punctuation keys optional, getting down from 11 to 6.
+
+### AltGr bonus characters for the number row
+
+Since the above bracket block already places three AltGr characters in the number row, we may as
+well fill the entire row. For mnemonic reasons we do this by character pairing and independent of 
+fingering:
+
+       ¡  ¢  £  €  ‰  ^  |  [  ]  ¿
+      1! 2@ 3# 4$ 5% 6^ 7& 8* 9/ 0?
+
+(Sadly, one mnemonic is lost on the generation that reads `#` as "hash", while older people still
+remember it as the "pound" character, which makes it perfect for the British pound sign.)
+
+The `|`, `[`, and `]` here are the same keys that head the letter-area block shown below. The row
+can shift around on layout models that rearrange the number row, and on larger keyboards that have
+extra keys in its center.
 
 ### Removing non-technical punctuation keys
 
