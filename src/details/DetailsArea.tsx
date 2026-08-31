@@ -437,11 +437,13 @@ export function ShiftLevelsDetails({layout, mapping, colloquial}: ShiftLevelsDet
         </p>
         {showsColloquial
             ? <p>
-                <b>Colloquial</b> cuts the punctuation down to the five keys a small board can spare –{" "}
-                <code>'"</code> <code>=+</code> <code>,;</code> <code>.:</code> <code>-_</code> – by moving{" "}
+                <b>Colloquial</b> cuts the punctuation down to the four keys a small board can spare –{" "}
+                <code>'"</code> <code>,;</code> <code>.:</code> <code>-_</code> – by moving{" "}
                 <code>;</code> off the home row and <code>/?</code> into the number row, where{" "}
                 <code>9/</code> and <code>0?</code> replace the parentheses. The two keys this frees get{" "}
-                <code>(&lt;</code> and <code>)&gt;</code>, whose characters the AltGr level carries anyway.
+                <code>(&lt;</code> and <code>)&gt;</code>, whose characters the AltGr level carries anyway.{" "}
+                Every further punctuation key a board has – <code>=+</code>, the brackets, the backtick –
+                is redundant with the AltGr level, so it can stay or go.
             </p>
             : isGermanCharMap(charMap)
                 ? <p>

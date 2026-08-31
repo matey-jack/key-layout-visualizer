@@ -2,8 +2,8 @@ Like many features in this app, key levels have an easy part and a hard part. Th
 simply show the Shift and AltGr characters and the Nav keys in the keyboard visualization. The hard
 part is to fine-tune this for all keyboard layout models and flex key maps, and to provide a few
 sensible additional options for the key maps. All new functionality is accessed via a new "mapping
-visualization" in the app called "Shift levels", so that all this new information doesn't clash with
-what is already there.
+visualization" in the app called "Shift and AltGr Levels", so that all this new information doesn't
+clash with what is already there.
 
 This document contains both purely domain descriptions (that is, implementation-independent design
 and rationale of keymaps) and app-specific descriptions (that is, what is shown where and how in the
@@ -26,6 +26,15 @@ Todo in code:
   exceptions/alternative characters to the pairings)
 - check some of my favorite English model-specific flex-maps: how do they look with colloquial Shift
   pairings? do I want to fix anything?
+
+Todo in concept:
+- the AltGr map in code contains the German position of @, because it's the only character 
+  missing from the German AltGr level. Update the doc with a rationale for that and also 
+  double-check it's true. (In English, the entire core of the AltGr is for redundancy with the 
+  base and Shift level plus some bonus keys. In other languages, however, even the standard keymap 
+  has characters on the AltGr level; thus we need to be careful to include them all in our AltGr 
+  map.)
+
 
 # [App] Showing the Shift and AltGr level characters (and functions)
 
@@ -50,8 +59,19 @@ and `-`; the latter is already a base character. A similar example is the German
 label as `'`.) And for the backtick character I actually included its Shift-level character (the
 tilde `~`) in the frame mappings, because it would otherwise be hard to see. So the app needs to
 work around both of those cases and recognize which key the base label actually denotes. In the
-"Shift levels" visualization, all such keys are normalized to the base/Shift pair of the
+"Shift and AltGr Levels" visualization, all such keys are normalized to the base/Shift pair of the
 auto-selected language.
+
+A quick note on terminology: the term "character level" comes from the internation keyboard 
+layout (actually: keymap) configuration. We use it here, because we mostly deal with characters; 
+the nav layer is just a small excursion. More popular in the keyboard community is the term 
+"layer", which is a generalization of the "character levels". Because keyboard layers can map 
+any keycode to a key; even key-modifier combinations and more complicated things. The layer 
+handling is done on the keyboard firmware itself or special remapping daemons on the computer. 
+Sticking with character levels has the advantage of not needing any special keyboard or software,
+because every operating system has the international layout (actually: keymap) configuration 
+built-in.
+
 
 ## [App] AltGr level
 
@@ -65,8 +85,9 @@ which are highly mnemonic in their positions, as we will see.
 
 ((TODO)) One important point, not yet designed, is that the keyboard should have an AltGr modifier
 key on each side, the same as the two Shift keys. We might later add some visuals and options for
-that in the app. For now we just highlight the AltGr key in the "Shift levels" view, so that people
-who have never used one can relate it to the AltGr-level key labels shown in the same color.
+that in the app. For now we just highlight the AltGr key in the "Shift and AltGr Levels" view, so
+that people who have never used one can relate it to the AltGr-level key labels shown in the same
+color.
 
 # [Domain] Options for ergonomic keyboard layout models
 
@@ -417,12 +438,13 @@ things really stand out:
 
 Although I personally consider keyboards without a number row impractical – there are just too many
 new mappings on too many new layers to learn – there is one such keyboard in the app, and given that
-it already exists, I decided to add a very special Shift-level mapping to it. With the number row
-gone, we have to bring its characters down to the remaining rows – the opposite of what the
-colloquial mapping does on every other keyboard. They move `/?` up into the number row; we move `!`
-down to the punctuation keys. I designed the set to reuse the colloquial pairings where possible,
-but for the characters arriving from the digit row that wasn't possible, so those are paired
-semi-randomly. (But hey, both `+` and `&` mean 'and' in some way!)
+it already exists, I decided to add a very special Shift-level mapping to it. It is the Minor
+Ergoslat 13/3, reachable as the Ergoslat's "47 keys" variant. With the number row gone, we have to
+bring its characters down to the remaining rows – the opposite of what the colloquial mapping does
+on every other keyboard. They move `/?` up into the number row; we move `!` down to the punctuation
+keys. I designed the set to reuse the colloquial pairings where possible, but for the characters
+arriving from the digit row that wasn't possible, so those are paired semi-randomly. (But hey, both
+`+` and `&` mean 'and' in some way!)
 
 The set is: `,;`  `.:`  `-!`  `/?`  `'"`  `$%`  `&+`
 

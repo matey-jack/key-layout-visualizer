@@ -43,8 +43,8 @@ export const ansiShiftPairs: ShiftPairs = byAnyMember([
 /*
     The standard German pairings, for the keys an ANSI-shaped board has – the ISO `<>|` key is on
     none of our boards. Two of these keys are drawn by another character than their base one:
-    `'` for the `#` key and the frame mapping's `` `~ `` for the `^°` key (see the Prerequisites
-    section of the doc), so those labels pair to the same key.
+    `'` for the `#` key and the frame mapping's `` `~ `` for the `^°` key (see "Showing the Shift
+    and AltGr level characters" in the doc), so those labels pair to the same key.
  */
 export const germanShiftPairs: ShiftPairs = {
     "1": "1!", "2": "2\"", "3": "3§", "4": "4$", "5": "5%",
@@ -93,9 +93,9 @@ export const shiftPairsFor = (
             : isGermanCharMap(charMap) ? germanShiftPairs : ansiShiftPairs;
 
 /*
-    Some layout models label the `=+` key with its shifted character (see the Prerequisites
-    section of docs/key-levels.md), and the cycles below name `=`. Normalise that away first, so
-    that every board takes the same path through them.
+    Some layout models label the `=+` key with its shifted character (see "Showing the Shift and
+    AltGr level characters" in the doc), and the cycles below name `=`. Normalise that away first,
+    so that every board takes the same path through them.
  */
 const normaliseEqualsKey = (charMap: string[][]): string[][] =>
     charMap.map((row) => row.map((label) => (label === "+" ? "=" : label)));
@@ -128,7 +128,7 @@ export const getShiftLevel = (charMap: string[][], pairs: ShiftPairs = ansiShift
     charMap.map((row) => row.map((label) => pairs[label]?.[1] ?? null));
 
 // The base level, but only where it differs from the label the key map draws
-// (see the Prerequisites section of docs/key-levels.md).
+// (see "Showing the Shift and AltGr level characters" in the doc).
 export const getBaseLevel = (charMap: string[][], pairs: ShiftPairs = ansiShiftPairs): LevelMap =>
     charMap.map((row) => row.map((label) => {
         const pair = pairs[label];
