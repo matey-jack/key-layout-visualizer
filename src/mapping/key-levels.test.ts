@@ -24,6 +24,7 @@ import {
     getThirdLevel,
     hasColloquialLevel,
     hasNumberRow,
+    isAnsiCharMap,
     navLeft,
     navRight,
     resolveSlot,
@@ -120,6 +121,22 @@ describe("shift pairings", () => {
 
     it("only overrides the base label where the key map draws something else", () => {
         expect(getBaseLevel([["a", "1", "+", "⌫", "`~"]])).toEqual([[null, null, "=", null, "`"]]);
+    });
+});
+
+describe("the ANSI marker", () => {
+    it("is the `;` key, which the European keymaps do not have", () => {
+        expect(isAnsiCharMap([["a", ";", "'"]])).toBe(true);
+        expect(isAnsiCharMap([["a", "ö", "ä"]])).toBe(false);
+    });
+
+    it("falls to the `(` that the colloquial board puts in place of the `;`", () => {
+        const mapping = mappingFor(ansiIBMLayoutModel);
+        const keymapType = findMatchingKeymapType(ansiIBMLayoutModel, mapping)!.typeId;
+        const charMap = colloquialiseCharMap(
+            fillMapping(ansiIBMLayoutModel, mapping)!, ansiIBMLayoutModel, keymapType);
+        expect(charMap.some((row) => row.includes(";"))).toBe(false);
+        expect(isAnsiCharMap(charMap)).toBe(true);
     });
 });
 
@@ -232,10 +249,11 @@ describe("AltGr character block", () => {
         expect(level["u"]).toBe("\\");
         expect(level["i"]).toBe("{");
         expect(level["o"]).toBe("}");
-        expect(level["h"]).toBe("~");
-        expect(level["j"]).toBe("`");
+        expect(level["p"]).toBe("~");
+        expect(level["j"]).toBe("+");
         expect(level["k"]).toBe("(");
         expect(level["l"]).toBe(")");
+        expect(level[";"]).toBe("`");
         expect(level["m"]).toBe("=");
         expect(level[","]).toBe("<");
         expect(level["."]).toBe(">");
@@ -246,10 +264,11 @@ describe("AltGr character block", () => {
         expect(level["r"]).toBe("\\");
         expect(level["e"]).toBe("}");
         expect(level["w"]).toBe("{");
-        expect(level["g"]).toBe("~");
-        expect(level["f"]).toBe("`");
+        expect(level["q"]).toBe("~");
+        expect(level["f"]).toBe("+");
         expect(level["d"]).toBe(")");
         expect(level["s"]).toBe("(");
+        expect(level["a"]).toBe("`");
         expect(level["v"]).toBe("=");
         expect(level["c"]).toBe(">");
         expect(level["x"]).toBe("<");
@@ -346,9 +365,10 @@ describe("the German `@`", () => {
         expect(level["q"]).toBe("@");
     });
 
-    it("stays there when the nav keys change hands", () => {
+    it("takes the mnemonic AltGr+2 when the character block claims that key", () => {
         const level = thirdLevelByLabel(majorErgoslatLayoutModel(false), Hand.Right, german);
-        expect(level["q"]).toBe("@");
+        expect(level["q"]).toBe("~");
+        expect(level["2"]).toBe("@");
     });
 
     it("is not on the English maps", () => {

@@ -22,14 +22,16 @@ Done:
 - I wrote this spec; yay!
 - renamed "compressed" Shift pairings to "colloquial" (both in UI and code).
 - merged the German position of `@` into the updated AltGr mapping spec. 
+- change the `ä` check for German to `;` for English
+- change the code to use the new AltGr mappings
 
 Todo in code:
 
-- change the `ä` check for German to `;` for English
-- change the code to use the new AltGr mappings
 - implement the Nav key replacements
 - fix some of the German keymaps to better match the Shift pairings (possibly add some more
   exceptions/alternative characters to the pairings)
+  + design: should the 32-key frame mappings by more like German or take a more generic 
+    international stance?
 - check some of my favorite English model-specific flex-maps: how do they look with colloquial Shift
   pairings? do I want to fix anything?
 

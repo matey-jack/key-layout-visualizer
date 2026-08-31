@@ -10,7 +10,7 @@
         npx tsx scripts/flex-map-inventory.ts
  */
 import {type FlexMapping, KeymapTypeId} from "../src/base-model.ts";
-import {isGermanCharMap} from "../src/mapping/key-levels.ts";
+import {isAnsiCharMap} from "../src/mapping/key-levels.ts";
 import {allMappings} from "../src/mapping/mappings.ts";
 
 // The keymap types every layout model can take; each of the others belongs to one model family.
@@ -18,9 +18,9 @@ const genericKeymapTypes: KeymapTypeId[] = [
     KeymapTypeId.Ansi30, KeymapTypeId.Ansi32, KeymapTypeId.Thumb30, KeymapTypeId.Thumb32,
 ];
 
-// A flex map row holds one character per key, which is the char map shape isGermanCharMap reads.
+// A flex map row holds one character per key, which is the char map shape isAnsiCharMap reads.
 const isGerman = (mapping: FlexMapping): boolean =>
-    Object.values(mapping.mappings).some((rows) => isGermanCharMap(rows.map((row) => [...row])));
+    !Object.values(mapping.mappings).every((rows) => isAnsiCharMap(rows.map((row) => [...row])));
 
 const pad = (text: string, width: number) => text + " ".repeat(Math.max(0, width - text.length));
 

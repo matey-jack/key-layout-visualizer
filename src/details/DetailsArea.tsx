@@ -36,7 +36,7 @@ import {
     TRADEOFF_SAME_FINGER_COLOR
 } from "../layout/TradeoffDiagram.tsx";
 import {sum} from "../library/math.ts";
-import {hasColloquialLevel, hasNumberRow, isGermanCharMap} from "../mapping/key-levels.ts";
+import {hasColloquialLevel, hasNumberRow, isAnsiCharMap} from "../mapping/key-levels.ts";
 import {qwertyMapping} from "../mapping/baseMappings.ts";
 import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
 
@@ -453,7 +453,7 @@ export function ShiftLevelsDetails({layout, mapping, colloquial}: ShiftLevelsDet
                 Every further punctuation key a board has – <code>=+</code>, the brackets, the backtick –
                 is redundant with the AltGr level, so it can stay or go.
             </p>
-            : isGermanCharMap(charMap)
+            : !isAnsiCharMap(charMap)
                 ? <p>
                     <b>Standard</b> on a German key map means the standard German Shift level:{" "}
                     <code>1!</code> <code>2"</code> … <code>ß?</code> <code>,;</code> <code>.:</code>{" "}
@@ -472,8 +472,9 @@ export function ShiftLevelsDetails({layout, mapping, colloquial}: ShiftLevelsDet
             On the letter rows the AltGr level is fixed by finger position instead, so it stays the same
             on every keyboard. One hand gets the characters: three kinds of brackets stacked on middle and
             ring finger, with <code>{"()"}</code> on the home row and <code>{"<>"}</code> where ANSI has
-            them, and <code>{"\\ ` ~ ="}</code> on the index finger – <code>=</code> sits right next to{" "}
-            <code>{"<>"}</code> for bigrams like <code>{"<="}</code>.
+            them, and <code>{"\\ + ="}</code> on the index finger – <code>=</code> sits right next to{" "}
+            <code>{"<>"}</code> for bigrams like <code>{"<="}</code>. The pinky reaches out for{" "}
+            <code>~</code> and the backtick.
         </p>}
         {!numberless && <p>
             The number row goes by digit, so that its mnemonics survive on the boards that shift the row

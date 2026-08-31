@@ -16,9 +16,14 @@ import {isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
 // Level arrays are parallel to the merged char map (and thus to the model's keyWidths).
 export type LevelMap = (string | null)[][];
 
-// The character set a key map draws decides its Shift pairings: only German has an `ä` key.
-export const isGermanCharMap = (charMap: string[][]): boolean =>
-    charMap.some((row) => row.includes("ä"));
+/*
+    The character set a key map draws decides its pairings, and the ANSI `;:` key is the marker:
+    most European keyboards do not have `;` as a base label. The colloquial rearrangement dissolves
+    that very key, so its own `(` stands in for it there – no other key map draws one on the base
+    level.
+ */
+export const isAnsiCharMap = (charMap: string[][]): boolean =>
+    charMap.some((row) => row.includes(";") || row.includes("("));
 
 export const hasNumberRow = (model: LayoutModel): boolean =>
     model.mainFingerAssignment[KeyboardRows.Number].some((finger) => finger !== null);
@@ -70,14 +75,14 @@ export const colloquialShiftPairs: ShiftPairs = {
 
 // The colloquial Shift level is defined for the English character set only.
 export const hasColloquialLevel = (charMap: string[][], hasNumberRow: boolean): boolean =>
-    hasNumberRow && !isGermanCharMap(charMap);
+    hasNumberRow && isAnsiCharMap(charMap);
 
 export const shiftPairsFor = (
     charMap: string[][], hasNumberRow: boolean, colloquial = false
 ): ShiftPairs =>
     !hasNumberRow ? {}
         : colloquial && hasColloquialLevel(charMap, hasNumberRow) ? colloquialShiftPairs
-            : isGermanCharMap(charMap) ? germanShiftPairs : ansiShiftPairs;
+            : isAnsiCharMap(charMap) ? ansiShiftPairs : germanShiftPairs;
 
 /*
     Some layout models label the `=+` key with its shifted character (see "Showing the Shift and
@@ -141,16 +146,16 @@ const _ = null;
 // The number row is not part of the blocks: it pairs with the digits instead, see below.
 export const altGrRight: Block = [
     [_, _, _, _, _],
-    [_, "\\", "{", "}", _],
-    ["~", "`", "(", ")", _],
+    [_, "\\", "{", "}", "~"],
+    [_, "+", "(", ")", "`"],
     [_, "=", "<", ">", _],
     [_, _, _, _, _],
 ];
 
 export const altGrLeft: Block = [
     [_, _, _, _, _],
-    [_, "\\", "}", "{", _],
-    ["~", "`", ")", "(", _],
+    [_, "\\", "}", "{", "~"],
+    [_, "+", ")", "(", "`"],
     [_, "=", ">", "<", _],
     [_, _, _, _, _],
 ];
@@ -259,9 +264,13 @@ export function getThirdLevel(
     if (hasNumberRow(model)) {
         placeBlock(result, model, positions, charSide, charSide === Hand.Right ? altGrRight : altGrLeft);
         placeDigits(result, positions);
-        if (isGermanCharMap(charMap)) {
-            // The AltGr assignment of the key map position [Upper, 0] – `q` in qwertz.
-            const key = resolveSlot(model, positions, Hand.Left, KeyboardRows.Upper, 4);
+        if (!isAnsiCharMap(charMap)) {
+            // `@` on the key the German standard has it, the key map position [Upper, 0] – `q` in
+            // qwertz. That is where the character block puts `~`, so when the block is on that
+            // hand, `@` takes the mnemonic AltGr+2 instead, off the `¢` the digits placed there.
+            const key = charSide === Hand.Left
+                ? positions.find((p) => p.row === KeyboardRows.Number && p.label === "2")
+                : resolveSlot(model, positions, Hand.Left, KeyboardRows.Upper, 4);
             if (key) result[key.row][key.col] = "@";
         }
     }
