@@ -26,12 +26,9 @@ import {
     hasNumberRow,
     navLeft,
     navRight,
-    numberlessEnglishShiftPairs,
-    numberlessGermanShiftPairs,
     resolveSlot,
     shiftPairFor,
 } from "./key-levels.ts";
-import {isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
 
 // Without a name, the first mapping the model accepts – which is a 30-key one everywhere.
 const mappingFor = (model: LayoutModel, name?: string) =>
@@ -277,71 +274,24 @@ describe("AltGr character block", () => {
     });
 });
 
-describe("numberless Shift pairings", () => {
+describe("a board without a number row", () => {
     const numberless = makeErgoslatNumberless(majorErgoslatLayoutModel(false));
-    const german = "Qwertz – German Standard";
 
-    it("finds a pairing by the label the key map draws, which the base level then replaces", () => {
-        expect(shiftPairFor(";", numberlessEnglishShiftPairs)).toBe("'\"");
-        expect(shiftPairFor("+", numberlessEnglishShiftPairs)).toBe("&+");
-        // and the ANSI meaning of that label no longer applies
-        expect(shiftPairFor(":", numberlessEnglishShiftPairs)).toBeUndefined();
-        expect(shiftPairFor("=", numberlessEnglishShiftPairs)).toBeUndefined();
-    });
-
-    it("replaces the ANSI set on the English maps", () => {
-        expect(shiftLevelByLabel(numberless)).toEqual({
-            ",": ",;", ".": ".:", "/": "/?",
-            ";": "'\"", "'": "-!", "-": "$%", "+": "&+",
+    it("shows no Shift and no base characters, whatever the key map", () => {
+        [undefined, "Quipper with Thumb-T", "Qwertz – German Standard"].forEach((name) => {
+            const charMap = fillMapping(numberless, mappingFor(numberless, name))!;
+            const positions = getKeyPositions(numberless, false, charMap);
+            const levels = getKeyLevels(numberless, positions, charMap, Hand.Left);
+            expect(levels.shift.flat().filter(Boolean), name).toEqual([]);
+            expect(levels.base.flat().filter(Boolean), name).toEqual([]);
         });
     });
 
-    it("is the same permutation on a thumb map, which takes `-` from the other source", () => {
-        expect(shiftLevelByLabel(numberless, "Quipper with Thumb-T"))
-            .toEqual(shiftLevelByLabel(numberless));
-    });
-
-    it("keeps only four of the pairs on the German maps", () => {
-        // `/?` goes on the `+` key here, since that is the one of `+` and `/` this board draws.
-        expect(shiftLevelByLabel(numberless, german)).toEqual({
-            ",": ",;", ".": ".:", "-": "-!", "+": "/?",
-        });
-    });
-
-    it("would put `/?` on a `/` key just as readily", () => {
-        expect(shiftPairFor("/", numberlessGermanShiftPairs)).toBe("/?");
-        expect(shiftPairFor("+", numberlessGermanShiftPairs)).toBe("/?");
-    });
-
-    it("leaves the ANSI pairings alone on the same board with a number row", () => {
+    it("leaves the pairings alone on the same board with a number row", () => {
         const numbered = shiftLevelByLabel(majorErgoslatLayoutModel(false));
         expect(numbered[";"]).toBe(";:");
         expect(numbered[","]).toBe(",<");
         expect(numbered["+"]).toBe("=+");
-    });
-});
-
-/*
-    The pairings are keyed by the label the key map draws, so a frame or flex mapping that moves a
-    punctuation character in or out of a numberless board would silently leave a key unpaired.
- */
-describe("every punctuation key on a numberless board is paired", () => {
-    const numberlessModels = allLayoutModels
-        .filter((m) => !positionsOf(m).some((p) => p.row === KeyboardRows.Number));
-
-    it("is a set of two models", () => {
-        expect(numberlessModels.map((m) => m.name)).toHaveLength(2);
-    });
-
-    it.each(numberlessModels.map((m) => [m.name, m] as const))("%s", (_name, model) => {
-        allMappings.filter((m) => hasMatchingMapping(model, m)).forEach((mapping) => {
-            const paired = shiftLevelByLabel(model, mapping.name);
-            const unpaired = fillMapping(model, mapping)!.flat()
-                .filter((label) => label && !isKeyName(label) && !isKeyboardSymbol(label)
-                    && !/^[\p{L}0-9]$/u.test(label))
-                .filter((label) => !paired[label]);
-            expect(unpaired, mapping.name).toEqual([]);
-        });
     });
 });
 

@@ -427,15 +427,23 @@ interface ShiftLevelsDetailsProps {
 
 export function ShiftLevelsDetails({layout, mapping, colloquial}: ShiftLevelsDetailsProps) {
     const charMap = fillMapping(layout, mapping)!;
+    const numberless = !hasNumberRow(layout);
     const showsColloquial = colloquial && hasColloquialLevel(charMap, hasNumberRow(layout));
     return <>
-        <p>
-            Each character key can carry three levels: the character it inserts on its own, the one it inserts
-            with Shift, and the one it inserts with AltGr. The Shift characters are shown above the base ones,
-            the AltGr level in <span class="altgr-level-legend">blue</span> in the bottom right corner –
-            the same three places an ISO keycap prints them.
-        </p>
-        {showsColloquial
+        {numberless
+            ? <p>
+                We show no Shift and no AltGr characters on this board, the only one without a number row:
+                with the digits gone, the standard pairings turn absurd – it still has <code>?</code>, but
+                no <code>!</code> – and we haven't put in the effort to design a more sensible set of its own.
+            </p>
+            : <p>
+                Each character key can carry three levels: the character it inserts on its own, the one it
+                inserts with Shift, and the one it inserts with AltGr. The Shift characters are shown above
+                the base ones, the AltGr level in <span class="altgr-level-legend">blue</span> in the bottom
+                right corner – the same three places an ISO keycap prints them.
+            </p>
+        }
+        {!numberless && (showsColloquial
             ? <p>
                 <b>Colloquial</b> cuts the punctuation down to the four keys a small board can spare –{" "}
                 <code>'"</code> <code>,;</code> <code>.:</code> <code>-_</code> – by moving{" "}
@@ -459,33 +467,28 @@ export function ShiftLevelsDetails({layout, mapping, colloquial}: ShiftLevelsDet
                     map rather than the board, so a mapping that moves its punctuation around takes its Shift
                     characters along.
                 </p>
-        }
-        {!hasNumberRow(layout) && <p>
-            This board has no number row, so it gets seven pairs of its own – <code>,;</code>{" "}
-            <code>.:</code> <code>-!</code> <code>/?</code> <code>'"</code> <code>$%</code>{" "}
-            <code>&amp;+</code> – because half of the ANSI ones live on digits it does not have.
-            They relabel the base level too, so the <code>;</code> key becomes the <code>'"</code> key.
-        </p>}
-        <p>
+        )}
+        {!numberless && <p>
             On the letter rows the AltGr level is fixed by finger position instead, so it stays the same
             on every keyboard. One hand gets the characters: three kinds of brackets stacked on middle and
             ring finger, with <code>{"()"}</code> on the home row and <code>{"<>"}</code> where ANSI has
             them, and <code>{"\\ ` ~ ="}</code> on the index finger – <code>=</code> sits right next to{" "}
             <code>{"<>"}</code> for bigrams like <code>{"<="}</code>.
-        </p>
-        <p>
+        </p>}
+        {!numberless && <p>
             The number row goes by digit, so that its mnemonics survive on the boards that shift the row
             around. Most of its characters pair with the Shift character above them: <code>¡</code> with{" "}
             <code>!</code>, <code>£</code> with <code>#</code> (the "pound" key), <code>€</code> with{" "}
             <code>$</code>, <code>‰</code> with <code>%</code>, and <code>|</code> with <code>&amp;</code>,
             reflecting their relationship in programming languages. <code>{"[ ]"}</code> complete the
             bracket stack on <code>8</code> and <code>9</code>.
-        </p>
+        </p>}
         <p>
-            The other hand gets "hands down" navigation: the four cursor keys in their familiar inverted-T
-            shape, but on the home row, with Home/End beside them and PageUp/PageDown below. Use the "Nav
-            keys" buttons to swap which hand gets which. The mnemonic character placement needs an AltGr key
-            for the opposite thumb – on an ISO board the extra key next to the left Shift can serve as one.
+            {numberless ? "One hand" : "The other hand"} gets "hands down" navigation: the four cursor keys
+            in their familiar inverted-T shape, but on the home row, with Home/End beside them and
+            PageUp/PageDown below. Use the "Nav keys" buttons to swap which hand gets it.
+            {!numberless && " The mnemonic character placement needs an AltGr key for the opposite thumb – "
+                + "on an ISO board the extra key next to the left Shift can serve as one."}
         </p>
     </>
 }

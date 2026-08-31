@@ -20,14 +20,13 @@ export type LevelMap = (string | null)[][];
 export const isGermanCharMap = (charMap: string[][]): boolean =>
     charMap.some((row) => row.includes("ä"));
 
-// A board without a number row gets its own Shift pairings and no AltGr characters at all.
 export const hasNumberRow = (model: LayoutModel): boolean =>
     model.mainFingerAssignment[KeyboardRows.Number].some((finger) => finger !== null);
 
 /*
     A pairing table maps the label a key map draws onto the two characters to show on that key:
     base character first, shifted character second. Where the two differ, the base level
-    overrides the drawn label – which is how the numberless tables below relabel a key entirely.
+    overrides the drawn label, so a key drawn `+` shows the `=` it actually inserts.
  */
 export type ShiftPairs = Record<string, string>;
 
@@ -54,18 +53,6 @@ export const germanShiftPairs: ShiftPairs = {
     ",": ",;", ".": ".:", "-": "-_",
 };
 
-// Without a number row the ANSI pairings make no sense, so these seven replace them.
-export const numberlessEnglishShiftPairs: ShiftPairs = {
-    ",": ",;", ".": ".:", "/": "/?",
-    ";": "'\"", "'": "-!", "-": "$%", "+": "&+",
-};
-
-// A German key map places only four of those characters, and `/?` lands on whichever of
-// `+` and `/` it happens to draw.
-export const numberlessGermanShiftPairs: ShiftPairs = {
-    ",": ",;", ".": ".:", "-": "-!", "+": "/?", "/": "/?",
-};
-
 /*
     The colloquial 30-key pairings, keyed by the label the colloquial frame mapping draws. The
     rearrangement below has already moved the five kept punctuation characters onto their keys,
@@ -88,8 +75,8 @@ export const hasColloquialLevel = (charMap: string[][], hasNumberRow: boolean): 
 export const shiftPairsFor = (
     charMap: string[][], hasNumberRow: boolean, colloquial = false
 ): ShiftPairs =>
-    colloquial && hasColloquialLevel(charMap, hasNumberRow) ? colloquialShiftPairs
-        : !hasNumberRow ? (isGermanCharMap(charMap) ? numberlessGermanShiftPairs : numberlessEnglishShiftPairs)
+    !hasNumberRow ? {}
+        : colloquial && hasColloquialLevel(charMap, hasNumberRow) ? colloquialShiftPairs
             : isGermanCharMap(charMap) ? germanShiftPairs : ansiShiftPairs;
 
 /*
@@ -256,8 +243,7 @@ function placeDigits(result: LevelMap, positions: KeyPosition[]) {
     });
 }
 
-// The AltGr level: navigation on `navSide` and the AltGr characters on the other hand,
-// which a layout without a number row does not get at all.
+// The AltGr level: navigation on `navSide` and the AltGr characters on the other hand.
 export function getThirdLevel(
     model: LayoutModel, positions: KeyPosition[], charMap: string[][], navSide: Hand
 ): LevelMap {

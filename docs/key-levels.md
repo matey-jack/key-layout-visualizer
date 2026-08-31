@@ -434,26 +434,6 @@ things really stand out:
   `\` of the main block change position to keep their mnemonic. And changes in the "bonus"
   AltGr+digit characters of the ANSI keymap aren't a problem, given their low usage.
 
-## Excursion: the numberless Ergoslat
-
-Although I personally consider keyboards without a number row impractical – there are just too many
-new mappings on too many new layers to learn – there is one such keyboard in the app, and given that
-it already exists, I decided to add a very special Shift-level mapping to it. It is the Minor
-Ergoslat 13/3, reachable as the Ergoslat's "47 keys" variant. With the number row gone, we have to
-bring its characters down to the remaining rows – the opposite of what the colloquial mapping does
-on every other keyboard. They move `/?` up into the number row; we move `!` down to the punctuation
-keys. I designed the set to reuse the colloquial pairings where possible, but for the characters
-arriving from the digit row that wasn't possible, so those are paired semi-randomly. (But hey, both
-`+` and `&` mean 'and' in some way!)
-
-The set is: `,;`  `.:`  `-!`  `/?`  `'"`  `$%`  `&+`
-
-The arrangement can be seen in the app. How it maps to the flex map's punctuation is a hard-coded
-heuristic, easy enough since most keys have a natural pairing with the flex map character set. (As a
-fun fact, this is the only layout model whose colloquial Shift pairing is independent of the base
-mapping's language. It is also not configurable, since the standard pairings don't make sense
-without the number-row characters.)
-
 # [App] Implementation design and UX
 
 ## Making the bracket pairs appear together in keymaps
