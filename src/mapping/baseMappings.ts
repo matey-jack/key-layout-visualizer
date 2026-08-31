@@ -76,7 +76,8 @@ export const qwertzMapping: FlexMapping = {
             "qwert" + "+z" + "uiopüä",
             "asdfg" + "#" + "hjklö",
             "yxcvb" + "-" + "nm,.",
-            "^⌥´☰"
+          // we use `°` as the label for the `^°` key, because a plain `^` in the flex map is shortcut for the `Ctrl` key!
+            "°⌥´☰"
         ]
     }
 }

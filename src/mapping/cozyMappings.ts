@@ -147,7 +147,7 @@ export const gemuetlichesMapping: FlexMapping = {
             "qwbfö" + "´ä" + "zkuopü",
             "asdrg" + "'" + "hnilt",
             "yxcv" + "/-" + "jm,.",
-            "\\e⌥+"
+            "°e⌥+"
         ],
     },
     fallback: qwertzMapping,
