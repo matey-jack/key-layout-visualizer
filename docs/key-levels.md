@@ -6,8 +6,8 @@ few sensible additional options for the key maps. All new functionality is acces
 doesn't clash with what is already there.
 
 The purpose of including those character levels is not to give an accurate description of existing
-keymaps. We rather include existing keymaps only as a starting point so that we can experiment with
-modified maps that improving the typing experience and also fit smaller keyboards.
+keymaps. Rather, we include existing keymaps only as a starting point so that we can experiment with
+modified maps that improve the typing experience and also fit smaller keyboards.
 
 This document contains both purely domain descriptions (that is, implementation-independent design
 and rationale of keymaps) and app-specific descriptions (that is, what is shown where and how in the
@@ -59,14 +59,14 @@ work around both of those cases and recognize which key the base label actually 
 "Shift and AltGr Levels" visualization, all such keys are normalized to the base/Shift pair of the
 auto-selected language.
 
-A quick note on terminology: the term "character level" comes from the internation keyboard layout
-(actually: keymap) configuration. We use it here, because we mostly deal with characters; the nav
-layer is just a small excursion. More popular in the keyboard community is the term "layer", which
-is a generalization of the "character levels". Because keyboard layers can map any keycode to a key;
-even key-modifier combinations and more complicated things. The layer handling is done on the
-keyboard firmware itself or special remapping daemons on the computer. Sticking with character
-levels has the advantage of not needing any special keyboard or software, because every operating
-system has the international layout (actually: keymap) configuration built-in.
+A quick note on terminology: the term "character level" comes from the international keyboard
+layout (actually: keymap) configuration. We use it here, because we mostly deal with characters;
+the nav layer is just a small excursion. More popular in the keyboard community is the term
+"layer", which is a generalization of the "character levels", because keyboard layers can map any
+keycode to a key — even key-modifier combinations and more complicated things. The layer handling
+is done on the keyboard firmware itself or special remapping daemons on the computer. Sticking with
+character levels has the advantage of not needing any special keyboard or software, because every
+operating system has the international layout (actually: keymap) configuration built-in.
 
 ## [App] AltGr level
 
@@ -85,14 +85,14 @@ that people who have never used one can relate it to the AltGr-level key labels 
 color.
 
 [Domain] While the Shift level in the app represents both ANSI English and German standard keymaps,
-and offers an improved alternative, we have taken more liberty with the AltGr level from the start.
-This is because ANSI doesn't define one anyway and the standard German one is ergonomically
+and offers an improved alternative, we have taken more liberties with the AltGr level from the
+start. This is because ANSI doesn't define one anyway and the standard German one is ergonomically
 terrible. Although we use almost the same AltGr level mapping for both languages, and it has
-ergonomic typing benefits in both, the current version only offers support for smaller keyboards for
-the ANSI English character set. This is because our shared AltGr mapping for German covers mostly
-characters that are already in the standard German AltGr mapping. For ANSI, on the other hand, all
-those characters are redundant, thus allowing us to shrink the size of the keyboard by removing the
-keys which have those characters on the base and Shift levels.
+ergonomic typing benefits in both, the current version supports smaller keyboards only for the ANSI
+English character set. The reason is that our shared mapping covers characters that German already
+has on its own AltGr level — not on base or Shift — so dropping keys wins nothing there. For ANSI,
+on the other hand, all those characters are redundant, which lets us shrink the keyboard by
+removing the keys that carry them on the base and Shift levels.
 
 # [Domain] Options for ergonomic keyboard layout models
 
@@ -211,16 +211,16 @@ The `|`, `[`, and `]` here are the same keys that head the letter-area block abo
 shift around on layout models that rearrange the number row, and on larger keyboards that have extra
 keys in its center.
 
-Incidentally, the `€` character here is important for our German keymap, because standard German has
-it on `AltGr+E`, a position that we need for our nav layer below. Together with the
-"technical punctuation" characters, there is now only one practically useful character from the
-standard German AltGr mapping missing. It is the `@` sign; and we map it on its conventional German
-position [Upper, 0] (which is `q` in qwertz). Note that the mapping needs to be tied to the finger,
-so it survives on different flex maps without clashing with other AltGr characters and Nav keys on
-the letter row. Unfortunately it clashes with `~` when the nav layer is on the right side. In that
-case, we move it to `AltGr+2`, overwriting `¢` which exists there more for fun than real usage
-anywhere. That position is very mnemonic thanks to the ANSI keymap, and the key is quite close to
-the original position.
+Incidentally, the `€` character here is important for our German keymap, because standard German
+has it on `AltGr+E`, a position that we need for our nav layer below. Together with the "technical
+punctuation" characters, only one practically useful character from the standard German AltGr
+mapping is still missing. It is the `@` sign, and we map it in its conventional German position
+[Upper, 0] (which is `q` in qwertz). Note that this assignment needs to be tied to the finger, so
+that it survives on different flex maps without clashing with other AltGr characters and Nav keys
+in the letter area. Unfortunately, it clashes with `~` when the nav layer is on the right side. In
+that case, we move it to `AltGr+2`, overwriting `¢`, which is there more for fun than for real use.
+That position is very mnemonic thanks to the ANSI keymap, and the key is quite close to the
+original one.
 
 ## Removing non-technical punctuation keys aka keeping the colloquial punctuation on base and Shift levels
 
@@ -416,7 +416,8 @@ This is not super-well thought out, but here are the good parts from left to rig
 - `°` moves by one key (and changes level)
 - `@` is already an AltGr level key in the German standard, but sits in the letter area that we
   better keep clear for navigation keys. Thus, we move it to the key that has it in English, which
-  is just one key away from the old position.
+  is just one key away from the old position – the same spot the shared AltGr map falls back to
+  when the nav block claims the German one.
 - We prefer the English pound/Pound mnemonic, with the additional benefit of `'` and `#`
   landing on the same key, just as in the German standard. Thus, `§` has to move one to the left.
   (No problem, it's a character that I might otherwise even just drop from the keymap entirely.)
