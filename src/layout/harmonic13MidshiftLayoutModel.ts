@@ -50,7 +50,7 @@ export const harmonic13MidshiftLayoutModel: LayoutModel = {
     staggerOffsets: harmonicStaggerOffsets,
     symmetricStagger: true,
 
-    compressedCycles: {
+    colloquialCycles: {
         [KeymapTypeId.Ansi30]: ["=("],
         [KeymapTypeId.Thumb30]: ["\\)"],
     },

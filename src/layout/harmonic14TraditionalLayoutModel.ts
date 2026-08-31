@@ -42,9 +42,9 @@ export const harmonic14TraditionalLayoutModel: LayoutModel = {
     staggerOffsets: harmonicStaggerOffsets,
     symmetricStagger: true,
 
-    compressedCycles: {
+    colloquialCycles: {
         [KeymapTypeId.Ansi30]: ["`)("],
-        // The standard placement has `/` in the bottom row and thus the compressed `-` lands there, too.
+        // The standard placement has `/` in the bottom row and thus the colloquial `-` lands there, too.
         // We do a second permutation to rescue it to a better position.
         [KeymapTypeId.Thumb30]: ["([", "`-=\\"],
     },

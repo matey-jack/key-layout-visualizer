@@ -149,7 +149,7 @@ export const ansiWideLayoutModel: LayoutModel = {
             ],
 
         // Put the () in the center and [] to the top right, both in a stack.
-        compressedCycles: {
+        colloquialCycles: {
             [KeymapTypeId.Ansi30]: ["=)](["],
             [KeymapTypeId.Thumb30]: ["([)]="],
         },

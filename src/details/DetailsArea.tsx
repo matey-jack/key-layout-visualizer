@@ -36,7 +36,7 @@ import {
     TRADEOFF_SAME_FINGER_COLOR
 } from "../layout/TradeoffDiagram.tsx";
 import {sum} from "../library/math.ts";
-import {hasCompressedLevel, hasNumberRow, isGermanCharMap} from "../mapping/key-levels.ts";
+import {hasColloquialLevel, hasNumberRow, isGermanCharMap} from "../mapping/key-levels.ts";
 import {qwertyMapping} from "../mapping/baseMappings.ts";
 import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
 
@@ -57,13 +57,13 @@ export function DetailsArea({appState}: DetailsAreaProps) {
         }
         <hr/>
         <div class="visualization-details">
-            {getVizDetails(vizType, layout, mapping, appState.shiftCompressed.value)}
+            {getVizDetails(vizType, layout, mapping, appState.shiftColloquial.value)}
         </div>
     </div>;
 }
 
 export function getVizDetails(
-    vizType: VisualizationType, layout: LayoutModel, mapping: FlexMapping, shiftCompressed = false
+    vizType: VisualizationType, layout: LayoutModel, mapping: FlexMapping, shiftColloquial = false
 ) {
     switch (vizType) {
         case VisualizationType.LayoutKeySize:
@@ -95,7 +95,7 @@ export function getVizDetails(
         case VisualizationType.MappingBigrams:
             return <BigramEffortDetails layout={layout} mapping={mapping}/>;
         case VisualizationType.MappingShiftLevels:
-            return <ShiftLevelsDetails layout={layout} mapping={mapping} compressed={shiftCompressed}/>;
+            return <ShiftLevelsDetails layout={layout} mapping={mapping} colloquial={shiftColloquial}/>;
         case VisualizationType.MappingTradeoff:
             return <TradeoffDetails/>;
     }
@@ -422,12 +422,12 @@ export function BigramDetailsLegendItem({bigramType, frequency, children}: Bigra
 interface ShiftLevelsDetailsProps {
     layout: LayoutModel;
     mapping: FlexMapping;
-    compressed: boolean;
+    colloquial: boolean;
 }
 
-export function ShiftLevelsDetails({layout, mapping, compressed}: ShiftLevelsDetailsProps) {
+export function ShiftLevelsDetails({layout, mapping, colloquial}: ShiftLevelsDetailsProps) {
     const charMap = fillMapping(layout, mapping)!;
-    const showsCompressed = compressed && hasCompressedLevel(charMap, hasNumberRow(layout));
+    const showsColloquial = colloquial && hasColloquialLevel(charMap, hasNumberRow(layout));
     return <>
         <p>
             Each character key can carry three levels: the character it inserts on its own, the one it inserts
@@ -435,9 +435,9 @@ export function ShiftLevelsDetails({layout, mapping, compressed}: ShiftLevelsDet
             the AltGr level in <span class="altgr-level-legend">blue</span> in the bottom right corner –
             the same three places an ISO keycap prints them.
         </p>
-        {showsCompressed
+        {showsColloquial
             ? <p>
-                <b>Compressed</b> cuts the punctuation down to the five keys a small board can spare –{" "}
+                <b>Colloquial</b> cuts the punctuation down to the five keys a small board can spare –{" "}
                 <code>'"</code> <code>=+</code> <code>,;</code> <code>.:</code> <code>-_</code> – by moving{" "}
                 <code>;</code> off the home row and <code>/?</code> into the number row, where{" "}
                 <code>9/</code> and <code>0?</code> replace the parentheses. The two keys this frees get{" "}

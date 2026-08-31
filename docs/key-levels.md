@@ -16,11 +16,11 @@ and [app], so readers can orient themselves.
 Done:
 
 - I wrote this spec; yay!
+- renamed "compressed" Shift pairings to "colloquial" (both in UI and code)
 
 Todo in code:
 
 - change the `ä` check for German to `;` for English
-- rename "compressed" Shift pairings to "colloquial" (both in UI and code)
 - implement the Nav key replacements
 - fix some of the German keymaps to better match the Shift pairings (possibly add some more
   exceptions/alternative characters to the pairings)

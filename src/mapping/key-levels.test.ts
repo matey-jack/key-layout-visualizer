@@ -15,14 +15,14 @@ import {
     altGrDigits,
     altGrLeft,
     altGrRight,
-    compressCharMap,
-    compressedShiftPairs,
+    colloquialiseCharMap,
+    colloquialShiftPairs,
     germanShiftPairs,
     getBaseLevel,
     getKeyLevels,
     getShiftLevel,
     getThirdLevel,
-    hasCompressedLevel,
+    hasColloquialLevel,
     hasNumberRow,
     navLeft,
     navRight,
@@ -56,14 +56,14 @@ function shiftLevelByLabel(model: LayoutModel, mappingName?: string): Record<str
 }
 
 /*
-    The same for the compressed level, which rearranges the keys themselves – so the char map
-    goes through compressCharMap before the positions are computed, exactly as the app does it.
-    The keys of the result are the labels the compressed board draws.
+    The same for the colloquial level, which rearranges the keys themselves – so the char map
+    goes through colloquialiseCharMap before the positions are computed, exactly as the app does it.
+    The keys of the result are the labels the colloquial board draws.
  */
-function compressedKeys(model: LayoutModel, mappingName?: string) {
+function colloquialKeys(model: LayoutModel, mappingName?: string) {
     const mapping = mappingFor(model, mappingName);
     const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
-    const charMap = compressCharMap(fillMapping(model, mapping)!, model, keymapType);
+    const charMap = colloquialiseCharMap(fillMapping(model, mapping)!, model, keymapType);
     const positions = getKeyPositions(model, false, charMap);
     const levels = getKeyLevels(model, positions, charMap, Hand.Left, true);
     return positions
@@ -74,9 +74,9 @@ function compressedKeys(model: LayoutModel, mappingName?: string) {
         }));
 }
 
-function compressedLevelByLabel(model: LayoutModel, mappingName?: string): Record<string, string> {
+function colloquialLevelByLabel(model: LayoutModel, mappingName?: string): Record<string, string> {
     const result: Record<string, string> = {};
-    compressedKeys(model, mappingName).forEach(({position, pair}) => {
+    colloquialKeys(model, mappingName).forEach(({position, pair}) => {
         result[position.label] = pair;
     });
     return result;
@@ -126,7 +126,7 @@ describe("shift pairings", () => {
     });
 });
 
-describe("compressed Shift pairings", () => {
+describe("colloquial Shift pairings", () => {
     const digits = {
         "1": "1!", "2": "2@", "3": "3#", "4": "4$", "5": "5%",
         "6": "6^", "7": "7&", "8": "8*", "9": "9/", "0": "0?",
@@ -136,22 +136,22 @@ describe("compressed Shift pairings", () => {
         ",": ",;", ".": ".:", "'": "'\"", "=": "=+", "-": "-_", "(": "(<", ")": ")>",
     };
 
-    it("pairs each compressed label with its own Shift character", () => {
-        expect(shiftPairFor("'", compressedShiftPairs)).toBe("'\"");
-        expect(shiftPairFor("-", compressedShiftPairs)).toBe("-_");
-        expect(shiftPairFor("9", compressedShiftPairs)).toBe("9/");
-        expect(shiftPairFor("(", compressedShiftPairs)).toBe("(<");
+    it("pairs each colloquial label with its own Shift character", () => {
+        expect(shiftPairFor("'", colloquialShiftPairs)).toBe("'\"");
+        expect(shiftPairFor("-", colloquialShiftPairs)).toBe("-_");
+        expect(shiftPairFor("9", colloquialShiftPairs)).toBe("9/");
+        expect(shiftPairFor("(", colloquialShiftPairs)).toBe("(<");
         // the keys the rearrangement removes are gone from the table
-        expect(shiftPairFor(";", compressedShiftPairs)).toBeUndefined();
-        expect(shiftPairFor("/", compressedShiftPairs)).toBeUndefined();
+        expect(shiftPairFor(";", colloquialShiftPairs)).toBeUndefined();
+        expect(shiftPairFor("/", colloquialShiftPairs)).toBeUndefined();
     });
 
     it("hands `;` to `'`, `'` to `=` and `-` to `/`, and fixes `(` on `-` and `)` on `=`/`+`", () => {
         // whichever of `=` and `+` the board draws ends up carrying `)`
-        expect(compressedLevelByLabel(ansiIBMLayoutModel)["("]).toBe("(<");
-        expect(compressedLevelByLabel(ansiIBMLayoutModel)[")"]).toBe(")>");
-        const onEquals = compressedKeys(ansiIBMLayoutModel);
-        const onPlus = compressedKeys(xhkb13LayoutModel, "Quipper with Thumb-T");
+        expect(colloquialLevelByLabel(ansiIBMLayoutModel)["("]).toBe("(<");
+        expect(colloquialLevelByLabel(ansiIBMLayoutModel)[")"]).toBe(")>");
+        const onEquals = colloquialKeys(ansiIBMLayoutModel);
+        const onPlus = colloquialKeys(xhkb13LayoutModel, "Quipper with Thumb-T");
         for (const keys of [onEquals, onPlus]) {
             const labels = keys.map(({position}) => position.label);
             expect(labels).toContain("(");
@@ -165,32 +165,32 @@ describe("compressed Shift pairings", () => {
     });
 
     it("reproduces the full-size punctuation map on ANSI", () => {
-        expect(compressedLevelByLabel(ansiIBMLayoutModel)).toEqual({
+        expect(colloquialLevelByLabel(ansiIBMLayoutModel)).toEqual({
             ...digits, ...punctuation,
             "`~": "`~", "[": "[{", "]": "]}", "\\": "\\|",
         });
     });
 
     it("keeps five base punctuation keys on a thumb board", () => {
-        expect(compressedLevelByLabel(xhkb13LayoutModel, "Quipper with Thumb-T"))
+        expect(colloquialLevelByLabel(xhkb13LayoutModel, "Quipper with Thumb-T"))
             .toEqual({...digits, ...punctuation});
     });
 
     it("applies the layout model's own cycles on top, where it has any", () => {
         // The wide mod swaps its two freed keys onto the centre columns that `[` and `]` hold.
         // the brackets are not removed, they swap out to the number-row edges
-        const level = compressedLevelByLabel(ansiWideLayoutModel);
+        const level = colloquialLevelByLabel(ansiWideLayoutModel);
         expect(level).toEqual({
             ...digits, ...punctuation, "`~": "`~", "[": "[{", "]": "]}", "\\": "\\|",
         });
-        const keys = compressedKeys(ansiWideLayoutModel);
+        const keys = colloquialKeys(ansiWideLayoutModel);
         const at = (label: string) => keys.find(({position}) => position.label === label)!.position;
         expect(at("(").row).toBe(KeyboardRows.Upper);
         expect(at(")").row).toBe(KeyboardRows.Home);
     });
 
     it("leaves them where the generic rearrangement put them without cycles", () => {
-        const keys = compressedKeys(ansiIBMLayoutModel);
+        const keys = colloquialKeys(ansiIBMLayoutModel);
         const at = (label: string) => keys.find(({position}) => position.label === label)!.position;
         expect(at("(").row).toBe(KeyboardRows.Number);
         expect(at(")").row).toBe(KeyboardRows.Number);
@@ -205,15 +205,15 @@ describe("compressed Shift pairings", () => {
 });
 
 /*
-    The compression is a permutation over the punctuation keys every English board carries, so it
-    has to come out complete on all of them: five base punctuation characters plus the redundant
-    `(` and `)`.
+    The colloquialisation is a permutation over the punctuation keys every English board
+    carries, so it has to come out complete on all of them: five base punctuation characters
+    plus the redundant `(` and `)`.
  */
-describe("the compressed level comes out complete on every English board", () => {
+describe("the colloquial level comes out complete on every English board", () => {
     const combos = allLayoutModels.flatMap((model) =>
         allMappings
             .filter((m) => hasMatchingMapping(model, m))
-            .filter((m) => hasCompressedLevel(fillMapping(model, m)!, hasNumberRow(model)))
+            .filter((m) => hasColloquialLevel(fillMapping(model, m)!, hasNumberRow(model)))
             .map((m) => [`${model.name} / ${m.name}`, model, m.name] as const));
 
     it("covers every English key map with a number row", () => {
@@ -221,7 +221,7 @@ describe("the compressed level comes out complete on every English board", () =>
     });
 
     it.each(combos)("%s", (_name, model, mappingName) => {
-        const keys = compressedKeys(model, mappingName);
+        const keys = colloquialKeys(model, mappingName);
         const bases = keys.map(({pair}) => pair[0]);
         expect(bases.filter((c) => "'=,.-".includes(c)).sort()).toEqual(["'", ",", "-", ".", "="]);
         expect(keys.filter(({pair}) => pair[0] === "(")).toHaveLength(1);
@@ -438,10 +438,10 @@ describe("standard German Shift pairings", () => {
         expect(level["'"]).toBe("'\"");
     });
 
-    it("come with no compressed level, which is defined for English only", () => {
+    it("come with no colloquial level, which is defined for English only", () => {
         const model = ansiIBMLayoutModel;
-        expect(hasCompressedLevel(fillMapping(model, mappingFor(model, german))!, true)).toBe(false);
-        expect(hasCompressedLevel(fillMapping(model, mappingFor(model))!, true)).toBe(true);
+        expect(hasColloquialLevel(fillMapping(model, mappingFor(model, german))!, true)).toBe(false);
+        expect(hasColloquialLevel(fillMapping(model, mappingFor(model))!, true)).toBe(true);
     });
 });
 

@@ -30,7 +30,7 @@ export const ergoboardComfyLayoutModel: LayoutModel = {
     ],
     singleKeyEffort,
 
-    compressedCycles: {
+    colloquialCycles: {
         [KeymapTypeId.Ansi30]: ["()-"],
         [KeymapTypeId.Thumb30]: ["()\\"],
     },

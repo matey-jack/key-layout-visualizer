@@ -67,27 +67,28 @@ export const numberlessGermanShiftPairs: ShiftPairs = {
 };
 
 /*
-    The compressed 30-key pairings, keyed by the label the compressed frame mapping draws. The
+    The colloquial 30-key pairings, keyed by the label the colloquial frame mapping draws. The
     rearrangement below has already moved the five kept punctuation characters onto their keys,
     so here every label simply pairs with its own Shift character.
  */
-export const compressedShiftPairs: ShiftPairs = {
+export const colloquialShiftPairs: ShiftPairs = {
     "1": "1!", "2": "2@", "3": "3#", "4": "4$", "5": "5%",
     "6": "6^", "7": "7&", "8": "8*", "9": "9/", "0": "0?",
     ",": ",;", ".": ".:", "'": "'\"", "=": "=+", "-": "-_",
-    // The two redundant keys the compression frees, and the ones the AltGr level covers anyway.
+    // The two redundant keys the colloquialisation frees, and the ones the AltGr level
+    // covers anyway.
     "(": "(<", ")": ")>",
     "`": "`~", "`~": "`~", "[": "[{", "]": "]}", "\\": "\\|",
 };
 
-// The compressed Shift level is defined for the English character set only.
-export const hasCompressedLevel = (charMap: string[][], hasNumberRow: boolean): boolean =>
+// The colloquial Shift level is defined for the English character set only.
+export const hasColloquialLevel = (charMap: string[][], hasNumberRow: boolean): boolean =>
     hasNumberRow && !isGermanCharMap(charMap);
 
 export const shiftPairsFor = (
-    charMap: string[][], hasNumberRow: boolean, compressed = false
+    charMap: string[][], hasNumberRow: boolean, colloquial = false
 ): ShiftPairs =>
-    compressed && hasCompressedLevel(charMap, hasNumberRow) ? compressedShiftPairs
+    colloquial && hasColloquialLevel(charMap, hasNumberRow) ? colloquialShiftPairs
         : !hasNumberRow ? (isGermanCharMap(charMap) ? numberlessGermanShiftPairs : numberlessEnglishShiftPairs)
             : isGermanCharMap(charMap) ? germanShiftPairs : ansiShiftPairs;
 
@@ -99,21 +100,21 @@ export const shiftPairsFor = (
 const normaliseEqualsKey = (charMap: string[][]): string[][] =>
     charMap.map((row) => row.map((label) => (label === "+" ? "=" : label)));
 
-// The compressed Shift level introduces `(` and `)`, removes `;` and `/`,
+// The colloquial Shift level introduces `(` and `)`, removes `;` and `/`,
 // and moves three other keys to better positions. (Rationale in the doc.)
-const compressionCycles = [")=';", "(-/"];
+const genericColloquialCycles = [")=';", "(-/"];
 
 /**
- * The board as the compressed Shift level shows it: the generic rearrangement above, followed by
+ * The board as the colloquial Shift level shows it: the generic rearrangement above, followed by
  * the layout model's own cycles where it defines any. Returns the char map unchanged when the
- * model has no compressed level at all.
+ * model has no colloquial level at all.
  */
-export function compressCharMap(
+export function colloquialiseCharMap(
     charMap: string[][], model: LayoutModel, keymapType?: KeymapTypeId
 ): string[][] {
-    if (!keymapType || !hasCompressedLevel(charMap, hasNumberRow(model))) return charMap;
-    const generic = permute(normaliseEqualsKey(charMap), ...compressionCycles) as string[][];
-    const cycles = model.compressedCycles?.[keymapType] ?? [];
+    if (!keymapType || !hasColloquialLevel(charMap, hasNumberRow(model))) return charMap;
+    const generic = permute(normaliseEqualsKey(charMap), ...genericColloquialCycles) as string[][];
+    const cycles = model.colloquialCycles?.[keymapType] ?? [];
     // A separate pass: permute resolves every cycle against the map it is given, so the layout
     // model's own cycles can only name `(` and `)` once the generic ones have placed them.
     return permute(generic, ...cycles) as string[][];
@@ -289,9 +290,9 @@ export interface KeyLevels {
 
 export const getKeyLevels = (
     model: LayoutModel, positions: KeyPosition[], charMap: string[][], navSide: Hand,
-    compressed = false
+    colloquial = false
 ): KeyLevels => {
-    const pairs = shiftPairsFor(charMap, hasNumberRow(model), compressed);
+    const pairs = shiftPairsFor(charMap, hasNumberRow(model), colloquial);
     return {
         base: getBaseLevel(charMap, pairs),
         shift: getShiftLevel(charMap, pairs),

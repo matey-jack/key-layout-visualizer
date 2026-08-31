@@ -1,9 +1,9 @@
 /*
     Analysis 1 of the "how to arrange the new pair of parenthesis keys symmetrically" question in
-    docs/key-levels.md: the compressed Shift level frees two keys and puts `(<` and `)>` on them,
+    docs/key-levels.md: the colloquial Shift level frees two keys and puts `(<` and `)>` on them,
     and we want to know how often those two land somewhere that reads as one unit.
 
-    Run it, change the compression rules in key-levels.ts, and run it again to compare:
+    Run it, change the colloquialisation rules in key-levels.ts, and run it again to compare:
         npx tsx scripts/bracket-key-positions.ts
  */
 import {allLayoutModels} from "../src/all-layout-models.ts";
@@ -21,7 +21,7 @@ import {
     getKeyPositions,
     hasMatchingMapping,
 } from "../src/layout/layout-functions.ts";
-import {compressCharMap, hasCompressedLevel, hasNumberRow} from "../src/mapping/key-levels.ts";
+import {colloquialiseCharMap, hasColloquialLevel, hasNumberRow} from "../src/mapping/key-levels.ts";
 import {allMappings} from "../src/mapping/mappings.ts";
 
 // One 30-key mapping per keymap type, as the analysis question asks for.
@@ -106,7 +106,7 @@ function describe(brackets: Brackets): string {
     return `${verdict}${verdict === "centred" ? ` ${relation(open, close)}` : ""} (${where})`;
 }
 
-// The bracket keys the compression leaves alone, which we would like to stay centred.
+// The bracket keys the colloquialisation leaves alone, which we would like to stay centred.
 function otherPair(model: LayoutModel, mappingName: string): string {
     const mapping = allMappings.find((m) => m.name === mappingName);
     if (!mapping || !hasMatchingMapping(model, mapping)) return "n/a";
@@ -126,8 +126,8 @@ function bracketKeys(model: LayoutModel, mappingName: string, expectedType?: str
     if (expectedType && keymapType !== expectedType) return undefined;
     const filled = fillMapping(model, mapping);
     if (!filled) return undefined;
-    if (!hasCompressedLevel(filled, hasNumberRow(model))) return undefined;
-    const charMap = compressCharMap(filled, model, keymapType);
+    if (!hasColloquialLevel(filled, hasNumberRow(model))) return undefined;
+    const charMap = colloquialiseCharMap(filled, model, keymapType);
     const positions = getKeyPositions(model, false, charMap, defaultTotalWidth);
     const open = positions.find((p) => p.label === "(");
     const close = positions.find((p) => p.label === ")");
@@ -150,7 +150,7 @@ for (const model of allLayoutModels) {
 }
 
 const total = verdicts.reduce((n, verdict) => n + counts[verdict].length, 0);
-console.log(`${total} layout model / keymap type combinations (${skipped} without a compressed level)\n`);
+console.log(`${total} layout model / keymap type combinations (${skipped} without a colloquial level)\n`);
 for (const verdict of verdicts) {
     const n = counts[verdict].length;
     console.log(`${verdict.padEnd(7)} ${String(n).padStart(3)}  ${Math.round((100 * n) / total)}%`);

@@ -90,7 +90,7 @@ export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
         staggerOffsets: [0.5, 0.25, 0, -0.5],
         symmetricStagger: true,
 
-        compressedCycles: midShift ?{
+        colloquialCycles: midShift ?{
             [KeymapTypeId.Ansi30]: ["()"],
             [KeymapTypeId.Thumb30]: ["=()"],
         } : {

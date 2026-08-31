@@ -61,7 +61,7 @@ export const xhkb13LayoutModel: LayoutModel = {
     staggerOffsets: [-0.75, -0.25, 0, 0.5],
     symmetricStagger: false,
 
-    compressedCycles: {
+    colloquialCycles: {
         [KeymapTypeId.Ansi30]: ["-=()"],
         [KeymapTypeId.Thumb30]: ["-()"],
     },
@@ -167,7 +167,7 @@ export const xhkb15LayoutModel: LayoutModel = {
     staggerOffsets: [-0.75, -0.25, 0, 0.5],
     symmetricStagger: false,
 
-    compressedCycles: {
+    colloquialCycles: {
         [KeymapTypeId.Thumb30]: ["`()"],
     },
 
@@ -244,7 +244,7 @@ export const xhkb16LayoutModel: LayoutModel = {
         [2.0, 2.0, 2.0, 0.2, null, null, null, 0.2, 2.0, 2.0, 2.0, 2.0],
     ],
 
-    compressedCycles: {
+    colloquialCycles: {
         [KeymapTypeId.Thumb30]: ["\\()"],
     },
 

@@ -31,7 +31,7 @@ export const harmonic14WideLayoutModel: LayoutModel = {
     staggerOffsets: harmonicStaggerOffsets,
     symmetricStagger: true,
 
-    compressedCycles: {
+    colloquialCycles: {
         [KeymapTypeId.Ansi30]: ["([", ")]"],
         [KeymapTypeId.Thumb30]: ["([", ")]\\`"],
     },

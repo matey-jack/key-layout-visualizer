@@ -12,7 +12,7 @@ import {OptionGroup} from "./components/OptionGroup.tsx";
 import {DetailsArea} from "./details/DetailsArea.tsx";
 import {LayoutArea} from "./layout/LayoutArea.tsx";
 import {fillMapping} from "./layout/layout-functions.ts";
-import {hasCompressedLevel, hasNumberRow} from "./mapping/key-levels.ts";
+import {hasColloquialLevel, hasNumberRow} from "./mapping/key-levels.ts";
 import {MappingList} from "./mapping/MappingArea.tsx";
 import {getKlc} from "./mapping/msKlcTemplate.ts";
 import {extractSvgWithStyles} from "./utils/svg-export.ts";
@@ -74,20 +74,20 @@ interface VisualizationSwitchesProps {
 // viz type buttons. A group whose choice does not exist on the current key map is left out.
 function LevelSwitches({appState}: { appState: AppState }) {
     const charMap = fillMapping(appState.layoutModel.value, appState.mapping.value);
-    const compressible = !!charMap && hasCompressedLevel(charMap, hasNumberRow(appState.layoutModel.value));
+    const hasColloquial = !!charMap && hasColloquialLevel(charMap, hasNumberRow(appState.layoutModel.value));
     return <div class="level-switches">
         <NavSideOptions navSide={appState.navSide}/>
-        {compressible && <ShiftLevelOptions shiftCompressed={appState.shiftCompressed}/>}
+        {hasColloquial && <ShiftLevelOptions shiftColloquial={appState.shiftColloquial}/>}
     </div>
 }
 
-function ShiftLevelOptions({shiftCompressed}: { shiftCompressed: Signal<boolean> }) {
+function ShiftLevelOptions({shiftColloquial}: { shiftColloquial: Signal<boolean> }) {
     return <OptionGroup label="Shift level">
-        <OptionButton selected={!shiftCompressed.value} onClick={() => {shiftCompressed.value = false;}}>
+        <OptionButton selected={!shiftColloquial.value} onClick={() => {shiftColloquial.value = false;}}>
             standard
         </OptionButton>
-        <OptionButton selected={shiftCompressed.value} onClick={() => {shiftCompressed.value = true;}}>
-            compressed
+        <OptionButton selected={shiftColloquial.value} onClick={() => {shiftColloquial.value = true;}}>
+            colloquial
         </OptionButton>
     </OptionGroup>
 }

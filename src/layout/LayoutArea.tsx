@@ -24,7 +24,7 @@ import {
 import {SplitOrthoLayoutOptions} from "./SplitOrthoLayoutOptions.tsx";
 import {TradeoffDiagram} from "./TradeoffDiagram.tsx";
 import {alignForHex} from './harmonic-layout-functions.ts';
-import {compressCharMap, getKeyLevels} from "../mapping/key-levels.ts";
+import {colloquialiseCharMap, getKeyLevels} from "../mapping/key-levels.ts";
 
 interface LayoutAreaProps {
     appState: AppState;
@@ -48,16 +48,16 @@ interface RenderedKeyboard {
 
 function renderKeyboard(
     layoutModel: LayoutModel, mapping: FlexMapping, layout: LayoutOptions, hexagons: boolean,
-    compressed: boolean
+    colloquial: boolean
 ): RenderedKeyboard {
     const lm = hexagons ? alignForHex(layoutModel) : layoutModel;
     let charMap = fillMapping(lm, mapping)!;
     if (layoutSupportsFlipRetRub(layout) && layout.flipRetRub) {
         flipRetRub(charMap);
     }
-    // The compressed Shift level rearranges the keys themselves, so it happens here rather than
+    // The colloquial Shift level rearranges the keys themselves, so it happens here rather than
     // in getKeyLevels - the positions have to be computed from the rearranged map.
-    if (compressed) charMap = compressCharMap(charMap, lm, findMatchingKeymapType(lm, mapping)?.typeId);
+    if (colloquial) charMap = colloquialiseCharMap(charMap, lm, findMatchingKeymapType(lm, mapping)?.typeId);
     return {
         layoutModel: lm,
         charMap,
@@ -71,17 +71,17 @@ export function LayoutArea({appState}: LayoutAreaProps) {
     const hexagons = layout.value.type === LayoutType.Harmonic &&
         layout.value.harmonicVariant > HarmonicVariant.H14_Traditional &&
         layout.value.harmonicHexagons;
-    // The outgoing board is compressed too, so that toggling the switch does not animate.
-    const compressed = appState.vizType.value === VisualizationType.MappingShiftLevels
-        && appState.shiftCompressed.value;
-    const current = renderKeyboard(layoutModel.value, mapping.value, layout.value, hexagons, compressed);
+    // The outgoing board is colloquialised too, so that toggling the switch does not animate.
+    const colloquial = appState.vizType.value === VisualizationType.MappingShiftLevels
+        && appState.shiftColloquial.value;
+    const current = renderKeyboard(layoutModel.value, mapping.value, layout.value, hexagons, colloquial);
     const previousPositions = renderKeyboard(
-        prevLayoutModel.value, prevMapping.value, layout.value, hexagons, compressed).positions;
+        prevLayoutModel.value, prevMapping.value, layout.value, hexagons, colloquial).positions;
     const keyMovements = getKeyMovements(previousPositions, current.positions);
 
     const {setLayout, mappingDiff, bigramMovements, vizType, setMapping, navSide} = appState;
     const keyLevels = vizType.value === VisualizationType.MappingShiftLevels
-        ? getKeyLevels(current.layoutModel, current.positions, current.charMap, navSide.value, compressed)
+        ? getKeyLevels(current.layoutModel, current.positions, current.charMap, navSide.value, colloquial)
         : undefined;
     const showFrame = layout.value.type !== LayoutType.Ergosplit &&
         !(layout.value.type !== LayoutType.ANSI && layout.value.ansiSplit);

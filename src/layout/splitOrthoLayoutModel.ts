@@ -97,7 +97,7 @@ export const splitOrthoLayoutModel = (thumbShift: boolean) : LayoutModel => ({
         [NaN, 2.0, 2.0, 1.5, 0.2, 0.2, 0.2, 0.2, 1.5, 2.0, 2.0, NaN],
     ],
 
-    compressedCycles: thumbShift ? {
+    colloquialCycles: thumbShift ? {
         [KeymapTypeId.Ansi30]: ["\\(", "`)"],
         [KeymapTypeId.Thumb30]: ["(\\`"],
     } : {
