@@ -53,28 +53,26 @@ describe('character coverage for core mappings', () => {
         });
     });
 
-    describe('Ansi32 mappings have all letters and \',.-äöü\'', () => {
-        const requiredCharsAnsi32 = allLetters + ',.-äöü';
-        const ansi32Mappings = allMappings.filter(m => m.mappings?.[KeymapTypeId.Ansi32]);
+    /*
+        A 32-key map holds the 26 Latin letters, the three punctuation characters that no frame
+        mapping carries, and three letters of its own language – äöü for German, æøå for Danish,
+        and so on. Which three those are is the map's choice, so we only count them and check that
+        they are letters. Counting occurrences also catches a map that repeats a required character
+        instead of spending the spot on a letter of its own.
+     */
+    const requiredChars32 = allLetters + ',.-';
 
-        ansi32Mappings.forEach((mapping) => {
-            it(`${mapping.name}`, () => {
-                const str = mapping.mappings[KeymapTypeId.Ansi32]!.join('');
-                const missing = requiredCharsAnsi32.split('').filter(c => !str.includes(c));
-                expect(missing).toEqual([]);
-            });
-        });
-    });
-
-    describe('Thumb32 mappings have all letters and \',.-äöü\'', () => {
-        const requiredCharsThumb32 = allLetters + ',.-äöü';
-        const thumb32Mappings = allMappings.filter(m => m.mappings?.[KeymapTypeId.Thumb32]);
-
-        thumb32Mappings.forEach((mapping) => {
-            it(`${mapping.name}`, () => {
-                const str = mapping.mappings[KeymapTypeId.Thumb32]!.join('');
-                const missing = requiredCharsThumb32.split('').filter(c => !str.includes(c));
-                expect(missing).toEqual([]);
+    [KeymapTypeId.Ansi32, KeymapTypeId.Thumb32].forEach((typeId) => {
+        describe(`${typeId} mappings have all letters, ",.-", and three language-specific letters`, () => {
+            allMappings.filter(m => m.mappings?.[typeId]).forEach((mapping) => {
+                it(`${mapping.name}`, () => {
+                    const chars = [...mapping.mappings[typeId]!.join('')];
+                    const missing = requiredChars32.split('').filter(c => !chars.includes(c));
+                    expect(missing, 'missing required characters').toEqual([]);
+                    const ownLetters = chars.filter(c => !requiredChars32.includes(c));
+                    expect(ownLetters.filter(c => !/\p{L}/u.test(c)), 'not a letter').toEqual([]);
+                    expect(ownLetters.length, 'language-specific letters').toBe(3);
+                });
             });
         });
     });

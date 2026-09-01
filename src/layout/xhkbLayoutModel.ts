@@ -76,7 +76,6 @@ export const xhkb13LayoutModel: LayoutModel = {
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "Fn"],
             ["Ctrl", "Cmd", "Alt", "␣", "␣", "AltGr", "+", [3, 9], "Ctrl"],
         ],
-        // Thumb30 has only nine keys in the lower row, so the same bottom row key is the frame's slash.
         [KeymapTypeId.Thumb30]: [
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'", "⇤"],
@@ -84,18 +83,20 @@ export const xhkb13LayoutModel: LayoutModel = {
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "⇥"],
             ["Ctrl", "Cmd", "Alt", 0, "␣", "AltGr", "+", "/", "Fn"],
         ],
-        // The 32-key maps need every spot for characters: the eleventh key of the home row takes the upper
-        // right corner (where the thirty-key maps have Page Up) and the outer bottom row key is the slash.
         [KeymapTypeId.Ansi32]: [
+            // Only 31 flex spots fit in the letter area, even with PageUp removed.
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, [2, 10]],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "Fn"],
-            ["Ctrl", "Cmd", "Alt", "/", "␣", "AltGr", "+", [3, 9], "Ctrl"],
+            ["Ctrl", "Cmd", "Alt", "'", "␣", "AltGr", "+", [3, 9], "Ctrl"],
         ],
         [KeymapTypeId.Thumb32]: [
+            // Thanks to the thumb-letter, the apostrophe's conventional spot is freed.
+            // (Alternatively, we could lift the other flex-map spot out of the bottom row.
+            // But in most flex maps, that is the `-` sign, which fits nicely there next to `+`.)
             ["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "⌫"],
-            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "/"],
+            ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "'"],
             ["⌦", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, "⇧", "Fn"],
             ["Ctrl", "Cmd", "Alt", 0, "␣", "AltGr", "+", [3, 9], "Ctrl"],

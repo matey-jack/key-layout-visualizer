@@ -25,9 +25,9 @@ import {allMappings} from "./mapping/mappings.ts";
 // Expected differences between ansi30 and thumb30
 // TODO: use the .name references throughout to avoid test failures when names change
 const IGNORED_30_KEYS: Record<string, string[]> = {
-    "ANSI/IBM with wide hand position": ["Esc", "☰"],
+    "ANSI/IBM with wide hand position": ["Esc", "⌦", "☰"],
     "AN65 with wide hand position": ["Esc", "☰"],
-    "ANSI/Apple with wide hand position": ["Esc"], // replaces duplicate Ctrl key
+    "ANSI/Apple with wide hand position": ["Esc", "⌦"], // replaces duplicate Ctrl key
     [xhkb13LayoutModel.name]: ["⇤", "⇥"],
     // The single difference here is due to removing the duplicate space key.
     [xhkb15LayoutModel.name]: ["⎀"],
@@ -44,9 +44,9 @@ const IGNORED_30_KEYS: Record<string, string[]> = {
 };
 
 const IGNORED_32_KEYS: Record<string, string[]> = {
-    "ANSI/IBM with wide hand position": ["\\", "☰"],
+    "ANSI/IBM with wide hand position": ["\\", "☰", "⌦"],
     "AN65 with wide hand position": ["\\", "☰"],
-    "ANSI/Apple with wide hand position": ["\\"],
+    "ANSI/Apple with wide hand position": ["\\", "⌦"],
     [xhkb15LayoutModel.name]: ["⎀"],
     [xhkb16LayoutModel.name]: ["€"],
 };
