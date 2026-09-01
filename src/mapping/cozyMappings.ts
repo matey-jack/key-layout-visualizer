@@ -120,10 +120,10 @@ export const gemuetlichesMapping: FlexMapping = {
             "e"
         ],
         [KeymapTypeId.SplitOrtho]: [
-            "qwbf'" + "zkuopü",
+            "qwbfö" + "zkuopü",
             "asdrg" + "hnilt",
-            "yxcv/" + "jm,.-",
-            "ö⌦e" + "ä+"
+            "yxcvä" + "jm,.-",
+            "ß⌦e" + "'+"
         ],
         /*
              The Harmonic port of this mapping changes less than Qwerty, because it is already made for a wide home position.
