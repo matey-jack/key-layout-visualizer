@@ -30,7 +30,7 @@
  */
 
 import {type FlexMapping, KeymapTypeId} from "../base-model.ts";
-import {qwertyMapping, qwertyWideMapping, qwertzMapping} from './baseMappings.ts';
+import {danishMapping, qwertyMapping, qwertyWideMapping, qwertzMapping} from './baseMappings.ts';
 import {
     assetMapping,
     colemakDhMapping,
@@ -265,6 +265,7 @@ export const allMappings: FlexMapping[] = [
     qweertyMapping,
     enTryMapping,
     qwertzMapping,
+    danishMapping,
     rightyMapping,
     rightUMapping,
     qwertyFlipTwistMapping,

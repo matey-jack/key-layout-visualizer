@@ -82,6 +82,21 @@ export const qwertzMapping: FlexMapping = {
     }
 }
 
+export const danishMapping: FlexMapping = {
+    name: "Danish Alphabet",
+    techName: "Danish",
+    description: `Just an example of another European language with three extra letters. 
+    I also placed them roughly as the standard Danish keymap does.`,
+    sourceUrl: "https://kbdlayout.info/KBDDA/",
+    mappings: {
+        [KeymapTypeId.Ansi32]: [
+            "qwert" + "yuiopå",
+            "asdfg" + "hjklæø",
+            "zxcvb" + "nm,.-",
+        ],
+    },
+};
+
 export const semiQwertzMapping: FlexMapping = {
     name: "German Qwertz with no Umlauts, only needed as technical comparison base.",
     mappings: {
