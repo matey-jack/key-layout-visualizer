@@ -26,16 +26,13 @@ Done:
 - change the code to use the new AltGr mappings
 - prepared frame mappings for the new 32-flex-key Shift pairings
 - added Danish flex map
+- changed the standard Shift mapping selection (everywhere but 32-key flex maps) to use `ß` as the
+  discriminator.
+- changed the Shift pairing selection again to use the colloquial system for all 32-key maps,
+  including the German exception, the `/?` pairing, and no `@` on the AltGr level.
 
 Todo in code:
 
-- change the standard Shift mapping selection (everywhere but 32-key flex maps) to use `ß` as the
-  discriminator.
-- change the Shift pairing selection again to use the colloquial system for all 32-key maps,
-  including the German exception. (In that case, no `@` on the AltGr level, since it's already on
-  Shift.)
-    + Include the `/?` Shift pairing, because some of the larger frame mappings have that 
-      redundantly with the number row mappings. 
 - Change the wording in the scripts to not say "German", where it actually concerns the new
   generic international levels.
 - implement the Nav key replacements
@@ -69,7 +66,9 @@ Deciding between the two standard Shift mappings takes a very simple rule: the G
 mapping contains the pair `ß?`, so we apply it whenever the character `ß` exists in the merged
 keymap. In practice that only happens on layout-model-specific flex maps. The 32-key types have no
 room for the key, because their three free letter spots already go to `äöü`, and no frame mapping
-carries it either — that would tie the whole layout model to German.
+carries it either — that would tie the whole layout model to German. A model-specific map for a
+German alphabet that still has no `ß` gets the ANSI pairings, and rightly so: without the key it
+draws ANSI punctuation such as `'` and `/`, which the German mapping does not pair at all.
 
 A board without a number row gets no Shift level at all: its pairings live in the number row as much
 as in the letter area, and showing only half of them would be more confusing than showing none.
@@ -416,6 +415,8 @@ the frame mapping) plus the backtick-tilde key, which many layout models spend o
 don't need to apply a colloquialization step, since the 32-key character set already mandates the
 base punctuation keys `,`, `.`, and `-`, and the frame mappings carry the other characters. (They
 still have the freedom to use either `+` or `=` for this Shift pair, and similarly `'` or `#`.)
+The roomier frame mappings also draw a `/` key, which keeps the ANSI `/?` pairing – redundantly
+with the `9/` and `0?` of the number row.
 The minimum keyboard space for character keys using this mapping is then 43: ten digits, 32 flex
 spots, and the `'"` key placed outside the flex map. If a keyboard has one more spot, I recommend
 placing `=+`, for the same reasons as in the colloquial English key map. An ANSI-like keyboard with

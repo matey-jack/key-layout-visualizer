@@ -4,6 +4,7 @@ import {type AppState, HarmonicVariant, isSplit, type LayoutOptions, PlankVarian
 import {
     type FlexMapping,
     type KeyPosition,
+    type KeymapTypeId,
     type LayoutModel,
     LayoutType,
     LayoutTypeNames,
@@ -44,6 +45,8 @@ interface RenderedKeyboard {
     layoutModel: LayoutModel;
     charMap: string[][];
     positions: KeyPosition[];
+    // The keymap type the flex map is drawn from, which decides the Shift pairings.
+    keymapType: KeymapTypeId | undefined;
 }
 
 function renderKeyboard(
@@ -55,13 +58,15 @@ function renderKeyboard(
     if (layoutSupportsFlipRetRub(layout) && layout.flipRetRub) {
         flipRetRub(charMap);
     }
+    const keymapType = findMatchingKeymapType(lm, mapping)?.typeId;
     // The colloquial Shift level rearranges the keys themselves, so it happens here rather than
     // in getKeyLevels - the positions have to be computed from the rearranged map.
-    if (colloquial) charMap = colloquialiseCharMap(charMap, lm, findMatchingKeymapType(lm, mapping)?.typeId);
+    if (colloquial) charMap = colloquialiseCharMap(charMap, lm, keymapType);
     return {
         layoutModel: lm,
         charMap,
         positions: getKeyPositions(lm, isSplit(layout), charMap, defaultTotalWidth),
+        keymapType,
     };
 }
 
@@ -81,7 +86,8 @@ export function LayoutArea({appState}: LayoutAreaProps) {
 
     const {setLayout, mappingDiff, bigramMovements, vizType, setMapping, navSide} = appState;
     const keyLevels = vizType.value === VisualizationType.MappingShiftLevels
-        ? getKeyLevels(current.layoutModel, current.positions, current.charMap, navSide.value, colloquial)
+        ? getKeyLevels(current.layoutModel, current.positions, current.charMap, current.keymapType,
+            navSide.value, colloquial)
         : undefined;
     const showFrame = layout.value.type !== LayoutType.Ergosplit &&
         !(layout.value.type !== LayoutType.ANSI && layout.value.ansiSplit);

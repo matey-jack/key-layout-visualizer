@@ -2,7 +2,7 @@ import {
     Hand,
     KeyboardRows,
     type KeyPosition,
-    type KeymapTypeId,
+    KeymapTypeId,
     type LayoutModel,
 } from "../base-model.ts";
 import {permute} from "../layout/permutation-functions.ts";
@@ -17,7 +17,7 @@ import {isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
 export type LevelMap = (string | null)[][];
 
 /*
-    The character set a key map draws decides its pairings, and the ANSI `;:` key is the marker:
+    The colloquial level is defined for the ANSI character set, and the `;:` key is what marks one:
     most European keyboards do not have `;` as a base label. The colloquial rearrangement dissolves
     that very key, so its own `(` stands in for it there – no other key map draws one on the base
     level.
@@ -73,16 +73,82 @@ export const colloquialShiftPairs: ShiftPairs = {
     "`": "`~", "`~": "`~", "[": "[{", "]": "]}", "\\": "\\|",
 };
 
+/*
+    The generic international pairings, which every 32-key flex map takes whatever alphabet it
+    maps. They are the colloquial ones plus the punctuation keys a 32-key frame mapping may draw:
+    `+` and `#` are the alternative labels of the `=+` and `'"` keys, and `/?` is redundant with
+    the number row's `9/` and `0?` – the roomier frame mappings carry it anyway.
+ */
+export const internationalShiftPairs: ShiftPairs = {
+    ...colloquialShiftPairs,
+    "+": "=+", "#": "'\"", "/": "/?",
+};
+
+/*
+    The German exception among the 32-key maps: `ß` claims a Shift spot in the number row, and `&`
+    and `/` move to the digits that carry them on a German keyboard. (`8*` already agrees.) `2@`
+    stays, so these maps have `@` on the Shift level and need none on AltGr.
+ */
+export const germanInternationalShiftPairs: ShiftPairs = {
+    ...internationalShiftPairs,
+    "6": "6&", "7": "7/", "9": "9ß",
+};
+
+/*
+    The 32-key flex maps encapsulate their punctuation in the frame mapping, so one pairing serves
+    every combination of such a map with a layout model.
+ */
+export const is32KeyType = (keymapType: KeymapTypeId | undefined): boolean =>
+    keymapType === KeymapTypeId.Ansi32 || keymapType === KeymapTypeId.Thumb32;
+
+const draws = (charMap: string[][], char: string): boolean =>
+    charMap.some((row) => row.includes(char));
+
 // The colloquial Shift level is defined for the English character set only.
 export const hasColloquialLevel = (charMap: string[][], hasNumberRow: boolean): boolean =>
     hasNumberRow && isAnsiCharMap(charMap);
 
+// The pairing tables, and thus the rules that pick one, are described in the doc's
+// "[App] Shift level" and "A generic international Shift pairing for punctuation" sections.
+export enum ShiftPairing {
+    None = "none",
+    Ansi = "ansi",
+    German = "german",
+    Colloquial = "colloquial",
+    International = "international",
+    GermanInternational = "germanInternational",
+}
+
+export function shiftPairingFor(
+    charMap: string[][], hasNumberRow: boolean, keymapType: KeymapTypeId | undefined,
+    colloquial: boolean
+): ShiftPairing {
+    if (!hasNumberRow) return ShiftPairing.None;
+    // The `ä` of a German 32-key map is what the international exception keys on; the other
+    // alphabets, English included, share the generic table.
+    if (is32KeyType(keymapType)) {
+        return draws(charMap, "ä") ? ShiftPairing.GermanInternational : ShiftPairing.International;
+    }
+    if (colloquial && hasColloquialLevel(charMap, hasNumberRow)) return ShiftPairing.Colloquial;
+    // Of the two standard pairings, only the German one has a `ß?` key, so its letter decides.
+    // There is room for it on layout-model-specific flex maps only.
+    return draws(charMap, "ß") ? ShiftPairing.German : ShiftPairing.Ansi;
+}
+
+const shiftPairsByPairing: Record<ShiftPairing, ShiftPairs> = {
+    [ShiftPairing.None]: {},
+    [ShiftPairing.Ansi]: ansiShiftPairs,
+    [ShiftPairing.German]: germanShiftPairs,
+    [ShiftPairing.Colloquial]: colloquialShiftPairs,
+    [ShiftPairing.International]: internationalShiftPairs,
+    [ShiftPairing.GermanInternational]: germanInternationalShiftPairs,
+};
+
 export const shiftPairsFor = (
-    charMap: string[][], hasNumberRow: boolean, colloquial = false
+    charMap: string[][], hasNumberRow: boolean, keymapType: KeymapTypeId | undefined,
+    colloquial: boolean
 ): ShiftPairs =>
-    !hasNumberRow ? {}
-        : colloquial && hasColloquialLevel(charMap, hasNumberRow) ? colloquialShiftPairs
-            : isAnsiCharMap(charMap) ? ansiShiftPairs : germanShiftPairs;
+    shiftPairsByPairing[shiftPairingFor(charMap, hasNumberRow, keymapType, colloquial)];
 
 /*
     Some layout models label the `=+` key with its shifted character (see "Showing the Shift and
@@ -250,7 +316,8 @@ function placeDigits(result: LevelMap, positions: KeyPosition[]) {
 
 // The AltGr level: navigation on `navSide` and the AltGr characters on the other hand.
 export function getThirdLevel(
-    model: LayoutModel, positions: KeyPosition[], charMap: string[][], navSide: Hand
+    model: LayoutModel, positions: KeyPosition[], charMap: string[][],
+    keymapType: KeymapTypeId | undefined, navSide: Hand
 ): LevelMap {
     const result = emptyLevelMap(model);
     const charSide = navSide === Hand.Left ? Hand.Right : Hand.Left;
@@ -264,7 +331,10 @@ export function getThirdLevel(
     if (hasNumberRow(model)) {
         placeBlock(result, model, positions, charSide, charSide === Hand.Right ? altGrRight : altGrLeft);
         placeDigits(result, positions);
-        if (!isAnsiCharMap(charMap)) {
+        // The standard German pairings are the only ones without a `2@` key, so they are the only
+        // ones that need the character here. The colloquial switch cannot change that: it applies
+        // to English maps, which have `2@` either way.
+        if (shiftPairingFor(charMap, true, keymapType, false) === ShiftPairing.German) {
             // `@` on the key the German standard has it, the key map position [Upper, 0] – `q` in
             // qwertz. That is where the character block puts `~`, so when the block is on that
             // hand, `@` takes the mnemonic AltGr+2 instead, off the `¢` the digits placed there.
@@ -284,13 +354,13 @@ export interface KeyLevels {
 }
 
 export const getKeyLevels = (
-    model: LayoutModel, positions: KeyPosition[], charMap: string[][], navSide: Hand,
-    colloquial = false
+    model: LayoutModel, positions: KeyPosition[], charMap: string[][],
+    keymapType: KeymapTypeId | undefined, navSide: Hand, colloquial: boolean
 ): KeyLevels => {
-    const pairs = shiftPairsFor(charMap, hasNumberRow(model), colloquial);
+    const pairs = shiftPairsFor(charMap, hasNumberRow(model), keymapType, colloquial);
     return {
         base: getBaseLevel(charMap, pairs),
         shift: getShiftLevel(charMap, pairs),
-        third: getThirdLevel(model, positions, charMap, navSide),
+        third: getThirdLevel(model, positions, charMap, keymapType, navSide),
     };
 };

@@ -36,7 +36,7 @@ import {
     TRADEOFF_SAME_FINGER_COLOR
 } from "../layout/TradeoffDiagram.tsx";
 import {sum} from "../library/math.ts";
-import {hasColloquialLevel, hasNumberRow, isAnsiCharMap} from "../mapping/key-levels.ts";
+import {hasNumberRow, ShiftPairing, shiftPairingFor} from "../mapping/key-levels.ts";
 import {qwertyMapping} from "../mapping/baseMappings.ts";
 import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
 
@@ -419,6 +419,57 @@ export function BigramDetailsLegendItem({bigramType, frequency, children}: Bigra
 
 }
 
+/*
+    Which of the Shift pairings the board and key map take, in one paragraph each. The rules that
+    pick one are in mapping/key-levels.ts; here we only name the outcome.
+ */
+function ShiftPairingParagraph({pairing}: { pairing: ShiftPairing }) {
+    switch (pairing) {
+        case ShiftPairing.Colloquial:
+            return <p>
+                <b>Colloquial</b> cuts the punctuation down to the four keys a small board can spare –{" "}
+                <code>'"</code> <code>,;</code> <code>.:</code> <code>-_</code> – by moving{" "}
+                <code>;</code> off the home row and <code>/?</code> into the number row, where{" "}
+                <code>9/</code> and <code>0?</code> replace the parentheses. The two keys this frees get{" "}
+                <code>(&lt;</code> and <code>)&gt;</code>, whose characters the AltGr level carries anyway.{" "}
+                Every further punctuation key a board has – <code>=+</code>, the brackets, the backtick –
+                is redundant with the AltGr level, so it can stay or go.
+            </p>;
+        case ShiftPairing.International:
+            return <p>
+                A <b>32-key</b> key map takes the same pairings as the colloquial English level –{" "}
+                <code>1!</code> <code>2@</code> … <code>9/</code> <code>0?</code> plus <code>'"</code>{" "}
+                <code>,;</code> <code>.:</code> <code>-_</code> – whichever language it maps. It spends
+                its three extra letter spots on the punctuation keys that a 30-key map keeps, so all
+                brackets are typed from the AltGr level, and the frame mapping is free to place
+                whatever redundant characters or navigation keys the board has room for.
+            </p>;
+        case ShiftPairing.GermanInternational:
+            return <p>
+                A <b>German 32-key</b> key map takes the same pairings as the colloquial English level,
+                with the digits <code>6</code> to <code>9</code> paired <code>6&amp;</code>{" "}
+                <code>7/</code> <code>8*</code> <code>9ß</code> instead: that makes room for{" "}
+                <code>ß</code> and puts <code>&amp;</code> and <code>/</code> on their conventional
+                German digits. <code>2@</code> stays, so <code>@</code> needs no AltGr spot here.
+            </p>;
+        case ShiftPairing.German:
+            return <p>
+                <b>Standard</b> on a German key map means the standard German Shift level:{" "}
+                <code>1!</code> <code>2"</code> … <code>ß?</code> <code>,;</code> <code>.:</code>{" "}
+                <code>-_</code>. It follows the key map rather than the board, so a mapping that moves
+                its punctuation around takes its Shift characters along. The characters of the ISO{" "}
+                <code>&lt;&gt;</code> key, which none of these boards has, live on the AltGr level.
+            </p>;
+        default:
+            return <p>
+                <b>Standard</b> on an English key map means the US ANSI Shift level: <code>1!</code>{" "}
+                <code>2@</code> … <code>,&lt;</code> <code>.&gt;</code> <code>/?</code>. It follows the key
+                map rather than the board, so a mapping that moves its punctuation around takes its Shift
+                characters along.
+            </p>;
+    }
+}
+
 interface ShiftLevelsDetailsProps {
     layout: LayoutModel;
     mapping: FlexMapping;
@@ -428,7 +479,8 @@ interface ShiftLevelsDetailsProps {
 export function ShiftLevelsDetails({layout, mapping, colloquial}: ShiftLevelsDetailsProps) {
     const charMap = fillMapping(layout, mapping)!;
     const numberless = !hasNumberRow(layout);
-    const showsColloquial = colloquial && hasColloquialLevel(charMap, hasNumberRow(layout));
+    const pairing = shiftPairingFor(
+        charMap, !numberless, findMatchingKeymapType(layout, mapping)?.typeId, colloquial);
     return <>
         {numberless
             ? <p>
@@ -443,31 +495,7 @@ export function ShiftLevelsDetails({layout, mapping, colloquial}: ShiftLevelsDet
                 right corner – the same three places an ISO keycap prints them.
             </p>
         }
-        {!numberless && (showsColloquial
-            ? <p>
-                <b>Colloquial</b> cuts the punctuation down to the four keys a small board can spare –{" "}
-                <code>'"</code> <code>,;</code> <code>.:</code> <code>-_</code> – by moving{" "}
-                <code>;</code> off the home row and <code>/?</code> into the number row, where{" "}
-                <code>9/</code> and <code>0?</code> replace the parentheses. The two keys this frees get{" "}
-                <code>(&lt;</code> and <code>)&gt;</code>, whose characters the AltGr level carries anyway.{" "}
-                Every further punctuation key a board has – <code>=+</code>, the brackets, the backtick –
-                is redundant with the AltGr level, so it can stay or go.
-            </p>
-            : !isAnsiCharMap(charMap)
-                ? <p>
-                    <b>Standard</b> on a German key map means the standard German Shift level:{" "}
-                    <code>1!</code> <code>2"</code> … <code>ß?</code> <code>,;</code> <code>.:</code>{" "}
-                    <code>-_</code>. It follows the key map rather than the board, so a mapping that moves
-                    its punctuation around takes its Shift characters along. The characters of the ISO{" "}
-                    <code>&lt;&gt;</code> key, which none of these boards has, live on the AltGr level.
-                </p>
-                : <p>
-                    <b>Standard</b> on an English key map means the US ANSI Shift level: <code>1!</code>{" "}
-                    <code>2@</code> … <code>,&lt;</code> <code>.&gt;</code> <code>/?</code>. It follows the key
-                    map rather than the board, so a mapping that moves its punctuation around takes its Shift
-                    characters along.
-                </p>
-        )}
+        {!numberless && <ShiftPairingParagraph pairing={pairing}/>}
         {!numberless && <p>
             On the letter rows the AltGr level is fixed by finger position instead, so it stays the same
             on every keyboard. One hand gets the characters: three kinds of brackets stacked on middle and
