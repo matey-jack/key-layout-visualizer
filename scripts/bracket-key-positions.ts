@@ -1,11 +1,3 @@
-/*
-    Analysis 1 of the "how to arrange the new pair of parenthesis keys symmetrically" question in
-    docs/key-levels.md: the colloquial Shift level frees two keys and puts `(<` and `)>` on them,
-    and we want to know how often those two land somewhere that reads as one unit.
-
-    Run it, change the colloquialisation rules in key-levels.ts, and run it again to compare:
-        npx tsx scripts/bracket-key-positions.ts
- */
 import {allLayoutModels} from "../src/all-layout-models.ts";
 import {KeyboardRows, type KeyPosition, type LayoutModel} from "../src/base-model.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel} from "../src/layout/ansiLayoutModel.ts";

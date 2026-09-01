@@ -1,14 +1,3 @@
-/*
-    Which flex maps carry a keymap for a specific layout model, next to (or instead of) the generic
-    30- and 32-key ones – the English ones, since a model-specific keymap is where a mapping can
-    place punctuation of its own.
-
-    The German counterpart of this question – how the keys a board offers a German map differ from
-    the standard German Shift pairings – is in scripts/german-frame-keys.ts.
-
-    Run it with:
-        npx tsx scripts/flex-map-inventory.ts
- */
 import {type FlexMapping, KeymapTypeId} from "../src/base-model.ts";
 import {isAnsiCharMap} from "../src/mapping/key-levels.ts";
 import {allMappings} from "../src/mapping/mappings.ts";
