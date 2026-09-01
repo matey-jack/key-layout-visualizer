@@ -414,7 +414,8 @@ have to be typed from the AltGr level. Those lost keys compensate for the three 
 the frame mapping) plus the backtick-tilde key, which many layout models spend on Escape. We also
 don't need to apply a colloquialization step, since the 32-key character set already mandates the
 base punctuation keys `,`, `.`, and `-`, and the frame mappings carry the other characters. (They
-still have the freedom to use either `+` or `=` for this Shift pair, and similarly `'` or `#`.)
+still have the freedom to use either `+` or `=` for this Shift pair. Not so for `'`: a lone `#`
+stands in for the `#'` key on the standard German pairings only.)
 The roomier frame mappings also draw a `/` key, which keeps the ANSI `/?` pairing – redundantly
 with the `9/` and `0?` of the number row.
 The minimum keyboard space for character keys using this mapping is then 43: ten digits, 32 flex

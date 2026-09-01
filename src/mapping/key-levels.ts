@@ -76,12 +76,13 @@ export const colloquialShiftPairs: ShiftPairs = {
 /*
     The generic international pairings, which every 32-key flex map takes whatever alphabet it
     maps. They are the colloquial ones plus the punctuation keys a 32-key frame mapping may draw:
-    `+` and `#` are the alternative labels of the `=+` and `'"` keys, and `/?` is redundant with
-    the number row's `9/` and `0?` – the roomier frame mappings carry it anyway.
+    `+` is the alternative label of the `=+` key, and `/?` is redundant with the number row's `9/`
+    and `0?` – the roomier frame mappings carry it anyway. (`#` is not among them: it stands in
+    for a key only on the standard German pairings, where it is the `#'` key.)
  */
 export const internationalShiftPairs: ShiftPairs = {
     ...colloquialShiftPairs,
-    "+": "=+", "#": "'\"", "/": "/?",
+    "+": "=+", "/": "/?",
 };
 
 /*
