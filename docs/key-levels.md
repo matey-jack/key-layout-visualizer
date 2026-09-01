@@ -33,10 +33,12 @@ Todo in code:
   including the German exception. (In that case, no `@` on the AltGr level, since it's already on
   Shift.)
     + Change the frame mappings to actually have the correct base mappings to match the pairings.
-    + Add at least one French, Spanish, or Danish flex map using a 32-key type, so that the 
-      generic Shift pairings (without the German exception) can be tested.
-    + If any layout is large enough to offer a redundant `/?` key, we need to add that to the 
-      Shift pairings.
+    + Change the wording in the scripts to not say "German", where it actually concerns the new
+      generic international levels.
+    + Add at least one French, Spanish, or Danish flex map using a 32-key type, so that the generic
+      Shift pairings (without the German exception) can be tested.
+    + If any layout is large enough to offer a redundant `/?` key, we need to add that to the Shift
+      pairings.
 - implement the Nav key replacements
 - check some of my favorite English model-specific flex-maps: how do they look with colloquial Shift
   pairings? do I want to fix anything?
@@ -282,7 +284,11 @@ prosaic punctuation key to the AltGr level. The minimal set now looks like this:
     '"  ,;  .:  -_
 
 Out of those 14 keycaps, 10 are pure US ANSI, 3 are obtainable from other languages, and only `9/`
-is the odd one out. (Although I didn't check whether it exists somewhere.)
+is the odd one out. (Although I didn't check whether it exists somewhere.) This count of 40 keys
+also means that all the mandatory base-level punctuation fits into a 30-key flex map, so a layout
+model for a small keyboard only needs to provide the ten digits and the 30 flex spots. All the
+remaining characters of the 94-character ANSI set are mapped onto our AltGr level and the colloquial
+Shift level.
 
 A final note: because I use `Ctrl +` and `Ctrl -` so much for zooming text, I have included the `=+`
 key on my 41-key board. It's more logical that way, too, because `/?` is represented on the Shift
@@ -408,11 +414,18 @@ have no room left for the four bracket keys, so on those all brackets (including
 have to be typed from the AltGr level. Those lost keys compensate for the three extra letters of the
 32-key flex map (which in exchange has one punctuation spot less, because the `'"` key moves into
 the frame mapping) plus the backtick-tilde key, which many layout models spend on Escape. We also
-don't need to apply a colloquialisation step, since the 32-key character set already mandates the
+don't need to apply a colloquialization step, since the 32-key character set already mandates the
 base punctuation keys `,`, `.`, and `-`, and the frame mappings carry the other characters. (They
 still have the freedom to use either `+` or `=` for this Shift pair, and similarly `'` or `#`.)
+The minimum keyboard space for character keys using this mapping is then 43: ten digits, 32 flex
+spots, and the `'"` key placed outside the flex map. If a keyboard has one more spot, I recommend
+placing `=+`, for the same reasons as in the colloquial English key map. An ANSI-like keyboard with
+Escape in the number row has two more spots on top of that, which can take redundant characters or
+navigation keys. Since the 32-key map types always come with this Shift level and our AltGr level,
+the frame mappings need no conditional customizing: they can arrange the flex spots and the other
+keys directly, so that the free spots land where nav, Delete, or another key is most useful.
 
-We make one small exception: when a German flex map (recognisable by its `ä`) is involved, the
+We make one small exception: when a German flex map (recognizable by its `ä`) is involved, the
 pairings of the digits `6` to `9` become `6& 7/ 8* 9ß` to accommodate the letter `ß` and to move `&`
 and `/` to their conventional German spots. (`8*` stays unchanged.) Since `2@` stays as it is, such
 a map has `@` on the Shift level and doesn't need it on AltGr.

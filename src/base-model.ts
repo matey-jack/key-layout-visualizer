@@ -191,7 +191,7 @@ export const isLayoutViz = (t: VisualizationType) =>
 // Both constants below are the list to copy a glyph from when writing a frame mapping or a flex
 // mapping, and the whitelist that layout-models.test.ts checks every mapping against.
 // An alphabet's own letters need no list: any Unicode letter may go on a key.
-// The non-ASCII ones currently mapped, to copy from: ä ö ü ß
+// The non-ASCII ones currently mapped, to copy from: ä ö ü ß / å æ ø
 
 // A symbol missing from here renders as an ordinary character key: no `keyboard-symbol` class,
 // no command border and no edge colour. So every symbol in use has to be listed.

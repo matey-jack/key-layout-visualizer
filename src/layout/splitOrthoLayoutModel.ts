@@ -40,7 +40,7 @@ const ansi32Base: FrameMapping = [
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
     ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, [2, 10]],
-    ["Alt", "/", "`~", "⌦", "Cmd", "⏎", "␣", "Ctrl", "AltGr", "'", "+", "Fn"],
+    ["Alt", "⎀", "`~", "⌦", "Cmd", "⏎", "␣", "Ctrl", "AltGr", "'", "+", "Fn"],
 ];
 
 const thumb32Base: FrameMapping = [
@@ -48,8 +48,8 @@ const thumb32Base: FrameMapping = [
     ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
     ["Ctrl", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'"],
-    // now = is right again, where German and other key maps have the -_
-    ["Alt", "⌦", "`~", "Cmd", 0, "⏎", "␣", "Ctrl", "AltGr", "/", "+", "Fn"],
+    // now + is right again, where German and other key maps have the -_
+    ["Alt", "⎀", "⌦", "Cmd", 0, "⏎", "␣", "Ctrl", "AltGr", "`~", "+", "Fn"],
 ];
 
 // thumbShift cycles: ⇧ moves to the second thumb key from center on each side.
@@ -64,7 +64,8 @@ export const splitOrthoLayoutModel = (thumbShift: boolean) : LayoutModel => ({
     Most split models include between two and four thumb keys on each side that users can map to any function they want. 
     Examples: The ZSA Voyager has two per side; 
     the Corne has three; the Iris has four; the Sofle and Lily58 have four thumb keys and one extra bottom key, 
-    and finally the MoErgo Go60 has four thumb keys and two further bottom-row keys per side, which corresponds to the picture shown here. (Don't confuse the Go60 with the Glove80, which is a much bigger keyboard. 
+    and finally the MoErgo Go60 has four thumb keys and two further bottom-row keys per side, which corresponds to the picture shown here. 
+    (Don't confuse the Go60 with the Glove80, which is a much bigger keyboard. 
     Similarly large is the Ergodox with 76 keys; too complicated to show here and not an interesting challenge in creating a compact key map!)
     We thus need to keep in mind that a keymap which works on all of those keyboards, 
     the characters in the bottom row need to be mapped redundantly on the AltGr level.`,
@@ -105,17 +106,12 @@ export const splitOrthoLayoutModel = (thumbShift: boolean) : LayoutModel => ({
         [KeymapTypeId.Thumb30]: ["\\(", "`)"],
     },
 
-    // thumbShift right cycles:
-    //   fullMapping:    swaps ⇧ with the flex letter at the second-from-center thumb key on each side
-    //   Ansi30/Thumb30: Fn → ' spot, ' → >⇧ spot, >⇧ → Fn spot
-    //   Ansi32:         >⇧ → >Ctrl spot, >Ctrl → {2:10} spot, {2:10} → >⇧ spot (becomes flex key 10 on row 2)
-    //   Thumb32:        >Ctrl → ' spot, ' → >⇧ spot, >⇧ → >Ctrl spot
     frameMappings: thumbShift ? {
         [KeymapTypeId.SplitOrtho]: permute(fullMapping, "<S{4:2}⏎>^F{4:1}", ">S{4:3}"),
         [KeymapTypeId.Ansi30]:     permute(ansi30Base,  SO_LEFT_TS_ANSI,  "F+-'>S"),
         [KeymapTypeId.Thumb30]:    permute(thumb30Base, "<S{4:0}⏎>^\\⌦", ">SF`'"),
         [KeymapTypeId.Ansi32]:     permute(ansi32Base,  SO_LEFT_TS_ANSI,  ">S>^{2:10}"),
-        [KeymapTypeId.Thumb32]:    permute(thumb32Base, ">S>^/⌦<S{4:0}⏎'"),
+        [KeymapTypeId.Thumb32]:    permute(thumb32Base, ">S>^`⌦<S{4:0}⏎'"),
     } : {
         [KeymapTypeId.SplitOrtho]: fullMapping,
         [KeymapTypeId.Ansi30]:     ansi30Base,
