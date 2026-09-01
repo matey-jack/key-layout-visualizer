@@ -26,18 +26,15 @@ export enum KeymapTypeId {
      */
 
     /**
-     * Variant for (European and other) Latin-based alphabets:
-     * this has space for 26 neo-Latin letters
-     * plus 3 language-specific letters (äöü or àçé or æ œ ø)
-     * plus 3 punctuation characters (,.-).
+     * Variant for (European and other) Latin-based alphabets, which has space for:
+     *  - 26 neo-Latin letters
+     *  - plus 3 language-specific letters (äöü or àçé or æ œ ø)
+     *  - plus 3 punctuation characters (,.-).
      * Note that the letters can vary by language, but the punctuation can't, since the remaining punctuation characters
      * are in the frame layout.
-     * There is no `;:` key in the FlexMapping or FrameMapping. Instead, we assume `,;` and `.:` Shift-pairings
-     * as on the German/Dutch/Danish/Swedish/Italian/Spanish (and more) keyboards.
-     * Note that unlike Ansi30 (and just like Thumb30), the frame mapping needs to include the `/` key.
-     * (A map with an `ä` key gets the standard German Shift level, which is a good fit for those
-     * languages' pairings, but leaves the `/` key of the frame mapping unpaired.)
-     * The number 32 fits our smallest keyboard layouts (Ergoslat and Split Ortho) which have no additional punctuation.
+     * The punctuation character set is based on the colloquialised English set from docs/key-levels.md.
+     * This means that (barring hard-coded exceptions in key-levels.ts) all languages have the same set of punctuation
+     * characters.
      */
     Ansi32 = "ansi32",
 

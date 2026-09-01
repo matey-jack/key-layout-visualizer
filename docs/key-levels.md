@@ -22,60 +22,67 @@ Done:
 - I wrote this spec; yay!
 - renamed "compressed" Shift pairings to "colloquial" (both in UI and code).
 - merged the German position of `@` into the updated AltGr mapping spec.
-- change the `ä` check for German to `;` for English -- how premature this seems now!
+- change the `ä` check for German to `;` for English — how premature this seems now!
 - change the code to use the new AltGr mappings
 
 Todo in code:
-- change the standard Shift mapping selection (everywhere but 32-key flex maps) to use `ß` as 
-  the discriminator.
+
+- change the standard Shift mapping selection (everywhere but 32-key flex maps) to use `ß` as the
+  discriminator.
 - change the Shift pairing selection again to use the colloquial system for all 32-key maps,
   including the German exception. (In that case, no `@` on the AltGr level, since it's already on
   Shift.)
-    + check that the frame mappings actually have the correct base mappings to match the pairings.
+    + Change the frame mappings to actually have the correct base mappings to match the pairings.
+    + Add at least one French, Spanish, or Danish flex map using a 32-key type, so that the 
+      generic Shift pairings (without the German exception) can be tested.
+    + If any layout is large enough to offer a redundant `/?` key, we need to add that to the 
+      Shift pairings.
 - implement the Nav key replacements
 - check some of my favorite English model-specific flex-maps: how do they look with colloquial Shift
   pairings? do I want to fix anything?
 
 # Showing the Shift and AltGr level characters (and functions)
 
-[Domain] Flex maps can place any character (or other key) on a layout and the frame mappings can do
-the same. Some of both make use of this by placing unconventional characters. Since we don't want to
-explode complexity by adding perfectly matched Shift mappings for each combination, we restrict
+[Domain] Flex maps can place any character (or other key) on a layout, and frame mappings can do the
+same. Maps of either kind make use of this to place unconventional characters. Since we don't want
+to explode complexity by adding a perfectly matched Shift mapping for each combination, we restrict
 ourselves to two conventional Shift maps (US ANSI and German Qwertz) plus three unconventional ones.
-We'll define rules and heuristics which Shift mapping is shown for a given flex map and layout model
-combination. Only in the very common case of key maps with the ANSI character set, we offer an
-actual user-facing choice between the standard mapping and a custom one (that is described below).
-Since our 32-key flexmap type abstractions (ansi32 and thumb32) are already designed to be used for
-many different languages, encapsulating common punctuation in the frame mappings, we also provide a
-custom Shift mapping for this. It is shared between 32-key flexmaps and layout models. This is the
-second custom Shift mapping. The third is simply a minimally tuned variant to optimize for German.
+Rules and heuristics then decide which Shift mapping is shown for a given flex map and layout model
+combination. Only for the very common case of key maps with the ANSI character set do we offer an
+actual user-facing choice between the standard mapping and a custom one (described below). That is
+the first unconventional mapping. The second one covers our 32-key flex map types (ansi32 and
+thumb32), which are already designed to be used for many different languages, encapsulating the
+common punctuation in the frame mappings; the same mapping serves every combination of a 32-key flex
+map with a layout model. The third is a minimally tuned variant of it for German.
 
 ## [App] Shift level
 
 Shift-level characters are defined purely as pairings with base characters, so they automatically
-follow the different flex maps and the layout models' frame maps. The app has pairings for English
-and German, where the latter stands as an example for many languages based on the Latin alphabet:
-all of them place more characters on the keyboard than the 94 of the ANSI English keyboard. (That is
-47 character keys, each with two characters. At least this character count is independent of the
-many variations in modifier and other key counts that various keyboards have.)
+follow the different flex maps and the layout models' frame maps. The two conventional pairings are
+English and German, where the latter stands as an example for many languages based on the Latin
+alphabet: all of them place more characters on the keyboard than the 94 of the ANSI English
+keyboard. (That is 47 character keys, each with two characters. At least this character count is
+independent of the many variations in modifier and other key counts that various keyboards have.)
 
-For the two standard Shift mappings, we can have a very simple rule to decide which to apply to a
-flexmap / layout model combination: the German standard Shift mapping contains the pair `ß?`. So we
-can apply it every time, that the character `ß` exists in the merged keymap. In practice, this will
-only happen for layout model specific flex maps, since not even the 32 key types have space for that
-key (because they mandate a-z and three punctuation keys to be present) and we also don't have the
-character mapped on any frame mappings -- this would restrict the entire keyboard layout model to
-only the German language.
+Deciding between the two standard Shift mappings takes a very simple rule: the German standard Shift
+mapping contains the pair `ß?`, so we apply it whenever the character `ß` exists in the merged
+keymap. In practice that only happens on layout-model-specific flex maps. The 32-key types have no
+room for the key, because their three free letter spots already go to `äöü`, and no frame mapping
+carries it either — that would tie the whole layout model to German.
+
+A board without a number row gets no Shift level at all: its pairings live in the number row as much
+as in the letter area, and showing only half of them would be more confusing than showing none.
 
 There is just one more little snag. To make keymaps and keycaps look prettier, I sometimes labeled a
 key with its Shift-level character instead of its base character — for example, the key whose base
 character is `=` is labeled `+`. ([Domain] In this case it was to highlight the symmetry between `+`
 and `-`; the latter is already a base character. A similar example is the German `#'` key, which I
-label as `'`.) And for the backtick character I actually included its Shift-level character (the
-tilde `~`) in the frame mappings, because it would otherwise be hard to see. So the app needs to
-work around both of those cases and recognize which key the base label actually denotes. In the
-"Shift and AltGr Levels" visualization, all such keys are normalized to the base/Shift pair of the
-auto-selected language.
+label as `'`, and the German `^°` key, which I label as `°` — a lone `^` in a flex map is the
+shorthand for the Ctrl key.) And for the backtick character I actually included its Shift-level
+character (the tilde `~`) in the frame mappings, because it would otherwise be hard to see. So the
+app needs to work around all of those cases and recognize which key the base label actually denotes.
+In the "Shift and AltGr Levels" visualization, all such keys are normalized to the base/Shift pair
+of the auto-selected language.
 
 A quick note on terminology: the term "character level" comes from the international keyboard layout
 (actually: keymap) configuration. We use it here, because we mostly deal with characters; the nav
@@ -262,7 +269,8 @@ spot. There are again mnemonic, international, and practical advantages:
 
 - It's practical for typing `/*` and `*/` if you are a programmer and still write code without AI.
 - `?` lands symmetrically to `!` on the other side of the number row. That's really sweet, and
-  incidentally something that a lot of other languages do as well.
+  incidentally something that a lot of other languages do as well, for example German, Dutch,
+  Danish, Swedish, Italian, and Spanish.
 - `-` is a much-used character, maybe more so than `/` – though that may depend on your writing
   style / personality. (Note the punctuation characters in that last half-sentence!)
 - And yes, the `-_` key is placed in that exact spot in the German and some other keymaps.
@@ -280,9 +288,9 @@ A final note: because I use `Ctrl +` and `Ctrl -` so much for zooming text, I ha
 key on my 41-key board. It's more logical that way, too, because `/?` is represented on the Shift
 level and thus more dispensable. But the nice thing is that you are free to choose which of the 7
 redundant keys you want to keep; the keymap works regardless. Note that if you don't have a physical
-`=+` key, but use a programmable keyboard or other key hacking tool, you can pick some key that
-doesn't have a Ctrl+key shortcut assigned and redirect that to send a `Ctrl +` to the computer. I so
-something similar for Ctrl+Tab and Alt+Tab on my keyboard and it works splendidly!
+`=+` key, but use a programmable keyboard or another key-hacking tool, you can pick some key that
+has no Ctrl shortcut assigned and have it send `Ctrl +` to the computer. I do something similar for
+Ctrl+Tab and Alt+Tab on my keyboard and it works splendidly!
 
 ### How to actually place the keys on an arbitrary flex map
 
@@ -385,36 +393,38 @@ Note that `↟` and `↡` denote mouse scrolls, which can be mapped using keyboa
 some third-party tools, but probably not using xkb. In case `⇟` or `⇞` would fall on the pinky and
 clash with the Shift key, we move the lower row of the nav block one key towards the center.
 
-# [Domain] going international
+# [Domain] Going international
 
 ## A generic international Shift pairing for punctuation
 
 Since the colloquial English Shift pairings are already inspired by the punctuation keys of some
-European keymaps, we can extend it to our 32-key flex maps. This doesn't yield perfect keymaps for
-each language, but at least offers something non-stupid that the app can show. It also offers us a
-simple rule when to apply this mapping: do it whenever the shown flexmap is of the ansi32 or thumb32
+European keymaps, we can extend them to our 32-key flex maps. This doesn't yield a perfect keymap
+for each language, but at least something non-stupid that the app can show. It also gives us a
+simple rule for when to apply this mapping: whenever the shown flex map is of the ansi32 or thumb32
 type.
 
-Indeed, we can use the exact same Shift pairings as the colloquial English, only that the four
-physical bracket keys will not fit and all brackets (including parenthesis) have to be typed from
-the AltGr layer. Those four lost keys compensate for the three extra letters in the 32-key flex map
-(which also has one less punctuation spot, the `'"` key moves into the frame mapping) plus the
-backtick-tilde which many layout models lose to placement of Escape. We also don't need to apply a
-colloqualization step, since the 32-key character set already mandates the base punctuation keys
-`,`, `.`, and `-`. And the frame mappings will have the other characters. (They still have the
-freedom to use either `+` or `=` for this Shift pair. And similarly `'` or `#`.)
+Indeed, we can use the exact same Shift pairings as the colloquial English ones. Most layout models
+have no room left for the four bracket keys, so on those all brackets (including the parentheses)
+have to be typed from the AltGr level. Those lost keys compensate for the three extra letters of the
+32-key flex map (which in exchange has one punctuation spot less, because the `'"` key moves into
+the frame mapping) plus the backtick-tilde key, which many layout models spend on Escape. We also
+don't need to apply a colloquialisation step, since the 32-key character set already mandates the
+base punctuation keys `,`, `.`, and `-`, and the frame mappings carry the other characters. (They
+still have the freedom to use either `+` or `=` for this Shift pair, and similarly `'` or `#`.)
 
-We just make one small exception when a German flex map (having the letter `ä`) is involved, the
-Shift pairing in the right number row becomes `5% 6& 7/ 8* 9ß 0?`. Only 6, 7, and 9 change to
-accomodate the letter `ß` and move `&` and `/` to their conventional German spots.
+We make one small exception: when a German flex map (recognisable by its `ä`) is involved, the
+pairings of the digits `6` to `9` become `6& 7/ 8* 9ß` to accommodate the letter `ß` and to move `&`
+and `/` to their conventional German spots. (`8*` stays unchanged.) Since `2@` stays as it is, such
+a map has `@` on the Shift level and doesn't need it on AltGr.
 
-TODO: adapt the AltGr layer to include some more characters common on European keyboards. But this
-is not critical, since at least the German ones are rarely used, and never in keyboard shortcuts.
+((TODO: adapt the AltGr level to include some more characters common on European keyboards. This is
+not critical, since at least the German ones are rarely used, and never in keyboard shortcuts.))
 
 ## Excursion: what a colloquial German keymap would look like
 
-This is not implemented, because the "32-key generic international" Shift pairings cover the German
-case quite nicely already.
+This is not implemented. German maps that fit a 32-key flex map get the generic international
+pairings above, which cover that case nicely enough, and the model-specific German maps keep the
+standard German pairings.
 
 Some numbers in advance: there are 29 letters in the German alphabet which have both minuscule and
 capital form, and there is `ß`, which exists only in minuscule. Since we are really tight on space
