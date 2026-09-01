@@ -24,6 +24,8 @@ Done:
 - merged the German position of `@` into the updated AltGr mapping spec.
 - change the `ä` check for German to `;` for English — how premature this seems now!
 - change the code to use the new AltGr mappings
+- prepared frame mappings for the new 32-flex-key Shift pairings
+- added Danish flex map
 
 Todo in code:
 
@@ -32,13 +34,10 @@ Todo in code:
 - change the Shift pairing selection again to use the colloquial system for all 32-key maps,
   including the German exception. (In that case, no `@` on the AltGr level, since it's already on
   Shift.)
-    + Change the frame mappings to actually have the correct base mappings to match the pairings.
-    + Change the wording in the scripts to not say "German", where it actually concerns the new
-      generic international levels.
-    + Add at least one French, Spanish, or Danish flex map using a 32-key type, so that the generic
-      Shift pairings (without the German exception) can be tested.
-    + If any layout is large enough to offer a redundant `/?` key, we need to add that to the Shift
-      pairings.
+    + Include the `/?` Shift pairing, because some of the larger frame mappings have that 
+      redundantly with the number row mappings. 
+- Change the wording in the scripts to not say "German", where it actually concerns the new
+  generic international levels.
 - implement the Nav key replacements
 - check some of my favorite English model-specific flex-maps: how do they look with colloquial Shift
   pairings? do I want to fix anything?
