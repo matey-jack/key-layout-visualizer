@@ -340,6 +340,8 @@ export interface LayoutModel extends RenderableLayoutModel {
         Optional per-layout cycles applied on top of the generic Shift-level colloquialisation,
         to put the two redundant `(` and `)` keys it frees somewhere the board can use. See
         `colloquialiseCharMap` in mapping/key-levels.ts and docs/key-levels.md.
+        The cycles of one list all resolve against the same map, so they run independently of each
+        other and no two of them may name the same key.
      */
     colloquialCycles?: Partial<Record<KeymapTypeId, string[]>>;
 

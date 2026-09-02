@@ -23,7 +23,7 @@ import {
     getBaseLevel,
     getKeyLevels,
     getShiftLevel,
-    getThirdLevel,
+    getAltGrLevel,
     hasColloquialLevel,
     hasNumberRow,
     is32KeyType,
@@ -90,13 +90,13 @@ function colloquialLevelByLabel(model: LayoutModel, mappingName?: string): Recor
     return result;
 }
 
-// The third level as a plain label -> character map, which is how the diagrams read.
-function thirdLevelByLabel(model: LayoutModel, navSide: Hand, mappingName?: string): Record<string, string> {
+// The AltGr level as a plain label -> character map, which is how the diagrams read.
+function altGrLevelByLabel(model: LayoutModel, navSide: Hand, mappingName?: string): Record<string, string> {
     const mapping = mappingFor(model, mappingName);
     const charMap = fillMapping(model, mapping)!;
     const positions = getKeyPositions(model, false, charMap);
     const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
-    const level = getThirdLevel(model, positions, charMap, keymapType, navSide);
+    const level = getAltGrLevel(model, positions, charMap, keymapType, navSide);
     const result: Record<string, string> = {};
     positions.forEach((p) => {
         const char = level[p.row][p.col];
@@ -254,9 +254,31 @@ describe("the colloquial level comes out complete on every English board", () =>
     });
 });
 
+/*
+    `colloquialiseCharMap` hands a model's cycles to one `permute` call, which resolves each of them
+    against the same map rather than against the previous one's result. Two cycles naming the same
+    key would therefore not compose - the later one would silently overwrite the earlier - and a
+    coordinate or edge token has no meaning in a merged char map, whose cells are all plain labels.
+ */
+describe("the layout models' own colloquial cycles", () => {
+    const cycleLists = allLayoutModels.flatMap((model) =>
+        Object.entries(model.colloquialCycles ?? {})
+            .map(([type, cycles]) => [`${model.name} / ${type}`, cycles as string[]] as const));
+
+    it("are defined on more than a handful of models", () => {
+        expect(cycleLists.length).toBeGreaterThan(10);
+    });
+
+    it.each(cycleLists)("%s", (_name, cycles) => {
+        expect(cycles.join("")).not.toMatch(/[{}<>]/);
+        const keys = [...cycles.join("")];
+        expect(keys.length, "a key named by two cycles").toBe(new Set(keys).size);
+    });
+});
+
 describe("AltGr character block", () => {
     it("sits on the right hand's finger columns", () => {
-        const level = thirdLevelByLabel(ansiIBMLayoutModel, Hand.Left);
+        const level = altGrLevelByLabel(ansiIBMLayoutModel, Hand.Left);
         expect(level["u"]).toBe("\\");
         expect(level["i"]).toBe("{");
         expect(level["o"]).toBe("}");
@@ -271,7 +293,7 @@ describe("AltGr character block", () => {
     });
 
     it("mirrors onto the left hand, keeping the fingers and swapping the bracket pairs", () => {
-        const level = thirdLevelByLabel(ansiIBMLayoutModel, Hand.Right);
+        const level = altGrLevelByLabel(ansiIBMLayoutModel, Hand.Right);
         expect(level["r"]).toBe("\\");
         expect(level["e"]).toBe("}");
         expect(level["w"]).toBe("{");
@@ -287,7 +309,7 @@ describe("AltGr character block", () => {
 
     it("is left out on a layout without a number row", () => {
         const numberless = makeErgoslatNumberless(majorErgoslatLayoutModel(false));
-        const level = thirdLevelByLabel(numberless, Hand.Left);
+        const level = altGrLevelByLabel(numberless, Hand.Left);
         const chars = Object.values(level);
         expect(chars).not.toContain("(");
         expect(chars).not.toContain("<");
@@ -298,7 +320,7 @@ describe("AltGr character block", () => {
 
     it("leaves out the 32-key `@` there as well, so no AltGr character is left", () => {
         const numberless = makeErgoslatNumberless(majorErgoslatLayoutModel(false));
-        const chars = Object.values(thirdLevelByLabel(numberless, Hand.Left, "Qwertz – German Standard"));
+        const chars = Object.values(altGrLevelByLabel(numberless, Hand.Left, "Qwertz – German Standard"));
         expect(chars).not.toContain("@");
         expect(chars).toContain("↓");
     });
@@ -329,7 +351,7 @@ describe("a board without a number row", () => {
 
 describe("AltGr number row", () => {
     it("pairs with the digits, brackets on 8 and 9", () => {
-        const level = thirdLevelByLabel(ansiIBMLayoutModel, Hand.Left);
+        const level = altGrLevelByLabel(ansiIBMLayoutModel, Hand.Left);
         expect(level["1"]).toBe("¡");
         expect(level["2"]).toBe("¢");
         expect(level["3"]).toBe("£");
@@ -344,7 +366,7 @@ describe("AltGr number row", () => {
 
     it("stays put when the characters change hands", () => {
         const digitsOf = (navSide: Hand) => {
-            const level = thirdLevelByLabel(ansiIBMLayoutModel, navSide);
+            const level = altGrLevelByLabel(ansiIBMLayoutModel, navSide);
             // spelled out because an object's integer-like keys come back in numeric order
             return "1234567890".split("").map((digit) => level[digit]).join(" ");
         };
@@ -354,7 +376,7 @@ describe("AltGr number row", () => {
 
     it("follows the digits, not the fingers, when the number row is shifted", () => {
         // On the 13/2 the index finger's number row key is `6`, not `7`.
-        const level = thirdLevelByLabel(xhkb13LayoutModel, Hand.Left);
+        const level = altGrLevelByLabel(xhkb13LayoutModel, Hand.Left);
         expect(level["6"]).toBe("^");
         expect(level["7"]).toBe("|");
         expect(level["8"]).toBe("[");
@@ -364,7 +386,7 @@ describe("AltGr number row", () => {
     it("repeats a bracket the number row already carries on its base level", () => {
         // The 16/5 has `[` and `]` keys in the centre of its number row, which does not stop
         // the digits from carrying them too.
-        const level = thirdLevelByLabel(xhkb16LayoutModel, Hand.Left);
+        const level = altGrLevelByLabel(xhkb16LayoutModel, Hand.Left);
         expect(level["8"]).toBe("[");
         expect(level["9"]).toBe("]");
     });
@@ -378,23 +400,23 @@ describe("the German `@`", () => {
     const german = "Qwertz – German Standard";
 
     it("sits on the key map's first upper row key", () => {
-        const level = thirdLevelByLabel(ansiIBMLayoutModel, Hand.Left, german);
+        const level = altGrLevelByLabel(ansiIBMLayoutModel, Hand.Left, german);
         expect(level["q"]).toBe("@");
     });
 
     it("takes the mnemonic AltGr+2 when the character block claims that key", () => {
-        const level = thirdLevelByLabel(ansiIBMLayoutModel, Hand.Right, german);
+        const level = altGrLevelByLabel(ansiIBMLayoutModel, Hand.Right, german);
         expect(level["q"]).toBe("~");
         expect(level["2"]).toBe("@");
     });
 
     it("is not on the English maps", () => {
-        const level = thirdLevelByLabel(majorErgoslatLayoutModel(false), Hand.Left);
+        const level = altGrLevelByLabel(majorErgoslatLayoutModel(false), Hand.Left);
         expect(Object.values(level)).not.toContain("@");
     });
 
     it("is not on a German 32-key map either, which has `2@` on the Shift level", () => {
-        const level = thirdLevelByLabel(majorErgoslatLayoutModel(false), Hand.Left, german);
+        const level = altGrLevelByLabel(majorErgoslatLayoutModel(false), Hand.Left, german);
         expect(Object.values(level)).not.toContain("@");
         expect(shiftLevelByLabel(majorErgoslatLayoutModel(false), german)["2"]).toBe("2@");
     });
@@ -525,7 +547,7 @@ describe("standard German Shift pairings", () => {
 
 describe("navigation block", () => {
     it("sits on the wer / asdfg / zxcv keys of the left hand", () => {
-        const level = thirdLevelByLabel(ansiIBMLayoutModel, Hand.Left);
+        const level = altGrLevelByLabel(ansiIBMLayoutModel, Hand.Left);
         expect(level["w"]).toBe("↞");
         expect(level["e"]).toBe("↑");
         expect(level["r"]).toBe("↠");
@@ -541,7 +563,7 @@ describe("navigation block", () => {
     });
 
     it("looks the same on the right hand", () => {
-        const level = thirdLevelByLabel(ansiIBMLayoutModel, Hand.Right);
+        const level = altGrLevelByLabel(ansiIBMLayoutModel, Hand.Right);
         expect(level["u"]).toBe("↞");
         expect(level["i"]).toBe("↑");
         expect(level["o"]).toBe("↠");
@@ -558,7 +580,7 @@ describe("navigation block", () => {
 
     it("moves the lower row towards the centre when its pinky column is taken", () => {
         // The wide hand position has no `/` key: its lower row ends in the right Shift.
-        const level = thirdLevelByLabel(ansiWideLayoutModel, Hand.Right);
+        const level = altGrLevelByLabel(ansiWideLayoutModel, Hand.Right);
         expect(level["n"]).toBe("⇞");
         expect(level["m"]).toBe("↟");
         expect(level[","]).toBe("↡");
@@ -606,7 +628,7 @@ describe("every block entry is placed on every layout model", () => {
             const charMap = fillMapping(model, mapping)!;
             const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
             const chars = Object.values(
-                getThirdLevel(model, positions, charMap, keymapType, navSide).flat().filter((c) => c));
+                getAltGrLevel(model, positions, charMap, keymapType, navSide).flat().filter((c) => c));
             for (const char of lowerRowFallbackChars) {
                 expect(chars, `nav on the ${Hand[navSide]} hand`).toContain(char);
             }
@@ -627,7 +649,7 @@ describe("every digit gets its AltGr character on every layout model", () => {
         const positions = positionsOf(model);
         const baseLabels = new Set(positions.filter((p) => p.row === KeyboardRows.Number).map((p) => p.label));
         [Hand.Left, Hand.Right].forEach((navSide) => {
-            const level = thirdLevelByLabel(model, navSide);
+            const level = altGrLevelByLabel(model, navSide);
             const missing = Object.entries(altGrDigits)
                 .filter(([digit, char]) => baseLabels.has(digit) && level[digit] !== char)
                 .map(([digit, char]) => `${digit} -> ${char}`);

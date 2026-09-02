@@ -98,7 +98,7 @@
     fill: #c3f3ac;
 }
 
-/* The third character level and the AltGr key that reaches it share one colour. */
+/* The AltGr level characters and the AltGr key that reaches them share one colour. */
 .key-outline.altgr-key {
     fill: var(--altgr-level-color);
     fill-opacity: 0.35;
@@ -220,7 +220,7 @@
     font-size: 21px;
 }
 
-.key-label--third {
+.key-label--altgr {
     font-family: Verdana, sans-serif;
     font-size: 20px;
     text-anchor: end;
@@ -229,7 +229,7 @@
 
 /* The nav symbols draw much smaller than letters at the same size, so they get a size up –
    the same bump that `keyboard-symbol` gives the base label. */
-.key-label--third-symbol {
+.key-label--altgr-symbol {
     font-size: 28px;
 }
 

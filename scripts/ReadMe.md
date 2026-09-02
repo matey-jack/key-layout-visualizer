@@ -32,6 +32,10 @@ of the boards the design question focuses on, including whether their `[]` keys 
 This is analysis 1 of the parenthesis-key question in `docs/key-levels.md`. Change the colloquialisation
 rules in `src/mapping/key-levels.ts` and run it again to compare.
 
+The classification lives in `bracket-classification.ts` so that `bracket-key-positions.test.ts` can
+read it too: that test pins the verdicts of the focus table, so an edit to a model's
+`colloquialCycles` that moves one of them fails the build instead of scrolling past unnoticed.
+
 ### flex-map-inventory.ts
 
 Walks **every English flex mapping** and lists the keymap types it defines for a specific layout

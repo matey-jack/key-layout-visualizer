@@ -121,9 +121,9 @@ interface KeyProps {
     vizType: VisualizationType,
     hexagons?: boolean,
     layer?: 'base' | 'label',
-    // Second and third character level, shown by the key levels visualization.
+    // Shift and AltGr level characters, shown by the key levels visualization.
     shiftLabel?: string,
-    thirdLabel?: string,
+    altGrLabel?: string,
 }
 
 const keyUnit = 100;
@@ -131,7 +131,7 @@ const keyPadding = 8;
 // How far a character key's label sits from the left edge of the keycap.
 const keyLabelInset = 20;
 // The AltGr label is smaller and keeps only half that distance from its corner.
-const thirdLabelInset = keyLabelInset / 2;
+const altGrLabelInset = keyLabelInset / 2;
 const keyRibbonPaddingH = 17;
 const keyRibbonPaddingV = 1;
 const isometric3dOffset = 8;
@@ -167,7 +167,7 @@ function rowCenterY(row: number, hexagons?: boolean): number {
 }
 
 export function Key(props: KeyProps) {
-    const {row, col, prevRow, prevCol, width, prevWidth, label, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker, hexagons, layer = 'base', shiftLabel, thirdLabel} = props;
+    const {row, col, prevRow, prevCol, width, prevWidth, label, height, backgroundClass, ribbonClass, frequencyCircleRadius, showHomeMarker, hexagons, layer = 'base', shiftLabel, altGrLabel} = props;
     const rowPitch = hexagons ? hexRowPitch : keyUnit;
     const x = col * keyUnit + keyPadding;
     const y = row * rowPitch + keyPadding;
@@ -226,10 +226,10 @@ export function Key(props: KeyProps) {
     const shiftText = shiftLabel &&
         <text x={0} y={30} className="key-label key-label--shift animating">{shiftLabel}</text>
 
-    const thirdText = thirdLabel &&
-        <text x={rectWidth - thirdLabelInset} y={keyHeight - thirdLabelInset}
-              className={"key-label--third" + (isKeyboardSymbol(thirdLabel) ? " key-label--third-symbol" : "")}
-        >{thirdLabel}</text>
+    const altGrText = altGrLabel &&
+        <text x={rectWidth - altGrLabelInset} y={keyHeight - altGrLabelInset}
+              className={"key-label--altgr" + (isKeyboardSymbol(altGrLabel) ? " key-label--altgr-symbol" : "")}
+        >{altGrLabel}</text>
 
     const keyRibbon = ribbonClass &&
         <rect class={"key-ribbon animating " + ribbonClass}
@@ -282,7 +282,7 @@ export function Key(props: KeyProps) {
                 </>}
             {keyRibbon || frequencyCircle || homeMarker}
         </>}
-        {layer === 'label' && <>{text}{shiftText}{thirdText}</>}
+        {layer === 'label' && <>{text}{shiftText}{altGrText}</>}
     </g>
 }
 
@@ -294,7 +294,7 @@ export interface KeyboardProps {
     // This only works in Harmonic staggering; otherwise keycaps overlap!
     hexagons?: boolean;
     mappingDiff?: Record<string, MappingChange>;
-    // Second and third character level for the key levels visualization; parallel to keyWidths.
+    // Shift and AltGr level characters for the key levels visualization; parallel to keyWidths.
     keyLevels?: KeyLevels;
     // Overlay rendered between the base and label layers (e.g. stagger or bigram lines).
     children?: ComponentChildren;
@@ -364,7 +364,7 @@ function keyBackgroundClass(
 ): string {
     switch (vizType) {
         case VisualizationType.MappingShiftLevels:
-            // Highlight the modifier that the third level belongs to.
+            // Highlight the modifier that the AltGr level belongs to.
             if (label === "AltGr") return "altgr-key";
             break;
         case VisualizationType.LayoutKeySize:
@@ -429,7 +429,7 @@ function KeyboardLayer({layoutModel, prevLayoutModel, keyMovements, mappingDiff,
             layer={layer}
             hexagons={hexagons}
             shiftLabel={levels?.shift[row]?.[col] ?? undefined}
-            thirdLabel={levels?.third[row]?.[col] ?? undefined}
+            altGrLabel={levels?.altGr[row]?.[col] ?? undefined}
             key={`${label}-${newRow}-${newCol}-${keyCapWidth}-${layer}`}
         />
     })

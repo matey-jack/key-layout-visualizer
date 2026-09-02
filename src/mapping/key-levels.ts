@@ -9,7 +9,7 @@ import {permute} from "../layout/permutation-functions.ts";
 import {isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
 
 /*
-    The three character levels of a key: base, Shift (second level), and AltGr (third level).
+    The three character levels of a key: base, Shift, and AltGr.
     docs/key-levels.md is the canonical description of what the tables below contain and why.
  */
 
@@ -193,7 +193,7 @@ export const getBaseLevel = (charMap: string[][], pairs: ShiftPairs): LevelMap =
     }));
 
 /*
-    A third-level block is one row per keyboard row, each listing the character for the hand's
+    An AltGr block is one row per keyboard row, each listing the character for the hand's
     five columns from the board centre outward:
 
         [centre, index, middle, ring, pinky]
@@ -282,7 +282,7 @@ export function resolveSlot(
         if (!best || Math.abs(p.colPos - target) < Math.abs(best.colPos - target)) best = p;
     }
     if (!best || Math.abs(best.colPos - target) > slotTolerance) return undefined;
-    // Gaps and every non-character key are unusable: a third level only makes sense on a key
+    // Gaps and every non-character key are unusable: an AltGr level only makes sense on a key
     // that already inserts a character. (Return and Space are character keys to isCommandKey,
     // but they are no place for a bracket either.)
     if (!best.label || isKeyboardSymbol(best.label) || isKeyName(best.label)) return undefined;
@@ -314,7 +314,7 @@ function placeDigits(result: LevelMap, positions: KeyPosition[]) {
 }
 
 // The AltGr level: navigation on `navSide` and the AltGr characters on the other hand.
-export function getThirdLevel(
+export function getAltGrLevel(
     model: LayoutModel, positions: KeyPosition[], charMap: string[][],
     keymapType: KeymapTypeId, navSide: Hand
 ): LevelMap {
@@ -351,7 +351,7 @@ export function getThirdLevel(
 export interface KeyLevels {
     base: LevelMap;
     shift: LevelMap;
-    third: LevelMap;
+    altGr: LevelMap;
 }
 
 export const getKeyLevels = (
@@ -362,6 +362,6 @@ export const getKeyLevels = (
     return {
         base: getBaseLevel(charMap, pairs),
         shift: getShiftLevel(charMap, pairs),
-        third: getThirdLevel(model, positions, charMap, keymapType, navSide),
+        altGr: getAltGrLevel(model, positions, charMap, keymapType, navSide),
     };
 };

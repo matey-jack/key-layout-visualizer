@@ -45,7 +45,8 @@ export const harmonic14TraditionalLayoutModel: LayoutModel = {
     colloquialCycles: {
         [KeymapTypeId.Ansi30]: ["`)("],
         // The standard placement has `/` in the bottom row and thus the colloquial `-` lands there, too.
-        // We do a second permutation to rescue it to a better position.
+        // The second cycle rescues it to a better position. The two are independent: every cycle of
+        // a list resolves against the same map, so they must not name a key in common.
         [KeymapTypeId.Thumb30]: ["([", "`-=\\"],
     },
     
