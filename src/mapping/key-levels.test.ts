@@ -1,5 +1,5 @@
 import {describe, expect, it} from "vitest";
-import {Hand, KeyboardRows, type KeyPosition, type LayoutModel} from "../base-model.ts";
+import {Hand, KeyboardRows, type KeyPosition, KeymapTypeId, type LayoutModel} from "../base-model.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel} from "../layout/ansiLayoutModel.ts";
 import {makeErgoslatNumberless, majorErgoslatLayoutModel} from "../layout/ergoslatLayoutModel.ts";
 import {
@@ -8,7 +8,6 @@ import {
     getKeyPositions,
     hasMatchingMapping,
 } from "../layout/layout-functions.ts";
-import {splitOrthoLayoutModel} from "../layout/splitOrthoLayoutModel.ts";
 import {xhkb13LayoutModel, xhkb16LayoutModel} from "../layout/xhkbLayoutModel.ts";
 import {allMappings} from "./mappings.ts";
 import {allLayoutModels} from "../all-layout-models.ts";
@@ -31,7 +30,10 @@ import {
     navLeft,
     navRight,
     resolveSlot,
+    ShiftPairing,
     shiftPairFor,
+    shiftPairingFor,
+    shiftPairsFor,
 } from "./key-levels.ts";
 
 // A base label of one letter, in any of the alphabets our flex maps carry.
@@ -473,11 +475,12 @@ describe("the `ß` discriminator", () => {
     });
 
     it("leaves a map without it on the ANSI pairings, whatever else it carries", () => {
-        // A German map, but one whose punctuation keys are the ANSI ones: `\'`, `/`, `+`.
-        const level = shiftLevelByLabel(splitOrthoLayoutModel(false), "Die Gemütliche Tastatur");
-        expect(level["2"]).toBe("2@");
-        expect(level["'"]).toBe("'\"");
-        expect(level["/"]).toBe("/?");
+        // Umlauts alone are not the German pairings' business: without the `ß?` key such a map
+        // draws ANSI punctuation like `'` and `/`, which those pairings do not know at all.
+        const umlautsOnly = [["q", "w", "ü", "ö", "ä", "'", "/", "2"]];
+        expect(shiftPairingFor(umlautsOnly, true, KeymapTypeId.Ansi, false)).toBe(ShiftPairing.Ansi);
+        expect(getShiftLevel(umlautsOnly, shiftPairsFor(umlautsOnly, true, KeymapTypeId.Ansi, false)))
+            .toEqual([[null, null, null, null, null, "\"", "?", "@"]]);
     });
 });
 

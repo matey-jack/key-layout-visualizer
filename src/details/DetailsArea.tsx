@@ -427,45 +427,25 @@ function ShiftPairingParagraph({pairing}: { pairing: ShiftPairing }) {
     switch (pairing) {
         case ShiftPairing.Colloquial:
             return <p>
-                <b>Colloquial</b> cuts the punctuation down to the four keys a small board can spare –{" "}
-                <code>'"</code> <code>,;</code> <code>.:</code> <code>-_</code> – by moving{" "}
-                <code>;</code> off the home row and <code>/?</code> into the number row, where{" "}
-                <code>9/</code> and <code>0?</code> replace the parentheses. The two keys this frees get{" "}
-                <code>(&lt;</code> and <code>)&gt;</code>, whose characters the AltGr level carries anyway.{" "}
-                Every further punctuation key a board has – <code>=+</code>, the brackets, the backtick –
-                is redundant with the AltGr level, so it can stay or go.
+                <b>Colloquial</b> is tuned to keep all the punctuation of everyday prose on the base and
+                Shift levels, leaving only the technical characters to the AltGr level.
             </p>;
         case ShiftPairing.International:
             return <p>
-                A <b>32-key</b> key map takes the same pairings as the colloquial English level –{" "}
-                <code>1!</code> <code>2@</code> … <code>9/</code> <code>0?</code> plus <code>'"</code>{" "}
-                <code>,;</code> <code>.:</code> <code>-_</code> – whichever language it maps. It spends
-                its three extra letter spots on the punctuation keys that a 30-key map keeps, so all
-                brackets are typed from the AltGr level, and the frame mapping is free to place
-                whatever redundant characters or navigation keys the board has room for.
+                A <b>32-key</b> key map takes the colloquial pairings whatever language it maps: everyday
+                punctuation on the base and Shift levels, everything technical on the AltGr level.
             </p>;
         case ShiftPairing.GermanInternational:
             return <p>
-                A <b>German 32-key</b> key map takes the same pairings as the colloquial English level,
-                with the digits <code>6</code> to <code>9</code> paired <code>6&amp;</code>{" "}
-                <code>7/</code> <code>8*</code> <code>9ß</code> instead: that makes room for{" "}
-                <code>ß</code> and puts <code>&amp;</code> and <code>/</code> on their conventional
-                German digits. <code>2@</code> stays, so <code>@</code> needs no AltGr spot here.
-            </p>;
-        case ShiftPairing.German:
-            return <p>
-                <b>Standard</b> on a German key map means the standard German Shift level:{" "}
-                <code>1!</code> <code>2"</code> … <code>ß?</code> <code>,;</code> <code>.:</code>{" "}
-                <code>-_</code>. It follows the key map rather than the board, so a mapping that moves
-                its punctuation around takes its Shift characters along. The characters of the ISO{" "}
-                <code>&lt;&gt;</code> key, which none of these boards has, live on the AltGr level.
+                A <b>German 32-key</b> key map takes the colloquial pairings too, with the digits{" "}
+                <code>6</code> to <code>9</code> rearranged to make room for <code>ß</code> and to put{" "}
+                <code>&amp;</code> and <code>/</code> on their conventional German keys.
             </p>;
         default:
             return <p>
-                <b>Standard</b> on an English key map means the US ANSI Shift level: <code>1!</code>{" "}
-                <code>2@</code> … <code>,&lt;</code> <code>.&gt;</code> <code>/?</code>. It follows the key
-                map rather than the board, so a mapping that moves its punctuation around takes its Shift
-                characters along.
+                <b>Standard</b> means the standard {pairing === ShiftPairing.German ? "German" : "US ANSI"}{" "}
+                Shift level. It follows the key map rather than the board, so a mapping that moves its
+                punctuation around takes its Shift characters along.
             </p>;
     }
 }
