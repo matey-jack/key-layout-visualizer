@@ -17,16 +17,19 @@ Run one with:
 
     npx tsx scripts/<name>.ts
 
+`tsconfig.node.json` includes this directory, so `npm run build` typechecks the scripts along with
+everything else and they cannot rot unnoticed when the tables they read change shape.
+
 ### bracket-key-positions.ts
 
 Walks **every layout model, once per reference mapping** – Qwerty for `ansi30` and Quipper Thumby
-for `thumb30` – skipping the combinations whose filled map has no compressed Shift level. For each
-one it looks up where the compressed level put `(` and `)` and classifies the two: *centred* (their
+for `thumb30` – skipping the combinations whose filled map has no colloquial Shift level. For each
+one it looks up where the colloquial level put `(` and `)` and classifies the two: *centred* (their
 middle is within half a key of the middle of the board or of the middle between the home index
 keys), *pair*, *stack* or *apart*. It prints the tally with the model names behind it, then a table
 of the boards the design question focuses on, including whether their `[]` keys stay centred.
 
-This is analysis 1 of the parenthesis-key question in `docs/key-levels.md`. Change the compression
+This is analysis 1 of the parenthesis-key question in `docs/key-levels.md`. Change the colloquialisation
 rules in `src/mapping/key-levels.ts` and run it again to compare.
 
 ### flex-map-inventory.ts

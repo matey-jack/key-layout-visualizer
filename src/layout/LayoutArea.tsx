@@ -46,7 +46,7 @@ interface RenderedKeyboard {
     charMap: string[][];
     positions: KeyPosition[];
     // The keymap type the flex map is drawn from, which decides the Shift pairings.
-    keymapType: KeymapTypeId | undefined;
+    keymapType: KeymapTypeId;
 }
 
 function renderKeyboard(
@@ -58,7 +58,8 @@ function renderKeyboard(
     if (layoutSupportsFlipRetRub(layout) && layout.flipRetRub) {
         flipRetRub(charMap);
     }
-    const keymapType = findMatchingKeymapType(lm, mapping)?.typeId;
+    // As certain as the filled char map above: both exist exactly when a keymap type matched.
+    const keymapType = findMatchingKeymapType(lm, mapping)!.typeId;
     // The colloquial Shift level rearranges the keys themselves, so it happens here rather than
     // in getKeyLevels - the positions have to be computed from the rearranged map.
     if (colloquial) charMap = colloquialiseCharMap(charMap, lm, keymapType);

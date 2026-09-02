@@ -99,7 +99,7 @@ export const germanInternationalShiftPairs: ShiftPairs = {
     The 32-key flex maps encapsulate their punctuation in the frame mapping, so one pairing serves
     every combination of such a map with a layout model.
  */
-export const is32KeyType = (keymapType: KeymapTypeId | undefined): boolean =>
+export const is32KeyType = (keymapType: KeymapTypeId): boolean =>
     keymapType === KeymapTypeId.Ansi32 || keymapType === KeymapTypeId.Thumb32;
 
 const draws = (charMap: string[][], char: string): boolean =>
@@ -121,8 +121,7 @@ export enum ShiftPairing {
 }
 
 export function shiftPairingFor(
-    charMap: string[][], hasNumberRow: boolean, keymapType: KeymapTypeId | undefined,
-    colloquial: boolean
+    charMap: string[][], hasNumberRow: boolean, keymapType: KeymapTypeId, colloquial: boolean
 ): ShiftPairing {
     if (!hasNumberRow) return ShiftPairing.None;
     // The `ä` of a German 32-key map is what the international exception keys on; the other
@@ -146,8 +145,7 @@ const shiftPairsByPairing: Record<ShiftPairing, ShiftPairs> = {
 };
 
 export const shiftPairsFor = (
-    charMap: string[][], hasNumberRow: boolean, keymapType: KeymapTypeId | undefined,
-    colloquial: boolean
+    charMap: string[][], hasNumberRow: boolean, keymapType: KeymapTypeId, colloquial: boolean
 ): ShiftPairs =>
     shiftPairsByPairing[shiftPairingFor(charMap, hasNumberRow, keymapType, colloquial)];
 
@@ -169,9 +167,9 @@ const genericColloquialCycles = [")=';", "(-/"];
  * model has no colloquial level at all.
  */
 export function colloquialiseCharMap(
-    charMap: string[][], model: LayoutModel, keymapType?: KeymapTypeId
+    charMap: string[][], model: LayoutModel, keymapType: KeymapTypeId
 ): string[][] {
-    if (!keymapType || !hasColloquialLevel(charMap, hasNumberRow(model))) return charMap;
+    if (!hasColloquialLevel(charMap, hasNumberRow(model))) return charMap;
     const generic = permute(normaliseEqualsKey(charMap), ...genericColloquialCycles) as string[][];
     const cycles = model.colloquialCycles?.[keymapType] ?? [];
     // A separate pass: permute resolves every cycle against the map it is given, so the layout
@@ -180,15 +178,15 @@ export function colloquialiseCharMap(
 }
 
 // The pairing a key label belongs to, or undefined for letters and non-character keys.
-export const shiftPairFor = (label: string, pairs: ShiftPairs = ansiShiftPairs): string | undefined =>
+export const shiftPairFor = (label: string, pairs: ShiftPairs): string | undefined =>
     pairs[label];
 
-export const getShiftLevel = (charMap: string[][], pairs: ShiftPairs = ansiShiftPairs): LevelMap =>
+export const getShiftLevel = (charMap: string[][], pairs: ShiftPairs): LevelMap =>
     charMap.map((row) => row.map((label) => pairs[label]?.[1] ?? null));
 
 // The base level, but only where it differs from the label the key map draws
 // (see "Showing the Shift and AltGr level characters" in the doc).
-export const getBaseLevel = (charMap: string[][], pairs: ShiftPairs = ansiShiftPairs): LevelMap =>
+export const getBaseLevel = (charMap: string[][], pairs: ShiftPairs): LevelMap =>
     charMap.map((row) => row.map((label) => {
         const pair = pairs[label];
         return pair && label !== pair[0] ? pair[0] : null;
@@ -318,7 +316,7 @@ function placeDigits(result: LevelMap, positions: KeyPosition[]) {
 // The AltGr level: navigation on `navSide` and the AltGr characters on the other hand.
 export function getThirdLevel(
     model: LayoutModel, positions: KeyPosition[], charMap: string[][],
-    keymapType: KeymapTypeId | undefined, navSide: Hand
+    keymapType: KeymapTypeId, navSide: Hand
 ): LevelMap {
     const result = emptyLevelMap(model);
     const charSide = navSide === Hand.Left ? Hand.Right : Hand.Left;
@@ -358,7 +356,7 @@ export interface KeyLevels {
 
 export const getKeyLevels = (
     model: LayoutModel, positions: KeyPosition[], charMap: string[][],
-    keymapType: KeymapTypeId | undefined, navSide: Hand, colloquial: boolean
+    keymapType: KeymapTypeId, navSide: Hand, colloquial: boolean
 ): KeyLevels => {
     const pairs = shiftPairsFor(charMap, hasNumberRow(model), keymapType, colloquial);
     return {

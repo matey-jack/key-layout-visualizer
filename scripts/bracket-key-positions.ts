@@ -59,7 +59,8 @@ const focusModels: [string, LayoutModel][] = [
     ["Split Ortho, Thumb Shift", splitOrthoLayoutModel(true)],
 ];
 
-const rowNames = {
+// Keyed by number, because that is how a KeyPosition carries its row.
+const rowNames: Record<number, string> = {
     [KeyboardRows.Number]: "num", [KeyboardRows.Upper]: "upper", [KeyboardRows.Home]: "home",
     [KeyboardRows.Lower]: "lower", [KeyboardRows.Bottom]: "bottom",
 };

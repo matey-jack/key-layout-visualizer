@@ -7,13 +7,18 @@ const genericKeymapTypes: KeymapTypeId[] = [
     KeymapTypeId.Ansi30, KeymapTypeId.Ansi32, KeymapTypeId.Thumb30, KeymapTypeId.Thumb32,
 ];
 
-// A flex map row holds one character per key, which is the char map shape isAnsiCharMap reads.
-const isGerman = (mapping: FlexMapping): boolean =>
-    !Object.values(mapping.mappings).every((rows) => isAnsiCharMap(rows.map((row) => [...row])));
+/*
+    A map is English when every keymap it defines draws the ANSI character set. `isAnsiCharMap` is
+    not the other alphabets' negation – a Danish or German 32-key map is neither – but that does not
+    matter here: those maps have no ANSI keymap at all, so they never pass this test.
+    A flex map row holds one character per key, which is the char map shape isAnsiCharMap reads.
+ */
+const isEnglish = (mapping: FlexMapping): boolean =>
+    Object.values(mapping.mappings).every((rows) => isAnsiCharMap(rows.map((row) => [...row])));
 
 const pad = (text: string, width: number) => text + " ".repeat(Math.max(0, width - text.length));
 
-const english = allMappings.filter((mapping) => !isGerman(mapping));
+const english = allMappings.filter(isEnglish);
 const modelSpecific = english
     .map((mapping) => [
         mapping,

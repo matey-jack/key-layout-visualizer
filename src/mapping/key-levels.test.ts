@@ -16,6 +16,7 @@ import {
     altGrDigits,
     altGrLeft,
     altGrRight,
+    ansiShiftPairs,
     colloquialiseCharMap,
     colloquialShiftPairs,
     germanShiftPairs,
@@ -106,31 +107,31 @@ function thirdLevelByLabel(model: LayoutModel, navSide: Hand, mappingName?: stri
 
 describe("shift pairings", () => {
     it("finds a pairing by its base character", () => {
-        expect(shiftPairFor(",")).toBe(",<");
-        expect(shiftPairFor("9")).toBe("9(");
+        expect(shiftPairFor(",", ansiShiftPairs)).toBe(",<");
+        expect(shiftPairFor("9", ansiShiftPairs)).toBe("9(");
     });
 
     it("finds a pairing by its shifted character, so a `+` key is the ANSI `=+` key", () => {
-        expect(shiftPairFor("+")).toBe("=+");
+        expect(shiftPairFor("+", ansiShiftPairs)).toBe("=+");
     });
 
     it("finds a pairing by the combined label the frame mappings use", () => {
-        expect(shiftPairFor("`~")).toBe("`~");
+        expect(shiftPairFor("`~", ansiShiftPairs)).toBe("`~");
     });
 
     it("has no pairing for letters and non-character keys", () => {
-        expect(shiftPairFor("a")).toBeUndefined();
-        expect(shiftPairFor("⏎")).toBeUndefined();
-        expect(shiftPairFor("AltGr")).toBeUndefined();
-        expect(shiftPairFor("")).toBeUndefined();
+        expect(shiftPairFor("a", ansiShiftPairs)).toBeUndefined();
+        expect(shiftPairFor("⏎", ansiShiftPairs)).toBeUndefined();
+        expect(shiftPairFor("AltGr", ansiShiftPairs)).toBeUndefined();
+        expect(shiftPairFor("", ansiShiftPairs)).toBeUndefined();
     });
 
     it("puts the shifted character on digit and punctuation keys only", () => {
-        expect(getShiftLevel([["a", "1", "+", "⌫", "`~"]])).toEqual([[null, "!", "+", null, "~"]]);
+        expect(getShiftLevel([["a", "1", "+", "⌫", "`~"]], ansiShiftPairs)).toEqual([[null, "!", "+", null, "~"]]);
     });
 
     it("only overrides the base label where the key map draws something else", () => {
-        expect(getBaseLevel([["a", "1", "+", "⌫", "`~"]])).toEqual([[null, null, "=", null, "`"]]);
+        expect(getBaseLevel([["a", "1", "+", "⌫", "`~"]], ansiShiftPairs)).toEqual([[null, null, "=", null, "`"]]);
     });
 });
 

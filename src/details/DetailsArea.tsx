@@ -63,7 +63,7 @@ export function DetailsArea({appState}: DetailsAreaProps) {
 }
 
 export function getVizDetails(
-    vizType: VisualizationType, layout: LayoutModel, mapping: FlexMapping, shiftColloquial = false
+    vizType: VisualizationType, layout: LayoutModel, mapping: FlexMapping, shiftColloquial: boolean
 ) {
     switch (vizType) {
         case VisualizationType.LayoutKeySize:
@@ -460,7 +460,7 @@ export function ShiftLevelsDetails({layout, mapping, colloquial}: ShiftLevelsDet
     const charMap = fillMapping(layout, mapping)!;
     const numberless = !hasNumberRow(layout);
     const pairing = shiftPairingFor(
-        charMap, !numberless, findMatchingKeymapType(layout, mapping)?.typeId, colloquial);
+        charMap, !numberless, findMatchingKeymapType(layout, mapping)!.typeId, colloquial);
     return <>
         {numberless
             ? <p>
