@@ -20,6 +20,8 @@ and [app], so readers can orient themselves.
 Todo in code:
 
 - implement the Nav key replacements
+- animate the toggling of the colloquial mapping for English. Only animate the base keys that 
+  are moving (as current animation logic already does), ignoring the other levels.
 - check some of my favorite English model-specific flex-maps: how do they look with colloquial Shift
   pairings? do I want to fix anything?
 

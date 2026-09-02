@@ -329,6 +329,8 @@ export function getThirdLevel(
         : navBlock.map((row, i) => i === KeyboardRows.Lower ? movedTowardsCentre(row) : row);
     placeBlock(result, model, positions, navSide, nav);
 
+    // The single numberless layout model would need a much more elaborate keymap with more than three levels.
+    // We don't have that, so we show no levels except for the nav layer.
     if (hasNumberRow(model)) {
         placeBlock(result, model, positions, charSide, charSide === Hand.Right ? altGrRight : altGrLeft);
         placeDigits(result, positions);

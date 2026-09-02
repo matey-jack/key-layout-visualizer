@@ -467,6 +467,9 @@ export function ShiftLevelsDetails({layout, mapping, colloquial}: ShiftLevelsDet
                 We show no Shift and no AltGr characters on this board, the only one without a number row:
                 with the digits gone, the standard pairings turn absurd – it still has <code>?</code>, but
                 no <code>!</code> – and we haven't put in the effort to design a more sensible set of its own.
+                A single AltGr level wouldn't even suffice to fit all the additional characters – 10 digits
+                and 20 extra punctuation, because the number row's AltGr level itself would also need to be
+                redistributed.
             </p>
             : <p>
                 Each character key can carry three levels: the character it inserts on its own, the one it
@@ -477,20 +480,10 @@ export function ShiftLevelsDetails({layout, mapping, colloquial}: ShiftLevelsDet
         }
         {!numberless && <ShiftPairingParagraph pairing={pairing}/>}
         {!numberless && <p>
-            On the letter rows the AltGr level is fixed by finger position instead, so it stays the same
-            on every keyboard. One hand gets the characters: three kinds of brackets stacked on middle and
-            ring finger, with <code>{"()"}</code> on the home row and <code>{"<>"}</code> where ANSI has
-            them, and <code>{"\\ + ="}</code> on the index finger – <code>=</code> sits right next to{" "}
-            <code>{"<>"}</code> for bigrams like <code>{"<="}</code>. The pinky reaches out for{" "}
-            <code>~</code> and the backtick.
-        </p>}
-        {!numberless && <p>
-            The number row goes by digit, so that its mnemonics survive on the boards that shift the row
-            around. Most of its characters pair with the Shift character above them: <code>¡</code> with{" "}
-            <code>!</code>, <code>£</code> with <code>#</code> (the "pound" key), <code>€</code> with{" "}
-            <code>$</code>, <code>‰</code> with <code>%</code>, and <code>|</code> with <code>&amp;</code>,
-            reflecting their relationship in programming languages. <code>{"[ ]"}</code> complete the
-            bracket stack on <code>8</code> and <code>9</code>.
+            The AltGr mappings shown are hand-crafted to including technical characters from keys that are
+            far away from the hand's home positions. This not only improves ergonomy, but also allows those
+            far-away keys to be dropped on smaller keyboards.  We use the same AltGr mapping on all the
+            different keyboard layout models and flexible key maps, making it a learn once, use everywhere.
         </p>}
         <p>
             {numberless ? "One hand" : "The other hand"} gets "hands down" navigation: the four cursor keys
