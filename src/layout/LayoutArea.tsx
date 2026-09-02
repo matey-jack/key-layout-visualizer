@@ -4,7 +4,6 @@ import {type AppState, HarmonicVariant, isSplit, type LayoutOptions, PlankVarian
 import {
     type FlexMapping,
     type KeyPosition,
-    type KeymapTypeId,
     type LayoutModel,
     LayoutType,
     LayoutTypeNames,
@@ -45,8 +44,6 @@ interface RenderedKeyboard {
     layoutModel: LayoutModel;
     charMap: string[][];
     positions: KeyPosition[];
-    // The keymap type the flex map is drawn from, which decides the Shift pairings.
-    keymapType: KeymapTypeId;
 }
 
 function renderKeyboard(
@@ -58,16 +55,18 @@ function renderKeyboard(
     if (layoutSupportsFlipRetRub(layout) && layout.flipRetRub) {
         flipRetRub(charMap);
     }
-    // As certain as the filled char map above: both exist exactly when a keymap type matched.
-    const keymapType = findMatchingKeymapType(lm, mapping)!.typeId;
     // The colloquial Shift level rearranges the keys themselves, so it happens here rather than
-    // in getKeyLevels - the positions have to be computed from the rearranged map.
-    if (colloquial) charMap = colloquialiseCharMap(charMap, lm, keymapType);
+    // in getKeyLevels - the positions have to be computed from the rearranged map. The keymap type
+    // is resolved per board rather than taken from the app state, because this also renders the
+    // outgoing one, which has a model and key map of its own.
+    if (colloquial) {
+        // As certain as the filled char map above: both exist exactly when a keymap type matched.
+        charMap = colloquialiseCharMap(charMap, lm, findMatchingKeymapType(lm, mapping)!.typeId);
+    }
     return {
         layoutModel: lm,
         charMap,
         positions: getKeyPositions(lm, isSplit(layout), charMap, defaultTotalWidth),
-        keymapType,
     };
 }
 
@@ -78,8 +77,7 @@ export function LayoutArea({appState}: LayoutAreaProps) {
         layout.value.harmonicVariant > HarmonicVariant.H14_Traditional &&
         layout.value.harmonicHexagons;
     // The outgoing board is colloquialised too, so that toggling the switch does not animate.
-    const colloquial = appState.vizType.value === VisualizationType.MappingShiftLevels
-        && appState.shiftColloquial.value;
+    const {colloquial, keymapType} = appState.resolvedKeyLevels.value;
     const current = renderKeyboard(layoutModel.value, mapping.value, layout.value, hexagons, colloquial);
     const previousPositions = renderKeyboard(
         prevLayoutModel.value, prevMapping.value, layout.value, hexagons, colloquial).positions;
@@ -87,7 +85,7 @@ export function LayoutArea({appState}: LayoutAreaProps) {
 
     const {setLayout, mappingDiff, bigramMovements, vizType, setMapping, navSide} = appState;
     const keyLevels = vizType.value === VisualizationType.MappingShiftLevels
-        ? getKeyLevels(current.layoutModel, current.positions, current.charMap, current.keymapType,
+        ? getKeyLevels(current.layoutModel, current.positions, current.charMap, keymapType,
             navSide.value, colloquial)
         : undefined;
     const showFrame = layout.value.type !== LayoutType.Ergosplit &&

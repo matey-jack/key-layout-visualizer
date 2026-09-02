@@ -12,7 +12,6 @@ import {OptionGroup} from "./components/OptionGroup.tsx";
 import {DetailsArea} from "./details/DetailsArea.tsx";
 import {LayoutArea} from "./layout/LayoutArea.tsx";
 import {fillMapping} from "./layout/layout-functions.ts";
-import {hasColloquialLevel, hasNumberRow} from "./mapping/key-levels.ts";
 import {MappingList} from "./mapping/MappingArea.tsx";
 import {getKlc} from "./mapping/msKlcTemplate.ts";
 import {extractSvgWithStyles} from "./utils/svg-export.ts";
@@ -73,11 +72,10 @@ interface VisualizationSwitchesProps {
 // The switches that configure the key levels visualization, in their own container right of the
 // viz type buttons. A group whose choice does not exist on the current key map is left out.
 function LevelSwitches({appState}: { appState: AppState }) {
-    const charMap = fillMapping(appState.layoutModel.value, appState.mapping.value);
-    const hasColloquial = !!charMap && hasColloquialLevel(charMap, hasNumberRow(appState.layoutModel.value));
     return <div class="level-switches">
         <NavSideOptions navSide={appState.navSide}/>
-        {hasColloquial && <ShiftLevelOptions shiftColloquial={appState.shiftColloquial}/>}
+        {appState.resolvedKeyLevels.value.hasColloquialLevel &&
+            <ShiftLevelOptions shiftColloquial={appState.shiftColloquial}/>}
     </div>
 }
 

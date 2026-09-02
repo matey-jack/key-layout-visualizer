@@ -1,7 +1,7 @@
 import './DetailsArea.css';
 import '../layout/KeyboardSvg.css';
 import type {ComponentChildren} from "preact";
-import type {AppState} from "../app-model.ts";
+import type {AppState, ResolvedKeyLevels} from "../app-model.ts";
 import {
     bigramEffort,
     BigramType,
@@ -36,7 +36,7 @@ import {
     TRADEOFF_SAME_FINGER_COLOR
 } from "../layout/TradeoffDiagram.tsx";
 import {sum} from "../library/math.ts";
-import {hasNumberRow, ShiftPairing, shiftPairingFor} from "../mapping/key-levels.ts";
+import {ShiftPairing} from "../mapping/key-levels.ts";
 import {qwertyMapping} from "../mapping/baseMappings.ts";
 import {sumKeyFrequenciesByEffort, weighSingleKeyEffort} from "../mapping/mapping-functions.ts";
 
@@ -57,13 +57,13 @@ export function DetailsArea({appState}: DetailsAreaProps) {
         }
         <hr/>
         <div class="visualization-details">
-            {getVizDetails(vizType, layout, mapping, appState.shiftColloquial.value)}
+            {getVizDetails(vizType, layout, mapping, appState.resolvedKeyLevels.value)}
         </div>
     </div>;
 }
 
 export function getVizDetails(
-    vizType: VisualizationType, layout: LayoutModel, mapping: FlexMapping, shiftColloquial: boolean
+    vizType: VisualizationType, layout: LayoutModel, mapping: FlexMapping, keyLevels: ResolvedKeyLevels
 ) {
     switch (vizType) {
         case VisualizationType.LayoutKeySize:
@@ -95,7 +95,7 @@ export function getVizDetails(
         case VisualizationType.MappingBigrams:
             return <BigramEffortDetails layout={layout} mapping={mapping}/>;
         case VisualizationType.MappingShiftLevels:
-            return <ShiftLevelsDetails layout={layout} mapping={mapping} colloquial={shiftColloquial}/>;
+            return <ShiftLevelsDetails keyLevels={keyLevels}/>;
         case VisualizationType.MappingTradeoff:
             return <TradeoffDetails/>;
     }
@@ -451,16 +451,11 @@ function ShiftPairingParagraph({pairing}: { pairing: ShiftPairing }) {
 }
 
 interface ShiftLevelsDetailsProps {
-    layout: LayoutModel;
-    mapping: FlexMapping;
-    colloquial: boolean;
+    keyLevels: ResolvedKeyLevels;
 }
 
-export function ShiftLevelsDetails({layout, mapping, colloquial}: ShiftLevelsDetailsProps) {
-    const charMap = fillMapping(layout, mapping)!;
-    const numberless = !hasNumberRow(layout);
-    const pairing = shiftPairingFor(
-        charMap, !numberless, findMatchingKeymapType(layout, mapping)!.typeId, colloquial);
+export function ShiftLevelsDetails({keyLevels}: ShiftLevelsDetailsProps) {
+    const numberless = !keyLevels.hasNumberRow;
     return <>
         {numberless
             ? <p>
@@ -478,7 +473,7 @@ export function ShiftLevelsDetails({layout, mapping, colloquial}: ShiftLevelsDet
                 right corner – the same three places an ISO keycap prints them.
             </p>
         }
-        {!numberless && <ShiftPairingParagraph pairing={pairing}/>}
+        {!numberless && <ShiftPairingParagraph pairing={keyLevels.pairing}/>}
         {!numberless && <p>
             The AltGr mappings shown are hand-crafted to including technical characters from keys that are
             far away from the hand's home positions. This not only improves ergonomy, but also allows those

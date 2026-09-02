@@ -1,12 +1,21 @@
 import {beforeEach, describe, expect, it} from "vitest";
 import {AnsiVariant, ErgoboardVariant, HarmonicVariant, PlankVariant} from "./app-model";
 import {createAppState} from "./app-state";
-import {type FlexMapping, KeymapTypeId, LayoutType} from "./base-model";
-import {hasMatchingMapping} from "./layout/layout-functions";
-import {qwertyMapping, qwertyWideMapping, qwertzMapping} from './mapping/baseMappings.ts';
+import {type FlexMapping, KeymapTypeId, type LayoutModel, LayoutType} from "./base-model";
+import {allLayoutModels} from "./all-layout-models.ts";
+import {alignForHex} from "./layout/harmonic-layout-functions.ts";
+import {fillMapping, findMatchingKeymapType, hasMatchingMapping} from "./layout/layout-functions";
+import {
+    colloquialiseCharMap,
+    hasColloquialLevel,
+    hasNumberRow,
+    ShiftPairing,
+    shiftPairingFor,
+} from "./mapping/key-levels.ts";
+import {danishMapping, qwertyMapping, qwertyWideMapping, qwertzMapping} from './mapping/baseMappings.ts';
 import {colemakMapping, colemakThumbyDMapping} from './mapping/colemakMappings.ts';
 import {cozyEnglish} from './mapping/cozyMappings.ts';
-import {maltronMapping} from "./mapping/mappings";
+import {allMappings, maltronMapping} from "./mapping/mappings";
 
 beforeEach(() => {
     window.location.hash = "";
@@ -374,3 +383,83 @@ describe("URL hash parameters", () => {
     });
 });
 
+
+/*
+    The one value the keyboard, the level switches and the details text all read. Its rules are in
+    mapping/key-levels.ts and tested there; what matters here is that the app state applies them to
+    the right board and hands out an answer the three consumers can share.
+ */
+describe("resolvedKeyLevels", () => {
+    it("selects a colloquial level only where the key map has one, and only in that viz", () => {
+        window.location.hash = "#layout=0&mapping=QWERTY&viz=8&colloquial=1";
+        const appState = createAppState();
+        expect(appState.resolvedKeyLevels.value.hasColloquialLevel).toBe(true);
+        expect(appState.resolvedKeyLevels.value.colloquial).toBe(true);
+        expect(appState.resolvedKeyLevels.value.pairing).toBe(ShiftPairing.Colloquial);
+
+        // The switch stays on, but a German map has nothing for it to select.
+        appState.setMapping(qwertzMapping);
+        expect(appState.shiftColloquial.value).toBe(true);
+        expect(appState.resolvedKeyLevels.value.hasColloquialLevel).toBe(false);
+        expect(appState.resolvedKeyLevels.value.colloquial).toBe(false);
+        expect(appState.resolvedKeyLevels.value.pairing).toBe(ShiftPairing.German);
+    });
+
+    it("leaves the board un-colloquialised outside the key levels visualization", () => {
+        window.location.hash = "#layout=0&mapping=QWERTY&viz=0&colloquial=1";
+        const appState = createAppState();
+        expect(appState.resolvedKeyLevels.value.hasColloquialLevel).toBe(true);
+        expect(appState.resolvedKeyLevels.value.colloquial).toBe(false);
+        expect(appState.resolvedKeyLevels.value.pairing).toBe(ShiftPairing.Ansi);
+    });
+
+    it("follows the selected board and key map", () => {
+        window.location.hash = "#layout=0&mapping=QWERTY&viz=8";
+        const appState = createAppState();
+        expect(appState.resolvedKeyLevels.value.keymapType).toBe(KeymapTypeId.Ansi30);
+        expect(appState.resolvedKeyLevels.value.hasNumberRow).toBe(true);
+
+        appState.setMapping(danishMapping);
+        expect(appState.resolvedKeyLevels.value.keymapType).toBe(KeymapTypeId.Ansi32);
+        expect(appState.resolvedKeyLevels.value.pairing).toBe(ShiftPairing.International);
+    });
+});
+
+/*
+    Deriving the levels once is only sound because the rules read the character set, which neither
+    the hexagon alignment nor the flipped Return/Rubout nor the colloquial rearrangement changes.
+    The app state therefore resolves them from the plain board, while LayoutArea draws a rearranged
+    one - and this is the property that lets the two agree.
+ */
+describe("the plain board can speak for the rendered one", () => {
+    it("resolves alike on the plain, the hexagon-aligned and the colloquialised board", () => {
+        const divergent: string[] = [];
+        let combos = 0;
+        for (const model of allLayoutModels) {
+            const hexed = alignForHex(model);
+            for (const mapping of allMappings.filter((m) => hasMatchingMapping(model, m))) {
+                combos++;
+                const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
+                const plain = fillMapping(model, mapping)!;
+                const onHex = fillMapping(hexed, mapping)!;
+                // `true` asks for the colloquial level wherever there is one, which is the case
+                // where the three boards differ most.
+                const pairing = (charMap: string[][], m: LayoutModel) =>
+                    shiftPairingFor(charMap, hasNumberRow(m), keymapType, true);
+                const expected = pairing(plain, model);
+                const actual = {
+                    hexagons: pairing(onHex, hexed),
+                    colloquial: pairing(colloquialiseCharMap(plain, model, keymapType), model),
+                };
+                for (const [board, got] of Object.entries(actual)) {
+                    if (got !== expected) divergent.push(`${model.name} / ${mapping.name}: ${board} says ${got}, plain says ${expected}`);
+                }
+                if (hasColloquialLevel(onHex, hasNumberRow(hexed)) !== hasColloquialLevel(plain, hasNumberRow(model))) {
+                    divergent.push(`${model.name} / ${mapping.name}: hexagons disagree about having a colloquial level`);
+                }
+            }
+        }
+        expect(combos).toBeGreaterThan(1500);
+        expect(divergent).toEqual([]);
+    });
+});

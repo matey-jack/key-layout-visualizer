@@ -10,14 +10,22 @@ import {
     isSplit,
     type LayoutOptions,
     PlankVariant,
+    type ResolvedKeyLevels,
     ThumbsUpVariant,
 } from "./app-model.ts";
 import {type FlexMapping, Hand, KeymapTypeId, type LayoutModel, LayoutType, VisualizationType} from "./base-model.ts";
 import {getBigramMovements} from "./bigrams.ts";
-import {diffToBase, fillMapping, getKeyPositions, hasMatchingMapping} from "./layout/layout-functions.ts";
+import {
+    diffToBase,
+    fillMapping,
+    findMatchingKeymapType,
+    getKeyPositions,
+    hasMatchingMapping,
+} from "./layout/layout-functions.ts";
 import {getLayoutModel} from "./layout-selection.ts";
 import {enumValues} from "./library/enum.ts";
 import {qwertyMapping} from "./mapping/baseMappings.ts";
+import {hasColloquialLevel, hasNumberRow, shiftPairingFor} from "./mapping/key-levels.ts";
 import {allMappings} from "./mapping/mappings.ts";
 
 
@@ -300,6 +308,28 @@ function updateUrlParams(
 }
 
 // let's just have one.
+/**
+ * Applies the key level rules of mapping/key-levels.ts to one board and key map.
+ * `colloquialWanted` is the switch as the user left it, which selects a colloquial level only
+ * where the key map has one.
+ */
+function resolveKeyLevels(
+    model: LayoutModel, mapping: FlexMapping, colloquialWanted: boolean
+): ResolvedKeyLevels {
+    const charMap = fillMapping(model, mapping)!;
+    const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
+    const numberRow = hasNumberRow(model);
+    const hasColloquial = hasColloquialLevel(charMap, numberRow);
+    const colloquial = colloquialWanted && hasColloquial;
+    return {
+        keymapType,
+        hasNumberRow: numberRow,
+        hasColloquialLevel: hasColloquial,
+        colloquial,
+        pairing: shiftPairingFor(charMap, numberRow, keymapType, colloquial),
+    };
+}
+
 export function createAppState(): AppState {
     const params = new URLSearchParams(window.location.hash.slice(1));
     const ansiVariant = s2i(params.get("ansi")) ?? AnsiVariant.IBM;
@@ -341,6 +371,15 @@ export function createAppState(): AppState {
     const navSide = signal<Hand>(s2i(params.get("nav")) ?? Hand.Left)
     const shiftColloquial = signal<boolean>(params.get("colloquial") === "1")
 
+    /*
+        The rendered board is hexagon-aligned and may have Return and Rubout flipped, and the
+        colloquial one is rearranged on top of that - but none of those touch the character set the
+        rules read, so all three answer alike and the plain board can speak for them.
+     */
+    const resolvedKeyLevels = computed(() => resolveKeyLevels(
+        layoutModel.value, mappingState.value,
+        vizType.value === VisualizationType.MappingShiftLevels && shiftColloquial.value));
+
     const mappingDiff = computed(() =>
         diffToBase(layoutModel.value, mappingState.value)
     )
@@ -370,6 +409,7 @@ export function createAppState(): AppState {
         vizType,
         navSide,
         shiftColloquial,
+        resolvedKeyLevels,
         mappingDiff,
         bigramMovements
     };

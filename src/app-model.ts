@@ -1,6 +1,7 @@
 import type {ReadonlySignal, Signal} from "@preact/signals";
-import type {BigramMovement, FlexMapping, Hand, LayoutModel, MappingChange} from "./base-model.ts";
+import type {BigramMovement, FlexMapping, Hand, KeymapTypeId, LayoutModel, MappingChange} from "./base-model.ts";
 import {LayoutType, type VisualizationType} from "./base-model.ts";
+import type {ShiftPairing} from "./mapping/key-levels.ts";
 
 export enum AnsiVariant {
     IBM,
@@ -134,4 +135,21 @@ export interface AppState {
     navSide: Signal<Hand>;
     // Whether the key levels visualization shows the colloquial Shift pairings.
     shiftColloquial: Signal<boolean>;
+    resolvedKeyLevels: ReadonlySignal<ResolvedKeyLevels>;
+}
+
+/*
+    What the key level rules make of the current board, key map and switches. The keyboard, the
+    switches above it and the details text next to it all need parts of this, and deriving it once
+    is what keeps the three from drifting apart.
+ */
+export interface ResolvedKeyLevels {
+    keymapType: KeymapTypeId;
+    hasNumberRow: boolean;
+    // Whether the colloquial switch has anything to offer, which is what decides whether it shows.
+    hasColloquialLevel: boolean;
+    // Whether the board is actually drawn colloquialised: the switch, but only where the key map
+    // has a colloquial level for it to select, and only in the visualization that shows one.
+    colloquial: boolean;
+    pairing: ShiftPairing;
 }
