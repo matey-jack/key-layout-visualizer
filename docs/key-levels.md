@@ -17,24 +17,8 @@ and [app], so readers can orient themselves.
 
 # Task items
 
-Done:
-
-- I wrote this spec; yay!
-- renamed "compressed" Shift pairings to "colloquial" (both in UI and code).
-- merged the German position of `@` into the updated AltGr mapping spec.
-- change the `ä` check for German to `;` for English — how premature this seems now!
-- change the code to use the new AltGr mappings
-- prepared frame mappings for the new 32-flex-key Shift pairings
-- added Danish flex map
-- changed the standard Shift mapping selection (everywhere but 32-key flex maps) to use `ß` as the
-  discriminator.
-- changed the Shift pairing selection again to use the colloquial system for all 32-key maps,
-  including the German exception, the `/?` pairing, and no `@` on the AltGr level.
-
 Todo in code:
 
-- Change the wording in the scripts to not say "German", where it actually concerns the new
-  generic international levels.
 - implement the Nav key replacements
 - check some of my favorite English model-specific flex-maps: how do they look with colloquial Shift
   pairings? do I want to fix anything?
@@ -224,13 +208,11 @@ Since the above bracket block already places three AltGr characters in the numbe
 well fill the entire row. For mnemonic reasons we do this by character pairing and independent of
 fingering:
 
-       ¡  ¢  £  €  ‰     |  [  ]  ¿
+       ¡  ¢  £  €  ‰  ^  |  [  ]  ¿
       1! 2@ 3# 4$ 5% 6^ 7& 8* 9/ 0?
 
 (Sadly, one mnemonic is lost on the generation that reads `#` as "hash", while older people still
 remember it as the "pound" character, which makes it perfect for the British pound sign.)
-
-((TODO: find a cool character for the AltGr+6 spot!))
 
 The `|`, `[`, and `]` here are the same keys that head the letter-area block above. The row can
 shift around on layout models that rearrange the number row, and on larger keyboards that have extra
@@ -245,6 +227,10 @@ that it survives on different flex maps without clashing with other AltGr charac
 the letter area. Unfortunately, it clashes with `~` when the nav layer is on the right side. In that
 case, we move it to `AltGr+2`, overwriting `¢`, which is there more for fun than for real use. That
 position is very mnemonic thanks to the ANSI keymap, and the key is quite close to the original one.
+
+Finally, the `^` on `AltGr+6` also serves a German keymap – not the standard one, which has the 
+character on the base-level of key, but the German variant of our international colloquial 
+keymap that we'll see below.
 
 ## Removing non-technical punctuation keys aka keeping the colloquial punctuation on base and Shift levels
 
