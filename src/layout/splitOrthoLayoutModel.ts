@@ -66,9 +66,7 @@ export const splitOrthoLayoutModel = (thumbShift: boolean) : LayoutModel => ({
     the Corne has three; the Iris has four; the Sofle and Lily58 have four thumb keys and one extra bottom key, 
     and finally the MoErgo Go60 has four thumb keys and two further bottom-row keys per side, which corresponds to the picture shown here. 
     (Don't confuse the Go60 with the Glove80, which is a much bigger keyboard. 
-    Similarly large is the Ergodox with 76 keys; too complicated to show here and not an interesting challenge in creating a compact key map!)
-    We thus need to keep in mind that a keymap which works on all of those keyboards, 
-    the characters in the bottom row need to be mapped redundantly on the AltGr level.`,
+    Similarly large is the Ergodox with 76 keys; too complicated to show here and not an interesting challenge in creating a compact key map!)`,
     // more splitties here: https://jhelvy.shinyapps.io/splitkbcompare/
     // if it's down, you can run it locally: https://github.com/jhelvy/splitKbCompare
 
