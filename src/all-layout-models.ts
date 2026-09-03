@@ -34,8 +34,8 @@ import {
 } from "./layout/ergoplankLayoutModel.ts";
 import {
     majorErgoslatLayoutModel,
-    makeErgoslatNumberless,
-    minorErgoslatLayoutModel
+    minorErgoslatLayoutModel,
+    numberlessErgoslatLayoutModel
 } from './layout/ergoslatLayoutModel.ts';
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
@@ -70,8 +70,8 @@ export const allLayoutModels: Array<LayoutModel> = [
     majorErgoslatLayoutModel(true),
     minorErgoslatLayoutModel(false),
     minorErgoslatLayoutModel(true),
-    makeErgoslatNumberless(majorErgoslatLayoutModel(false)),
-    makeErgoslatNumberless(minorErgoslatLayoutModel(false)),
+    numberlessErgoslatLayoutModel(false),
+    numberlessErgoslatLayoutModel(true),
     ergoplankLayoutModel,
     createErgoPlankMidShiftLowerCharacters(ergoplankLayoutModel),
     createErgoPlankMidShiftRightReturn(ergoplankLayoutModel),

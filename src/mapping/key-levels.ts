@@ -2,19 +2,36 @@ import {
     Hand,
     KeyboardRows,
     type KeyPosition,
-    KeymapTypeId,
+    type KeymapTypeId,
     type LayoutModel,
 } from "../base-model.ts";
 import {permute} from "../layout/permutation-functions.ts";
-import {isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
+import {
+    type Block,
+    byAnyMember,
+    draws,
+    emptyLevelMap,
+    getBaseLevel,
+    getShiftLevel,
+    hasNumberRow,
+    is32KeyType,
+    type KeyLevels,
+    type LevelMap,
+    movedTowardsCentre,
+    placeBlock,
+    resolveSlot,
+    type ShiftPairs,
+} from "./key-level-functions.ts";
+import {getNumberlessKeyLevels, numberlessShiftPairs} from "./numberless-key-levels.ts";
 
 /*
-    The three character levels of a key: base, Shift, and AltGr.
+    The three character levels of a key – base, Shift, and AltGr – on a numbered board, that is one
+    whose digits have a row of their own. mapping/numberless-key-levels.ts has the tables for the
+    boards that have none, and mapping/key-level-functions.ts the mechanics both build on. This
+    file also holds what the two have in common towards the app: the ShiftPairing a board and key
+    map take, and the getKeyLevels that picks the right set of tables for a board.
     docs/key-levels.md is the canonical description of what the tables below contain and why.
  */
-
-// Level arrays are parallel to the merged char map (and thus to the model's keyWidths).
-export type LevelMap = (string | null)[][];
 
 /*
     The colloquial level is defined for the ANSI character set, and the `;:` key is what marks one:
@@ -24,20 +41,6 @@ export type LevelMap = (string | null)[][];
  */
 export const isAnsiCharMap = (charMap: string[][]): boolean =>
     charMap.some((row) => row.includes(";") || row.includes("("));
-
-export const hasNumberRow = (model: LayoutModel): boolean =>
-    model.mainFingerAssignment[KeyboardRows.Number].some((finger) => finger !== null);
-
-/*
-    A pairing table maps the label a key map draws onto the two characters to show on that key:
-    base character first, shifted character second. Where the two differ, the base level
-    overrides the drawn label, so a key drawn `+` shows the `=` it actually inserts.
- */
-export type ShiftPairs = Record<string, string>;
-
-// A key map may draw the base character, the shifted one, or the combined label.
-const byAnyMember = (pairs: string[]): ShiftPairs =>
-    Object.fromEntries(pairs.flatMap((pair) => [[pair, pair], [pair[0], pair], [pair[1], pair]]));
 
 export const ansiShiftPairs: ShiftPairs = byAnyMember([
     "1!", "2@", "3#", "4$", "5%", "6^", "7&", "8*", "9(", "0)",
@@ -95,16 +98,6 @@ export const germanInternationalShiftPairs: ShiftPairs = {
     "6": "6&", "7": "7/", "9": "9ß",
 };
 
-/*
-    The 32-key flex maps encapsulate their punctuation in the frame mapping, so one pairing serves
-    every combination of such a map with a layout model.
- */
-export const is32KeyType = (keymapType: KeymapTypeId): boolean =>
-    keymapType === KeymapTypeId.Ansi32 || keymapType === KeymapTypeId.Thumb32;
-
-const draws = (charMap: string[][], char: string): boolean =>
-    charMap.some((row) => row.includes(char));
-
 // The colloquial Shift level is defined for the English character set only.
 export const hasColloquialLevel = (charMap: string[][], hasNumberRow: boolean): boolean =>
     hasNumberRow && isAnsiCharMap(charMap);
@@ -112,7 +105,7 @@ export const hasColloquialLevel = (charMap: string[][], hasNumberRow: boolean): 
 // The pairing tables, and thus the rules that pick one, are described in the doc's
 // "[App] Shift level" and "A generic international Shift pairing for punctuation" sections.
 export enum ShiftPairing {
-    None = "none",
+    Numberless = "numberless",
     Ansi = "ansi",
     German = "german",
     Colloquial = "colloquial",
@@ -123,7 +116,7 @@ export enum ShiftPairing {
 export function shiftPairingFor(
     charMap: string[][], hasNumberRow: boolean, keymapType: KeymapTypeId, colloquial: boolean
 ): ShiftPairing {
-    if (!hasNumberRow) return ShiftPairing.None;
+    if (!hasNumberRow) return ShiftPairing.Numberless;
     // The `ä` of a German 32-key map is what the international exception keys on; the other
     // alphabets, English included, share the generic table.
     if (is32KeyType(keymapType)) {
@@ -136,7 +129,7 @@ export function shiftPairingFor(
 }
 
 const shiftPairsByPairing: Record<ShiftPairing, ShiftPairs> = {
-    [ShiftPairing.None]: {},
+    [ShiftPairing.Numberless]: numberlessShiftPairs,
     [ShiftPairing.Ansi]: ansiShiftPairs,
     [ShiftPairing.German]: germanShiftPairs,
     [ShiftPairing.Colloquial]: colloquialShiftPairs,
@@ -176,35 +169,6 @@ export function colloquialiseCharMap(
     // model's own cycles can only name `(` and `)` once the generic ones have placed them.
     return permute(generic, ...cycles) as string[][];
 }
-
-// The pairing a key label belongs to, or undefined for letters and non-character keys.
-export const shiftPairFor = (label: string, pairs: ShiftPairs): string | undefined =>
-    pairs[label];
-
-export const getShiftLevel = (charMap: string[][], pairs: ShiftPairs): LevelMap =>
-    charMap.map((row) => row.map((label) => pairs[label]?.[1] ?? null));
-
-// The base level, but only where it differs from the label the key map draws
-// (see "Showing the Shift and AltGr level characters" in the doc).
-export const getBaseLevel = (charMap: string[][], pairs: ShiftPairs): LevelMap =>
-    charMap.map((row) => row.map((label) => {
-        const pair = pairs[label];
-        return pair && label !== pair[0] ? pair[0] : null;
-    }));
-
-/*
-    An AltGr block is one row per keyboard row, each listing the character for the hand's
-    five columns from the board centre outward:
-
-        [centre, index, middle, ring, pinky]
-
-    "centre" is the index finger's second column (`g` on the left hand, `h` on the right one).
-    Mirroring keeps the finger and exchanges the two members of each pair, which is short enough
-    to spell out per hand rather than compute.
- */
-type BlockRow = (string | null)[];
-// Indexed by KeyboardRows; the bottom row carries no block.
-type Block = BlockRow[];
 
 const _ = null;
 
@@ -250,60 +214,6 @@ export const navRight: Block = [
     [_, _, _, _, _],
 ];
 
-// Used on the boards where the lower row's pinky column is the Shift key: the row keeps all
-// four of its characters and moves one key towards the centre, whose column is free there.
-const movedTowardsCentre = (row: BlockRow): BlockRow => [...row.slice(1), _];
-
-// A block column may sit a quarter unit off its home key (rounding in the row indents),
-// but not half a unit – that would be the neighbouring column.
-const slotTolerance = 0.26;
-
-/**
- * The key that carries the block entry for one (row, slot), or undefined when the layout has
- * no usable key there. Slots are indices into a BlockRow: 0 is the centre column, 1 the index
- * finger's home column, and 4 the pinky.
- */
-export function resolveSlot(
-    model: LayoutModel, positions: KeyPosition[], hand: Hand, row: KeyboardRows, slot: number
-): KeyPosition | undefined {
-    const outward = slot - 1;
-    const anchorCol = hand === Hand.Right
-        ? model.rightHomeIndex + outward
-        : model.leftHomeIndex - outward;
-    const anchor = positions.find((p) => p.row === KeyboardRows.Home && p.col === anchorCol);
-    if (!anchor) return undefined;
-    const stagger = (model.symmetricStagger && hand === Hand.Right)
-        ? -model.staggerOffsets[row]
-        : model.staggerOffsets[row];
-    const target = anchor.colPos + stagger;
-    let best: KeyPosition | undefined;
-    for (const p of positions) {
-        if (p.row !== row) continue;
-        if (!best || Math.abs(p.colPos - target) < Math.abs(best.colPos - target)) best = p;
-    }
-    if (!best || Math.abs(best.colPos - target) > slotTolerance) return undefined;
-    // Gaps and every non-character key are unusable: an AltGr level only makes sense on a key
-    // that already inserts a character. (Return and Space are character keys to isCommandKey,
-    // but they are no place for a bracket either.)
-    if (!best.label || isKeyboardSymbol(best.label) || isKeyName(best.label)) return undefined;
-    return best;
-}
-
-const emptyLevelMap = (model: LayoutModel): LevelMap =>
-    model.keyWidths.map((row) => row.map(() => null));
-
-function placeBlock(
-    result: LevelMap, model: LayoutModel, positions: KeyPosition[], hand: Hand, block: Block
-) {
-    block.forEach((blockRow, row) => {
-        blockRow.forEach((char, slot) => {
-            if (!char) return;
-            const key = resolveSlot(model, positions, hand, row, slot);
-            if (key) result[key.row][key.col] = char;
-        });
-    });
-}
-
 // The number row, placed by digit.
 function placeDigits(result: LevelMap, positions: KeyPosition[]) {
     positions.forEach((p) => {
@@ -327,38 +237,29 @@ export function getAltGrLevel(
         : navBlock.map((row, i) => i === KeyboardRows.Lower ? movedTowardsCentre(row) : row);
     placeBlock(result, model, positions, navSide, nav);
 
-    // The single numberless layout model would need a much more elaborate keymap with more than three levels.
-    // We don't have that, so we show no levels except for the nav layer.
-    if (hasNumberRow(model)) {
-        placeBlock(result, model, positions, charSide, charSide === Hand.Right ? altGrRight : altGrLeft);
-        placeDigits(result, positions);
-        // The standard German pairings are the only ones without a `2@` key, so they are the only
-        // ones that need the character here. The colloquial switch cannot change that: it applies
-        // to English maps, which have `2@` either way.
-        if (shiftPairingFor(charMap, true, keymapType, false) === ShiftPairing.German) {
-            // `@` on the key the German standard has it, the key map position [Upper, 0] – `q` in
-            // qwertz. That is where the character block puts `~`, so when the block is on that
-            // hand, `@` takes the mnemonic AltGr+2 instead, off the `¢` the digits placed there.
-            const key = charSide === Hand.Left
-                ? positions.find((p) => p.row === KeyboardRows.Number && p.label === "2")
-                : resolveSlot(model, positions, Hand.Left, KeyboardRows.Upper, 4);
-            if (key) result[key.row][key.col] = "@";
-        }
+    placeBlock(result, model, positions, charSide, charSide === Hand.Right ? altGrRight : altGrLeft);
+    placeDigits(result, positions);
+    // The standard German pairings are the only ones without a `2@` key, so they are the only
+    // ones that need the character here. The colloquial switch cannot change that: it applies
+    // to English maps, which have `2@` either way.
+    if (shiftPairingFor(charMap, true, keymapType, false) === ShiftPairing.German) {
+        // `@` on the key the German standard has it, the key map position [Upper, 0] – `q` in
+        // qwertz. That is where the character block puts `~`, so when the block is on that
+        // hand, `@` takes the mnemonic AltGr+2 instead, off the `¢` the digits placed there.
+        const key = charSide === Hand.Left
+            ? positions.find((p) => p.row === KeyboardRows.Number && p.label === "2")
+            : resolveSlot(model, positions, Hand.Left, KeyboardRows.Upper, 4);
+        if (key) result[key.row][key.col] = "@";
     }
     return result;
-}
-
-export interface KeyLevels {
-    base: LevelMap;
-    shift: LevelMap;
-    altGr: LevelMap;
 }
 
 export const getKeyLevels = (
     model: LayoutModel, positions: KeyPosition[], charMap: string[][],
     keymapType: KeymapTypeId, navSide: Hand, colloquial: boolean
 ): KeyLevels => {
-    const pairs = shiftPairsFor(charMap, hasNumberRow(model), keymapType, colloquial);
+    if (!hasNumberRow(model)) return getNumberlessKeyLevels(model, positions, charMap, navSide);
+    const pairs = shiftPairsFor(charMap, true, keymapType, colloquial);
     return {
         base: getBaseLevel(charMap, pairs),
         shift: getShiftLevel(charMap, pairs),

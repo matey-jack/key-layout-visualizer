@@ -1,7 +1,7 @@
 import {describe, expect, it} from "vitest";
 import {Hand, KeyboardRows, type KeyPosition, KeymapTypeId, type LayoutModel} from "../base-model.ts";
 import {ansiIBMLayoutModel, ansiWideLayoutModel} from "../layout/ansiLayoutModel.ts";
-import {makeErgoslatNumberless, majorErgoslatLayoutModel} from "../layout/ergoslatLayoutModel.ts";
+import {majorErgoslatLayoutModel} from "../layout/ergoslatLayoutModel.ts";
 import {
     fillMapping,
     findMatchingKeymapType,
@@ -13,6 +13,14 @@ import {allMappings} from "./mappings.ts";
 import {allLayoutModels} from "../all-layout-models.ts";
 import {isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
 import {
+    getBaseLevel,
+    getShiftLevel,
+    hasNumberRow,
+    is32KeyType,
+    resolveSlot,
+    shiftPairFor,
+} from "./key-level-functions.ts";
+import {
     altGrDigits,
     altGrLeft,
     altGrRight,
@@ -20,19 +28,13 @@ import {
     colloquialiseCharMap,
     colloquialShiftPairs,
     germanShiftPairs,
-    getBaseLevel,
-    getKeyLevels,
-    getShiftLevel,
     getAltGrLevel,
+    getKeyLevels,
     hasColloquialLevel,
-    hasNumberRow,
-    is32KeyType,
     isAnsiCharMap,
     navLeft,
     navRight,
-    resolveSlot,
     ShiftPairing,
-    shiftPairFor,
     shiftPairingFor,
     shiftPairsFor,
 } from "./key-levels.ts";
@@ -307,41 +309,10 @@ describe("AltGr character block", () => {
         expect(level["x"]).toBe("<");
     });
 
-    it("is left out on a layout without a number row", () => {
-        const numberless = makeErgoslatNumberless(majorErgoslatLayoutModel(false));
-        const level = altGrLevelByLabel(numberless, Hand.Left);
-        const chars = Object.values(level);
-        expect(chars).not.toContain("(");
-        expect(chars).not.toContain("<");
-        // but the navigation block is still there.
-        expect(chars).toContain("↓");
-        expect(chars).toContain("⇤");
-    });
-
-    it("leaves out the 32-key `@` there as well, so no AltGr character is left", () => {
-        const numberless = makeErgoslatNumberless(majorErgoslatLayoutModel(false));
-        const chars = Object.values(altGrLevelByLabel(numberless, Hand.Left, "Qwertz – German Standard"));
-        expect(chars).not.toContain("@");
-        expect(chars).toContain("↓");
-    });
 });
 
-describe("a board without a number row", () => {
-    const numberless = makeErgoslatNumberless(majorErgoslatLayoutModel(false));
-
-    it("shows no Shift and no base characters, whatever the key map", () => {
-        [undefined, "Quipper with Thumb-T", "Qwertz – German Standard"].forEach((name) => {
-            const mapping = mappingFor(numberless, name);
-            const charMap = fillMapping(numberless, mapping)!;
-            const positions = getKeyPositions(numberless, false, charMap);
-            const keymapType = findMatchingKeymapType(numberless, mapping)!.typeId;
-            const levels = getKeyLevels(numberless, positions, charMap, keymapType, Hand.Left, false);
-            expect(levels.shift.flat().filter(Boolean), name).toEqual([]);
-            expect(levels.base.flat().filter(Boolean), name).toEqual([]);
-        });
-    });
-
-    it("leaves the pairings alone on the same board with a number row", () => {
+describe("a board with a number row", () => {
+    it("keeps the standard pairings that the numberless one of the same family replaces", () => {
         const numbered = shiftLevelByLabel(majorErgoslatLayoutModel(false));
         expect(numbered[";"]).toBe(";:");
         expect(numbered[","]).toBe(",<");

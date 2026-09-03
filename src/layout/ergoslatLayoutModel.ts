@@ -1,7 +1,7 @@
 import {KeyboardRows, KeymapTypeId, type FrameMapping, type LayoutModel} from "../base-model.ts";
 import {mapValues} from "../library/records.ts";
 import {mirror, SymmetricKeyWidth} from "./keyWidth.ts";
-import {copyKeymap, ergoFamilyKeyColorClass} from "./layout-functions.ts";
+import {ergoFamilyKeyColorClass} from "./layout-functions.ts";
 import {patchThumb30, patchThumb32, permute} from "./permutation-functions.ts";
 
 /*
@@ -158,49 +158,25 @@ const numberlessAnsi30FrameMapping: FrameMapping = [
     ["Ctrl", "Cmd", "↹", "Alt", "⏎", "␣", "AltGr", "-", "Fn", "Ctrl"],
 ];
 
-export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
+export function numberlessErgoslatLayoutModel(midshift: boolean): LayoutModel {
+    // we always use the lowshift minor model as base, because we'll use the larger keys for Shaft.
+    const base = minorErgoslatLayoutModel(false);
     return {
-        ...lm,
-        name: lm.name + " (numberless)",
-        rowIndent: [0, ...lm.rowIndent.slice(1)] as [number, number, number, number, number],
+        ...base,
+        name: base.name + " (numberless)",
+        rowIndent: [0, ...base.rowIndent.slice(1)] as [number, number, number, number, number],
         keyWidths: [
             [13], // just put a full-width gap here, so the test passes
-            ...lm.keyWidths.slice(1),
+            ...base.keyWidths.slice(1),
         ],
 
-        mainFingerAssignment: [[null], ...lm.mainFingerAssignment.slice(1, 5)],
-        singleKeyEffort: [[null], ...lm.singleKeyEffort.slice(1, 5)],
+        mainFingerAssignment: [[null], ...base.mainFingerAssignment.slice(1, 5)],
+        singleKeyEffort: [[null], ...base.singleKeyEffort.slice(1, 5)],
         // TODO: for midShift simply swap Shift and Shaft
         frameMappings: {
             [KeymapTypeId.Ansi30]: numberlessAnsi30FrameMapping,
         },
     };
-}
-
-function numberlessKeymap(keymap: FrameMapping): FrameMapping {
-    const overriddenUpper0 = keymap[KeyboardRows.Upper][0];
-    const overriddenUpper12 = keymap[KeyboardRows.Upper][12];
-
-    keymap[KeyboardRows.Number] = [null];
-    keymap[KeyboardRows.Upper][0] = "Esc";
-    keymap[KeyboardRows.Upper][12] = "⌫";
-
-    keymap[KeyboardRows.Bottom][2] = adjustPlaceholderRow(overriddenUpper0, KeyboardRows.Upper);
-    keymap[KeyboardRows.Bottom][7] = adjustPlaceholderRow(overriddenUpper12, KeyboardRows.Upper);
-
-    return keymap;
-}
-
-// Pins a placeholder that is being moved to another row: a same-row number becomes an absolute
-// [sourceRow, col] reference; an already-absolute tuple (or a label / gap) is unchanged.
-function adjustPlaceholderRow(
-    v: string | number | null | [number, number],
-    sourceRow: number
-): string | number | null | [number, number] {
-    if (typeof v === "number") {
-        return [sourceRow, v];
-    }
-    return v;
 }
 
 function replaceBottomRowGaps(mapping: FrameMapping): FrameMapping {

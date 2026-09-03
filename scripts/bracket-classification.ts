@@ -18,7 +18,8 @@ import {
     getKeyPositions,
     hasMatchingMapping,
 } from "../src/layout/layout-functions.ts";
-import {colloquialiseCharMap, hasColloquialLevel, hasNumberRow} from "../src/mapping/key-levels.ts";
+import {hasNumberRow} from "../src/mapping/key-level-functions.ts";
+import {colloquialiseCharMap, hasColloquialLevel} from "../src/mapping/key-levels.ts";
 import {allMappings} from "../src/mapping/mappings.ts";
 
 // The two parenthesis keys, together with the lines they may sit on to count as centred.

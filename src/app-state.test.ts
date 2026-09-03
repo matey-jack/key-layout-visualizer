@@ -5,10 +5,10 @@ import {type FlexMapping, KeymapTypeId, type LayoutModel, LayoutType} from "./ba
 import {allLayoutModels} from "./all-layout-models.ts";
 import {alignForHex} from "./layout/harmonic-layout-functions.ts";
 import {fillMapping, findMatchingKeymapType, hasMatchingMapping} from "./layout/layout-functions";
+import {hasNumberRow} from "./mapping/key-level-functions.ts";
 import {
     colloquialiseCharMap,
     hasColloquialLevel,
-    hasNumberRow,
     ShiftPairing,
     shiftPairingFor,
 } from "./mapping/key-levels.ts";

@@ -38,7 +38,7 @@ import {
     createErgoPlankMidShiftLowerCharacters, createErgoPlankMidShiftRightReturn,
     ergoplankLayoutModel
 } from "./layout/ergoplankLayoutModel.ts";
-import {majorErgoslatLayoutModel, makeErgoslatNumberless, minorErgoslatLayoutModel } from './layout/ergoslatLayoutModel.ts';
+import {majorErgoslatLayoutModel, minorErgoslatLayoutModel, numberlessErgoslatLayoutModel } from './layout/ergoslatLayoutModel.ts';
 import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
 import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
 import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
@@ -67,12 +67,13 @@ export function getPlankVariant(opts: LayoutOptions): LayoutModel {
     switch (opts.plankVariant) {
         case PlankVariant.KATANA_60:
             return katanaLayoutModel;
-        case PlankVariant.ERGOSLAT: {
-            const baseModel = opts.esSmallerThumbs
+        case PlankVariant.ERGOSLAT:
+            // The numberless board is a Minor one whatever the thumb switch says: it needs the
+            // Minor's gapless bottom row for the ↹ and `-` keys that leave the letter block.
+            if (opts.esNumberless) return numberlessErgoslatLayoutModel(opts.midShift);
+            return opts.esSmallerThumbs
                 ? minorErgoslatLayoutModel(opts.midShift)
                 : majorErgoslatLayoutModel(opts.midShift);
-            return opts.esNumberless ? makeErgoslatNumberless(baseModel) : baseModel;
-        }
         case PlankVariant.ERGOBOARD_LOW_SHIFT:
             // UI calls this method without variant parameters, so we need a default.
             switch (opts.ergoboardLowshiftVariant) {

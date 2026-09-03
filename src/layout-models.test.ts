@@ -12,7 +12,7 @@ import {ergoboardSemiWideLayoutModel} from "./layout/ergoboardSemiWideLayoutMode
 import {createErgoPlankCenterArrows, createErgoPlankMidShiftLowerCharacters, ergoplankLayoutModel} from "./layout/ergoplankLayoutModel.ts";
 import {
     majorErgoslatLayoutModel,
-    makeErgoslatNumberless,
+    numberlessErgoslatLayoutModel,
     minorErgoslatLayoutModel
 } from './layout/ergoslatLayoutModel.ts';
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
@@ -216,33 +216,36 @@ describe("midShift variants don't change the character set", () => {
 });
 
 describe('Ergoslat numberless key placements', () => {
-    it('moves upper row overridden keys to the bottom row instead of Home and End', () => {
-        const baseMinor = minorErgoslatLayoutModel(false);
-        const numberlessMinor = makeErgoslatNumberless(baseMinor);
+    const numberless = numberlessErgoslatLayoutModel(false);
 
-        // Check Ansi30
-        const baseAnsi30 = baseMinor.frameMappings[KeymapTypeId.Ansi30]!;
-        const numAnsi30 = numberlessMinor.frameMappings[KeymapTypeId.Ansi30]!;
+    // The 30-key ANSI frame is the only one drawn so far; the other keymap types follow later.
+    it('offers the 30-key ANSI frame only', () => {
+        expect(Object.keys(numberless.frameMappings)).toEqual([KeymapTypeId.Ansi30]);
+    });
 
-        const expectedBottom2 = baseAnsi30[KeyboardRows.Upper][0]; // "↹"
-        const expectedBottom7 = baseAnsi30[KeyboardRows.Upper][12]; // "-"
+    it('opens the letter block with Esc and ⌫, and moves ↹ and the `-` key to the bottom row', () => {
+        const ansi30 = numberless.frameMappings[KeymapTypeId.Ansi30]!;
 
-        expect(numAnsi30[KeyboardRows.Upper][0]).toBe("Esc");
-        expect(numAnsi30[KeyboardRows.Upper][12]).toBe("⌫");
-        expect(numAnsi30[KeyboardRows.Bottom][2]).toBe(expectedBottom2);
-        expect(numAnsi30[KeyboardRows.Bottom][7]).toBe(expectedBottom7);
+        expect(ansi30[KeyboardRows.Number]).toEqual([null]);
+        expect(ansi30[KeyboardRows.Upper][0]).toBe("Esc");
+        expect(ansi30[KeyboardRows.Upper][12]).toBe("⌫");
+        expect(ansi30[KeyboardRows.Bottom][2]).toBe("↹");
+        expect(ansi30[KeyboardRows.Bottom][7]).toBe("-");
+        // The Shaft key takes both ends of the home row, where the numbered board has ⌦ and `'`.
+        expect(ansi30[KeyboardRows.Home][0]).toBe("⇩");
+        expect(ansi30[KeyboardRows.Home][12]).toBe("⇩");
+    });
 
-        // Check Thumb30
-        const baseThumb30 = baseMinor.frameMappings[KeymapTypeId.Thumb30]!;
-        const numThumb30 = numberlessMinor.frameMappings[KeymapTypeId.Thumb30]!;
-
-        const expectedThumbBottom2 = baseThumb30[KeyboardRows.Upper][0]; // "↹"
-        const expectedThumbBottom7 = baseThumb30[KeyboardRows.Upper][12]; // "⏎"
-
-        expect(numThumb30[KeyboardRows.Upper][0]).toBe("Esc");
-        expect(numThumb30[KeyboardRows.Upper][12]).toBe("⌫");
-        expect(numThumb30[KeyboardRows.Bottom][2]).toBe(expectedThumbBottom2);
-        expect(numThumb30[KeyboardRows.Bottom][7]).toBe(expectedThumbBottom7);
+    /*
+        The two keys that leave the letter block need a full-width spot in the bottom row, which the
+        Minor has and the Major – whose bottom row is 1.5u keys around two quarter-unit gaps – has
+        not. That is why the numberless board is built on the Minor whatever the thumb switch says.
+     */
+    it("has a gapless bottom row for them", () => {
+        expect(numberless.keyWidths[KeyboardRows.Bottom])
+            .toEqual(minorErgoslatLayoutModel(false).keyWidths[KeyboardRows.Bottom]);
+        expect(numberless.mainFingerAssignment[KeyboardRows.Bottom]).not.toContain(null);
+        expect(numberless.singleKeyEffort[KeyboardRows.Bottom]).not.toContain(null);
     });
 });
 

@@ -19,7 +19,8 @@ and [app], so readers can orient themselves.
 
 Todo in code:
 
-- Implement the numberless colloquial Shift/Shaft mapping.
+- Extend the numberless Shift/Shaft mapping beyond the 30-key ANSI frame: the three other keymap
+  types, and the MidShift board, where Shift and Shaft swap places.
 - Implement the Nav key replacements.
 - Animate the toggling of the colloquial mapping for English. Only animate the base keys that are
   moving (as current animation logic already does), ignoring the other levels.
@@ -413,9 +414,8 @@ Design premises:
 
 Consequences of those premises: `()` stays mapped between the other "shifted digit punctuation"
 characters in the Shaft layer. The "left pinky" spot in this row (where `!` would go) is free to
-use. If you like muscle memory compatibility, you could map `!` there redundantly; we spend it on
-the `~` that no other level carries, which puts it right under the `` ` `` on the pinky's home key –
-the same key that carries the backtick on a board with a number row.
+use, because the `-!` key already has that character. If you like muscle memory compatibility, you
+could map `!` there redundantly.
 
 Dissolving the `;:` key frees one spot on the base level, and we spend it the way the colloquial
 keymap above does: on `=+`. That gives the board the same six punctuation keys the colloquial one

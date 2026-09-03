@@ -25,6 +25,7 @@ import {SplitOrthoLayoutOptions} from "./SplitOrthoLayoutOptions.tsx";
 import {TradeoffDiagram} from "./TradeoffDiagram.tsx";
 import {alignForHex} from './harmonic-layout-functions.ts';
 import {colloquialiseCharMap, getKeyLevels} from "../mapping/key-levels.ts";
+import {numberlessCharMap} from "../mapping/numberless-key-levels.ts";
 
 interface LayoutAreaProps {
     appState: AppState;
@@ -55,10 +56,11 @@ function renderKeyboard(
     if (layoutSupportsFlipRetRub(layout) && layout.flipRetRub) {
         flipRetRub(charMap);
     }
-    // The colloquial Shift level rearranges the keys themselves, so it happens here rather than
-    // in getKeyLevels - the positions have to be computed from the rearranged map. The keymap type
-    // is resolved per board rather than taken from the app state, because this also renders the
-    // outgoing one, which has a model and key map of its own.
+    // Both the numberless and the colloquial Shift level rearrange the keys themselves, so that
+    // happens here rather than in getKeyLevels - the positions have to be computed from the
+    // rearranged map. The keymap type is resolved per board rather than taken from the app state,
+    // because this also renders the outgoing one, which has a model and key map of its own.
+    charMap = numberlessCharMap(charMap, lm);
     if (colloquial) {
         // As certain as the filled char map above: both exist exactly when a keymap type matched.
         charMap = colloquialiseCharMap(charMap, lm, findMatchingKeymapType(lm, mapping)!.typeId);

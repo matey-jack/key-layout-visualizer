@@ -196,7 +196,7 @@ export const isLayoutViz = (t: VisualizationType) =>
 // A symbol missing from here renders as an ordinary character key: no `keyboard-symbol` class,
 // no command border and no edge colour. So every symbol in use has to be listed.
 // This is a list and not a Unicode range, because characters to insert can be non-ASCII too.
-export const keyboardSymbols = "↹⌦⎀⌫⇧⇩ ☰␣⏎¤⌥⇞⇟⇤⇥⇱⇲←↑↓→↞↠↟↡";
+export const keyboardSymbols = "↹⌦⎀⌫⇧⇩☰␣⏎¤⌥⇞⇟⇤⇥⇱⇲←↑↓→↞↠↟↡";
 
 // Characters (not symbols) beyond ASCII and beyond an alphabet's own letters, worth a key of their own.
 // ´ is the dead-key accent of the German and other European keyboards.

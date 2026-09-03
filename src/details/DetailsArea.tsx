@@ -425,6 +425,14 @@ export function BigramDetailsLegendItem({bigramType, frequency, children}: Bigra
  */
 function ShiftPairingParagraph({pairing}: { pairing: ShiftPairing }) {
     switch (pairing) {
+        case ShiftPairing.Numberless:
+            return <p>
+                <b>Numberless</b> keeps the punctuation of everyday prose on the base and Shift
+                levels, the colloquial pairings <code>,;</code> and <code>.:</code> among them. It
+                adds <code>-!</code>, so that <code>!</code> stays a shifted character once the
+                digits move off the base level, and spends the key that the vanishing{" "}
+                <code>;</code> frees on <code>=+</code>.
+            </p>;
         case ShiftPairing.Colloquial:
             return <p>
                 <b>Colloquial</b> is tuned to keep all the punctuation of everyday prose on the base and
@@ -457,35 +465,45 @@ interface ShiftLevelsDetailsProps {
 export function ShiftLevelsDetails({keyLevels}: ShiftLevelsDetailsProps) {
     const numberless = !keyLevels.hasNumberRow;
     return <>
+        <p>
+            Each character key can carry three levels: the character it inserts on its own, the one it
+            inserts with Shift, and the one it inserts with {numberless ? "Shaft" : "AltGr"}. The Shift
+            characters are shown above the base ones, the third level in{" "}
+            <span class="altgr-level-legend">blue</span> in the bottom right corner – the same three
+            places an ISO keycap prints them.
+            {numberless && " This board names its third level after the ⇩ key that reaches it, "
+                + "which sits at both ends of the home row where the Shift keys sit below."}
+        </p>
+        <ShiftPairingParagraph pairing={keyLevels.pairing}/>
         {numberless
             ? <p>
-                We show no Shift and no AltGr characters on this board, the only one without a number row:
-                with the digits gone, the standard pairings turn absurd – it still has <code>?</code>, but
-                no <code>!</code> – and we haven't put in the effort to design a more sensible set of its own.
-                A single AltGr level wouldn't even suffice to fit all the additional characters – 10 digits
-                and 20 extra punctuation, because the number row's AltGr level itself would also need to be
-                redistributed.
+                The Shaft level carries what a number row carries elsewhere: the digits on the upper
+                letter row and the characters their Shift level holds on the lower one, each on the very
+                key its digit would sit above. That leaves the technical punctuation{" "}
+                <code>[]&#123;&#125;&lt;&gt;|\_</code> to layers we don't draw – imagine a board used
+                for messages and notes rather than for programming.
             </p>
             : <p>
-                Each character key can carry three levels: the character it inserts on its own, the one it
-                inserts with Shift, and the one it inserts with AltGr. The Shift characters are shown above
-                the base ones, the AltGr level in <span class="altgr-level-legend">blue</span> in the bottom
-                right corner – the same three places an ISO keycap prints them.
+                The AltGr mappings shown are hand-crafted to including technical characters from keys that are
+                far away from the hand's home positions. This not only improves ergonomy, but also allows those
+                far-away keys to be dropped on smaller keyboards.  We use the same AltGr mapping on all the
+                different keyboard layout models and flexible key maps, making it a learn once, use everywhere.
             </p>
         }
-        {!numberless && <ShiftPairingParagraph pairing={keyLevels.pairing}/>}
-        {!numberless && <p>
-            The AltGr mappings shown are hand-crafted to including technical characters from keys that are
-            far away from the hand's home positions. This not only improves ergonomy, but also allows those
-            far-away keys to be dropped on smaller keyboards.  We use the same AltGr mapping on all the
-            different keyboard layout models and flexible key maps, making it a learn once, use everywhere.
-        </p>}
-        <p>
-            {numberless ? "One hand" : "The other hand"} gets "hands down" navigation: the four cursor keys
-            in their familiar inverted-T shape, but on the home row, with Home/End beside them and
-            PageUp/PageDown below. Use the "Nav keys" buttons to swap which hand gets it.
-            {!numberless && " The mnemonic character placement needs an AltGr key for the opposite thumb – "
-                + "on an ISO board the extra key next to the left Shift can serve as one."}
-        </p>
+        {numberless
+            ? <p>
+                Navigation is in-line and takes both hands: the four cursor keys in reading order on one
+                of them, the four that move by more than a character – Home, PageUp, PageDown, End – on
+                the other, and Delete on the single key between the two. Use the "Nav keys" buttons to
+                swap which hand gets the cursor keys.
+            </p>
+            : <p>
+                The other hand gets "hands down" navigation: the four cursor keys in their familiar
+                inverted-T shape, but on the home row, with Home/End beside them and PageUp/PageDown
+                below. Use the "Nav keys" buttons to swap which hand gets it. The mnemonic character
+                placement needs an AltGr key for the opposite thumb – on an ISO board the extra key next
+                to the left Shift can serve as one.
+            </p>
+        }
     </>
 }

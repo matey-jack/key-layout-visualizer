@@ -21,7 +21,7 @@ import {
     keyCapHeight,
     lettersAndVIP,
 } from "./layout-functions.ts";
-import type {KeyLevels} from "../mapping/key-levels.ts";
+import type {KeyLevels} from "../mapping/key-level-functions.ts";
 import {formatDecimal} from '../library/math.ts';
 
 interface KeyboardSvgProps {

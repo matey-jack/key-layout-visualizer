@@ -25,7 +25,8 @@ import {
 import {getLayoutModel} from "./layout-selection.ts";
 import {enumValues} from "./library/enum.ts";
 import {qwertyMapping} from "./mapping/baseMappings.ts";
-import {hasColloquialLevel, hasNumberRow, shiftPairingFor} from "./mapping/key-levels.ts";
+import {hasNumberRow} from "./mapping/key-level-functions.ts";
+import {hasColloquialLevel, shiftPairingFor} from "./mapping/key-levels.ts";
 import {allMappings} from "./mapping/mappings.ts";
 
 
