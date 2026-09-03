@@ -1,9 +1,11 @@
 import {describe, expect, it} from "vitest";
 import {
+    KEY_COLOR,
     KEYMAP_TYPES,
     keyboardSymbols,
     KeyboardRows,
     KeymapTypeId,
+    type FrameMapping,
     type LayoutModel,
     usefulNonAsciiCharacters
 } from "./base-model.ts";
@@ -241,6 +243,44 @@ describe('Ergoslat numberless key placements', () => {
         Minor has and the Major – whose bottom row is 1.5u keys around two quarter-unit gaps – has
         not. That is why the numberless board is built on the Minor whatever the thumb switch says.
      */
+    /*
+        MidShift moves the Shift keys up to the home row and the Shaft keys down into the lower row
+        they leave, which is the wider pair – the reason this board keeps the LowShift geometry.
+     */
+    it('swaps the Shift and Shaft keys for MidShift, and moves nothing else', () => {
+        const midShift = numberlessErgoslatLayoutModel(true);
+        const frame = midShift.frameMappings[KeymapTypeId.Ansi30]!;
+        const lowShiftFrame = numberless.frameMappings[KeymapTypeId.Ansi30]!;
+        const modifiersMasked = (mapping: FrameMapping) =>
+            mapping.map((row) => row.map((key) => (key === "⇧" || key === "⇩" ? "mod" : key)));
+
+        expect(frame[KeyboardRows.Home][0]).toBe("⇧");
+        expect(frame[KeyboardRows.Home][12]).toBe("⇧");
+        expect(frame[KeyboardRows.Lower][0]).toBe("⇩");
+        expect(frame[KeyboardRows.Lower][11]).toBe("⇩");
+        expect(modifiersMasked(frame)).toEqual(modifiersMasked(lowShiftFrame));
+        expect(midShift.keyWidths).toEqual(numberless.keyWidths);
+    });
+
+    /*
+        A numbered board's lower row has letters in its outer columns, so the ergo family colour rule
+        leaves them boring. Here both of those columns hold a modifier, whichever way MidShift has
+        arranged the two, and both pairs have to look like one.
+     */
+    it('gives the Shift and the Shaft keys the edge colour in either row', () => {
+        [numberless, numberlessErgoslatLayoutModel(true)].forEach((model) => {
+            const frame = model.frameMappings[KeymapTypeId.Ansi30]!;
+            [KeyboardRows.Home, KeyboardRows.Lower].forEach((row) => {
+                [0, frame[row].length - 1].forEach((col) => {
+                    const label = frame[row][col] as string;
+                    expect(label, `${model.name} row ${row}`).toMatch(/[⇧⇩]/);
+                    expect(model.keyColorClass!(label, row, col), `${model.name} ${label}`)
+                        .toBe(KEY_COLOR.EDGE);
+                });
+            });
+        });
+    });
+
     it("has a gapless bottom row for them", () => {
         expect(numberless.keyWidths[KeyboardRows.Bottom])
             .toEqual(minorErgoslatLayoutModel(false).keyWidths[KeyboardRows.Bottom]);

@@ -19,8 +19,7 @@ and [app], so readers can orient themselves.
 
 Todo in code:
 
-- Extend the numberless Shift/Shaft mapping beyond the 30-key ANSI frame: the three other keymap
-  types, and the MidShift board, where Shift and Shaft swap places.
+- Ergoslat numberless: add thumb30 and 32-key mappings.
 - Implement the Nav key replacements.
 - Animate the toggling of the colloquial mapping for English. Only animate the base keys that are
   moving (as current animation logic already does), ignoring the other levels.

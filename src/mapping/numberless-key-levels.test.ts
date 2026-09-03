@@ -106,3 +106,13 @@ describe("the numberless Shaft level", () => {
         });
     });
 });
+
+describe("the MidShift variant", () => {
+    // Only the two modifier keys swap places there, so every character level stays where it is.
+    it("leaves all three levels where the LowShift board has them", () => {
+        const midShift = levelsByLabel(numberlessErgoslatLayoutModel(true), Hand.Left);
+        const lowShift = levelsByLabel(numberless, Hand.Left);
+        expect(midShift.pair).toEqual(lowShift.pair);
+        expect(midShift.shaft).toEqual(lowShift.shaft);
+    });
+});

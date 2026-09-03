@@ -1,4 +1,4 @@
-import {KeyboardRows, KeymapTypeId, type FrameMapping, type LayoutModel} from "../base-model.ts";
+import {KEY_COLOR, KeyboardRows, KeymapTypeId, type FrameMapping, type LayoutModel} from "../base-model.ts";
 import {mapValues} from "../library/records.ts";
 import {mirror, SymmetricKeyWidth} from "./keyWidth.ts";
 import {ergoFamilyKeyColorClass} from "./layout-functions.ts";
@@ -158,12 +158,27 @@ const numberlessAnsi30FrameMapping: FrameMapping = [
     ["Ctrl", "Cmd", "↹", "Alt", "⏎", "␣", "AltGr", "-", "Fn", "Ctrl"],
 ];
 
+const swapShiftAndShaft = (mapping: FrameMapping): FrameMapping =>
+    mapping.map((row) => row.map((key) => (key === "⇧" ? "⇩" : key === "⇩" ? "⇧" : key)));
+
+/*
+    The two modifier pairs sit at the ends of the home and the lower row, and the ergo family rule
+    colours only the home row's: on a numbered board the lower row's outer columns hold letters, so
+    it leaves them boring. Here both pairs are modifiers, and both take the edge colour – whichever
+    of the two rows MidShift has put them in.
+ */
+const numberlessKeyColorClass = (
+    inherited: LayoutModel["keyColorClass"]
+): LayoutModel["keyColorClass"] =>
+    (label, row, col) =>
+        label === "⇧" || label === "⇩" ? KEY_COLOR.EDGE : inherited!(label, row, col);
+
 export function numberlessErgoslatLayoutModel(midshift: boolean): LayoutModel {
     // we always use the lowshift minor model as base, because we'll use the larger keys for Shaft.
     const base = minorErgoslatLayoutModel(false);
     return {
         ...base,
-        name: base.name + " (numberless)",
+        name: base.name + (midshift ? " MidShift" : "") + " (numberless)",
         rowIndent: [0, ...base.rowIndent.slice(1)] as [number, number, number, number, number],
         keyWidths: [
             [13], // just put a full-width gap here, so the test passes
@@ -172,10 +187,12 @@ export function numberlessErgoslatLayoutModel(midshift: boolean): LayoutModel {
 
         mainFingerAssignment: [[null], ...base.mainFingerAssignment.slice(1, 5)],
         singleKeyEffort: [[null], ...base.singleKeyEffort.slice(1, 5)],
-        // TODO: for midShift simply swap Shift and Shaft
         frameMappings: {
-            [KeymapTypeId.Ansi30]: numberlessAnsi30FrameMapping,
+            [KeymapTypeId.Ansi30]: midshift
+                ? swapShiftAndShaft(numberlessAnsi30FrameMapping)
+                : numberlessAnsi30FrameMapping,
         },
+        keyColorClass: numberlessKeyColorClass(base.keyColorClass),
     };
 }
 
