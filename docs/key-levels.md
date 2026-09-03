@@ -19,10 +19,12 @@ and [app], so readers can orient themselves.
 
 Todo in code:
 
-- implement the Nav key replacements
-- animate the toggling of the colloquial mapping for English. Only animate the base keys that 
-  are moving (as current animation logic already does), ignoring the other levels.
-- check some of my favorite English model-specific flex-maps: how do they look with colloquial Shift
+- Implement the numberless colloquial Shift/Shaft mapping.
+- Implement the Nav key replacements.
+- Animate the toggling of the colloquial mapping for English. Only animate the base keys that are
+  moving (as current animation logic already does), ignoring the other levels.
+  + It seems this works already in one way. But it should work both ways.
+- Check some of my favorite English model-specific flex-maps: how do they look with colloquial Shift
   pairings? do I want to fix anything?
 
 # Showing the Shift and AltGr level characters (and functions)
@@ -230,9 +232,9 @@ the letter area. Unfortunately, it clashes with `~` when the nav layer is on the
 case, we move it to `AltGr+2`, overwriting `¢`, which is there more for fun than for real use. That
 position is very mnemonic thanks to the ANSI keymap, and the key is quite close to the original one.
 
-Finally, the `^` on `AltGr+6` also serves a German keymap – not the standard one, which has the 
-character on the base-level of key, but the German variant of our international colloquial 
-keymap that we'll see below.
+Finally, the `^` on `AltGr+6` also serves a German keymap – not the standard one, which has the
+character on the base-level of key, but the German variant of our international colloquial keymap
+that we'll see below.
 
 ## Removing non-technical punctuation keys aka keeping the colloquial punctuation on base and Shift levels
 
@@ -385,6 +387,63 @@ Note that `↟` and `↡` denote mouse scrolls, which can be mapped using keyboa
 some third-party tools, but probably not using xkb. In case `⇟` or `⇞` would fall on the pinky and
 clash with the Shift key, we move the lower row of the nav block one key towards the center.
 
+## Numberless keyboards
+
+There's a lot of 3-row or "30 key plus thumb keys" keyboards on the market, and they need a much
+more complicated layer system. I don't want to replicate this in this app, but we can follow our
+"colloquial punctuation" strategy to give a glimpse at what a usable key map for such a board would
+look like.
+
+Design premises:
+
+- Map the digit row and its shifted punctuation characters position-based to the upper and lower
+  letter-area rows of the AltGr level. (This is what many keymaps do in practice.)
+- Simple remove the technical punctuation `[]{}<>|\_` from the visible layers. (You might imagine
+  that there are further layers not shown or the keyboard is for use with phones and tablets where
+  no programming work is done anyway.)
+- Use the middle letter AltGr level for navigation.
+- Use the colloquial Shift pairings `,;` and `.:`, but keep the `/?` key in play, so that `?`
+  stays a shifted character. Introduce the new `-!` shift pairing, so that `!` also stays a shifted
+  character.
+- Navigation becomes an "in-line" system with `←  ↑  ↓  →`  on one hand and `⇤  ⇞  ⇟  ⇥` on the
+  other. If there is space in-between, this could be the Delete key.
+- To highlight that this is a programmable keyboard and the AltGr level is much more important, we
+  show an explicit Shaft layer key `⇩` on both sides of the keyboard, analogous to the Shift keys.
+  (This has to be done in the frame mappings.)
+
+Consequences of those premises: `()` stays mapped between the other "shifted digit punctuation"
+characters in the Shaft layer. The "left pinky" spot in this row (where `!` would go) is free to
+use. If you like muscle memory compatibility, you could map `!` there redundantly; we spend it on
+the `~` that no other level carries, which puts it right under the `` ` `` on the pinky's home key –
+the same key that carries the backtick on a board with a number row.
+
+Dissolving the `;:` key frees one spot on the base level, and we spend it the way the colloquial
+keymap above does: on `=+`. That gives the board the same six punctuation keys the colloquial one
+has, `,;` `.:` `'"` `/?` `-!` and `=+`, differing only in the `-` key's Shift character.
+
+Here is the whole board, as the 30-key ANSI frame draws it on the Ergoslat with qwerty letters. The
+rows are offset the way that board staggers them. Base and Shift level first:
+
+       Esc  q   w   e   r   t     y   u   i   o   p   ⌫
+     ⇩   a   s   d   f   g   '"  h   j   k   l   =+  ⇩
+      ⇧⇧   z   x   c   v   b   /?  n   m   ,;  .:  ⇧⇧
+      Ctrl  Cmd  ↹   Alt   ⏎   ␣  AlGr  -!  Fn  Ctrl
+
+and the Shaft layer of the same keys, where `¿` marks a spot that can be used, but isn't 
+assigned yet:
+
+       Esc  1   2   3   4   5     6   7   8   9   0   ⌫
+     ⇩   ←   ↑   ↓   →   ¿   ⌦   ¿   ⇤   ⇞   ⇟   ⇥    ⇩
+      ⇧⇧   ¿   @   #   $   %   ^   &   *   (   )    ⇧⇧
+       Ctrl  Cmd  ↹   Alt  ⏎   ␣   AlGr  ¿   Fn  Ctrl
+
+The lower letter row shares its key columns with the number row of the same board exactly, so every
+one of those Shift characters sits on the very key its digit would be above. The upper letter row is
+a quarter unit off them, which is as position-based as the digits themselves can get.
+
+The "Nav keys" switch swaps the two nav groups between the hands, and nothing else: neither the
+digits nor their Shift characters have a mnemonic reason to move with them.
+
 # [Domain] Going international
 
 ## A generic international Shift pairing for punctuation
@@ -404,15 +463,15 @@ don't need to apply a colloquialization step, since the 32-key character set alr
 base punctuation keys `,`, `.`, and `-`, and the frame mappings carry the other characters. (They
 still have the freedom to use either `+` or `=` for this Shift pair. Not so for `'`: a lone `#`
 stands in for the `#'` key on the standard German pairings only.)
-The roomier frame mappings also draw a `/` key, which keeps the ANSI `/?` pairing – redundantly
-with the `9/` and `0?` of the number row.
-The minimum keyboard space for character keys using this mapping is then 43: ten digits, 32 flex
-spots, and the `'"` key placed outside the flex map. If a keyboard has one more spot, I recommend
-placing `=+`, for the same reasons as in the colloquial English key map. An ANSI-like keyboard with
-Escape in the number row has two more spots on top of that, which can take redundant characters or
-navigation keys. Since the 32-key map types always come with this Shift level and our AltGr level,
-the frame mappings need no conditional customizing: they can arrange the flex spots and the other
-keys directly, so that the free spots land where nav, Delete, or another key is most useful.
+The roomier frame mappings also draw a `/` key, which keeps the ANSI `/?` pairing – redundantly with
+the `9/` and `0?` of the number row. The minimum keyboard space for character keys using this
+mapping is then 43: ten digits, 32 flex spots, and the `'"` key placed outside the flex map. If a
+keyboard has one more spot, I recommend placing `=+`, for the same reasons as in the colloquial
+English key map. An ANSI-like keyboard with Escape in the number row has two more spots on top of
+that, which can take redundant characters or navigation keys. Since the 32-key map types always come
+with this Shift level and our AltGr level, the frame mappings need no conditional customizing: they
+can arrange the flex spots and the other keys directly, so that the free spots land where nav,
+Delete, or another key is most useful.
 
 We make one small exception: when a German flex map (recognizable by its `ä`) is involved, the
 pairings of the digits `6` to `9` become `6& 7/ 8* 9ß` to accommodate the letter `ß` and to move `&`

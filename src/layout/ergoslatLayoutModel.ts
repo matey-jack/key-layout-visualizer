@@ -150,6 +150,14 @@ export function minorErgoslatLayoutModel(midShift: boolean): LayoutModel {
     };
 }
 
+const numberlessAnsi30FrameMapping: FrameMapping = [
+    [null],
+    ["Esc", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⌫"],
+    ["⇩", 0, 1, 2, 3, 4, "'", 5, 6, 7, 8, 9, "⇩"],
+    ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
+    ["Ctrl", "Cmd", "↹", "Alt", "⏎", "␣", "AltGr", "-", "Fn", "Ctrl"],
+];
+
 export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
     return {
         ...lm,
@@ -162,9 +170,10 @@ export function makeErgoslatNumberless(lm: LayoutModel): LayoutModel {
 
         mainFingerAssignment: [[null], ...lm.mainFingerAssignment.slice(1, 5)],
         singleKeyEffort: [[null], ...lm.singleKeyEffort.slice(1, 5)],
-        frameMappings: mapValues(lm.frameMappings, (_, mapping) =>
-            numberlessKeymap(copyKeymap(mapping))
-        ) as Partial<Record<KeymapTypeId, FrameMapping>>,
+        // TODO: for midShift simply swap Shift and Shaft
+        frameMappings: {
+            [KeymapTypeId.Ansi30]: numberlessAnsi30FrameMapping,
+        },
     };
 }
 
