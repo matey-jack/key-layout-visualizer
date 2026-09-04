@@ -1,10 +1,10 @@
 import {
+    type FrameMapping,
     KEY_COLOR,
     KeyboardRows,
+    KeyColorClassifier,
     KeymapTypeId,
-    type FrameMapping,
-    type LayoutModel,
-    FrameMappings, KeyColorClassifier
+    type LayoutModel
 } from "../base-model.ts";
 import {mapValues} from "../library/records.ts";
 import {mirror, SymmetricKeyWidth} from "./keyWidth.ts";
@@ -65,7 +65,9 @@ export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
         While all keyboard layouts can be used with Android devices like smartphones and tablets, this one is specialized for that use case.
         What's also neat about it: the number of keys above the bottom row for each hand are 3 or 4 rows times 6 columns 
         which is the same as a large class of fully split keyboards. 
-        Given two great thumb keys per hand, a lot of the split ergo keymaps and habits can be reused here.`,
+        Given two great thumb keys per hand, a lot of the split ergo keymaps and habits can be reused here.
+        To promote swapping keycaps around as the user pleases, each variant of the Ergoslat only uses two keycap sizes: 
+        The Major has 1u and 1.5u; the Minor has 1u and 1.25u, which fits one more key on each half of the bottom row.`,
         keyWidths: [
             keyWidths.row(0, 1.5),
             keyWidths.row(1, 1),
@@ -157,43 +159,31 @@ export function minorErgoslatLayoutModel(midShift: boolean): LayoutModel {
     };
 }
 
-// TODO: should Shaft keys better be tap/hold keys on the thumbs?
+function numberlessKeyColorClass(base: KeyColorClassifier): KeyColorClassifier {
+    return (label, row, col) =>
+        (row === KeyboardRows.Lower && (col === 0 || col === 11) && label !== "⏎") ? KEY_COLOR.EDGE : base(label, row, col);
+}
+
 const numberlessAnsi30FrameMapping: FrameMapping = [
     [null],
     ["Esc", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⌫"],
-    ["⇩", 0, 1, 2, 3, 4, "'", 5, 6, 7, 8, 9, "⇩"],
+    ["↹", 0, 1, 2, 3, 4, "'", 5, 6, 7, 8, 9, "-"],
     ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
-    ["Ctrl", "Cmd", "↹", "Alt", "⏎", "␣", "AltGr", "-", "Fn", "Ctrl"],
+    ["Ctrl", "Cmd", "Alt", "⇩", "⏎", "␣", "⇩", "⌦", "Fn", "Ctrl"],
 ];
-const numberlessThumb30FrameMapping: FrameMapping = patchThumb30(ansi30FrameMapping, "{4:0}⏎-", "/{3:9}");
-
-const numberlessFrameMappings: FrameMappings = {
-    [KeymapTypeId.Ansi30]:  numberlessAnsi30FrameMapping,
-    [KeymapTypeId.Thumb30]:  numberlessThumb30FrameMapping,
-};
-
-function swapShiftAndShaft(mapping: FrameMapping): FrameMapping {
-    return mapping.map((row) =>
-        row.map((key) =>
-            (key === "⇧" ? "⇩" : key === "⇩" ? "⇧" : key)
-        ));
-}
-
-function swapAllShiftShaft(frameMappings:  FrameMappings):  FrameMappings {
-    // TODO: return `frameMappings` with `swapShiftAndShaft` applied to each element.
-}
-
-function numberlessKeyColorClass(base: KeyColorClassifier): KeyColorClassifier {
-    return (label, row, col) =>
-        label === "⇧" || label === "⇩" ? KEY_COLOR.EDGE : base(label, row, col);
-}
+const numberlessThumb30FrameMapping: FrameMapping = patchThumb30(numberlessAnsi30FrameMapping, "{4:0}⏎-", "/{3:9}");
 
 export function numberlessErgoslatLayoutModel(midshift: boolean): LayoutModel {
     // we always use the lowshift minor model as base, because we'll use the larger keys for Shaft.
     const base = minorErgoslatLayoutModel(false);
+    const LEFT_MIDSHIFT_CYCLE = "<⇧↹AC<^";
     return {
         ...base,
-        name: base.name + (midshift ? " MidShift" : "") + " (numberless)",
+        name: "Numberless Ergoslat 13/3" + (midshift ? " MidShift" : ""),
+        description: `This is the only numberless layout model in this app and it isn't as fine-tuned as other keyboards here.
+        With such a small board, users would probably configure tap/hold keys and other Firmware tricks that this app can't show.
+        But what we can show is a pair of Shaft keys ⇩ which take AltGr's role, but are mapped on both sides of they keyboard, 
+        just as the Shift ⇧ keys are.`,
         rowIndent: [0, ...base.rowIndent.slice(1)] as [number, number, number, number, number],
         keyWidths: [
             [13], // just put a full-width gap here, so the test passes
@@ -202,7 +192,13 @@ export function numberlessErgoslatLayoutModel(midshift: boolean): LayoutModel {
 
         mainFingerAssignment: [[null], ...base.mainFingerAssignment.slice(1, 5)],
         singleKeyEffort: [[null], ...base.singleKeyEffort.slice(1, 5)],
-        frameMappings: midshift ? swapAllShiftShaft(numberlessFrameMappings) : numberlessFrameMappings,
+        frameMappings: midshift ? {
+            [KeymapTypeId.Ansi30]:  permute(numberlessAnsi30FrameMapping, LEFT_MIDSHIFT_CYCLE, ">⇧-⌦⏎"),
+            [KeymapTypeId.Thumb30]:  permute(numberlessThumb30FrameMapping, LEFT_MIDSHIFT_CYCLE, ">⇧⏎"),
+        } : {
+            [KeymapTypeId.Ansi30]:  numberlessAnsi30FrameMapping,
+            [KeymapTypeId.Thumb30]:  numberlessThumb30FrameMapping,
+        },
         keyColorClass: numberlessKeyColorClass(base.keyColorClass!),
     };
 }

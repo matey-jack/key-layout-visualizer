@@ -74,11 +74,6 @@ describe("the numberless Shaft level", () => {
         expect(["/", "n", "m", ",", "."].map((k) => shaft[k])).toEqual(["^", "&", "*", "(", ")"]);
     });
 
-    it("leaves the spot `!` would take free, since the `-!` key makes it redundant", () => {
-        const {shaft} = levelsByLabel(numberless, Hand.Left);
-        expect(shaft["z"]).toBeUndefined();
-    });
-
     // Both hands keep their centre column – the index finger's stretch – free.
     it("spells navigation out in-line, flush on the fingers' home keys", () => {
         const left = levelsByLabel(numberless, Hand.Left).shaft;

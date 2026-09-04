@@ -56,26 +56,14 @@ type ShaftRow = (string | null)[];
 
 const INNER = -1;
 
-/*
-    The digits go where the number row would be. Its key columns are exactly those of the lower
-    letter row, and the upper letter row sits a quarter unit off them – so the digits take the
-    upper row and the characters that a number row carries on its Shift level take the lower one.
-    Half a unit of stagger separates the two rows, which is why `5` and `6` sit on the centre
-    columns above and on the inner ones below.
- */
+// due to the counting from the center, each side needs an empty spot to cover the central gap.
 const digitsLeft: ShaftRow = [_, "5", "4", "3", "2", "1"];
 const digitsRight: ShaftRow = [_, "6", "7", "8", "9", "0"];
 
-// `!` would land on the left pinky, where the `-!` key makes it redundant, so that spot stays free.
-const digitShiftsLeft: ShaftRow = ["%", "$", "#", "@", _, _];
+const digitShiftsLeft: ShaftRow = ["%", "$", "#", "@", "_", _];
 const digitShiftsRight: ShaftRow = ["^", "&", "*", "(", ")", _];
 
-/*
-    Navigation is "in-line" and takes both hands: the four cursor keys in reading order on the nav
-    side, and the four keys that move by more than a character on the other one, again in reading
-    order. Each group sits flush on the four fingers' home keys, which leaves the centre column –
-    the index finger's stretch – free on both hands, next to the Delete key between them.
- */
+// inline navigation keys in reading order (left -> right, top -> bottom)
 const arrows = ["←", "↑", "↓", "→"];
 const paging = ["⇤", "⇞", "⇟", "⇥"];
 
