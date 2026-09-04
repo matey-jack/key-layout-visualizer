@@ -165,7 +165,8 @@ export const xhkb14LayoutModel: LayoutModel = {
     symmetricStagger: false,
 
     colloquialCycles: {
-        [KeymapTypeId.Ansi30]: ["`()"],  // can't do better than stacking the parentheses.
+        // Ansi30 needs no cycle: `-` and `+` are both central, so the generic cycles already
+        // stack the parentheses on them. Adding one only shifts the pair up into the number row.
         // This leads to a pair in the bottom row center for all keymaps that place `-` on ANSI `b`.
         // (Works with Quipper/Colemak Thumby and Cozy Keyboard.)
         [KeymapTypeId.Thumb30]: [")-\\"],
