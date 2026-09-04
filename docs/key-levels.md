@@ -294,27 +294,11 @@ have space for the `[]\` keys and wants to place Delete on `=+`, then you would 
 permutations with `⌦-';` which lets the `-_` key advance at least a bit towards the center, where
 `=` is in our colloquial mapping, or `'` in the original ANSI.
 
-### Boards that lack the keys a cycle names
-
-The two permutations are written for no board in particular, and a frame mapping may have none of
-the punctuation keys they name: a board with the bare minimum of 40 character keys spends all
-thirty of its flex spots on the letter map, whose punctuation is `,` `.` `;` and `/`. A cycle is
-therefore read as far back as it reaches: everything before the last key it names that the board
-does not have is dropped, so that missing key is the one that enters. On such a minimal board the
-two permutations shrink to `';` and `-/`, which is exactly right — they bring `'` and `-` in from
-nowhere, in exchange for the `;` and `/` the colloquial Shift level covers anyway, and leave the
-board with the four punctuation keys of the minimal set above. A permutation that shrinks to a
-single key does nothing at all.
-
-The one place where reading a cycle backwards is not enough is the choice between `+` and a
-bracket. A board that has neither `=` nor `'` gets `'` from the first permutation and would get
-`(` from the second — but a lone bracket is a poor trade for a board with no way to type `+` at
-all, and `()` are on the AltGr level regardless. So on such a board the second permutation becomes
-`=-/` and spends that spot on `=+`.
-
-The layout models' own permutations are held to a stricter rule, since a model knows which keys
-its frame mapping carries: naming a key that is not there is an error rather than something to
-work around.
+Small keyboards might not have all the keys moved around by the above permutations. In that case,
+we won't insert the new parenthesis keys, but instead the missing other punctuation key. For 
+example, in the minimal case of a frame mapping that has only digits, flex keys, and no further 
+punctuation, the spots of `;` and `/` will be filled with `'` and `-`. If one of those is 
+already present, but no `+`, then `+` will enter instead.
 
 ## Using redundant periphery character keys for other purposes
 

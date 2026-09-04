@@ -170,9 +170,6 @@ export function colloquialiseCharMap(
 ): string[][] {
     if (!hasColloquialLevel(charMap, hasNumberRow(model))) return charMap;
     const normalised = normaliseEqualsKey(charMap);
-    // The generic cycles are written for no board in particular, so a frame mapping that carries
-    // none of the punctuation keys they name still has to come out sensible: see the doc's
-    // "Boards that lack the keys a cycle names".
     const generic = permuteAvailable(normalised, ...genericCyclesFor(normalised)) as string[][];
     const cycles = model.colloquialCycles?.[keymapType] ?? [];
     // A separate pass: permute resolves every cycle against the map it is given, so the layout
