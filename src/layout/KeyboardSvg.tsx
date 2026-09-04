@@ -364,8 +364,8 @@ function keyBackgroundClass(
 ): string {
     switch (vizType) {
         case VisualizationType.MappingShiftLevels:
-            // Highlight the modifier that the AltGr level belongs to.
-            if (label === "AltGr") return "altgr-key";
+            // Highlight the modifier that the AltGr level belongs to. On some boards, this is the Shaft key.
+            if (label === "AltGr" || label === "⇩") return "altgr-key";
             break;
         case VisualizationType.LayoutKeySize:
             return getKeySizeClass(capSize) ?? "";
