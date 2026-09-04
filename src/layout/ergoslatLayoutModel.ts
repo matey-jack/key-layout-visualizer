@@ -1,8 +1,9 @@
 import {
     type FrameMapping,
+    type FrameMappings,
     KEY_COLOR,
     KeyboardRows,
-    KeyColorClassifier,
+    type KeyColorClassifier,
     KeymapTypeId,
     type LayoutModel
 } from "../base-model.ts";
@@ -155,7 +156,7 @@ export function minorErgoslatLayoutModel(midShift: boolean): LayoutModel {
             [2.0, 2.0, 1.5, 1.0, 0.2, 0.2, 1.0, 1.5, 2.0, 2.0],
         ],
         rowIndent: keyWidths.rowIndent,
-        frameMappings: mapValues(base.frameMappings, (_, mapping) => replaceBottomRowGaps(mapping)) as Partial<Record<KeymapTypeId, FrameMapping>>,
+        frameMappings: mapValues(base.frameMappings, (_, mapping) => replaceBottomRowGaps(mapping)) as FrameMappings,
     };
 }
 

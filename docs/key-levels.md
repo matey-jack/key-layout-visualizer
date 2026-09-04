@@ -33,14 +33,15 @@ Todo in code:
 [Domain] Flex maps can place any character (or other key) on a layout, and frame mappings can do the
 same. Maps of either kind make use of this to place unconventional characters. Since we don't want
 to explode complexity by adding a perfectly matched Shift mapping for each combination, we restrict
-ourselves to two conventional Shift maps (US ANSI and German Qwertz) plus three unconventional ones.
-Rules and heuristics then decide which Shift mapping is shown for a given flex map and layout model
-combination. Only for the very common case of key maps with the ANSI character set do we offer an
-actual user-facing choice between the standard mapping and a custom one (described below). That is
-the first unconventional mapping. The second one covers our 32-key flex map types (ansi32 and
+ourselves to two conventional Shift maps (US ANSI and German Qwertz) plus several unconventional
+ones. Rules and heuristics then decide which Shift mapping is shown for a given flex map and layout
+model combination. Only for the very common case of key maps with the ANSI character set do we offer
+an actual user-facing choice between the standard mapping and a custom one (described below). That
+is the first unconventional mapping. The second one covers our 32-key flex map types (ansi32 and
 thumb32), which are already designed to be used for many different languages, encapsulating the
 common punctuation in the frame mappings; the same mapping serves every combination of a 32-key flex
-map with a layout model. The third is a minimally tuned variant of it for German.
+map with a layout model. The third is a minimally tuned variant of it for German, and finally
+there's another small variant for the numberless keyboard.
 
 ## [App] Shift level
 
@@ -58,9 +59,6 @@ room for the key, because their three free letter spots already go to `äöü`, 
 carries it either — that would tie the whole layout model to German. A model-specific map for a
 German alphabet that still has no `ß` gets the ANSI pairings, and rightly so: without the key it
 draws ANSI punctuation such as `'` and `/`, which the German mapping does not pair at all.
-
-A board without a number row gets no Shift level at all: its pairings live in the number row as much
-as in the letter area, and showing only half of them would be more confusing than showing none.
 
 There is just one more little snag. To make keymaps and keycaps look prettier, I sometimes labeled a
 key with its Shift-level character instead of its base character — for example, the key whose base
@@ -410,30 +408,13 @@ Design premises:
   position-based to the upper and lower letter-area rows of the AltGr level. Basically, each digit
   and punctuation character will still be typed by the same finger.
 - Place the navigation in the home-row of the AltGr level, using an "in-line" system with
-  `←  ↑  ↓  →`  on one hand and `⇤  ⇞  ⇟  ⇥` on the other. This can use the exact home positions 
-  of the fingers. The middle has three spots for other non-character keys, we place Delete in one.
+  `←  ↑  ↓  →`  on one hand and `⇤  ⇞  ⇟  ⇥` on the other. This can use the exact home positions of
+  the fingers. The middle has three spots for other non-character keys, we place Delete in one.
 
 Consequences of those premises: `()` stays mapped between the other "shifted digit punctuation"
-characters in the Shaft layer. In total, this has 22 out of ANSI's 32 punctuation keys on its 
-three levels: 6 on base, 6 on Shift, 10 on Shaft. It covers all the 18 punctuation characters 
-that our colloquial 40 character key map has on its base (4) and Shift (4 + 10) levels. 
-
-Here is the whole board, as the 30-key ANSI frame draws it on the Ergoslat with qwerty letters. The
-rows are offset the way that board staggers them. Base and Shift level first:
-
-       Esc  q   w   e   r   t     y   u   i   o   p   ⌫
-     ⇩   a   s   d   f   g   '"  h   j   k   l   =+  ⇩
-      ⇧⇧   z   x   c   v   b   /?  n   m   ,;  .:  ⇧⇧
-      Ctrl  Cmd  ↹   Alt   ⏎   ␣  AlGr  -!  Fn  Ctrl
-
-and the Shaft layer of the same keys, where `¿` marks a spot that can be used, but isn't assigned
-yet:
-
-       Esc  1   2   3   4   5     6   7   8   9   0   ⌫
-     ⇩   ←   ↑   ↓   →   ¿   ⌦   ¿   ⇤   ⇞   ⇟   ⇥    ⇩
-      ⇧⇧   _   @   #   $   %   ^   &   *   (   )    ⇧⇧
-       Ctrl  Cmd  ↹   Alt  ⏎   ␣   AlGr  ¿   Fn  Ctrl
-
+characters in the Shaft layer. In total, this has 22 out of ANSI's 32 punctuation characters on its
+three levels: 6 on base, 6 on Shift, 10 on Shaft. It covers all the 18 punctuation characters that
+our colloquial 40 character key map has on its base (4) and Shift (4 + 10) levels.
 
 # [Domain] Going international
 
@@ -464,6 +445,11 @@ with this Shift level and our AltGr level, the frame mappings need no conditiona
 can arrange the flex spots and the other keys directly, so that the free spots land where nav,
 Delete, or another key is most useful.
 
+Rejected alternative: we could reduce the footprint to 42 characters keys and still keep the quotes
+`'"` on the Shift level by mapping them onto the `3` and `6` keys, moving the present Shift
+occupants `#` and `^` to the AltGr layer. This conflicts with the German special case below, but
+could still be done as a variant for other languages.
+
 We make one small exception: when a German flex map (recognizable by its `ä`) is involved, the
 pairings of the digits `6` to `9` become `6& 7/ 8* 9ß` to accommodate the letter `ß` and to move `&`
 and `/` to their conventional German spots. (`8*` stays unchanged.) Since `2@` stays as it is, such
@@ -476,12 +462,11 @@ not critical, since at least the German ones are rarely used, and never in keybo
 
 Three pure punctuation keys (coming from the flexmap): `,;`, `.:`, and `-_`.
 
-Shaft layer like the ANSI English numberless, but the punctuation row follows the colloquial set 
-from keyboards with a number row: `! @ # $ % ^ & * / ?`.  While it would be nice to have `!` and 
-`?` and possibly even `/` on the base and Shift layer, having to remap and relearn all three 
-shifted key pairs doesn't seem worth it. Especially since the characters `;` and `:` are also 
-very common in prosaic writing. 
-
+Shaft layer like the ANSI English numberless, but the punctuation row follows the colloquial set
+from keyboards with a number row: `! @ # $ % ^ & * / ?`. While it would be nice to have `!` and
+`?` and possibly even `/` on the base and Shift layer, having to remap and relearn all three shifted
+key pairs doesn't seem worth it. Especially since the characters `;` and `:` are also very common in
+prosaic writing.
 
 ## Excursion: what a colloquial German keymap would look like
 
@@ -604,4 +589,49 @@ only describes the new behavior that still needs to be implemented.
     + for pairs, first `[]`, then `()`;
     + for singles, first `\|`, then backtick-tilde, then `=+`, and lastly `/?`; after the last one,
       use a key from a pair.
+
+## Details Area texts
+
+The details area (bottom right of the app) for the Shift level doesn't need a legend. But it should
+say which is the current Shift mapping that applies. It should never describe the mapping letter by
+letter, because that is already obvious from the Keyboard SVG. Instead, it should highlight the
+advantage of the current mapping and the purpose that it was made to serve.
+
+TODO: Use the following names (in bold face) and their explanations. Then remove
+
+- ANSI English - Shift-pairing from the well-known standard, applied to match the keyboard layout
+  model and flex key map.
+
+- Qwertz German - Shift-pairing from the German standard keyboard, applied to match the keyboard
+  layout model and flex key map.
+
+- Colloquial English - Fine-tuning of the ANSI shift pairings to have all punctuation for prose
+  English writing on the base and Shift levels even on keyboards with as little as 40 character
+  keys. The AltGr level collects the remaining "technical" punctuation. The present keyboard layout
+  model has {{n}} character keys available and thus {{ (n-40)*2}} characters are mapped redundantly
+  on the central AltGr level and their own (slightly) peripheral key.
+
+- Colloquial International - Fine-tuning of the ANSI shift pairings to have all punctuation for
+  prose English writing on the base and Shift levels even on keyboards with as little as 43
+  character keys, leaving space for 26 letter keys. The AltGr level collects the remaining
+  "technical" punctuation. The present keyboard layout model has {{n}} character keys available and
+  thus {{ (n-43)*2}} characters are mapped redundantly on the central AltGr level and their own
+  (slightly) peripheral key. (Note that most international layouts put some or all of `[]{}\|`
+  on the AltGr level already, but on much worse positions, that are overridden here.)
+
+- Colloquial International, German variant - This tweaks a few Shift mappings in the right number
+  row to fit the German letter `ß`. Otherwise it's the same fine-tuning of the ANSI shift pairings
+  to have all punctuation for prose English writing on the base and Shift levels even on keyboards
+  with as little as 43 character keys, leaving space for 26 letter keys. The AltGr level collects
+  the remaining
+  "technical" punctuation. The present keyboard layout model has {{n}} character keys available and
+  thus {{ (n-43)*2}} characters are mapped redundantly on the central AltGr level and their own
+  (slightly) peripheral key. (By the way, the standard German keymap also has `[]{}\|` on the AltGr
+  level, but on much worse positions, that are overridden here.)
+
+- Numberless special blend - Lacking a number row, we not only lose the space for 10 punctuation
+  characters, but also need to relocate the digits themselves. This Shift and AltGr level map does
+  so by abandoning technical punctuation altogether and rearranging the Shift pairings to provide at
+  least 12 of the colloquial punctuation characters on the base and Shift levels.
+
 
