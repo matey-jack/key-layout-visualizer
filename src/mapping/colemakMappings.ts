@@ -76,8 +76,8 @@ export const colemakThumbyDMapping: FlexMapping = {
     mappings: {
         [KeymapTypeId.Thumb30]: [
             "qwfpg" + "jluy;",
-            "arst-" + "hndio",
-            "zxcvb" + "km,.",
+            "arstb" + "hndio",
+            "zxcv-" + "km,.",
             "e"
         ]
     },
