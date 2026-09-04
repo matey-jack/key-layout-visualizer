@@ -146,6 +146,9 @@ export interface AppState {
 export interface ResolvedKeyLevels {
     keymapType: KeymapTypeId;
     hasNumberRow: boolean;
+    // How many keys the board has for characters, which is what decides how much of a pairing's
+    // budget it uses up and how much it maps twice.
+    characterKeys: number;
     // Whether the colloquial switch has anything to offer, which is what decides whether it shows.
     hasColloquialLevel: boolean;
     // Whether the board is actually drawn colloquialised: the switch, but only where the key map

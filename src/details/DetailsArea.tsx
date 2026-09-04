@@ -420,40 +420,80 @@ export function BigramDetailsLegendItem({bigramType, frequency, children}: Bigra
 }
 
 /*
-    Which of the Shift pairings the board and key map take, in one paragraph each. The rules that
-    pick one are in mapping/key-levels.ts; here we only name the outcome.
+    The character-key budget each colloquial pairing was designed for. A board with more keys than
+    that maps the surplus twice: on its own peripheral key and on the central AltGr level.
  */
-function ShiftPairingParagraph({pairing}: { pairing: ShiftPairing }) {
+const COLLOQUIAL_KEYS = 40;
+const INTERNATIONAL_KEYS = 43;
+
+function Redundancy({characterKeys, budget}: { characterKeys: number, budget: number }) {
+    const redundant = (characterKeys - budget) * 2;
+    return redundant > 0
+        ? <> The present keyboard layout model has {characterKeys} character keys available, and
+            thus {redundant} characters are mapped redundantly on the central AltGr level and on
+            their own (slightly) peripheral key.</>
+        : <> The present keyboard layout model has exactly the {budget} character keys this needs,
+            so no character is mapped twice.</>;
+}
+
+// The body the two international pairings share, so that the German variant only adds its tweak.
+function InternationalPairing({characterKeys}: { characterKeys: number }) {
+    return <>
+        fine-tuning of the ANSI Shift pairings to have all punctuation for prose English writing on
+        the base and Shift levels even on keyboards with as little as {INTERNATIONAL_KEYS} character
+        keys, leaving space for 26 letter keys. The AltGr level collects the remaining "technical"
+        punctuation.
+        <Redundancy characterKeys={characterKeys} budget={INTERNATIONAL_KEYS}/>
+    </>;
+}
+
+/*
+    Which of the Shift pairings the board and key map take, in one paragraph each: what it is good
+    for, never what it maps where – the keyboard above says that better than a sentence can. The
+    rules that pick one are in mapping/key-levels.ts; here we only name the outcome.
+ */
+function ShiftPairingParagraph({pairing, characterKeys}: { pairing: ShiftPairing, characterKeys: number }) {
     switch (pairing) {
         case ShiftPairing.Numberless:
             return <p>
-                <b>Numberless</b> keeps the punctuation of everyday prose on the base and Shift
-                levels, the colloquial pairings <code>,;</code> and <code>.:</code> among them. It
-                adds <code>-!</code>, so that <code>!</code> stays a shifted character once the
-                digits move off the base level, and spends the key that the vanishing{" "}
-                <code>;</code> frees on <code>=+</code>.
+                <b>Numberless special blend</b> – lacking a number row, this board not only loses the
+                space for 10 punctuation characters, it also has to relocate the digits themselves.
+                This Shift and Shaft level map does so by abandoning technical punctuation
+                altogether and rearranging the Shift pairings, which keeps at least 12 of the
+                colloquial punctuation characters on the base and Shift levels.
             </p>;
         case ShiftPairing.Colloquial:
             return <p>
-                <b>Colloquial</b> is tuned to keep all the punctuation of everyday prose on the base and
-                Shift levels, leaving only the technical characters to the AltGr level.
+                <b>Colloquial English</b> – fine-tuning of the ANSI Shift pairings to have all
+                punctuation for prose English writing on the base and Shift levels even on keyboards
+                with as little as {COLLOQUIAL_KEYS} character keys. The AltGr level collects the
+                remaining "technical" punctuation.
+                <Redundancy characterKeys={characterKeys} budget={COLLOQUIAL_KEYS}/>
             </p>;
         case ShiftPairing.International:
             return <p>
-                A <b>32-key</b> key map takes the colloquial pairings whatever language it maps: everyday
-                punctuation on the base and Shift levels, everything technical on the AltGr level.
+                <b>Colloquial International</b> – <InternationalPairing characterKeys={characterKeys}/>
+                {" "}(Note that most international layouts put some or all of{" "}
+                <code>[]&#123;&#125;\|</code> on the AltGr level already, but on much worse
+                positions, which are overridden here.)
             </p>;
         case ShiftPairing.GermanInternational:
             return <p>
-                A <b>German 32-key</b> key map takes the colloquial pairings too, with the digits{" "}
-                <code>6</code> to <code>9</code> rearranged to make room for <code>ß</code> and to put{" "}
-                <code>&amp;</code> and <code>/</code> on their conventional German keys.
+                <b>Colloquial International, German variant</b> – this tweaks a few Shift pairings in
+                the right half of the number row to fit the German letter <code>ß</code>. Otherwise
+                it is the same <InternationalPairing characterKeys={characterKeys}/>
+                {" "}(By the way, the standard German keymap also has <code>[]&#123;&#125;\|</code> on
+                the AltGr level, but on much worse positions, which are overridden here.)
+            </p>;
+        case ShiftPairing.German:
+            return <p>
+                <b>Qwertz German</b> – Shift pairings from the German standard keyboard, applied to
+                match the keyboard layout model and flex key map.
             </p>;
         default:
             return <p>
-                <b>Standard</b> means the standard {pairing === ShiftPairing.German ? "German" : "US ANSI"}{" "}
-                Shift level. It follows the key map rather than the board, so a mapping that moves its
-                punctuation around takes its Shift characters along.
+                <b>ANSI English</b> – Shift pairings from the well-known standard, applied to match
+                the keyboard layout model and flex key map.
             </p>;
     }
 }
@@ -465,29 +505,21 @@ interface ShiftLevelsDetailsProps {
 export function ShiftLevelsDetails({keyLevels}: ShiftLevelsDetailsProps) {
     const numberless = !keyLevels.hasNumberRow;
     return <>
-        <p>
-            Each character key can carry three levels: the character it inserts on its own, the one it
-            inserts with Shift, and the one it inserts with {numberless ? "Shaft" : "AltGr"}. The Shift
-            characters are shown above the base ones, the third level in{" "}
-            <span class="altgr-level-legend">blue</span> in the bottom right corner – the same three
-            places an ISO keycap prints them.
-            {numberless && " This board names its third level after the ⇩ key that reaches it, "
-                + "which sits at both ends of the home row where the Shift keys sit below."}
-        </p>
-        <ShiftPairingParagraph pairing={keyLevels.pairing}/>
+        <ShiftPairingParagraph pairing={keyLevels.pairing} characterKeys={keyLevels.characterKeys}/>
         {numberless
             ? <p>
-                The Shaft level carries what a number row carries elsewhere: the digits on the upper
-                letter row and the characters their Shift level holds on the lower one, each on the very
-                key its digit would sit above. That leaves the technical punctuation{" "}
-                <code>[]&#123;&#125;&lt;&gt;|\_</code> to layers we don't draw – imagine a board used
-                for messages and notes rather than for programming.
+                The third level is called Shaft here, after the <span class="altgr-level-legend">⇩</span>{" "}
+                key that reaches it: a board this small deserves a modifier on each thumb, the way Shift
+                sits under each pinky. What it gives up in return is the technical punctuation{" "}
+                <code>`~[]&#123;&#125;&lt;&gt;|\</code>, which moves to layers we don't draw – imagine a
+                board used for messages and notes rather than for programming.
             </p>
             : <p>
-                The AltGr mappings shown are hand-crafted to including technical characters from keys that are
-                far away from the hand's home positions. This not only improves ergonomy, but also allows those
-                far-away keys to be dropped on smaller keyboards.  We use the same AltGr mapping on all the
-                different keyboard layout models and flexible key maps, making it a learn once, use everywhere.
+                The AltGr mappings shown are hand-crafted to bring technical characters in from keys that
+                are far away from the hand's home positions. This not only improves ergonomy, but also
+                allows those far-away keys to be dropped on smaller keyboards. Every board with a number
+                row shares one AltGr mapping, whatever its flex key map, making it a learn once, use
+                everywhere.
             </p>
         }
         {numberless

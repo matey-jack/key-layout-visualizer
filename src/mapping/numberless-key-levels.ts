@@ -100,8 +100,8 @@ export function getNumberlessAltGrLevel(
 
     // The space between the two nav groups is Delete. Both hands reach that one key, so it is
     // placed here rather than in either hand's home row.
-    const between = resolveSlot(model, positions, Hand.Left, KeyboardRows.Home, INNER);
-    if (between) result[between.row][between.col] = "⌦";
+    // const between = resolveSlot(model, positions, Hand.Left, KeyboardRows.Home, INNER);
+    // if (between) result[between.row][between.col] = "⌦";
 
     return result;
 }

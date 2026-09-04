@@ -90,22 +90,6 @@ letters "below". (This "below" refers to base being level 1, Shift level 2, and 
 stacked above each other.) The positional approach is especially sensible for the navigation keys,
 which are highly mnemonic in their positions, as we will see.
 
-((TODO)) One important point, not yet designed, is that the keyboard should have an AltGr modifier
-key on each side, the same as the two Shift keys. We might later add some visuals and options for
-that in the app. For now we just highlight the AltGr key in the "Shift and AltGr Levels" view, so
-that people who have never used one can relate it to the AltGr-level key labels shown in the same
-color.
-
-[Domain] While the Shift level in the app represents both ANSI English and German standard keymaps,
-and offers an improved alternative, we have taken more liberties with the AltGr level from the
-start. This is because ANSI doesn't define one anyway and the standard German one is ergonomically
-terrible. Although we use almost the same AltGr level mapping for both languages, and it has
-ergonomic typing benefits in both, the current version supports smaller keyboards only for the ANSI
-English character set. The reason is that our shared mapping covers characters that German already
-has on its own AltGr level — not on base or Shift — so dropping keys wins nothing there. For ANSI,
-on the other hand, all those characters are redundant, which lets us shrink the keyboard by removing
-the keys that carry them on the base and Shift levels.
-
 # [Domain] Options for ergonomic keyboard layout models
 
 What follows in this section applies to the English keymaps only, because it goes into quite some
@@ -155,7 +139,8 @@ US ANSI has 32 punctuation characters in total: 11 on the base level and 21 on t
 start by calling out four punctuation keys that I consider highly "technical", that is, not needed
 for writing simple English texts and messages: `[{`, `]}`, `\|`, and the backtick-tilde key
 `` `~ ``, which I call by name because the backtick itself is Markdown syntax that sometimes
-confuses text rendering. Those four keys are easy to handle, for two reasons:
+confuses text rendering of this document itself. Those four keys are easy to handle, for two
+reasons:
 
 - They are already on the edge of the keyboard, so we can remove them and the board gets smaller
   without leaving a gap.
@@ -204,6 +189,12 @@ advantages:
 
 Now that both `=` and `+` have found a place on our AltGr keymap, we can already consider the `=+`
 key optional. We have thus made five ANSI punctuation keys optional, getting down from 11 to 6.
+
+((TODO: One important point, not yet designed, is that the keyboard should have an AltGr modifier
+key on each side, the same as the two Shift keys. We might later add some visuals and options for
+that in the app. For now, we just highlight the AltGr key in the "Shift and AltGr Levels" view, so
+that people who have never used one can relate it to the AltGr-level key labels shown in the same
+color.))
 
 ## AltGr bonus characters for the number row
 
@@ -303,7 +294,7 @@ have space for the `[]\` keys and wants to place Delete on `=+`, then you would 
 permutations with `⌦-';` which lets the `-_` key advance at least a bit towards the center, where
 `=` is in our colloquial mapping, or `'` in the original ANSI.
 
-## Using the optimized Shift level without removing any keys
+## Using redundant periphery character keys for other purposes
 
 If you type on a full-size keyboard with a redundant AltGr mapping for the far-away keys, you can
 get used to the comfort of having two different ways to type a character. When you are in typing
@@ -319,7 +310,7 @@ their original keys fully redundant, while the characters `()<>` have moved from
 AltGr. We can use those doubly redundant key positions to re-introduce the characters on the base
 and Shift level! We create two brand-new keys: `(<` and `)>`. With this trick we have optimized the
 Shift-level mappings for small and big keyboards alike. Here's what the punctuation keymap looks
-like:
+like on a legacy ANSI keyboard:
 
         1!  2@  3#  4$  5%  6^  7&  8*  9/  0?  (<  )>   ⌫⌫⌫
                                           o   p   [{  ]}  \|
@@ -392,7 +383,7 @@ There's a lot of 3-row or "30 key plus thumb keys" keyboards on the market, and 
 more complicated layer system. I don't want to replicate this in this app, but we can follow our
 "colloquial punctuation" strategy to give a glimpse at what a usable key map for such a board would
 look like. To highlight that this is a different category of keyboard which comes with its own
-Firmware that offers layers and a lot of other features, we use a new Shaft key `⇩` instead of
+firmware that offers layers and a lot of other features, we use a new Shaft key `⇩` instead of
 AltGr. We also place it explicitly on both halves of the keyboard, like Shift `⇧`.
 
 Design premises:
@@ -409,7 +400,8 @@ Design premises:
   and punctuation character will still be typed by the same finger.
 - Place the navigation in the home-row of the AltGr level, using an "in-line" system with
   `←  ↑  ↓  →`  on one hand and `⇤  ⇞  ⇟  ⇥` on the other. This can use the exact home positions of
-  the fingers. The middle has three spots for other non-character keys, we place Delete in one.
+  the fingers. The middle has three spots for other non-character keys, we could place Delete in 
+  one, if it weren't on the board already.
 
 Consequences of those premises: `()` stays mapped between the other "shifted digit punctuation"
 characters in the Shaft layer. In total, this has 22 out of ANSI's 32 punctuation characters on its
@@ -417,6 +409,39 @@ three levels: 6 on base, 6 on Shift, 10 on Shaft. It covers all the 18 punctuati
 our colloquial 40 character key map has on its base (4) and Shift (4 + 10) levels.
 
 # [Domain] Going international
+
+## Different, but same purpose of the AltGr level mappings
+
+For the ANSI character set, our AltGr level already serves several purposes:
+
+- make technical punctuation more easily accessible by placing the characters on or closer to the
+  home keys.
+- use the same keymap on smaller keyboards, down to a size of 40 character keys, simply by omitting
+  keys whose characters are redundantly mapped on the AltGr level.
+- finally, bring some navigation and other keys closer to the hand position (and on fixed spots, as
+  opposed to the variable placement on many laptops) – again, by remapping redundant keys.
+
+When international character sets come into play, these advantages extend naturally, because most
+international keymaps already place some of the technical punctuation on the AltGr level. This means
+that we cannot remove as many keys when mapping smaller keyboards, but it also means that we can use
+the exact same AltGr level mappings for all languages! For our generic 32-flex-key approach this
+means that we can place 3 extra letters (or generally 6 extra characters) and use keyboards with a
+minimum of 43 character keys. (Any surplus is usable as redundant characters or navigation keys,
+just as in the ANSI English case.)
+
+Note, however, the premise of this work: many international keymaps also introduce new punctuation
+characters, such as the negation sign `¬` and broken pipe `¦` on the UK English, or the
+section `§` and degree `°` signs on the German one. Our app doesn't show how those could be mapped.
+
+Instead of following localized punctuation, we prioritize the ANSI character set and that has two
+big advantages:
+
+- programming languages are the same all over the world (including low-code usages such as `$`
+  for relative cell references in Excel) and they all use the ANSI punctuation. Programmers now can
+  also work the same way and still have their national letters on the keyboard.
+- keyboard shortcuts are also usually based on the ANSI keyboard mapping. Some keyboard mappings
+  don't even work in nationalized keymaps for this reason. Using the same punctuation map in many
+  languages partly or wholly fixes this.
 
 ## A generic international Shift pairing for punctuation
 
@@ -597,41 +622,5 @@ say which is the current Shift mapping that applies. It should never describe th
 letter, because that is already obvious from the Keyboard SVG. Instead, it should highlight the
 advantage of the current mapping and the purpose that it was made to serve.
 
-TODO: Use the following names (in bold face) and their explanations. Then remove
-
-- ANSI English - Shift-pairing from the well-known standard, applied to match the keyboard layout
-  model and flex key map.
-
-- Qwertz German - Shift-pairing from the German standard keyboard, applied to match the keyboard
-  layout model and flex key map.
-
-- Colloquial English - Fine-tuning of the ANSI shift pairings to have all punctuation for prose
-  English writing on the base and Shift levels even on keyboards with as little as 40 character
-  keys. The AltGr level collects the remaining "technical" punctuation. The present keyboard layout
-  model has {{n}} character keys available and thus {{ (n-40)*2}} characters are mapped redundantly
-  on the central AltGr level and their own (slightly) peripheral key.
-
-- Colloquial International - Fine-tuning of the ANSI shift pairings to have all punctuation for
-  prose English writing on the base and Shift levels even on keyboards with as little as 43
-  character keys, leaving space for 26 letter keys. The AltGr level collects the remaining
-  "technical" punctuation. The present keyboard layout model has {{n}} character keys available and
-  thus {{ (n-43)*2}} characters are mapped redundantly on the central AltGr level and their own
-  (slightly) peripheral key. (Note that most international layouts put some or all of `[]{}\|`
-  on the AltGr level already, but on much worse positions, that are overridden here.)
-
-- Colloquial International, German variant - This tweaks a few Shift mappings in the right number
-  row to fit the German letter `ß`. Otherwise it's the same fine-tuning of the ANSI shift pairings
-  to have all punctuation for prose English writing on the base and Shift levels even on keyboards
-  with as little as 43 character keys, leaving space for 26 letter keys. The AltGr level collects
-  the remaining
-  "technical" punctuation. The present keyboard layout model has {{n}} character keys available and
-  thus {{ (n-43)*2}} characters are mapped redundantly on the central AltGr level and their own
-  (slightly) peripheral key. (By the way, the standard German keymap also has `[]{}\|` on the AltGr
-  level, but on much worse positions, that are overridden here.)
-
-- Numberless special blend - Lacking a number row, we not only lose the space for 10 punctuation
-  characters, but also need to relocate the digits themselves. This Shift and AltGr level map does
-  so by abandoning technical punctuation altogether and rearranging the Shift pairings to provide at
-  least 12 of the colloquial punctuation characters on the base and Shift levels.
-
-
+The names and the explanations themselves are in `ShiftPairingParagraph`
+(details/DetailsArea.tsx): user-facing prose belongs in the app.

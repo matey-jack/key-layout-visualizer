@@ -175,15 +175,15 @@ const numberlessAnsi30FrameMapping: FrameMapping = [
 const numberlessThumb30FrameMapping: FrameMapping = patchThumb30(numberlessAnsi30FrameMapping, "{4:0}⏎-", "/{3:9}");
 
 export function numberlessErgoslatLayoutModel(midshift: boolean): LayoutModel {
-    // we always use the lowshift minor model as base, because we'll use the larger keys for Shaft.
+    // We always use the lowshift minor model as base, because we'll never place character keys there.
     const base = minorErgoslatLayoutModel(false);
     const LEFT_MIDSHIFT_CYCLE = "<⇧↹AC<^";
     return {
         ...base,
         name: "Numberless Ergoslat 13/3" + (midshift ? " MidShift" : ""),
         description: `This is the only numberless layout model in this app and it isn't as fine-tuned as other keyboards here.
-        With such a small board, users would probably configure tap/hold keys and other Firmware tricks that this app can't show.
-        But what we can show is a pair of Shaft keys ⇩ which take AltGr's role, but are mapped on both sides of they keyboard, 
+        With such a small board, users would probably configure tap/hold keys and other firmware tricks that this app can't show.
+        But what we can show is a pair of Shaft keys ⇩ which take AltGr's role, but are mapped on both sides of the keyboard, 
         just as the Shift ⇧ keys are.`,
         rowIndent: [0, ...base.rowIndent.slice(1)] as [number, number, number, number, number],
         keyWidths: [

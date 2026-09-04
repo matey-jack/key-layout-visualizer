@@ -1,5 +1,5 @@
 import {Hand, KeyboardRows, type KeyPosition, KeymapTypeId, type LayoutModel} from "../base-model.ts";
-import {isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
+import {isCharacterKey} from "./mapping-functions.ts";
 
 /*
     The mechanics every key level table needs, whatever board it describes: how a level map is
@@ -105,11 +105,8 @@ export function resolveSlot(
         if (!best || Math.abs(p.colPos - target) < Math.abs(best.colPos - target)) best = p;
     }
     if (!best || Math.abs(best.colPos - target) > slotTolerance) return undefined;
-    // Gaps and every non-character key are unusable: an AltGr level only makes sense on a key
-    // that already inserts a character. (Return and Space are character keys to isCommandKey,
-    // but they are no place for a bracket either.)
-    if (!best.label || isKeyboardSymbol(best.label) || isKeyName(best.label)) return undefined;
-    return best;
+    // An AltGr level only makes sense on a key that already inserts a character.
+    return isCharacterKey(best.label) ? best : undefined;
 }
 
 export function placeBlock(

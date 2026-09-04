@@ -12,6 +12,16 @@ export const isKeyName = (label: string) => keyboardNames.includes(label);
 export const isCommandKey = (label: string) =>
     (isKeyboardSymbol(label) || isKeyName(label)) && label !== "␣" && label !== "⏎" && label !== "";
 
+// A key that inserts a character, and thus can carry a Shift and an AltGr level. Gaps are none,
+// and neither are Return and Space, which isCommandKey does count as character keys.
+export const isCharacterKey = (label: string) =>
+    !!label && !isKeyboardSymbol(label) && !isKeyName(label);
+
+// How many characters a board can carry per level. Permuting a char map never changes this, so
+// the plain merged map answers for the colloquialised and numberless ones too.
+export const characterKeyCount = (charMap: string[][]) =>
+    charMap.flat().filter(isCharacterKey).length;
+
 export function weighSingleKeyEffort(layoutModel: LayoutModel, charMap: string[][], freqs: Record<string, number>): number {
     const efforts = getSingleKeyEffort(layoutModel, charMap, freqs);
     let totalEffort = 0;

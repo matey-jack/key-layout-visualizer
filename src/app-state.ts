@@ -27,6 +27,7 @@ import {enumValues} from "./library/enum.ts";
 import {qwertyMapping} from "./mapping/baseMappings.ts";
 import {hasNumberRow} from "./mapping/key-level-functions.ts";
 import {hasColloquialLevel, shiftPairingFor} from "./mapping/key-levels.ts";
+import {characterKeyCount} from "./mapping/mapping-functions.ts";
 import {allMappings} from "./mapping/mappings.ts";
 
 
@@ -325,6 +326,7 @@ function resolveKeyLevels(
     return {
         keymapType,
         hasNumberRow: numberRow,
+        characterKeys: characterKeyCount(charMap),
         hasColloquialLevel: hasColloquial,
         colloquial,
         pairing: shiftPairingFor(charMap, numberRow, keymapType, colloquial),
