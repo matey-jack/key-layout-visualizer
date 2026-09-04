@@ -135,9 +135,20 @@ Typical spots are:
  - left home row edge (traditional CapsLock)
  - any >1u key in the center (since those have no traditional use)
 
+# Reduced character set
+
+If not all of ANSI's 47 character keys fit, the first keys to be omitted are the "purely technical"
+characters mentioned in `key-levels.md`: `[]|` and the backtick. If more characters need to be
+removed, the layout model should enforce "Colloquial Punctuation" and remove the `()`
+keys that it creates. (Net effect being the removal of `;` and `/`.) The final one to go is `=`,
+often labeled as `+`. The minimal set of pure punctuation keys is thus `,.-'`. But the frame
+mappings for 30-flex-key maps don't need to mention those, since they are contained in the flex
+mappings. Only on 32-flex-key maps, there has to be at least the `'` character in the frame mapping.
+
 # Character and Navigation key pairs
 
-Some keys are symmetric with each other and should sensibly be placed either close to each other or at least in proximity.
+Some keys are symmetric with each other and should sensibly be placed either close to each other or
+at least in proximity.
 
 ## Character pairs
 

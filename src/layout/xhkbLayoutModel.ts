@@ -176,25 +176,25 @@ export const xhkb14LayoutModel: LayoutModel = {
         // and in the lower row the tenth character, which is the arrangement the 15/4 uses
         // for the second of its two central columns.
         [KeymapTypeId.Ansi30]: [
-            ["Esc", "1", "2", "3", "4", "5", "\\", "6", "7", "8", "9", "0", "⌫"],
+            ["Esc", "1", "2", "3", "4", "5", "`~", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, "'", "⇞"],
-            ["⌦", 0, 1, 2, 3, 4, "`~", 5, 6, 7, 8, 9, "⏎"],
+            ["⌦", 0, 1, 2, 3, 4, "-", 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧", "⇟"],
-            ["Ctrl", "Cmd", "-", "Alt", "␣", "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "⎀", "Alt", "␣", "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
         ],
         // The thumb letter takes the left space bar, which frees the hyphen's bottom-row spot for Insert,
         // and the lower row's central key carries the slash the thirty-key set no longer maps.
         [KeymapTypeId.Thumb30]: [
-            ["Esc", "1", "2", "3", "4", "5", "\\", "6", "7", "8", "9", "0", "⌫"],
+            ["Esc", "1", "2", "3", "4", "5", "`~", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, "'", "⇞"],
-            ["⌦", 0, 1, 2, 3, 4, "`~", 5, 6, 7, 8, 9, "⏎"],
+            ["⌦", 0, 1, 2, 3, 4, "\\", 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, "/", 5, 6, 7, 8, "⇧", "⇟"],
             ["Ctrl", "Cmd", "⎀", "Alt", 0, "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
         ],
         // The upper row's central key is spent on the home row's eleventh character,
         // which leaves the apostrophe to take the home row's own central spot.
         [KeymapTypeId.Ansi32]: [
-            ["Esc", "1", "2", "3", "4", "5", "\\", "6", "7", "8", "9", "0", "⌫"],
+            ["Esc", "1", "2", "3", "4", "5", "`~", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, [2, 10], 5, 6, 7, 8, 9, 10, "⇞"],
             ["⌦", 0, 1, 2, 3, 4, "'", 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧", "⇟"],
@@ -202,11 +202,11 @@ export const xhkb14LayoutModel: LayoutModel = {
         ],
         // The thumb letter frees the upper row's central key, so the backtick fits after all.
         [KeymapTypeId.Thumb32]: [
-            ["Esc", "1", "2", "3", "4", "5", "\\", "6", "7", "8", "9", "0", "⌫"],
+            ["Esc", "1", "2", "3", "4", "5", "`~", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, "'", 5, 6, 7, 8, 9, 10, "⇞"],
-            ["⌦", 0, 1, 2, 3, 4, "`~", 5, 6, 7, 8, 9, "⏎"],
+            ["⌦", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧", "⇟"],
-            ["Ctrl", "Cmd", "+", "Alt", 0, "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "⎀", "Alt", 0, "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
         ],
     },
 }
