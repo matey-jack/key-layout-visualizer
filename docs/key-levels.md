@@ -19,11 +19,12 @@ and [app], so readers can orient themselves.
 
 Todo in code:
 
-- Ergoslat numberless: add thumb30 and 32-key mappings.
+- 32-flex key mappings for the Ergoslat numberless.
 - Implement the Nav key replacements.
 - Animate the toggling of the colloquial mapping for English. Only animate the base keys that are
   moving (as current animation logic already does), ignoring the other levels.
-  + It seems this works already in one way. But it should work both ways.
+    + It seems this works already in one way. But it should work both ways.
+- Maybe show some options of placing a left-hand AltGr key. Probably on the legacy CAPS key spot.
 - Check some of my favorite English model-specific flex-maps: how do they look with colloquial Shift
   pairings? do I want to fix anything?
 
@@ -392,33 +393,30 @@ clash with the Shift key, we move the lower row of the nav block one key towards
 There's a lot of 3-row or "30 key plus thumb keys" keyboards on the market, and they need a much
 more complicated layer system. I don't want to replicate this in this app, but we can follow our
 "colloquial punctuation" strategy to give a glimpse at what a usable key map for such a board would
-look like.
+look like. To highlight that this is a different category of keyboard which comes with its own
+Firmware that offers layers and a lot of other features, we use a new Shaft key `⇩` instead of
+AltGr. We also place it explicitly on both halves of the keyboard, like Shift `⇧`.
 
 Design premises:
 
-- Map the digit row and its shifted punctuation characters position-based to the upper and lower
-  letter-area rows of the AltGr level. (This is what many keymaps do in practice.)
-- Simple remove the technical punctuation `[]{}<>|\_` from the visible layers. (You might imagine
-  that there are further layers not shown or the keyboard is for use with phones and tablets where
-  no programming work is done anyway.)
-- Use the middle letter AltGr level for navigation.
+- Completely abandon the generic AltGr level mapping from our other keyboards, because that relies
+  on having four rows. We outright remove the technical punctuation `[]{}<>|\` from the visible
+  layers. (You might imagine that there are further layers not shown or that the keyboard is for use
+  with phones and tablets where no programming work is done anyway.)
 - Use the colloquial Shift pairings `,;` and `.:`, but keep the `/?` key in play, so that `?`
   stays a shifted character. Introduce the new `-!` shift pairing, so that `!` also stays a shifted
-  character.
-- Navigation becomes an "in-line" system with `←  ↑  ↓  →`  on one hand and `⇤  ⇞  ⇟  ⇥` on the
-  other. If there is space in-between, this could be the Delete key.
-- To highlight that this is a programmable keyboard and the AltGr level is much more important, we
-  show an explicit Shaft layer key `⇩` on both sides of the keyboard, analogous to the Shift keys.
-  (This has to be done in the frame mappings.)
+  character. (We can swap `!` and `_` or map another character on that spot.)
+- Following a common practice, map the digit row and its shifted punctuation characters
+  position-based to the upper and lower letter-area rows of the AltGr level. Basically, each digit
+  and punctuation character will still be typed by the same finger.
+- Place the navigation in the home-row of the AltGr level, using an "in-line" system with
+  `←  ↑  ↓  →`  on one hand and `⇤  ⇞  ⇟  ⇥` on the other. This can use the exact home positions 
+  of the fingers. The middle has three spots for other non-character keys, we place Delete in one.
 
 Consequences of those premises: `()` stays mapped between the other "shifted digit punctuation"
-characters in the Shaft layer. The "left pinky" spot in this row (where `!` would go) is free to
-use, because the `-!` key already has that character. If you like muscle memory compatibility, you
-could map `!` there redundantly.
-
-Dissolving the `;:` key frees one spot on the base level, and we spend it the way the colloquial
-keymap above does: on `=+`. That gives the board the same six punctuation keys the colloquial one
-has, `,;` `.:` `'"` `/?` `-!` and `=+`, differing only in the `-` key's Shift character.
+characters in the Shaft layer. In total, this has 22 out of ANSI's 32 punctuation keys on its 
+three levels: 6 on base, 6 on Shift, 10 on Shaft. It covers all the 18 punctuation characters 
+that our colloquial 40 character key map has on its base (4) and Shift (4 + 10) levels. 
 
 Here is the whole board, as the 30-key ANSI frame draws it on the Ergoslat with qwerty letters. The
 rows are offset the way that board staggers them. Base and Shift level first:
@@ -428,20 +426,14 @@ rows are offset the way that board staggers them. Base and Shift level first:
       ⇧⇧   z   x   c   v   b   /?  n   m   ,;  .:  ⇧⇧
       Ctrl  Cmd  ↹   Alt   ⏎   ␣  AlGr  -!  Fn  Ctrl
 
-and the Shaft layer of the same keys, where `¿` marks a spot that can be used, but isn't 
-assigned yet:
+and the Shaft layer of the same keys, where `¿` marks a spot that can be used, but isn't assigned
+yet:
 
        Esc  1   2   3   4   5     6   7   8   9   0   ⌫
      ⇩   ←   ↑   ↓   →   ¿   ⌦   ¿   ⇤   ⇞   ⇟   ⇥    ⇩
-      ⇧⇧   ¿   @   #   $   %   ^   &   *   (   )    ⇧⇧
+      ⇧⇧   _   @   #   $   %   ^   &   *   (   )    ⇧⇧
        Ctrl  Cmd  ↹   Alt  ⏎   ␣   AlGr  ¿   Fn  Ctrl
 
-The lower letter row shares its key columns with the number row of the same board exactly, so every
-one of those Shift characters sits on the very key its digit would be above. The upper letter row is
-a quarter unit off them, which is as position-based as the digits themselves can get.
-
-The "Nav keys" switch swaps the two nav groups between the hands, and nothing else: neither the
-digits nor their Shift characters have a mnemonic reason to move with them.
 
 # [Domain] Going international
 
@@ -479,6 +471,17 @@ a map has `@` on the Shift level and doesn't need it on AltGr.
 
 ((TODO: adapt the AltGr level to include some more characters common on European keyboards. This is
 not critical, since at least the German ones are rarely used, and never in keyboard shortcuts.))
+
+## Numberless international
+
+Three pure punctuation keys (coming from the flexmap): `,;`, `.:`, and `-_`.
+
+Shaft layer like the ANSI English numberless, but the punctuation row follows the colloquial set 
+from keyboards with a number row: `! @ # $ % ^ & * / ?`.  While it would be nice to have `!` and 
+`?` and possibly even `/` on the base and Shift layer, having to remap and relearn all three 
+shifted key pairs doesn't seem worth it. Especially since the characters `;` and `:` are also 
+very common in prosaic writing. 
+
 
 ## Excursion: what a colloquial German keymap would look like
 
