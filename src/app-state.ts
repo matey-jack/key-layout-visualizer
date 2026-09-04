@@ -361,12 +361,18 @@ export function createAppState(): AppState {
         ergoboardVariant: s2i(params.get("ebMsVariant") ?? params.get("eb65ms")) ?? ErgoboardVariant.COMFY_WIDE,
         flipRetRub: false,
     });
-    const layoutModel = computed(() => getLayoutModel(layoutOptionsState.value))
-    // Initialize previousLayoutModel with the current layoutModel to avoid null handling
-    const previousLayoutModelState = signal(layoutModel.value);
-
     const mappingState = signal(getMappingByName(params.get("mapping")));
-    // Initialize previousMappingState with the current mapping to avoid null handling
+    /*
+        The layout and the key map come from the URL independently, so they can name a pair that
+        does not fit – a 32-key map on a board that has no 32-key frame mapping, say. Reconciling
+        once here does what the user's first click would have done, and it is what lets everything
+        downstream rely on the board and the key map matching.
+     */
+    setLayout({}, layoutOptionsState, mappingState);
+
+    const layoutModel = computed(() => getLayoutModel(layoutOptionsState.value))
+    // Initialize the previous layout model and mapping with the current ones to avoid null handling.
+    const previousLayoutModelState = signal(layoutModel.value);
     const previousMappingState = signal(mappingState.value);
     const vizType = signal(s2i(params.get("viz")) ?? VisualizationType.LayoutPlain)
     // Default: navigation on the left hand, which puts the AltGr characters on the right one –

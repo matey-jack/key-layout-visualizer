@@ -98,11 +98,6 @@ export function getNumberlessAltGrLevel(
         place(hand, KeyboardRows.Lower, hand === Hand.Left ? digitShiftsLeft : digitShiftsRight);
     }
 
-    // The space between the two nav groups is Delete. Both hands reach that one key, so it is
-    // placed here rather than in either hand's home row.
-    // const between = resolveSlot(model, positions, Hand.Left, KeyboardRows.Home, INNER);
-    // if (between) result[between.row][between.col] = "⌦";
-
     return result;
 }
 

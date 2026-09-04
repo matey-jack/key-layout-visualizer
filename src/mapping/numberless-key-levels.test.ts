@@ -74,22 +74,21 @@ describe("the numberless Shaft level", () => {
         expect(["/", "n", "m", ",", "."].map((k) => shaft[k])).toEqual(["^", "&", "*", "(", ")"]);
     });
 
-    // Both hands keep their centre column – the index finger's stretch – free.
+    // The nav groups take the eight home keys and nothing else: both hands keep their centre
+    // column – the index finger's stretch – free, and so does the key between the hands.
     it("spells navigation out in-line, flush on the fingers' home keys", () => {
         const left = levelsByLabel(numberless, Hand.Left).shaft;
         expect("asdf".split("").map((k) => left[k])).toEqual(["←", "↑", "↓", "→"]);
         expect(["j", "k", "l", "="].map((k) => left[k])).toEqual(["⇤", "⇞", "⇟", "⇥"]);
         expect(left["g"]).toBeUndefined();
         expect(left["h"]).toBeUndefined();
-        // Delete goes on the single key between the hands.
-        expect(left["'"]).toBe("⌦");
+        expect(left["'"]).toBeUndefined();
     });
 
     it("swaps the two nav groups with the nav side", () => {
         const right = levelsByLabel(numberless, Hand.Right).shaft;
         expect("asdf".split("").map((k) => right[k])).toEqual(["⇤", "⇞", "⇟", "⇥"]);
         expect(["j", "k", "l", "="].map((k) => right[k])).toEqual(["←", "↑", "↓", "→"]);
-        expect(right["'"]).toBe("⌦");
     });
 
     it("carries all ten digits and all ten of their Shift characters, whatever the key map", () => {

@@ -524,10 +524,10 @@ export function ShiftLevelsDetails({keyLevels}: ShiftLevelsDetailsProps) {
         }
         {numberless
             ? <p>
-                Navigation is in-line and takes both hands: the four cursor keys in reading order on one
-                of them, the four that move by more than a character – Home, PageUp, PageDown, End – on
-                the other, and Delete on the single key between the two. Use the "Nav keys" buttons to
-                swap which hand gets the cursor keys.
+                Navigation is in-line and takes both hands, one home key each: the four cursor keys in
+                reading order on one of them, the four that move by more than a character – Home,
+                PageUp, PageDown, End – on the other. Use the "Nav keys" buttons to swap which hand
+                gets the cursor keys.
             </p>
             : <p>
                 The other hand gets "hands down" navigation: the four cursor keys in their familiar
