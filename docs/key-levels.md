@@ -19,6 +19,8 @@ and [app], so readers can orient themselves.
 
 Todo in code:
 
+- Enable the explicit "standard" vs "colloquial" Shift pairings also for 32-flexkey mappings. 
+  + Including model-specific permutations, where applicable. 
 - 32-flex key mappings for the Ergoslat numberless.
 - Implement the Nav key replacements.
 - Animate the toggling of the colloquial mapping for English. Only animate the base keys that are
@@ -35,13 +37,14 @@ same. Maps of either kind make use of this to place unconventional characters. S
 to explode complexity by adding a perfectly matched Shift mapping for each combination, we restrict
 ourselves to two conventional Shift maps (US ANSI and German Qwertz) plus several unconventional
 ones. Rules and heuristics then decide which Shift mapping is shown for a given flex map and layout
-model combination. Only for the very common case of key maps with the ANSI character set do we offer
-an actual user-facing choice between the standard mapping and a custom one (described below). That
-is the first unconventional mapping. The second one covers our 32-key flex map types (ansi32 and
-thumb32), which are already designed to be used for many different languages, encapsulating the
-common punctuation in the frame mappings; the same mapping serves every combination of a 32-key flex
-map with a layout model. The third is a minimally tuned variant of it for German, and finally
-there's another small variant for the numberless keyboard.
+model combination. 
+
+Our unconventional Shift pairings are mixing two goals:
+- keep prosaic punctuation keys on the base and Shift level even on small keyboards that have 
+  few pure punctuation keys.
+- offer a common punctuation mapping for other languages, so that we only need to develop one 
+  kind of "international" frame mapping and Shift pairing and use it with several languages.
+
 
 ## [App] Shift level
 
@@ -406,7 +409,7 @@ Design premises:
   and punctuation character will still be typed by the same finger.
 - Place the navigation in the home-row of the AltGr level, using an "in-line" system with
   `←  ↑  ↓  →`  on one hand and `⇤  ⇞  ⇟  ⇥` on the other. This can use the exact home positions of
-  the fingers. The middle has three spots for other non-character keys, we could place Delete in 
+  the fingers. The middle has three spots for other non-character keys, we could place Delete in
   one, if it weren't on the board already.
 
 Consequences of those premises: `()` stays mapped between the other "shifted digit punctuation"
@@ -436,8 +439,8 @@ minimum of 43 character keys. (Any surplus is usable as redundant characters or 
 just as in the ANSI English case.)
 
 Note, however, the premise of this work: many international keymaps also introduce new punctuation
-characters, such as the negation sign `¬` and broken pipe `¦` on the UK English, or the
-section `§` and degree `°` signs on the German one. Our app doesn't show how those could be mapped.
+characters, such as the negation sign `¬` and broken pipe `¦` on the UK English, or the section `§`
+and degree `°` signs on the German one. Our app doesn't show how those could be mapped.
 
 Instead of following localized punctuation, we prioritize the ANSI character set and that has two
 big advantages:
@@ -453,28 +456,22 @@ big advantages:
 
 Since the colloquial English Shift pairings are already inspired by the punctuation keys of some
 European keymaps, we can extend them to our 32-key flex maps. This doesn't yield a perfect keymap
-for each language, but at least something non-stupid that the app can show. It also gives us a
-simple rule for when to apply this mapping: whenever the shown flex map is of the ansi32 or thumb32
-type.
+for each language, but at least something non-stupid that the app can show.
 
-Indeed, we can use the exact same Shift pairings as the colloquial English ones. Most layout models
-have no room left for the four bracket keys, so on those all brackets (including the parentheses)
-have to be typed from the AltGr level. Those lost keys compensate for the three extra letters of the
-32-key flex map (which in exchange has one punctuation spot less, because the `'"` key moves into
-the frame mapping) plus the backtick-tilde key, which many layout models spend on Escape. We also
-don't need to apply a colloquialization step, since the 32-key character set already mandates the
-base punctuation keys `,`, `.`, and `-`, and the frame mappings carry the other characters. (They
-still have the freedom to use either `+` or `=` for this Shift pair. Not so for `'`: a lone `#`
-stands in for the `#'` key on the standard German pairings only.)
-The roomier frame mappings also draw a `/` key, which keeps the ANSI `/?` pairing – redundantly with
-the `9/` and `0?` of the number row. The minimum keyboard space for character keys using this
-mapping is then 43: ten digits, 32 flex spots, and the `'"` key placed outside the flex map. If a
-keyboard has one more spot, I recommend placing `=+`, for the same reasons as in the colloquial
-English key map. An ANSI-like keyboard with Escape in the number row has two more spots on top of
-that, which can take redundant characters or navigation keys. Since the 32-key map types always come
-with this Shift level and our AltGr level, the frame mappings need no conditional customizing: they
-can arrange the flex spots and the other keys directly, so that the free spots land where nav,
-Delete, or another key is most useful.
+Some facts:
+
+- the 32-flexkey character set never contained the `;` key, so this part of our colloquial Shift
+  pairing (`,;` and `.:`) has to be permanent, even when the "colloquial Shift pairing"
+  mode is inactive. (`<>` are already permaenently available on AltGr.)
+- the frame layouts do, however, always contain the `\` key and often also the `/` key, so we can
+  change the colloquial mode to replace both those keys with the new "mixed" parenthesis keys `(<`
+  and `)>`. The resulting Shift pairs in "colloquial mode" are then the same as for English.
+- When there are 47 character keys and three extra letter, one of the letters replaces `,;` and the
+  others replace `[{` and `]}` – that's no problem, because they are also on our default AltGr
+  layer.
+- The minimum keyboard space for character keys using this mapping is 43: ten digits, 32 flex spots,
+  and the `'"` key placed outside the flex map. (If a keyboard has one more spot, I recommend 
+  placing `=+`, for the same reasons as in the colloquial English key map.)
 
 Rejected alternative: we could reduce the footprint to 42 characters keys and still keep the quotes
 `'"` on the Shift level by mapping them onto the `3` and `6` keys, moving the present Shift
