@@ -105,6 +105,112 @@ export const xhkb13LayoutModel: LayoutModel = {
 }
 
 
+const keyWidth14 = new MonotonicKeyWidth(14, zeroIndent, "XHKB 14");
+
+export const xhkb14LayoutModel: LayoutModel = {
+    name: "Thumbs Up 14/3",
+    description: `One central column wider than the 13/2, which is just enough to bring back the backslash,
+    the backtick, and a Page Up / Page Down pair without paying for the 15/4's full pair of central columns.
+    The hands sit three keys apart, halfway between the ANSI distance of the 13/2 and the wide stance of the 15/4,
+    and the bottom row is the 15/4's own, shaved by half a unit per side.
+    That makes it the member of the family to reach for when a 15/4 is wider than the desk allows,
+    but a 13/2 gives up too much punctuation.`,
+
+    keyWidths: [
+        keyWidth14.row(0, 1.5), // 13 keys
+        keyWidth14.row(1, 1),   // 14 keys
+        keyWidth14.row(2, 1.25),// 13 keys
+        [1.75, ...Array(10).fill(1), 1.25, 1], // 13 keys
+        // Center of keyboard is at 6.75 / 7.25, so the bottom row is the 15/4's with half a unit taken
+        // off each side: Cmd drops to 1u on the left, CapsLock and Fn to 1.25u on the right.
+        [1.5, 1.25, 1, 1.25, 1.75, 1.75, 1.5, 1.25, 1.25, 1.5],
+    ],
+
+    // The central column is equidistant from both index fingers, so it goes to the right one,
+    // which is the hand that owns the lower-row character it carries in the thirty-key maps.
+    mainFingerAssignment: [
+        [1, 1, 1, 2, 2, 3, 6, 6, 6, 7, 8, 9, 9],
+        [1, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, 9, 9],
+        [0, 0, 1, 2, 3, 3, null, 6, 6, 7, 8, 9, 9],
+        [0, 0, 1, 2, 3, 3, 6, 6, 6, 7, 8, 9, null],
+        [0, 1, 1, 4, 4, 5, 5, 7, 8, 9],
+    ],
+
+    singleKeyEffort: [
+        [3.0, 3.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 2.0, 3.0, 3.0],
+        [3.0, 2.0, 1.0, 1.0, 1.5, 1.5, 3.0, 2.0, 1.5, 1.0, 1.0, 2.0, 2.0, 3.0],
+        [1.5, 0.2, 0.2, 0.2, 0.2, 1.5, null, 1.5, 0.2, 0.2, 0.2, 0.2, 1.5],
+        [1.0, 2.0, 2.0, 1.5, 1.5, 3.0, 3.0, 1.5, 1.0, 1.5, 1.5, 1.0, null],
+        [2.0, 2.0, 2.0, 1.0, 0.2, 0.2, 1.0, 2.0, 2.0, 2.0],
+    ],
+
+    rowIndent: keyWidth14.rowIndent,
+
+    // The 13/2's colouring, with the right edge moved out by the one added central key per row.
+    keyColorClass(label: string, row: KeyboardRows, col: number) {
+        if (label && "⏎↑↓←→".includes(label) || label === "Esc") return KEY_COLOR.HIGHLIGHT;
+        if (row === KeyboardRows.Bottom) return KEY_COLOR.EDGE;
+        if (col === 0) return KEY_COLOR.EDGE;
+        const rightEdge = [11, 12, 11, 10]
+        if (col <= rightEdge[row]) return KEY_COLOR.BORING;
+        return KEY_COLOR.EDGE;
+    },
+
+    splitColumns: [6, 6, 6, 6, 5],
+
+    leftHomeIndex: 4,
+    rightHomeIndex: 8,
+
+    staggerOffsets: [-0.75, -0.25, 0, 0.5],
+    symmetricStagger: false,
+
+    // One central column can hold only one of the two parentheses per row, so the backtick moves out
+    // of the way to let them stack in it instead of pairing side by side as they do on the 15/4.
+    colloquialCycles: {
+        [KeymapTypeId.Ansi30]: ["`()"],
+        [KeymapTypeId.Thumb30]: ["`()"],
+    },
+
+    frameMappings: {
+        // The single central column carries the backslash, the plus, and the backtick,
+        // and in the lower row the tenth character, which is the arrangement the 15/4 uses
+        // for the second of its two central columns.
+        [KeymapTypeId.Ansi30]: [
+            ["Esc", "1", "2", "3", "4", "5", "\\", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, "'", "⇞"],
+            ["⌦", 0, 1, 2, 3, 4, "`~", 5, 6, 7, 8, 9, "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧", "⇟"],
+            ["Ctrl", "Cmd", "-", "Alt", "␣", "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
+        ],
+        // The thumb letter takes the left space bar, which frees the hyphen's bottom-row spot for Insert,
+        // and the lower row's central key carries the slash the thirty-key set no longer maps.
+        [KeymapTypeId.Thumb30]: [
+            ["Esc", "1", "2", "3", "4", "5", "\\", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, "'", "⇞"],
+            ["⌦", 0, 1, 2, 3, 4, "`~", 5, 6, 7, 8, 9, "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, "/", 5, 6, 7, 8, "⇧", "⇟"],
+            ["Ctrl", "Cmd", "⎀", "Alt", 0, "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
+        ],
+        // The upper row's central key is spent on the home row's eleventh character,
+        // which leaves the apostrophe to take the home row's own central spot.
+        [KeymapTypeId.Ansi32]: [
+            ["Esc", "1", "2", "3", "4", "5", "\\", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, [2, 10], 5, 6, 7, 8, 9, 10, "⇞"],
+            ["⌦", 0, 1, 2, 3, 4, "'", 5, 6, 7, 8, 9, "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧", "⇟"],
+            ["Ctrl", "Cmd", "+", "Alt", "␣", "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
+        ],
+        // The thumb letter frees the upper row's central key, so the backtick fits after all.
+        [KeymapTypeId.Thumb32]: [
+            ["Esc", "1", "2", "3", "4", "5", "\\", "6", "7", "8", "9", "0", "⌫"],
+            ["↹", 0, 1, 2, 3, 4, "'", 5, 6, 7, 8, 9, 10, "⇞"],
+            ["⌦", 0, 1, 2, 3, 4, "`~", 5, 6, 7, 8, 9, "⏎"],
+            ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧", "⇟"],
+            ["Ctrl", "Cmd", "+", "Alt", 0, "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
+        ],
+    },
+}
+
 const keyWidth15 = new MonotonicKeyWidth(15, zeroIndent, "XHKB 15");
 
 export const xhkb15LayoutModel: LayoutModel = {

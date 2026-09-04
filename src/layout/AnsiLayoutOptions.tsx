@@ -76,6 +76,10 @@ export function AnsiLayoutOptions({options, setOption, mapping}: AnsiLayoutOptio
                                               onClick={() => setOption({thumbsUpVariant: ThumbsUpVariant.TU13})}>
                                     13/2
                                 </OptionButton>
+                                <OptionButton selected={thumbsUpVariant === ThumbsUpVariant.TU14}
+                                              onClick={() => setOption({thumbsUpVariant: ThumbsUpVariant.TU14})}>
+                                    14/3
+                                </OptionButton>
                                 <OptionButton selected={thumbsUpVariant === ThumbsUpVariant.TU15}
                                               onClick={() => setOption({thumbsUpVariant: ThumbsUpVariant.TU15})}>
                                     15/4

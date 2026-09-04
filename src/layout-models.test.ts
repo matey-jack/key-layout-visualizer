@@ -18,7 +18,7 @@ import {
     minorErgoslatLayoutModel
 } from './layout/ergoslatLayoutModel.ts';
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
-import {xhkb13LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "./layout/xhkbLayoutModel.ts";
+import {xhkb13LayoutModel, xhkb14LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "./layout/xhkbLayoutModel.ts";
 import {sum} from "./library/math.ts";
 import {allLayoutModels} from "./all-layout-models.ts";
 import {allMappings} from "./mapping/mappings.ts";
@@ -32,6 +32,7 @@ const IGNORED_30_KEYS: Record<string, string[]> = {
     "ANSI/Apple with wide hand position": ["Esc", "⌦"], // replaces duplicate Ctrl key
     [xhkb13LayoutModel.name]: ["⇤", "⇥"],
     // The single difference here is due to removing the duplicate space key.
+    [xhkb14LayoutModel.name]: ["⎀"],
     [xhkb15LayoutModel.name]: ["⎀"],
     [xhkb16LayoutModel.name]: ["€"],
     "Ergoboard 65 LowShift Big Enter": ["`~"],
@@ -49,6 +50,7 @@ const IGNORED_32_KEYS: Record<string, string[]> = {
     "ANSI/IBM with wide hand position": ["\\", "☰", "⌦"],
     "AN65 with wide hand position": ["\\", "☰"],
     "ANSI/Apple with wide hand position": ["\\", "⌦"],
+    [xhkb14LayoutModel.name]: ["`~"],
     [xhkb15LayoutModel.name]: ["⎀"],
     [xhkb16LayoutModel.name]: ["€"],
 };

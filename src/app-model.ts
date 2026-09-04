@@ -19,6 +19,9 @@ export enum ThumbsUpVariant {
     TU13,  // 13/2, without any central keys.
     TU15,  // 15/4, the original.
     TU16,  // 16/5, with the central arrow cluster.
+    // Listed after the wider boards so that the numeric values the `thumbsUp` URL parameter
+    // stores keep pointing at the same variant. The buttons order themselves by width.
+    TU14,  // 14/3, with a single central column.
 }
 
 /*

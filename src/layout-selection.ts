@@ -46,7 +46,7 @@ import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLa
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
-import {xhkb13LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "./layout/xhkbLayoutModel.ts";
+import {xhkb13LayoutModel, xhkb14LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "./layout/xhkbLayoutModel.ts";
 
 export function getHarmonicVariant(variant: HarmonicVariant): LayoutModel {
     switch (variant) {
@@ -141,6 +141,8 @@ export function getAnsiVariant(layoutOptions: LayoutOptions) {
             switch (layoutOptions.thumbsUpVariant) {
                 case ThumbsUpVariant.TU13:
                     return xhkb13LayoutModel;
+                case ThumbsUpVariant.TU14:
+                    return xhkb14LayoutModel;
                 case ThumbsUpVariant.TU16:
                     return xhkb16LayoutModel;
                 default:

@@ -10,7 +10,7 @@ import {ergoboardCentralLayoutModel} from "../src/layout/ergoboardCentralLayoutM
 import {ergoboardComfyLayoutModel} from "../src/layout/ergoboardComfyLayoutModel.ts";
 import {ergoplankLayoutModel} from "../src/layout/ergoplankLayoutModel.ts";
 import {splitOrthoLayoutModel} from "../src/layout/splitOrthoLayoutModel.ts";
-import {xhkb13LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "../src/layout/xhkbLayoutModel.ts";
+import {xhkb13LayoutModel, xhkb14LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "../src/layout/xhkbLayoutModel.ts";
 import {
     defaultTotalWidth,
     fillMapping,
@@ -119,6 +119,7 @@ export const focusModels: [string, LayoutModel][] = [
     ["ANSI", ansiIBMLayoutModel],
     ["ANSI wide", ansiWideLayoutModel],
     ["Thumbs Up 13/2", xhkb13LayoutModel],
+    ["Thumbs Up 14/3", xhkb14LayoutModel],
     ["Thumbs Up 15/4", xhkb15LayoutModel],
     ["Thumbs Up 16/5", xhkb16LayoutModel],
     ["Ergoplank 15/5", ergoplankLayoutModel],

@@ -44,7 +44,7 @@ import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLa
 import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
-import {xhkb13LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "./layout/xhkbLayoutModel.ts";
+import {xhkb13LayoutModel, xhkb14LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "./layout/xhkbLayoutModel.ts";
 
 export const allLayoutModels: Array<LayoutModel> = [
     ansiIBMLayoutModel,
@@ -56,6 +56,7 @@ export const allLayoutModels: Array<LayoutModel> = [
     createAN65(ansiIBMLayoutModel),
     createAN65(ansiWideLayoutModel),
     xhkb13LayoutModel,
+    xhkb14LayoutModel,
     xhkb15LayoutModel,
     xhkb16LayoutModel,
     // Harmonics

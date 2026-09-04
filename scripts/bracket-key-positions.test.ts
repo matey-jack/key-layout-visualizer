@@ -14,6 +14,7 @@ const expected: Record<string, [string, string, string]> = {
     "ANSI": ["pair (num)", "–", "off centre"],
     "ANSI wide": ["centred stack (upper, home)", "centred stack (upper, home)", "centred"],
     "Thumbs Up 13/2": ["pair (bottom)", "pair (bottom)", "no `[]` keys"],
+    "Thumbs Up 14/3": ["centred stack (upper, home)", "centred stack (upper, home)", "no `[]` keys"],
     "Thumbs Up 15/4": ["centred pair (upper)", "centred pair (upper)", "centred"],
     "Thumbs Up 16/5": ["centred apart (upper)", "centred apart (upper)", "centred"],
     "Ergoplank 15/5": ["centred apart (upper)", "centred apart (upper)", "centred"],
