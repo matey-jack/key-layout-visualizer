@@ -341,6 +341,9 @@ export interface LayoutModel extends RenderableLayoutModel {
 
     // Optional per-layout cycles applied on top of the generic Shift-level colloquialisation,
     // to move the two redundant `(` and `)` keys to a symmetric position.
+    // They may only name keys this model's frame mapping carries, plus the `(` and `)` the generic
+    // step places - which a frame mapping too short of punctuation keys does not get. Naming a key
+    // that is not there throws, since a model knows its own frame mapping.
     // See `colloquialiseCharMap` in mapping/key-levels.ts and docs/key-levels.md.
     colloquialCycles?: Partial<Record<KeymapTypeId, string[]>>;
 

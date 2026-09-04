@@ -1,7 +1,7 @@
 import {describe, expect, it} from "vitest";
 import {KeymapTypeId, type FrameMapping} from "../base-model.ts";
 import {majorErgoslatLayoutModel} from "./ergoslatLayoutModel.ts";
-import {patchThumb30, patchThumb32, permute} from "./permutation-functions.ts";
+import {patchThumb30, patchThumb32, permute, permuteAvailable} from "./permutation-functions.ts";
 
 describe("permute", () => {
     it("swaps two labels (a 2-cycle)", () => {
@@ -153,6 +153,45 @@ describe("permute", () => {
         expect(permute(base, "Ab")).toEqual([
             ["a", "Alt"]
         ]);
+    });
+});
+
+describe("permuteAvailable", () => {
+    it("leaves a cycle whose keys are all there alone", () => {
+        const base: FrameMapping = [["a", "b", "c"]];
+        expect(permuteAvailable(base, "abc")).toEqual(permute(base, "abc"));
+    });
+
+    it("keeps an entering first key entering", () => {
+        const base: FrameMapping = [["a", "b"]];
+        expect(permuteAvailable(base, "xab")).toEqual(permute(base, "xab"));
+    });
+
+    it("drops the keys before a missing one, which then enters", () => {
+        const base: FrameMapping = [["a", "c"]];
+        // 'b' is gone, so "xabc" is read as "bc": b enters on c's cell and c leaves.
+        expect(permuteAvailable(base, "xabc")).toEqual([["a", "b"]]);
+        expect(() => permute(base, "xabc")).toThrow(/must be the first token/);
+    });
+
+    it("trims to the last missing key, not the first", () => {
+        const base: FrameMapping = [["a", "d"]];
+        expect(permuteAvailable(base, "abcd")).toEqual([["a", "c"]]);
+    });
+
+    it("does nothing when only the last key is missing", () => {
+        const base: FrameMapping = [["a", "b"]];
+        expect(permuteAvailable(base, "abz")).toEqual(base);
+    });
+
+    it("does nothing when no key of the cycle is there", () => {
+        const base: FrameMapping = [["a", "b"]];
+        expect(permuteAvailable(base, "xyz")).toEqual(base);
+    });
+
+    it("still throws on a cycle that is malformed rather than incomplete", () => {
+        const base: FrameMapping = [["a", "a"]];
+        expect(() => permuteAvailable(base, "ab")).toThrow(/must be unique/);
     });
 });
 

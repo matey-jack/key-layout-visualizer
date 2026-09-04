@@ -206,26 +206,53 @@ function tokenValue(token: CycleToken, destRow: number): FrameMappingEntry {
     return encodeFlex(token.coord, destRow);
 }
 
+// One cycle spec resolved against the mapping it is read from: its tokens, and for each the cell
+// it currently occupies - null when the key is not on the mapping and thus enters.
+function resolveCycle(base: FrameMapping, spec: string): { tokens: CycleToken[]; positions: (Coord | null)[] } {
+    const tokens = parseCycle(spec).map((t) => resolveToken(base, t));
+    return {tokens, positions: tokens.map((t) => findToken(base, t))};
+}
+
+function applyCycle(result: FrameMapping, tokens: CycleToken[], positions: (Coord | null)[]) {
+    const n = tokens.length;
+    for (let i = 0; i < n; i++) {
+        // each token moves into the place of the next; the last wraps into the first...
+        const dest = positions[(i + 1) % n];
+        // ...unless the first token is entering (no place of its own): then the last token leaves.
+        if (dest === null) continue;
+        result[dest[0]][dest[1]] = tokenValue(tokens[i], dest[0]);
+    }
+}
+
 // Returns a copy of a frame mapping with the given cyclic permutations applied (see the note above
 // for the cycle syntax). The base mapping is not modified.
 export function permute(base: FrameMapping, ...cycles: string[]): FrameMapping {
     const result = copyKeymap(base);
     for (const spec of cycles) {
-        const tokens = parseCycle(spec).map((t) => resolveToken(base, t));
-        const positions = tokens.map((t) => findToken(base, t));
+        const {tokens, positions} = resolveCycle(base, spec);
         positions.forEach((pos, i) => {
             if (pos === null && i !== 0) {
                 throw new Error(`In cycle "${spec}", entering key ${tokenLabel(tokens[i])} must be the first token.`);
             }
         });
-        const n = tokens.length;
-        for (let i = 0; i < n; i++) {
-            // each token moves into the place of the next; the last wraps into the first...
-            const dest = positions[(i + 1) % n];
-            // ...unless the first token is entering (no place of its own): then the last token leaves.
-            if (dest === null) continue;
-            result[dest[0]][dest[1]] = tokenValue(tokens[i], dest[0]);
-        }
+        applyCycle(result, tokens, positions);
+    }
+    return result;
+}
+
+/*
+    Like `permute`, but for cycles written without seeing the mapping they are applied to, which may
+    not carry every key they name. Each cycle is trimmed to start at its LAST missing key: the
+    tokens before it are dropped, which restores the rule `permute` insists on - only the first
+    token may be absent. So the missing key enters where the token after it sits, the rest of the
+    cycle shifts along as usual, and a cycle trimmed down to a single token does nothing at all.
+ */
+export function permuteAvailable(base: FrameMapping, ...cycles: string[]): FrameMapping {
+    const result = copyKeymap(base);
+    for (const spec of cycles) {
+        const {tokens, positions} = resolveCycle(base, spec);
+        const start = Math.max(0, positions.lastIndexOf(null));
+        applyCycle(result, tokens.slice(start), positions.slice(start));
     }
     return result;
 }

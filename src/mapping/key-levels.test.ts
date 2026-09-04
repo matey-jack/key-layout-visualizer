@@ -278,6 +278,79 @@ describe("the layout models' own colloquial cycles", () => {
     });
 });
 
+/*
+    A frame mapping may carry none of the punctuation keys the generic colloquial cycles name: a
+    board with the minimal 40 character keys spends all thirty of its flex spots on the letter map,
+    whose own punctuation is `,` `.` `;` and `/`. No real layout model is that bare, so the boards
+    below are made up. What the cycles do to them is the doc's "Boards that lack the keys a cycle
+    names".
+ */
+describe("colloquialising a board short of punctuation keys", () => {
+    // Of the model, only the number row and the cycles that follow the generic ones matter here;
+    // the char map stands in for the board itself.
+    const bareModel: LayoutModel = {...ansiIBMLayoutModel, colloquialCycles: undefined};
+
+    // The thirty flex spots of a qwerty letter map, which is where `;` and `/` sit, plus the
+    // digits and whichever punctuation keys the frame mapping adds.
+    const board = (...frameKeys: string[]): string[][] => [
+        ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
+        ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
+        ["a", "s", "d", "f", "g", "h", "j", "k", "l", ";"],
+        ["z", "x", "c", "v", "b", "n", "m", ",", ".", "/"],
+        frameKeys,
+    ];
+
+    const without = (charMap: string[][], key: string): string[][] =>
+        charMap.map((row) => row.filter((label) => label !== key));
+
+    const colloquialised = (charMap: string[][]): string[] =>
+        colloquialiseCharMap(charMap, bareModel, KeymapTypeId.Ansi30).flat();
+
+    it("brings `'` and `-` in from nowhere on a 40-key board", () => {
+        const keys = colloquialised(board());
+        expect(keys).toContain("'");
+        expect(keys).toContain("-");
+        expect(keys).not.toContain(";");
+        expect(keys).not.toContain("/");
+        expect(keys).not.toContain("(");
+        expect(keys).not.toContain(")");
+        expect(keys.filter((k) => "',.-".includes(k)).sort()).toEqual(["'", ",", "-", "."]);
+        expect(keys).toHaveLength(40);
+    });
+
+    it("spends the bracket's spot on `=` when the board has neither `=` nor `'`", () => {
+        const keys = colloquialised(board("-"));
+        expect(keys).toContain("=");
+        expect(keys).not.toContain("(");
+        expect(keys.filter((k) => "'=,.-".includes(k)).sort()).toEqual(["'", ",", "-", ".", "="]);
+    });
+
+    it("brings `=` in through the first cycle when the board has an `'`", () => {
+        const keys = colloquialised(board("'", "-"));
+        expect(keys).toContain("=");
+        // The board is rich enough for one bracket, and the other stays on the AltGr level.
+        expect(keys).toContain("(");
+        expect(keys).not.toContain(")");
+    });
+
+    it("leaves the `-_` key alone when there is no `/` for it to move onto", () => {
+        const keys = colloquialised(without(board("'", "-", "="), "/"));
+        expect(keys).toContain("-");
+        expect(keys).toContain(")");
+        expect(keys).not.toContain("(");
+        expect(keys).not.toContain(";");
+    });
+
+    it("throws when a model's own cycles name a key the board never gets", () => {
+        const model: LayoutModel = {
+            ...ansiIBMLayoutModel,
+            colloquialCycles: {[KeymapTypeId.Ansi30]: ["=)](["]},
+        };
+        expect(() => colloquialiseCharMap(board(), model, KeymapTypeId.Ansi30))
+            .toThrow(/must be the first token/);
+    });
+});
+
 describe("AltGr character block", () => {
     it("sits on the right hand's finger columns", () => {
         const level = altGrLevelByLabel(ansiIBMLayoutModel, Hand.Left);

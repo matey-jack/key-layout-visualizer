@@ -5,7 +5,7 @@ import {
     type KeymapTypeId,
     type LayoutModel,
 } from "../base-model.ts";
-import {permute} from "../layout/permutation-functions.ts";
+import {permute, permuteAvailable} from "../layout/permutation-functions.ts";
 import {
     type Block,
     byAnyMember,
@@ -150,9 +150,15 @@ export const shiftPairsFor = (
 const normaliseEqualsKey = (charMap: string[][]): string[][] =>
     charMap.map((row) => row.map((label) => (label === "+" ? "=" : label)));
 
-// The colloquial Shift level introduces `(` and `)`, removes `;` and `/`,
-// and moves three other keys to better positions. (Rationale in the doc.)
-const genericColloquialCycles = [")=';", "(-/"];
+/*
+    The colloquial Shift level introduces `(` and `)`, removes `;` and `/`, and moves three other
+    keys to better positions. (Rationale in the doc.) On a board that draws neither `=` nor `'`,
+    the first cycle is trimmed down to `';` and nothing would bring `+` in - and a board short of
+    a `+` needs one more than it needs the redundant `(`, so the second cycle spends that spot
+    on `=` instead.
+ */
+const genericCyclesFor = (charMap: string[][]): string[] =>
+    draws(charMap, "=") || draws(charMap, "'") ? [")=';", "(-/"] : [")=';", "=-/"];
 
 /**
  * The board as the colloquial Shift level shows it: the generic rearrangement above, followed by
@@ -163,7 +169,11 @@ export function colloquialiseCharMap(
     charMap: string[][], model: LayoutModel, keymapType: KeymapTypeId
 ): string[][] {
     if (!hasColloquialLevel(charMap, hasNumberRow(model))) return charMap;
-    const generic = permute(normaliseEqualsKey(charMap), ...genericColloquialCycles) as string[][];
+    const normalised = normaliseEqualsKey(charMap);
+    // The generic cycles are written for no board in particular, so a frame mapping that carries
+    // none of the punctuation keys they name still has to come out sensible: see the doc's
+    // "Boards that lack the keys a cycle names".
+    const generic = permuteAvailable(normalised, ...genericCyclesFor(normalised)) as string[][];
     const cycles = model.colloquialCycles?.[keymapType] ?? [];
     // A separate pass: permute resolves every cycle against the map it is given, so the layout
     // model's own cycles can only name `(` and `)` once the generic ones have placed them.
