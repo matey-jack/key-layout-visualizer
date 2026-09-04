@@ -63,6 +63,11 @@ write a throwaway test file (handy in plan mode where you can't write test files
 
 ## Documentation style
 
+A lot of the app describes itself, because the behavior is easily observed. We don't document 
+key sizes or key mappings, because it's easier to see them graphically in the app than described 
+anywhere. What we need to document is the rationale of why things are the way they are. But even 
+this need not be overdone. 
+
 Documentation describes the code as it is now, never as it was before.
 No "this replaces X", no "used to be Y", no "is being retired", no migration notes —
 not in `docs/`, not in code comments. Rationale for the current state is welcome
