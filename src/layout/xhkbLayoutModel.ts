@@ -164,17 +164,14 @@ export const xhkb14LayoutModel: LayoutModel = {
     staggerOffsets: [-0.75, -0.25, 0, 0.5],
     symmetricStagger: false,
 
-    // One central column can hold only one of the two parentheses per row, so the backtick moves out
-    // of the way to let them stack in it instead of pairing side by side as they do on the 15/4.
     colloquialCycles: {
-        [KeymapTypeId.Ansi30]: ["`()"],
-        [KeymapTypeId.Thumb30]: ["`()"],
+        [KeymapTypeId.Ansi30]: ["`()"],  // can't do better than stacking the parentheses.
+        // This leads to a pair in the bottom row center for all keymaps that place `-` on ANSI `b`.
+        // (Works with Quipper/Colemak Thumby and Cozy Keyboard.)
+        [KeymapTypeId.Thumb30]: [")-\\"],
     },
 
     frameMappings: {
-        // The single central column carries the backslash, the plus, and the backtick,
-        // and in the lower row the tenth character, which is the arrangement the 15/4 uses
-        // for the second of its two central columns.
         [KeymapTypeId.Ansi30]: [
             ["Esc", "1", "2", "3", "4", "5", "`~", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, "'", "⇞"],
@@ -182,8 +179,6 @@ export const xhkb14LayoutModel: LayoutModel = {
             ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧", "⇟"],
             ["Ctrl", "Cmd", "⎀", "Alt", "␣", "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
         ],
-        // The thumb letter takes the left space bar, which frees the hyphen's bottom-row spot for Insert,
-        // and the lower row's central key carries the slash the thirty-key set no longer maps.
         [KeymapTypeId.Thumb30]: [
             ["Esc", "1", "2", "3", "4", "5", "`~", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, "'", "⇞"],
@@ -191,22 +186,21 @@ export const xhkb14LayoutModel: LayoutModel = {
             ["⇧", 0, 1, 2, 3, 4, "/", 5, 6, 7, 8, "⇧", "⇟"],
             ["Ctrl", "Cmd", "⎀", "Alt", 0, "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
         ],
-        // The upper row's central key is spent on the home row's eleventh character,
-        // which leaves the apostrophe to take the home row's own central spot.
+        // This includes the `/` key like most other 32-flex frame maps.
+        // It's going to be needed soon when we introduce the "colloquial" switch for this case.
         [KeymapTypeId.Ansi32]: [
-            ["Esc", "1", "2", "3", "4", "5", "`~", "6", "7", "8", "9", "0", "⌫"],
+            ["Esc", "1", "2", "3", "4", "5", "+", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, [2, 10], 5, 6, 7, 8, 9, 10, "⇞"],
             ["⌦", 0, 1, 2, 3, 4, "'", 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧", "⇟"],
-            ["Ctrl", "Cmd", "+", "Alt", "␣", "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "/", "Alt", "␣", "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
         ],
-        // The thumb letter frees the upper row's central key, so the backtick fits after all.
         [KeymapTypeId.Thumb32]: [
             ["Esc", "1", "2", "3", "4", "5", "`~", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, "'", 5, 6, 7, 8, 9, 10, "⇞"],
             ["⌦", 0, 1, 2, 3, 4, "+", 5, 6, 7, 8, 9, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧", "⇟"],
-            ["Ctrl", "Cmd", "⎀", "Alt", 0, "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
+            ["Ctrl", "Cmd", "/", "Alt", 0, "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
         ],
     },
 }

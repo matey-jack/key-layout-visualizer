@@ -1,22 +1,20 @@
 import {describe, expect, it} from "vitest";
 import {
-    KEY_COLOR,
-    KEYMAP_TYPES,
-    keyboardSymbols,
     KeyboardRows,
+    keyboardSymbols,
+    KEYMAP_TYPES,
     KeymapTypeId,
-    type FrameMapping,
     type LayoutModel,
     usefulNonAsciiCharacters
 } from "./base-model.ts";
 import {ergoboardRightRetLayoutModel, ergoboardVerticalEnterLayoutModel} from "./layout/ergoboardNarrowLayoutModels.ts";
 import {ergoboardSemiWideLayoutModel} from "./layout/ergoboardSemiWideLayoutModel.ts";
-import {createErgoPlankCenterArrows, createErgoPlankMidShiftLowerCharacters, ergoplankLayoutModel} from "./layout/ergoplankLayoutModel.ts";
 import {
-    majorErgoslatLayoutModel,
-    numberlessErgoslatLayoutModel,
-    minorErgoslatLayoutModel
-} from './layout/ergoslatLayoutModel.ts';
+    createErgoPlankCenterArrows,
+    createErgoPlankMidShiftLowerCharacters,
+    ergoplankLayoutModel
+} from "./layout/ergoplankLayoutModel.ts";
+import {majorErgoslatLayoutModel, minorErgoslatLayoutModel} from './layout/ergoslatLayoutModel.ts';
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 import {xhkb13LayoutModel, xhkb14LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "./layout/xhkbLayoutModel.ts";
 import {sum} from "./library/math.ts";
@@ -32,7 +30,7 @@ const IGNORED_30_KEYS: Record<string, string[]> = {
     "ANSI/Apple with wide hand position": ["Esc", "⌦"], // replaces duplicate Ctrl key
     [xhkb13LayoutModel.name]: ["⇤", "⇥"],
     // The single difference here is due to removing the duplicate space key.
-    [xhkb14LayoutModel.name]: ["⎀"],
+    [xhkb14LayoutModel.name]: ["⎀", "\\"],
     [xhkb15LayoutModel.name]: ["⎀"],
     [xhkb16LayoutModel.name]: ["€"],
     "Ergoboard 65 LowShift Big Enter": ["`~"],
