@@ -279,11 +279,9 @@ describe("the layout models' own colloquial cycles", () => {
 });
 
 /*
-    A frame mapping may carry none of the punctuation keys the generic colloquial cycles name: a
-    board with the minimal 40 character keys spends all thirty of its flex spots on the letter map,
-    whose own punctuation is `,` `.` `;` and `/`. No real layout model is that bare, so the boards
-    below are made up. What the cycles do to them is the doc's "Boards that lack the keys a cycle
-    names".
+    No real layout model is short of the punctuation keys the generic colloquial cycles name, so
+    the boards below are made up. What the cycles do to such a board is in the doc's "How to
+    actually place the keys on an arbitrary flex map".
  */
 describe("colloquialising a board short of punctuation keys", () => {
     // Of the model, only the number row and the cycles that follow the generic ones matter here;
