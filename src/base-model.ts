@@ -293,6 +293,7 @@ export enum MappingChange {
 // same row (number), or an absolute [flexRow, col] reference to a letter from another row.
 export type FrameMappingEntry = (string | number | null | [number, number]);
 export type FrameMapping = FrameMappingEntry[][];
+export type FrameMappings = Partial<Record<KeymapTypeId, FrameMapping>>;
 
 export const harmonicStaggerOffsets = [1, 0.5, 0, -0.5];
 
@@ -303,6 +304,7 @@ export const KEY_COLOR = {
 }
 
 export type KeyColor = (typeof KEY_COLOR)[keyof typeof KEY_COLOR];
+export type KeyColorClassifier = (label: string, row: KeyboardRows, col: number) => KeyColor;
 
 // Shared data model between the main app (with flex mapping support) and semi-ergo explorer.
 // Used mainly by KeyboardSvg.
@@ -319,7 +321,7 @@ export interface RenderableLayoutModel {
     keyCapWidth?: (row: KeyboardRows, col: number) => (number | undefined);
     keyCapHeight?: (row: KeyboardRows, col: number) => number;
 
-    keyColorClass?: (label: string, row: KeyboardRows, col: number) => KeyColor;
+    keyColorClass?: KeyColorClassifier;
 
     // How many columns are to the left of the split line for each row?
     // (We could actually automatically derive this from the finger assignment...)
@@ -335,22 +337,20 @@ export interface LayoutModel extends RenderableLayoutModel {
     description: string;
 
     // Frame mappings for each supported keymap type, similar to FlexMapping structure.
-    frameMappings: Partial<Record<KeymapTypeId, FrameMapping>>;
-    /*
-        Optional per-layout cycles applied on top of the generic Shift-level colloquialisation,
-        to put the two redundant `(` and `)` keys it frees somewhere the board can use. See
-        `colloquialiseCharMap` in mapping/key-levels.ts and docs/key-levels.md.
-        The cycles of one list all resolve against the same map, so they run independently of each
-        other and no two of them may name the same key.
-     */
+    frameMappings: FrameMappings;
+
+    // Optional per-layout cycles applied on top of the generic Shift-level colloquialisation,
+    // to move the two redundant `(` and `)` keys to a symmetric position.
+    // See `colloquialiseCharMap` in mapping/key-levels.ts and docs/key-levels.md.
     colloquialCycles?: Partial<Record<KeymapTypeId, string[]>>;
 
     // cumulative values relative to home row
     staggerOffsets: number[];
     symmetricStagger: boolean;
 
-    // Finger assignment and key effort arrays have the same shape (number of entries in each row) as the LayoutMappings.
-    // 'null' value used for gaps between keys and keys which require the hand off home position (such as the arrow cluster).
+    // Finger assignment and key effort arrays have the same shape (number of entries in each row)
+    // as the LayoutMappings. 'null' value used for gaps between keys and keys which require
+    // the hand off home position (such as the arrow cluster).
     mainFingerAssignment: (Finger | null)[][];
 
     singleKeyEffort: (number | null)[][];

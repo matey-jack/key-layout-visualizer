@@ -1,4 +1,11 @@
-import {KEY_COLOR, KeyboardRows, KeymapTypeId, type FrameMapping, type LayoutModel} from "../base-model.ts";
+import {
+    KEY_COLOR,
+    KeyboardRows,
+    KeymapTypeId,
+    type FrameMapping,
+    type LayoutModel,
+    FrameMappings, KeyColorClassifier
+} from "../base-model.ts";
 import {mapValues} from "../library/records.ts";
 import {mirror, SymmetricKeyWidth} from "./keyWidth.ts";
 import {ergoFamilyKeyColorClass} from "./layout-functions.ts";
@@ -150,6 +157,7 @@ export function minorErgoslatLayoutModel(midShift: boolean): LayoutModel {
     };
 }
 
+// TODO: should Shaft keys better be tap/hold keys on the thumbs?
 const numberlessAnsi30FrameMapping: FrameMapping = [
     [null],
     ["Esc", 0, 1, 2, 3, 4, null, 5, 6, 7, 8, 9, "⌫"],
@@ -157,21 +165,28 @@ const numberlessAnsi30FrameMapping: FrameMapping = [
     ["⇧", 0, 1, 2, 3, 4, 9, 5, 6, 7, 8, "⇧"],
     ["Ctrl", "Cmd", "↹", "Alt", "⏎", "␣", "AltGr", "-", "Fn", "Ctrl"],
 ];
+const numberlessThumb30FrameMapping: FrameMapping = patchThumb30(ansi30FrameMapping, "{4:0}⏎-", "/{3:9}");
 
-const swapShiftAndShaft = (mapping: FrameMapping): FrameMapping =>
-    mapping.map((row) => row.map((key) => (key === "⇧" ? "⇩" : key === "⇩" ? "⇧" : key)));
+const numberlessFrameMappings: FrameMappings = {
+    [KeymapTypeId.Ansi30]:  numberlessAnsi30FrameMapping,
+    [KeymapTypeId.Thumb30]:  numberlessThumb30FrameMapping,
+};
 
-/*
-    The two modifier pairs sit at the ends of the home and the lower row, and the ergo family rule
-    colours only the home row's: on a numbered board the lower row's outer columns hold letters, so
-    it leaves them boring. Here both pairs are modifiers, and both take the edge colour – whichever
-    of the two rows MidShift has put them in.
- */
-const numberlessKeyColorClass = (
-    inherited: LayoutModel["keyColorClass"]
-): LayoutModel["keyColorClass"] =>
-    (label, row, col) =>
-        label === "⇧" || label === "⇩" ? KEY_COLOR.EDGE : inherited!(label, row, col);
+function swapShiftAndShaft(mapping: FrameMapping): FrameMapping {
+    return mapping.map((row) =>
+        row.map((key) =>
+            (key === "⇧" ? "⇩" : key === "⇩" ? "⇧" : key)
+        ));
+}
+
+function swapAllShiftShaft(frameMappings:  FrameMappings):  FrameMappings {
+    // TODO: return `frameMappings` with `swapShiftAndShaft` applied to each element.
+}
+
+function numberlessKeyColorClass(base: KeyColorClassifier): KeyColorClassifier {
+    return (label, row, col) =>
+        label === "⇧" || label === "⇩" ? KEY_COLOR.EDGE : base(label, row, col);
+}
 
 export function numberlessErgoslatLayoutModel(midshift: boolean): LayoutModel {
     // we always use the lowshift minor model as base, because we'll use the larger keys for Shaft.
@@ -187,12 +202,8 @@ export function numberlessErgoslatLayoutModel(midshift: boolean): LayoutModel {
 
         mainFingerAssignment: [[null], ...base.mainFingerAssignment.slice(1, 5)],
         singleKeyEffort: [[null], ...base.singleKeyEffort.slice(1, 5)],
-        frameMappings: {
-            [KeymapTypeId.Ansi30]: midshift
-                ? swapShiftAndShaft(numberlessAnsi30FrameMapping)
-                : numberlessAnsi30FrameMapping,
-        },
-        keyColorClass: numberlessKeyColorClass(base.keyColorClass),
+        frameMappings: midshift ? swapAllShiftShaft(numberlessFrameMappings) : numberlessFrameMappings,
+        keyColorClass: numberlessKeyColorClass(base.keyColorClass!),
     };
 }
 
