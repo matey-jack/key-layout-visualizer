@@ -9,6 +9,14 @@ Let's try to write down the design principles I used so that LLM-based agents ca
 - Characters, except for the space character (and newline and tab, if you count those as characters), should be placed on 1u keys.
   This makes them easier to exchange for a user's preferences or languages and is also much prettier. 
 
+## Bottom row key sizes
+
+In the bottom row, only the central keys / space bars may have a size of 1.75u. All others need to be maximum 1.5u.
+The space bars should be the largest size of all the sizes used in the bottom row, a minimum of 1.5u and both the same size.
+If there are more than two keys of that size than the outermost keys should also have that size.
+All other keys in the bottom row should adapt to fit, but there can also be gaps between the keys if that helps
+to create a more symmetrical arrangement.
+
 # Uniform symmetric row stagger
 
 The row stagger should be 0.25u symmetric with the higher rows being staggered by that amount towards the center.
