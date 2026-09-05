@@ -9,7 +9,9 @@ bugs:
 
 small improvements:
  - make the back button actually pop the app state back to the previous one. ask Claude for the technological options here.
- - extend Split Ortho full mapping, see branch `split-ortho-full-mapping`
+ - extend Split Ortho full mapping, see branch `split-ortho-full-mapping`.
+   Maybe also add options to reduce the number of bottom row keys so it matches some common commercial keyboards.
+   (And then add affiliate links :D.)
 
 further refactorings:
  - check if some more thumbXX frame mappings can be generated with the patchThumb3x functions.
