@@ -532,10 +532,15 @@ available on the smaller keyboards, but the colloquial mode always is.
 Three pure punctuation keys (coming from the flexmap): `,;`, `.:`, and `-_`.
 
 Shaft layer like the ANSI English numberless, but the punctuation row follows the colloquial set
-from keyboards with a number row: `! @ # $ % ^ & * / ?`. While it would be nice to have `!` and
-`?` and possibly even `/` on the base and Shift layer, having to remap and relearn all three shifted
-key pairs doesn't seem worth it. Especially since the characters `;` and `:` are also very common in
-prosaic writing.
+from keyboards with a number row: `! @ # $ % ^ & * / ?`. Rationale: While it would be nice to have
+`!` and `?` and possibly even `/` on the base and Shift layer, having to remap and relearn all three
+shifted key pairs doesn't seem worth it. Especially since the characters `;` and `:` are also very
+common in prosaic writing.
+
+In German mode (that is, when `ä` is in the base keymap), the AltGr punctuation row changes to
+`! @ # $ % & / * ß ?` (analogous to the Shift level on boards with a number row). The `^`
+character is simply lost in this case, just like the other technical punctuation that all numberless
+boards don't show on their three layers/levels.
 
 ## Excursion: what a colloquial German keymap would look like
 
