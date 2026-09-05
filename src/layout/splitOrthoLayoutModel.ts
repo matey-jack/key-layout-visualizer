@@ -55,7 +55,6 @@ const thumb32Base: FrameMapping = [
 // thumbShift cycles: ⇧ moves to the second thumb key from center on each side.
 // Left side: <S → Cmd/flex-letter spot, Cmd/flex-letter → ⌦ spot, ⌦ → <S spot.
 const SO_LEFT_TS_ANSI = "<SC⌦";    // for Ansi30 and Ansi32
- // for Thumb30 and Thumb32
 
 export const splitOrthoLayoutModel = (thumbShift: boolean) : LayoutModel => ({
     name: "Split Ergonomic" + (thumbShift ? " Thumb-Shift" : ""),

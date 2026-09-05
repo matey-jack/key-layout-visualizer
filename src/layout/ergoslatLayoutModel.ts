@@ -187,13 +187,13 @@ const numberlessThumb30FrameMapping: FrameMapping = patchThumb30(numberlessAnsi3
 const numberlessAnsi32FrameMapping: FrameMapping = permute(numberlessAnsi30FrameMapping, "{1:10}'", "{2:10}-");
 const numberlessThumb32FrameMapping: FrameMapping = patchThumb32(numberlessAnsi32FrameMapping, "{4:0}⏎{2:10}");
 
-export function numberlessErgoslatLayoutModel(midshift: boolean): LayoutModel {
+export function numberlessErgoslatLayoutModel(midShift: boolean): LayoutModel {
     // We always use the lowshift minor model as base, because we'll never place character keys there.
     const base = minorErgoslatLayoutModel(false);
     const LEFT_MIDSHIFT_CYCLE = "<⇧↹AC<^";
     return {
         ...base,
-        name: "Numberless Ergoslat 13/3" + (midshift ? " MidShift" : ""),
+        name: "Numberless Ergoslat 13/3" + (midShift ? " MidShift" : ""),
         description: `This is the only numberless layout model in this app and it isn't as fine-tuned as other keyboards here.
         With such a small board, users would probably configure tap/hold keys and other firmware tricks that this app can't show.
         But what we can show is a pair of Shaft keys ⇩ which take AltGr's role, but are mapped on both sides of the keyboard, 
@@ -209,16 +209,16 @@ export function numberlessErgoslatLayoutModel(midshift: boolean): LayoutModel {
         // Ansi32 is the one frame whose home row ends in a letter rather than in punctuation or
         // Return, so there the right Shift swaps with that letter and Return stays on the bottom
         // row - with 32 flex spots to house, the letter area has none to spare for it.
-        frameMappings: midshift ? {
-            [KeymapTypeId.Ansi30]:  permute(numberlessAnsi30FrameMapping, LEFT_MIDSHIFT_CYCLE, ">⇧-⌦⏎"),
-            [KeymapTypeId.Ansi32]:  permute(numberlessAnsi32FrameMapping, LEFT_MIDSHIFT_CYCLE, ">⇧{2:10}"),
-            [KeymapTypeId.Thumb30]:  permute(numberlessThumb30FrameMapping, LEFT_MIDSHIFT_CYCLE, ">⇧⏎"),
-            [KeymapTypeId.Thumb32]:  permute(numberlessThumb32FrameMapping, LEFT_MIDSHIFT_CYCLE, ">⇧⏎"),
+        frameMappings: midShift ? {
+            [KeymapTypeId.Ansi30]: permute(numberlessAnsi30FrameMapping, LEFT_MIDSHIFT_CYCLE, ">⇧-⌦⏎"),
+            [KeymapTypeId.Ansi32]: permute(numberlessAnsi32FrameMapping, LEFT_MIDSHIFT_CYCLE, ">⇧{2:10}"),
+            [KeymapTypeId.Thumb30]: permute(numberlessThumb30FrameMapping, LEFT_MIDSHIFT_CYCLE, ">⇧⏎"),
+            [KeymapTypeId.Thumb32]: permute(numberlessThumb32FrameMapping, LEFT_MIDSHIFT_CYCLE, ">⇧⏎"),
         } : {
-            [KeymapTypeId.Ansi30]:  numberlessAnsi30FrameMapping,
-            [KeymapTypeId.Ansi32]:  numberlessAnsi32FrameMapping,
-            [KeymapTypeId.Thumb30]:  numberlessThumb30FrameMapping,
-            [KeymapTypeId.Thumb32]:  numberlessThumb32FrameMapping,
+            [KeymapTypeId.Ansi30]: numberlessAnsi30FrameMapping,
+            [KeymapTypeId.Ansi32]: numberlessAnsi32FrameMapping,
+            [KeymapTypeId.Thumb30]: numberlessThumb30FrameMapping,
+            [KeymapTypeId.Thumb32]: numberlessThumb32FrameMapping,
         },
         keyColorClass: numberlessKeyColorClass(base.keyColorClass!),
     };
