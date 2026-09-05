@@ -14,8 +14,7 @@ import {
 
 /*
     The three levels of a numberless board, which has to fit on them what a numbered one spreads
-    over four rows. docs/key-levels.md ("Numberless keyboards") is the canonical description of
-    what the tables below contain and why.
+    over four rows. Its section of the doc is "Numberless keyboards".
  */
 
 /*
@@ -39,11 +38,6 @@ export const numberlessInternationalShiftPairs: ShiftPairs = {
     numbered ones: a 30-key map always draws `/`, and the 32-key character set never had one. It
     does not matter that the `/` comes from the flex map on one frame and from the frame itself on
     the thumb one - either way it marks the same 30-key character set.
-
-    The keymap type would answer this outright, since the numberless board takes only those two
-    families, but it is not at hand: every function here is given the merged char map alone, and
-    threading the type in from the app would touch getKeyLevels and shiftPairingFor as well. Nor
-    would it get us rid of the char map, because the German exception below keys on the `ä` in it.
  */
 export const isNumberlessInternational = (charMap: string[][]): boolean => !draws(charMap, "/");
 

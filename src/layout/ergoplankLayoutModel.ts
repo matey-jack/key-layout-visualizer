@@ -87,7 +87,6 @@ export const ergoplankLayoutModel: LayoutModel = {
     symmetricStagger: true,
 
     colloquialCycles: {
-        // Ansi30 is already good
         [KeymapTypeId.Thumb30]: ["()\\"],
     },
 

@@ -47,7 +47,7 @@ export const harmonic12LayoutModel: LayoutModel = {
 
     colloquialCycles: {
         [KeymapTypeId.Ansi30]: ["-=)"],
-        // can't think of a good solution for the Thumb30; and the bespoke is out of scope.
+        // No good solution for the Thumb30; the bespoke keymap is out of scope.
     },
 
     frameMappings: {

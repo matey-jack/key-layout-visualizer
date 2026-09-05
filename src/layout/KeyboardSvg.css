@@ -1,5 +1,4 @@
-/* The AltGr level: its characters and the AltGr key that reaches them share this colour.
-   Declared here (and not in app.css) so that the SVG export, which copies this stylesheet
+/* Declared here (and not in app.css) so that the SVG export, which copies this stylesheet
    into the exported file, resolves it too. */
 :root {
     --altgr-level-color: #1f6fb2;

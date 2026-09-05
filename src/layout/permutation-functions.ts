@@ -24,6 +24,8 @@ import {copyKeymap} from "./layout-functions.ts";
 // always wins, and a tie between two such 2-char labels is left unresolved (so findToken throws).
 //
 // Semantics of "abc": a takes the place of b, b takes the place of c, c takes the place of a.
+// Every cycle of one call resolves its keys against the mapping as it was given, so two cycles
+// applied together must not name a key in common.
 // A key entering the mapping (new) may appear only as the FIRST token; a key leaving only as the
 // LAST. With both present the cycle is an open chain: the first key is placed, the last is dropped,
 // and there is no wrap-around (so the column count stays the same).

@@ -44,12 +44,11 @@ export const harmonic14TraditionalLayoutModel: LayoutModel = {
 
     colloquialCycles: {
         [KeymapTypeId.Ansi30]: ["`)("],
-        // The standard placement has `/` in the bottom row and thus the colloquial `-` lands there, too.
-        // The second cycle rescues it to a better position. The two are independent: every cycle of
-        // a list resolves against the same map, so they must not name a key in common.
+        // The standard placement has `/` in the bottom row and thus the colloquial `-` lands there,
+        // too; the second cycle rescues it to a better position.
         [KeymapTypeId.Thumb30]: ["([", "`-=\\"],
     },
-    
+
     frameMappings: {
         [KeymapTypeId.Harmonic14T]: fullMapping,
         [KeymapTypeId.Ansi30]: [

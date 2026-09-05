@@ -35,7 +35,6 @@ import {
     boards that have none, and mapping/key-level-functions.ts the mechanics both build on. This
     file also holds what the two have in common towards the app: the ShiftPairing a board and key
     map take, and the getKeyLevels that picks the right set of tables for a board.
-    docs/key-levels.md is the canonical description of what the tables below contain and why.
  */
 
 /*
@@ -119,11 +118,8 @@ export const germanInternationalShiftPairs: ShiftPairs = {
 export const hasColloquialLevel = (charMap: string[][], numberRow: boolean): boolean =>
     numberRow && !draws(charMap, "ß");
 
-/*
-    The three keys the standard pairings cannot do without: `'` and `-`, whose characters are
-    nowhere else, and `/`, because a standard number row keeps `9(` and `0)`. A board short of one
-    of them can only be drawn colloquially, and the app then disables the "standard" button.
- */
+// A board short of one of these can only be drawn colloquially - `ForcedColloquial` in
+// details/DetailsArea.tsx tells the user why.
 const standardKeys = ["'", "-", "/"];
 
 export const hasStandardLevel = (charMap: string[][], numberRow: boolean): boolean =>

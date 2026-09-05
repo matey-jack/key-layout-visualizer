@@ -54,7 +54,6 @@ export const ergoboardCentralLayoutModel: LayoutModel = {
     symmetricStagger: true,
 
     colloquialCycles: {
-        // Ansi30 is fine
         [KeymapTypeId.Thumb30]: ["\\(", "=)"],
     },
 

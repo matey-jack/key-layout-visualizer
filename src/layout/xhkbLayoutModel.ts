@@ -187,8 +187,8 @@ export const xhkb14LayoutModel: LayoutModel = {
             ["⇧", 0, 1, 2, 3, 4, "/", 5, 6, 7, 8, "⇧", "⇟"],
             ["Ctrl", "Cmd", "⎀", "Alt", 0, "␣", "AltGr", "CAPS", "Fn", "Ctrl"],
         ],
-        // This includes the `/` key like most other 32-flex frame maps.
-        // It's going to be needed soon when we introduce the "colloquial" switch for this case.
+        // Carries the `/` key like most other 32-key frame maps, which is what keeps the standard
+        // Shift mode available and gives the colloquial one a key to spend on a parenthesis.
         [KeymapTypeId.Ansi32]: [
             ["Esc", "1", "2", "3", "4", "5", "+", "6", "7", "8", "9", "0", "⌫"],
             ["↹", 0, 1, 2, 3, 4, [2, 10], 5, 6, 7, 8, 9, 10, "⇞"],

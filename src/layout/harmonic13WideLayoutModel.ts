@@ -44,7 +44,7 @@ export const harmonic13WideLayoutModel: LayoutModel = {
     symmetricStagger: true,
 
     colloquialCycles: {
-        // Ansi30 is fine by default and the bespoke is out of scope
+        // The bespoke keymap is out of scope.
         [KeymapTypeId.Thumb30]: ["-=)"],
     },
 
