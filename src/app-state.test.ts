@@ -4,14 +4,9 @@ import {createAppState} from "./app-state";
 import {type FlexMapping, KeymapTypeId, type LayoutModel, LayoutType} from "./base-model";
 import {allLayoutModels} from "./all-layout-models.ts";
 import {alignForHex} from "./layout/harmonic-layout-functions.ts";
-import {fillMapping, findMatchingKeymapType, hasMatchingMapping} from "./layout/layout-functions";
+import {fillMapping, hasMatchingMapping} from "./layout/layout-functions";
 import {hasNumberRow} from "./mapping/key-level-functions.ts";
-import {
-    colloquialiseCharMap,
-    hasColloquialLevel,
-    ShiftPairing,
-    shiftPairingFor,
-} from "./mapping/key-levels.ts";
+import {hasColloquialLevel, ShiftPairing, shiftPairingFor} from "./mapping/key-levels.ts";
 import {danishMapping, qwertyMapping, qwertyWideMapping, qwertzMapping} from './mapping/baseMappings.ts';
 import {colemakMapping, colemakThumbyDMapping} from './mapping/colemakMappings.ts';
 import {cozyEnglish} from './mapping/cozyMappings.ts';

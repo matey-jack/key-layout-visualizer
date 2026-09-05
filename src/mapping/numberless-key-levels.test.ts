@@ -1,5 +1,5 @@
 import {describe, expect, it} from "vitest";
-import {type FlexMapping, Hand, KeymapTypeId, type LayoutModel} from "../base-model.ts";
+import {type FlexMapping, Hand, type LayoutModel} from "../base-model.ts";
 import {majorErgoslatLayoutModel, numberlessErgoslatLayoutModel} from "../layout/ergoslatLayoutModel.ts";
 import {fillMapping, getKeyPositions, hasMatchingMapping} from "../layout/layout-functions.ts";
 import {getKeyLevels} from "./key-levels.ts";

@@ -864,7 +864,6 @@ describe("every block entry is placed on every layout model", () => {
         for (const navSide of [Hand.Left, Hand.Right]) {
             const mapping = mappingFor(model);
             const charMap = fillMapping(model, mapping)!;
-            const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
             const chars = Object.values(
                 getAltGrLevel(model, positions, charMap, navSide).flat().filter((c) => c));
             for (const char of lowerRowFallbackChars) {
