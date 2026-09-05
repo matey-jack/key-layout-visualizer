@@ -1,6 +1,6 @@
 import {type FlexMapping, GENERIC_KEYMAP_TYPES, type KeymapTypeId} from "../src/base-model.ts";
 import {allMappings} from "../src/mapping/mappings.ts";
-import {isTableKey, type KeyMap, printKeyTable} from "./key-columns.ts";
+import {isTableKey, type KeyMap, printKeyTable} from "./lib/key-columns.ts";
 
 const keysOf = (rows: string[]) => new Set([...rows.join("")].filter(isTableKey));
 

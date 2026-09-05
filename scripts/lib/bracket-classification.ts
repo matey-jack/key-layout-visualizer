@@ -1,26 +1,26 @@
 /*
     Where the colloquialisation put the `(` and `)` keys of a board, and how well the two read as
     one unit. Shared by bracket-key-positions.ts, which prints it for every layout model, and by
-    bracket-key-positions.test.ts, which pins the verdicts of the boards the design question is
+    bracket-classification.test.ts, which pins the verdicts of the boards the design question is
     about so that a change to `colloquialCycles` cannot move them unnoticed.
  */
-import {KeyboardRows, type KeyPosition, type LayoutModel} from "../src/base-model.ts";
-import {ansiIBMLayoutModel, ansiWideLayoutModel} from "../src/layout/ansiLayoutModel.ts";
-import {ergoboardCentralLayoutModel} from "../src/layout/ergoboardCentralLayoutModel.ts";
-import {ergoboardComfyLayoutModel} from "../src/layout/ergoboardComfyLayoutModel.ts";
-import {ergoplankLayoutModel} from "../src/layout/ergoplankLayoutModel.ts";
-import {splitOrthoLayoutModel} from "../src/layout/splitOrthoLayoutModel.ts";
-import {xhkb13LayoutModel, xhkb14LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "../src/layout/xhkbLayoutModel.ts";
+import {KeyboardRows, type KeyPosition, type LayoutModel} from "../../src/base-model.ts";
+import {ansiIBMLayoutModel, ansiWideLayoutModel} from "../../src/layout/ansiLayoutModel.ts";
+import {ergoboardCentralLayoutModel} from "../../src/layout/ergoboardCentralLayoutModel.ts";
+import {ergoboardComfyLayoutModel} from "../../src/layout/ergoboardComfyLayoutModel.ts";
+import {ergoplankLayoutModel} from "../../src/layout/ergoplankLayoutModel.ts";
+import {splitOrthoLayoutModel} from "../../src/layout/splitOrthoLayoutModel.ts";
+import {xhkb13LayoutModel, xhkb14LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "../../src/layout/xhkbLayoutModel.ts";
 import {
     defaultTotalWidth,
     fillMapping,
     findMatchingKeymapType,
     getKeyPositions,
     hasMatchingMapping,
-} from "../src/layout/layout-functions.ts";
-import {hasNumberRow} from "../src/mapping/key-level-functions.ts";
-import {colloquialiseCharMap, hasColloquialLevel} from "../src/mapping/key-levels.ts";
-import {allMappings} from "../src/mapping/mappings.ts";
+} from "../../src/layout/layout-functions.ts";
+import {hasNumberRow} from "../../src/mapping/key-level-functions.ts";
+import {colloquialiseCharMap, hasColloquialLevel} from "../../src/mapping/key-levels.ts";
+import {allMappings} from "../../src/mapping/mappings.ts";
 
 // The two parenthesis keys, together with the lines they may sit on to count as centred.
 export interface Brackets {

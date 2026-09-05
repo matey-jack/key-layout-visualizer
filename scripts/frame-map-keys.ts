@@ -1,6 +1,6 @@
 import {allLayoutModels} from "../src/all-layout-models.ts";
 import {type FrameMapping, KeymapTypeId, type LayoutModel} from "../src/base-model.ts";
-import {isTableKey, type KeyMap, printKeyTable} from "./key-columns.ts";
+import {isTableKey, type KeyMap, printKeyTable} from "./lib/key-columns.ts";
 import {isCharacterKey} from "../src/mapping/mapping-functions.ts";
 
 // The keymap types a 32-key alphabet uses; a layout model may define either or both of them.

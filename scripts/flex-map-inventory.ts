@@ -1,7 +1,7 @@
 import {type FlexMapping, GENERIC_KEYMAP_TYPES, type KeymapTypeId} from "../src/base-model.ts";
 import {isAnsiCharMap} from "../src/mapping/key-levels.ts";
 import {allMappings} from "../src/mapping/mappings.ts";
-import {pad} from "./key-columns.ts";
+import {pad} from "./lib/key-columns.ts";
 
 /*
     A map is English when every keymap it defines draws the ANSI character set. `isAnsiCharMap` is

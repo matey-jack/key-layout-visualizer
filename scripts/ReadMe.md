@@ -17,8 +17,12 @@ Run one with:
 
     npx tsx scripts/<name>.ts
 
+Every `.ts` file directly in this directory is one of those runnable scripts; the code more than
+one of them shares, and the tests over it, live in `lib/`.
+
 `tsconfig.node.json` includes this directory, so `npm run build` typechecks the scripts along with
-everything else and they cannot rot unnoticed when the tables they read change shape.
+everything else, and they cannot rot unnoticed when the tables they read change shape. `npm test`
+picks up the tests under `lib/` along with those in `src/`.
 
 ### bracket-key-positions.ts
 
@@ -32,9 +36,8 @@ of the boards the design question focuses on, including whether their `[]` keys 
 This is analysis 1 of the parenthesis-key question in `docs/key-levels.md`. Change the colloquialisation
 rules in `src/mapping/key-levels.ts` and run it again to compare.
 
-The classification lives in `bracket-classification.ts` so that `bracket-key-positions.test.ts` can
-read it too: that test pins the verdicts of the focus table, so an edit to a model's
-`colloquialCycles` that moves one of them fails the build instead of scrolling past unnoticed.
+The classification lives in `lib/bracket-classification.ts` so that the test beside it can read it
+too: that test pins the verdicts of the focus table.
 
 ### flex-map-inventory.ts
 
@@ -55,7 +58,7 @@ Shift pairings might ever apply.
 uses the colloquial Shift pairing directly, we need to make sure that all the frame mappings
 actually have base keys matching those Shift pairings.
 
-Both scripts print the same table through `key-columns.ts`, and both drop the letters `a`-`z` and
+Both scripts print the same table through `lib/key-columns.ts`, and both drop the letters `a`-`z` and
 the digits, which every map has anyway. All lines use the same columns: the union of the keys of
 every map listed, most widely shared first and Unicode order breaking the ties, and a map that does
 not have a key leaves its column blank. A column is as wide as the label it stands for, so the

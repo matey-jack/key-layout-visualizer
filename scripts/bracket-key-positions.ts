@@ -3,8 +3,8 @@
     docs/key-levels.md: the colloquial Shift level frees two keys and puts `(<` and `)>` on them,
     and we want to know how often those two land somewhere that reads as one unit.
 
-    The classification itself is in bracket-classification.ts, which bracket-key-positions.test.ts
-    reads too, so the verdicts of the focus table below are pinned against an accidental change.
+    The classification itself is in lib/bracket-classification.ts, and the test next to it pins
+    the verdicts of the focus table below against an accidental change.
 
     Run it, change the colloquialisation rules in key-levels.ts, and run it again to compare:
         npx tsx scripts/bracket-key-positions.ts
@@ -21,7 +21,7 @@ import {
     otherPair,
     type Verdict,
     verdicts,
-} from "./bracket-classification.ts";
+} from "./lib/bracket-classification.ts";
 
 const counts: Record<Verdict, string[]> = {centred: [], pair: [], stack: [], apart: []};
 let skipped = 0;
