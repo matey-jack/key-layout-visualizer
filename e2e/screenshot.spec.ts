@@ -1,12 +1,12 @@
 import { test } from '@playwright/test';
 
-test('capture page state and screenshot', async ({ page }) => {
+test('capture page state and screenshot', async ({ page }, testInfo) => {
   // Set a generous test timeout just in case
   test.setTimeout(45000);
-  
-  const targetUrl = 'http://localhost:3000/key-layout-visualizer/#layout=0&midShift=1&mapping=QWERTY&viz=4&split=0&wide=0&ansi=0&thumbsUp16=0&angle=0';
+
+  const targetUrl = '/key-layout-visualizer/#layout=0&midShift=1&mapping=QWERTY&viz=4&split=0&wide=0&ansi=0&thumbsUp16=0&angle=0';
   console.log(`Navigating to: ${targetUrl}`);
-  
+
   await page.goto(targetUrl);
   
   // Wait for the SVG to render (max 5 seconds)
@@ -15,7 +15,7 @@ test('capture page state and screenshot', async ({ page }) => {
   await page.waitForTimeout(500);
 
   // Take the screenshot immediately so we guarantee we get it even if subsequent queries timeout
-  const screenshotPath = 'C:\\Users\\beaut\\.gemini\\antigravity\\brain\\9d3d755f-407b-4ccc-a1e2-c3d48f0dd601\\screenshot.png';
+  const screenshotPath = testInfo.outputPath('screenshot.png');
   await page.screenshot({ path: screenshotPath, fullPage: true });
   console.log(`Screenshot successfully saved to: ${screenshotPath}`);
 

@@ -1,5 +1,14 @@
 import {expect, test} from '@playwright/test';
 
+// Two resource errors say nothing about the app and appear or not depending on where the tests run:
+// the web font, which a sandboxed or offline environment can't reach, and the favicon the browser
+// asks for on its own and the dev server doesn't serve. Everything else counts, page errors always.
+function isEnvironmentError(entry: { type: string, text: string, location?: { url?: string } }, pageOrigin: string): boolean {
+  if (entry.type !== 'error' || !entry.text.startsWith('Failed to load resource')) return false;
+  const url = entry.location?.url ?? '';
+  return !url.startsWith(pageOrigin) || url.endsWith('/favicon.ico');
+}
+
 test.describe('Keyboard Layout Visualizer', () => {
   test.beforeEach(async ({ page }, testInfo) => {
     // Set up global error collection for all tests
@@ -34,7 +43,8 @@ test.describe('Keyboard Layout Visualizer', () => {
 
   test.afterEach(async ({ page }, testInfo) => {
     // Fail the test if any console errors were collected
-    const errors = (page as any).consoleErrors || [];
+    const pageOrigin = new URL(page.url()).origin;
+    const errors = ((page as any).consoleErrors || []).filter((e) => !isEnvironmentError(e, pageOrigin));
     if (errors.length > 0) {
       console.error(`\n${'='.repeat(60)}`);
       console.error(`Test: ${testInfo.title}`);

@@ -1,5 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// Environments that ship their own Chromium (CI images, cloud dev containers) don't have the build
+// that this Playwright version downloads. Point PLAYWRIGHT_CHROMIUM_PATH at the browser binary and
+// the tests use it instead; unset, Playwright picks its own as usual.
+const executablePath = process.env.PLAYWRIGHT_CHROMIUM_PATH;
+
 export default defineConfig({
   testDir: './e2e',
   fullyParallel: true,
@@ -15,7 +20,10 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        ...(executablePath ? {launchOptions: {executablePath}} : {}),
+      },
     },
     // {
     //   name: 'firefox',
