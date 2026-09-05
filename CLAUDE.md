@@ -11,8 +11,9 @@ If running on WSL or other environments it might be different.
 
 ### Preview app
 
-`npm dev` (Vite) is usally already running. 
-Try connecting to localhost:3000 with the browser before starting the dev server on your own.
+On the author's Windows machine, `npm run dev` (Vite) is usually already running: 
+try connecting to localhost:3000 with the browser before starting the dev server on your own.
+A fresh container has neither the server nor `node_modules`, so there `npm ci` comes first.
 
 #### Outgoing keys stay in the SVG — don't read the DOM right after a switch
 
@@ -28,7 +29,10 @@ Switch to another mapping and back, or reload, and read again — or better, che
 with a `tsx` probe (below) and use the browser only to confirm.
 
 ### `npx tsx -e` must be a SINGLE physical line — multiline silently fails
-On this setup, a multiline `-e` script (and any `-e` using a top-level static `import`)
+**On the Windows shell only.** A Linux container runs multiline `-e` scripts and top-level static
+imports just fine, so there you can ignore this whole section.
+
+On the Windows setup, a multiline `-e` script (and any `-e` using a top-level static `import`)
 exits **0 with zero output** — no error, nothing. It's the shell/tool quoting mangling the
 newlines, *not* an import throwing. Don't misread the silence as a code failure.
 
@@ -42,7 +46,7 @@ visible so it can't masquerade as the silent-multiline trap.
 ### Project basics for ad-hoc inspection
 - `tsx` is available with no install. Project is **ESM**; imports need explicit `.ts`
   extensions (`./src/base-model.ts`).
-- Test runner is vitest (`npm test`), build is `npm run build` (runs `tsc -b` + vite).
+- Which command checks what: see the Testing section of [AGENTS.md](AGENTS.md).
 
 ### `tsx -e` as a read-only "what does this actually evaluate to" probe
 This codebase is mostly **pure functions over data tables** (layout models, frame mappings,

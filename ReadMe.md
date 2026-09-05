@@ -208,7 +208,7 @@ I have committed my [AGENTS.md](AGENTS.md) and [CLAUDE.md](CLAUDE.md) to this re
 so if you run your own agents on this, make sure that you like what's in those files or simply delete them.
 (They are in the repo only to sync them automatically through worktrees.)
 
-After cloning the project and the typical `node install`, you can run `npm run dev` (or similar) to start the app.
+After cloning the project and the typical `npm install`, you can run `npm run dev` (or similar) to start the app.
 That should be enough to make changes in the code and directly see the result in the browser.
 This way, you can make small tweaks to mappings or colors without having to implement actual buttons and switches in the app itself.
 
