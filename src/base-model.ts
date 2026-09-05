@@ -42,7 +42,7 @@ export enum KeymapTypeId {
      Keys per row: 10, 10, 9 plus one thumb key.
      Includes 26 letters plus the punctuation characters `;,.-`.
      Other punctuation is placed by the Layout-specific mapping.
-     For rationale see //thumb30-mapping-format.md
+     For rationale see docs/thumb30-mapping-format.md
      */
     Thumb30 = "thumb30",
 

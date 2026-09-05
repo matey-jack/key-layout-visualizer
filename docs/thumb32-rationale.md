@@ -9,7 +9,7 @@ Actually, I only deleted one argument that wasn't fully logical.
    * **Scope**: 26 letters + 3 language-specific letters (e.g., German Umlauts `äöü`, French accents, Swedish letters) + 3 punctuation characters (`,.-`).
    * **Total**: 32 keys.
 
-2. **`thumb32`** (`[0, 11, 11, 9, 1]` keys per row)
+2. **`thumb32`** (`[0, 11, 10, 10, 1]` keys per row)
    * **Scope**: 26 letters + 3 language-specific letters + 3 punctuation characters (`,.-`).
    * **Total**: 32 keys (31 main row keys + 1 thumb key).
 
@@ -31,8 +31,11 @@ Using the exact same 32-character set as `ansi32` ensures a level playing field 
 * If we introduced a 33rd character in `thumb33` (e.g., `ß` or another punctuation character), any direct comparison with `ansi32` would be skewed because the character frequencies and bigram statistics of the two layouts would evaluate different datasets.
 
 ### 3. Symmetry with the 30-Key Precedent
-Our existing 30-key keymap types follow a clear mapping pattern where the thumb layout is derived by reducing the lower row by one key and moving it to the thumb:
-* **`ansi30`** (`[0, 10, 10, 10, 0]`) $\rightarrow$ **`thumb30`** (`[0, 10, 10, 9, 1]`)
-* **`ansi32`** (`[0, 11, 11, 10, 0]`) $\rightarrow$ **`thumb32`** (`[0, 11, 11, 9, 1]`)
+Each thumb type takes exactly one key out of the three main rows and gives it to the thumb, keeping the character count of its non-thumb counterpart:
+* **`ansi30`** (`[0, 10, 10, 10, 0]`) $\rightarrow$ **`thumb30`** (`[0, 10, 10, 9, 1]`), out of the lower row.
+* **`ansi32`** (`[0, 11, 11, 10, 0]`) $\rightarrow$ **`thumb32`** (`[0, 11, 10, 10, 1]`), out of the home row.
 
-This symmetrical relationship makes the codebase's validation rules, frame mappings, and overall architecture highly uniform, predictable, and easier to maintain.
+`thumb32` therefore takes the 11-key upper row from `ansi32` and the 10-key home row from `thumb30`, which is what its
+description in the code, "mixes Ansi32 and Thumb30", refers to.
+
+This relationship makes the codebase's validation rules, frame mappings, and overall architecture uniform, predictable, and easier to maintain.
