@@ -64,3 +64,13 @@ every map listed, most widely shared first and Unicode order breaking the ties, 
 not have a key leaves its column blank. A column is as wide as the label it stands for, so the
 two-character `` `~ `` label takes two of them. The first line spells out that column order, the
 last one the keys that every map carries.
+
+### frame-map-key-counts.ts
+
+Lists the layout models that define both a 30-key and a 32-key frame mapping, with a count per
+keymap type of the keys that end up carrying a character rather than a command. The count is split
+at the bottom row because a character key down there is one the thumbs have to reach: two boards
+with the same total can still ask quite different things of the hands, and the same board can divide
+the total differently for each of its keymap types.
+
+Which keys those are is `isFrameCharacterKey` in `src/mapping/mapping-functions.ts`.

@@ -1,4 +1,4 @@
-import {keyboardSymbols, type LayoutModel, SKE_HOME} from "../base-model.ts";
+import {type FrameMappingEntry, keyboardSymbols, type LayoutModel, SKE_HOME} from "../base-model.ts";
 
 export const isKeyboardSymbol = (label: string) => keyboardSymbols.includes(label);
 
@@ -16,6 +16,11 @@ export const isCommandKey = (label: string) =>
 // and neither are Return and Space, which isCommandKey does count as character keys.
 export const isCharacterKey = (label: string) =>
     !!label && !isKeyboardSymbol(label) && !isKeyName(label);
+
+// The same question about a frame-mapping cell. A flexspot always ends up carrying a character, no
+// matter which flex mapping fills it, so only the literal labels have to be asked; a gap carries none.
+export const isFrameCharacterKey = (cell: FrameMappingEntry) =>
+    typeof cell === "number" || Array.isArray(cell) || (typeof cell === "string" && isCharacterKey(cell));
 
 // How many characters a board can carry per level. Permuting a char map never changes this, so
 // the plain merged map answers for the colloquialised and numberless ones too.

@@ -121,6 +121,9 @@ export const ansiIBMLayoutModel: LayoutModel = {
             ["↹", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "'", "+"],
             ["CAPS", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "⏎"],
             ["⇧", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "⇧"],
+          // Adding the redundant bottom-row `/` because it's close to the customary lower pinky position.
+          // The same key somewhere in a higher-up row would have less value, because if you retrain yourself to reach up,
+          // you can as well use the colloquial position on Shift+9.
             ["Ctrl", "Cmd", "Alt", "␣", "AltGr", "/", "Fn", "Ctrl"],
         ],
     },
