@@ -27,6 +27,7 @@ import {
     altGrLeft,
     altGrRight,
     ansiShiftPairs,
+    colloquialInternationalShiftPairs,
     colloquialiseCharMap,
     colloquialShiftPairs,
     germanShiftPairs,
@@ -52,15 +53,12 @@ const mappingFor = (model: LayoutModel, name?: string) =>
 const keymapTypeFor = (model: LayoutModel, mappingName?: string) =>
     findMatchingKeymapType(model, mappingFor(model, mappingName))!.typeId;
 
-// The two gates the app reads off a board and key map: whether the colloquial switch has
-// anything to offer, and whether the standard pairing can serve the board at all.
+// The two gates the app reads off a board and key map, one per button of the Shift switch.
 const hasColloquial = (model: LayoutModel, mappingName?: string) =>
-    hasColloquialLevel(fillMapping(model, mappingFor(model, mappingName))!, hasNumberRow(model),
-        keymapTypeFor(model, mappingName));
+    hasColloquialLevel(fillMapping(model, mappingFor(model, mappingName))!, hasNumberRow(model));
 
 const hasStandard = (model: LayoutModel, mappingName?: string) =>
-    hasStandardLevel(fillMapping(model, mappingFor(model, mappingName))!,
-        keymapTypeFor(model, mappingName));
+    hasStandardLevel(fillMapping(model, mappingFor(model, mappingName))!, hasNumberRow(model));
 
 function positionsOf(model: LayoutModel, mappingName?: string): KeyPosition[] {
     return getKeyPositions(model, false, fillMapping(model, mappingFor(model, mappingName))!);
@@ -71,8 +69,7 @@ function shiftLevelByLabel(model: LayoutModel, mappingName?: string): Record<str
     const mapping = mappingFor(model, mappingName);
     const charMap = fillMapping(model, mapping)!;
     const positions = getKeyPositions(model, false, charMap);
-    const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
-    const levels = getKeyLevels(model, positions, charMap, keymapType, Hand.Left, false);
+    const levels = getKeyLevels(model, positions, charMap, Hand.Left, false);
     const result: Record<string, string> = {};
     positions.forEach((p) => {
         const shift = levels.shift[p.row][p.col];
@@ -91,7 +88,7 @@ function colloquialKeys(model: LayoutModel, mappingName?: string) {
     const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
     const charMap = colloquialiseCharMap(fillMapping(model, mapping)!, model, keymapType);
     const positions = getKeyPositions(model, false, charMap);
-    const levels = getKeyLevels(model, positions, charMap, keymapType, Hand.Left, true);
+    const levels = getKeyLevels(model, positions, charMap, Hand.Left, true);
     return positions
         .filter((p) => levels.shift[p.row][p.col])
         .map((p) => ({
@@ -113,8 +110,7 @@ function altGrLevelByLabel(model: LayoutModel, navSide: Hand, mappingName?: stri
     const mapping = mappingFor(model, mappingName);
     const charMap = fillMapping(model, mapping)!;
     const positions = getKeyPositions(model, false, charMap);
-    const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
-    const level = getAltGrLevel(model, positions, charMap, keymapType, navSide);
+    const level = getAltGrLevel(model, positions, charMap, navSide);
     const result: Record<string, string> = {};
     positions.forEach((p) => {
         const char = level[p.row][p.col];
@@ -159,13 +155,12 @@ describe("the ANSI marker", () => {
         expect(isAnsiCharMap([["a", "ö", "ä"]])).toBe(false);
     });
 
-    it("falls to the `(` that the colloquial board puts in place of the `;`", () => {
+    it("is gone from a colloquialised board, whose `;` the rearrangement dissolves", () => {
         const mapping = mappingFor(ansiIBMLayoutModel);
         const keymapType = findMatchingKeymapType(ansiIBMLayoutModel, mapping)!.typeId;
         const charMap = colloquialiseCharMap(
             fillMapping(ansiIBMLayoutModel, mapping)!, ansiIBMLayoutModel, keymapType);
-        expect(charMap.some((row) => row.includes(";"))).toBe(false);
-        expect(isAnsiCharMap(charMap)).toBe(true);
+        expect(isAnsiCharMap(charMap)).toBe(false);
     });
 });
 
@@ -257,8 +252,7 @@ describe("the colloquial level comes out complete on every English board", () =>
         allMappings
             .filter((m) => hasMatchingMapping(model, m))
             .filter((m) => !is32KeyType(findMatchingKeymapType(model, m)!.typeId))
-            .filter((m) => hasColloquialLevel(fillMapping(model, m)!, hasNumberRow(model),
-                findMatchingKeymapType(model, m)!.typeId))
+            .filter((m) => hasColloquialLevel(fillMapping(model, m)!, hasNumberRow(model)))
             .map((m) => [`${model.name} / ${m.name}`, model, m.name] as const));
 
     it("covers every English key map with a number row", () => {
@@ -545,7 +539,7 @@ describe("the 32-key colloquial rearrangement", () => {
         colloquialiseCharMap(fillMapping(model, mappingFor(model, mappingName))!, model,
             keymapTypeFor(model, mappingName)).flat();
 
-    it("spends the `\` and `/` keys where the board draws both", () => {
+    it("spends the `` and `/` keys where the board draws both", () => {
         const labels = labelsOf(ergoplankLayoutModel, "Danish Alphabet");
         expect(labels).toContain("(");
         expect(labels).toContain(")");
@@ -553,7 +547,7 @@ describe("the 32-key colloquial rearrangement", () => {
         expect(labels).not.toContain("/");
     });
 
-    it("falls back to the `` `~ `` key on a board that draws no `\`", () => {
+    it("falls back to the `` `~ `` key on a board that draws no ``", () => {
         const labels = labelsOf(ergoboardCentralLayoutModel, "Danish Alphabet");
         expect(labels).toContain("(");
         expect(labels).toContain(")");
@@ -561,10 +555,31 @@ describe("the 32-key colloquial rearrangement", () => {
         expect(labels).not.toContain("/");
     });
 
-    it("introduces no parenthesis key where the board can spare only one key", () => {
-        // The 14/3 draws a `/` in its bottom row, but neither a `\` nor a backtick.
+    it("falls further to the `=+` key on a board that draws neither", () => {
+        // The 14/3 draws a `/` in its bottom row, but no `\` and no backtick.
         const labels = labelsOf(xhkb14LayoutModel, "Danish Alphabet");
-        expect(labels).toContain("/");
+        expect(labels).toContain("(");
+        expect(labels).toContain(")");
+        expect(labels).not.toContain("=");
+        expect(labels).not.toContain("+");
+        expect(labels).not.toContain("/");
+    });
+
+    /*
+        No real board is short of all three, so this one is made up: only the digits, the flex
+        spots and a `/`. The `=+` key is worth more there than a lone parenthesis key would be.
+     */
+    it("spends the `/` spot on the `=+` key when there is nothing to pair it with", () => {
+        const bare: string[][] = [
+            ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
+            ["q", "w", "e", "r", "t", "z", "u", "i", "o", "p", "ü"],
+            ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä"],
+            ["y", "x", "c", "v", "b", "n", "m", ",", ".", "-"],
+            ["/"],
+        ];
+        const labels = colloquialiseCharMap(bare, ergoplankLayoutModel, KeymapTypeId.Ansi32).flat();
+        expect(labels).toContain("=");
+        expect(labels).not.toContain("/");
         expect(labels).not.toContain("(");
         expect(labels).not.toContain(")");
     });
@@ -580,7 +595,7 @@ describe("the 32-key colloquial rearrangement", () => {
             for (const mapping of allMappings.filter((m) => hasMatchingMapping(model, m))) {
                 const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
                 const plain = fillMapping(model, mapping)!;
-                if (!is32KeyType(keymapType) || !hasColloquialLevel(plain, true, keymapType)) continue;
+                if (!is32KeyType(keymapType) || !hasColloquialLevel(plain, true)) continue;
                 const labels = colloquialiseCharMap(plain, model, keymapType).flat();
                 if (labels.includes("(") !== labels.includes(")")) {
                     lone.push(`${model.name} / ${mapping.name}`);
@@ -590,13 +605,8 @@ describe("the 32-key colloquial rearrangement", () => {
         expect(lone).toEqual([]);
     });
     it("still offers the switch there, because the pairings differ anyway", () => {
-        expect(hasColloquial(xhkb14LayoutModel, "Danish Alphabet")).toBe(true);
         expect(hasColloquial(majorErgoslatLayoutModel(false), "Danish Alphabet")).toBe(true);
-    });
-
-    it("offers nothing to a German map on a board with no key to spare", () => {
-        expect(hasColloquial(majorErgoslatLayoutModel(false), "Qwertz – German Standard")).toBe(false);
-        expect(hasColloquial(ergoplankLayoutModel, "Qwertz – German Standard")).toBe(true);
+        expect(hasColloquial(majorErgoslatLayoutModel(false), "Qwertz – German Standard")).toBe(true);
     });
 });
 
@@ -605,8 +615,6 @@ describe("the 32-key colloquial rearrangement", () => {
     one of them cannot serve the standard pairing and takes the colloquial one alone.
  */
 describe("whether the standard pairing can serve a board", () => {
-    const altGrlessChars = [...`'"-_;:/?`];
-
     it("holds on every English board", () => {
         const without = allLayoutModels
             .filter((model) => hasNumberRow(model))
@@ -615,33 +623,30 @@ describe("whether the standard pairing can serve a board", () => {
         expect(without).toEqual([]);
     });
 
-    it("always holds for the colloquial pairing, which is the point of having one", () => {
-        const gaps: string[] = [];
-        for (const model of allLayoutModels.filter((m) => hasNumberRow(m))) {
-            for (const mapping of allMappings.filter((m) => hasMatchingMapping(model, m))) {
-                const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
-                const plain = fillMapping(model, mapping)!;
-                if (!hasColloquialLevel(plain, true, keymapType)) continue;
-                const charMap = colloquialiseCharMap(plain, model, keymapType);
-                const pairs = shiftPairsFor(charMap, true, keymapType, true);
-                const covered = new Set(charMap.flat().flatMap((label) => [...(pairs[label] ?? "")]));
-                const missing = altGrlessChars.filter((char) => !covered.has(char));
-                if (missing.length) gaps.push(`${model.name} / ${mapping.name}: ${missing.join("")}`);
-            }
-        }
-        expect(gaps).toEqual([]);
-    });
     it("fails on a 32-key board without a `/` key, and holds where there is one", () => {
         expect(hasStandard(majorErgoslatLayoutModel(false), "Danish Alphabet")).toBe(false);
         expect(hasStandard(xhkb13LayoutModel, "Danish Alphabet")).toBe(false);
         expect(hasStandard(ergoplankLayoutModel, "Danish Alphabet")).toBe(true);
     });
 
-    it("holds for a German 32-key map without one, whose own digits carry `/` and `?`", () => {
-        expect(hasStandard(majorErgoslatLayoutModel(false), "Qwertz – German Standard")).toBe(true);
+    /*
+        The German digits would carry `/` and `?` without the key, but the rule stays the plain
+        one: no `/` key, no standard mode. On such a board the two modes draw the same keys
+        anyway, so the forced one is the honest thing to show.
+     */
+    it("fails on a German 32-key map without one too", () => {
+        expect(hasStandard(majorErgoslatLayoutModel(false), "Qwertz – German Standard")).toBe(false);
+        expect(hasStandard(ergoplankLayoutModel, "Qwertz – German Standard")).toBe(true);
     });
 
-    it("fails on a board short of any one of those keys", () => {
+    // The pure German pairing has no colloquial mode to fall back on, so it is never asked.
+    it("is not asked of a keymap that has no colloquial mode", () => {
+        const german = "Qwertz – German Standard";
+        expect(hasColloquial(ansiIBMLayoutModel, german)).toBe(false);
+        expect(hasStandard(ansiIBMLayoutModel, german)).toBe(true);
+    });
+
+    it("fails on a board short of any one of the three keys", () => {
         const board = (...frameKeys: string[]): string[][] => [
             ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
             ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
@@ -652,10 +657,37 @@ describe("whether the standard pairing can serve a board", () => {
         const without = (charMap: string[][], key: string): string[][] =>
             charMap.map((row) => row.filter((label) => label !== key));
         const full = board("'", "-");
-        expect(hasStandardLevel(full, KeymapTypeId.Ansi30)).toBe(true);
-        for (const key of ["'", "-", "/", ";"]) {
-            expect(hasStandardLevel(without(full, key), KeymapTypeId.Ansi30), key).toBe(false);
+        expect(hasStandardLevel(full, true)).toBe(true);
+        for (const key of ["'", "-", "/"]) {
+            expect(hasStandardLevel(without(full, key), true), key).toBe(false);
         }
+        // Dropping the `;` does not: such a board is no longer an English one, and the
+        // international pairings carry `;` and `:` on the `,` and `.` keys.
+        expect(hasStandardLevel(without(full, ";"), true)).toBe(true);
+    });
+});
+
+/*
+    `getKeyLevels` derives the pairing from the board it draws, and a colloquialised one has lost
+    the `;` that marks an English key map - so it arrives at the international table instead. That
+    is only harmless while the two colloquial tables agree on every label such a board draws.
+ */
+describe("the two colloquial tables", () => {
+    it("agree on every label a colloquialised board draws", () => {
+        const divergent: string[] = [];
+        for (const model of allLayoutModels.filter((m) => hasNumberRow(m))) {
+            for (const mapping of allMappings.filter((m) => hasMatchingMapping(model, m))) {
+                const plain = fillMapping(model, mapping)!;
+                if (!hasColloquialLevel(plain, true)) continue;
+                const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
+                const charMap = colloquialiseCharMap(plain, model, keymapType);
+                for (const label of charMap.flat()) {
+                    if (colloquialShiftPairs[label] === colloquialInternationalShiftPairs[label]) continue;
+                    divergent.push(`${model.name} / ${mapping.name}: ${label}`);
+                }
+            }
+        }
+        expect(divergent).toEqual([]);
     });
 });
 
@@ -684,7 +716,7 @@ describe("the international levels cover every 32-key board", () => {
                 ? colloquialiseCharMap(fillMapping(model, mapping)!, model, keymapType)
                 : fillMapping(model, mapping)!;
             const positions = getKeyPositions(model, false, charMap);
-            const levels = getKeyLevels(model, positions, charMap, keymapType, Hand.Left, colloquial);
+            const levels = getKeyLevels(model, positions, charMap, Hand.Left, colloquial);
             const unpaired = positions
                 .filter((p) => p.label && !isKeyName(p.label) && !isKeyboardSymbol(p.label))
                 .filter((p) => !isLetter(p.label))
@@ -704,12 +736,12 @@ describe("the `ß` discriminator", () => {
         expect(shiftLevelByLabel(ansiIBMLayoutModel, "Qwertz – German Standard")["2"]).toBe("2\"");
     });
 
-    it("leaves a map without it on the ANSI pairings, whatever else it carries", () => {
+    it("leaves a map without it to the international pairings, umlauts or not", () => {
         // Umlauts alone are not the German pairings' business: without the `ß?` key such a map
         // draws ANSI punctuation like `'` and `/`, which those pairings do not know at all.
         const umlautsOnly = [["q", "w", "ü", "ö", "ä", "'", "/", "2"]];
-        expect(shiftPairingFor(umlautsOnly, true, KeymapTypeId.Ansi, false)).toBe(ShiftPairing.Ansi);
-        expect(getShiftLevel(umlautsOnly, shiftPairsFor(umlautsOnly, true, KeymapTypeId.Ansi, false)))
+        expect(shiftPairingFor(umlautsOnly, true, false)).toBe(ShiftPairing.GermanInternational);
+        expect(getShiftLevel(umlautsOnly, shiftPairsFor(umlautsOnly, true, false)))
             .toEqual([[null, null, null, null, null, "\"", "?", "@"]]);
     });
 });
@@ -745,7 +777,7 @@ describe("standard German Shift pairings", () => {
         expect(level["'"]).toBe("'\"");
     });
 
-    it("come with no colloquial level, which is defined for English only", () => {
+    it("are the one pairing with no colloquial mode", () => {
         expect(hasColloquial(ansiIBMLayoutModel, german)).toBe(false);
         expect(hasColloquial(ansiIBMLayoutModel)).toBe(true);
     });
@@ -834,7 +866,7 @@ describe("every block entry is placed on every layout model", () => {
             const charMap = fillMapping(model, mapping)!;
             const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
             const chars = Object.values(
-                getAltGrLevel(model, positions, charMap, keymapType, navSide).flat().filter((c) => c));
+                getAltGrLevel(model, positions, charMap, navSide).flat().filter((c) => c));
             for (const char of lowerRowFallbackChars) {
                 expect(chars, `nav on the ${Hand[navSide]} hand`).toContain(char);
             }

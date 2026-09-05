@@ -444,35 +444,34 @@ describe("resolvedKeyLevels", () => {
 
 /*
     Deriving the levels once is only sound because the rules read the character set, which neither
-    the hexagon alignment nor the flipped Return/Rubout nor the colloquial rearrangement changes.
-    The app state therefore resolves them from the plain board, while LayoutArea draws a rearranged
-    one - and this is the property that lets the two agree.
+    the hexagon alignment nor the flipped Return/Rubout changes. The app state therefore resolves
+    them from the plain board, while LayoutArea draws a rearranged one.
+
+    The colloquial rearrangement is the one thing that does change the character set: it takes the
+    `;` that marks an English key map away, so a colloquialised board lands on the international
+    table instead. That the two colloquial tables agree is pinned in mapping/key-levels.test.ts.
  */
 describe("the plain board can speak for the rendered one", () => {
-    it("resolves alike on the plain, the hexagon-aligned and the colloquialised board", () => {
+    it("resolves alike on the plain and the hexagon-aligned board", () => {
         const divergent: string[] = [];
         let combos = 0;
         for (const model of allLayoutModels) {
             const hexed = alignForHex(model);
             for (const mapping of allMappings.filter((m) => hasMatchingMapping(model, m))) {
                 combos++;
-                const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
                 const plain = fillMapping(model, mapping)!;
                 const onHex = fillMapping(hexed, mapping)!;
                 // `true` asks for the colloquial level wherever there is one, which is the case
-                // where the three boards differ most.
+                // where the two boards differ most.
                 const pairing = (charMap: string[][], m: LayoutModel) =>
-                    shiftPairingFor(charMap, hasNumberRow(m), keymapType, true);
+                    shiftPairingFor(charMap, hasNumberRow(m), true);
                 const expected = pairing(plain, model);
-                const actual = {
-                    hexagons: pairing(onHex, hexed),
-                    colloquial: pairing(colloquialiseCharMap(plain, model, keymapType), model),
-                };
-                for (const [board, got] of Object.entries(actual)) {
-                    if (got !== expected) divergent.push(`${model.name} / ${mapping.name}: ${board} says ${got}, plain says ${expected}`);
+                const got = pairing(onHex, hexed);
+                if (got !== expected) {
+                    divergent.push(`${model.name} / ${mapping.name}: hexagons say ${got}, plain says ${expected}`);
                 }
-                if (hasColloquialLevel(onHex, hasNumberRow(hexed), keymapType)
-                    !== hasColloquialLevel(plain, hasNumberRow(model), keymapType)) {
+                if (hasColloquialLevel(onHex, hasNumberRow(hexed))
+                    !== hasColloquialLevel(plain, hasNumberRow(model))) {
                     divergent.push(`${model.name} / ${mapping.name}: hexagons disagree about having a colloquial level`);
                 }
             }

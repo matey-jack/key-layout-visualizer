@@ -20,7 +20,7 @@ const mappingFor = (name?: string): FlexMapping =>
 function levelsByLabel(model: LayoutModel, navSide: Hand, mappingName?: string) {
     const charMap = numberlessCharMap(fillMapping(model, mappingFor(mappingName))!, model);
     const positions = getKeyPositions(model, false, charMap);
-    const levels = getKeyLevels(model, positions, charMap, KeymapTypeId.Ansi30, navSide, false);
+    const levels = getKeyLevels(model, positions, charMap, navSide, false);
     const pair: Record<string, string> = {};
     const shaft: Record<string, string> = {};
     positions.forEach((p) => {

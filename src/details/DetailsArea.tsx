@@ -505,7 +505,8 @@ function ShiftPairingParagraph({pairing, characterKeys}: { pairing: ShiftPairing
         case ShiftPairing.German:
             return <p>
                 <b>Qwertz German</b> – Shift pairings from the German standard keyboard, applied to
-                match the keyboard layout model and flex key map.
+                match the keyboard layout model and flex key map. This is the one pairing with no
+                colloquial variant, so its button above is greyed out.
             </p>;
         default:
             return <p>
@@ -519,9 +520,11 @@ function ShiftPairingParagraph({pairing, characterKeys}: { pairing: ShiftPairing
 // than on the switch itself.
 function ForcedColloquial() {
     return <p>
-        The characters <code>'"-_;:/?</code> are the ones our AltGr level does not carry, so each of
-        them is only ever on the key its Shift pairing puts it on. This board is missing such a key,
-        which is why the standard pairing is not on offer for it.
+        A standard pairing needs a <code>'</code>, a <code>-</code> and a <code>/</code> key: the
+        first two carry characters that are nowhere else, and the third is the only home for
+        <code>/</code> and <code>?</code> while the number row keeps <code>9(</code> and
+        {" "}<code>0)</code>. This board is missing one of them, which is why only the colloquial
+        pairing is on offer for it.
     </p>;
 }
 

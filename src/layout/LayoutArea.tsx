@@ -87,7 +87,7 @@ export function LayoutArea({appState}: LayoutAreaProps) {
 
     const {setLayout, mappingDiff, bigramMovements, vizType, setMapping, navSide} = appState;
     const keyLevels = vizType.value === VisualizationType.MappingShiftLevels
-        ? getKeyLevels(current.layoutModel, current.positions, current.charMap, keymapType,
+        ? getKeyLevels(current.layoutModel, current.positions, current.charMap,
             navSide.value, colloquial)
         : undefined;
     const showFrame = layout.value.type !== LayoutType.Ergosplit &&

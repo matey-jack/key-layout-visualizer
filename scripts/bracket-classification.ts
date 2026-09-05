@@ -87,7 +87,7 @@ export function bracketKeys(
     if (expectedType && keymapType !== expectedType) return undefined;
     const filled = fillMapping(model, mapping);
     if (!filled) return undefined;
-    if (!hasColloquialLevel(filled, hasNumberRow(model), keymapType)) return undefined;
+    if (!hasColloquialLevel(filled, hasNumberRow(model))) return undefined;
     const charMap = colloquialiseCharMap(filled, model, keymapType);
     const positions = getKeyPositions(model, false, charMap, defaultTotalWidth);
     const open = positions.find((p) => p.label === "(");

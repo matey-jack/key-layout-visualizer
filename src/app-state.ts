@@ -322,9 +322,8 @@ function resolveKeyLevels(
     const charMap = fillMapping(model, mapping)!;
     const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
     const numberRow = hasNumberRow(model);
-    const hasColloquial = hasColloquialLevel(charMap, numberRow, keymapType);
-    // With no colloquial level there is nothing to disable, so the standard one stands by default.
-    const hasStandard = !hasColloquial || hasStandardLevel(charMap, keymapType);
+    const hasColloquial = hasColloquialLevel(charMap, numberRow);
+    const hasStandard = hasStandardLevel(charMap, numberRow);
     const colloquial = hasColloquial && (colloquialWanted || !hasStandard);
     return {
         keymapType,
@@ -333,7 +332,7 @@ function resolveKeyLevels(
         hasColloquialLevel: hasColloquial,
         hasStandardLevel: hasStandard,
         colloquial,
-        pairing: shiftPairingFor(charMap, numberRow, keymapType, colloquial),
+        pairing: shiftPairingFor(charMap, numberRow, colloquial),
     };
 }
 

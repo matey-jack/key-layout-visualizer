@@ -74,22 +74,23 @@ interface VisualizationSwitchesProps {
 function LevelSwitches({appState}: { appState: AppState }) {
     return <div class="level-switches">
         <NavSideOptions navSide={appState.navSide}/>
-        {appState.resolvedKeyLevels.value.hasColloquialLevel &&
+        {appState.resolvedKeyLevels.value.hasNumberRow &&
             <ShiftLevelOptions appState={appState}/>}
     </div>
 }
 
-// The board decides, not the switch: a key map that cannot serve the standard pairing is drawn
-// colloquialised whatever the user last picked, so the buttons follow the resolved level.
+// The board decides, not the switch: where only one mode can serve the key map, that one is drawn
+// whatever the user last picked, so the buttons follow the resolved level rather than the signal.
 function ShiftLevelOptions({appState}: { appState: AppState }) {
-    const {colloquial, hasStandardLevel} = appState.resolvedKeyLevels.value;
+    const {colloquial, hasStandardLevel, hasColloquialLevel} = appState.resolvedKeyLevels.value;
     const shiftColloquial = appState.shiftColloquial;
     return <OptionGroup label="Shift level">
         <OptionButton selected={!colloquial} disabled={!hasStandardLevel}
             onClick={() => {shiftColloquial.value = false;}}>
             standard
         </OptionButton>
-        <OptionButton selected={colloquial} onClick={() => {shiftColloquial.value = true;}}>
+        <OptionButton selected={colloquial} disabled={!hasColloquialLevel}
+            onClick={() => {shiftColloquial.value = true;}}>
             colloquial
         </OptionButton>
     </OptionGroup>
