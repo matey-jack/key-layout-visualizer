@@ -1,3 +1,9 @@
+/*
+    Work in progress towards the KLE export listed in TODO.txt: nothing in the app imports this yet.
+    It is a script with a top-level side effect – run it with `npx tsx src/kle-export.ts` and it writes
+    `kle.json` for one hard-coded model and mapping, which you can then load at keyboard-layout-editor.com
+    to see how the SVG picture translates into a keyboard someone could actually build.
+ */
 import {type KleKey, type KleKeyboardMetadata, KleKeyboard, serialize} from '@kcf-hub/kle-serial';
 import type {FlexMapping, LayoutModel} from './base-model.ts';
 import  {isSplit, type LayoutOptions} from './app-model.ts';

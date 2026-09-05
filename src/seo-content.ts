@@ -14,6 +14,8 @@ import {xhkb15LayoutModel} from './layout/xhkbLayoutModel.ts';
 import {allMappings} from "./mapping/mappings.ts";
 
 // No need to include all variants, since this only extracts the description, which is often the same or mostly the same.
+// So this is a shorter list than the equally named one in all-layout-models.ts, which is the one to iterate
+// over when something has to hold for every model.
 export const allLayoutModels: LayoutModel[] = [
     ansiIBMLayoutModel,
     createApple(ansiIBMLayoutModel),
