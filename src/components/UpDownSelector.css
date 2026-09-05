@@ -12,11 +12,6 @@
     color: var(--btn-text);
 }
 
-.up-down-selector .toggle-btn:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-}
-
 .up-down-button {
     font-size: 133%;
     padding: 0.15rem 0.65rem;

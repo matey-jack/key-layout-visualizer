@@ -420,11 +420,14 @@ export function BigramDetailsLegendItem({bigramType, frequency, children}: Bigra
 }
 
 /*
-    The character-key budget each colloquial pairing was designed for. A board with more keys than
-    that maps the surplus twice: on its own peripheral key and on the central AltGr level.
+    The character-key budget each pairing was designed for. A board with more keys than that maps
+    the surplus twice: on its own peripheral key and on the central AltGr level. The standard
+    international pairing needs one key more than the colloquial one, because the `/?` key is the
+    only place it has for `/` and `?`.
  */
 const COLLOQUIAL_KEYS = 40;
 const INTERNATIONAL_KEYS = 43;
+const STANDARD_INTERNATIONAL_KEYS = 44;
 
 function Redundancy({characterKeys, budget}: { characterKeys: number, budget: number }) {
     const redundant = (characterKeys - budget) * 2;
@@ -436,14 +439,14 @@ function Redundancy({characterKeys, budget}: { characterKeys: number, budget: nu
             so no character is mapped twice.</>;
 }
 
-// The body the two international pairings share, so that the German variant only adds its tweak.
-function InternationalPairing({characterKeys}: { characterKeys: number }) {
+// The body the international pairings share, so that each of them only adds what is its own.
+function InternationalPairing({characterKeys, budget}: { characterKeys: number, budget: number }) {
     return <>
         fine-tuning of the ANSI Shift pairings to have all punctuation for prose English writing on
-        the base and Shift levels even on keyboards with as little as {INTERNATIONAL_KEYS} character
+        the base and Shift levels even on keyboards with as little as {budget} character
         keys, leaving space for 26 letter keys. The AltGr level collects the remaining "technical"
         punctuation.
-        <Redundancy characterKeys={characterKeys} budget={INTERNATIONAL_KEYS}/>
+        <Redundancy characterKeys={characterKeys} budget={budget}/>
     </>;
 }
 
@@ -472,16 +475,30 @@ function ShiftPairingParagraph({pairing, characterKeys}: { pairing: ShiftPairing
             </p>;
         case ShiftPairing.International:
             return <p>
-                <b>Colloquial International</b> – <InternationalPairing characterKeys={characterKeys}/>
+                <b>Standard International</b> – the ANSI Shift level on a board that has no{" "}
+                <code>;:</code> key, so those two characters move onto <code>,</code> and{" "}
+                <code>.</code>. Everything else sits where the ANSI keycaps say, which leaves{" "}
+                <code>?</code> on the <code>/?</code> key – the one character key this pairing
+                needs more than the colloquial one.
+                <Redundancy characterKeys={characterKeys} budget={STANDARD_INTERNATIONAL_KEYS}/>
+            </p>;
+        case ShiftPairing.ColloquialInternational:
+            return <p>
+                <b>Colloquial International</b> –{" "}
+                <InternationalPairing characterKeys={characterKeys} budget={INTERNATIONAL_KEYS}/>
                 {" "}(Note that most international layouts put some or all of{" "}
                 <code>[]&#123;&#125;\|</code> on the AltGr level already, but on much worse
                 positions, which are overridden here.)
             </p>;
         case ShiftPairing.GermanInternational:
             return <p>
-                <b>Colloquial International, German variant</b> – this tweaks a few Shift pairings in
-                the right half of the number row to fit the German letter <code>ß</code>. Otherwise
-                it is the same <InternationalPairing characterKeys={characterKeys}/>
+                <b>International, German variant</b> – this tweaks a few Shift pairings in the right
+                half of the number row to fit the German letter <code>ß</code>. Those tweaks happen
+                to settle the only pairings the standard and the colloquial map disagree about, so a
+                German key map has one Shift level either way: the colloquial mode only moves the
+                two keys that become <code>(&lt;</code> and <code>)&gt;</code>, and where the board
+                has none to spare it is not offered at all. Otherwise it is the same{" "}
+                <InternationalPairing characterKeys={characterKeys} budget={INTERNATIONAL_KEYS}/>
                 {" "}(By the way, the standard German keymap also has <code>[]&#123;&#125;\|</code> on
                 the AltGr level, but on much worse positions, which are overridden here.)
             </p>;
@@ -498,6 +515,16 @@ function ShiftPairingParagraph({pairing, characterKeys}: { pairing: ShiftPairing
     }
 }
 
+// Why the standard button is greyed out – said here, where the pairings are explained, rather
+// than on the switch itself.
+function ForcedColloquial() {
+    return <p>
+        The characters <code>'"-_;:/?</code> are the ones our AltGr level does not carry, so each of
+        them is only ever on the key its Shift pairing puts it on. This board is missing such a key,
+        which is why the standard pairing is not on offer for it.
+    </p>;
+}
+
 interface ShiftLevelsDetailsProps {
     keyLevels: ResolvedKeyLevels;
 }
@@ -506,6 +533,7 @@ export function ShiftLevelsDetails({keyLevels}: ShiftLevelsDetailsProps) {
     const numberless = !keyLevels.hasNumberRow;
     return <>
         <ShiftPairingParagraph pairing={keyLevels.pairing} characterKeys={keyLevels.characterKeys}/>
+        {!keyLevels.hasStandardLevel && <ForcedColloquial/>}
         {numberless
             ? <p>
                 The third level is called Shaft here, after the <span class="altgr-level-legend">⇩</span>{" "}

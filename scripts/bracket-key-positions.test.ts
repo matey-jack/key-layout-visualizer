@@ -9,19 +9,19 @@
 import {describe, expect, it} from "vitest";
 import {bracketCell, focusModels, otherPair} from "./bracket-classification.ts";
 
-// layout model -> [ansi30, thumb30, `[]` keys], exactly the cells the script prints.
-const expected: Record<string, [string, string, string]> = {
-    "ANSI": ["pair (num)", "–", "off centre"],
-    "ANSI wide": ["centred stack (upper, home)", "centred stack (upper, home)", "centred"],
-    "Thumbs Up 13/2": ["pair (bottom)", "pair (bottom)", "no `[]` keys"],
-    "Thumbs Up 14/3": ["centred stack (home, upper)", "centred pair (lower)", "no `[]` keys"],
-    "Thumbs Up 15/4": ["centred pair (upper)", "centred pair (upper)", "centred"],
-    "Thumbs Up 16/5": ["centred apart (upper)", "centred apart (upper)", "centred"],
-    "Ergoplank 15/5": ["centred apart (upper)", "centred apart (upper)", "centred"],
-    "Ergoboard 16/5 Central": ["centred apart (upper)", "centred apart (home)", "centred"],
-    "Ergoboard 16/5 Comfy Wide": ["centred apart (lower)", "centred apart (lower)", "centred"],
-    "Split Ortho": ["pair (bottom)", "pair (bottom)", "no `[]` keys"],
-    "Split Ortho, Thumb Shift": ["pair (bottom)", "pair (bottom)", "no `[]` keys"],
+// layout model -> [ansi30, thumb30, ansi32, `[]` keys], exactly the cells the script prints.
+const expected: Record<string, [string, string, string, string]> = {
+    "ANSI": ["pair (num)", "–", "apart (num, bottom)", "off centre"],
+    "ANSI wide": ["centred stack (upper, home)", "centred stack (upper, home)", "apart (num, home)", "centred"],
+    "Thumbs Up 13/2": ["pair (bottom)", "pair (bottom)", "–", "no `[]` keys"],
+    "Thumbs Up 14/3": ["centred stack (home, upper)", "centred pair (lower)", "–", "no `[]` keys"],
+    "Thumbs Up 15/4": ["centred pair (upper)", "centred pair (upper)", "centred pair (num)", "centred"],
+    "Thumbs Up 16/5": ["centred apart (upper)", "centred apart (upper)", "centred apart (num)", "centred"],
+    "Ergoplank 15/5": ["centred apart (upper)", "centred apart (upper)", "centred pair (num)", "centred"],
+    "Ergoboard 16/5 Central": ["centred apart (upper)", "centred apart (home)", "apart (num, home)", "centred"],
+    "Ergoboard 16/5 Comfy Wide": ["centred apart (lower)", "centred apart (lower)", "pair (home)", "centred"],
+    "Split Ortho": ["pair (bottom)", "pair (bottom)", "–", "no `[]` keys"],
+    "Split Ortho, Thumb Shift": ["pair (bottom)", "pair (bottom)", "–", "no `[]` keys"],
 };
 
 describe("where the colloquialisation leaves the parenthesis keys", () => {
@@ -33,6 +33,7 @@ describe("where the colloquialisation leaves the parenthesis keys", () => {
         expect([
             bracketCell(model, "Qwerty", "ansi30"),
             bracketCell(model, "Quipper Thumby", "thumb30"),
+            bracketCell(model, "Danish Alphabet", "ansi32"),
             otherPair(model, "Qwerty"),
         ]).toEqual(expected[name]);
     });

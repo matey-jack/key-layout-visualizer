@@ -77,30 +77,68 @@ export const colloquialShiftPairs: ShiftPairs = {
 };
 
 /*
-    The generic international pairings, which every 32-key flex map takes whatever alphabet it
-    maps. They are the colloquial ones plus the punctuation keys a 32-key frame mapping may draw:
-    `+` is the alternative label of the `=+` key, and `/?` is redundant with the number row's `9/`
-    and `0?` – the roomier frame mappings carry it anyway. (`#` is not among them: it stands in
-    for a key only on the standard German pairings, where it is the `#'` key.)
+    The pairings a 32-key flex map takes in the standard Shift mode, whatever alphabet it maps:
+    the ANSI Shift level minus the `;:` key, which the 32-key character set never had. Its
+    two characters move onto `,` and `.`, and stay there in both Shift modes. `+` is the
+    alternative label of the `=+` key. (`#` is not among them: it stands in for a key only on the
+    standard German pairings, where it is the `#'` key.)
  */
 export const internationalShiftPairs: ShiftPairs = {
-    ...colloquialShiftPairs,
-    "+": "=+", "/": "/?",
+    "1": "1!", "2": "2@", "3": "3#", "4": "4$", "5": "5%",
+    "6": "6^", "7": "7&", "8": "8*", "9": "9(", "0": "0)",
+    ",": ",;", ".": ".:", "'": "'\"", "=": "=+", "+": "=+", "-": "-_", "/": "/?",
+    "`": "`~", "`~": "`~", "[": "[{", "]": "]}", "\\": "\\|",
+};
+
+/*
+    The colloquial variant: `/` and `?` move onto the two digits whose ANSI characters the AltGr
+    level carries anyway, which frees the `/?` key for one of the mixed parenthesis keys the
+    rearrangement below introduces.
+ */
+export const colloquialInternationalShiftPairs: ShiftPairs = {
+    ...internationalShiftPairs,
+    "9": "9/", "0": "0?", "(": "(<", ")": ")>",
 };
 
 /*
     The German exception among the 32-key maps: `ß` claims a Shift spot in the number row, and `&`
     and `/` move to the digits that carry them on a German keyboard. (`8*` already agrees.) `2@`
-    stays, so these maps have `@` on the Shift level and need none on AltGr.
+    stays, so these maps have `@` on the Shift level and need none on AltGr. `9` and `0` are the
+    only two pairings the two Shift modes disagree about, and this table settles both, so German
+    takes one table for both modes: there the colloquial switch moves keys, it changes no pairing.
  */
 export const germanInternationalShiftPairs: ShiftPairs = {
-    ...internationalShiftPairs,
+    ...colloquialInternationalShiftPairs,
     "6": "6&", "7": "7/", "9": "9ß",
 };
 
-// The colloquial Shift level is defined for the English character set only.
-export const hasColloquialLevel = (charMap: string[][], hasNumberRow: boolean): boolean =>
-    hasNumberRow && isAnsiCharMap(charMap);
+// The `ä` of a German 32-key map is what the international exception keys on; the other
+// alphabets, English included, share the generic table.
+export const isGermanCharMap = (charMap: string[][]): boolean => draws(charMap, "ä");
+
+/*
+    The two keys a 32-key board gives up to the mixed parenthesis keys `(<` and `)>`: the `\` key,
+    or the `` `~ `` key where the board draws none, plus the `/` key. Both characters remain on the
+    AltGr level, and `/` and `?` move onto the digits. A board that can spare only one of the two
+    keeps what it has - a lone parenthesis key is not worth a key position.
+ */
+const bracketKeysFor = (charMap: string[][]): [string, string] | null => {
+    const backtick = draws(charMap, "`~") || draws(charMap, "`");
+    const opener = draws(charMap, "\\") ? "\\" : backtick ? "`" : null;
+    return opener && draws(charMap, "/") ? [opener, "/"] : null;
+};
+
+/*
+    Whether the colloquial switch has anything to offer. On the English maps the character set
+    decides. A 32-key map always has its different number row to show - except a German one, whose
+    pairings are the same either way, so there only the key swap is left to offer.
+ */
+export const hasColloquialLevel = (
+    charMap: string[][], hasNumberRow: boolean, keymapType: KeymapTypeId
+): boolean =>
+    hasNumberRow && (is32KeyType(keymapType)
+        ? !isGermanCharMap(charMap) || bracketKeysFor(charMap) !== null
+        : isAnsiCharMap(charMap));
 
 // The pairing tables, and thus the rules that pick one, are described in the doc's
 // "[App] Shift level" and "A generic international Shift pairing for punctuation" sections.
@@ -110,6 +148,7 @@ export enum ShiftPairing {
     German = "german",
     Colloquial = "colloquial",
     International = "international",
+    ColloquialInternational = "colloquialInternational",
     GermanInternational = "germanInternational",
 }
 
@@ -117,12 +156,11 @@ export function shiftPairingFor(
     charMap: string[][], hasNumberRow: boolean, keymapType: KeymapTypeId, colloquial: boolean
 ): ShiftPairing {
     if (!hasNumberRow) return ShiftPairing.Numberless;
-    // The `ä` of a German 32-key map is what the international exception keys on; the other
-    // alphabets, English included, share the generic table.
     if (is32KeyType(keymapType)) {
-        return draws(charMap, "ä") ? ShiftPairing.GermanInternational : ShiftPairing.International;
+        if (isGermanCharMap(charMap)) return ShiftPairing.GermanInternational;
+        return colloquial ? ShiftPairing.ColloquialInternational : ShiftPairing.International;
     }
-    if (colloquial && hasColloquialLevel(charMap, hasNumberRow)) return ShiftPairing.Colloquial;
+    if (colloquial && hasColloquialLevel(charMap, hasNumberRow, keymapType)) return ShiftPairing.Colloquial;
     // Of the two standard pairings, only the German one has a `ß?` key, so its letter decides.
     // There is room for it on layout-model-specific flex maps only.
     return draws(charMap, "ß") ? ShiftPairing.German : ShiftPairing.Ansi;
@@ -134,6 +172,7 @@ const shiftPairsByPairing: Record<ShiftPairing, ShiftPairs> = {
     [ShiftPairing.German]: germanShiftPairs,
     [ShiftPairing.Colloquial]: colloquialShiftPairs,
     [ShiftPairing.International]: internationalShiftPairs,
+    [ShiftPairing.ColloquialInternational]: colloquialInternationalShiftPairs,
     [ShiftPairing.GermanInternational]: germanInternationalShiftPairs,
 };
 
@@ -141,6 +180,21 @@ export const shiftPairsFor = (
     charMap: string[][], hasNumberRow: boolean, keymapType: KeymapTypeId, colloquial: boolean
 ): ShiftPairs =>
     shiftPairsByPairing[shiftPairingFor(charMap, hasNumberRow, keymapType, colloquial)];
+
+/*
+    The eight characters the AltGr level does not carry: each is reachable only through the key
+    whose Shift pairing holds it. A board that draws no such key cannot serve the standard pairing
+    at all, and the app then offers the colloquial one alone. Reading them off the table rather
+    than naming the keys is what makes this right for the German 32-key maps too, whose `7/` and
+    `0?` cover `/` and `?` without a `/` key.
+ */
+const altGrlessChars = [..."'\"-_;:/?"];
+
+export const hasStandardLevel = (charMap: string[][], keymapType: KeymapTypeId): boolean => {
+    const pairs = shiftPairsFor(charMap, true, keymapType, false);
+    const covered = new Set(charMap.flat().flatMap((label) => [...(pairs[label] ?? "")]));
+    return altGrlessChars.every((char) => covered.has(char));
+};
 
 /*
     Some layout models label the `=+` key with its shifted character (see "Showing the Shift and
@@ -160,6 +214,13 @@ const normaliseEqualsKey = (charMap: string[][]): string[][] =>
 const genericCyclesFor = (charMap: string[][]): string[] =>
     draws(charMap, "=") || draws(charMap, "'") ? [")=';", "(-/"] : [")=';", "=-/"];
 
+// The 32-key boards give up two keys instead, and only ever those two - their prosaic punctuation
+// is already in place, so nothing else has to move.
+const international32CyclesFor = (charMap: string[][]): string[] => {
+    const keys = bracketKeysFor(charMap);
+    return keys ? [`(${keys[0]}`, `)${keys[1]}`] : [];
+};
+
 /**
  * The board as the colloquial Shift level shows it: the generic rearrangement above, followed by
  * the layout model's own cycles where it defines any. Returns the char map unchanged when the
@@ -168,9 +229,11 @@ const genericCyclesFor = (charMap: string[][]): string[] =>
 export function colloquialiseCharMap(
     charMap: string[][], model: LayoutModel, keymapType: KeymapTypeId
 ): string[][] {
-    if (!hasColloquialLevel(charMap, hasNumberRow(model))) return charMap;
+    if (!hasColloquialLevel(charMap, hasNumberRow(model), keymapType)) return charMap;
     const normalised = normaliseEqualsKey(charMap);
-    const generic = permuteAvailable(normalised, ...genericCyclesFor(normalised)) as string[][];
+    const generic = permuteAvailable(normalised, ...(is32KeyType(keymapType)
+        ? international32CyclesFor(normalised)
+        : genericCyclesFor(normalised))) as string[][];
     const cycles = model.colloquialCycles?.[keymapType] ?? [];
     // A separate pass: permute resolves every cycle against the map it is given, so the layout
     // model's own cycles can only name `(` and `)` once the generic ones have placed them.

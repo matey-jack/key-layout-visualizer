@@ -154,6 +154,9 @@ export interface ResolvedKeyLevels {
     characterKeys: number;
     // Whether the colloquial switch has anything to offer, which is what decides whether it shows.
     hasColloquialLevel: boolean;
+    // Whether the standard pairing can serve this board at all. Where it cannot, the colloquial
+    // one is forced and the switch offers it alone.
+    hasStandardLevel: boolean;
     // Whether the board is actually drawn colloquialised: the switch, but only where the key map
     // has a colloquial level for it to select, and only in the visualization that shows one.
     colloquial: boolean;

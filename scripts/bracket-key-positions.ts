@@ -47,8 +47,8 @@ for (const verdict of verdicts) {
 }
 
 console.log("The boards the design question focuses on:\n");
-const head = ["layout model", "ansi30", "thumb30", "`[]` keys"];
-const widths = [25, 31, 31, 12];
+const head = ["layout model", "ansi30", "thumb30", "ansi32", "`[]` keys"];
+const widths = [25, 31, 31, 31, 12];
 const line = (cells: string[]) => "| " + cells.map((c, i) => c.padEnd(widths[i])).join(" | ") + " |";
 console.log(line(head));
 console.log("|" + widths.map((w) => "-".repeat(w + 2)).join("|") + "|");
@@ -57,6 +57,7 @@ for (const [name, model] of focusModels) {
         name,
         bracketCell(model, "Qwerty", "ansi30"),
         bracketCell(model, "Quipper Thumby", "thumb30"),
+        bracketCell(model, "Danish Alphabet", "ansi32"),
         otherPair(model, "Qwerty"),
     ]));
 }

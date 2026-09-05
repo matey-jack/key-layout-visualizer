@@ -87,7 +87,7 @@ export function bracketKeys(
     if (expectedType && keymapType !== expectedType) return undefined;
     const filled = fillMapping(model, mapping);
     if (!filled) return undefined;
-    if (!hasColloquialLevel(filled, hasNumberRow(model))) return undefined;
+    if (!hasColloquialLevel(filled, hasNumberRow(model), keymapType)) return undefined;
     const charMap = colloquialiseCharMap(filled, model, keymapType);
     const positions = getKeyPositions(model, false, charMap, defaultTotalWidth);
     const open = positions.find((p) => p.label === "(");
@@ -108,8 +108,9 @@ export function otherPair(model: LayoutModel, mappingName: string): string {
     return isCentred(open, close, centreLines(model, positions)) ? "centred" : "off centre";
 }
 
-// One 30-key mapping per keymap type, as the analysis question asks for.
-export const mappingNames = ["Qwerty", "Quipper Thumby"];
+// One mapping per keymap type, as the analysis question asks for. The 32-key maps have their
+// own pairings, but their colloquial mode spends two keys on the parentheses just the same.
+export const mappingNames = ["Qwerty", "Quipper Thumby", "Danish Alphabet"];
 
 /*
     The boards the design question focuses on: everything the layout options mark with a heart,

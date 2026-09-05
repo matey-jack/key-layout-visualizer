@@ -26,7 +26,7 @@ import {getLayoutModel} from "./layout-selection.ts";
 import {enumValues} from "./library/enum.ts";
 import {qwertyMapping} from "./mapping/baseMappings.ts";
 import {hasNumberRow} from "./mapping/key-level-functions.ts";
-import {hasColloquialLevel, shiftPairingFor} from "./mapping/key-levels.ts";
+import {hasColloquialLevel, hasStandardLevel, shiftPairingFor} from "./mapping/key-levels.ts";
 import {characterKeyCount} from "./mapping/mapping-functions.ts";
 import {allMappings} from "./mapping/mappings.ts";
 
@@ -313,7 +313,8 @@ function updateUrlParams(
 /**
  * Applies the key level rules of mapping/key-levels.ts to one board and key map.
  * `colloquialWanted` is the switch as the user left it, which selects a colloquial level only
- * where the key map has one.
+ * where the key map has one - and where the standard pairing cannot serve the board, the
+ * colloquial one is on whatever the switch says.
  */
 function resolveKeyLevels(
     model: LayoutModel, mapping: FlexMapping, colloquialWanted: boolean
@@ -321,13 +322,16 @@ function resolveKeyLevels(
     const charMap = fillMapping(model, mapping)!;
     const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
     const numberRow = hasNumberRow(model);
-    const hasColloquial = hasColloquialLevel(charMap, numberRow);
-    const colloquial = colloquialWanted && hasColloquial;
+    const hasColloquial = hasColloquialLevel(charMap, numberRow, keymapType);
+    // With no colloquial level there is nothing to disable, so the standard one stands by default.
+    const hasStandard = !hasColloquial || hasStandardLevel(charMap, keymapType);
+    const colloquial = hasColloquial && (colloquialWanted || !hasStandard);
     return {
         keymapType,
         hasNumberRow: numberRow,
         characterKeys: characterKeyCount(charMap),
         hasColloquialLevel: hasColloquial,
+        hasStandardLevel: hasStandard,
         colloquial,
         pairing: shiftPairingFor(charMap, numberRow, keymapType, colloquial),
     };

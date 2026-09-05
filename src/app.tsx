@@ -75,16 +75,21 @@ function LevelSwitches({appState}: { appState: AppState }) {
     return <div class="level-switches">
         <NavSideOptions navSide={appState.navSide}/>
         {appState.resolvedKeyLevels.value.hasColloquialLevel &&
-            <ShiftLevelOptions shiftColloquial={appState.shiftColloquial}/>}
+            <ShiftLevelOptions appState={appState}/>}
     </div>
 }
 
-function ShiftLevelOptions({shiftColloquial}: { shiftColloquial: Signal<boolean> }) {
+// The board decides, not the switch: a key map that cannot serve the standard pairing is drawn
+// colloquialised whatever the user last picked, so the buttons follow the resolved level.
+function ShiftLevelOptions({appState}: { appState: AppState }) {
+    const {colloquial, hasStandardLevel} = appState.resolvedKeyLevels.value;
+    const shiftColloquial = appState.shiftColloquial;
     return <OptionGroup label="Shift level">
-        <OptionButton selected={!shiftColloquial.value} onClick={() => {shiftColloquial.value = false;}}>
+        <OptionButton selected={!colloquial} disabled={!hasStandardLevel}
+            onClick={() => {shiftColloquial.value = false;}}>
             standard
         </OptionButton>
-        <OptionButton selected={shiftColloquial.value} onClick={() => {shiftColloquial.value = true;}}>
+        <OptionButton selected={colloquial} onClick={() => {shiftColloquial.value = true;}}>
             colloquial
         </OptionButton>
     </OptionGroup>

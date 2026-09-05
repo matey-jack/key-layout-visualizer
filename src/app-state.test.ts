@@ -413,6 +413,23 @@ describe("resolvedKeyLevels", () => {
         expect(appState.resolvedKeyLevels.value.pairing).toBe(ShiftPairing.Ansi);
     });
 
+    it("forces the colloquial level where the board cannot serve the standard one", () => {
+        window.location.hash = "#viz=8&colloquial=0";
+        const appState = createAppState();
+        appState.setLayout({type: LayoutType.Ergoplank, plankVariant: PlankVariant.ERGOSLAT});
+        appState.setMapping(danishMapping);
+        // The 13/3 has no `/` key, so the ANSI number row would leave `/` and `?` untypeable.
+        expect(appState.resolvedKeyLevels.value.hasStandardLevel).toBe(false);
+        expect(appState.shiftColloquial.value).toBe(false);
+        expect(appState.resolvedKeyLevels.value.colloquial).toBe(true);
+        expect(appState.resolvedKeyLevels.value.pairing).toBe(ShiftPairing.ColloquialInternational);
+
+        // A board with the key to spare leaves the choice to the switch.
+        appState.setLayout({type: LayoutType.Ergoplank, plankVariant: PlankVariant.ERGOPLANK});
+        expect(appState.resolvedKeyLevels.value.hasStandardLevel).toBe(true);
+        expect(appState.resolvedKeyLevels.value.colloquial).toBe(false);
+        expect(appState.resolvedKeyLevels.value.pairing).toBe(ShiftPairing.International);
+    });
     it("follows the selected board and key map", () => {
         window.location.hash = "#layout=0&mapping=QWERTY&viz=8";
         const appState = createAppState();
@@ -454,7 +471,8 @@ describe("the plain board can speak for the rendered one", () => {
                 for (const [board, got] of Object.entries(actual)) {
                     if (got !== expected) divergent.push(`${model.name} / ${mapping.name}: ${board} says ${got}, plain says ${expected}`);
                 }
-                if (hasColloquialLevel(onHex, hasNumberRow(hexed)) !== hasColloquialLevel(plain, hasNumberRow(model))) {
+                if (hasColloquialLevel(onHex, hasNumberRow(hexed), keymapType)
+                    !== hasColloquialLevel(plain, hasNumberRow(model), keymapType)) {
                     divergent.push(`${model.name} / ${mapping.name}: hexagons disagree about having a colloquial level`);
                 }
             }

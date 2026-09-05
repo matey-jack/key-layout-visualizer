@@ -72,9 +72,15 @@ body {
     transition: var(--btn-transition);
 }
 
-.toggle-btn:hover:not(.selected) {
+.toggle-btn:hover:not(.selected):not(:disabled) {
     background-color: var(--btn-hover-bg);
     border-color: var(--btn-hover-border);
+}
+
+/* an option the current board cannot take: still readable, but visibly not on offer */
+.toggle-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
 }
 
 /* passive buttons aren't really clickable toggles, so suppress the hover feedback */

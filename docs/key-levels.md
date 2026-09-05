@@ -19,8 +19,7 @@ and [app], so readers can orient themselves.
 
 Todo in code:
 
-- Enable the explicit "standard" vs "colloquial" Shift pairings also for 32-flexkey mappings. 
-  + Including model-specific permutations, where applicable. 
+- Model-specific permutations of the colloquial 32-flexkey mappings, where applicable.
 - 32-flex key mappings for the Ergoslat numberless.
 - Implement the Nav key replacements.
 - Animate the toggling of the colloquial mapping for English. Only animate the base keys that are
@@ -37,14 +36,14 @@ same. Maps of either kind make use of this to place unconventional characters. S
 to explode complexity by adding a perfectly matched Shift mapping for each combination, we restrict
 ourselves to two conventional Shift maps (US ANSI and German Qwertz) plus several unconventional
 ones. Rules and heuristics then decide which Shift mapping is shown for a given flex map and layout
-model combination. 
+model combination.
 
 Our unconventional Shift pairings are mixing two goals:
-- keep prosaic punctuation keys on the base and Shift level even on small keyboards that have 
-  few pure punctuation keys.
-- offer a common punctuation mapping for other languages, so that we only need to develop one 
-  kind of "international" frame mapping and Shift pairing and use it with several languages.
 
+- keep prosaic punctuation keys on the base and Shift level even on small keyboards that have few
+  pure punctuation keys.
+- offer a common punctuation mapping for other languages, so that we only need to develop one kind
+  of "international" frame mapping and Shift pairing and use it with several languages.
 
 ## [App] Shift level
 
@@ -297,11 +296,11 @@ have space for the `[]\` keys and wants to place Delete on `=+`, then you would 
 permutations with `⌦-';` which lets the `-_` key advance at least a bit towards the center, where
 `=` is in our colloquial mapping, or `'` in the original ANSI.
 
-Small keyboards might not have all the keys moved around by the above permutations. In that case,
-we won't insert the new parenthesis keys, but instead the missing other punctuation key. For 
-example, in the minimal case of a frame mapping that has only digits, flex keys, and no further 
-punctuation, the spots of `;` and `/` will be filled with `'` and `-`. If one of those is 
-already present, but no `+`, then `+` will enter instead.
+Small keyboards might not have all the keys moved around by the above permutations. In that case, we
+won't insert the new parenthesis keys, but instead the missing other punctuation key. For example,
+in the minimal case of a frame mapping that has only digits, flex keys, and no further punctuation,
+the spots of `;` and `/` will be filled with `'` and `-`. If one of those is already present, but no
+`+`, then `+` will enter instead.
 
 ## Using redundant periphery character keys for other purposes
 
@@ -462,29 +461,67 @@ Some facts:
 
 - the 32-flexkey character set never contained the `;` key, so this part of our colloquial Shift
   pairing (`,;` and `.:`) has to be permanent, even when the "colloquial Shift pairing"
-  mode is inactive. (`<>` are already permaenently available on AltGr.)
-- the frame layouts do, however, always contain the `\` key and often also the `/` key, so we can
-  change the colloquial mode to replace both those keys with the new "mixed" parenthesis keys `(<`
-  and `)>`. The resulting Shift pairs in "colloquial mode" are then the same as for English.
+  mode is inactive. (`<>` are already permanently available on AltGr.)
 - When there are 47 character keys and three extra letter, one of the letters replaces `,;` and the
   others replace `[{` and `]}` – that's no problem, because they are also on our default AltGr
-  layer.
+  layer. (Some of our fictional keyboards actually have 49 character keys, unlike any standard board
+  you can buy. Those can show the three international letters and all ANSI characters except `<>` on
+  the base and Shift level only.)
 - The minimum keyboard space for character keys using this mapping is 43: ten digits, 32 flex spots,
-  and the `'"` key placed outside the flex map. (If a keyboard has one more spot, I recommend 
+  and the `'"` key placed outside the flex map. (If a keyboard has one more spot, I recommend
   placing `=+`, for the same reasons as in the colloquial English key map.)
 
-Rejected alternative: we could reduce the footprint to 42 characters keys and still keep the quotes
-`'"` on the Shift level by mapping them onto the `3` and `6` keys, moving the present Shift
-occupants `#` and `^` to the AltGr layer. This conflicts with the German special case below, but
-could still be done as a variant for other languages.
+Now let's introduce "standard" and "colloquial" Shift pairings:
+
+- The only difference in Shift pairings is that standard mode has Shift pairings `9(` and `0)`
+  while colloquial mode has `9/` and `0?`. All other pairings are as in the ANSI colloquial mode.
+- If the keymap doesn't have a `/` key at all, then the colloquial mode will automatically be
+  selected and "standard" will be disabled in the UI. (We still show the buttons, to show the
+  current mode to the user.)
+- If the frame has a `/` key and another redundant character key, then colloquial mode can replace
+  it with the new "mixed" parenthesis keys `(<` and `)>`. The other key selected for this swap is
+  `\|`, backtick-tilde, or `=+` in this order of precedence. (Note that the latter can show as
+  either `+` or `=` on a merged base map.)
+- If the frame has a `/` key and no other redundant key, then colloquial mode simply replaces `/`
+  with `+`.
 
 We make one small exception: when a German flex map (recognizable by its `ä`) is involved, the
-pairings of the digits `6` to `9` become `6& 7/ 8* 9ß` to accommodate the letter `ß` and to move `&`
-and `/` to their conventional German spots. (`8*` stays unchanged.) Since `2@` stays as it is, such
-a map has `@` on the Shift level and doesn't need it on AltGr.
+pairings of the digits `6` to `0` become `6& 7/ 8* 9ß 0?` to accommodate the letter `ß` and to move
+`&` and `/` to their conventional German spots. (`8*` stays unchanged.) Those overrides happen to
+cover the two digits the standard and the colloquial mapping disagree about, so a German map has one
+Shift level either way: there the mode switch only moves the two keys.
 
-((TODO: adapt the AltGr level to include some more characters common on European keyboards. This is
-not critical, since at least the German ones are rarely used, and never in keyboard shortcuts.))
+Rejected alternative for reducing the footprint to 42 characters keys while still keeping the quotes
+`'"` on the Shift level: map them onto the `3` and `6` keys, moving the present Shift occupants `#`
+and `^` to the AltGr layer. This conflicts with the German special case, but could still be done as
+a variant for other languages.
+
+## When the standard pairing is not on offer (TODO: move this section up to English and reword)
+
+`'"-_;:/?` are the characters our AltGr level does not carry, on any of the boards. Each of them is
+therefore only ever on the one key its Shift pairing puts it on, and a keymap that has no such key
+cannot be typed completely. Where that happens the app disables the "standard" mode and shows the
+colloquial pairing alone – on the international mapping above whenever the board draws no `/` key,
+and on an English one that would be short of `'`, `-`, `/` or `;`. It is the colloquial mapping's
+whole purpose to make those keymaps work, so it always has a home for all eight.
+
+## Summary of when each Shift pairing is active
+
+- Highest priority is the pure German Shift pairing, which is active for any keymap that contains a
+  letter `ß`. (Those are rare, because only layout-model-specific keymaps have space for all of
+  `äöü` and `ß`.) This is the only Shift pairing that doesn't offer a colloquial mode. We still 
+  show the mode switch for completeness and disable the "colloquial" button.
+
+- Next highest priority is the English ANSI Shift pairing, which is active any keymap that contains
+  a letter `;`. This automatically includes all the 30-flex-key mappings, but also works for 
+  layout-model-specific keymaps. 
+ 
+- All the remaining keymaps receive the international Shift pairing (possibly with the German 
+  modification).
+
+As explained above, the "standard" mode of English and international Shift pairings will not be 
+available on smaller keyboards, but the colloquial mode is always available.
+
 
 ## Numberless international
 
