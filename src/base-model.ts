@@ -61,6 +61,11 @@ export enum KeymapTypeId {
     Harmonic14T = "harmonic14t",
 }
 
+// The keymap types every layout model can take; each of the others belongs to one model family.
+export const GENERIC_KEYMAP_TYPES: KeymapTypeId[] = [
+    KeymapTypeId.Ansi30, KeymapTypeId.Ansi32, KeymapTypeId.Thumb30, KeymapTypeId.Thumb32,
+];
+
 export interface KeymapType {
     id: KeymapTypeId;
     // Number of mapping spots per row, used for validation.

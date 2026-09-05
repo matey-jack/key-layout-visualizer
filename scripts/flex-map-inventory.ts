@@ -1,11 +1,7 @@
-import {type FlexMapping, KeymapTypeId} from "../src/base-model.ts";
+import {type FlexMapping, GENERIC_KEYMAP_TYPES, type KeymapTypeId} from "../src/base-model.ts";
 import {isAnsiCharMap} from "../src/mapping/key-levels.ts";
 import {allMappings} from "../src/mapping/mappings.ts";
-
-// The keymap types every layout model can take; each of the others belongs to one model family.
-const genericKeymapTypes: KeymapTypeId[] = [
-    KeymapTypeId.Ansi30, KeymapTypeId.Ansi32, KeymapTypeId.Thumb30, KeymapTypeId.Thumb32,
-];
+import {pad} from "./key-columns.ts";
 
 /*
     A map is English when every keymap it defines draws the ANSI character set. `isAnsiCharMap` is
@@ -16,13 +12,11 @@ const genericKeymapTypes: KeymapTypeId[] = [
 const isEnglish = (mapping: FlexMapping): boolean =>
     Object.values(mapping.mappings).every((rows) => isAnsiCharMap(rows.map((row) => [...row])));
 
-const pad = (text: string, width: number) => text + " ".repeat(Math.max(0, width - text.length));
-
 const english = allMappings.filter(isEnglish);
 const modelSpecific = english
     .map((mapping) => [
         mapping,
-        (Object.keys(mapping.mappings) as KeymapTypeId[]).filter((type) => !genericKeymapTypes.includes(type)),
+        (Object.keys(mapping.mappings) as KeymapTypeId[]).filter((type) => !GENERIC_KEYMAP_TYPES.includes(type)),
     ] as const)
     .filter(([, types]) => types.length > 0);
 

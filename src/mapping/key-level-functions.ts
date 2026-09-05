@@ -44,10 +44,6 @@ export type ShiftPairs = Record<string, string>;
 export const byAnyMember = (pairs: string[]): ShiftPairs =>
     Object.fromEntries(pairs.flatMap((pair) => [[pair, pair], [pair[0], pair], [pair[1], pair]]));
 
-// The pairing a key label belongs to, or undefined for letters and non-character keys.
-export const shiftPairFor = (label: string, pairs: ShiftPairs): string | undefined =>
-    pairs[label];
-
 export const getShiftLevel = (charMap: string[][], pairs: ShiftPairs): LevelMap =>
     charMap.map((row) => row.map((label) => pairs[label]?.[1] ?? null));
 

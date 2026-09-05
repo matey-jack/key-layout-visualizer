@@ -1,5 +1,10 @@
 // The shared table of the two key scripts: which map carries which key.
 
+// The keys the tables are about: everything but the letters and digits, which each map carries
+// anyway and which would only pad the table out. A flex map spot spent on a command key is worth
+// a column of its own; a frame mapping is full of them, so that script filters them out on top.
+export const isTableKey = (label: string) => label !== "" && !/^[a-z0-9]$/i.test(label);
+
 export interface KeyMap {
     // What the line is about: a layout model, or a flex mapping.
     name: string;
@@ -8,7 +13,7 @@ export interface KeyMap {
     keys: Set<string>;
 }
 
-const pad = (text: string, width: number) => text + " ".repeat(Math.max(0, width - text.length));
+export const pad = (text: string, width: number) => text + " ".repeat(Math.max(0, width - text.length));
 
 /**
  * `counted` are the maps behind the column order, `rows` the lines to print, which may merge maps

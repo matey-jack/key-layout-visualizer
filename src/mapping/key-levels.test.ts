@@ -20,7 +20,6 @@ import {
     hasNumberRow,
     is32KeyType,
     resolveSlot,
-    shiftPairFor,
 } from "./key-level-functions.ts";
 import {
     altGrDigits,
@@ -124,23 +123,23 @@ function altGrLevelByLabel(model: LayoutModel, navSide: Hand, mappingName?: stri
 
 describe("shift pairings", () => {
     it("finds a pairing by its base character", () => {
-        expect(shiftPairFor(",", ansiShiftPairs)).toBe(",<");
-        expect(shiftPairFor("9", ansiShiftPairs)).toBe("9(");
+        expect(ansiShiftPairs[","]).toBe(",<");
+        expect(ansiShiftPairs["9"]).toBe("9(");
     });
 
     it("finds a pairing by its shifted character, so a `+` key is the ANSI `=+` key", () => {
-        expect(shiftPairFor("+", ansiShiftPairs)).toBe("=+");
+        expect(ansiShiftPairs["+"]).toBe("=+");
     });
 
     it("finds a pairing by the combined label the frame mappings use", () => {
-        expect(shiftPairFor("`~", ansiShiftPairs)).toBe("`~");
+        expect(ansiShiftPairs["`~"]).toBe("`~");
     });
 
     it("has no pairing for letters and non-character keys", () => {
-        expect(shiftPairFor("a", ansiShiftPairs)).toBeUndefined();
-        expect(shiftPairFor("⏎", ansiShiftPairs)).toBeUndefined();
-        expect(shiftPairFor("AltGr", ansiShiftPairs)).toBeUndefined();
-        expect(shiftPairFor("", ansiShiftPairs)).toBeUndefined();
+        expect(ansiShiftPairs["a"]).toBeUndefined();
+        expect(ansiShiftPairs["⏎"]).toBeUndefined();
+        expect(ansiShiftPairs["AltGr"]).toBeUndefined();
+        expect(ansiShiftPairs[""]).toBeUndefined();
     });
 
     it("puts the shifted character on digit and punctuation keys only", () => {
@@ -178,13 +177,13 @@ describe("colloquial Shift pairings", () => {
     };
 
     it("pairs each colloquial label with its own Shift character", () => {
-        expect(shiftPairFor("'", colloquialShiftPairs)).toBe("'\"");
-        expect(shiftPairFor("-", colloquialShiftPairs)).toBe("-_");
-        expect(shiftPairFor("9", colloquialShiftPairs)).toBe("9/");
-        expect(shiftPairFor("(", colloquialShiftPairs)).toBe("(<");
+        expect(colloquialShiftPairs["'"]).toBe("'\"");
+        expect(colloquialShiftPairs["-"]).toBe("-_");
+        expect(colloquialShiftPairs["9"]).toBe("9/");
+        expect(colloquialShiftPairs["("]).toBe("(<");
         // the keys the rearrangement removes are gone from the table
-        expect(shiftPairFor(";", colloquialShiftPairs)).toBeUndefined();
-        expect(shiftPairFor("/", colloquialShiftPairs)).toBeUndefined();
+        expect(colloquialShiftPairs[";"]).toBeUndefined();
+        expect(colloquialShiftPairs["/"]).toBeUndefined();
     });
 
     it("hands `;` to `'`, `'` to `=` and `-` to `/`, and fixes `(` on `-` and `)` on `=`/`+`", () => {
@@ -745,9 +744,9 @@ describe("standard German Shift pairings", () => {
 
     it("replace the base label where the key map draws another character of the key", () => {
         // the frame mapping's `` `~ `` key is the German `^°` key
-        expect(shiftPairFor("`~", germanShiftPairs)).toBe("^°");
+        expect(germanShiftPairs["`~"]).toBe("^°");
         // and a German map that draws `'` means the `#` key
-        expect(shiftPairFor("'", germanShiftPairs)).toBe("#'");
+        expect(germanShiftPairs["'"]).toBe("#'");
     });
 
     it("leave the English maps on the same board with the ANSI pairings", () => {

@@ -1,16 +1,13 @@
 import {allLayoutModels} from "../src/all-layout-models.ts";
 import {type FrameMapping, KeymapTypeId, type LayoutModel} from "../src/base-model.ts";
-import {isKeyboardSymbol, isKeyName} from "../src/mapping/mapping-functions.ts";
-import {type KeyMap, printKeyTable} from "./key-columns.ts";
+import {isTableKey, type KeyMap, printKeyTable} from "./key-columns.ts";
+import {isCharacterKey} from "../src/mapping/mapping-functions.ts";
 
 // The keymap types a 32-key alphabet uses; a layout model may define either or both of them.
 const frameKeymapTypes = [KeymapTypeId.Ansi32, KeymapTypeId.Thumb32];
 
-const isCharacterKey = (label: string) =>
-    label !== "" && !/^[a-z0-9]$/i.test(label) && !isKeyName(label) && !isKeyboardSymbol(label);
-
 const keysOf = (frame: FrameMapping): Set<string> =>
-    new Set(frame.flat().filter((cell) => typeof cell === "string" && isCharacterKey(cell)) as string[]);
+    new Set(frame.flat().filter((cell) => typeof cell === "string" && isTableKey(cell) && isCharacterKey(cell)) as string[]);
 
 const frames: KeyMap[] = allLayoutModels.flatMap((model: LayoutModel) =>
     frameKeymapTypes

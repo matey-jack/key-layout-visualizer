@@ -116,8 +116,8 @@ export const germanInternationalShiftPairs: ShiftPairs = {
 
 // Every pairing but the pure German one has a colloquial mode. The switch itself shows wherever
 // the board has a number row, so both buttons can be disabled independently.
-export const hasColloquialLevel = (charMap: string[][], hasNumberRow: boolean): boolean =>
-    hasNumberRow && !draws(charMap, "ß");
+export const hasColloquialLevel = (charMap: string[][], numberRow: boolean): boolean =>
+    numberRow && !draws(charMap, "ß");
 
 /*
     The three keys the standard pairings cannot do without: `'` and `-`, whose characters are
@@ -126,8 +126,8 @@ export const hasColloquialLevel = (charMap: string[][], hasNumberRow: boolean): 
  */
 const standardKeys = ["'", "-", "/"];
 
-export const hasStandardLevel = (charMap: string[][], hasNumberRow: boolean): boolean =>
-    !hasColloquialLevel(charMap, hasNumberRow)
+export const hasStandardLevel = (charMap: string[][], numberRow: boolean): boolean =>
+    !hasColloquialLevel(charMap, numberRow)
     || standardKeys.every((key) => draws(charMap, key));
 
 // The pairing tables, and thus the rules that pick one, are described in the doc's
@@ -149,9 +149,9 @@ export enum ShiftPairing {
     one dissolves the very `;` key an English map is known by.
  */
 export function shiftPairingFor(
-    charMap: string[][], hasNumberRow: boolean, colloquial: boolean
+    charMap: string[][], numberRow: boolean, colloquial: boolean
 ): ShiftPairing {
-    if (!hasNumberRow) {
+    if (!numberRow) {
         return isNumberlessInternational(charMap)
             ? ShiftPairing.NumberlessInternational : ShiftPairing.Numberless;
     }
