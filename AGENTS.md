@@ -42,7 +42,8 @@ names), so you can open the app directly in the state you want to look at.
   Set `PLAYWRIGHT_CHROMIUM_PATH` if the environment brings its own Chromium instead of Playwright's own download.
 - `npm run e2e:ui` - Run tests with UI mode for debugging, only for human use!
 
-CI ([build.yml](.github/workflows/build.yml)) runs `npm test` and `npm run build`, not the e2e tests and not the linter.
+CI ([build.yml](.github/workflows/build.yml)) runs all of those, the e2e tests in a job of their own,
+and deploys only when both jobs are green.
 
 ## Adding a keyboard layout model or variant
 
