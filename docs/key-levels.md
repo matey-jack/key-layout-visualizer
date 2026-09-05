@@ -302,6 +302,19 @@ in the minimal case of a frame mapping that has only digits, flex keys, and no f
 the spots of `;` and `/` will be filled with `'` and `-`. If one of those is already present, but no
 `+`, then `+` will enter instead.
 
+### The very smallest keyboards are forced into colloquial mode
+
+When there are only 40 character keys on a keymap, we need the space for the `'` and `-` keys that
+colloquial mode frees. So whenever one of those two is missing from a keymap, we select colloquial
+mode automatically and disable the "standard" button: the rearrangement puts those keys on the
+spots of `;` and `/`, and nothing else can. The same holds for a keymap without a `/` key, because
+then only the colloquial `9/` and `0?` can still type `/` and `?`.
+
+The international Shift pairing rules below handle the case where no `;` or `/` is in the base
+keymap in the first place, making sure their characters are still mapped on the Shift level. As a
+nice side effect, that international rule also applies to custom-made pure English keymaps, so we
+really cover a lot of cases.
+
 ## Using redundant periphery character keys for other purposes
 
 If you type on a full-size keyboard with a redundant AltGr mapping for the far-away keys, you can
@@ -462,7 +475,7 @@ Some facts:
 - the 32-flexkey character set never contained the `;` key, so this part of our colloquial Shift
   pairing (`,;` and `.:`) has to be permanent, even when the "colloquial Shift pairing"
   mode is inactive. (`<>` are already permanently available on AltGr.)
-- When there are 47 character keys and three extra letter, one of the letters replaces `,;` and the
+- When there are 47 character keys and three extra letters, one of the letters replaces `;:` and the
   others replace `[{` and `]}` – that's no problem, because they are also on our default AltGr
   layer. (Some of our fictional keyboards actually have 49 character keys, unlike any standard board
   you can buy. Those can show the three international letters and all ANSI characters except `<>` on
@@ -478,8 +491,8 @@ Now let's introduce "standard" and "colloquial" Shift pairings:
 - If the keymap doesn't have a `/` key at all, then the colloquial mode will automatically be
   selected and "standard" will be disabled in the UI. (We still show the buttons, to show the
   current mode to the user.)
-- If the frame has a `/` key and another redundant character key, then colloquial mode can replace
-  it with the new "mixed" parenthesis keys `(<` and `)>`. The other key selected for this swap is
+- If the frame has a `/` key and another redundant character key, then colloquial mode turns those
+  two into the new "mixed" parenthesis keys `(<` and `)>`. The other key selected for this swap is
   `\|`, backtick-tilde, or `=+` in this order of precedence. (Note that the latter can show as
   either `+` or `=` on a merged base map.)
 - If the frame has a `/` key and no other redundant key, then colloquial mode simply replaces `/`
@@ -496,32 +509,23 @@ Rejected alternative for reducing the footprint to 42 characters keys while stil
 and `^` to the AltGr layer. This conflicts with the German special case, but could still be done as
 a variant for other languages.
 
-## When the standard pairing is not on offer (TODO: move this section up to English and reword)
-
-`'"-_;:/?` are the characters our AltGr level does not carry, on any of the boards. Each of them is
-therefore only ever on the one key its Shift pairing puts it on, and a keymap that has no such key
-cannot be typed completely. Where that happens the app disables the "standard" mode and shows the
-colloquial pairing alone – on the international mapping above whenever the board draws no `/` key,
-and on an English one that would be short of `'`, `-`, `/` or `;`. It is the colloquial mapping's
-whole purpose to make those keymaps work, so it always has a home for all eight.
-
 ## Summary of when each Shift pairing is active
 
 - Highest priority is the pure German Shift pairing, which is active for any keymap that contains a
   letter `ß`. (Those are rare, because only layout-model-specific keymaps have space for all of
-  `äöü` and `ß`.) This is the only Shift pairing that doesn't offer a colloquial mode. We still 
+  `äöü` and `ß`.) This is the only Shift pairing that doesn't offer a colloquial mode. We still
   show the mode switch for completeness and disable the "colloquial" button.
 
-- Next highest priority is the English ANSI Shift pairing, which is active any keymap that contains
-  a letter `;`. This automatically includes all the 30-flex-key mappings, but also works for 
-  layout-model-specific keymaps. 
- 
-- All the remaining keymaps receive the international Shift pairing (possibly with the German 
-  modification).
+- Next highest priority is the English ANSI Shift pairing, which is active for any keymap that
+  contains a `;` key. This automatically includes all the 30-flex-key mappings, but also works for
+  layout-model-specific keymaps.
 
-As explained above, the "standard" mode of English and international Shift pairings will not be 
-available on smaller keyboards, but the colloquial mode is always available.
+- All the remaining keymaps receive the international Shift pairing (possibly with the German
+  modification). (This automatically includes all the 32-flexkey maps, because those can't be
+  drawn by the previous rules.)
 
+As explained above, the "standard" mode of the English and international Shift pairings is not
+available on the smaller keyboards, but the colloquial mode always is.
 
 ## Numberless international
 
