@@ -24,7 +24,10 @@ Todo in code:
 - Implement the Nav key replacements.
 - Animate the toggling of the colloquial mapping for English. Only animate the base keys that are
   moving (as current animation logic already does), ignoring the other levels.
-    + It seems this works already in one way. But it should work both ways.
+    + We might need to remove the `=+` exception to keep this simple, because when `+` switches 
+      to `=` underneath that's no visible change, but still shows an animation.
+    + We also need to reason through how previousLayout interacts with the colloquialization to 
+      keep this simple enough in code.
 - Maybe show some options of placing a left-hand AltGr key. Probably on the legacy CAPS key spot.
 - Check some of my favorite English model-specific flex-maps: how do they look with colloquial Shift
   pairings? do I want to fix anything?
