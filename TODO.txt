@@ -3,13 +3,19 @@ Feature ideas that I am not so sure about are in `ideas.txt`.
 
 # KLV main app
 
+bugs:
+- Some problem with SVG download after layout or mapping changes, because it doesn't update fast enough.
+  This needs to be reproduced first.
+
 small improvements:
  - make the back button actually pop the app state back to the previous one. ask Claude for the technological options here.
+ - extend Split Ortho full mapping, see branch `split-ortho-full-mapping`
 
 further refactorings:
  - check if some more thumbXX frame mappings can be generated with the patchThumb3x functions.
 
 missing core features:
+- Shift level is there, but its animations and other details aren't yet working, see docs/key-levels.md
 - SVG export (with a title stating name of layout and keymap) ✅ except:
   - add metadata for to-scale printing (might need PDF?)
   - add a ruler to the SVG so people can zoom to scale on their laptop or tablet
