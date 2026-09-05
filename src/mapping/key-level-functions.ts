@@ -62,10 +62,11 @@ export const emptyLevelMap = (model: LayoutModel): LevelMap =>
     A block is one row per keyboard row, each listing the character for the hand's six columns
     from the board centre outward – entry i is `resolveSlot`'s slot i - 1:
 
-        [inner, centre, index, middle, ring, pinky]
+        [centre, off-index, index, middle, ring, pinky]
 
-    "centre" is the index finger's second column (`g` on the left hand, `h` on the right one), and
-    "inner" the column each hand reaches past it, which only the smallest boards use.
+    "off-index" is the index finger's second column (`g` on the left hand, `h` on the right one), and
+    "centre" the column each hand reaches past it, which is lacking on the smallest boards (Thumbs Up 13/2)
+    and overlapping on other boards (Ergoslat 13/3).
     Mirroring keeps the finger and exchanges the two members of each pair, which is short enough
     to spell out per hand rather than compute.
  */

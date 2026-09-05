@@ -82,7 +82,8 @@ export function LayoutArea({appState}: LayoutAreaProps) {
     const {colloquial, pairing} = appState.resolvedKeyLevels.value;
     const current = renderKeyboard(layoutModel.value, mapping.value, layout.value, hexagons, colloquial);
     const previousPositions = renderKeyboard(
-        prevLayoutModel.value, prevMapping.value, layout.value, hexagons, colloquial).positions;
+        prevLayoutModel.value, prevMapping.value, layout.value, hexagons, colloquial
+    ).positions;
     const keyMovements = getKeyMovements(previousPositions, current.positions);
 
     const {setLayout, mappingDiff, bigramMovements, vizType, setMapping, navSide} = appState;
