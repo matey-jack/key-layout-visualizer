@@ -8,6 +8,7 @@ import {
     type LayoutModel
 } from "../base-model.ts";
 import {mapValues} from "../library/records.ts";
+import {isCommandKey} from "../mapping/mapping-functions.ts";
 import {mirror, SymmetricKeyWidth} from "./keyWidth.ts";
 import {ergoFamilyKeyColorClass} from "./layout-functions.ts";
 import {patchThumb30, patchThumb32, permute} from "./permutation-functions.ts";
@@ -160,9 +161,12 @@ export function minorErgoslatLayoutModel(midShift: boolean): LayoutModel {
     };
 }
 
+// The lower row's edge keys carry modifiers here where the numbered boards have characters, and
+// the shape-derived colouring of the ergo family reads them as letter keys.
 function numberlessKeyColorClass(base: KeyColorClassifier): KeyColorClassifier {
     return (label, row, col) =>
-        (row === KeyboardRows.Lower && (col === 0 || col === 11) && label !== "⏎") ? KEY_COLOR.EDGE : base(label, row, col);
+        (row === KeyboardRows.Lower && (col === 0 || col === 11) && isCommandKey(label))
+            ? KEY_COLOR.EDGE : base(label, row, col);
 }
 
 const numberlessAnsi30FrameMapping: FrameMapping = [
@@ -173,6 +177,15 @@ const numberlessAnsi30FrameMapping: FrameMapping = [
     ["Ctrl", "Cmd", "Alt", "⇩", "⏎", "␣", "⇩", "⌦", "Fn", "Ctrl"],
 ];
 const numberlessThumb30FrameMapping: FrameMapping = patchThumb30(numberlessAnsi30FrameMapping, "{4:0}⏎-", "/{3:9}");
+
+/*
+    A 32-key flex map brings `,.-` of its own, so the two punctuation keys of the thirty-key
+    frame give way to its two extra spots: the home row takes its own eleventh key at the end of
+    the row, where a German key map has its `ä`, and the upper row's eleventh goes to the key
+    between the hands, the only other spot a board this small has to spare.
+ */
+const numberlessAnsi32FrameMapping: FrameMapping = permute(numberlessAnsi30FrameMapping, "{1:10}'", "{2:10}-");
+const numberlessThumb32FrameMapping: FrameMapping = patchThumb32(numberlessAnsi32FrameMapping, "{4:0}⏎{2:10}");
 
 export function numberlessErgoslatLayoutModel(midshift: boolean): LayoutModel {
     // We always use the lowshift minor model as base, because we'll never place character keys there.
@@ -193,12 +206,19 @@ export function numberlessErgoslatLayoutModel(midshift: boolean): LayoutModel {
 
         mainFingerAssignment: [[null], ...base.mainFingerAssignment.slice(1, 5)],
         singleKeyEffort: [[null], ...base.singleKeyEffort.slice(1, 5)],
+        // Ansi32 is the one frame whose home row ends in a letter rather than in punctuation or
+        // Return, so there the right Shift swaps with that letter and Return stays on the bottom
+        // row - with 32 flex spots to house, the letter area has none to spare for it.
         frameMappings: midshift ? {
             [KeymapTypeId.Ansi30]:  permute(numberlessAnsi30FrameMapping, LEFT_MIDSHIFT_CYCLE, ">⇧-⌦⏎"),
+            [KeymapTypeId.Ansi32]:  permute(numberlessAnsi32FrameMapping, LEFT_MIDSHIFT_CYCLE, ">⇧{2:10}"),
             [KeymapTypeId.Thumb30]:  permute(numberlessThumb30FrameMapping, LEFT_MIDSHIFT_CYCLE, ">⇧⏎"),
+            [KeymapTypeId.Thumb32]:  permute(numberlessThumb32FrameMapping, LEFT_MIDSHIFT_CYCLE, ">⇧⏎"),
         } : {
             [KeymapTypeId.Ansi30]:  numberlessAnsi30FrameMapping,
+            [KeymapTypeId.Ansi32]:  numberlessAnsi32FrameMapping,
             [KeymapTypeId.Thumb30]:  numberlessThumb30FrameMapping,
+            [KeymapTypeId.Thumb32]:  numberlessThumb32FrameMapping,
         },
         keyColorClass: numberlessKeyColorClass(base.keyColorClass!),
     };

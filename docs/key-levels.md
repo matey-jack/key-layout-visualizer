@@ -20,7 +20,6 @@ and [app], so readers can orient themselves.
 Todo in code:
 
 - Model-specific permutations of the colloquial 32-flexkey mappings, where applicable.
-- 32-flex key mappings for the Ergoslat numberless.
 - Implement the Nav key replacements.
 - Animate the toggling of the colloquial mapping for English. Only animate the base keys that are
   moving (as current animation logic already does), ignoring the other levels.

@@ -465,6 +465,16 @@ function ShiftPairingParagraph({pairing, characterKeys}: { pairing: ShiftPairing
                 altogether and rearranging the Shift pairings, which keeps at least 12 of the
                 colloquial punctuation characters on the base and Shift levels.
             </p>;
+        case ShiftPairing.NumberlessInternational:
+            return <p>
+                <b>Numberless international blend</b> – same trade as the numberless English
+                blend, but a 32-key flex map spends one of its punctuation spots on a letter, so the
+                board is left with <code>,;</code>, <code>.:</code> and <code>-_</code>. That in
+                turn lets the Shaft level carry <code>!</code>, <code>/</code> and <code>?</code> on
+                the digits they belong to, at the price of the parentheses. A German key map{" "}
+                moves <code>&amp;</code> and <code>/</code> to the digits a German keyboard has them
+                on and fits <code>ß</code> in there too.
+            </p>;
         case ShiftPairing.Colloquial:
             return <p>
                 <b>Colloquial English</b> – fine-tuning of the ANSI Shift pairings to have all

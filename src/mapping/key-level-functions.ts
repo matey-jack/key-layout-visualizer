@@ -29,6 +29,10 @@ export const is32KeyType = (keymapType: KeymapTypeId): boolean =>
 export const draws = (charMap: string[][], char: string): boolean =>
     charMap.some((row) => row.includes(char));
 
+// The `ä` of a German flex map is what the German exceptions key on; the other alphabets,
+// English included, share the generic tables.
+export const isGermanAlphabet = (charMap: string[][]): boolean => draws(charMap, "ä");
+
 /*
     A pairing table maps the label a key map draws onto the two characters to show on that key:
     base character first, shifted character second. Where the two differ, the base level

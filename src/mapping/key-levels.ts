@@ -14,6 +14,7 @@ import {
     getBaseLevel,
     getShiftLevel,
     hasNumberRow,
+    isGermanAlphabet,
     type KeyLevels,
     type LevelMap,
     movedTowardsCentre,
@@ -21,7 +22,12 @@ import {
     resolveSlot,
     type ShiftPairs,
 } from "./key-level-functions.ts";
-import {getNumberlessKeyLevels, numberlessShiftPairs} from "./numberless-key-levels.ts";
+import {
+    getNumberlessKeyLevels,
+    isNumberlessInternational,
+    numberlessInternationalShiftPairs,
+    numberlessShiftPairs,
+} from "./numberless-key-levels.ts";
 
 /*
     The three character levels of a key – base, Shift, and AltGr – on a numbered board, that is one
@@ -110,10 +116,6 @@ export const germanInternationalShiftPairs: ShiftPairs = {
     "6": "6&", "7": "7/", "9": "9ß",
 };
 
-// The `ä` of a German flex map is what the international exception keys on; the other
-// alphabets, English included, share the generic table.
-export const isGermanAlphabet = (charMap: string[][]): boolean => draws(charMap, "ä");
-
 // Every pairing but the pure German one has a colloquial mode. The switch itself shows wherever
 // the board has a number row, so both buttons can be disabled independently.
 export const hasColloquialLevel = (charMap: string[][], hasNumberRow: boolean): boolean =>
@@ -134,6 +136,7 @@ export const hasStandardLevel = (charMap: string[][], hasNumberRow: boolean): bo
 // "[App] Shift level" and "A generic international Shift pairing for punctuation" sections.
 export enum ShiftPairing {
     Numberless = "numberless",
+    NumberlessInternational = "numberlessInternational",
     Ansi = "ansi",
     German = "german",
     Colloquial = "colloquial",
@@ -153,7 +156,10 @@ export enum ShiftPairing {
 export function shiftPairingFor(
     charMap: string[][], hasNumberRow: boolean, colloquial: boolean
 ): ShiftPairing {
-    if (!hasNumberRow) return ShiftPairing.Numberless;
+    if (!hasNumberRow) {
+        return isNumberlessInternational(charMap)
+            ? ShiftPairing.NumberlessInternational : ShiftPairing.Numberless;
+    }
     // Only the German standard pairings have a `ß?` key, so its letter decides, and it outranks
     // everything else: there is room for the key on layout-model-specific flex maps only.
     if (draws(charMap, "ß")) return ShiftPairing.German;
@@ -164,6 +170,7 @@ export function shiftPairingFor(
 
 const shiftPairsByPairing: Record<ShiftPairing, ShiftPairs> = {
     [ShiftPairing.Numberless]: numberlessShiftPairs,
+    [ShiftPairing.NumberlessInternational]: numberlessInternationalShiftPairs,
     [ShiftPairing.Ansi]: ansiShiftPairs,
     [ShiftPairing.German]: germanShiftPairs,
     [ShiftPairing.Colloquial]: colloquialShiftPairs,

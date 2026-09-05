@@ -1,10 +1,12 @@
 import {Hand, KeyboardRows, type KeyPosition, type LayoutModel} from "../base-model.ts";
-import {permute} from "../layout/permutation-functions.ts";
+import {permuteAvailable} from "../layout/permutation-functions.ts";
 import {
+    draws,
     emptyLevelMap,
     getBaseLevel,
     getShiftLevel,
     hasNumberRow,
+    isGermanAlphabet,
     type KeyLevels,
     type LevelMap,
     resolveSlot,
@@ -27,10 +29,33 @@ export const numberlessShiftPairs: ShiftPairs = {
     ",": ",;", ".": ".:", "/": "/?", "'": "'\"", "-": "-!", "=": "=+",
 };
 
+// With only three punctuation keys available, we reduce it to the normal colloquial pairing again.
+// This is the only case, where ? and ! are not on the Shift level, but the Shaft layer.
+export const numberlessInternationalShiftPairs: ShiftPairs = {
+    ",": ",;", ".": ".:", "-": "-_",
+};
+
+/*
+    Which of the two the board takes, read off its character set the way key-levels.ts reads the
+    numbered ones: a 30-key map always draws `/`, and the 32-key character set never had one. It
+    does not matter that the `/` comes from the flex map on one frame and from the frame itself on
+    the thumb one - either way it marks the same 30-key character set.
+
+    The keymap type would answer this outright, since the numberless board takes only those two
+    families, but it is not at hand: every function here is given the merged char map alone, and
+    threading the type in from the app would touch getKeyLevels and shiftPairingFor as well. Nor
+    would it get us rid of the char map, because the German exception below keys on the `ä` in it.
+ */
+export const isNumberlessInternational = (charMap: string[][]): boolean => !draws(charMap, "/");
+
+export const numberlessShiftPairsFor = (charMap: string[][]): ShiftPairs =>
+    isNumberlessInternational(charMap) ? numberlessInternationalShiftPairs : numberlessShiftPairs;
+
 /*
     `;` becomes the Shift character of `,`, so the key that drew it is free. Every 30-key flex map
     spends its four non-letter spots on `; , . /`, so this one chain serves them all: `=` enters
-    the map where `;` was and `;` leaves it.
+    the map where `;` was and `;` leaves it. A 32-key map has no `;` to give up, and the cycle
+    leaves it alone.
  */
 const spareKeyCycle = "=;";
 
@@ -39,7 +64,7 @@ const spareKeyCycle = "=;";
  * number row, so the caller can apply it to whatever it is about to draw.
  */
 export const numberlessCharMap = (charMap: string[][], model: LayoutModel): string[][] =>
-    hasNumberRow(model) ? charMap : permute(charMap, spareKeyCycle) as string[][];
+    hasNumberRow(model) ? charMap : permuteAvailable(charMap, spareKeyCycle) as string[][];
 
 const _ = null;
 
@@ -60,8 +85,29 @@ const INNER = -1;
 const digitsLeft: ShaftRow = [_, "5", "4", "3", "2", "1"];
 const digitsRight: ShaftRow = [_, "6", "7", "8", "9", "0"];
 
+// The 30-key board keeps `-!` and `/?` on its base and Shift levels, so `_` and the parentheses
+// take the two spots their characters leave here.
 const digitShiftsLeft: ShaftRow = ["%", "$", "#", "@", "_", _];
 const digitShiftsRight: ShaftRow = ["^", "&", "*", "(", ")", _];
+
+/*
+    The international board has neither, so `!` and `/?` come back to the digits they belong to,
+    and the parentheses go. The German variant then moves `&` and `/` onto the digits a German
+    keyboard has them on and fits `ß` in, as germanInternationalShiftPairs does on a numbered
+    board; the `^` is what pays for it, and it is not the only technical character a numberless
+    board goes without.
+ */
+const internationalDigitShiftsLeft: ShaftRow = ["%", "$", "#", "@", "!", _];
+const internationalDigitShiftsRight: ShaftRow = ["^", "&", "*", "/", "?", _];
+const germanDigitShiftsRight: ShaftRow = ["&", "/", "*", "ß", "?", _];
+
+const digitShiftRow = (charMap: string[][], hand: Hand): ShaftRow => {
+    if (!isNumberlessInternational(charMap)) {
+        return hand === Hand.Left ? digitShiftsLeft : digitShiftsRight;
+    }
+    if (hand === Hand.Left) return internationalDigitShiftsLeft;
+    return isGermanAlphabet(charMap) ? germanDigitShiftsRight : internationalDigitShiftsRight;
+};
 
 // inline navigation keys in reading order (left -> right, top -> bottom)
 const arrows = ["←", "↑", "↓", "→"];
@@ -82,7 +128,7 @@ const homeRow = (hand: Hand, navSide: Hand): ShaftRow => [
  * digits and their Shift characters on the two outer rows, navigation on the home row.
  */
 export function getNumberlessAltGrLevel(
-    model: LayoutModel, positions: KeyPosition[], navSide: Hand
+    model: LayoutModel, positions: KeyPosition[], charMap: string[][], navSide: Hand
 ): LevelMap {
     const result = emptyLevelMap(model);
     const place = (hand: Hand, row: KeyboardRows, chars: ShaftRow) =>
@@ -95,7 +141,7 @@ export function getNumberlessAltGrLevel(
     for (const hand of [Hand.Left, Hand.Right]) {
         place(hand, KeyboardRows.Upper, hand === Hand.Left ? digitsLeft : digitsRight);
         place(hand, KeyboardRows.Home, homeRow(hand, navSide));
-        place(hand, KeyboardRows.Lower, hand === Hand.Left ? digitShiftsLeft : digitShiftsRight);
+        place(hand, KeyboardRows.Lower, digitShiftRow(charMap, hand));
     }
 
     return result;
@@ -103,8 +149,11 @@ export function getNumberlessAltGrLevel(
 
 export const getNumberlessKeyLevels = (
     model: LayoutModel, positions: KeyPosition[], charMap: string[][], navSide: Hand
-): KeyLevels => ({
-    base: getBaseLevel(charMap, numberlessShiftPairs),
-    shift: getShiftLevel(charMap, numberlessShiftPairs),
-    altGr: getNumberlessAltGrLevel(model, positions, navSide),
-});
+): KeyLevels => {
+    const pairs = numberlessShiftPairsFor(charMap);
+    return {
+        base: getBaseLevel(charMap, pairs),
+        shift: getShiftLevel(charMap, pairs),
+        altGr: getNumberlessAltGrLevel(model, positions, charMap, navSide),
+    };
+};
