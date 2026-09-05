@@ -1,6 +1,6 @@
 import './DetailsArea.css';
 import '../layout/KeyboardSvg.css';
-import type {ComponentChildren} from "preact";
+import type {ComponentChildren, VNode} from "preact";
 import type {AppState, ResolvedKeyLevels} from "../app-model.ts";
 import {
     bigramEffort,
@@ -455,7 +455,9 @@ function InternationalPairing({characterKeys, budget}: { characterKeys: number, 
     for, never what it maps where – the keyboard above says that better than a sentence can. The
     rules that pick one are in mapping/key-levels.ts; here we only name the outcome.
  */
-function ShiftPairingParagraph({pairing, characterKeys}: { pairing: ShiftPairing, characterKeys: number }) {
+function ShiftPairingParagraph(
+    {pairing, characterKeys}: { pairing: ShiftPairing, characterKeys: number }
+): VNode {
     switch (pairing) {
         case ShiftPairing.Numberless:
             return <p>
@@ -518,7 +520,7 @@ function ShiftPairingParagraph({pairing, characterKeys}: { pairing: ShiftPairing
                 match the keyboard layout model and flex key map. This is the one pairing with no
                 colloquial variant, so its button above is greyed out.
             </p>;
-        default:
+        case ShiftPairing.Ansi:
             return <p>
                 <b>ANSI English</b> – Shift pairings from the well-known standard, applied to match
                 the keyboard layout model and flex key map.

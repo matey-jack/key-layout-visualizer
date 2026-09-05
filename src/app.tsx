@@ -3,7 +3,7 @@ import './app-model.ts';
 import {type Signal, useSignal} from "@preact/signals";
 import {useEffect} from "preact/hooks";
 import type {ComponentChildren} from "preact";
-import type {AppState} from "./app-model.ts";
+import type {AppState, ResolvedKeyLevels} from "./app-model.ts";
 import {AnsiVariant} from "./app-model.ts";
 import {createAppState} from "./app-state.ts";
 import {Hand, LayoutType, LayoutTypeNames, VisualizationType} from "./base-model.ts";
@@ -40,29 +40,29 @@ interface VisualizationSwitchesProps {
  export function VisualizationSwitches({vizType, appState}: VisualizationSwitchesProps) {
      return <div class="visualization-switches">
          <div class="viz-type-groups">
-         <div>
-             Layout Visualizations:
-             <VizTypeButton vizType={VisualizationType.LayoutPlain} signal={vizType}>Plain</VizTypeButton>
-             <VizTypeButton vizType={VisualizationType.LayoutKeySize} signal={vizType}>Key Sizes</VizTypeButton>
-             <VizTypeButton vizType={VisualizationType.LayoutFingering} signal={vizType}>Fingering</VizTypeButton>
-             <VizTypeButton vizType={VisualizationType.LayoutAngle} signal={vizType}>Angle</VizTypeButton>
-             <VizTypeButton vizType={VisualizationType.LayoutKeyEffort} signal={vizType}>Single-Key
-                 Effort</VizTypeButton>
-             {appState && <DownloadSvgLink appState={appState}/>}
-         </div>
-         <div>
-             Mapping Visualizations:
-             <VizTypeButton vizType={VisualizationType.MappingDiff} signal={vizType}>Learning</VizTypeButton>
-             <VizTypeButton vizType={VisualizationType.MappingFrequeny} signal={vizType}>Letter Frequency</VizTypeButton>
-             <VizTypeButton vizType={VisualizationType.MappingBigrams} signal={vizType}>Bigram Effort</VizTypeButton>
-             <VizTypeButton vizType={VisualizationType.MappingTradeoff} signal={vizType}>Learning Effort Trade-off</VizTypeButton>
-             <VizTypeButton vizType={VisualizationType.MappingShiftLevels} signal={vizType}>Shift and AltGr
-                 Levels</VizTypeButton>
-             {/* The KLC export knows only the ANSI base/Shift pairs, so it has nothing to offer
-                 while the levels view is showing something else. */}
-             {appState && vizType.value !== VisualizationType.MappingShiftLevels
-                 && isKlcCompatible(appState) && <DownloadKlcLink appState={appState}/>}
-         </div>
+             <div>
+                 Layout Visualizations:
+                 <VizTypeButton vizType={VisualizationType.LayoutPlain} signal={vizType}>Plain</VizTypeButton>
+                 <VizTypeButton vizType={VisualizationType.LayoutKeySize} signal={vizType}>Key Sizes</VizTypeButton>
+                 <VizTypeButton vizType={VisualizationType.LayoutFingering} signal={vizType}>Fingering</VizTypeButton>
+                 <VizTypeButton vizType={VisualizationType.LayoutAngle} signal={vizType}>Angle</VizTypeButton>
+                 <VizTypeButton vizType={VisualizationType.LayoutKeyEffort} signal={vizType}>Single-Key
+                     Effort</VizTypeButton>
+                 {appState && <DownloadSvgLink appState={appState}/>}
+             </div>
+             <div>
+                 Mapping Visualizations:
+                 <VizTypeButton vizType={VisualizationType.MappingDiff} signal={vizType}>Learning</VizTypeButton>
+                 <VizTypeButton vizType={VisualizationType.MappingFrequeny} signal={vizType}>Letter Frequency</VizTypeButton>
+                 <VizTypeButton vizType={VisualizationType.MappingBigrams} signal={vizType}>Bigram Effort</VizTypeButton>
+                 <VizTypeButton vizType={VisualizationType.MappingTradeoff} signal={vizType}>Learning Effort Trade-off</VizTypeButton>
+                 <VizTypeButton vizType={VisualizationType.MappingShiftLevels} signal={vizType}>Shift and AltGr
+                     Levels</VizTypeButton>
+                 {/* The KLC export knows only the ANSI base/Shift pairs, so it has nothing to offer
+                     while the levels view is showing something else. */}
+                 {appState && vizType.value !== VisualizationType.MappingShiftLevels
+                     && isKlcCompatible(appState) && <DownloadKlcLink appState={appState}/>}
+             </div>
          </div>
          {appState && vizType.value === VisualizationType.MappingShiftLevels &&
              <LevelSwitches appState={appState}/>}
@@ -72,25 +72,29 @@ interface VisualizationSwitchesProps {
 // The switches that configure the key levels visualization, in their own container right of the
 // viz type buttons. A group whose choice does not exist on the current key map is left out.
 function LevelSwitches({appState}: { appState: AppState }) {
+    const levels = appState.resolvedKeyLevels.value;
     return <div class="level-switches">
         <NavSideOptions navSide={appState.navSide}/>
-        {appState.resolvedKeyLevels.value.hasNumberRow &&
-            <ShiftLevelOptions appState={appState}/>}
+        {levels.hasNumberRow &&
+            <ShiftLevelOptions levels={levels} colloquialWanted={appState.shiftColloquial}/>}
     </div>
+}
+
+interface ShiftLevelOptionsProps {
+    levels: ResolvedKeyLevels;
+    colloquialWanted: Signal<boolean>;
 }
 
 // The board decides, not the switch: where only one mode can serve the key map, that one is drawn
 // whatever the user last picked, so the buttons follow the resolved level rather than the signal.
-function ShiftLevelOptions({appState}: { appState: AppState }) {
-    const {colloquial, hasStandardLevel, hasColloquialLevel} = appState.resolvedKeyLevels.value;
-    const shiftColloquial = appState.shiftColloquial;
+function ShiftLevelOptions({levels, colloquialWanted}: ShiftLevelOptionsProps) {
     return <OptionGroup label="Shift level">
-        <OptionButton selected={!colloquial} disabled={!hasStandardLevel}
-            onClick={() => {shiftColloquial.value = false;}}>
+        <OptionButton selected={!levels.colloquial} disabled={!levels.hasStandardLevel}
+            onClick={() => {colloquialWanted.value = false;}}>
             standard
         </OptionButton>
-        <OptionButton selected={colloquial} disabled={!hasColloquialLevel}
-            onClick={() => {shiftColloquial.value = true;}}>
+        <OptionButton selected={levels.colloquial} disabled={!levels.hasColloquialLevel}
+            onClick={() => {colloquialWanted.value = true;}}>
             colloquial
         </OptionButton>
     </OptionGroup>
