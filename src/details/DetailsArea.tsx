@@ -531,7 +531,7 @@ function ShiftPairingParagraph({pairing, characterKeys}: { pairing: ShiftPairing
 function ForcedColloquial() {
     return <p>
         A standard pairing needs a <code>'</code>, a <code>-</code> and a <code>/</code> key: the
-        first two carry characters that are nowhere else, and the third is the only home for
+        first two carry characters that are nowhere else, and the third is the only home for{" "}
         <code>/</code> and <code>?</code> while the number row keeps <code>9(</code> and
         {" "}<code>0)</code>. This board is missing one of them, which is why only the colloquial
         pairing is on offer for it.

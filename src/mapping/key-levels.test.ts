@@ -27,7 +27,6 @@ import {
     altGrLeft,
     altGrRight,
     ansiShiftPairs,
-    colloquialInternationalShiftPairs,
     colloquialiseCharMap,
     colloquialShiftPairs,
     germanShiftPairs,
@@ -40,7 +39,7 @@ import {
     navRight,
     ShiftPairing,
     shiftPairingFor,
-    shiftPairsFor,
+    shiftPairsByPairing,
 } from "./key-levels.ts";
 
 // A base label of one letter, in any of the alphabets our flex maps carry.
@@ -52,6 +51,10 @@ const mappingFor = (model: LayoutModel, name?: string) =>
 
 const keymapTypeFor = (model: LayoutModel, mappingName?: string) =>
     findMatchingKeymapType(model, mappingFor(model, mappingName))!.typeId;
+
+// The pairing of a board and key map, read off the plain char map exactly as the app state does.
+const pairingFor = (model: LayoutModel, mappingName?: string, colloquial = false) =>
+    shiftPairingFor(fillMapping(model, mappingFor(model, mappingName))!, hasNumberRow(model), colloquial);
 
 // The two gates the app reads off a board and key map, one per button of the Shift switch.
 const hasColloquial = (model: LayoutModel, mappingName?: string) =>
@@ -69,7 +72,7 @@ function shiftLevelByLabel(model: LayoutModel, mappingName?: string): Record<str
     const mapping = mappingFor(model, mappingName);
     const charMap = fillMapping(model, mapping)!;
     const positions = getKeyPositions(model, false, charMap);
-    const levels = getKeyLevels(model, positions, charMap, Hand.Left, false);
+    const levels = getKeyLevels(model, positions, charMap, Hand.Left, pairingFor(model, mappingName));
     const result: Record<string, string> = {};
     positions.forEach((p) => {
         const shift = levels.shift[p.row][p.col];
@@ -88,7 +91,7 @@ function colloquialKeys(model: LayoutModel, mappingName?: string) {
     const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
     const charMap = colloquialiseCharMap(fillMapping(model, mapping)!, model, keymapType);
     const positions = getKeyPositions(model, false, charMap);
-    const levels = getKeyLevels(model, positions, charMap, Hand.Left, true);
+    const levels = getKeyLevels(model, positions, charMap, Hand.Left, pairingFor(model, mappingName, true));
     return positions
         .filter((p) => levels.shift[p.row][p.col])
         .map((p) => ({
@@ -110,7 +113,7 @@ function altGrLevelByLabel(model: LayoutModel, navSide: Hand, mappingName?: stri
     const mapping = mappingFor(model, mappingName);
     const charMap = fillMapping(model, mapping)!;
     const positions = getKeyPositions(model, false, charMap);
-    const level = getAltGrLevel(model, positions, charMap, navSide);
+    const level = getAltGrLevel(model, positions, pairingFor(model, mappingName), navSide);
     const result: Record<string, string> = {};
     positions.forEach((p) => {
         const char = level[p.row][p.col];
@@ -668,30 +671,6 @@ describe("whether the standard pairing can serve a board", () => {
 });
 
 /*
-    `getKeyLevels` derives the pairing from the board it draws, and a colloquialised one has lost
-    the `;` that marks an English key map - so it arrives at the international table instead. That
-    is only harmless while the two colloquial tables agree on every label such a board draws.
- */
-describe("the two colloquial tables", () => {
-    it("agree on every label a colloquialised board draws", () => {
-        const divergent: string[] = [];
-        for (const model of allLayoutModels.filter((m) => hasNumberRow(m))) {
-            for (const mapping of allMappings.filter((m) => hasMatchingMapping(model, m))) {
-                const plain = fillMapping(model, mapping)!;
-                if (!hasColloquialLevel(plain, true)) continue;
-                const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
-                const charMap = colloquialiseCharMap(plain, model, keymapType);
-                for (const label of charMap.flat()) {
-                    if (colloquialShiftPairs[label] === colloquialInternationalShiftPairs[label]) continue;
-                    divergent.push(`${model.name} / ${mapping.name}: ${label}`);
-                }
-            }
-        }
-        expect(divergent).toEqual([]);
-    });
-});
-
-/*
     The pairings have to cover the punctuation of every 32-key frame mapping, or a key on some
     board silently loses its Shift character. `€` is the one character key without a partner:
     no pairing in any language puts one on it.
@@ -716,7 +695,8 @@ describe("the international levels cover every 32-key board", () => {
                 ? colloquialiseCharMap(fillMapping(model, mapping)!, model, keymapType)
                 : fillMapping(model, mapping)!;
             const positions = getKeyPositions(model, false, charMap);
-            const levels = getKeyLevels(model, positions, charMap, Hand.Left, colloquial);
+            const levels = getKeyLevels(model, positions, charMap, Hand.Left,
+                pairingFor(model, mappingName, colloquial));
             const unpaired = positions
                 .filter((p) => p.label && !isKeyName(p.label) && !isKeyboardSymbol(p.label))
                 .filter((p) => !isLetter(p.label))
@@ -741,7 +721,7 @@ describe("the `ß` discriminator", () => {
         // draws ANSI punctuation like `'` and `/`, which those pairings do not know at all.
         const umlautsOnly = [["q", "w", "ü", "ö", "ä", "'", "/", "2"]];
         expect(shiftPairingFor(umlautsOnly, true, false)).toBe(ShiftPairing.GermanInternational);
-        expect(getShiftLevel(umlautsOnly, shiftPairsFor(umlautsOnly, true, false)))
+        expect(getShiftLevel(umlautsOnly, shiftPairsByPairing[shiftPairingFor(umlautsOnly, true, false)]))
             .toEqual([[null, null, null, null, null, "\"", "?", "@"]]);
     });
 });
@@ -847,9 +827,10 @@ describe("every block entry is placed on every layout model", () => {
         const missing: string[] = [];
         blocks.forEach(([blockName, hand, block]) => {
             block.forEach((blockRow, row) => {
-                blockRow.forEach((char, slot) => {
+                blockRow.forEach((char, i) => {
                     if (!char) return;
                     if (row === KeyboardRows.Lower && lowerRowFallbackChars.includes(char)) return;
+                    const slot = i - 1;
                     if (!resolveSlot(model, positions, hand, row, slot)) {
                         missing.push(`${blockName} on the ${Hand[hand]} hand: '${char}' (row ${row}, slot ${slot})`);
                     }
@@ -862,10 +843,8 @@ describe("every block entry is placed on every layout model", () => {
     it.each(allLayoutModels.map((m) => [m.name, m] as const))("%s places the whole lower row", (_name, model) => {
         const positions = positionsOf(model);
         for (const navSide of [Hand.Left, Hand.Right]) {
-            const mapping = mappingFor(model);
-            const charMap = fillMapping(model, mapping)!;
             const chars = Object.values(
-                getAltGrLevel(model, positions, charMap, navSide).flat().filter((c) => c));
+                getAltGrLevel(model, positions, pairingFor(model), navSide).flat().filter((c) => c));
             for (const char of lowerRowFallbackChars) {
                 expect(chars, `nav on the ${Hand[navSide]} hand`).toContain(char);
             }

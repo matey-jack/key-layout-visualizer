@@ -79,7 +79,7 @@ export function LayoutArea({appState}: LayoutAreaProps) {
         layout.value.harmonicVariant > HarmonicVariant.H14_Traditional &&
         layout.value.harmonicHexagons;
     // The outgoing board is colloquialised too, so that toggling the switch does not animate.
-    const {colloquial} = appState.resolvedKeyLevels.value;
+    const {colloquial, pairing} = appState.resolvedKeyLevels.value;
     const current = renderKeyboard(layoutModel.value, mapping.value, layout.value, hexagons, colloquial);
     const previousPositions = renderKeyboard(
         prevLayoutModel.value, prevMapping.value, layout.value, hexagons, colloquial).positions;
@@ -88,7 +88,7 @@ export function LayoutArea({appState}: LayoutAreaProps) {
     const {setLayout, mappingDiff, bigramMovements, vizType, setMapping, navSide} = appState;
     const keyLevels = vizType.value === VisualizationType.MappingShiftLevels
         ? getKeyLevels(current.layoutModel, current.positions, current.charMap,
-            navSide.value, colloquial)
+            navSide.value, pairing)
         : undefined;
     const showFrame = layout.value.type !== LayoutType.Ergosplit &&
         !(layout.value.type !== LayoutType.ANSI && layout.value.ansiSplit);

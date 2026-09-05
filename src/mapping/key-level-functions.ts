@@ -63,17 +63,18 @@ export const emptyLevelMap = (model: LayoutModel): LevelMap =>
     model.keyWidths.map((row) => row.map(() => null));
 
 /*
-    A block is one row per keyboard row, each listing the character for the hand's five columns
-    from the board centre outward:
+    A block is one row per keyboard row, each listing the character for the hand's six columns
+    from the board centre outward – entry i is `resolveSlot`'s slot i - 1:
 
-        [centre, index, middle, ring, pinky]
+        [inner, centre, index, middle, ring, pinky]
 
-    "centre" is the index finger's second column (`g` on the left hand, `h` on the right one).
+    "centre" is the index finger's second column (`g` on the left hand, `h` on the right one), and
+    "inner" the column each hand reaches past it, which only the smallest boards use.
     Mirroring keeps the finger and exchanges the two members of each pair, which is short enough
     to spell out per hand rather than compute.
  */
 export type BlockRow = (string | null)[];
-// Indexed by KeyboardRows; the bottom row carries no block.
+// Indexed by KeyboardRows; a row the block has nothing for may be left empty.
 export type Block = BlockRow[];
 
 // Used on the boards where the lower row's pinky column is the Shift key: the row keeps all
@@ -117,9 +118,9 @@ export function placeBlock(
     result: LevelMap, model: LayoutModel, positions: KeyPosition[], hand: Hand, block: Block
 ) {
     block.forEach((blockRow, row) => {
-        blockRow.forEach((char, slot) => {
+        blockRow.forEach((char, i) => {
             if (!char) return;
-            const key = resolveSlot(model, positions, hand, row, slot);
+            const key = resolveSlot(model, positions, hand, row, i - 1);
             if (key) result[key.row][key.col] = char;
         });
     });

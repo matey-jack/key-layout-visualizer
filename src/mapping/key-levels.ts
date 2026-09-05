@@ -23,7 +23,7 @@ import {
     type ShiftPairs,
 } from "./key-level-functions.ts";
 import {
-    getNumberlessKeyLevels,
+    getNumberlessAltGrLevel,
     isNumberlessInternational,
     numberlessInternationalShiftPairs,
     numberlessShiftPairs,
@@ -40,9 +40,7 @@ import {
 
 /*
     The ANSI character set, which the English pairings are for, is marked by its `;:` key: most
-    European keyboards do not have `;` as a base label. Note that the colloquial rearrangement
-    dissolves that very key, so a colloquialised board no longer answers to this - see the note
-    on the order in `shiftPairingFor`.
+    European keyboards do not have `;` as a base label.
  */
 export const isAnsiCharMap = (charMap: string[][]): boolean => draws(charMap, ";");
 
@@ -147,11 +145,8 @@ export enum ShiftPairing {
 
 /*
     The priority list of the doc's "Summary of when each Shift pairing is active", read off the
-    character set alone. The order carries a second job, because `getKeyLevels` asks this of the
-    already colloquialised board too: that board has lost its `;`, so it arrives here as an
-    international one. Harmless, since the two colloquial tables agree on every label such a board
-    draws - but only as long as `ä` is asked before the fall-through, which is what keeps a
-    colloquialised German map on its own digits.
+    character set alone. It is asked of the plain board, before any colloquial rearrangement: that
+    one dissolves the very `;` key an English map is known by.
  */
 export function shiftPairingFor(
     charMap: string[][], hasNumberRow: boolean, colloquial: boolean
@@ -168,7 +163,7 @@ export function shiftPairingFor(
     return colloquial ? ShiftPairing.ColloquialInternational : ShiftPairing.International;
 }
 
-const shiftPairsByPairing: Record<ShiftPairing, ShiftPairs> = {
+export const shiftPairsByPairing: Record<ShiftPairing, ShiftPairs> = {
     [ShiftPairing.Numberless]: numberlessShiftPairs,
     [ShiftPairing.NumberlessInternational]: numberlessInternationalShiftPairs,
     [ShiftPairing.Ansi]: ansiShiftPairs,
@@ -178,11 +173,6 @@ const shiftPairsByPairing: Record<ShiftPairing, ShiftPairs> = {
     [ShiftPairing.ColloquialInternational]: colloquialInternationalShiftPairs,
     [ShiftPairing.GermanInternational]: germanInternationalShiftPairs,
 };
-
-export const shiftPairsFor = (
-    charMap: string[][], hasNumberRow: boolean, colloquial: boolean
-): ShiftPairs =>
-    shiftPairsByPairing[shiftPairingFor(charMap, hasNumberRow, colloquial)];
 
 /*
     Some layout models label the `=+` key with its shifted character (see "Showing the Shift and
@@ -243,19 +233,17 @@ const _ = null;
 
 // The number row is not part of the blocks: it pairs with the digits instead, see below.
 export const altGrRight: Block = [
-    [_, _, _, _, _],
-    [_, "\\", "{", "}", "~"],
-    [_, "+", "(", ")", "`"],
-    [_, "=", "<", ">", _],
-    [_, _, _, _, _],
+    [],
+    [_, _, "\\", "{", "}", "~"],
+    [_, _, "+", "(", ")", "`"],
+    [_, _, "=", "<", ">", _],
 ];
 
 export const altGrLeft: Block = [
-    [_, _, _, _, _],
-    [_, "\\", "}", "{", "~"],
-    [_, "+", ")", "(", "`"],
-    [_, "=", ">", "<", _],
-    [_, _, _, _, _],
+    [],
+    [_, _, "\\", "}", "{", "~"],
+    [_, _, "+", ")", "(", "`"],
+    [_, _, "=", ">", "<", _],
 ];
 
 /*
@@ -268,19 +256,17 @@ export const altGrDigits: Record<string, string> =
     {"1": "¡", "2": "¢", "3": "£", "4": "€", "5": "‰", "6": "^", "7": "|", "8": "[", "9": "]", "0": "¿"};
 
 export const navLeft: Block = [
-    [_, _, _, _, _],
-    [_, "↠", "↑", "↞", _],
-    ["⇥", "→", "↓", "←", "⇤"],
-    [_, "⇟", "↡", "↟", "⇞"],
-    [_, _, _, _, _],
+    [],
+    [_, _, "↠", "↑", "↞", _],
+    [_, "⇥", "→", "↓", "←", "⇤"],
+    [_, _, "⇟", "↡", "↟", "⇞"],
 ];
 
 export const navRight: Block = [
-    [_, _, _, _, _],
-    [_, "↞", "↑", "↠", _],
-    ["⇤", "←", "↓", "→", "⇥"],
-    [_, "⇞", "↟", "↡", "⇟"],
-    [_, _, _, _, _],
+    [],
+    [_, _, "↞", "↑", "↠", _],
+    [_, "⇤", "←", "↓", "→", "⇥"],
+    [_, _, "⇞", "↟", "↡", "⇟"],
 ];
 
 // The number row, placed by digit.
@@ -294,7 +280,7 @@ function placeDigits(result: LevelMap, positions: KeyPosition[]) {
 
 // The AltGr level: navigation on `navSide` and the AltGr characters on the other hand.
 export function getAltGrLevel(
-    model: LayoutModel, positions: KeyPosition[], charMap: string[][], navSide: Hand
+    model: LayoutModel, positions: KeyPosition[], pairing: ShiftPairing, navSide: Hand
 ): LevelMap {
     const result = emptyLevelMap(model);
     const charSide = navSide === Hand.Left ? Hand.Right : Hand.Left;
@@ -308,9 +294,8 @@ export function getAltGrLevel(
     placeBlock(result, model, positions, charSide, charSide === Hand.Right ? altGrRight : altGrLeft);
     placeDigits(result, positions);
     // The standard German pairings are the only ones without a `2@` key, so they are the only
-    // ones that need the character here. The colloquial switch cannot change that: it applies
-    // to English maps, which have `2@` either way.
-    if (shiftPairingFor(charMap, true, false) === ShiftPairing.German) {
+    // ones that need the character here.
+    if (pairing === ShiftPairing.German) {
         // `@` on the key the German standard has it, the key map position [Upper, 0] – `q` in
         // qwertz. That is where the character block puts `~`, so when the block is on that
         // hand, `@` takes the mnemonic AltGr+2 instead, off the `¢` the digits placed there.
@@ -322,15 +307,21 @@ export function getAltGrLevel(
     return result;
 }
 
+/**
+ * The three levels of the board as it is drawn. `charMap` is the map the keyboard shows, which may
+ * be rearranged (numberless, colloquial); `pairing` is the one the app resolved from the plain
+ * board, since the rearrangement takes away the very keys the rules read.
+ */
 export const getKeyLevels = (
     model: LayoutModel, positions: KeyPosition[], charMap: string[][],
-    navSide: Hand, colloquial: boolean
+    navSide: Hand, pairing: ShiftPairing
 ): KeyLevels => {
-    if (!hasNumberRow(model)) return getNumberlessKeyLevels(model, positions, charMap, navSide);
-    const pairs = shiftPairsFor(charMap, true, colloquial);
+    const pairs = shiftPairsByPairing[pairing];
     return {
         base: getBaseLevel(charMap, pairs),
         shift: getShiftLevel(charMap, pairs),
-        altGr: getAltGrLevel(model, positions, charMap, navSide),
+        altGr: hasNumberRow(model)
+            ? getAltGrLevel(model, positions, pairing, navSide)
+            : getNumberlessAltGrLevel(model, positions, charMap, navSide),
     };
 };

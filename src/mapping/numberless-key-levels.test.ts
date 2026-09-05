@@ -8,7 +8,7 @@ import {
     hasMatchingMapping,
 } from "../layout/layout-functions.ts";
 import {is32KeyType, isGermanAlphabet} from "./key-level-functions.ts";
-import {getKeyLevels} from "./key-levels.ts";
+import {getKeyLevels, shiftPairingFor} from "./key-levels.ts";
 import {allMappings} from "./mappings.ts";
 import {numberlessCharMap} from "./numberless-key-levels.ts";
 
@@ -34,7 +34,8 @@ const DANISH = "Danish Alphabet";
 function levelsByLabel(model: LayoutModel, navSide: Hand, mappingName?: string) {
     const charMap = numberlessCharMap(fillMapping(model, mappingFor(mappingName))!, model);
     const positions = getKeyPositions(model, false, charMap);
-    const levels = getKeyLevels(model, positions, charMap, navSide, false);
+    const levels = getKeyLevels(model, positions, charMap, navSide,
+        shiftPairingFor(charMap, false, false));
     const pair: Record<string, string> = {};
     const shaft: Record<string, string> = {};
     positions.forEach((p) => {

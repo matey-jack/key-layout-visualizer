@@ -1,15 +1,14 @@
-import {Hand, KeyboardRows, type KeyPosition, type LayoutModel} from "../base-model.ts";
+import {Hand, type KeyPosition, type LayoutModel} from "../base-model.ts";
 import {permuteAvailable} from "../layout/permutation-functions.ts";
 import {
+    type Block,
+    type BlockRow,
     draws,
     emptyLevelMap,
-    getBaseLevel,
-    getShiftLevel,
     hasNumberRow,
     isGermanAlphabet,
-    type KeyLevels,
     type LevelMap,
-    resolveSlot,
+    placeBlock,
     type ShiftPairs,
 } from "./key-level-functions.ts";
 
@@ -48,9 +47,6 @@ export const numberlessInternationalShiftPairs: ShiftPairs = {
  */
 export const isNumberlessInternational = (charMap: string[][]): boolean => !draws(charMap, "/");
 
-export const numberlessShiftPairsFor = (charMap: string[][]): ShiftPairs =>
-    isNumberlessInternational(charMap) ? numberlessInternationalShiftPairs : numberlessShiftPairs;
-
 /*
     `;` becomes the Shift character of `,`, so the key that drew it is free. Every 30-key flex map
     spends its four non-letter spots on `; , . /`, so this one chain serves them all: `=` enters
@@ -69,26 +65,18 @@ export const numberlessCharMap = (charMap: string[][], model: LayoutModel): stri
 const _ = null;
 
 /*
-    One keyboard row of one hand, from the inner column outward:
-
-        [inner, centre, index, middle, ring, pinky]
-
-    Entry i is resolveSlot's slot i - 1, so the leading one is the column each hand reaches past
-    its centre one. On the home row that is the single key between the hands; on the rows above
-    and below it, the row stagger gives each hand one of the two keys that straddle the centre.
+    The rows are `BlockRow`s, and this board is the one that uses their inner column: on the home
+    row that is the single key between the hands, on the rows above and below it the row stagger
+    gives each hand one of the two keys that straddle the centre. Only the digits leave it empty,
+    for want of a tenth key on the far side.
  */
-type ShaftRow = (string | null)[];
-
-const INNER = -1;
-
-// due to the counting from the center, each side needs an empty spot to cover the central gap.
-const digitsLeft: ShaftRow = [_, "5", "4", "3", "2", "1"];
-const digitsRight: ShaftRow = [_, "6", "7", "8", "9", "0"];
+const digitsLeft: BlockRow = [_, "5", "4", "3", "2", "1"];
+const digitsRight: BlockRow = [_, "6", "7", "8", "9", "0"];
 
 // The 30-key board keeps `-!` and `/?` on its base and Shift levels, so `_` and the parentheses
 // take the two spots their characters leave here.
-const digitShiftsLeft: ShaftRow = ["%", "$", "#", "@", "_", _];
-const digitShiftsRight: ShaftRow = ["^", "&", "*", "(", ")", _];
+const digitShiftsLeft: BlockRow = ["%", "$", "#", "@", "_", _];
+const digitShiftsRight: BlockRow = ["^", "&", "*", "(", ")", _];
 
 /*
     The international board has neither, so `!` and `/?` come back to the digits they belong to,
@@ -97,11 +85,11 @@ const digitShiftsRight: ShaftRow = ["^", "&", "*", "(", ")", _];
     board; the `^` is what pays for it, and it is not the only technical character a numberless
     board goes without.
  */
-const internationalDigitShiftsLeft: ShaftRow = ["%", "$", "#", "@", "!", _];
-const internationalDigitShiftsRight: ShaftRow = ["^", "&", "*", "/", "?", _];
-const germanDigitShiftsRight: ShaftRow = ["&", "/", "*", "ß", "?", _];
+const internationalDigitShiftsLeft: BlockRow = ["%", "$", "#", "@", "!", _];
+const internationalDigitShiftsRight: BlockRow = ["^", "&", "*", "/", "?", _];
+const germanDigitShiftsRight: BlockRow = ["&", "/", "*", "ß", "?", _];
 
-const digitShiftRow = (charMap: string[][], hand: Hand): ShaftRow => {
+const digitShiftRow = (charMap: string[][], hand: Hand): BlockRow => {
     if (!isNumberlessInternational(charMap)) {
         return hand === Hand.Left ? digitShiftsLeft : digitShiftsRight;
     }
@@ -118,9 +106,17 @@ const paging = ["⇤", "⇞", "⇟", "⇥"];
 const outwardFromCentre = (hand: Hand, leftToRight: string[]): string[] =>
     hand === Hand.Left ? leftToRight.toReversed() : leftToRight;
 
-const homeRow = (hand: Hand, navSide: Hand): ShaftRow => [
+const homeRow = (hand: Hand, navSide: Hand): BlockRow => [
     _, _,
     ...outwardFromCentre(hand, hand === navSide ? arrows : paging),
+];
+
+// Indexed by KeyboardRows, so the number row this board does not have still takes its place.
+const shaftBlock = (charMap: string[][], hand: Hand, navSide: Hand): Block => [
+    [],
+    hand === Hand.Left ? digitsLeft : digitsRight,
+    homeRow(hand, navSide),
+    digitShiftRow(charMap, hand),
 ];
 
 /**
@@ -131,29 +127,8 @@ export function getNumberlessAltGrLevel(
     model: LayoutModel, positions: KeyPosition[], charMap: string[][], navSide: Hand
 ): LevelMap {
     const result = emptyLevelMap(model);
-    const place = (hand: Hand, row: KeyboardRows, chars: ShaftRow) =>
-        chars.forEach((char, i) => {
-            if (!char) return;
-            const key = resolveSlot(model, positions, hand, row, i + INNER);
-            if (key) result[key.row][key.col] = char;
-        });
-
     for (const hand of [Hand.Left, Hand.Right]) {
-        place(hand, KeyboardRows.Upper, hand === Hand.Left ? digitsLeft : digitsRight);
-        place(hand, KeyboardRows.Home, homeRow(hand, navSide));
-        place(hand, KeyboardRows.Lower, digitShiftRow(charMap, hand));
+        placeBlock(result, model, positions, hand, shaftBlock(charMap, hand, navSide));
     }
-
     return result;
 }
-
-export const getNumberlessKeyLevels = (
-    model: LayoutModel, positions: KeyPosition[], charMap: string[][], navSide: Hand
-): KeyLevels => {
-    const pairs = numberlessShiftPairsFor(charMap);
-    return {
-        base: getBaseLevel(charMap, pairs),
-        shift: getShiftLevel(charMap, pairs),
-        altGr: getNumberlessAltGrLevel(model, positions, charMap, navSide),
-    };
-};
