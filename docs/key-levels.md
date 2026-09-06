@@ -640,11 +640,17 @@ things really stand out:
 
 Status quo:
 
-- The app has unit tests for the completeness of flex mappings with respect to their defined 
-character set since the beginning of time. ((TODO: name test files here))
+- The completeness of the generic flex mappings against their character set is covered by
+`character coverage for core mappings` in [mappings.test.ts](../src/mapping/mappings.test.ts),
+one test per flex map and generic keymap type. The same file's `mappings property validates
+against KEYMAP_TYPES` pins their shape, and `key labels` in
+[layout-models.test.ts](../src/layout-models.test.ts) rejects glyphs that are neither a letter
+nor a known keyboard symbol.
 
-- Before we had well-defined Shift and AltGr levels, we also had completeness tests for frame 
-mappings that have the full set of 47 character keys. ((TODO: name test file examples))
+- Frame mappings that carry the full set of 47 character keys are covered by
+`hasLettersNumbersAndProsePunctuation` in
+[layout-functions.test.ts](../src/layout/layout-functions.test.ts), which merges a frame mapping
+with a flex map and asks for the letters, the digits and `,.;-/'`.
 
 Now that we know what characters are mapped on the Shift and AltGr levels, we can fully validate 
 all frame mappings and all model-specific flex mappings. Here are the rules:
