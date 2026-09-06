@@ -14,6 +14,11 @@ The RenderableLayoutModel is the key interface shared by both apps to provide da
 
 This visualizes and compares several "casual" (that is easy-to-learn instead of fully optimized) keyboard mappings on different layouts of keyboards.
 
+The page shows a keyboard at the top, a list of keymaps on the bottom left, and detail information on the bottom right.
+Several different visualizations (called "vizzies") show different information on the keyboard diagram.
+Some vizzies show information only related to the keyboard layout (like key size statistics, finger assignment, key effort assignment, ...) and others show information about the selected keymap.
+For most visualizations, key labels are shown according to the keymap which is selected in the bottom left list.
+
 Key mappings are shown for four different layout types:
  1. the ancient typewriter-based keyboard layout (used in virtually every laptop that was ever made) with its irregular row-staggering, 
  2. an orthogonal layout (which for key mapping purposes also stands in for most column-staggered layouts), and 
@@ -202,37 +207,11 @@ https://cyanophage.github.io/index.html (and the [playground](https://cyanophage
 https://precondition.github.io/pressing-e-with-the-thumb
 
 
-# Development
+# Getting it running
 
-I have committed my [AGENTS.md](AGENTS.md) and [CLAUDE.md](CLAUDE.md) to this repo, 
-so if you run your own agents on this, make sure that you like what's in those files or simply delete them.
-(They are in the repo only to sync them automatically through worktrees.)
+After cloning the project and the typical `npm install`, `npm run dev` starts the app, and changes in the code
+show up in the browser right away. That is enough to tweak mappings or colors without implementing actual buttons
+and switches in the app first. Which command checks what before a change is done is listed in [AGENTS.md](AGENTS.md).
 
-After cloning the project and the typical `npm install`, you can run `npm run dev` (or similar) to start the app.
-That should be enough to make changes in the code and directly see the result in the browser.
-This way, you can make small tweaks to mappings or colors without having to implement actual buttons and switches in the app itself.
-
-
-## Notes to self
-
-Isn't it funny, that JavaScript has Math.max(), but we need a library for sum(...)?
-Reminder to always check https://youmightnotneed.com/ before searching for libraries.
-
-And isn't it confusing that there are so many libraries out there that provide this function?
-To make things worse, ChatGPT recommends libraries like https://github.com/angus-c/just and https://www.npmjs.com/package/micro-math
-which do not even include the sum(...) function! 
-And there is "just-sum" on npmjs.com, but it only sums two numbers, instead of a list. 
-
-Now, I have prejudices towards first-gen JavaScript libraries like Underscore, Lodash, Ramda, 
-because I think that they come with a lot of cruft and first-generation mistakes that are hard to fix.
-Although I appreciate that they are often battle-tested and cover a lot of edge cases, I prefer "small and focused" as well as 
-"typescript first" and ideally "es6 first", that is use named exports only.
-
-    I looked at Rambda, Radashi, and Remeda.
-    Upacked size (npmjs.com): 675 kB, 436 kB, 863 kB
-
-Rambda doesn't advertise itself to be tree-shakable and also is designed to call all of its functions as part of R.pipe(...).
-
-So that leaves Radashi and Remeda. Darn, I can't decide, I'll just use generated code for the function again. (As you might have noticed, most of the AI-generated code in this project is actually for stuff that should be some public library function or React component, but isn't.)
-
-
+That file and the one-line [CLAUDE.md](CLAUDE.md) beside it are committed here so that they sync through worktrees.
+If you run your own agents on this, make sure that you like what's in them or simply delete them.
