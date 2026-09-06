@@ -1,5 +1,6 @@
 import {describe, expect, it} from "vitest";
 import {
+    GENERIC_KEYMAP_TYPES,
     KeyboardRows,
     keyboardSymbols,
     KEYMAP_TYPES,
@@ -7,6 +8,12 @@ import {
     type LayoutModel,
     usefulNonAsciiCharacters
 } from "./base-model.ts";
+import {ansiWideLayoutModel, createAN65, createApple} from "./layout/ansiLayoutModel.ts";
+import {ergoboardBigEnterLayoutModel} from "./layout/ergoboardLowshiftLayoutModel.ts";
+import {
+    ergoboardLowshiftWideAngleModLayoutModel,
+    ergoboardLowshiftWideLayoutModel
+} from "./layout/ergoboardLowshiftWideLayoutModel.ts";
 import {ergoboardRightRetLayoutModel, ergoboardVerticalEnterLayoutModel} from "./layout/ergoboardNarrowLayoutModels.ts";
 import {ergoboardSemiWideLayoutModel} from "./layout/ergoboardSemiWideLayoutModel.ts";
 import {
@@ -15,39 +22,45 @@ import {
     ergoplankLayoutModel
 } from "./layout/ergoplankLayoutModel.ts";
 import {majorErgoslatLayoutModel, minorErgoslatLayoutModel} from './layout/ergoslatLayoutModel.ts';
+import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
+import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
 import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 import {xhkb13LayoutModel, xhkb14LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "./layout/xhkbLayoutModel.ts";
 import {sum} from "./library/math.ts";
 import {allLayoutModels} from "./all-layout-models.ts";
+import {hasNumberRow} from "./mapping/key-level-functions.ts";
+import {isCharacterKey} from "./mapping/mapping-functions.ts";
 import {allMappings} from "./mapping/mappings.ts";
 
 
+const an65Wide = createAN65(ansiWideLayoutModel);
+const appleWide = createApple(ansiWideLayoutModel);
+
 // Expected differences between ansi30 and thumb30
-// TODO: use the .name references throughout to avoid test failures when names change
 const IGNORED_30_KEYS: Record<string, string[]> = {
-    "ANSI/IBM with wide hand position": ["Esc", "⌦", "☰"],
-    "AN65 with wide hand position": ["Esc", "☰"],
-    "ANSI/Apple with wide hand position": ["Esc", "⌦"], // replaces duplicate Ctrl key
+    [ansiWideLayoutModel.name]: ["Esc", "⌦", "☰"],
+    [an65Wide.name]: ["Esc", "☰"],
+    [appleWide.name]: ["Esc", "⌦"], // replaces duplicate Ctrl key
     [xhkb13LayoutModel.name]: ["⇤", "⇥"],
     // The single difference here is due to removing the duplicate space key.
     [xhkb14LayoutModel.name]: ["⎀", "\\"],
     [xhkb15LayoutModel.name]: ["⎀"],
     [xhkb16LayoutModel.name]: ["€"],
-    "Ergoboard 65 LowShift Big Enter": ["`~"],
-    "Ergoboard 65 LowShift Wide": ["⎀"],
-    "Ergoboard 65 LowShift Wide angle mod": ["⎀"],
+    [ergoboardBigEnterLayoutModel.name]: ["`~"],
+    [ergoboardLowshiftWideLayoutModel.name]: ["⎀"],
+    [ergoboardLowshiftWideAngleModLayoutModel.name]: ["⎀"],
     [ergoboardRightRetLayoutModel.name]: ["⎀"],
     [ergoboardVerticalEnterLayoutModel.name]: ["⎀"],
     [ergoboardSemiWideLayoutModel.name]: ["⎀"],
     // those are differences where I didn't want to settle on a single variant.
-    "Harmonic 13 MidShift": ["\\", "`", "[", "]"],
-    "Harmonic 14 Macro": ["", "☰"],
+    [harmonic13MidshiftLayoutModel.name]: ["\\", "`", "[", "]"],
+    [harmonic14WideLayoutModel.name]: ["", "☰"],
 };
 
 const IGNORED_32_KEYS: Record<string, string[]> = {
-    "ANSI/IBM with wide hand position": ["\\", "☰", "⌦"],
-    "AN65 with wide hand position": ["\\", "☰"],
-    "ANSI/Apple with wide hand position": ["\\", "⌦"],
+    [ansiWideLayoutModel.name]: ["\\", "☰", "⌦"],
+    [an65Wide.name]: ["\\", "☰"],
+    [appleWide.name]: ["\\", "⌦"],
     [xhkb14LayoutModel.name]: ["`~"],
     [xhkb15LayoutModel.name]: ["⎀"],
     [xhkb16LayoutModel.name]: ["€"],
@@ -116,8 +129,6 @@ describe('RowBasedLayoutModel matrix shapes', () => {
         });
     });
 });
-
-// --- NEW: Tests for supportedKeymapTypes frame mappings ---
 
 /**
  * For frame mappings, we count placeholders across the entire frame mapping,
@@ -197,6 +208,44 @@ describe('frameMappings frame mapping validation', () => {
          });
      });
  });
+
+/*
+    A 32-key flex map spends its two extra spots on letters of its own alphabet, so the frame has
+    to bring the `'` key itself – on such a board nothing else can type the apostrophe. Except on
+    a numberless board, which keeps only three punctuation keys and drops the apostrophe with the
+    rest (see "Numberless international" in the doc).
+ */
+describe('32-key frame mappings carry the quote key', () => {
+    allLayoutModels.filter(hasNumberRow).forEach((model) => {
+        [KeymapTypeId.Ansi32, KeymapTypeId.Thumb32].forEach((typeId) => {
+            const frameMapping = model.frameMappings[typeId];
+            if (!frameMapping) return;
+            it(`${model.name} – ${typeId}`, () => {
+                expect(getStringKeys(frameMapping).filter((key) => key.includes("'"))).toHaveLength(1);
+            });
+        });
+    });
+});
+
+/*
+    A model-specific flex map is cut for its one board and covers all of its characters, so the
+    frame around it draws none. The digits are the exception, because no flex map carries them,
+    and so is the `` `~ `` key in the corner that no flex map reaches.
+ */
+describe('model-specific frame mappings leave the characters to the flex map', () => {
+    const allowed = (label: string) => /^[0-9]$/.test(label) || label === "`~";
+
+    allLayoutModels.forEach((model) => {
+        Object.entries(model.frameMappings)
+            .filter(([typeId]) => !GENERIC_KEYMAP_TYPES.includes(typeId as KeymapTypeId))
+            .forEach(([typeId, frameMapping]) => {
+                it(`${model.name} – ${typeId}`, () => {
+                    expect(getStringKeys(frameMapping).filter(isCharacterKey).filter((l) => !allowed(l)))
+                        .toEqual([]);
+                });
+            });
+    });
+});
 
 describe("midShift variants don't change the character set", () => {
     const pairs = [

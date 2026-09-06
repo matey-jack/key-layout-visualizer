@@ -1,10 +1,10 @@
 import {describe, expect, it} from "vitest";
-import {KEYMAP_TYPES, KeymapTypeId} from "../base-model.ts";
+import {GENERIC_KEYMAP_TYPES, KEYMAP_TYPES, KeymapTypeId} from "../base-model.ts";
 import {qwertyMapping} from "./baseMappings.ts";
 import {colemakMapping} from './colemakMappings.ts';
 import {allMappings} from "./mappings.ts";
 
-describe('new mappings property structure', () => {
+describe('the mappings property', () => {
     it('qwertyMapping has mappings property with Ansi30', () => {
         expect(qwertyMapping.mappings).toBeDefined();
         expect(qwertyMapping.mappings![KeymapTypeId.Ansi30]).toBeDefined();
@@ -36,8 +36,9 @@ describe('mappings property validates against KEYMAP_TYPES', () => {
     });
 });
 
+const allLetters = 'abcdefghijklmnopqrstuvwxyz';
+
 describe('character coverage for core mappings', () => {
-    const allLetters = 'abcdefghijklmnopqrstuvwxyz';
     const requiredCharsAnsi30 = allLetters + ',.;/';
     const requiredCharsThumb30 = allLetters + ',.;-' ;
     
@@ -81,7 +82,7 @@ describe('character coverage for core mappings', () => {
         const thumb30Mappings = allMappings.filter(m => m.mappings?.[KeymapTypeId.Thumb30]);
         
         thumb30Mappings.forEach((mapping) => {
-            it.skipIf(mapping.name === 'Qweerty')(`${mapping.name}`, () => {
+            it(`${mapping.name}`, () => {
                 const thumb30String = mapping.mappings[KeymapTypeId.Thumb30]!.join('');
                 const missingChars = requiredCharsThumb30.split('').filter(char => !thumb30String.includes(char));
                 expect(missingChars).toEqual([]);
@@ -90,3 +91,23 @@ describe('character coverage for core mappings', () => {
     });
 });
 
+/*
+    A model-specific flex map is cut for its one board and brings all of its characters, so it has
+    to carry the letters and the four punctuation keys the Shift and AltGr levels build on. The
+    apostrophe may arrive as the `#` key: `germanShiftPairs` puts it on that key's Shift level,
+    which is where a German board types it.
+ */
+describe('model-specific mappings have all letters and the critical punctuation', () => {
+    allMappings.forEach((mapping) => {
+        Object.entries(mapping.mappings)
+            .filter(([typeId]) => !GENERIC_KEYMAP_TYPES.includes(typeId as KeymapTypeId))
+            .forEach(([typeId, rows]) => {
+                it(`${mapping.name} – ${typeId}`, () => {
+                    const chars = rows!.join('');
+                    const missing = (allLetters + ',.-').split('').filter((c) => !chars.includes(c));
+                    expect(missing, 'missing required characters').toEqual([]);
+                    expect(chars.includes("'") || chars.includes('#'), "neither `'` nor `#`").toBe(true);
+                });
+            });
+    });
+});

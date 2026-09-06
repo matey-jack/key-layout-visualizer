@@ -635,6 +635,52 @@ things really stand out:
 
 # [App] Implementation design and UX
 
+## Validation rules
+
+Status quo:
+
+- The completeness of the generic flex mappings against their character set is covered by
+`character coverage for core mappings` in [mappings.test.ts](../src/mapping/mappings.test.ts),
+one test per flex map and generic keymap type. The same file's `mappings property validates
+against KEYMAP_TYPES` pins their shape, and `key labels` in
+[layout-models.test.ts](../src/layout-models.test.ts) rejects glyphs that are neither a letter
+nor a known keyboard symbol.
+
+- Frame mappings that carry the full set of 47 character keys are covered by
+`hasLettersNumbersAndProsePunctuation` in
+[layout-functions.test.ts](../src/layout/layout-functions.test.ts), which merges a frame mapping
+with a flex map and asks for the letters, the digits and `,.;-/'`.
+
+Now that we know what characters are mapped on the Shift and AltGr levels, we can fully validate 
+all frame mappings and all model-specific flex mappings. Here are the rules:
+
+1. Frame mappings for 30-flexkey maps have no constraints at all. Colloquialization will 
+   automatically kick-in and provide the necessary `-` and `'` that the flex character set is 
+   lacking. And if that frees any key or pair of keys in the flex map, it will also replace that 
+   sensibly with another key or pair of keys.
+
+2. Frame mappings for 32-flexkey maps need to have the quote key `'`, because a 32-key flex map 
+   spends its two extra spots on letters of its own alphabet. Numberless boards are exempt: they 
+   keep three punctuation keys and drop the apostrophe along with the technical punctuation, as 
+   "Numberless international" above describes.
+
+3. Model-specific frame mappings should not have any character keys beyond their flex spots, 
+   the digits, and the `` `~ `` key, which the ANSI family draws in the corner that no flex map 
+   reaches. And model-specific flex mappings must have all 26 letters and the four critical 
+   punctuation keys: `,`, `.`, `-`, and `'` – or, in place of the last, the `#` key, whose Shift 
+   level is where a German board types the apostrophe. Depending on the presence of the `;` key, 
+   those will receive English or international Shift mappings. And depending on the presence of 
+   the `/` they will either have the choice between the standard and the colloquial keymap, or 
+   they will only have the colloquial keymap.
+
+Rule 1 asks for nothing and so is nothing to test. Rule 2 is `32-key frame mappings carry the 
+quote key`, and rule 3's first half `model-specific frame mappings leave the characters to the 
+flex map`, both in [layout-models.test.ts](../src/layout-models.test.ts); its second half is 
+`model-specific mappings have all letters and the critical punctuation` in 
+[mappings.test.ts](../src/mapping/mappings.test.ts). The two closing sentences of rule 3 are the 
+subject of `the ANSI marker` and `whether the standard pairing can serve a board` in 
+[key-levels.test.ts](../src/mapping/key-levels.test.ts).
+
 ## Making the bracket pairs appear together in keymaps
 
 To make the pair of new bracket keys co-located on all keyboard layout models, we need to add some
@@ -647,9 +693,10 @@ flex-map specific. Out of scope for now.
 
 ## UX for the nav key replacements
 
-The [Domain] sections describe mostly already implemented functionality and serve as a manual and
-rationale. For the UX, the manual is the visible behavior of the app itself. Therefore, this section
-only describes the new behavior that still needs to be implemented.
+The [Domain] sections serve as a manual and rationale. For the UX, the manual is the visible
+behavior of the app itself, so this section only lists the rules that behavior follows. The code is
+in [nav-keys.ts](../src/mapping/nav-keys.ts), tested per rule in
+[nav-keys.test.ts](../src/mapping/nav-keys.test.ts).
 
 - One button per nav pair, and one each for Delete and Insert. (Four buttons in total.)
 - Each button has an 'on' and an 'off' state: when 'on', the nav or edit key is placed in the

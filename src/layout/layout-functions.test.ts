@@ -39,7 +39,12 @@ import {
 import {splitOrthoLayoutModel} from "./splitOrthoLayoutModel.ts";
 import {xhkb15LayoutModel} from "./xhkbLayoutModel.ts";
 
-const allLayoutModels = [
+/*
+    A hand-picked set of full-size boards, not the app's `allLayoutModels`: the completeness check
+    below asks for the digits and the prose punctuation, which the numberless and 32-key-only
+    boards deliberately do not have.
+ */
+const sampleLayoutModels = [
     ansiIBMLayoutModel,
     createHHKB(ansiIBMLayoutModel),
     xhkb15LayoutModel,
@@ -74,7 +79,7 @@ describe('fillMapping', () => {
         expect(actual[4]).toStrictEqual(["Ctrl", "Cmd", "Alt", "[", "␣", "⏎", "]", "AltGr", "Fn", "Ctrl",]);
     });
 
-    allLayoutModels.forEach((model) => {
+    sampleLayoutModels.forEach((model) => {
         if (model.frameMappings[KeymapTypeId.Ansi30]) {
             it(`${model.name} 30-key frame maps all important characters`, () => {
                 hasLettersNumbersAndProsePunctuation(mergeMapping((model.frameMappings[KeymapTypeId.Ansi30])!, ["", ...qwertyMapping.mappings[KeymapTypeId.Ansi30]!]));
@@ -89,11 +94,6 @@ describe('fillMapping', () => {
 
     it(`ANSI wide layout maps all important characters`, () => {
         hasLettersNumbersAndProsePunctuation(fillMapping(ansiWideLayoutModel, thumbyZero)!);
-    })
-
-    it.skip(`ANSI layout maps all important characters`, () => {
-        // qwertz is the only keymap with ANSI-specific mapping... but qwertz doesn't have the expected qwerty punctuation...
-        hasLettersNumbersAndProsePunctuation(fillMapping(ansiIBMLayoutModel, qwertzMapping)!);
     })
 
     it(`Split Ortho full layout maps all important characters`, () => {
@@ -112,9 +112,12 @@ describe('hasMatchingMapping', () => {
     it('no Thumby mapping on ANSI-narrow', () => {
         expect(hasMatchingMapping(ansiIBMLayoutModel, colemakThumbyDMapping)).toBeFalsy();
     });
-});
 
-// --- NEW: Tests for keymap type system ---
+    it('qwerty fits the ANSI board and the split ortho one', () => {
+        expect(hasMatchingMapping(ansiIBMLayoutModel, qwertyMapping)).toBe(true);
+        expect(hasMatchingMapping(splitOrthoLayoutModel(false), qwertyMapping)).toBe(true);
+    });
+});
 
 describe('findMatchingKeymapType', () => {
     it('finds Ansi30 match between qwertyMapping and ansiIBMLayoutModel', () => {
@@ -145,40 +148,6 @@ describe('findMatchingKeymapType', () => {
     it('returns undefined when no mappings property exists', () => {
         const match = findMatchingKeymapType(ansiIBMLayoutModel, topNine);
         expect(match).toBeUndefined();
-    });
-});
-
-describe('new keymap type system - fillMappingNew', () => {
-    it('produces same result as fillMapping for qwerty on ANSI', () => {
-        const oldResult = fillMapping(ansiIBMLayoutModel, qwertyMapping);
-        const newResult = fillMapping(ansiIBMLayoutModel, qwertyMapping);
-        expect(newResult).toEqual(oldResult);
-    });
-
-    it('produces same result as fillMapping for qwerty on splitOrtho', () => {
-        const oldResult = fillMapping(splitOrthoLayoutModel(false), qwertyMapping);
-        const newResult = fillMapping(splitOrthoLayoutModel(false), qwertyMapping);
-        expect(newResult).toEqual(oldResult);
-    });
-
-    it('falls back to old system for mappings without new property', () => {
-        const result = fillMapping(ansiIBMLayoutModel, normanMapping);
-        expect(result).toBeDefined();
-        // Should use old system since normanMapping doesn't have mappings property
-    });
-});
-
-describe('new keymap type system - hasMatchingMappingNew', () => {
-    it('returns true for qwertyMapping on ansiIBMLayoutModel', () => {
-        expect(hasMatchingMapping(ansiIBMLayoutModel, qwertyMapping)).toBe(true);
-    });
-
-    it('returns true for qwertyMapping on splitOrthoLayoutModel', () => {
-        expect(hasMatchingMapping(splitOrthoLayoutModel(false), qwertyMapping)).toBe(true);
-    });
-
-    it('falls back to old system for mappings without new property', () => {
-        expect(hasMatchingMapping(ansiIBMLayoutModel, normanMapping)).toBe(true);
     });
 });
 
@@ -215,26 +184,6 @@ describe('copyAndModifyKeymap', () => {
             expect(matrix[0]).not.toBe(original[0]);
             expect(matrix[1]).not.toBe(original[1]);
             return matrix;
-        });
-    });
-});
-
-describe('finger assignment consistency', () => {
-    allLayoutModels.forEach((model) => {
-        it(model.name, () => {
-            model.keyWidths.forEach((widthRow, r) => {
-                expect(model.mainFingerAssignment[r].length, `${model.name} ${KeyboardRows[r]}Row`).toBe(widthRow.length);
-            });
-        });
-    });
-});
-
-describe('key effort consistency', () => {
-    allLayoutModels.forEach((model) => {
-        it(model.name, () => {
-            model.keyWidths.forEach((widthRow, r) => {
-                expect(model.singleKeyEffort[r].length, `${model.name} ${KeyboardRows[r]}Row`).toBe(widthRow.length);
-            });
         });
     });
 });

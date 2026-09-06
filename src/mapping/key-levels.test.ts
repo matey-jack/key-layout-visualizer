@@ -13,7 +13,6 @@ import {ergoplankLayoutModel} from "../layout/ergoplankLayoutModel.ts";
 import {xhkb13LayoutModel, xhkb14LayoutModel, xhkb16LayoutModel} from "../layout/xhkbLayoutModel.ts";
 import {allMappings} from "./mappings.ts";
 import {allLayoutModels} from "../all-layout-models.ts";
-import {isKeyboardSymbol, isKeyName} from "./mapping-functions.ts";
 import {
     getBaseLevel,
     getShiftLevel,
@@ -40,9 +39,6 @@ import {
     shiftPairingFor,
     shiftPairsByPairing,
 } from "./key-levels.ts";
-
-// A base label of one letter, in any of the alphabets our flex maps carry.
-const isLetter = (label: string) => label.length === 1 && label.toLowerCase() !== label.toUpperCase();
 
 // Without a name, the first mapping the model accepts – which is a 30-key one everywhere.
 const mappingFor = (model: LayoutModel, name?: string) =>
@@ -241,32 +237,6 @@ describe("colloquial Shift pairings", () => {
         expect(level[";"]).toBe(";:");
         expect(level["9"]).toBe("9(");
         expect(level["-"]).toBe("-_");
-    });
-});
-
-/*
-    The colloquialisation is a permutation over the punctuation keys every English board
-    carries, so it has to come out complete on all of them: five base punctuation characters
-    plus the redundant `(` and `)`.
- */
-describe("the colloquial level comes out complete on every English board", () => {
-    const combos = allLayoutModels.flatMap((model) =>
-        allMappings
-            .filter((m) => hasMatchingMapping(model, m))
-            .filter((m) => !is32KeyType(findMatchingKeymapType(model, m)!.typeId))
-            .filter((m) => hasColloquialLevel(fillMapping(model, m)!, hasNumberRow(model)))
-            .map((m) => [`${model.name} / ${m.name}`, model, m.name] as const));
-
-    it("covers every English key map with a number row", () => {
-        expect(combos.length).toBeGreaterThan(1500);
-    });
-
-    it.each(combos)("%s", (_name, model, mappingName) => {
-        const keys = colloquialKeys(model, mappingName);
-        const bases = keys.map(({pair}) => pair[0]);
-        expect(bases.filter((c) => "'=,.-".includes(c)).sort()).toEqual(["'", ",", "-", ".", "="]);
-        expect(keys.filter(({pair}) => pair[0] === "(")).toHaveLength(1);
-        expect(keys.filter(({pair}) => pair[0] === ")")).toHaveLength(1);
     });
 });
 
@@ -666,43 +636,6 @@ describe("whether the standard pairing can serve a board", () => {
         // Dropping the `;` does not: such a board is no longer an English one, and the
         // international pairings carry `;` and `:` on the `,` and `.` keys.
         expect(hasStandardLevel(without(full, ";"), true)).toBe(true);
-    });
-});
-
-/*
-    The pairings have to cover the punctuation of every 32-key frame mapping, or a key on some
-    board silently loses its Shift character. `€` is the one character key without a partner:
-    no pairing in any language puts one on it.
- */
-describe("the international levels cover every 32-key board", () => {
-    const combos = allLayoutModels
-        .filter((model) => hasNumberRow(model))
-        .flatMap((model) => allMappings
-            .filter((m) => hasMatchingMapping(model, m))
-            .filter((m) => is32KeyType(findMatchingKeymapType(model, m)!.typeId))
-            .map((m) => [`${model.name} / ${m.name}`, model, m.name] as const));
-
-    it("covers every 32-key map on every board with a number row", () => {
-        expect(combos.length).toBeGreaterThan(100);
-    });
-
-    it.each(combos)("%s", (_name, model, mappingName) => {
-        for (const colloquial of [false, true]) {
-            const mapping = mappingFor(model, mappingName);
-            const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
-            const charMap = colloquial
-                ? colloquialiseCharMap(fillMapping(model, mapping)!, model, keymapType)
-                : fillMapping(model, mapping)!;
-            const positions = getKeyPositions(model, false, charMap);
-            const levels = getKeyLevels(model, positions, charMap, Hand.Left,
-                pairingFor(model, mappingName, colloquial));
-            const unpaired = positions
-                .filter((p) => p.label && !isKeyName(p.label) && !isKeyboardSymbol(p.label))
-                .filter((p) => !isLetter(p.label))
-                .filter((p) => !levels.shift[p.row][p.col])
-                .map((p) => p.label);
-            expect(unpaired.filter((label) => label !== "€"), `colloquial=${colloquial}`).toEqual([]);
-        }
     });
 });
 
