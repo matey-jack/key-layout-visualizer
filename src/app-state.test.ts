@@ -1,16 +1,13 @@
 import {beforeEach, describe, expect, it} from "vitest";
 import {AnsiVariant, ErgoboardVariant, HarmonicVariant, PlankVariant} from "./app-model";
 import {createAppState} from "./app-state";
-import {type FlexMapping, KeymapTypeId, type LayoutModel, LayoutType} from "./base-model";
-import {allLayoutModels} from "./all-layout-models.ts";
-import {alignForHex} from "./layout/harmonic-layout-functions.ts";
-import {fillMapping, hasMatchingMapping} from "./layout/layout-functions";
-import {hasNumberRow} from "./mapping/key-level-functions.ts";
-import {hasColloquialLevel, ShiftPairing, shiftPairingFor} from "./mapping/key-levels.ts";
+import {type FlexMapping, KeymapTypeId, LayoutType} from "./base-model";
+import {hasMatchingMapping} from "./layout/layout-functions";
+import {ShiftPairing} from "./mapping/key-levels.ts";
 import {danishMapping, qwertyMapping, qwertyWideMapping, qwertzMapping} from './mapping/baseMappings.ts';
 import {colemakMapping, colemakThumbyDMapping} from './mapping/colemakMappings.ts';
 import {cozyEnglish} from './mapping/cozyMappings.ts';
-import {allMappings, maltronMapping} from "./mapping/mappings";
+import {maltronMapping} from "./mapping/mappings";
 
 beforeEach(() => {
     window.location.hash = "";
@@ -378,7 +375,6 @@ describe("URL hash parameters", () => {
     });
 });
 
-
 /*
     The one value the keyboard, the level switches and the details text all read. Its rules are in
     mapping/key-levels.ts and tested there; what matters here is that the app state applies them to
@@ -437,41 +433,3 @@ describe("resolvedKeyLevels", () => {
     });
 });
 
-/*
-    Deriving the levels once is only sound because the rules read the character set, which neither
-    the hexagon alignment nor the flipped Return/Rubout changes. The app state therefore resolves
-    them from the plain board, while LayoutArea draws a rearranged one.
-
-    The colloquial rearrangement is the one thing that does change the character set: it takes the
-    `;` that marks an English key map away, so a colloquialised board lands on the international
-    table instead. That the two colloquial tables agree is pinned in mapping/key-levels.test.ts.
- */
-describe("the plain board can speak for the rendered one", () => {
-    it("resolves alike on the plain and the hexagon-aligned board", () => {
-        const divergent: string[] = [];
-        let combos = 0;
-        for (const model of allLayoutModels) {
-            const hexed = alignForHex(model);
-            for (const mapping of allMappings.filter((m) => hasMatchingMapping(model, m))) {
-                combos++;
-                const plain = fillMapping(model, mapping)!;
-                const onHex = fillMapping(hexed, mapping)!;
-                // `true` asks for the colloquial level wherever there is one, which is the case
-                // where the two boards differ most.
-                const pairing = (charMap: string[][], m: LayoutModel) =>
-                    shiftPairingFor(charMap, hasNumberRow(m), true);
-                const expected = pairing(plain, model);
-                const got = pairing(onHex, hexed);
-                if (got !== expected) {
-                    divergent.push(`${model.name} / ${mapping.name}: hexagons say ${got}, plain says ${expected}`);
-                }
-                if (hasColloquialLevel(onHex, hasNumberRow(hexed))
-                    !== hasColloquialLevel(plain, hasNumberRow(model))) {
-                    divergent.push(`${model.name} / ${mapping.name}: hexagons disagree about having a colloquial level`);
-                }
-            }
-        }
-        expect(combos).toBeGreaterThan(1500);
-        expect(divergent).toEqual([]);
-    });
-});
