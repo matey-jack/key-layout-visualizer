@@ -25,6 +25,7 @@ The compiler catches only some of these, so walk the list:
 - [layout-selection.ts](../src/layout-selection.ts) - which options select it,
 - [app-model.ts](../src/app-model.ts) - the variant enum. Never renumber: the URL parameters store these values.
 - [app-state.ts](../src/app-state.ts) - URL parameter and default,
-- the matching `*LayoutOptions.tsx` component - the buttons,
-- [seo-content.ts](../src/seo-content.ts) - only if the model's description says something the listed ones don't.
-  Note that this file exports an `allLayoutModels` of its own, a subset of the one above.
+- the matching `*LayoutOptions.tsx` component - the buttons.
+
+The SEO content of the built page is generated from the same `allLayoutModels`, so a model's name and
+description reach it without a further step.

@@ -1,37 +1,5 @@
-import type {LayoutModel} from "./base-model.ts";
-import {ansiIBMLayoutModel, createApple, createHHKB} from "./layout/ansiLayoutModel.ts";
-import {ergoboardComfyLayoutModel} from "./layout/ergoboardComfyLayoutModel.ts";
-import {ergoplankLayoutModel} from "./layout/ergoplankLayoutModel.ts";
-import {minorErgoslatLayoutModel} from './layout/ergoslatLayoutModel.ts';
-import {harmonic12LayoutModel} from "./layout/harmonic12LayoutModel.ts";
-import {harmonic13MidshiftLayoutModel} from "./layout/harmonic13MidshiftLayoutModel.ts";
-import {harmonic13WideLayoutModel} from "./layout/harmonic13WideLayoutModel.ts";
-import {harmonic14TraditionalLayoutModel} from "./layout/harmonic14TraditionalLayoutModel.ts";
-import {harmonic14WideLayoutModel} from "./layout/harmonic14WideLayoutModel.ts";
-import {katanaLayoutModel} from "./layout/katanaLayoutModel.ts";
-import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
-import {xhkb15LayoutModel} from './layout/xhkbLayoutModel.ts';
+import {allLayoutModels} from "./all-layout-models.ts";
 import {allMappings} from "./mapping/mappings.ts";
-
-// No need to include all variants, since this only extracts the description, which is often the same or mostly the same.
-// So this is a shorter list than the equally named one in all-layout-models.ts, which is the one to iterate
-// over when something has to hold for every model.
-export const allLayoutModels: LayoutModel[] = [
-    ansiIBMLayoutModel,
-    createApple(ansiIBMLayoutModel),
-    createHHKB(ansiIBMLayoutModel),
-    xhkb15LayoutModel,
-    harmonic14WideLayoutModel,
-    harmonic14TraditionalLayoutModel,
-    harmonic13WideLayoutModel,
-    harmonic13MidshiftLayoutModel,
-    harmonic12LayoutModel,
-    katanaLayoutModel,
-    minorErgoslatLayoutModel(true),
-    ergoplankLayoutModel,
-    ergoboardComfyLayoutModel,
-    splitOrthoLayoutModel(false),
-];
 
 export function generateSeoContent(): string {
     const lines: string[] = [];

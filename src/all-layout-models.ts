@@ -1,7 +1,7 @@
 /*
     Every layout model variant the app can show, in one list.
     Used by tests that have to hold for all of them – shape validation, and the finger-position
-    blocks of the key levels visualization.
+    blocks of the key levels visualization – and by the SEO content generated into the built page.
  */
 import type {LayoutModel} from "./base-model.ts";
 import {
