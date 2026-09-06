@@ -1,5 +1,6 @@
 import {describe, expect, it} from "vitest";
 import {
+    GENERIC_KEYMAP_TYPES,
     KeyboardRows,
     keyboardSymbols,
     KEYMAP_TYPES,
@@ -19,6 +20,8 @@ import {splitOrthoLayoutModel} from "./layout/splitOrthoLayoutModel.ts";
 import {xhkb13LayoutModel, xhkb14LayoutModel, xhkb15LayoutModel, xhkb16LayoutModel} from "./layout/xhkbLayoutModel.ts";
 import {sum} from "./library/math.ts";
 import {allLayoutModels} from "./all-layout-models.ts";
+import {hasNumberRow} from "./mapping/key-level-functions.ts";
+import {isCharacterKey} from "./mapping/mapping-functions.ts";
 import {allMappings} from "./mapping/mappings.ts";
 
 
@@ -197,6 +200,44 @@ describe('frameMappings frame mapping validation', () => {
          });
      });
  });
+
+/*
+    A 32-key flex map spends its two extra spots on letters of its own alphabet, so the frame has
+    to bring the `'` key itself – on such a board nothing else can type the apostrophe. Except on
+    a numberless board, which keeps only three punctuation keys and drops the apostrophe with the
+    rest (see "Numberless international" in the doc).
+ */
+describe('32-key frame mappings carry the quote key', () => {
+    allLayoutModels.filter(hasNumberRow).forEach((model) => {
+        [KeymapTypeId.Ansi32, KeymapTypeId.Thumb32].forEach((typeId) => {
+            const frameMapping = model.frameMappings[typeId];
+            if (!frameMapping) return;
+            it(`${model.name} – ${typeId}`, () => {
+                expect(getStringKeys(frameMapping).filter((key) => key.includes("'"))).toHaveLength(1);
+            });
+        });
+    });
+});
+
+/*
+    A model-specific flex map is cut for its one board and covers all of its characters, so the
+    frame around it draws none. The digits are the exception, because no flex map carries them,
+    and so is the `` `~ `` key in the corner that no flex map reaches.
+ */
+describe('model-specific frame mappings leave the characters to the flex map', () => {
+    const allowed = (label: string) => /^[0-9]$/.test(label) || label === "`~";
+
+    allLayoutModels.forEach((model) => {
+        Object.entries(model.frameMappings)
+            .filter(([typeId]) => !GENERIC_KEYMAP_TYPES.includes(typeId as KeymapTypeId))
+            .forEach(([typeId, frameMapping]) => {
+                it(`${model.name} – ${typeId}`, () => {
+                    expect(getStringKeys(frameMapping).filter(isCharacterKey).filter((l) => !allowed(l)))
+                        .toEqual([]);
+                });
+            });
+    });
+});
 
 describe("midShift variants don't change the character set", () => {
     const pairs = [

@@ -660,20 +660,27 @@ all frame mappings and all model-specific flex mappings. Here are the rules:
    lacking. And if that frees any key or pair of keys in the flex map, it will also replace that 
    sensibly with another key or pair of keys.
 
-2. Frame mappings for 32-flexkey maps need to have the quote key `'`.
+2. Frame mappings for 32-flexkey maps need to have the quote key `'`, because a 32-key flex map 
+   spends its two extra spots on letters of its own alphabet. Numberless boards are exempt: they 
+   keep three punctuation keys and drop the apostrophe along with the technical punctuation, as 
+   "Numberless international" above describes.
 
-3. Model-specific frame mappings should not have any character keys beyond their flex spots 
-   and (usually) digits. And model-specific flex mappings must have all 26 letters and the four 
-   critical punctuation keys: `,`, `.`, `-`, and `'`. Depending on the presence of the `;` key, 
+3. Model-specific frame mappings should not have any character keys beyond their flex spots, 
+   the digits, and the `` `~ `` key, which the ANSI family draws in the corner that no flex map 
+   reaches. And model-specific flex mappings must have all 26 letters and the four critical 
+   punctuation keys: `,`, `.`, `-`, and `'` – or, in place of the last, the `#` key, whose Shift 
+   level is where a German board types the apostrophe. Depending on the presence of the `;` key, 
    those will receive English or international Shift mappings. And depending on the presence of 
    the `/` they will either have the choice between the standard and the colloquial keymap, or 
    they will only have the colloquial keymap.
 
-((TODO: make sure, there are tests for conditions 2 and 3, and they are referenced here.
-Also check whether we have any character-set specific tests that run for the cross product of 
-flex maps and layout models and if those tests still have any value now that the 
-character-set-interface between both is so well define. Possibly replace the cross product with 
-just a few select integration tests.))
+Rule 1 asks for nothing and so is nothing to test. Rule 2 is `32-key frame mappings carry the 
+quote key`, and rule 3's first half `model-specific frame mappings leave the characters to the 
+flex map`, both in [layout-models.test.ts](../src/layout-models.test.ts); its second half is 
+`model-specific mappings have all letters and the critical punctuation` in 
+[mappings.test.ts](../src/mapping/mappings.test.ts). The two closing sentences of rule 3 are the 
+subject of `the ANSI marker` and `whether the standard pairing can serve a board` in 
+[key-levels.test.ts](../src/mapping/key-levels.test.ts).
 
 ## Making the bracket pairs appear together in keymaps
 
