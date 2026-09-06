@@ -1,7 +1,7 @@
 import {beforeEach, describe, expect, it} from "vitest";
 import {AnsiVariant, ErgoboardVariant, HarmonicVariant, PlankVariant} from "./app-model";
 import {createAppState} from "./app-state";
-import {type FlexMapping, KeymapTypeId, type LayoutModel, LayoutType} from "./base-model";
+import {type FlexMapping, KeymapTypeId, type LayoutModel, LayoutType, VisualizationType} from "./base-model";
 import {allLayoutModels} from "./all-layout-models.ts";
 import {alignForHex} from "./layout/harmonic-layout-functions.ts";
 import {fillMapping, hasMatchingMapping} from "./layout/layout-functions";
@@ -11,6 +11,7 @@ import {danishMapping, qwertyMapping, qwertyWideMapping, qwertzMapping} from './
 import {colemakMapping, colemakThumbyDMapping} from './mapping/colemakMappings.ts';
 import {cozyEnglish} from './mapping/cozyMappings.ts';
 import {allMappings, maltronMapping} from "./mapping/mappings";
+import {NavReplacement} from "./mapping/nav-keys.ts";
 
 beforeEach(() => {
     window.location.hash = "";
@@ -434,6 +435,40 @@ describe("resolvedKeyLevels", () => {
         appState.setMapping(danishMapping);
         expect(appState.resolvedKeyLevels.value.keymapType).toBe(KeymapTypeId.Ansi32);
         expect(appState.resolvedKeyLevels.value.pairing).toBe(ShiftPairing.International);
+    });
+
+    it("spends a spare key on a nav key, and takes it back when the switch goes off", () => {
+        window.location.hash = "#layout=0&mapping=QWERTY&viz=8&colloquial=1";
+        const appState = createAppState();
+        const before = appState.resolvedKeyLevels.value.characterKeys;
+
+        appState.toggleNavReplacement(NavReplacement.HomeEnd);
+        expect(appState.resolvedKeyLevels.value.navReplacements).toEqual([NavReplacement.HomeEnd]);
+        // The two brackets are characters no more.
+        expect(appState.resolvedKeyLevels.value.characterKeys).toBe(before - 2);
+
+        appState.toggleNavReplacement(NavReplacement.HomeEnd);
+        expect(appState.resolvedKeyLevels.value.navReplacements).toEqual([]);
+        expect(appState.resolvedKeyLevels.value.characterKeys).toBe(before);
+    });
+
+    it("leaves the board alone outside the key levels visualization", () => {
+        window.location.hash = "#layout=0&mapping=QWERTY&viz=8";
+        const appState = createAppState();
+        appState.toggleNavReplacement(NavReplacement.Delete);
+        expect(appState.resolvedKeyLevels.value.navReplacements).toEqual([NavReplacement.Delete]);
+
+        appState.vizType.value = VisualizationType.MappingDiff;
+        expect(appState.resolvedKeyLevels.value.navReplacements).toEqual([]);
+        expect(appState.resolvedKeyLevels.value.navReplacementsOnOffer).not.toEqual([]);
+    });
+
+    // It is a thing to try on the board in front of you, not part of the keyboard a link describes.
+    it("keeps the selection out of the URL", () => {
+        window.location.hash = "#layout=0&mapping=QWERTY&viz=8";
+        const appState = createAppState();
+        appState.toggleNavReplacement(NavReplacement.Delete);
+        expect(window.location.hash).not.toMatch(/nav[A-Za-z]|⌦/);
     });
 });
 

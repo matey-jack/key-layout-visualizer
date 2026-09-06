@@ -20,7 +20,6 @@ and [app], so readers can orient themselves.
 Todo in code:
 
 - Model-specific permutations of the colloquial 32-flexkey mappings, where applicable.
-- Implement the Nav key replacements.
 - Animate the toggling of the colloquial mapping for English. Only animate the base keys that are
   moving (as current animation logic already does), ignoring the other levels.
     + We might need to remove the `=+` exception to keep this simple, because when `+` switches 
@@ -652,19 +651,25 @@ The [Domain] sections describe mostly already implemented functionality and serv
 rationale. For the UX, the manual is the visible behavior of the app itself. Therefore, this section
 only describes the new behavior that still needs to be implemented.
 
-- There will be specific buttons for each nav pair and separately for the Delete and Insert keys.
-  (Three buttons in total.)
+- One button per nav pair, and one each for Delete and Insert. (Four buttons in total.)
 - Each button has an 'on' and an 'off' state: when 'on', the nav or edit key is placed in the
   keymap.
 - If a key or key pair is already on the board, its button will not be displayed.
 - If there are no bracket pairs on the board, don't show any of the paired nav buttons.
-- If none of the seven optional keys is on the board, don't display the nav button group at all.
+- If none of the optional keys is on the board, don't display the nav button group at all. Which
+  covers every numberless board: those have no redundant AltGr mapping to make a key spare.
 - If a button is selected and all the optional keys are already assigned to other nav keys, unassign
-  one (or an entire pair, never half of a pair) to assign the new one.
+  the one selected longest ago (an entire pair, never half of a pair). Preferably one of the same
+  kind as the button just clicked, so that a pair gives way to a pair and a single to a single.
 - Order of the keys to use:
     + for pairs, first `[]`, then `()`;
-    + for singles, first `\|`, then backtick-tilde, then `=+`, and lastly `/?`; after the last one,
-      use a key from a pair.
+    + for singles, first `\|`, then backtick-tilde, then `=+`; after the last one, use a key from a
+      pair. `/?` is not among them: in the standard mode `?` has nowhere else to go, and the
+      colloquial rearrangement that would free it is the very one that spends the key.
+- The selection is not part of the state a link carries, unlike the two switches above it.
+- The buttons only apply in the "Shift and AltGr Levels" visualization, the same as the colloquial
+  switch: everywhere else the board keeps its punctuation, so the key counts and effort scores of
+  the other mapping visualizations stay comparable.
 
 ## Details Area texts
 

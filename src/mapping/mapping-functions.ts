@@ -22,8 +22,9 @@ export const isCharacterKey = (label: string) =>
 export const isFrameCharacterKey = (cell: FrameMappingEntry) =>
     typeof cell === "number" || Array.isArray(cell) || (typeof cell === "string" && isCharacterKey(cell));
 
-// How many characters a board can carry per level. Permuting a char map never changes this, so
-// the plain merged map answers for the colloquialised and numberless ones too.
+// How many characters a board can carry per level. Moving keys about never changes this, so the
+// plain merged map answers for the colloquialised and numberless ones too - but a nav key
+// replacement does, since it takes a character key off the board.
 export const characterKeyCount = (charMap: string[][]) =>
     charMap.flat().filter(isCharacterKey).length;
 

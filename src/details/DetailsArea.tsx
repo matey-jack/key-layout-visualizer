@@ -580,5 +580,14 @@ export function ShiftLevelsDetails({keyLevels}: ShiftLevelsDetailsProps) {
                 to the left Shift can serve as one.
             </p>
         }
+        {!!keyLevels.navReplacementsOnOffer.length && <p>
+            The "Spare keys" buttons spend a punctuation key on a navigation or editing key instead.
+            Those keys are spare because the AltGr level types their characters anyway, and they beat
+            a nav cluster in the far corner of the board or a cramped one on a laptop – you reach them
+            without leaving the keyboard. Which is worth having next to the hands-down navigation
+            above, because one uses PageUp and Delete just as often with the hands off the keys, while
+            reading or after picking something with the mouse. Each button takes the next spare key,
+            and where none is left it takes one back from a key you switched on earlier.
+        </p>}
     </>
 }
