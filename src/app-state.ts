@@ -26,9 +26,22 @@ import {getLayoutModel} from "./layout-selection.ts";
 import {enumValues} from "./library/enum.ts";
 import {qwertyMapping} from "./mapping/baseMappings.ts";
 import {hasNumberRow} from "./mapping/key-level-functions.ts";
-import {hasColloquialLevel, hasStandardLevel, shiftPairingFor} from "./mapping/key-levels.ts";
+import {
+    colloquialiseCharMap,
+    hasColloquialLevel,
+    hasStandardLevel,
+    shiftPairingFor,
+} from "./mapping/key-levels.ts";
 import {characterKeyCount} from "./mapping/mapping-functions.ts";
 import {allMappings} from "./mapping/mappings.ts";
+import {
+    assignNavKeys,
+    type NavReplacement,
+    navReplacementsOnOffer,
+    placeNavKeys,
+    toggleNavKey,
+} from "./mapping/nav-keys.ts";
+import {numberlessCharMap} from "./mapping/numberless-key-levels.ts";
 
 
 function modifyWide(mapping: FlexMapping, opts: LayoutOptions): boolean {
@@ -309,15 +322,31 @@ function updateUrlParams(
     window.history.pushState(null, "", "#" + params.toString());
 }
 
+/*
+    The board as the keyboard draws it, before the nav keys go on: the two rearrangements that
+    change which characters are where. (LayoutArea's renderKeyboard takes the same two steps, after
+    the ones that only move keys about - hexagon alignment and the flipped Return.)
+ */
+function rearrangedCharMap(
+    model: LayoutModel, mapping: FlexMapping, colloquial: boolean
+): string[][] {
+    const charMap = numberlessCharMap(fillMapping(model, mapping)!, model);
+    return colloquial
+        ? colloquialiseCharMap(charMap, model, findMatchingKeymapType(model, mapping)!.typeId)
+        : charMap;
+}
+
 // let's just have one.
 /**
  * Applies the key level rules of mapping/key-levels.ts to one board and key map.
  * `colloquialWanted` is the switch as the user left it, which selects a colloquial level only
  * where the key map has one - and where the standard pairing cannot serve the board, the
- * colloquial one is on whatever the switch says.
+ * colloquial one is on whatever the switch says. `navWanted` is the spare-key selection, which
+ * the board can only partly serve in the same way.
  */
 function resolveKeyLevels(
-    model: LayoutModel, mapping: FlexMapping, colloquialWanted: boolean
+    model: LayoutModel, mapping: FlexMapping, colloquialWanted: boolean,
+    navWanted: NavReplacement[]
 ): ResolvedKeyLevels {
     const charMap = fillMapping(model, mapping)!;
     const keymapType = findMatchingKeymapType(model, mapping)!.typeId;
@@ -325,14 +354,22 @@ function resolveKeyLevels(
     const hasColloquial = hasColloquialLevel(charMap, numberRow);
     const hasStandard = hasStandardLevel(charMap, numberRow);
     const colloquial = hasColloquial && (colloquialWanted || !hasStandard);
+    // The spare keys are read off the board as it is drawn, because only the colloquial
+    // rearrangement puts `(` and `)` within reach of a nav key.
+    const rearranged = rearrangedCharMap(model, mapping, colloquial);
+    const {placed} = assignNavKeys(rearranged, numberRow, navWanted);
     return {
         keymapType,
         hasNumberRow: numberRow,
-        characterKeys: characterKeyCount(charMap),
+        // Off the board with the nav keys on it, so that the count of redundant keys shrinks as
+        // they are spent.
+        characterKeys: characterKeyCount(placeNavKeys(rearranged, numberRow, navWanted)),
         hasColloquialLevel: hasColloquial,
         hasStandardLevel: hasStandard,
         colloquial,
         pairing: shiftPairingFor(charMap, numberRow, colloquial),
+        navReplacementsOnOffer: navReplacementsOnOffer(rearranged, numberRow),
+        navReplacements: placed,
     };
 }
 
@@ -382,15 +419,21 @@ export function createAppState(): AppState {
     // the mnemonic variant of docs/key-levels.md.
     const navSide = signal<Hand>(s2i(params.get("nav")) ?? Hand.Left)
     const shiftColloquial = signal<boolean>(params.get("colloquial") === "1")
+    // Deliberately not in the URL: this one is a thing to try out on the board in front of you,
+    // not part of the keyboard a link describes.
+    const navReplacements = signal<NavReplacement[]>([])
 
     /*
-        The rendered board is hexagon-aligned and may have Return and Rubout flipped, and the
-        colloquial one is rearranged on top of that - but none of those touch the character set the
-        rules read, so all three answer alike and the plain board can speak for them.
+        The rendered board is hexagon-aligned and may have Return and Rubout flipped - but neither
+        touches the character set the pairing rules read, so the plain board can speak for it. The
+        rules that read which keys a board has to spare do need the rearranged one, which
+        rearrangedCharMap builds the same way the keyboard does.
      */
+    const showsLevels = computed(() => vizType.value === VisualizationType.MappingShiftLevels);
     const resolvedKeyLevels = computed(() => resolveKeyLevels(
         layoutModel.value, mappingState.value,
-        vizType.value === VisualizationType.MappingShiftLevels && shiftColloquial.value));
+        showsLevels.value && shiftColloquial.value,
+        showsLevels.value ? navReplacements.value : []));
 
     const mappingDiff = computed(() =>
         diffToBase(layoutModel.value, mappingState.value)
@@ -421,6 +464,13 @@ export function createAppState(): AppState {
         vizType,
         navSide,
         shiftColloquial,
+        toggleNavReplacement: (replacement: NavReplacement) => {
+            navReplacements.value = toggleNavKey(
+                rearrangedCharMap(
+                    layoutModel.value, mappingState.value,
+                    resolvedKeyLevels.value.colloquial),
+                hasNumberRow(layoutModel.value), navReplacements.value, replacement);
+        },
         resolvedKeyLevels,
         mappingDiff,
         bigramMovements

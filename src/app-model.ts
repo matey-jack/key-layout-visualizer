@@ -2,6 +2,7 @@ import type {ReadonlySignal, Signal} from "@preact/signals";
 import type {BigramMovement, FlexMapping, Hand, KeymapTypeId, LayoutModel, MappingChange} from "./base-model.ts";
 import {LayoutType, type VisualizationType} from "./base-model.ts";
 import type {ShiftPairing} from "./mapping/key-levels.ts";
+import type {NavReplacement} from "./mapping/nav-keys.ts";
 
 export enum AnsiVariant {
     IBM,
@@ -138,6 +139,11 @@ export interface AppState {
     navSide: Signal<Hand>;
     // Whether the key levels visualization shows the colloquial Shift pairings.
     shiftColloquial: Signal<boolean>;
+    // Switches one spare punctuation key over to a navigation or editing key, and back. The
+    // selection it keeps is ordered by the clicks that made it, because that is what decides which
+    // one gives way when the board runs out of spare keys. (Which is why this is a setter and not
+    // a raw signal: the answer depends on the board. `resolvedKeyLevels` has the current state.)
+    toggleNavReplacement: (replacement: NavReplacement) => void;
     resolvedKeyLevels: ReadonlySignal<ResolvedKeyLevels>;
 }
 
@@ -160,4 +166,9 @@ export interface ResolvedKeyLevels {
     // has a colloquial level for it to select, and only in the visualization that shows one.
     colloquial: boolean;
     pairing: ShiftPairing;
+    // The spare-key buttons this board has any use for, and the selection it actually draws -
+    // the switch, but only for keys this board has to spare and only in the visualization that
+    // shows them.
+    navReplacementsOnOffer: NavReplacement[];
+    navReplacements: NavReplacement[];
 }

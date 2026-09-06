@@ -14,6 +14,7 @@ import {LayoutArea} from "./layout/LayoutArea.tsx";
 import {fillMapping} from "./layout/layout-functions.ts";
 import {MappingList} from "./mapping/MappingArea.tsx";
 import {getKlc} from "./mapping/msKlcTemplate.ts";
+import {NavReplacement} from "./mapping/nav-keys.ts";
 import {extractSvgWithStyles} from "./utils/svg-export.ts";
 import {PageHeader} from "./components/PageHeader.tsx";
 
@@ -77,7 +78,34 @@ function LevelSwitches({appState}: { appState: AppState }) {
         <NavSideOptions navSide={appState.navSide}/>
         {levels.hasNumberRow &&
             <ShiftLevelOptions levels={levels} colloquialWanted={appState.shiftColloquial}/>}
+        <SpareKeyOptions appState={appState} levels={levels}/>
     </div>
+}
+
+// What each button puts on the board, named as well as drawn: the symbols are the point, but not
+// everyone reads them yet.
+const navReplacementLabels: Record<NavReplacement, string> = {
+    [NavReplacement.HomeEnd]: "⇤⇥ Home/End",
+    [NavReplacement.PageUpDown]: "⇞⇟ PgUp/PgDn",
+    [NavReplacement.Delete]: "⌦ Delete",
+    [NavReplacement.Insert]: "⎀ Insert",
+};
+
+/*
+    The keys a board has to spare, spent on navigation and editing instead of on characters the
+    AltGr level carries anyway. Only the buttons this board can serve are shown, and where it can
+    serve none the whole group stays away.
+ */
+function SpareKeyOptions({appState, levels}: { appState: AppState, levels: ResolvedKeyLevels }) {
+    const {navReplacementsOnOffer, navReplacements} = levels;
+    if (!navReplacementsOnOffer.length) return null;
+    return <OptionGroup label="Spare keys">
+        {navReplacementsOnOffer.map((replacement) =>
+            <OptionButton key={replacement} selected={navReplacements.includes(replacement)}
+                onClick={() => appState.toggleNavReplacement(replacement)}>
+                {navReplacementLabels[replacement]}
+            </OptionButton>)}
+    </OptionGroup>
 }
 
 interface ShiftLevelOptionsProps {
