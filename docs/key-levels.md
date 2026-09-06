@@ -636,6 +636,39 @@ things really stand out:
 
 # [App] Implementation design and UX
 
+## Validation rules
+
+Status quo:
+
+- The app has unit tests for the completeness of flex mappings with respect to their defined 
+character set since the beginning of time. ((TODO: name test files here))
+
+- Before we had well-defined Shift and AltGr levels, we also had completeness tests for frame 
+mappings that have the full set of 47 character keys. ((TODO: name test file examples))
+
+Now that we know what characters are mapped on the Shift and AltGr levels, we can fully validate 
+all frame mappings and all model-specific flex mappings. Here are the rules:
+
+1. Frame mappings for 30-flexkey maps have no constraints at all. Colloquialization will 
+   automatically kick-in and provide the necessary `-` and `'` that the flex character set is 
+   lacking. And if that frees any key or pair of keys in the flex map, it will also replace that 
+   sensibly with another key or pair of keys.
+
+2. Frame mappings for 32-flexkey maps need to have the quote key `'`.
+
+3. Model-specific frame mappings should not have any character keys beyond their flex spots 
+   and (usually) digits. And model-specific flex mappings must have all 26 letters and the four 
+   critical punctuation keys: `,`, `.`, `-`, and `'`. Depending on the presence of the `;` key, 
+   those will receive English or international Shift mappings. And depending on the presence of 
+   the `/` they will either have the choice between the standard and the colloquial keymap, or 
+   they will only have the colloquial keymap.
+
+((TODO: make sure, there are tests for conditions 2 and 3, and they are referenced here.
+Also check whether we have any character-set specific tests that run for the cross product of 
+flex maps and layout models and if those tests still have any value now that the 
+character-set-interface between both is so well define. Possibly replace the cross product with 
+just a few select integration tests.))
+
 ## Making the bracket pairs appear together in keymaps
 
 To make the pair of new bracket keys co-located on all keyboard layout models, we need to add some
