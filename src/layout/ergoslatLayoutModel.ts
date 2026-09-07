@@ -108,7 +108,7 @@ export function majorErgoslatLayoutModel(midShift: boolean): LayoutModel {
             [KeymapTypeId.Ansi30]: ["()"],
             [KeymapTypeId.Thumb30]: ["=()"],
         } : {
-            [KeymapTypeId.Ansi30]: ["()-="],
+            [KeymapTypeId.Ansi30]: ["(b)-="],
             [KeymapTypeId.Thumb30]: ["-)"],
         },
 
