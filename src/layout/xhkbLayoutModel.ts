@@ -1,5 +1,6 @@
 import {KEY_COLOR, KeyboardRows, KeymapTypeId, type LayoutModel} from "../base-model.ts";
 import {MonotonicKeyWidth, zeroIndent} from "./keyWidth.ts";
+import {isKeyboardSymbol, isKeyName} from '../mapping/mapping-functions.ts';
 
 const keyWidth13 = new MonotonicKeyWidth(13, zeroIndent, "XHKB 13");
 
@@ -147,13 +148,9 @@ export const xhkb14LayoutModel: LayoutModel = {
     rowIndent: keyWidth14.rowIndent,
 
     // The 13/2's colouring, with the right edge moved out by the one added central key per row.
-    keyColorClass(label: string, row: KeyboardRows, col: number) {
+    keyColorClass(label: string, _row: KeyboardRows, _col: number) {
         if (label && "⏎↑↓←→".includes(label) || label === "Esc") return KEY_COLOR.HIGHLIGHT;
-        if (row === KeyboardRows.Bottom) return KEY_COLOR.EDGE;
-        if (col === 0) return KEY_COLOR.EDGE;
-        const rightEdge = [11, 12, 11, 10]
-        if (col <= rightEdge[row]) return KEY_COLOR.BORING;
-        return KEY_COLOR.EDGE;
+        return label !== "␣" && isKeyboardSymbol(label) || isKeyName(label) ? KEY_COLOR.EDGE : KEY_COLOR.BORING;
     },
 
     splitColumns: [6, 6, 6, 6, 5],
@@ -165,8 +162,7 @@ export const xhkb14LayoutModel: LayoutModel = {
     symmetricStagger: false,
 
     colloquialCycles: {
-        // Ansi30 needs no cycle: `-` and `+` are both central, so the generic cycles already
-        // stack the parentheses on them. Adding one only shifts the pair up into the number row.
+        [KeymapTypeId.Ansi30]: ["(b", ")-"],
         // This leads to a pair in the bottom row center for all keymaps that place `-` on ANSI `b`.
         // (Works with Quipper/Colemak Thumby and Cozy Keyboard.)
         [KeymapTypeId.Thumb30]: [")-\\"],
