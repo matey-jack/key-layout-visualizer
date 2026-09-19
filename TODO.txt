@@ -21,8 +21,9 @@ missing core features:
 - SVG export (with a title stating name of layout and keymap) ✅ except:
   - add metadata for to-scale printing (might need PDF?)
   - add a ruler to the SVG so people can zoom to scale on their laptop or tablet
-- export to keyboard layout editor format, https://www.keyboard-layout-editor.com/, because that is used as a spec by hardward keyboard builders.
-  (Having the export will help us to remove remaining ambiguities of how the SVG pics translate to actual hardware!)
+- export to keyboard layout editor format, https://www.keyboard-layout-editor.com/,
+  because that is used as a spec by hardware keyboard builders. ✅ except:
+  - only the base labels go in; KLE's 3×3 label grid could carry the Shift and AltGr levels too.
 
 "Every wish, once fulfilled, begets a bunch of new ones."
 Now that we have hexagon-shaped keys for the Harmonic layouts, we notice that those layouts aren't following our new semi-ergo principles of having letter keys aligned along finger-axes, with the consequence that the left side should be angle-modded above and below, and Shift must be in the home row or on a thumb key, because it's traditional position is taken by 'Z' and '/'.

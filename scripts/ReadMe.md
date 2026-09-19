@@ -6,6 +6,13 @@
 last, and it replaces the `<!--SEO_CONTENT-->` placeholder of the built `index.html`
 (`dist/index.html` unless a path is given) with the output of `generateSeoContent()`.
 
+## The KLE export
+
+`kle-export.ts` writes `kle.json` for the one layout and mapping named at the top of it, so that a
+board can be loaded at keyboard-layout-editor.com without going through the app. The app offers the
+same file behind a download link; this is the way to get one for a board the app does not currently
+show, or for a batch of them.
+
 ## The analysis scripts
 
 Everything else here is a read-only probe over the data tables the app is built from: the layout
@@ -17,8 +24,8 @@ Run one with:
 
     npx tsx scripts/<name>.ts
 
-Every `.ts` file directly in this directory is one of those runnable scripts; the code more than
-one of them shares, and the tests over it, live in `lib/`.
+Every `.ts` file directly in this directory is runnable that way; the code more than one of them
+shares, and the tests over it, live in `lib/`.
 
 `tsconfig.node.json` includes this directory, so `npm run build` typechecks the scripts along with
 everything else, and they cannot rot unnoticed when the tables they read change shape. `npm test`
