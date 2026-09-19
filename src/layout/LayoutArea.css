@@ -224,28 +224,26 @@ label.disabled {
     margin: 0.3rem;
 }
 
-.download-klc-link {
+.download-klc-link,
+.download-svg-link,
+.download-kle-link {
     margin-left: 1rem;
     color: #003fae;
     text-decoration: none;
     cursor: pointer;
 }
 
-.download-klc-link:hover {
+.download-klc-link:hover,
+.download-svg-link:hover,
+.download-kle-link:hover {
     text-decoration: underline;
     color: #5cdbef;
 }
 
-.download-svg-link {
-    margin-left: 1rem;
-    color: #003fae;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.download-svg-link:hover {
-    text-decoration: underline;
-    color: #5cdbef;
+/* The two layout exports stand next to each other, so a rule keeps them from reading as one link. */
+.download-kle-link {
+    padding-left: 1rem;
+    border-left: 1px solid #ccc;
 }
 
 .layout-area-svg-container {
