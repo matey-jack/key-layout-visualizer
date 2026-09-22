@@ -1,10 +1,11 @@
 /**
- * E2E tests for SVG download functionality.
+ * E2E tests for the download links.
  * Tests verify that:
  * - SVG downloads with correct filename format
  * - SVG contains valid structure and embedded styles
  * - CSS styling includes only KeyboardSvg.css rules (no page layout styles)
  * - All visualization types can be exported
+ * - the KLE export downloads a file keyboard-layout-editor.com can read back
  */
 
 import * as fs from 'node:fs';
@@ -274,5 +275,76 @@ test.describe('SVG Download', () => {
         fs.unlinkSync(tempPath);
       }
     }
+  });
+});
+
+test.describe('KLE Download', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/key-layout-visualizer/');
+  });
+
+  test('should download KLE JSON with correct filename format', async ({ page }) => {
+    await page.waitForSelector('svg.keyboard-svg', { timeout: 5000 });
+
+    const downloadPromise = page.waitForEvent('download');
+    const downloadLink = page.locator('a.download-kle-link');
+    await expect(downloadLink).toBeVisible();
+    await downloadLink.click();
+
+    const filename = (await downloadPromise).suggestedFilename();
+
+    // Same {keymapName}-{layoutName} as the SVG export, in KLE's own format.
+    expect(filename).toMatch(/\.json$/);
+    expect(filename).toMatch(/-/);
+  });
+
+  test('should produce a file in the KLE layout format', async ({ page }) => {
+    await page.waitForSelector('svg.keyboard-svg', { timeout: 5000 });
+
+    const downloadPromise = page.waitForEvent('download');
+    await page.locator('a.download-kle-link').click();
+    const download = await downloadPromise;
+
+    const tempPath = 'temp-download-kle.json';
+    await download.saveAs(tempPath);
+
+    try {
+      const rows = JSON.parse(fs.readFileSync(tempPath, 'utf-8'));
+
+      // A KLE file is the metadata object followed by one array per keyboard row.
+      expect(Array.isArray(rows)).toBe(true);
+      expect(rows[0].name).toBeTruthy();
+      const keyRows = rows.slice(1);
+      expect(keyRows.length).toBeGreaterThan(3);
+      for (const row of keyRows) {
+        expect(Array.isArray(row)).toBe(true);
+      }
+
+      // Every label is a plain string between the property objects that precede it.
+      const labels = keyRows.flat().filter((entry: unknown) => typeof entry === 'string');
+      expect(labels.length).toBeGreaterThan(40);
+      expect(labels).toContain('q');
+    } finally {
+      if (fs.existsSync(tempPath)) {
+        fs.unlinkSync(tempPath);
+      }
+    }
+  });
+
+  // KLE draws rectangles only, so the hexagons of a Harmonic board have nothing to translate into.
+  test('should not offer the KLE export while hexagons are drawn', async ({ page }) => {
+    // The app reads the hash once, when its state is created, so a hash change needs a reload.
+    const show = async (hash: string) => {
+      await page.goto(`/key-layout-visualizer/#${hash}`);
+      await page.reload();
+      await page.waitForSelector('svg.keyboard-svg', { timeout: 5000 });
+    };
+
+    await show('layout=1&harmonicHexagons=1');
+    await expect(page.locator('a.download-svg-link')).toBeVisible();
+    await expect(page.locator('a.download-kle-link')).toHaveCount(0);
+
+    await show('layout=1&harmonicHexagons=0');
+    await expect(page.locator('a.download-kle-link')).toBeVisible();
   });
 });

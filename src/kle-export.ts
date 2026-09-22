@@ -1,99 +1,82 @@
 /*
-    Work in progress towards the KLE export listed in TODO.txt: nothing in the app imports this yet.
-    It is a script with a top-level side effect – run it with `npx tsx src/kle-export.ts` and it writes
-    `kle.json` for one hard-coded model and mapping, which you can then load at keyboard-layout-editor.com
-    to see how the SVG picture translates into a keyboard someone could actually build.
- */
-import {type KleKey, type KleKeyboardMetadata, KleKeyboard, serialize} from '@kcf-hub/kle-serial';
-import type {FlexMapping, LayoutModel} from './base-model.ts';
-import  {isSplit, type LayoutOptions} from './app-model.ts';
-import {fillMapping, getKeyPositions, isHomeKey, defaultKeyColor} from './layout/layout-functions.ts';
-import {ergoboardCentralLayoutModel} from './layout/ergoboardCentralLayoutModel.ts';
-import {colemakMapping} from './mapping/colemakMappings.ts';
-import { writeFileSync } from 'node:fs';
+    The board as keyboard-layout-editor.com describes it: the same keys the app draws, in the format
+    hardware builders use as a spec. Loading an export at https://www.keyboard-layout-editor.com/
+    is what tells us whether a picture in the app translates into a keyboard someone could build.
 
+    Only the base labels go in. KLE's 3×3 label grid could carry the Shift and AltGr levels too, but
+    a build spec needs the key sizes and positions, and those levels are easier to read in the app.
+ */
+import {KleKey, KleKeyboard, KleKeyboardMetadata, serialize} from '@kcf-hub/kle-serial';
+import {isSplit, type LayoutOptions} from './app-model.ts';
+import type {FlexMapping, KeyboardRows, LayoutModel} from './base-model.ts';
+import {defaultKeyColor, fillMapping, getKeyPositions, isHomeKey, keyCapHeight} from './layout/layout-functions.ts';
+
+/*
+    KLE stores a colour per key, so the classes of the plain layout visualization are resolved here
+    against the same values KeyboardSvg.css gives them. The visualization the app happens to be
+    showing plays no part: an effort or fingering colour says nothing to whoever builds the board.
+ */
 const colorClassMap: Record<string, string> = {
     "home-key": "#c3f3ac",
     "edge-key": "#729bac",
     "highlighted-key": "#c6b07c",
     "unlabeled": "#e7e7e7",
-    "pinky": "#BCA7D4",
-    "ringy": "#A3BFD9",
-    "middy": "#a1c67e",
-    "lindex": "#DDD88C",
-    "rindex": "#C6B4A5",
-    "lthumb": "#D7A86E",
-    "rthumb": "#D8A39D",
     "": "#faf5eb",
 };
 
-const basicMetadata: KleKeyboardMetadata = {
-    author: "Robert Jack Will",
-    notes: "https://matey-jack.github.io/key-layout-visualizer",
-    radii: "20px",
-    name: "Ergoplank",
-    backcolor: "black",
-    background: null,
-    switchBrand: "Kailh",
-    switchMount: "hotswap or solder?",
-    switchType: "Choc v1",
-}
+const metadata = (layout: LayoutModel, mapping: FlexMapping): KleKeyboardMetadata =>
+    Object.assign(new KleKeyboardMetadata(), {
+        author: "Robert Jack Will",
+        notes: "https://matey-jack.github.io/key-layout-visualizer",
+        radii: "20px",
+        name: `${layout.name} — ${mapping.name}`,
+        backcolor: "black",
+    });
 
-export function buildKle(layout: LayoutModel, mapping: FlexMapping, options: Partial<LayoutOptions>): KleKeyboard {
+/**
+ * Returns null for a mapping that does not fit the layout, which is `fillMapping`'s way of saying so.
+ */
+export function buildKle(layout: LayoutModel, mapping: FlexMapping, options: Partial<LayoutOptions>): KleKeyboard | null {
     const charMap = fillMapping(layout, mapping);
-    const positions = getKeyPositions(layout, isSplit(options), charMap!);
-    const leftEdge = Math.min(...positions.map( p => p.colPos));
-    const keys: KleKey[] = positions.map( (pos) => {
+    if (!charMap) return null;
+
+    const positions = getKeyPositions(layout, isSplit(options), charMap);
+    const leftEdge = Math.min(...positions.map((p) => p.colPos));
+    const keys = positions.map((pos) => {
         const colorFn = layout.keyColorClass || defaultKeyColor;
         const colorClass = isHomeKey(layout, pos.row, pos.col)
             ? "home-key"
-            : (colorFn(pos.label, pos.row, pos.col) || (!pos.label ? "unlabeled" : ""));
-        const color = colorClassMap[colorClass] || colorClassMap[""];
+            : (colorFn(pos.label, pos.row as KeyboardRows, pos.col) || (!pos.label ? "unlabeled" : ""));
+        const height = keyCapHeight(layout, pos.row as KeyboardRows, pos.col);
 
-        return {
+        return Object.assign(new KleKey(), {
             x: pos.colPos - leftEdge,
             y: pos.row,
             width: pos.keyCapWidth,
-            // TODO: get height from wherever it's stored
-            height: 1,
+            height,
+            // The secondary rectangle describes the notch of an L-shaped key, of which we have none.
+            // Leaving it congruent with the primary one is what keeps it out of the serialized form.
+            width2: pos.keyCapWidth,
+            height2: height,
             labels: [
                 // it's a 3×3 matrix, but we fill only enough to reach the center
                 "", "", "",
-                "", pos.label
+                "", pos.label,
             ],
-            color: color,
-            textColor: [],
-            textSize: [],
-            default: {
-                textColor: "",
-                textSize: 0,
-            },
-            x2: 0,
-            y2: 0,
-            width2: 0,
-            height2: 0,
-            rotation_x: 0,
-            rotation_y: 0,
-            rotation_angle: 0,
-            decal: false,
-            ghost: false,
-            stepped: false,
-            nub: false,
-            profile: "",
-            sm: "",
-            sb: "",
-            st: "",
-            f2: undefined,
-            align: undefined,
-        };
-    })
+            color: colorClassMap[colorClass] || colorClassMap[""],
+        });
+    });
+
     const keyboard = new KleKeyboard();
-    keyboard.meta = basicMetadata;
+    keyboard.meta = metadata(layout, mapping);
     keyboard.keys = keys;
     return keyboard;
 }
 
-const prepared = buildKle(ergoboardCentralLayoutModel, colemakMapping, {})
-const kleData = serialize(prepared);
-
-writeFileSync('kle.json', JSON.stringify(kleData, null, 2), 'utf-8');
+/**
+ * The file content itself, ready to be saved and loaded at keyboard-layout-editor.com.
+ */
+export function kleJson(layout: LayoutModel, mapping: FlexMapping, options: Partial<LayoutOptions>): string | null {
+    const keyboard = buildKle(layout, mapping, options);
+    return keyboard && JSON.stringify(serialize(keyboard), null, 2);
+}

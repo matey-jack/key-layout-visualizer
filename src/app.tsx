@@ -10,6 +10,7 @@ import {Hand, LayoutType, LayoutTypeNames, VisualizationType} from "./base-model
 import {OptionButton} from "./components/OptionButton.tsx";
 import {OptionGroup} from "./components/OptionGroup.tsx";
 import {DetailsArea} from "./details/DetailsArea.tsx";
+import {kleJson} from "./kle-export.ts";
 import {LayoutArea} from "./layout/LayoutArea.tsx";
 import {fillMapping} from "./layout/layout-functions.ts";
 import {MappingList} from "./mapping/MappingArea.tsx";
@@ -50,6 +51,7 @@ interface VisualizationSwitchesProps {
                  <VizTypeButton vizType={VisualizationType.LayoutKeyEffort} signal={vizType}>Single-Key
                      Effort</VizTypeButton>
                  {appState && <DownloadSvgLink appState={appState}/>}
+                 {appState && isKleExportable(appState) && <DownloadKleLink appState={appState}/>}
              </div>
              <div>
                  Mapping Visualizations:
@@ -171,6 +173,16 @@ function isKlcCompatible(appState: AppState): boolean {
      return layoutOptions.ansiVariant === AnsiVariant.IBM || layoutOptions.ansiVariant === AnsiVariant.APPLE;
 }
 
+/*
+    KLE draws rectangles only, so a Harmonic board showing its hexagons has nothing to export that
+    would still look like the board on screen. With the hexagons off it is an ordinary 0.5-stagger
+    grid, and exports like any other.
+ */
+function isKleExportable(appState: AppState): boolean {
+    const layoutOptions = appState.layout.value;
+    return !(layoutOptions.type === LayoutType.Harmonic && layoutOptions.harmonicHexagons);
+}
+
 interface DownloadKlcLinkProps {
     appState: AppState;
 }
@@ -273,6 +285,38 @@ function DownloadSvgLink({appState}: DownloadSvgLinkProps) {
     return <a href={file.url} download={file.fileName} class="download-svg-link"
               onPointerDown={prepare} onFocus={prepare}>
         Download SVG
+    </a>;
+}
+
+interface DownloadKleLinkProps {
+    appState: AppState;
+}
+
+function DownloadKleLink({appState}: DownloadKleLinkProps) {
+    const layout = appState.layoutModel.value;
+    const layoutOptions = appState.layout.value;
+    const keyMap = appState.mapping.value;
+
+    const {file, prepare} = useDownloadFile(() => {
+        const content = kleJson(layout, keyMap, layoutOptions);
+        if (!content) {
+            console.warn("Unable to generate KLE file for this mapping");
+            return null;
+        }
+        const layoutName = LayoutTypeNames[layoutOptions.type];
+        return {
+            content,
+            type: "application/json",
+            fileName: sanitizeFileName(`${keyMap.name}-${layoutName}.json`),
+        };
+    }, [layout, layoutOptions, keyMap]);
+
+    if (!file) {
+        return null;
+    }
+    return <a href={file.url} download={file.fileName} class="download-kle-link"
+              onPointerDown={prepare} onFocus={prepare}>
+        Download for KLE
     </a>;
 }
 
